@@ -40,6 +40,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 .meta{font-size:12px;font-weight:600;color:var(--muted)}
 .bars{height:200px;display:flex;align-items:flex-end;gap:4px;border-bottom:1px solid var(--axis)}
 .bars>div{flex:1 1 0;min-width:0;height:100%;display:flex;align-items:flex-end;gap:1px}
+.bars .ly{position:absolute;left:-1px;right:-1px;height:3px;border-radius:2px;background:var(--ink)}
 .bars i{flex:1 1 0;border-radius:3px 3px 0 0;min-height:1px}
 .minis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .mini{background:var(--bg);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
@@ -58,6 +59,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 .empty{padding:18px;border:1px dashed var(--axis);border-radius:16px;font-size:14px;line-height:1.5;color:var(--body)}
 .banner{background:#FFF7E6;border:1px solid #F3D9A4;border-radius:16px;padding:12px 16px;font-size:14px;line-height:1.5;color:#5A4210}
 .chart{position:relative}
+#ships iframe{border:0;width:100%;height:360px;display:block}
 .chart svg{width:100%;height:262px;display:block}
 @media (max-width:600px){.wrap{padding:24px 16px 40px}h1{font-size:28px}.big{font-size:34px}.seg button{padding:0 14px}}
 .sec-h{margin:12px 0 0;font-size:24px;font-weight:800;letter-spacing:-.02em}
@@ -67,7 +69,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 .fd{background:var(--bg);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .fd .d{font-size:13px;font-weight:700}.fd .t{font-size:15px;font-weight:800}.fd .t span{color:var(--muted);font-weight:600}
 .fd .r{font-size:12px;font-weight:600;color:var(--use)}.fd .e{font-size:12px;font-weight:700;color:#9A5B00}
-.map{height:360px;border-radius:16px;overflow:hidden;background:var(--grid);border:0;width:100%;display:block}
+.map{height:360px;position:relative;border-radius:16px;overflow:hidden;background:var(--grid);border:0;width:100%;display:block}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{background:var(--bg);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600}
 .species{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
@@ -112,7 +114,7 @@ h2{margin:0;font-size:17px;font-weight:700}
   <div class="row">
     <section class="card wide" aria-labelledby="mo-h">
       <div class="head"><h2 id="mo-h">Last 30 days</h2>
-        <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+        <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
       </div>
       <div id="month-chart"></div>
       <div class="axis" id="month-axis"></div>
@@ -145,7 +147,12 @@ h2{margin:0;font-size:17px;font-weight:700}
       </section>
       <section class="card side" aria-labelledby="ship-h">
         <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-        <iframe class="map" id="ships" title="Live ship positions near Sauvie Island" loading="lazy"></iframe>
+        <div class="map" id="ships">
+          <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+          <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+            var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+          <script src="https://www.vesselfinder.com/aismap.js"></script>
+        </div>
         <p class="note" id="tides"></p>
       </section>
     </div>
@@ -208,7 +215,10 @@ function render() {
     const asOf = m == null ? '' : `${(Math.floor(m / 60) % 12) || 12}:${String(m % 60).padStart(2, '0')} ${m < 720 ? 'am' : 'pm'}`;
     $('t-now-s').textContent = s.as_of ? `As of ${asOf}` + (s.capacity_kw ? ` · ${s.capacity_kw} kW system` : '') : 'No reading yet today';
     $('t-today').innerHTML = `${n1(s.today_kwh)} <span class="u">kWh</span>`;
-    $('t-today-s').textContent = s.pace_kwh ? `On pace for about ${Math.round(s.pace_kwh)} kWh` : `This month ${Math.round(s.summary.month)} kWh`;
+    const ly = s.last_year || {};
+    const lyRef = ly.so_far_kwh != null && s.pace_kwh ? ly.so_far_kwh : ly.day_kwh;
+    const lyText = lyRef ? ` · last year ${s.pace_kwh && ly.so_far_kwh != null ? 'by now' : 'this day'}: ${Math.round(lyRef)} kWh` : '';
+    $('t-today-s').textContent = (s.pace_kwh ? `On pace for about ${Math.round(s.pace_kwh)} kWh` : `This month ${Math.round(s.summary.month)} kWh`) + lyText;
   }
   const p = D.performance;
   if (p && p.pct != null) {
@@ -261,6 +271,7 @@ function renderMain() {
   const sunCurve = (w && w.curve && w.curve.length) ? w.curve : ((D.outside && D.outside.sun_curve) || []);
   const hasSun = sunCurve.length > 0;
   $('main-legend').innerHTML = '<span><i class="sw" style="background:var(--solar)"></i>Solar</span>' +
+    ((s && s.last_year && s.last_year.curve.length) ? '<span><i style="width:14px;border-top:2px solid var(--ink);opacity:.45"></i>Same day last year</span>' : '') +
     (hasSun ? `<span><i style="width:14px;border-top:2px dashed var(--sun)"></i>Sunlight (${w && w.curve && w.curve.length ? 'your station' : 'weather model'})</span>` : '');
   const pts = (s && s.curve) || [];
   if (!pts.length) {
@@ -270,11 +281,16 @@ function renderMain() {
   }
   const W = 760, H = 262, base = 240, top = 20, start = 5 * 60, end = 21 * 60;
   const x = m => (Math.min(Math.max(m, start), end) - start) / (end - start) * W;
-  const maxKw = Math.max(s.capacity_kw || 0, ...pts.map(p => p.kw)) * 1.05 || 1;
+  const maxKw = Math.max(...pts.map(p => p.kw), ...((s.last_year && s.last_year.curve) || []).map(p => p.kw), 1) * 1.15;
   const y = kw => base - kw / maxKw * (base - top);
   const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(mins(p.t)).toFixed(1)} ${y(p.kw).toFixed(1)}`).join(' ');
   const lastX = x(mins(pts[pts.length - 1].t)).toFixed(1);
   const area = `${line} L${lastX} ${base} L${x(mins(pts[0].t)).toFixed(1)} ${base} Z`;
+  let lastYear = '';
+  const lyc = (s.last_year && s.last_year.curve) || [];
+  if (lyc.length) {
+    lastYear = `<path d="${lyc.map((c, i) => `${i ? 'L' : 'M'}${x(mins(c.t)).toFixed(1)} ${y(c.kw).toFixed(1)}`).join(' ')}" fill="none" stroke="var(--ink)" stroke-opacity="0.45" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+  }
   let sun = '';
   if (hasSun) {
     const maxW = Math.max(1000, ...sunCurve.map(c => c.wm2));
@@ -284,7 +300,7 @@ function renderMain() {
   const grid = [90, 165].map(g => `<line x1="0" y1="${g}" x2="${W}" y2="${g}" stroke="var(--grid)" vector-effect="non-scaling-stroke"/>`).join('');
   $('main-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Solar power today, peaking at ${n1(peak.kw)} kW around ${hourLabel(mins(peak.t))}">
     ${grid}<line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="var(--axis)" vector-effect="non-scaling-stroke"/>
-    <path d="${area}" fill="var(--solar)" fill-opacity="0.85"/>${sun}
+    <path d="${area}" fill="var(--solar)" fill-opacity="0.85"/>${sun}${lastYear}
     <line x1="${lastX}" y1="${top}" x2="${lastX}" y2="${base}" stroke="var(--ink)" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/></svg>`;
   $('main-axis').innerHTML = [5, 9, 13, 17, 21].map(h => `<span>${hourLabel(h * 60)}</span>`).join('');
 }
@@ -337,10 +353,12 @@ function renderMonth() {
   const days = D.days;
   const hasUse = days.some(d => d.used != null);
   $('used-legend').style.display = hasUse ? '' : 'none';
-  const max = Math.max(1, ...days.map(d => Math.max(d.produced || 0, d.used || 0)));
-  $('month-chart').innerHTML = `<div class="bars" role="img" aria-label="Daily production${hasUse ? ' and use' : ''} for the last 30 days">` +
-    days.map(d => `<div title="${fmtDate(d.date)}: ${d.produced == null ? 'no data' : n1(d.produced) + ' kWh made'}${d.used != null ? ', ' + n1(d.used) + ' kWh used' : ''}">
-      <i style="background:var(--solar);height:${(d.produced || 0) / max * 100}%"></i>${hasUse ? `<i style="background:var(--use);height:${(d.used || 0) / max * 100}%"></i>` : ''}</div>`).join('') + '</div>';
+  const hasLy = days.some(d => d.last_year != null);
+  $('ly-legend').style.display = hasLy ? '' : 'none';
+  const max = Math.max(1, ...days.map(d => Math.max(d.produced || 0, d.used || 0, d.last_year || 0)));
+  $('month-chart').innerHTML = `<div class="bars" role="img" aria-label="Daily production${hasUse ? ' and use' : ''} for the last 30 days${hasLy ? ', with the same dates last year marked' : ''}">` +
+    days.map(d => `<div style="position:relative" title="${fmtDate(d.date)}: ${d.produced == null ? 'no data' : n1(d.produced) + ' kWh made'}${d.last_year != null ? ' (last year ' + n1(d.last_year) + ')' : ''}${d.used != null ? ', ' + n1(d.used) + ' kWh used' : ''}">
+      <i style="background:var(--solar);height:${(d.produced || 0) / max * 100}%"></i>${hasUse ? `<i style="background:var(--use);height:${(d.used || 0) / max * 100}%"></i>` : ''}${d.last_year != null ? `<b class="ly" style="bottom:calc(${d.last_year / max * 100}% - 1.5px)"></b>` : ''}</div>`).join('') + '</div>';
   $('month-axis').innerHTML = [0, 9, 19, 29].map(i => `<span>${fmtDate(days[i].date)}</span>`).join('');
   const low = D.low_days || [];
   let note;
@@ -352,6 +370,12 @@ function renderMonth() {
     note = `Low days: ${list}. ` + (!D.sun_source ? 'Connecting your weather station will show whether clouds explain them.'
       : cloudy === low.length ? `They match cloudy days in ${src}, so the system is fine.`
       : `Not all of them were cloudy in ${src}, so they may be worth a look.`);
+  }
+  const both = days.slice(0, -1).filter(d => d.produced != null && d.last_year != null);
+  if (both.length >= 7) {
+    const now = both.reduce((a, d) => a + d.produced, 0), then = both.reduce((a, d) => a + d.last_year, 0);
+    const pct = Math.round((now / then - 1) * 100);
+    note = `Past ${both.length} days: ${Math.round(now).toLocaleString()} kWh vs ${Math.round(then).toLocaleString()} kWh on the same dates last year (${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%). ` + note;
   }
   $('month-note').textContent = note;
 }
@@ -485,9 +509,7 @@ function renderOutside() {
   }).join('');
 
   const rv = o.river_view || { lat: o.lat, lon: o.lon, zoom: 11 };
-  const shipSrc = `https://www.vesselfinder.com/aismap?zoom=${rv.zoom}&lat=${rv.lat}&lon=${rv.lon}&width=100%25&height=360&names=true&clicktoact=false&store_pos=false`;
-  if ($('ships').getAttribute('src') !== shipSrc) $('ships').setAttribute('src', shipSrc);
-  $('ship-link').href = `https://www.marinetraffic.com/en/ais/home/centerx:${rv.lon}/centery:${rv.lat}/zoom:${rv.zoom}`;
+  $('ship-link').href = `https://www.vesselfinder.com/?lat=${rv.lat}&lon=${rv.lon}&zoom=${rv.zoom}`;
   $('tides').textContent = o.tide_station && tides.length
     ? `Tides at ${o.tide_station.name}: ` + tides.map(x => `${x.type.toLowerCase()} ${x.ft} ft at ${clock(x.t.slice(11))}`).join(', then ') + '.'
     : '';

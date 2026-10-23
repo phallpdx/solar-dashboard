@@ -119,6 +119,22 @@ def fetch_solar(state, now_utc):
             months[prev] = client.energy(sid, "daily", prev)
         solar["summary"] = client.summary(sid)
 
+    # Same dates last year: two months of daily totals once (they never change),
+    # plus last year's hour-by-hour curve for today's date, once a day.
+    months = solar.setdefault("months", {})
+    ly_today = year_ago(now.date())
+    for d in (ly_today - dt.timedelta(days=30), ly_today):
+        if d.strftime("%Y-%m") not in months:
+            months[d.strftime("%Y-%m")] = client.energy(sid, "daily", d.strftime("%Y-%m"))
+    if solar.get("ly_hourly_day") != today and now.hour >= DAY_START:
+        try:
+            solar["ly_hourly"] = client.energy(sid, "hourly", ly_today.isoformat())
+        except aps.APSError as e:
+            if e.code not in (1000, 1001):
+                raise
+            solar["ly_hourly"] = []
+        solar["ly_hourly_day"] = today
+
     # Every panel's power through the day: one call per ECU.
     if (DAY_START <= now.hour <= DAY_END and gap_ok) or first_run_today or evening_final:
         series = {}
@@ -135,6 +151,13 @@ def fetch_solar(state, now_utc):
         if evening_final:
             solar["final_day"] = today
     return None
+
+
+def year_ago(day):
+    try:
+        return day.replace(year=day.year - 1)
+    except ValueError:  # Feb 29
+        return day.replace(year=day.year - 1, day=28)
 
 
 def solar_view(state, now_utc):
@@ -198,7 +221,20 @@ def solar_view(state, now_utc):
         "low": bool(median > 0.2 and panels[k][1] < 0.6 * median),
     } for i, k in enumerate(names)]
 
+    ly_date = year_ago(now.date()).isoformat()
+    ly_hourly = [fnum(v) for v in solar.get("ly_hourly") or []] if solar.get("ly_hourly_day") == today else []
+    # Last year at this time of day, from the hourly totals (each hour's kWh = its average kW).
+    ly_so_far = sum(v for h, v in enumerate(ly_hourly) if h < now.hour) + \
+        (ly_hourly[now.hour] * now.minute / 60 if now.hour < len(ly_hourly) else 0)
+    last_year = {
+        "date": ly_date,
+        "day_kwh": daily.get(ly_date),
+        "so_far_kwh": round(ly_so_far, 1) if ly_hourly else None,
+        "curve": [{"t": f"{h:02d}:30", "kw": round(v, 2)} for h, v in enumerate(ly_hourly)],
+    }
+
     return {
+        "last_year": last_year,
         "capacity_kw": fnum(details.get("capacity")),
         "timezone": str(tz),
         "now_kw": points[-1]["kw"] if points else 0.0,
@@ -524,7 +560,8 @@ def build(state, status, now_utc):
         used = round(produced + g["import"] - g["export"], 1) if g and produced is not None else None
         # Sunlight: your weather station when connected, else Open-Meteo's estimate.
         sun = ((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2") or model_sun.get(d)
-        days.append({"date": d, "produced": produced, "used": used, "sun": sun})
+        ly = (solar or {}).get("daily", {}).get(year_ago(dt.date.fromisoformat(d)).isoformat())
+        days.append({"date": d, "produced": produced, "used": used, "sun": sun, "last_year": ly})
 
     # Panels vs. sunlight: today's kWh per unit of sunlight, against this system's usual ratio.
     performance = None

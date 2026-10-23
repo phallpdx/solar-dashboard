@@ -151,17 +151,16 @@ def solar_view(state, now_utc):
             times = data.get("time") or []
             for key, values in (data.get("power") or {}).items():
                 vals = [fnum(v) for v in values]
-                panels[key] = vals[-1] if vals else 0.0
+                kwh = sum((a + b) / 2 / 1000 * h for a, b, h in
+                          zip(vals, vals[1:], _step_hours(times)))
+                panels[key] = (vals[-1] if vals else 0.0, kwh)
                 for t, v in zip(times, vals):
                     curve[t] = curve.get(t, 0.0) + v
     times = sorted(curve)
     points = [{"t": t, "kw": round(curve[t] / 1000, 3)} for t in times]
 
-    kwh_today = 0.0
-    for a, b in zip(times, times[1:]):
-        hours = (_minutes(b) - _minutes(a)) / 60
-        if 0 < hours <= 0.5:
-            kwh_today += (curve[a] + curve[b]) / 2 / 1000 * hours
+    kwh_today = sum((curve[a] + curve[b]) / 2 / 1000 * h
+                    for a, b, h in zip(times, times[1:], _step_hours(times)))
 
     # Daily history from the monthly series (today's entry may be partial).
     daily = {}
@@ -184,15 +183,18 @@ def solar_view(state, now_utc):
         if frac > 0.15:
             pace = round(kwh_today / frac, 1)
 
+    # Judge panels on energy so far today, not the latest reading: late in the
+    # day roof angles and shade make instant watts uneven even on healthy panels.
     names = sorted(panels, key=_panel_sort)
-    watts = [round(panels[k]) for k in names]
-    median = statistics.median(watts) if watts else 0
+    median = statistics.median(panels[k][1] for k in names) if names else 0
     panel_list = [{
         "id": f"P{i + 1}",
         "key": k,
-        "w": w,
-        "low": bool(median > 50 and w < 0.6 * median),
-    } for i, (k, w) in enumerate(zip(names, watts))]
+        "w": round(panels[k][0]),
+        "kwh": round(panels[k][1], 2),
+        "dead": bool(median > 0.2 and panels[k][1] < 0.05 * median),
+        "low": bool(median > 0.2 and panels[k][1] < 0.6 * median),
+    } for i, k in enumerate(names)]
 
     return {
         "capacity_kw": fnum(details.get("capacity")),
@@ -212,6 +214,12 @@ def solar_view(state, now_utc):
 def _minutes(hhmm):
     parts = hhmm.split(" ")[-1].split(":")
     return int(parts[0]) * 60 + int(parts[1])
+
+
+def _step_hours(times):
+    """Hours between readings; gaps over 30 minutes count as no data."""
+    steps = [(_minutes(b) - _minutes(a)) / 60 for a, b in zip(times, times[1:])]
+    return [h if 0 < h <= 0.5 else 0 for h in steps]
 
 
 def _panel_sort(key):

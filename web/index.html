@@ -259,7 +259,7 @@ function renderWeather() {
 function renderMonth() {
   const days = D.days;
   const hasUse = days.some(d => d.used != null);
-  $('used-legend').hidden = !hasUse;
+  $('used-legend').style.display = hasUse ? '' : 'none';
   const max = Math.max(1, ...days.map(d => Math.max(d.produced || 0, d.used || 0)));
   $('month-chart').innerHTML = `<div class="bars" role="img" aria-label="Daily production${hasUse ? ' and use' : ''} for the last 30 days">` +
     days.map(d => `<div title="${fmtDate(d.date)}: ${d.produced == null ? 'no data' : n1(d.produced) + ' kWh made'}${d.used != null ? ', ' + n1(d.used) + ' kWh used' : ''}">
@@ -306,13 +306,18 @@ function renderPanels() {
     $('panels').innerHTML = '<div class="empty" style="grid-column:1/-1">Panel readings show up once your system reports today.</div>';
     return;
   }
-  const max = Math.max(1, ...panels.map(p => p.w));
-  const low = panels.filter(p => p.low);
-  $('pn-meta').textContent = `${panels.length} panels` + (low.length ? ` · ${low.length} running low (${low.map(p => p.id).join(', ')})` : ' · all looking even');
+  const score = p => p.kwh ?? p.w;
+  const max = Math.max(0.01, ...panels.map(score));
+  const dead = panels.filter(p => p.dead), low = panels.filter(p => p.low && !p.dead);
+  const ids = list => list.map(p => p.id).join(', ');
+  $('pn-meta').textContent = `${panels.length} panels` +
+    (dead.length ? ` · ${dead.length} made nothing today (${ids(dead)})` : '') +
+    (low.length ? ` · ${low.length} running low (${ids(low)})` : '') +
+    (!dead.length && !low.length ? ' · all looking even' : '');
   $('panels').innerHTML = panels.map(p => {
-    const a = Math.round(40 + p.w / max * 60);
+    const a = Math.round(40 + score(p) / max * 60);
     const bg = p.low ? '' : `background:color-mix(in srgb, var(--solar) ${a}%, #FFFFFF)`;
-    return `<div class="panel${p.low ? ' low' : ''}" style="${bg}"><span>${p.id}</span><b>${p.w}W</b></div>`;
+    return `<div class="panel${p.low ? ' low' : ''}" style="${bg}" title="${p.id}: ${p.kwh != null ? p.kwh + ' kWh today' : ''}"><span>${p.id}</span><b>${p.w}W</b></div>`;
   }).join('');
 }
 

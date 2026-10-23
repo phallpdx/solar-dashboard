@@ -1,0 +1,75 @@
+name: Update dashboard
+
+on:
+  schedule:
+    - cron: "7 * * * *" # hourly; the updater decides whether to spend APsystems calls
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cached API responses, call counts and PG&E files live on the "data" branch.
+      - name: Get saved data
+        run: |
+          if git ls-remote --exit-code --heads origin data >/dev/null; then
+            git clone --quiet --depth 1 --branch data \
+              "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+          else
+            mkdir -p data && git -C data init --quiet
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch solar, weather and PG&E data
+        env:
+          APSYSTEMS_APP_ID: ${{ secrets.APSYSTEMS_APP_ID }}
+          APSYSTEMS_APP_SECRET: ${{ secrets.APSYSTEMS_APP_SECRET }}
+          APSYSTEMS_SID: ${{ secrets.APSYSTEMS_SID }}
+          AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
+          AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
+          PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
+          DATA_DIR: data
+        run: python -m solar.update
+
+      - name: Save data
+        working-directory: data
+        run: |
+          git config user.name "solar-dashboard bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --quiet --orphan snapshot
+          git add -A
+          git commit --quiet -m "Data as of $(date -u +%FT%TZ)"
+          git push --quiet --force \
+            "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" snapshot:data
+
+      - name: Build site
+        run: |
+          mkdir -p _site
+          cp web/* _site/
+          cp data/dashboard.json _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

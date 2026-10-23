@@ -38,10 +38,11 @@ def snapshot():
         except Exception:
             continue
         price = meta.get("regularMarketPrice") or points[-1][1]
-        prev = meta.get("chartPreviousClose") if len(points) < 2 else points[-2][1]
-        # If today's bar is already the last point, compare with the one before it.
-        if points and abs(points[-1][1] - price) > 1e-9:
-            prev = points[-1][1]
+        # Compare with the previous session's close: if the last daily bar is the
+        # current session, that's the bar before it.
+        market_day = dt.datetime.utcfromtimestamp(meta.get("regularMarketTime") or points[-1][0]).date()
+        last_day = dt.datetime.utcfromtimestamp(points[-1][0]).date()
+        prev = points[-2][1] if last_day == market_day and len(points) > 1 else points[-1][1]
         jan1 = next((c for t, c in points if dt.datetime.utcfromtimestamp(t).year == year), None)
         out.append({
             "symbol": symbol, "name": name, "kind": kind,

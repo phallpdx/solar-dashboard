@@ -115,12 +115,16 @@ def usno_phases(day, count=4):
 def aurora():
     """Highest planetary Kp forecast over the next ~3 days (NOAA SWPC)."""
     rows = _get("https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json")
-    now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H")
-    future = [r for r in rows[1:] if r[0][:13] >= now and r[2] in ("predicted", "estimated")]
+    # The feed has been both a header row plus lists, and a list of objects.
+    if rows and isinstance(rows[0], list):
+        rows = [dict(zip(rows[0], r)) for r in rows[1:]]
+    now = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H")
+    future = [r for r in rows if str(r.get("time_tag", "")).replace(" ", "T")[:13] >= now
+              and r.get("observed") in ("predicted", "estimated")]
     if not future:
         return None
-    top = max(future, key=lambda r: float(r[1]))
-    return {"kp": float(top[1]), "when_utc": top[0].replace(" ", "T")[:16] + ":00+00:00"}
+    top = max(future, key=lambda r: float(r["kp"]))
+    return {"kp": float(top["kp"]), "when_utc": str(top["time_tag"]).replace(" ", "T")[:16] + ":00+00:00"}
 
 
 # ------------------------------------------------------------- events list

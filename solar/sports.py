@@ -57,7 +57,7 @@ def team(league_path, name):
     record = next((i.get("summary") for i in (info.get("record") or {}).get("items", [])
                    if i.get("type") in ("total", None)), None)
     schedule = _get(f"{ESPN}/{league_path}/teams/{team_id}/schedule").get("events", [])
-    games = [_game(e, team_id) for e in schedule]
+    games = sorted((_game(e, team_id) for e in schedule), key=lambda g: g["utc"] or "")
     done = [g for g in games if g["completed"]]
     upcoming = [_game(e, team_id) for e in info.get("nextEvent", [])] or \
         [g for g in games if not g["completed"]]

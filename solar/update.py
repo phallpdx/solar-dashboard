@@ -551,6 +551,10 @@ def build(state, status, now_utc):
 
     out = outside_view(state, now_utc)
     model_sun = (out or {}).get("sun_by_day") or {}
+    # Never mix sources: a backyard sensor and the weather model read differently.
+    # Use the station once it has a week of full days, else the model throughout.
+    station_days = {d: v for d, v in ((weather or {}).get("days") or {}).items() if v.get("n", 0) >= 250}
+    use_station = bool(weather) and (len(station_days) >= 7 or not out)
 
     days = []
     for i in range(29, -1, -1):
@@ -558,8 +562,8 @@ def build(state, status, now_utc):
         produced = (solar or {}).get("daily", {}).get(d)
         g = grid.get(d)
         used = round(produced + g["import"] - g["export"], 1) if g and produced is not None else None
-        # Sunlight: your weather station when connected, else Open-Meteo's estimate.
-        sun = ((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2") or model_sun.get(d)
+        sun = (((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2") if use_station
+               else model_sun.get(d))
         ly = (solar or {}).get("daily", {}).get(year_ago(dt.date.fromisoformat(d)).isoformat())
         days.append({"date": d, "produced": produced, "used": used, "sun": sun, "last_year": ly})
 
@@ -569,7 +573,7 @@ def build(state, status, now_utc):
         ratios = [x["produced"] / x["sun"] for x in days[:-1]
                   if x["produced"] and x["sun"] and x["sun"] > 1.0]
         # Compare against sunlight so far today, not the whole day's.
-        sun_today = days[-1]["sun"] if weather else (out or {}).get("sun_so_far")
+        sun_today = days[-1]["sun"] if use_station else (out or {}).get("sun_so_far")
         if len(ratios) >= 5 and sun_today and sun_today > 0.3:
             ratio = statistics.median(ratios)
             pct = round(solar["today_kwh"] / sun_today / ratio * 100)
@@ -603,7 +607,7 @@ def build(state, status, now_utc):
         "bill": bill_view(rows, today) or (bills_view(bills, today, solar_daily) if bills else None),
         "days": days,
         "low_days": [{"date": x["date"], "cloudy": x.get("cloudy")} for x in low_days],
-        "sun_source": "station" if weather else ("model" if out else None),
+        "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
     }

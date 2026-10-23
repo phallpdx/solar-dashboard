@@ -28,6 +28,21 @@ DAY_START, DAY_END = 6, 20  # local hours when panels get polled
 COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 
 
+LEGACY_ZONES = {"US/Pacific": "America/Los_Angeles", "US/Mountain": "America/Denver",
+                "US/Central": "America/Chicago", "US/Eastern": "America/New_York",
+                "US/Arizona": "America/Phoenix", "US/Alaska": "America/Anchorage",
+                "US/Hawaii": "Pacific/Honolulu"}
+
+
+def zone(name):
+    """APsystems reports legacy names like US/Pacific; map them to ones every system has."""
+    name = LEGACY_ZONES.get(name or "", name or "America/Los_Angeles")
+    try:
+        return ZoneInfo(name)
+    except Exception:
+        return ZoneInfo("America/Los_Angeles")
+
+
 def env(name):
     return (os.environ.get(name) or "").strip()
 
@@ -85,7 +100,7 @@ def fetch_solar(state, now_utc):
         solar["details"] = details
         solar["ecus"] = client.inverters(sid)
 
-    tz = ZoneInfo(solar["details"].get("timezone") or "America/Los_Angeles")
+    tz = zone(solar["details"].get("timezone"))
     now = now_utc.astimezone(tz)
     today = now.strftime("%Y-%m-%d")
     last = solar.get("last_power_fetch")
@@ -125,7 +140,7 @@ def solar_view(state, now_utc):
     if "details" not in solar:
         return None
     details = solar["details"]
-    tz = ZoneInfo(details.get("timezone") or "America/Los_Angeles")
+    tz = zone(details.get("timezone"))
     now = now_utc.astimezone(tz)
     today = now.strftime("%Y-%m-%d")
 
@@ -215,7 +230,7 @@ def fetch_weather(state, now_utc):
         return "No weather station found on this Ambient account."
     device = devices[0]
     history = client.history(device["macAddress"])
-    tz = ZoneInfo(device.get("lastData", {}).get("tz") or "America/Los_Angeles")
+    tz = zone(device.get("lastData", {}).get("tz"))
     weather = state.setdefault("weather", {})
     weather["latest"] = device.get("lastData", {})
     weather["name"] = (device.get("info") or {}).get("name") or "Ambient station"
@@ -309,7 +324,7 @@ def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
     rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
-    tz = ZoneInfo(solar["timezone"] if solar else "America/Los_Angeles")
+    tz = zone(solar["timezone"] if solar else None)
     today = now_utc.astimezone(tz).strftime("%Y-%m-%d")
 
     grid = {}

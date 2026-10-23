@@ -48,7 +48,9 @@ jobs:
           AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
-        run: python -m solar.update
+        run: |
+          pip install --quiet tzdata
+          python -m solar.update
 
       - name: Save data
         working-directory: data

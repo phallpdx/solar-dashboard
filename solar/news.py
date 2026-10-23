@@ -150,7 +150,10 @@ def reviews(limit=25):
     items, failed = _collect(REVIEW_SOURCES, 14, counts)
     out, urls, per = [], set(), {}
     for it in sorted(items, key=lambda x: x["utc"], reverse=True):
-        is_review = "review" in it["url"].lower() or re.search(r"\breview\b", it["title"], re.I)
+        url = it["url"].lower()
+        is_review = re.search(r"(^|[/_-])reviews?([/_.-]|$)", url) or re.search(r"\breview\b", it["title"], re.I)
+        if re.search(r"/(entertainment|movies?|tv-shows?|streaming|games?/reviews?|books?)/", url):
+            continue  # product reviews only, not films, shows or books
         if not is_review or it["url"] in urls or per.get(it["source"], 0) >= PER_SOURCE:
             continue
         urls.add(it["url"])

@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Cached API responses, call counts and PG&E files live on the "data" branch.
+      # Cached API responses, call counts and PGE files live on the "data" branch.
       - name: Get saved data
         run: |
           if git ls-remote --exit-code --heads origin data >/dev/null; then
@@ -39,13 +39,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Fetch solar, weather and PG&E data
+      - name: Fetch solar, weather and PGE data
         env:
           APSYSTEMS_APP_ID: ${{ secrets.APSYSTEMS_APP_ID }}
           APSYSTEMS_APP_SECRET: ${{ secrets.APSYSTEMS_APP_SECRET }}
           APSYSTEMS_SID: ${{ secrets.APSYSTEMS_SID }}
           AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
           AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
+          HOME_ADDRESS: ${{ secrets.HOME_ADDRESS }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |

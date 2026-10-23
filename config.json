@@ -1,0 +1,9 @@
+{
+  "location": {
+    "label": "Sauvie Island",
+    "lat": 45.7,
+    "lon": -122.8,
+    "note": "Rounded to island level on purpose; this repo is public."
+  },
+  "river_view": {"lat": 45.72, "lon": -122.77, "zoom": 12}
+}

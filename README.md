@@ -1,15 +1,15 @@
 # Solar dashboard
 
 A home energy dashboard that combines APsystems (EMA) solar data, an Ambient
-Weather station and PG&E Green Button downloads.
+Weather station and PGE Green Button downloads.
 
 - `solar/update.py` fetches everything and writes `dashboard.json`. It runs
   hourly from GitHub Actions and spends roughly 20 APsystems calls a day
   (about 620 a month), with a hard stop at 850 a month.
 - `web/index.html` is the dashboard page. It reads `dashboard.json` and falls
   back to `sample.json` until real data exists.
-- Cached API responses, call counts and PG&E CSVs live on the `data` branch.
-  Personal details (name, address, account number) are stripped from PG&E
+- Cached API responses, call counts and PGE CSVs live on the `data` branch.
+  Personal details (name, address, account number) are stripped from PGE
   files before they are saved.
 
 ## Settings
@@ -17,7 +17,7 @@ Weather station and PG&E Green Button downloads.
 Repository secrets: `APSYSTEMS_APP_ID`, `APSYSTEMS_APP_SECRET`,
 `APSYSTEMS_SID`, and optionally `AMBIENT_API_KEY` and `AMBIENT_APP_KEY`.
 Optional repository variable `PGE_CYCLE_START_DAY` (the day of the month your
-PG&E bill cycle starts).
+PGE bill cycle starts).
 
 ## Run locally
 

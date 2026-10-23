@@ -6,6 +6,8 @@
 <meta name="robots" content="noindex">
 <title>Home energy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
@@ -58,6 +60,22 @@ h2{margin:0;font-size:17px;font-weight:700}
 .chart{position:relative}
 .chart svg{width:100%;height:262px;display:block}
 @media (max-width:600px){.wrap{padding:24px 16px 40px}h1{font-size:28px}.big{font-size:34px}.seg button{padding:0 14px}}
+.sec-h{margin:12px 0 0;font-size:24px;font-weight:800;letter-spacing:-.02em}
+.summary{font-size:15px;line-height:1.55;color:var(--body);margin:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fc{display:grid;grid-template-columns:repeat(7,minmax(92px,1fr));gap:8px;overflow-x:auto;padding-bottom:4px}
+.fd{background:var(--bg);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.fd .d{font-size:13px;font-weight:700}.fd .t{font-size:15px;font-weight:800}.fd .t span{color:var(--muted);font-weight:600}
+.fd .r{font-size:12px;font-weight:600;color:var(--use)}.fd .e{font-size:12px;font-weight:700;color:#9A5B00}
+.map{height:360px;border-radius:16px;overflow:hidden;background:var(--grid);border:0;width:100%;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--bg);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600}
+.species{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sp{display:flex;gap:10px;align-items:center;background:var(--bg);border-radius:14px;padding:8px;text-decoration:none;color:var(--ink);min-height:44px}
+.sp img{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none;background:var(--grid)}
+.sp b{font-size:13px;font-weight:700;line-height:1.25;display:block}.sp small{font-size:12px;color:var(--muted);font-weight:600}
+.aqi{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.link{font-size:13px;font-weight:600}
 </style>
 </head>
 <body>
@@ -76,7 +94,7 @@ h2{margin:0;font-size:17px;font-weight:700}
     <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
     <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
     <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
-    <div class="tile"><span class="k">PG&amp;E this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
+    <div class="tile"><span class="k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
   </section>
 
   <div class="row">
@@ -94,14 +112,14 @@ h2{margin:0;font-size:17px;font-weight:700}
   <div class="row">
     <section class="card wide" aria-labelledby="mo-h">
       <div class="head"><h2 id="mo-h">Last 30 days</h2>
-        <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PG&amp;E meter)</span></div>
+        <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
       </div>
       <div id="month-chart"></div>
       <div class="axis" id="month-axis"></div>
       <p class="note" id="month-note"></p>
     </section>
     <section class="card side" aria-labelledby="bill-h">
-      <div class="head"><h2 id="bill-h">PG&amp;E bill cycle</h2><span class="meta" id="bill-meta"></span></div>
+      <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
       <div id="bill"></div>
     </section>
   </div>
@@ -109,6 +127,42 @@ h2{margin:0;font-size:17px;font-weight:700}
   <section class="card" aria-labelledby="pn-h">
     <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
     <div class="panels" id="panels"></div>
+  </section>
+  <section id="outside" aria-labelledby="out-h" style="display:flex;flex-direction:column;gap:20px" hidden>
+    <h2 class="sec-h" id="out-h">Outside</h2>
+    <section class="card" aria-label="Today outside">
+      <p class="summary" id="out-summary"></p>
+      <div class="facts" id="out-facts"></div>
+    </section>
+    <section class="card" aria-labelledby="fc-h">
+      <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
+      <div class="fc" id="forecast"></div>
+    </section>
+    <div class="row">
+      <section class="card wide" aria-labelledby="radar-h">
+        <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+        <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+      </section>
+      <section class="card side" aria-labelledby="ship-h">
+        <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+        <iframe class="map" id="ships" title="Live ship positions near Sauvie Island" loading="lazy"></iframe>
+        <p class="note" id="tides"></p>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="birds-h">
+      <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
+      <div class="species" id="birds"></div>
+    </section>
+    <div class="row">
+      <section class="card wide" aria-labelledby="bloom-h">
+        <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
+        <div class="species" id="blooms"></div>
+      </section>
+      <section class="card side" aria-labelledby="food-h">
+        <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
+        <div class="chips" id="produce"></div>
+      </section>
+    </div>
   </section>
   <p class="meta" id="foot" style="margin:0"></p>
 </div>
@@ -172,7 +226,7 @@ function render() {
     $('t-bill-s').textContent = 'Bought from grid this cycle';
   } else {
     $('t-bill').innerHTML = '<span class="u">–</span>';
-    $('t-bill-s').textContent = 'Needs a PG&E download';
+    $('t-bill-s').textContent = 'Needs a PGE download';
   }
 
   renderMain();
@@ -180,6 +234,7 @@ function render() {
   renderMonth();
   renderBill();
   renderPanels();
+  renderOutside();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
     `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates about once an hour.`;
 }
@@ -199,9 +254,10 @@ function renderMain() {
     return;
   }
   $('main-h').textContent = 'Power through the day';
-  const hasSun = w && w.curve && w.curve.length;
+  const sunCurve = (w && w.curve && w.curve.length) ? w.curve : ((D.outside && D.outside.sun_curve) || []);
+  const hasSun = sunCurve.length > 0;
   $('main-legend').innerHTML = '<span><i class="sw" style="background:var(--solar)"></i>Solar</span>' +
-    (hasSun ? '<span><i style="width:14px;border-top:2px dashed var(--sun)"></i>Sunlight (Ambient)</span>' : '');
+    (hasSun ? `<span><i style="width:14px;border-top:2px dashed var(--sun)"></i>Sunlight (${w && w.curve && w.curve.length ? 'your station' : 'weather model'})</span>` : '');
   const pts = (s && s.curve) || [];
   if (!pts.length) {
     $('main-chart').innerHTML = '<div class="empty">No production yet today. The chart fills in once the panels wake up.</div>';
@@ -217,8 +273,8 @@ function renderMain() {
   const area = `${line} L${lastX} ${base} L${x(mins(pts[0].t)).toFixed(1)} ${base} Z`;
   let sun = '';
   if (hasSun) {
-    const maxW = Math.max(1000, ...w.curve.map(c => c.wm2));
-    sun = `<path d="${w.curve.map((c, i) => `${i ? 'L' : 'M'}${x(mins(c.t)).toFixed(1)} ${(base - c.wm2 / maxW * (base - top)).toFixed(1)}`).join(' ')}" fill="none" stroke="var(--sun)" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"/>`;
+    const maxW = Math.max(1000, ...sunCurve.map(c => c.wm2));
+    sun = `<path d="${sunCurve.map((c, i) => `${i ? 'L' : 'M'}${x(mins(c.t)).toFixed(1)} ${(base - c.wm2 / maxW * (base - top)).toFixed(1)}`).join(' ')}" fill="none" stroke="var(--sun)" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"/>`;
   }
   const peak = pts.reduce((a, b) => b.kw > a.kw ? b : a);
   const grid = [90, 165].map(g => `<line x1="0" y1="${g}" x2="${W}" y2="${g}" stroke="var(--grid)" vector-effect="non-scaling-stroke"/>`).join('');
@@ -232,8 +288,25 @@ function renderMain() {
 function renderWeather() {
   const w = D.weather;
   if (!w) {
-    $('wx-meta').textContent = '';
-    $('wx').innerHTML = '<div class="empty">Connect your Ambient Weather station to see sunlight, temperature and how weather affects your panels.</div>';
+    const o = D.outside;
+    if (!o) {
+      $('wx-meta').textContent = '';
+      $('wx').innerHTML = '<div class="empty">Connect your Ambient Weather station to see sunlight, temperature and how weather affects your panels.</div>';
+      return;
+    }
+    const t = o.days[0] || {};
+    $('wx-meta').textContent = `${esc(o.label)} · forecast model`;
+    $('wx').innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:14px">${wxIcon(o.now.code, 48)}
+        <div style="display:flex;flex-direction:column"><span class="big" style="line-height:1">${o.now.temp}°F</span>
+        <span class="meta" style="font-size:13px">${wxName(o.now.code)} · high ${t.hi}° · low ${t.lo}°</span></div></div>
+      <div class="minis">
+        <div class="mini"><span class="k">Feels like</span><span class="v">${o.now.feels}°</span></div>
+        <div class="mini"><span class="k">UV index today</span><span class="v">${t.uv != null ? Math.round(t.uv) : '–'}</span></div>
+        <div class="mini"><span class="k">Humidity</span><span class="v">${o.now.humidity ?? '–'}<small>%</small></span></div>
+        <div class="mini"><span class="k">Wind</span><span class="v">${o.now.wind} <small>mph ${esc(o.now.wind_dir)}</small></span></div>
+      </div>
+      <p class="note">Connect your Ambient station for readings from your own yard.</p></div>`;
     return;
   }
   const ago = w.updated_ms ? Math.max(0, Math.round((Date.now() - w.updated_ms) / 60000)) : null;
@@ -271,9 +344,10 @@ function renderMonth() {
   else {
     const list = low.map(l => fmtDate(l.date)).join(', ');
     const cloudy = low.filter(l => l.cloudy).length;
-    note = `Low days: ${list}. ` + (!D.weather ? 'Connecting your weather station will show whether clouds explain them.'
-      : cloudy === low.length ? 'They match cloudy readings from your weather station, so the system is fine.'
-      : 'Not all of them were cloudy at your station, so they may be worth a look.');
+    const src = D.sun_source === 'station' ? 'your weather station' : 'the weather records';
+    note = `Low days: ${list}. ` + (!D.sun_source ? 'Connecting your weather station will show whether clouds explain them.'
+      : cloudy === low.length ? `They match cloudy days in ${src}, so the system is fine.`
+      : `Not all of them were cloudy in ${src}, so they may be worth a look.`);
   }
   $('month-note').textContent = note;
 }
@@ -282,16 +356,16 @@ function renderBill() {
   const b = D.bill;
   if (!b) {
     $('bill-meta').textContent = '';
-    $('bill').innerHTML = '<div class="empty">Upload a PG&amp;E “Green Button” download to see what you bought, what you sent back, and your running balance.</div>';
+    $('bill').innerHTML = '<div class="empty">Add your PGE usage download to see what you bought, what you sent back, and your running balance.</div>';
     return;
   }
   const pct = Math.min(100, Math.round(b.cycle_day / b.cycle_days * 100));
   $('bill-meta').textContent = `${fmtDate(b.cycle_start)} – ${fmtDate(b.cycle_end)}`;
   const rows = [['Bought from grid', `${b.imported_kwh} kWh`], ['Sent to grid', `${b.exported_kwh} kWh`]];
-  if (b.peak_kwh != null) rows.push(['Peak-hour use (4–9 pm)', `${b.peak_kwh} kWh`]);
+  if (b.peak_kwh != null) rows.push(['Peak-hour use (5–9 pm weekdays)', `${b.peak_kwh} kWh`]);
   if (b.cost != null) rows.push(['Estimated balance', money(b.cost)]);
-  let note = `PG&E data runs through ${fmtDate(b.data_through)}.`;
-  if (b.peak_share != null && b.peak_share >= 0.5) note = `About ${Math.round(b.peak_share * 100)}% of what you buy is 4–9 pm, the priciest hours. Shifting laundry or dishes earlier would help. ` + note;
+  let note = `PGE data runs through ${fmtDate(b.data_through)}.`;
+  if (b.peak_share != null && b.peak_share >= 0.5) note = `About ${Math.round(b.peak_share * 100)}% of what you buy is 5–9 pm on weekdays, PGE’s priciest hours if you’re on Time of Day pricing. Shifting laundry or dishes earlier would help. ` + note;
   $('bill').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
     <div class="progress"><div style="width:${pct}%"></div></div>
     <span class="meta" style="margin-top:-6px">Day ${Math.min(b.cycle_day, b.cycle_days)} of ${b.cycle_days}${b.cycle_explicit ? '' : ' (assumed cycle)'}</span>
@@ -319,6 +393,111 @@ function renderPanels() {
     const bg = p.low ? '' : `background:color-mix(in srgb, var(--solar) ${a}%, #FFFFFF)`;
     return `<div class="panel${p.low ? ' low' : ''}" style="${bg}" title="${p.id}: ${p.kwh != null ? p.kwh + ' kWh today' : ''}"><span>${p.id}</span><b>${p.w}W</b></div>`;
   }).join('');
+}
+
+const WX = [[0, 'Clear', 'sun'], [1, 'Mostly clear', 'sun'], [2, 'Partly cloudy', 'part'], [3, 'Cloudy', 'cloud'],
+  [48, 'Fog', 'fog'], [57, 'Drizzle', 'rain'], [67, 'Rain', 'rain'], [77, 'Snow', 'snow'], [82, 'Showers', 'rain'],
+  [86, 'Snow showers', 'snow'], [99, 'Thunderstorms', 'storm']];
+const wxOf = c => WX.find(([max]) => (c ?? 0) <= max) || WX[0];
+const wxName = c => wxOf(c)[1];
+function wxIcon(code, size = 28) {
+  const kind = wxOf(code)[2];
+  const cloud = '<path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 11.1 3.5 3.5 0 0 0 7 18z"/>';
+  const paths = {
+    sun: '<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    part: '<path d="M8 3v1.5M3.5 8H2M4.6 4.6l1 1M12 6.2A4 4 0 0 0 5 9"/><path d="M8.5 20h9a3.5 3.5 0 0 0 .4-6.97A5 5 0 0 0 8.3 14 3 3 0 0 0 8.5 20z"/>',
+    cloud, fog: cloud.replace('M7 18', 'M7 15') + '<path d="M5 20h14M8 22h8"/>',
+    rain: '<path d="M7 15h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 8.1 3.5 3.5 0 0 0 7 15z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/>',
+    snow: '<path d="M7 15h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 8.1 3.5 3.5 0 0 0 7 15z"/><path d="M8 19h.01M12 20h.01M16 19h.01M10 22h.01M14 22h.01"/>',
+    storm: '<path d="M7 15h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 8.1 3.5 3.5 0 0 0 7 15z"/><path d="M12 15l-2 4h4l-2 4"/>',
+  };
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[kind]}</svg>`;
+}
+const clock = hhmm => { if (!hhmm) return '–'; const [h, m] = hhmm.split(':').map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`; };
+const AQI_COLORS = [[50, '#3FA34D'], [100, '#E3B505'], [150, '#F08A24'], [200, '#D64545'], [300, '#8E3B9E'], [1e9, '#7A2E2E']];
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+function renderOutside() {
+  const o = D.outside;
+  $('outside').hidden = !o;
+  if (!o) return;
+  const t = o.days[0] || {};
+  // Plain-language summary of whether it's a good time to be out.
+  const wet = o.next_hours.slice(0, 6).filter(h => (h.rain_pct || 0) >= 50);
+  const parts = [];
+  parts.push(wet.length ? `Rain likely around ${clock(wet[0].t)}.` : 'Dry for the next six hours.');
+  if (o.air.aqi != null) parts.push(`Air quality is ${o.air.label.toLowerCase()} (AQI ${o.air.aqi}).`);
+  if ((t.uv || 0) >= 6) parts.push(`UV peaks at ${Math.round(t.uv)}, so bring sunscreen.`);
+  if ((t.wind || 0) >= 20) parts.push(`Gusty, up to ${t.wind} mph.`);
+  const [sh, sm] = (t.sunset || '0:0').split(':').map(Number);
+  const golden = `${String(sh - 1).padStart(2, '0')}:${String(sm).padStart(2, '0')}`;
+  parts.push(`Sunset is ${clock(t.sunset)}, with golden light from about ${clock(golden)}.`);
+  $('out-summary').textContent = parts.join(' ');
+
+  const tides = o.tides.filter(x => new Date(x.t.replace(' ', 'T')) > new Date()).slice(0, 2);
+  const aqiColor = (AQI_COLORS.find(([m]) => (o.air.aqi ?? 0) <= m) || AQI_COLORS[0])[1];
+  const daylight = `${Math.floor(t.daylight_min / 60)}h ${t.daylight_min % 60}m`;
+  const tomorrow = o.days[1];
+  const facts = [
+    ['Sunrise', clock(t.sunrise)], ['Sunset', clock(t.sunset)], ['Daylight', daylight],
+    ['Air quality', o.air.aqi != null ? `<i class="aqi" style="background:${aqiColor}"></i>${o.air.aqi} <small>${esc(o.air.label)}</small>` : '–'],
+    ['UV index today', t.uv != null ? Math.round(t.uv) : '–'],
+    ['Moon', `${esc(o.moon.name)} <small>${o.moon.lit_pct}%</small>`],
+  ];
+  if (tides.length) facts.push(['Next tide', `${tides[0].type} ${clock(tides[0].t.slice(11))} <small>${tides[0].ft} ft</small>`]);
+  if (tomorrow && tomorrow.solar_kwh != null) facts.push(['Solar tomorrow', `~${tomorrow.solar_kwh} <small>kWh</small>`]);
+  $('out-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+
+  $('forecast').innerHTML = o.days.map((d, i) => {
+    const [y, m, dd] = d.date.split('-').map(Number);
+    const name = i === 0 ? 'Today' : DOW[new Date(y, m - 1, dd).getDay()];
+    return `<div class="fd" title="${wxName(d.code)}"><span class="d">${name}</span>${wxIcon(d.code)}
+      <span class="t">${d.hi}° <span>${d.lo}°</span></span>
+      <span class="r">${d.rain_pct != null ? d.rain_pct + '% rain' : ''}</span>
+      ${d.solar_kwh != null ? `<span class="e">~${d.solar_kwh} kWh</span>` : ''}</div>`;
+  }).join('');
+
+  const rv = o.river_view || { lat: o.lat, lon: o.lon, zoom: 11 };
+  const shipSrc = `https://www.vesselfinder.com/aismap?zoom=${rv.zoom}&lat=${rv.lat}&lon=${rv.lon}&width=100%25&height=360&names=true&clicktoact=false&store_pos=false`;
+  if ($('ships').getAttribute('src') !== shipSrc) $('ships').setAttribute('src', shipSrc);
+  $('ship-link').href = `https://www.marinetraffic.com/en/ais/home/centerx:${rv.lon}/centery:${rv.lat}/zoom:${rv.zoom}`;
+  $('tides').textContent = o.tide_station && tides.length
+    ? `Tides at ${o.tide_station.name}: ` + tides.map(x => `${x.type.toLowerCase()} ${x.ft} ft at ${clock(x.t.slice(11))}`).join(', then ') + '.'
+    : '';
+
+  const species = list => list.length ? list.map(x => `<a class="sp" href="${esc(x.url)}" target="_blank" rel="noopener">
+      ${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy">` : '<img alt="">'}<span><b>${esc(x.name)}</b><small>${x.count} sighting${x.count === 1 ? '' : 's'}</small></span></a>`).join('')
+    : '<div class="empty" style="grid-column:1/-1">Nothing reported nearby lately.</div>';
+  $('birds').innerHTML = species(o.birds);
+  $('blooms').innerHTML = species(o.blooms);
+  $('produce').innerHTML = o.produce.map(p => `<span class="chip">${esc(p)}</span>`).join('');
+  initRadar(o);
+}
+
+let radarMap;
+async function initRadar(o) {
+  if (radarMap || !window.L) return;
+  radarMap = L.map('radar', { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView([o.lat, o.lon], 8);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap, &copy; CARTO', maxZoom: 12 }).addTo(radarMap);
+  L.circleMarker([o.lat, o.lon], { radius: 6, color: '#15171C', weight: 2, fillColor: '#F5A524', fillOpacity: 1 }).addTo(radarMap);
+  try {
+    const maps = await (await fetch('https://api.rainviewer.com/public/weather-maps.json')).json();
+    const frames = maps.radar.past.slice(-8);
+    const layers = frames.map(f => L.tileLayer(`${maps.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,
+      { opacity: 0, maxNativeZoom: 7, maxZoom: 12, attribution: 'Radar: RainViewer' }).addTo(radarMap));
+    let i = layers.length - 1;
+    layers[i].setOpacity(0.7);
+    const show = () => {
+      layers.forEach((l, k) => l.setOpacity(k === i ? 0.7 : 0));
+      const when = new Date(frames[i].time * 1000);
+      $('radar-meta').textContent = 'Past 2 hours · ' + when.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    };
+    show();
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { i = (i + 1) % layers.length; show(); }, 800);
+  } catch (e) {
+    $('radar-meta').textContent = 'Radar unavailable right now';
+  }
 }
 
 document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { range = b.dataset.range; renderMain(); }));

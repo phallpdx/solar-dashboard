@@ -1,4 +1,4 @@
-"""Read PG&E "Green Button" CSV exports (Download My Data -> CSV).
+"""Read Portland General Electric (PGE) usage CSV exports (Opower / Green Button format).
 
 Handles interval files (15-minute or hourly rows with START TIME) and daily
 files, with either USAGE or IMPORT/EXPORT columns. Returns a list of rows:

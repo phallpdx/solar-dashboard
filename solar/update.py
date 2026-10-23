@@ -1,4 +1,4 @@
-"""Fetch solar, weather and PG&E data and write dashboard.json.
+"""Fetch solar, weather and PGE data and write dashboard.json.
 
 Run once an hour. APsystems allows about 1,000 calls a month, so this spends
 one call per daytime run plus two a day, and refuses to go past
@@ -8,10 +8,12 @@ Settings come from environment variables:
   APSYSTEMS_APP_ID, APSYSTEMS_APP_SECRET, APSYSTEMS_SID   solar (required)
   AMBIENT_API_KEY, AMBIENT_APP_KEY                        weather (optional)
   PGE_CYCLE_START_DAY                                     bill cycle start day (optional)
+  HOME_ADDRESS                                            for forecast, air, tides, birds
   DATA_DIR                                                where state.json, dashboard.json
                                                           and pge/*.csv live (default ./data)
 """
 import datetime as dt
+import hashlib
 import json
 import os
 import statistics
@@ -19,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import ambient, aps, pge
+from . import ambient, aps, outside, pge
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -295,7 +297,7 @@ def weather_view(state):
     }
 
 
-# ---------------------------------------------------------------- PG&E
+# ---------------------------------------------------------------- PGE
 
 def bill_view(rows, today):
     if not rows:
@@ -309,7 +311,9 @@ def bill_view(rows, today):
     nxt = (start.replace(day=28) + dt.timedelta(days=5)).replace(day=start.day)
     cycle = [r for r in rows if start.isoformat() <= r["date"] <= last_date]
     costs = [r["cost"] for r in cycle if r["cost"] is not None]
-    peak = [r for r in cycle if r["hour"] is not None and 16 <= r["hour"] < 21]
+    # PGE Time of Day on-peak: 5-9 pm on weekdays.
+    peak = [r for r in cycle if r["hour"] is not None and 17 <= r["hour"] < 21
+            and dt.date.fromisoformat(r["date"]).weekday() < 5]
     imported = sum(r["import"] for r in cycle)
     return {
         "cycle_start": start.isoformat(),
@@ -323,6 +327,131 @@ def bill_view(rows, today):
         "peak_share": round(sum(r["import"] for r in peak) / imported, 2) if peak and imported else None,
         "cost": round(sum(costs), 2) if costs else None,
         "cycle_explicit": bool(env("PGE_CYCLE_START_DAY")),
+    }
+
+
+# ---------------------------------------------------------------- Outside
+
+
+
+def fetch_outside(state, now_utc):
+    # Location comes from config.json (rounded, safe to publish) or a HOME_ADDRESS secret.
+    loc = load_json("config.json", {}).get("location") or {}
+    address = env("HOME_ADDRESS")
+    if not (address or loc.get("lat")):
+        return "Add your home location."
+    out = state.setdefault("outside", {})
+    # Saved data is public on a public repo: keep only a fingerprint of the address.
+    key = address.lower() if address else f"{loc['lat']},{loc['lon']}"
+    fingerprint = hashlib.sha256(key.encode()).hexdigest()[:16]
+    if out.get("address_id") != fingerprint:
+        out.clear()
+        out["address_id"] = fingerprint
+        lat, lon = outside.geocode(address) if address else (loc["lat"], loc["lon"])
+        out["lat"], out["lon"] = round(lat, 2), round(lon, 2)  # never save the exact spot
+    lat, lon, tz_name = out["lat"], out["lon"], "America/Los_Angeles"
+    now = now_utc.astimezone(zone(tz_name))
+    errors = []
+
+    def attempt(key, fn, every_hours=0):
+        stamp = out.get(key + "_at")
+        if stamp and every_hours and (now_utc - dt.datetime.fromisoformat(stamp)).total_seconds() < every_hours * 3600:
+            return
+        try:
+            out[key] = fn()
+            out[key + "_at"] = now_utc.isoformat()
+        except Exception as e:  # one source failing shouldn't blank the rest
+            errors.append(f"{key}: {e}")
+
+    attempt("forecast", lambda: outside.forecast(lat, lon, tz_name))
+    attempt("air", lambda: outside.air(lat, lon, tz_name))
+    if "tide_station" not in out:
+        attempt("tide_station", lambda: outside.tide_station(lat, lon))
+    if out.get("tide_station"):
+        attempt("tides", lambda: outside.tides(out["tide_station"]["id"], now.date()), 6)
+    attempt("birds", lambda: outside.birds(lat, lon), 6)
+    attempt("blooms", lambda: outside.blooms(lat, lon), 12)
+    return "; ".join(errors) or None
+
+
+def outside_view(state, now_utc):
+    out = state.get("outside") or {}
+    f = out.get("forecast")
+    if not f:
+        return None
+    tz = zone("America/Los_Angeles")
+    now = now_utc.astimezone(tz)
+    today = now.strftime("%Y-%m-%d")
+    daily = f.get("daily") or {}
+    dates = daily.get("time") or []
+
+    def col(name, i):
+        values = daily.get(name) or []
+        return values[i] if i < len(values) else None
+
+    days = []
+    sun_by_day = {}
+    for i, d in enumerate(dates):
+        sw = col("shortwave_radiation_sum", i)
+        if sw is not None:
+            sun_by_day[d] = round(sw / 3.6, 3)  # MJ/m² -> kWh/m²
+        if d >= today:
+            days.append({
+                "date": d,
+                "code": col("weather_code", i),
+                "hi": round(col("temperature_2m_max", i) or 0),
+                "lo": round(col("temperature_2m_min", i) or 0),
+                "rain_pct": col("precipitation_probability_max", i),
+                "rain_in": col("precipitation_sum", i),
+                "uv": col("uv_index_max", i),
+                "wind": round(col("wind_speed_10m_max", i) or 0),
+                "sunrise": (col("sunrise", i) or "T")[11:16],
+                "sunset": (col("sunset", i) or "T")[11:16],
+                "daylight_min": round((col("daylight_duration", i) or 0) / 60),
+                "sun": sun_by_day.get(d),
+            })
+
+    hourly = f.get("hourly") or {}
+    sun_so_far = 0.0
+    next_hours, sun_curve = [], []
+    for i, t in enumerate(hourly.get("time") or []):
+        if t[:10] == today:
+            # Open-Meteo radiation is the average over the hour that ends at t.
+            sun_curve.append({"t": t[11:16], "wm2": hourly["shortwave_radiation"][i] or 0})
+            if t <= now.strftime("%Y-%m-%dT%H:%M"):
+                sun_so_far += (hourly["shortwave_radiation"][i] or 0) / 1000
+        if now.strftime("%Y-%m-%dT%H") <= t[:13] and len(next_hours) < 24:
+            next_hours.append({"t": t[11:16], "temp": round(hourly["temperature_2m"][i] or 0),
+                               "rain_pct": hourly["precipitation_probability"][i],
+                               "cloud": hourly["cloud_cover"][i]})
+
+    aq = (out.get("air") or {}).get("current") or {}
+    aqi = aq.get("us_aqi")
+    levels = [(50, "Good"), (100, "Moderate"), (150, "Unhealthy for sensitive groups"),
+              (200, "Unhealthy"), (300, "Very unhealthy"), (10 ** 6, "Hazardous")]
+    cur = f.get("current") or {}
+    cfg = load_json("config.json", {})
+    return {
+        "label": (cfg.get("location") or {}).get("label") or "Home",
+        "lat": round(out["lat"], 1), "lon": round(out["lon"], 1),  # island level, a few miles
+        "river_view": cfg.get("river_view"),
+        "now": {"temp": round(cur.get("temperature_2m") or 0), "feels": round(cur.get("apparent_temperature") or 0),
+                "code": cur.get("weather_code"), "cloud": cur.get("cloud_cover"),
+                "humidity": cur.get("relative_humidity_2m"), "wind": round(cur.get("wind_speed_10m") or 0),
+                "wind_dir": COMPASS[round((cur.get("wind_direction_10m") or 0) / 45) % 8]},
+        "days": days,
+        "next_hours": next_hours,
+        "sun_by_day": sun_by_day,
+        "sun_so_far": round(sun_so_far, 3),
+        "sun_curve": sun_curve,
+        "air": {"aqi": aqi, "label": next(l for lim, l in levels if (aqi or 0) <= lim) if aqi is not None else None,
+                "pm25": aq.get("pm2_5"), "ozone": aq.get("ozone")},
+        "tide_station": out.get("tide_station"),
+        "tides": out.get("tides") or [],
+        "birds": out.get("birds") or [],
+        "blooms": out.get("blooms") or [],
+        "produce": outside.PRODUCE[now.month],
+        "moon": outside.moon(now.date()),
     }
 
 
@@ -341,24 +470,33 @@ def build(state, status, now_utc):
         g["import"] += r["import"]
         g["export"] += r["export"]
 
+    out = outside_view(state, now_utc)
+    model_sun = (out or {}).get("sun_by_day") or {}
+
     days = []
     for i in range(29, -1, -1):
         d = (dt.date.fromisoformat(today) - dt.timedelta(days=i)).isoformat()
         produced = (solar or {}).get("daily", {}).get(d)
         g = grid.get(d)
         used = round(produced + g["import"] - g["export"], 1) if g and produced is not None else None
-        sun = ((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2")
+        # Sunlight: your weather station when connected, else Open-Meteo's estimate.
+        sun = ((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2") or model_sun.get(d)
         days.append({"date": d, "produced": produced, "used": used, "sun": sun})
 
     # Panels vs. sunlight: today's kWh per unit of sunlight, against this system's usual ratio.
     performance = None
-    if solar and weather:
+    if solar and (weather or out):
         ratios = [x["produced"] / x["sun"] for x in days[:-1]
                   if x["produced"] and x["sun"] and x["sun"] > 1.0]
-        sun_today = days[-1]["sun"]
+        # Compare against sunlight so far today, not the whole day's.
+        sun_today = days[-1]["sun"] if weather else (out or {}).get("sun_so_far")
         if len(ratios) >= 5 and sun_today and sun_today > 0.3:
-            pct = round(solar["today_kwh"] / sun_today / statistics.median(ratios) * 100)
-            performance = {"pct": pct, "baseline_days": len(ratios)}
+            ratio = statistics.median(ratios)
+            pct = round(solar["today_kwh"] / sun_today / ratio * 100)
+            performance = {"pct": pct, "baseline_days": len(ratios), "kwh_per_sun": round(ratio, 2)}
+            for d in (out or {}).get("days", []):
+                if d["sun"]:
+                    d["solar_kwh"] = round(d["sun"] * ratio)
         else:
             performance = {"pct": None, "baseline_days": len(ratios)}
 
@@ -366,7 +504,8 @@ def build(state, status, now_utc):
     typical = statistics.median(produced) if produced else 0
     low_days = [x for x in days[:-1] if x["produced"] is not None and typical and x["produced"] < 0.6 * typical]
     for x in low_days:
-        typical_sun = statistics.median([y["sun"] for y in days if y["sun"]]) if weather else None
+        suns = [y["sun"] for y in days if y["sun"]]
+        typical_sun = statistics.median(suns) if suns else None
         x["cloudy"] = bool(x["sun"] and typical_sun and x["sun"] < 0.7 * typical_sun)
 
     if weather:
@@ -383,7 +522,9 @@ def build(state, status, now_utc):
         "bill": bill_view(rows, today),
         "days": days,
         "low_days": [{"date": x["date"], "cloudy": x.get("cloudy")} for x in low_days],
+        "sun_source": "station" if weather else ("model" if out else None),
         "performance": performance,
+        "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
     }
 
 
@@ -393,7 +534,7 @@ def main():
     state = load_json(state_path, {})
     now_utc = dt.datetime.now(dt.timezone.utc)
     status = {}
-    for name, fn in (("solar", fetch_solar), ("weather", fetch_weather)):
+    for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data
@@ -401,7 +542,7 @@ def main():
             status[name] = f"Error: {e}"
     save_json(state_path, state)
     status["pge"] = "ok" if any(f.endswith(".csv") for f in os.listdir(os.path.join(DATA_DIR, "pge"))) \
-        else "No PG&E file yet."
+        else "No PGE file yet."
     out = build(state, status, now_utc)
     save_json(os.path.join(DATA_DIR, "dashboard.json"), out)
     print(json.dumps(status))

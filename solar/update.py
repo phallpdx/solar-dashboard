@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import ambient, aps, outside, pge
+from . import ambient, aps, markets, outside, pge, ships, sky, sports
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -446,6 +446,10 @@ def fetch_outside(state, now_utc):
         attempt("tide_station", lambda: outside.tide_station(lat, lon))
     if out.get("tide_station"):
         attempt("tides", lambda: outside.tides(out["tide_station"]["id"], now.date()), 6)
+    tz_hours = round(now.utcoffset().total_seconds() / 3600)
+    attempt("moon_today", lambda: sky.usno_day(now.date(), lat, lon, tz_hours), 6)
+    attempt("phases", lambda: sky.usno_phases(now.date()), 12)
+    attempt("aurora", sky.aurora, 3)
     attempt("birds", lambda: outside.birds(lat, lon), 6)
     attempt("blooms", lambda: outside.blooms(lat, lon), 12)
     return "; ".join(errors) or None
@@ -528,7 +532,62 @@ def outside_view(state, now_utc):
         "birds": out.get("birds") or [],
         "blooms": out.get("blooms") or [],
         "produce": outside.PRODUCE[now.month],
-        "moon": outside.moon(now.date()),
+        "moon": {**sky.moon_state(now_utc),
+                 **({k: v for k, v in (out.get("moon_today") or {}).items() if k in ("moonrise", "moonset")}
+                    if out.get("moon_today_at", "")[:10] == now_utc.strftime("%Y-%m-%d") else {})},
+        "phases": [p for p in (out.get("phases") or sky.mean_phases(now_utc)) if p["utc"] > now_utc.isoformat()][:4]
+                  or sky.mean_phases(now_utc),
+        "aurora": out.get("aurora"),
+        "sky_events": sky.upcoming_events(now_utc, out["lat"], out["lon"]),
+    }
+
+
+# ---------------------------------------------------------------- Sports, markets, ships
+
+def _refresh(store, key, fn, every_hours, now_utc, errors):
+    stamp = store.get(key + "_at")
+    if stamp and (now_utc - dt.datetime.fromisoformat(stamp)).total_seconds() < every_hours * 3600:
+        return
+    try:
+        store[key] = fn()
+        store[key + "_at"] = now_utc.isoformat()
+    except Exception as e:  # keep the last good copy
+        errors.append(f"{key}: {e}")
+
+
+def fetch_sports(state, now_utc):
+    store, errors = state.setdefault("sports", {}), []
+    _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers"), 2.5, now_utc, errors)
+    _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), 2.5, now_utc, errors)
+    _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_markets(state, now_utc):
+    store, errors = state.setdefault("markets", {}), []
+    _refresh(store, "quotes", markets.snapshot, 0.5, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_ships(state, now_utc):
+    if not env("AISSTREAM_KEY"):
+        return "Add your aisstream.io key."
+    store = state.setdefault("ships", {})
+    heard = ships.listen(env("AISSTREAM_KEY"))
+    ships.merge(store.setdefault("cache", {}), heard, now_utc)
+    store["last_listen"] = {"at": now_utc.isoformat(), "heard": len(heard)}
+    return None
+
+
+def ships_view(state, now_utc):
+    store = state.get("ships") or {}
+    loc = (load_json("config.json", {}).get("river_view") or {})
+    if not store.get("cache") or not loc:
+        return None
+    return {
+        "approaching": ships.approaching(store["cache"], loc["lat"], loc["lon"], now_utc)[:8],
+        "in_area": len(store["cache"]),
+        "listened": store.get("last_listen"),
     }
 
 
@@ -610,6 +669,9 @@ def build(state, status, now_utc):
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
+        "sports": {k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at")} or None,
+        "markets": (state.get("markets") or {}).get("quotes"),
+        "ships": ships_view(state, now_utc),
     }
 
 
@@ -619,7 +681,8 @@ def main():
     state = load_json(state_path, {})
     now_utc = dt.datetime.now(dt.timezone.utc)
     status = {}
-    for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside)):
+    for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
+                     ("sports", fetch_sports), ("markets", fetch_markets), ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

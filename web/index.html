@@ -78,6 +78,11 @@ h2{margin:0;font-size:17px;font-weight:700}
 .sp b{font-size:13px;font-weight:700;line-height:1.25;display:block}.sp small{font-size:12px;color:var(--muted);font-weight:600}
 .aqi{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .link{font-size:13px;font-weight:600}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.team-top{display:flex;align-items:center;gap:12px}.team-top img{width:44px;height:44px;object-fit:contain}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--bg)}
+.up{color:#1F7A3A}.down{color:#B42318}
+.lines small{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -154,6 +159,17 @@ h2{margin:0;font-size:17px;font-weight:700}
           <script src="https://www.vesselfinder.com/aismap.js"></script>
         </div>
         <p class="note" id="tides"></p>
+        <div id="ship-list"></div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card side" aria-labelledby="moon-h">
+        <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
+        <div id="moon"></div>
+      </section>
+      <section class="card wide" aria-labelledby="sky-h">
+        <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
+        <div class="lines" id="sky"></div>
       </section>
     </div>
     <section class="card" aria-labelledby="birds-h">
@@ -168,6 +184,22 @@ h2{margin:0;font-size:17px;font-weight:700}
       <section class="card side" aria-labelledby="food-h">
         <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
         <div class="chips" id="produce"></div>
+      </section>
+    </div>
+  </section>
+  <section id="more" aria-labelledby="more-h" style="display:flex;flex-direction:column;gap:20px" hidden>
+    <h2 class="sec-h" id="more-h">Games and markets</h2>
+    <div class="teams" id="teams"></div>
+    <div class="row">
+      <section class="card wide" aria-labelledby="mkt-h">
+        <div class="head"><h2 id="mkt-h">Markets</h2><span class="meta" id="mkt-meta"></span></div>
+        <p class="summary" id="mkt-summary"></p>
+        <div id="mkt-spark"></div>
+        <div class="lines" id="mkt"></div>
+      </section>
+      <section class="card side" aria-labelledby="f1-h">
+        <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
+        <div id="f1"></div>
       </section>
     </div>
   </section>
@@ -249,8 +281,10 @@ function render() {
   renderBill();
   renderPanels();
   renderOutside();
+  renderShips();
+  renderMore();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
-    `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates about once an hour.`;
+    `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
 }
 
 function renderMain() {
@@ -493,7 +527,6 @@ function renderOutside() {
     ['Sunrise', clock(t.sunrise)], ['Sunset', clock(t.sunset)], ['Daylight', daylight],
     ['Air quality', o.air.aqi != null ? `<i class="aqi" style="background:${aqiColor}"></i>${o.air.aqi} <small>${esc(o.air.label)}</small>` : '–'],
     ['UV index today', t.uv != null ? Math.round(t.uv) : '–'],
-    ['Moon', `${esc(o.moon.name)} <small>${o.moon.lit_pct}%</small>`],
   ];
   if (tides.length) facts.push(['Next tide', `${tides[0].type} ${clock(tides[0].t.slice(11))} <small>${tides[0].ft} ft</small>`]);
   if (tomorrow && tomorrow.solar_kwh != null) facts.push(['Solar tomorrow', `~${tomorrow.solar_kwh} <small>kWh</small>`]);
@@ -520,6 +553,7 @@ function renderOutside() {
   $('birds').innerHTML = species(o.birds);
   $('blooms').innerHTML = species(o.blooms);
   $('produce').innerHTML = o.produce.map(p => `<span class="chip">${esc(p)}</span>`).join('');
+  renderSky(o);
   initRadar(o);
 }
 
@@ -527,25 +561,111 @@ let radarMap;
 async function initRadar(o) {
   if (radarMap || !window.L) return;
   radarMap = L.map('radar', { zoomControl: true, attributionControl: true, scrollWheelZoom: false }).setView([o.lat, o.lon], 8);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap, &copy; CARTO', maxZoom: 12 }).addTo(radarMap);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors', maxZoom: 12 }).addTo(radarMap);
   L.circleMarker([o.lat, o.lon], { radius: 6, color: '#15171C', weight: 2, fillColor: '#F5A524', fillOpacity: 1 }).addTo(radarMap);
-  try {
-    const maps = await (await fetch('https://api.rainviewer.com/public/weather-maps.json')).json();
-    const frames = maps.radar.past.slice(-8);
-    const layers = frames.map(f => L.tileLayer(`${maps.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,
-      { opacity: 0, maxNativeZoom: 7, maxZoom: 12, attribution: 'Radar: RainViewer' }).addTo(radarMap));
-    let i = layers.length - 1;
-    layers[i].setOpacity(0.7);
-    const show = () => {
-      layers.forEach((l, k) => l.setOpacity(k === i ? 0.7 : 0));
-      const when = new Date(frames[i].time * 1000);
-      $('radar-meta').textContent = 'Past 2 hours · ' + when.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-    };
-    show();
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { i = (i + 1) % layers.length; show(); }, 800);
-  } catch (e) {
-    $('radar-meta').textContent = 'Radar unavailable right now';
+  // NWS NEXRAD composite via Iowa Environmental Mesonet: no key, refreshed every 5 minutes.
+  const offsets = [50, 40, 30, 20, 10, 0];
+  const bust = Math.floor(Date.now() / 300000);
+  const layers = offsets.map(m => L.tileLayer(
+    `https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913${m ? `-m${String(m).padStart(2, '0')}m` : ''}/{z}/{x}/{y}.png?${bust}`,
+    { opacity: 0, maxZoom: 12, attribution: 'Radar: NWS via Iowa Environmental Mesonet' }).addTo(radarMap));
+  let i = layers.length - 1;
+  const show = () => {
+    layers.forEach((l, k) => l.setOpacity(k === i ? 0.7 : 0));
+    $('radar-meta').textContent = offsets[i] ? `${offsets[i]} min ago` : 'Now';
+  };
+  show();
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { i = (i + 1) % layers.length; show(); }, 900);
+}
+
+function moonSvg(m, size = 120) {
+  const r = size / 2 - 2, c = size / 2, f = m.lit_pct / 100, gib = f > 0.5;
+  const rx = Math.abs(2 * f - 1) * r;
+  const limb = m.waxing ? 1 : 0, term = (m.waxing === gib) ? 1 : 0;
+  const lit = f < 0.01 ? '' : f > 0.99 ? `<circle cx="${c}" cy="${c}" r="${r}" fill="#F3EBD3"/>`
+    : `<path d="M${c} ${c - r} A${r} ${r} 0 0 ${limb} ${c} ${c + r} A${rx} ${r} 0 0 ${term} ${c} ${c - r}Z" fill="#F3EBD3"/>`;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="${esc(m.name)}, ${m.lit_pct}% lit">
+    <circle cx="${c}" cy="${c}" r="${r}" fill="#2A2D35"/>${lit}<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="#15171C" stroke-width="1.5"/></svg>`;
+}
+const localWhen = iso => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const localDay = iso => new Date(iso).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+function renderSky(o) {
+  const m = o.moon;
+  $('moon-meta').textContent = `${m.lit_pct}% lit`;
+  const times = [m.moonrise && `Rises ${clock(m.moonrise)}`, m.moonset && `sets ${clock(m.moonset)}`].filter(Boolean).join(', ');
+  $('moon').innerHTML = `<div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">${moonSvg(m)}
+    <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:22px;font-weight:800">${esc(m.name)}</span>
+    <span class="meta" style="font-size:13px">${times || `Day ${Math.round(m.age_days)} of 29`}</span></div></div>
+    <div class="lines">${(o.phases || []).map(p => `<div><span>${esc(p.phase)}</span><span>${localDay(p.utc)}</span></div>`).join('')}</div>`;
+  const a = o.aurora;
+  $('aurora').textContent = a ? (a.kp >= 6 ? `Aurora possible ${localDay(a.when_utc)} (Kp ${a.kp})` : `Aurora unlikely (Kp up to ${a.kp})`) : '';
+  $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${localDay(e.utc)}</span></div>`).join('');
+}
+
+function renderShips() {
+  const sh = D.ships;
+  if (!sh) { $('ship-list').innerHTML = ''; return; }
+  const list = sh.approaching;
+  const mins = s => Math.round((new Date(s.eta_utc) - Date.now()) / 60000);
+  $('ship-list').innerHTML = list.length ? '<div class="lines">' + list.map(s => {
+    const m = mins(s);
+    const when = s.passing_now || m <= 2 ? 'Passing now' : m < 60 ? `~${m} min` : `~${clock(new Date(s.eta_utc).toTimeString().slice(0, 5))}`;
+    const what = [s.type, s.length_m ? `${s.length_m} m` : null, s.destination ? `to ${s.destination}` : null].filter(Boolean).join(' · ');
+    return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${esc(what)}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+  }).join('') + '</div>'
+    : `<p class="note">No ships heading your way right now (${sh.in_area} seen on the river in the last few hours).</p>`;
+}
+
+function renderMore() {
+  const sp = D.sports, mk = D.markets;
+  $('more').hidden = !sp && !mk;
+  const teams = [];
+  for (const key of ['blazers', 'timbers']) {
+    const t = sp && sp[key];
+    if (!t) continue;
+    const g = t.next, l = t.last;
+    const next = g ? `<div class="lines"><div><span>Next: ${g.home ? 'vs' : 'at'} ${esc(g.opponent)}${g.note ? `<br><small>${esc(g.note)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${localWhen(g.utc)}</span></div>
+      ${g.tv ? `<div><span>Watch on</span><span>${esc(g.tv)}</span></div>` : ''}</div>` : '<p class="note">No game scheduled yet.</p>';
+    const last = l ? `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>` : '';
+    teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, t.standing].filter(Boolean).map(esc).join(' · ')}</span></div></div>${next}${last}</section>`);
+  }
+  $('teams').innerHTML = teams.join('');
+
+  const f = sp && sp.f1;
+  if (f) {
+    $('f1-meta').textContent = f.season ? `${f.season} season` : '';
+    $('f1').innerHTML = `<div class="lines">${f.next.map(r => `<div><span>${esc(r.name)}${r.sprint ? ' <span class="pill">Sprint</span>' : ''}<br><small>${esc(r.where)}</small></span><span style="white-space:nowrap;padding-left:12px">${localWhen(r.utc)}</span></div>`).join('') || '<div><span>Season finished</span><span></span></div>'}</div>
+      <h3 style="margin:6px 0 0;font-size:14px">Championship</h3>
+      <div class="lines">${f.standings.map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>`;
+  }
+
+  if (mk && mk.length) {
+    const fmt = q => q.kind === 'yield' ? `${q.price.toFixed(2)}%` : q.price.toLocaleString(undefined, { maximumFractionDigits: q.price > 1000 ? 0 : 2 });
+    const chg = v => v == null ? '' : `<span class="${v >= 0 ? 'up' : 'down'}">${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}%</span>`;
+    const spx = mk.find(q => q.symbol === '^GSPC');
+    $('mkt-meta').textContent = 'As of ' + localWhen(mk[0].as_of);
+    if (spx) {
+      const dir = spx.day_pct >= 0 ? 'up' : 'down';
+      const off = spx.high_52w ? (spx.price / spx.high_52w - 1) * 100 : null;
+      const nas = mk.find(q => q.symbol === '^IXIC'), tnx = mk.find(q => q.symbol === '^TNX');
+      $('mkt-summary').textContent = `The S&P 500 is ${dir} ${Math.abs(spx.day_pct).toFixed(1)}% at ${fmt(spx)}` +
+        (spx.ytd_pct != null ? `, ${spx.ytd_pct >= 0 ? 'up' : 'down'} ${Math.abs(spx.ytd_pct)}% this year` : '') +
+        (off != null ? (off > -1 ? ', right near its 52-week high.' : `, ${Math.abs(off).toFixed(1)}% below its 52-week high.`) : '.') +
+        (nas ? ` The Nasdaq is ${nas.day_pct >= 0 ? 'up' : 'down'} ${Math.abs(nas.day_pct).toFixed(1)}%.` : '') +
+        (tnx ? ` The 10-year Treasury yields ${tnx.price.toFixed(2)}%.` : '');
+      const pts = spx.spark || [];
+      if (pts.length > 1) {
+        const lo = Math.min(...pts), hi = Math.max(...pts), W = 600, H = 70;
+        const d = pts.map((v, i) => `${i ? 'L' : 'M'}${(i / (pts.length - 1) * W).toFixed(1)} ${(H - 4 - (v - lo) / (hi - lo || 1) * (H - 8)).toFixed(1)}`).join(' ');
+        $('mkt-spark').innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:70px;display:block" role="img" aria-label="S&P 500 over the last 30 trading days">
+          <path d="${d}" fill="none" stroke="${pts[pts.length - 1] >= pts[0] ? '#1F7A3A' : '#B42318'}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg><div class="axis"><span>30 trading days ago</span><span>Today</span></div>`;
+      }
+    }
+    $('mkt').innerHTML = mk.map(q => `<div><span>${esc(q.name)}</span><span>${fmt(q)} &nbsp;${chg(q.day_pct)}</span></div>`).join('');
   }
 }
 

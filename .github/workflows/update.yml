@@ -2,7 +2,7 @@ name: Update dashboard
 
 on:
   schedule:
-    - cron: "7 * * * *" # hourly; the updater decides whether to spend APsystems calls
+    - cron: "*/20 * * * *" # every 20 min; the updater limits APsystems calls to about one an hour
   workflow_dispatch:
   push:
     branches: [main]
@@ -47,10 +47,11 @@ jobs:
           AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
           AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
           HOME_ADDRESS: ${{ secrets.HOME_ADDRESS }}
+          AISSTREAM_KEY: ${{ secrets.AISSTREAM_KEY }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |
-          pip install --quiet tzdata
+          pip install --quiet tzdata websockets
           python -m solar.update
 
       - name: Save data

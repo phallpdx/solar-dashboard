@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import ambient, aps, markets, outside, pge, ships, sky, sports, world
+from . import alerts, ambient, aps, markets, news, outside, pge, ships, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -450,6 +450,7 @@ def fetch_outside(state, now_utc):
     attempt("moon_today", lambda: sky.usno_day(now.date(), lat, lon, tz_hours), 6)
     attempt("phases", lambda: sky.usno_phases(now.date()), 12)
     attempt("aurora", sky.aurora, 3)
+    attempt("nws_alerts", lambda: alerts.nws(lat, lon))
     attempt("birds", lambda: outside.birds(lat, lon), 6)
     attempt("blooms", lambda: outside.blooms(lat, lon), 12)
     return "; ".join(errors) or None
@@ -486,6 +487,8 @@ def outside_view(state, now_utc):
                 "rain_in": col("precipitation_sum", i),
                 "uv": col("uv_index_max", i),
                 "wind": round(col("wind_speed_10m_max", i) or 0),
+                "gust": round(col("wind_gusts_10m_max", i) or 0),
+                "snow_in": col("snowfall_sum", i),
                 "sunrise": (col("sunrise", i) or "T")[11:16],
                 "sunset": (col("sunset", i) or "T")[11:16],
                 "daylight_min": round((col("daylight_duration", i) or 0) / 60),
@@ -557,7 +560,10 @@ def _refresh(store, key, fn, every_hours, now_utc, errors):
 
 def fetch_sports(state, now_utc):
     store, errors = state.setdefault("sports", {}), []
-    _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers"), 2.5, now_utc, errors)
+    if store.get("v") != 2:  # new fields (division rank): fetch again now
+        store.clear()
+        store["v"] = 2
+    _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), 2.5, now_utc, errors)
     _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), 2.5, now_utc, errors)
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
     return "; ".join(errors) or None
@@ -575,6 +581,23 @@ def fetch_world(state, now_utc):
     _refresh(store, "holidays", lambda: world.holidays(today), 12, now_utc, errors)
     _refresh(store, "bangkok", world.bangkok, 0.3, now_utc, errors)
     return "; ".join(errors) or None
+
+
+def fetch_news(state, now_utc):
+    store, errors = state.setdefault("news", {}), []
+    _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
+    _refresh(store, "reviews", news.reviews, 3, now_utc, errors)
+    failed = sorted(set((store.get("stories") or {}).get("failed", []) + (store.get("reviews") or {}).get("failed", [])))
+    if failed:
+        errors.append("feeds not answering: " + ", ".join(failed))
+    return "; ".join(errors) or None
+
+
+def alerts_view(state, out, now_utc):
+    if not out:
+        return None
+    official = alerts.active((state.get("outside") or {}).get("nws_alerts") or [], now_utc)
+    return {"official": official, "forecast": alerts.from_forecast(out["days"], official), "days": 3}
 
 
 def fetch_ships(state, now_utc):
@@ -677,11 +700,13 @@ def build(state, status, now_utc):
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
-        "sports": {k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at")} or None,
+        "sports": {k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k != "v"} or None,
         "markets": (state.get("markets") or {}).get("quotes"),
         "ships": ships_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
+        "alerts": alerts_view(state, out, now_utc),
+        "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
     }
 
 
@@ -693,7 +718,7 @@ def main():
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
-                     ("ships", fetch_ships)):
+                     ("news", fetch_news), ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

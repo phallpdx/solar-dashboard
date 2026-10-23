@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Home energy</title>
+<title>Home dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -64,7 +64,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 @media (max-width:600px){.wrap{padding:24px 16px 40px}h1{font-size:28px}.big{font-size:34px}.seg button{padding:0 14px}}
 .sec-h{margin:12px 0 0;font-size:24px;font-weight:800;letter-spacing:-.02em}
 .summary{font-size:15px;line-height:1.55;color:var(--body);margin:0}
-.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
 .fc{display:grid;grid-template-columns:repeat(7,minmax(92px,1fr));gap:8px;overflow-x:auto;padding-bottom:4px}
 .fd{background:var(--bg);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .fd .d{font-size:13px;font-weight:700}.fd .t{font-size:15px;font-weight:800}.fd .t span{color:var(--muted);font-weight:600}
@@ -83,68 +83,70 @@ h2{margin:0;font-size:17px;font-weight:700}
 .pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--bg)}
 .up{color:#1F7A3A}.down{color:#B42318}
 .lines small{color:var(--muted);font-weight:600}
+.hours{display:grid;grid-template-columns:repeat(12,minmax(48px,1fr));gap:4px;overflow-x:auto;padding-bottom:2px}
+.hours div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:12px;background:var(--bg);font-size:12px;font-weight:600;color:var(--muted)}
+.hours b{font-size:15px;font-weight:800;color:var(--ink)}.hours .r{color:var(--use)}
+.group{display:flex;flex-direction:column;gap:20px}
+.half{flex:1 1 420px}
+.scroll{max-height:560px;overflow-y:auto;overscroll-behavior:contain;margin:0 -8px;padding:0 8px;border-top:1px solid var(--grid)}
+.scroll:focus-visible{outline:2px solid var(--use);outline-offset:2px;border-radius:8px}
+.story{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--grid);text-decoration:none;color:var(--ink)}
+.story:last-child{border-bottom:0}
+.story img{width:72px;height:72px;border-radius:12px;object-fit:cover;flex:none;background:var(--grid)}
+.story b{display:block;font-size:14px;font-weight:700;line-height:1.35}
+.story p{margin:4px 0 0;font-size:13px;line-height:1.45;color:var(--body);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.story small{display:block;margin-top:4px;font-size:12px;font-weight:600;color:var(--muted)}
+.story:hover b{text-decoration:underline}
+.alerts{display:flex;flex-direction:column;gap:10px}
+.alert{border-radius:18px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;border:1px solid}
+.alert.l3{background:#FDECEC;border-color:#F2B8B5;color:#6B1A13}
+.alert.l2{background:#FFF4E0;border-color:#F3D29A;color:#5A4210}
+.alert.l1{background:#EEF3FB;border-color:#C9D6EE;color:#1E3A66}
+.alert svg{flex:none;margin-top:2px}
+.alert b{font-size:16px;font-weight:800}
+.alert p{margin:4px 0 0;font-size:14px;line-height:1.5}
+.alert details{margin-top:6px;font-size:13px;line-height:1.5}
+.alert summary{cursor:pointer;font-weight:700;min-height:28px}
+.alert .src{font-size:12px;font-weight:600;opacity:.8}
+.allclear{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--body)}
+.allclear i{width:10px;height:10px;border-radius:50%;background:#3FA34D}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div><div class="eyebrow" id="stamp">Loading…</div><h1>Home energy</h1></div>
-    <div class="seg" role="group" aria-label="Time range">
-      <button data-range="day" aria-pressed="true">Day</button>
-      <button data-range="week" aria-pressed="false">Week</button>
-      <button data-range="month" aria-pressed="false">Month</button>
-    </div>
+    <div><div class="eyebrow" id="stamp">Loading…</div><h1 id="hello">Your day at home</h1></div>
+    <span class="meta" id="place"></span>
   </header>
   <div id="banner" class="banner" hidden></div>
+  <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
 
-  <section class="tiles" aria-label="Right now">
+  <div class="row" id="today-row">
+    <section class="card side" aria-labelledby="wx-h">
+      <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
+      <div id="wx"></div>
+    </section>
+    <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
+      <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
+      <p class="summary" id="out-summary"></p>
+      <div class="facts" id="out-facts"></div>
+      <div class="hours" id="hours" aria-label="Next 12 hours"></div>
+    </section>
+  </div>
+  <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
+    <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
+    <div class="fc" id="forecast"></div>
+  </section>
+
+  <section class="tiles" aria-label="Solar right now">
     <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
     <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
     <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
     <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
   </section>
 
-  <div class="row">
-    <section class="card wide" aria-labelledby="main-h">
-      <div class="head"><h2 id="main-h">Power through the day</h2><div class="legend" id="main-legend"></div></div>
-      <div class="chart" id="main-chart"></div>
-      <div class="axis" id="main-axis"></div>
-    </section>
-    <section class="card side" aria-labelledby="wx-h">
-      <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
-      <div id="wx"></div>
-    </section>
-  </div>
-
-  <div class="row">
-    <section class="card wide" aria-labelledby="mo-h">
-      <div class="head"><h2 id="mo-h">Last 30 days</h2>
-        <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
-      </div>
-      <div id="month-chart"></div>
-      <div class="axis" id="month-axis"></div>
-      <p class="note" id="month-note"></p>
-    </section>
-    <section class="card side" aria-labelledby="bill-h">
-      <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
-      <div id="bill"></div>
-    </section>
-  </div>
-
-  <section class="card" aria-labelledby="pn-h">
-    <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
-    <div class="panels" id="panels"></div>
-  </section>
-  <section id="outside" aria-labelledby="out-h" style="display:flex;flex-direction:column;gap:20px" hidden>
-    <h2 class="sec-h" id="out-h">Outside</h2>
-    <section class="card" aria-label="Today outside">
-      <p class="summary" id="out-summary"></p>
-      <div class="facts" id="out-facts"></div>
-    </section>
-    <section class="card" aria-labelledby="fc-h">
-      <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
-      <div class="fc" id="forecast"></div>
-    </section>
+  <section id="outside" aria-labelledby="out-h" class="group" hidden>
+    <h2 class="sec-h" id="out-h">Around you</h2>
     <div class="row">
       <section class="card wide" aria-labelledby="radar-h">
         <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
@@ -187,7 +189,22 @@ h2{margin:0;font-size:17px;font-weight:700}
       </section>
     </div>
   </section>
-  <section id="more" aria-labelledby="more-h" style="display:flex;flex-direction:column;gap:20px" hidden>
+
+  <section id="news" aria-labelledby="news-h" class="group" hidden>
+    <h2 class="sec-h" id="news-h">News and reviews</h2>
+    <div class="row">
+      <section class="card half" aria-labelledby="stories-h">
+        <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
+        <div class="scroll" id="stories" tabindex="0" aria-label="A/V and tech stories, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="reviews-h">
+        <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
+        <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="more" aria-labelledby="more-h" class="group" hidden>
     <h2 class="sec-h" id="more-h">Shows, games and markets</h2>
     <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
       <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
@@ -208,7 +225,8 @@ h2{margin:0;font-size:17px;font-weight:700}
       </section>
     </div>
   </section>
-  <section id="world" aria-labelledby="world-h" style="display:flex;flex-direction:column;gap:20px" hidden>
+
+  <section id="world" aria-labelledby="world-h" class="group" hidden>
     <h2 class="sec-h" id="world-h">Bangkok and holidays</h2>
     <div class="row">
       <section class="card side" aria-labelledby="bkk-h">
@@ -221,6 +239,40 @@ h2{margin:0;font-size:17px;font-weight:700}
         <div class="lines" id="holidays"></div>
       </section>
     </div>
+  </section>
+
+  <section aria-labelledby="solar-h" class="group">
+    <h2 class="sec-h" id="solar-h">Solar details</h2>
+    <section class="card" aria-labelledby="main-h">
+      <div class="head"><h2 id="main-h">Power through the day</h2>
+        <div class="seg" role="group" aria-label="Time range">
+          <button data-range="day" aria-pressed="true">Day</button>
+          <button data-range="week" aria-pressed="false">Week</button>
+          <button data-range="month" aria-pressed="false">Month</button>
+        </div>
+      </div>
+      <div class="legend" id="main-legend"></div>
+      <div class="chart" id="main-chart"></div>
+      <div class="axis" id="main-axis"></div>
+    </section>
+    <div class="row">
+      <section class="card wide" aria-labelledby="mo-h">
+        <div class="head"><h2 id="mo-h">Last 30 days</h2>
+          <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+        </div>
+        <div id="month-chart"></div>
+        <div class="axis" id="month-axis"></div>
+        <p class="note" id="month-note"></p>
+      </section>
+      <section class="card side" aria-labelledby="bill-h">
+        <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
+        <div id="bill"></div>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="pn-h">
+      <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
+      <div class="panels" id="panels"></div>
+    </section>
   </section>
   <p class="meta" id="foot" style="margin:0"></p>
 </div>
@@ -253,6 +305,9 @@ function render() {
   const gen = new Date(D.generated_at);
   $('stamp').textContent = gen.toLocaleDateString(undefined, {weekday:'long', month:'short', day:'numeric'}) +
     ' · updated ' + gen.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) + (sample ? ' · Sample data' : '');
+  const hr = new Date().getHours();
+  $('hello').textContent = hr < 5 ? 'Good night' : hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  $('place').textContent = D.outside ? D.outside.label : '';
 
   const problems = Object.entries(D.status || {}).filter(([k, v]) => k === 'solar' && v !== 'ok');
   if (sample && D.realStatus) problems.push(['solar', D.realStatus]);
@@ -294,6 +349,7 @@ function render() {
     $('t-bill-s').textContent = 'Needs a PGE download';
   }
 
+  renderAlerts();
   renderMain();
   renderWeather();
   renderMonth();
@@ -301,6 +357,7 @@ function render() {
   renderPanels();
   renderOutside();
   renderShips();
+  renderNews();
   renderMore();
   renderWorld();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
@@ -387,6 +444,7 @@ function renderWeather() {
   $('wx-meta').textContent = esc(w.station) + (ago != null ? ` · ${ago < 60 ? ago + ' min' : Math.round(ago / 60) + ' hr'} ago` : '');
   const hilo = w.hi_f != null ? `High ${w.hi_f}° · low ${w.lo_f}°` : '';
   const note = w.heat_loss_pct == null ? 'Not much sun right now, so heat isn’t costing you anything.'
+    : w.heat_loss_pct < 1 ? 'Panels are running cool, so heat isn’t costing you anything right now.'
     : w.heat_loss_pct <= 4 ? `Panels are running cool, so heat is costing only about ${w.heat_loss_pct}% right now.`
     : `Hot panels lose output. Heat is costing about ${w.heat_loss_pct}% right now.`;
   $('wx').innerHTML = `<div style="display:flex;flex-direction:column;gap:16px">
@@ -524,7 +582,7 @@ const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function renderOutside() {
   const o = D.outside;
-  $('outside').hidden = !o;
+  $('outside').hidden = $('today-card').hidden = $('fc-card').hidden = !o;
   if (!o) return;
   const t = o.days[0] || {};
   // Plain-language summary of whether it's a good time to be out.
@@ -538,6 +596,9 @@ function renderOutside() {
   const golden = `${String(sh - 1).padStart(2, '0')}:${String(sm).padStart(2, '0')}`;
   parts.push(`Sunset is ${clock(t.sunset)}, with golden light from about ${clock(golden)}.`);
   $('out-summary').textContent = parts.join(' ');
+  $('day-meta').textContent = 'Forecast for ' + o.label;
+  $('hours').innerHTML = o.next_hours.slice(0, 12).map(h => `<div><span>${hourLabel(mins(h.t))}</span><b>${h.temp}°</b>
+    <span class="r">${(h.rain_pct || 0) >= 20 ? h.rain_pct + '%' : '&nbsp;'}</span></div>`).join('');
 
   const tides = o.tides.filter(x => new Date(x.t.replace(' ', 'T')) > new Date()).slice(0, 2);
   const aqiColor = (AQI_COLORS.find(([m]) => (o.air.aqi ?? 0) <= m) || AQI_COLORS[0])[1];
@@ -684,6 +745,56 @@ async function renderGigs() {
   $('more').hidden = false;
 }
 
+const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+const rankLine = r => r ? `<div class="lines"><div><span>${esc(r.group)}</span><span>${ordinal(r.rank)} of ${r.of}</span></div></div>` : '';
+
+function ago(iso) {
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
+  return m < 60 ? `${m} min ago` : m < 48 * 60 ? `${Math.round(m / 60)} hr ago` : localDay(iso);
+}
+
+function renderNews() {
+  const n = D.news || {}, stories = n.stories || [], reviews = n.reviews || [];
+  $('news').hidden = !stories.length && !reviews.length;
+  const item = (x, extra) => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
+      ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
+      <span><b>${esc(x.title)}</b>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}<small>${extra}</small></span></a>`;
+  $('stories').innerHTML = stories.map(x => item(x, [esc(x.source), ago(x.utc),
+    x.coverage > 1 ? `covered by ${x.coverage} outlets` : null, x.av ? 'A/V' : null].filter(Boolean).join(' · '))).join('')
+    || '<p class="note" style="padding:12px 0">No stories right now.</p>';
+  $('reviews').innerHTML = reviews.map(x => item(x, [esc(x.source), x.author ? 'by ' + esc(x.author) : null, ago(x.utc),
+    x.av ? 'A/V' : null].filter(Boolean).join(' · '))).join('')
+    || '<p class="note" style="padding:12px 0">No new reviews right now.</p>';
+  const sources = list => { const n = new Set(list.map(x => x.source)).size; return `${n} source${n === 1 ? '' : 's'}`; };
+  $('stories-meta').textContent = stories.length ? `Ranked by how many outlets cover it · ${sources(stories)}` : '';
+  $('reviews-meta').textContent = reviews.length ? `Hands-on reviews by named writers · ${sources(reviews)}` : '';
+}
+
+const ALERT_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>`;
+function renderAlerts() {
+  const a = D.alerts;
+  $('alerts').hidden = !a;
+  if (!a) return;
+  const span = x => {
+    const on = x.onset ? new Date(x.onset) : null, end = x.ends ? new Date(x.ends) : null;
+    if (on && on > new Date()) return `${localWhen(x.onset)}${end ? ' to ' + localWhen(x.ends) : ''}`;
+    return end ? `Until ${localWhen(x.ends)}` : 'In effect now';
+  };
+  const official = a.official.map(x => `<div class="alert l${x.level}" role="alert">${ALERT_ICON}<div>
+      <b>${esc(x.event)}</b> <span class="src">· ${span(x)} · National Weather Service</span>
+      ${x.headline ? `<p>${esc(x.headline)}</p>` : ''}
+      ${x.description || x.instruction ? `<details><summary>Details</summary><p style="white-space:pre-line">${esc(x.description)}</p>${x.instruction ? `<p style="white-space:pre-line"><b style="font-size:13px">What to do:</b> ${esc(x.instruction)}</p>` : ''}</details>` : ''}
+    </div></div>`);
+  const dayName = iso => { const [y, m, d] = iso.split('-').map(Number); const t = new Date(y, m - 1, d);
+    const diff = Math.round((t - new Date(new Date().toDateString())) / 864e5);
+    return diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : DOW[t.getDay()]; };
+  const fc = a.forecast.map(x => `<div class="alert l${x.level}">${ALERT_ICON}<div>
+      <b>${esc(x.title)} ${dayName(x.date).toLowerCase() === 'today' ? 'today' : dayName(x.date) === 'Tomorrow' ? 'tomorrow' : 'on ' + dayName(x.date)}</b>
+      <span class="src">· forecast</span><p>${esc(x.text)}</p></div></div>`);
+  $('alerts').innerHTML = official.concat(fc).join('') ||
+    `<div class="allclear"><i></i>No strong weather expected in the next ${a.days} days.</div>`;
+}
+
 function renderMore() {
   renderGigs();
   const sp = D.sports, mk = D.markets;
@@ -697,7 +808,7 @@ function renderMore() {
       ${g.tv ? `<div><span>Watch on</span><span>${esc(g.tv)}</span></div>` : ''}</div>` : '<p class="note">No game scheduled yet.</p>';
     const last = l ? `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, t.standing].filter(Boolean).map(esc).join(' · ')}</span></div></div>${next}${last}</section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}</section>`);
   }
   $('teams').innerHTML = teams.join('');
 

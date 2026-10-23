@@ -4,6 +4,7 @@ import json
 import urllib.request
 
 ESPN = "https://site.api.espn.com/apis/site/v2/sports"
+STANDINGS = "https://site.api.espn.com/apis/v2/sports"
 UA = {"User-Agent": "solar-dashboard (personal home dashboard)"}
 
 
@@ -51,7 +52,56 @@ def _game(event, team_id):
     }
 
 
-def team(league_path, name):
+def _stat(entry, name):
+    for s in entry.get("stats", []):
+        if s.get("name") == name or s.get("type") == name:
+            return s.get("value")
+    return None
+
+
+def _groups(node):
+    if (node.get("standings") or {}).get("entries"):
+        yield node
+    for child in node.get("children") or []:
+        yield from _groups(child)
+
+
+def _ordered(entries):
+    if all(_stat(e, "rank") is not None for e in entries):
+        return sorted(entries, key=lambda e: _stat(e, "rank"))
+    if all(_stat(e, "winPercent") is not None for e in entries):
+        return sorted(entries, key=lambda e: (-_stat(e, "winPercent"), _stat(e, "playoffSeed") or 99))
+    if all(_stat(e, "points") is not None for e in entries):
+        return sorted(entries, key=lambda e: -_stat(e, "points"))
+    return entries
+
+
+def group_rank(league_path, team_id, level=None):
+    """Where the team sits in its division (NBA) or conference (MLS)."""
+    data = _get(f"{STANDINGS}/{league_path}/standings" + (f"?level={level}" if level else ""))
+    for g in _groups(data):
+        entries = _ordered(g["standings"]["entries"])
+        for i, e in enumerate(entries):
+            if str(e.get("team", {}).get("id")) == str(team_id):
+                return {"group": g.get("name"), "rank": i + 1, "of": len(entries)}
+    return None
+
+
+def _recent(league_path, team_id, days=45):
+    """Completed games from the league scoreboard, for when the team schedule lags."""
+    end = dt.date.today()
+    start = end - dt.timedelta(days=days)
+    data = _get(f"{ESPN}/{league_path}/scoreboard?dates={start:%Y%m%d}-{end:%Y%m%d}&limit=1000")
+    games = []
+    for e in data.get("events", []):
+        ids = {str(c.get("id") or c.get("team", {}).get("id"))
+               for c in (e.get("competitions") or [{}])[0].get("competitors", [])}
+        if str(team_id) in ids:
+            games.append(_game(e, team_id))
+    return sorted((g for g in games if g["completed"]), key=lambda g: g["utc"] or "")
+
+
+def team(league_path, name, standings_level=None):
     team_id = _find_team(league_path, name)
     info = _get(f"{ESPN}/{league_path}/teams/{team_id}").get("team", {})
     record = next((i.get("summary") for i in (info.get("record") or {}).get("items", [])
@@ -61,6 +111,16 @@ def team(league_path, name):
     now_iso = dt.datetime.now(dt.timezone.utc).isoformat()
     # Some ESPN schedules omit the final status, so a past game with a score counts too.
     done = [g for g in games if g["completed"] or ((g["utc"] or "") < now_iso[:16] and g["us"] not in (None, ""))]
+    stale = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=21)).isoformat()[:16]
+    if not done or (done[-1]["utc"] or "") < stale:
+        try:
+            done = _recent(league_path, team_id) or done
+        except Exception:
+            pass
+    try:
+        rank = group_rank(league_path, team_id, standings_level)
+    except Exception:
+        rank = None
     upcoming = [_game(e, team_id) for e in info.get("nextEvent", [])] or \
         [g for g in games if not g["completed"]]
     now = dt.datetime.now(dt.timezone.utc).isoformat()
@@ -70,6 +130,7 @@ def team(league_path, name):
         "logo": (info.get("logos") or [{}])[0].get("href"),
         "record": record,
         "standing": info.get("standingSummary"),
+        "group_rank": rank,
         "last": done[-1] if done else None,
         "next": upcoming[0] if upcoming else None,
     }

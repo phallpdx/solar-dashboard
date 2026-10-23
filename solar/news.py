@@ -164,4 +164,4 @@ def reviews(limit=25):
             break
     if not out:
         raise RuntimeError("no review feeds answered (" + ", ".join(failed) + ")")
-    return {"items": out, "failed": failed, "feed_items": counts, "kept": per}
+    return {"items": out, "failed": failed, "feed_items": counts, "kept": per, "v": 2}

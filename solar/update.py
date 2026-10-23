@@ -586,7 +586,7 @@ def fetch_world(state, now_utc):
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
     _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
-    if "kept" not in (store.get("reviews") or {}):  # pick up the wider source list now
+    if (store.get("reviews") or {}).get("v") != 2:  # pick up filter changes now
         store.pop("reviews_at", None)
     _refresh(store, "reviews", news.reviews, 3, now_utc, errors)
     failed = sorted(set((store.get("stories") or {}).get("failed", []) + (store.get("reviews") or {}).get("failed", [])))

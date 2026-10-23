@@ -1,0 +1,22 @@
+{
+  "updated": "2026-10-23",
+  "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
+  "shows": [
+    {"artist": "Thundercat", "album": "Distracted", "score": 81, "score_source": "Metacritic",
+     "date": "2026-11-19", "venue": "McMenamins Crystal Ballroom", "tickets": "https://www.mcmenamins.com/crystal-ballroom/live-music"},
+    {"artist": "Neurosis", "album": "An Undying Love for a Burning World", "score": null, "score_source": "Blabbermouth 9/10, KFJC 9/10",
+     "date": "2026-11-27", "venue": "Revolution Hall", "tickets": "https://www.revolutionhall.com/"},
+    {"artist": "Bonobo", "album": "Distance in Static", "score": null, "score_source": "No aggregate score yet",
+     "date": "2026-11-15", "venue": "Roseland Theater", "tickets": "https://roselandpdx.com/events/"},
+    {"artist": "Gracie Abrams", "album": "Daughter from Hell", "score": null, "score_source": "No aggregate score found",
+     "date": "2027-01-31", "venue": "Moda Center (also Feb 1)", "tickets": "https://www.rosequarter.com/events"},
+    {"artist": "Iceage", "album": "For Love of Grace & the Hereafter", "score": 87, "score_source": "Metacritic",
+     "date": "2027-04-03", "venue": "Aladdin Theater", "tickets": "https://www.aladdin-theater.com/"}
+  ],
+  "missing": [
+    {"artist": "Phoebe Bridgers", "album": "Lost Weekend", "score": 91, "why": "Tour skipped Portland and ends Nov 1"},
+    {"artist": "Billy Strings", "album": "So Much for Goodbyes", "score": 89, "why": "No Portland date on the 2027 run yet"},
+    {"artist": "Vince Staples", "album": "Cry Baby", "score": 87, "why": "Played Pioneer Courthouse Square Aug 20; tour skips Portland"},
+    {"artist": "Mitski", "album": "Nothing's About to Happen to Me", "score": 87, "why": "No Portland date announced"}
+  ]
+}

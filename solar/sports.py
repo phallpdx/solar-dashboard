@@ -58,7 +58,9 @@ def team(league_path, name):
                    if i.get("type") in ("total", None)), None)
     schedule = _get(f"{ESPN}/{league_path}/teams/{team_id}/schedule").get("events", [])
     games = sorted((_game(e, team_id) for e in schedule), key=lambda g: g["utc"] or "")
-    done = [g for g in games if g["completed"]]
+    now_iso = dt.datetime.now(dt.timezone.utc).isoformat()
+    # Some ESPN schedules omit the final status, so a past game with a score counts too.
+    done = [g for g in games if g["completed"] or ((g["utc"] or "") < now_iso[:16] and g["us"] not in (None, ""))]
     upcoming = [_game(e, team_id) for e in info.get("nextEvent", [])] or \
         [g for g in games if not g["completed"]]
     now = dt.datetime.now(dt.timezone.utc).isoformat()

@@ -113,7 +113,14 @@ def approaching(cache, home_lat, home_lon, now_utc):
         if eta_min < -10 or eta_min > 360:
             continue
         code = ship.get("type")
+        # The Columbia runs north-west past the island toward the ocean.
+        if eta_min <= 0:
+            upriver = 90 < (ship.get("cog") or 0) < 270
+        else:
+            upriver = ship["lat"] > home_lat  # north of home and closing in means heading upriver
+        direction = "Headed toward Portland" if upriver else "Headed toward Astoria"
         out.append({
+            "direction": direction,
             "name": (ship.get("name") or f"MMSI {ship['mmsi']}").title(),
             "type": type_name(code) if code else "Vessel",
             "destination": (ship.get("destination") or "").title() or None,

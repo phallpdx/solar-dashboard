@@ -188,7 +188,12 @@ h2{margin:0;font-size:17px;font-weight:700}
     </div>
   </section>
   <section id="more" aria-labelledby="more-h" style="display:flex;flex-direction:column;gap:20px" hidden>
-    <h2 class="sec-h" id="more-h">Games and markets</h2>
+    <h2 class="sec-h" id="more-h">Shows, games and markets</h2>
+    <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
+      <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
+      <div class="lines" id="gigs"></div>
+      <p class="note" id="gig-missing"></p>
+    </section>
     <div class="teams" id="teams"></div>
     <div class="row">
       <section class="card wide" aria-labelledby="mkt-h">
@@ -200,6 +205,20 @@ h2{margin:0;font-size:17px;font-weight:700}
       <section class="card side" aria-labelledby="f1-h">
         <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
         <div id="f1"></div>
+      </section>
+    </div>
+  </section>
+  <section id="world" aria-labelledby="world-h" style="display:flex;flex-direction:column;gap:20px" hidden>
+    <h2 class="sec-h" id="world-h">Bangkok and holidays</h2>
+    <div class="row">
+      <section class="card side" aria-labelledby="bkk-h">
+        <div class="head"><h2 id="bkk-h">Bangkok</h2><span class="meta" id="bkk-time"></span></div>
+        <div id="bkk"></div>
+      </section>
+      <section class="card wide" aria-labelledby="hol-h">
+        <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
+          <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
+        <div class="lines" id="holidays"></div>
       </section>
     </div>
   </section>
@@ -283,6 +302,7 @@ function render() {
   renderOutside();
   renderShips();
   renderMore();
+  renderWorld();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
     `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
 }
@@ -613,13 +633,59 @@ function renderShips() {
   $('ship-list').innerHTML = list.length ? '<div class="lines">' + list.map(s => {
     const m = mins(s);
     const when = s.passing_now || m <= 2 ? 'Passing now' : m < 60 ? `~${m} min` : `~${clock(new Date(s.eta_utc).toTimeString().slice(0, 5))}`;
-    const what = [s.type, s.length_m ? `${s.length_m} m` : null, s.destination ? `to ${s.destination}` : null].filter(Boolean).join(' · ');
-    return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${esc(what)}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+    const what = [s.type, s.length_m ? `${s.length_m} m` : null, s.destination ? `to ${s.destination}` : null].filter(Boolean).join(' · ') +
+      (s.direction ? `<br>${s.direction}` : '');
+    return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${what}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('') + '</div>'
     : `<p class="note">No ships heading your way right now (${sh.in_area} seen on the river in the last few hours).</p>`;
 }
 
+function renderWorld() {
+  const b = D.bangkok, hol = D.holidays || [];
+  $('world').hidden = !b && !hol.length;
+  if (b) {
+    const tick = () => { $('bkk-time').textContent = new Date().toLocaleString(undefined, { timeZone: 'Asia/Bangkok', weekday: 'short', hour: 'numeric', minute: '2-digit' }); };
+    tick(); clearInterval(renderWorld.t); renderWorld.t = setInterval(tick, 30000);
+    const aqiColor = (AQI_COLORS.find(([m]) => (b.aqi ?? 0) <= m) || AQI_COLORS[0])[1];
+    const aqiLabel = b.aqi == null ? '' : b.aqi <= 50 ? 'Good' : b.aqi <= 100 ? 'Moderate' : b.aqi <= 150 ? 'Unhealthy for sensitive groups' : b.aqi <= 200 ? 'Unhealthy' : 'Very unhealthy';
+    $('bkk').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:14px">${wxIcon(b.code, 44)}<div style="display:flex;flex-direction:column">
+        <span class="big" style="line-height:1">${b.temp}°F</span><span class="meta" style="font-size:13px">${wxName(b.code)} · feels like ${b.feels}°</span></div></div>
+      <div class="minis">
+        <div class="mini"><span class="k">Air quality</span><span class="v"><i class="aqi" style="background:${aqiColor}"></i>${b.aqi ?? '–'} <small>${aqiLabel}</small></span></div>
+        <div class="mini"><span class="k">Humidity</span><span class="v">${b.humidity ?? '–'}<small>%</small></span></div>
+      </div>
+      <div class="lines">${b.days.map((d, i) => `<div><span>${i === 0 ? 'Today' : localDay(d.date + 'T12:00:00+07:00')}</span><span>${d.hi}° / ${d.lo}° · ${d.rain_pct ?? 0}% rain</span></div>`).join('')}</div></div>`;
+  }
+  $('holidays').innerHTML = hol.slice(0, 14).map(h => {
+    const [y, m, d] = h.date.split('-').map(Number);
+    const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    const local = h.local && h.local !== h.name ? `<br><small>${esc(h.local)}</small>` : '';
+    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.country === 'USA' ? 'var(--use)' : 'var(--solar)'}"></i>${esc(h.name)}${local}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+  }).join('');
+}
+
+async function renderGigs() {
+  let g;
+  try { g = await (await fetch('concerts.json?t=' + Date.now())).json(); } catch (e) { return; }
+  const today = new Date().toISOString().slice(0, 10);
+  const shows = (g.shows || []).filter(x => x.date >= today).sort((a, b) => a.date < b.date ? -1 : 1);
+  $('gigs-card').hidden = !shows.length;
+  $('gig-meta').textContent = `Updated ${fmtDate(g.updated)}`;
+  $('gigs').innerHTML = shows.map(x => {
+    const [y, m, d] = x.date.split('-').map(Number);
+    const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined });
+    const score = x.score != null ? `<span class="pill">${x.score} ${esc(x.score_source)}</span>` : `<small>${esc(x.score_source)}</small>`;
+    return `<div><span><b style="font-weight:700">${esc(x.artist)}</b> · <i>${esc(x.album)}</i> ${score}<br><small>${esc(x.venue)}</small></span>
+      <span style="white-space:nowrap;padding-left:12px;text-align:right">${when}<br><a class="link" href="${esc(x.tickets)}" target="_blank" rel="noopener">Tickets</a></span></div>`;
+  }).join('');
+  const miss = (g.missing || []).map(x => `${x.artist} (${x.score})`).join(', ');
+  $('gig-missing').textContent = miss ? `Top-rated albums with no Portland show yet: ${miss}.` : '';
+  $('more').hidden = false;
+}
+
 function renderMore() {
+  renderGigs();
   const sp = D.sports, mk = D.markets;
   $('more').hidden = !sp && !mk;
   const teams = [];

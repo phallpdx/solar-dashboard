@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import ambient, aps, markets, outside, pge, ships, sky, sports
+from . import ambient, aps, markets, outside, pge, ships, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -569,6 +569,14 @@ def fetch_markets(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_world(state, now_utc):
+    store, errors = state.setdefault("world", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    _refresh(store, "holidays", lambda: world.holidays(today), 12, now_utc, errors)
+    _refresh(store, "bangkok", world.bangkok, 0.3, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_ships(state, now_utc):
     if not env("AISSTREAM_KEY"):
         return "Add your aisstream.io key."
@@ -672,6 +680,8 @@ def build(state, status, now_utc):
         "sports": {k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at")} or None,
         "markets": (state.get("markets") or {}).get("quotes"),
         "ships": ships_view(state, now_utc),
+        "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
+        "bangkok": (state.get("world") or {}).get("bangkok"),
     }
 
 
@@ -682,7 +692,8 @@ def main():
     now_utc = dt.datetime.now(dt.timezone.utc)
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
-                     ("sports", fetch_sports), ("markets", fetch_markets), ("ships", fetch_ships)):
+                     ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
+                     ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

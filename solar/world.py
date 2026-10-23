@@ -16,22 +16,55 @@ def _get(url, **params):
         return json.load(resp)
 
 
+GOOGLE_HOLIDAY_ICS = "https://calendar.google.com/calendar/ical/{cal}/public/basic.ics"
+CALENDARS = (("en.usa%23holiday%40group.v.calendar.google.com", "USA"),
+             ("en.th%23holiday%40group.v.calendar.google.com", "Thailand"))
+
+
+def _ics_events(url):
+    req = urllib.request.Request(url, headers=UA)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        text = resp.read().decode("utf-8", "replace")
+    text = text.replace("\r\n ", "").replace("\n ", "")  # unfold long lines
+    for block in text.split("BEGIN:VEVENT")[1:]:
+        fields = {}
+        for line in block.splitlines():
+            key, _, value = line.partition(":")
+            fields[key.split(";")[0]] = value.strip()
+        start = fields.get("DTSTART", "")
+        if len(start) >= 8:
+            yield {"date": f"{start[:4]}-{start[4:6]}-{start[6:8]}", "name": fields.get("SUMMARY", ""),
+                   "observance": "observance" in fields.get("DESCRIPTION", "").lower()}
+
+
+def _nager(country, today):
+    """Fallback source: Nager.Date public holidays."""
+    events = []
+    for year in (today.year, today.year + 1):
+        try:
+            rows = _get(f"https://date.nager.at/api/v3/PublicHolidays/{year}/{country}")
+        except Exception:
+            continue
+        events += [{"date": r["date"], "name": r["name"], "observance": False} for r in rows]
+    return events
+
+
 def holidays(today):
-    """Next ~10 public holidays in each country, from Nager.Date."""
+    """Upcoming public holidays in the USA and Thailand (Google's public holiday calendars)."""
     out = []
-    for country, label in (("US", "USA"), ("TH", "Thailand")):
-        rows = []
-        for year in (today.year, today.year + 1):
-            rows += _get(f"https://date.nager.at/api/v3/PublicHolidays/{year}/{country}")
-        seen = set()
-        for r in rows:
-            if r["date"] < today.isoformat() or (r["date"], r["name"]) in seen:
-                continue
-            seen.add((r["date"], r["name"]))
-            out.append({"date": r["date"], "name": r["name"], "local": r.get("localName"),
-                        "country": label, "nationwide": r.get("global", True)})
-    out.sort(key=lambda h: h["date"])
-    return out[:20]
+    for cal, label in CALENDARS:
+        try:
+            events = list(_ics_events(GOOGLE_HOLIDAY_ICS.format(cal=cal)))
+        except Exception:
+            events = _nager("US" if label == "USA" else "TH", today)
+        for ev in events:
+            if today.isoformat() <= ev["date"] <= (today + dt.timedelta(days=200)).isoformat():
+                out.append({"date": ev["date"], "name": ev["name"].replace("\\,", ","), "country": label,
+                            "observance": ev["observance"]})
+    out = sorted({(h["date"], h["country"], h["name"]): h for h in out}.values(), key=lambda h: h["date"])
+    if not out:
+        raise RuntimeError("no holidays returned")
+    return out[:30]
 
 
 def bangkok():

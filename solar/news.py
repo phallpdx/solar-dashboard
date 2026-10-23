@@ -27,7 +27,11 @@ REVIEW_SOURCES = [
     ("TechRadar", ["https://www.techradar.com/reviews/feeds.xml", "https://www.techradar.com/feeds.xml"]),
     ("Tom's Guide", ["https://www.tomsguide.com/reviews/feeds.xml", "https://www.tomsguide.com/feeds.xml"]),
     ("Digital Trends", ["https://www.digitaltrends.com/product-reviews/feed/"]),
+    ("CNET", ["https://www.cnet.com/rss/reviews/"]),
+    ("Wired", ["https://www.wired.com/feed/tag/review/latest/rss", "https://www.wired.com/feed/category/gear/latest/rss"]),
+    ("PCMag", ["https://www.pcmag.com/feeds/rss/reviews", "https://www.pcmag.com/feeds/rss/latest"]),
 ]
+PER_SOURCE = 6  # keep one busy site from filling the whole list
 AV_WORDS = re.compile(r"\b(tv|oled|qled|mini-?led|projector|soundbar|speaker|headphone|earbud|airpods|amp|"
                       r"amplifier|receiver|av|a/v|hdmi|dolby|atmos|imax|streaming|turntable|vinyl|hi-?fi|"
                       r"audio|sonos|bose|lg|samsung|sony|panasonic|hisense|tcl|roku|apple tv|4k|8k|hdr)\b", re.I)
@@ -85,7 +89,7 @@ def _when(text):
         return None
 
 
-def _collect(sources, days):
+def _collect(sources, days, counts=None):
     now = dt.datetime.now(dt.timezone.utc)
     out, failed = [], []
     for name, urls in sources:
@@ -100,6 +104,8 @@ def _collect(sources, days):
         if items is None:
             failed.append(name)
             continue
+        if counts is not None:
+            counts[name] = len(items)
         for it in items:
             when = _when(it["date"])
             if not it["title"] or not it["url"] or not when or now - when > dt.timedelta(days=days):
@@ -140,17 +146,19 @@ def top_stories(limit=25):
 
 def reviews(limit=25):
     """Latest hands-on product reviews written by named reviewers."""
-    items, failed = _collect(REVIEW_SOURCES, 14)
-    out, urls = [], set()
+    counts = {}
+    items, failed = _collect(REVIEW_SOURCES, 14, counts)
+    out, urls, per = [], set(), {}
     for it in sorted(items, key=lambda x: x["utc"], reverse=True):
-        is_review = "/review" in it["url"] or re.search(r"\breview\b", it["title"], re.I)
-        if not is_review or it["url"] in urls:
+        is_review = "review" in it["url"].lower() or re.search(r"\breview\b", it["title"], re.I)
+        if not is_review or it["url"] in urls or per.get(it["source"], 0) >= PER_SOURCE:
             continue
         urls.add(it["url"])
+        per[it["source"]] = per.get(it["source"], 0) + 1
         out.append({k: it[k] for k in ("title", "url", "source", "utc", "summary", "author", "image")}
                    | {"av": bool(AV_WORDS.search(it["title"]))})
         if len(out) >= limit:
             break
     if not out:
         raise RuntimeError("no review feeds answered (" + ", ".join(failed) + ")")
-    return {"items": out, "failed": failed}
+    return {"items": out, "failed": failed, "feed_items": counts, "kept": per}

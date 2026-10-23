@@ -83,7 +83,10 @@ def group_rank(league_path, team_id, level=None):
         entries = _ordered(g["standings"]["entries"])
         for i, e in enumerate(entries):
             if str(e.get("team", {}).get("id")) == str(team_id):
-                return {"group": g.get("name"), "rank": i + 1, "of": len(entries)}
+                name = g.get("name") or ""
+                if level == 3 and "Division" not in name:
+                    name += " Division"
+                return {"group": name, "rank": i + 1, "of": len(entries)}
     return None
 
 

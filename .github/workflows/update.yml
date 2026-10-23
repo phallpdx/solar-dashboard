@@ -73,3 +73,4 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@v4
+        continue-on-error: true # data still updates while Pages is not turned on yet

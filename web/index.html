@@ -94,7 +94,7 @@ h2{margin:0;font-size:17px;font-weight:700}
     <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
     <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
     <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
-    <div class="tile"><span class="k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
+    <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
   </section>
 
   <div class="row">
@@ -218,7 +218,11 @@ function render() {
     $('t-perf').innerHTML = '<span class="u">–</span>';
     $('t-perf-s').textContent = w ? `Learning your system (${p ? p.baseline_days : 0} of 5 days)` : 'Needs your weather station';
   }
-  if (b && b.cost != null) {
+  if (b && b.kind === 'bills') {
+    $('t-bill-k').textContent = 'Solar value this cycle';
+    $('t-bill').textContent = b.solar_value_cycle != null ? '$' + Math.round(b.solar_value_cycle) : '–';
+    $('t-bill-s').textContent = `${b.solar_kwh_cycle.toLocaleString()} kWh at your PGE rate · bill closes ${fmtDate(b.cycle_end)}`;
+  } else if (b && b.cost != null) {
     $('t-bill').textContent = (b.cost < 0 ? '−$' : '$') + Math.round(Math.abs(b.cost));
     $('t-bill-s').textContent = `${b.cost < 0 ? 'Credit' : 'Owed'} so far · bill closes ${fmtDate(b.cycle_end)}`;
   } else if (b) {
@@ -360,6 +364,7 @@ function renderBill() {
     return;
   }
   const pct = Math.min(100, Math.round(b.cycle_day / b.cycle_days * 100));
+  if (b.kind === 'bills') { renderBills(b, pct); return; }
   $('bill-meta').textContent = `${fmtDate(b.cycle_start)} – ${fmtDate(b.cycle_end)}`;
   const rows = [['Bought from grid', `${b.imported_kwh} kWh`], ['Sent to grid', `${b.exported_kwh} kWh`]];
   if (b.peak_kwh != null) rows.push(['Peak-hour use (5–9 pm weekdays)', `${b.peak_kwh} kWh`]);
@@ -370,6 +375,28 @@ function renderBill() {
     <div class="progress"><div style="width:${pct}%"></div></div>
     <span class="meta" style="margin-top:-6px">Day ${Math.min(b.cycle_day, b.cycle_days)} of ${b.cycle_days}${b.cycle_explicit ? '' : ' (assumed cycle)'}</span>
     <div class="lines">${rows.map(r => `<div><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+    <p class="note">${esc(note)}</p></div>`;
+}
+
+function renderBills(b, pct) {
+  const span = x => `${fmtDate(x.start)} – ${fmtDate(x.end)}`;
+  $('bill-meta').textContent = `${fmtDate(b.cycle_start)} – ${fmtDate(b.cycle_end)}`;
+  const rows = [[`Last bill <small class="meta">${span(b.last)}</small>`, `${money(b.last.cost)} · ${b.last.kwh.toLocaleString()} kWh`]];
+  if (b.same_last_year) rows.push([`Same time last year`, `${money(b.same_last_year.cost)} · ${b.same_last_year.kwh.toLocaleString()} kWh`]);
+  rows.push(['Last 12 months', '$' + Math.round(b.last12_cost).toLocaleString()]);
+  if (b.rate) rows.push(['Your energy rate', `about ${(b.rate * 100).toFixed(1)}¢/kWh`]);
+  const max = Math.max(1, ...b.history.map(h => h.cost || 0));
+  const bars = `<div class="bars" style="height:80px;gap:3px" role="img" aria-label="PGE bill amounts for the last ${b.history.length} months">` +
+    b.history.map(h => `<div title="${span(h)}: ${money(h.cost)}, ${h.kwh} kWh"><i style="background:var(--use);height:${(h.cost || 0) / max * 100}%"></i></div>`).join('') + '</div>' +
+    `<div class="axis"><span>${MON[+b.history[0].start.slice(5, 7) - 1]}</span><span>${MON[+b.history[b.history.length - 1].start.slice(5, 7) - 1]}</span></div>`;
+  let note = '';
+  if (b.winter_share != null && b.winter_share >= 0.6) note += `${Math.round(b.winter_share * 100)}% of the last year’s PGE cost came from October through March, when the panels make less and heating runs. `;
+  if (b.solar_value_cycle != null) note += `So far this cycle your panels made ${b.solar_kwh_cycle.toLocaleString()} kWh, worth about $${Math.round(b.solar_value_cycle)} at your rate.`;
+  $('bill').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
+    <div class="progress"><div style="width:${pct}%"></div></div>
+    <span class="meta" style="margin-top:-6px">Day ${Math.min(b.cycle_day, b.cycle_days)} of about ${b.cycle_days}</span>
+    <div class="lines">${rows.map(r => `<div><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+    ${bars}
     <p class="note">${esc(note)}</p></div>`;
 }
 

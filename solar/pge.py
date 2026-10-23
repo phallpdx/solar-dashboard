@@ -1,8 +1,10 @@
 """Read Portland General Electric (PGE) usage CSV exports (Opower / Green Button format).
 
-Handles interval files (15-minute or hourly rows with START TIME) and daily
-files, with either USAGE or IMPORT/EXPORT columns. Returns a list of rows:
+Handles interval files (15-minute or hourly rows with START TIME), daily
+files, and billing-period files (START DATE / END DATE), with either USAGE or
+IMPORT/EXPORT columns. Returns a list of rows:
 {"date": "YYYY-MM-DD", "hour": int|None, "import": kWh, "export": kWh, "cost": $|None}
+Billing rows also carry "bill": True, "start" and "end", with "date" = end.
 """
 import csv
 import glob
@@ -38,6 +40,18 @@ def read_file(path):
             if usage is None:
                 continue
             imp, exp = max(usage, 0.0), max(-usage, 0.0)
+        if rec.get("START DATE") and rec.get("END DATE") and not rec.get("DATE"):
+            rows.append({
+                "bill": True,
+                "start": rec["START DATE"].strip(),
+                "end": rec["END DATE"].strip(),
+                "date": rec["END DATE"].strip(),
+                "hour": None,
+                "import": imp or 0.0,
+                "export": abs(exp or 0.0),
+                "cost": _num(rec.get("COST")),
+            })
+            continue
         start_time = rec.get("START TIME", "").strip()
         rows.append({
             "date": rec.get("DATE", "").strip(),

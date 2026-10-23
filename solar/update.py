@@ -299,6 +299,47 @@ def weather_view(state):
 
 # ---------------------------------------------------------------- PGE
 
+def bills_view(bills, today, solar_daily):
+    """Monthly PGE bills: history, this cycle's progress and what the solar is worth."""
+    bills = sorted(bills, key=lambda b: b["start"])
+    last = bills[-1]
+    start = dt.date.fromisoformat(last["end"])
+    lengths = [(dt.date.fromisoformat(b["end"]) - dt.date.fromisoformat(b["start"])).days for b in bills[-6:]]
+    cycle_days = round(statistics.mean(lengths)) if lengths else 30
+    end = start + dt.timedelta(days=cycle_days)
+    # Fixed monthly charge: what a bill costs when no energy was billed.
+    zero = [b["cost"] for b in bills if b["import"] == 0 and b["cost"] is not None]
+    base = statistics.median(zero) if zero else min(b["cost"] or 0 for b in bills)
+    rates = [(b["cost"] - base) / b["import"] for b in bills if b["cost"] and b["import"] >= 100]
+    rate = round(statistics.median(rates), 3) if rates else None
+    solar_kwh = sum(v for d, v in solar_daily.items() if start.isoformat() <= d <= today and v)
+    year_ago = start - dt.timedelta(days=365)
+    same = min(bills, key=lambda b: abs((dt.date.fromisoformat(b["start"]) - year_ago).days))
+    if abs((dt.date.fromisoformat(same["start"]) - year_ago).days) > 20:
+        same = None
+    last12 = [b for b in bills if b["end"] > (start - dt.timedelta(days=365)).isoformat()]
+    winter = [b for b in last12 if int(b["start"][5:7]) in (10, 11, 12, 1, 2, 3)]
+    total12 = sum(b["cost"] or 0 for b in last12)
+    return {
+        "kind": "bills",
+        "cycle_start": start.isoformat(),
+        "cycle_end": end.isoformat(),
+        "cycle_day": (dt.date.fromisoformat(today) - start).days + 1,
+        "cycle_days": cycle_days,
+        "last": {"start": last["start"], "end": last["end"], "kwh": round(last["import"]), "cost": last["cost"]},
+        "same_last_year": {"start": same["start"], "end": same["end"], "kwh": round(same["import"]),
+                           "cost": same["cost"]} if same else None,
+        "last12_cost": round(total12, 2),
+        "winter_share": round(sum(b["cost"] or 0 for b in winter) / total12, 2) if total12 else None,
+        "base_charge": base,
+        "rate": rate,
+        "solar_kwh_cycle": round(solar_kwh),
+        "solar_value_cycle": round(solar_kwh * rate, 2) if rate else None,
+        "history": [{"start": b["start"], "end": b["end"], "kwh": round(b["import"]), "cost": b["cost"]}
+                    for b in bills[-13:]],
+    }
+
+
 def bill_view(rows, today):
     if not rows:
         return None
@@ -460,7 +501,9 @@ def outside_view(state, now_utc):
 def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
-    rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
+    all_rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
+    rows = [r for r in all_rows if not r.get("bill")]
+    bills = [r for r in all_rows if r.get("bill")]
     tz = zone(solar["timezone"] if solar else None)
     today = now_utc.astimezone(tz).strftime("%Y-%m-%d")
 
@@ -510,6 +553,7 @@ def build(state, status, now_utc):
 
     if weather:
         weather = {k: v for k, v in weather.items() if k != "days"}
+    solar_daily = (solar or {}).get("daily") or {}
     if solar:
         solar = {k: v for k, v in solar.items() if k != "daily"}
     return {
@@ -519,7 +563,7 @@ def build(state, status, now_utc):
         "status": status,
         "solar": solar,
         "weather": weather,
-        "bill": bill_view(rows, today),
+        "bill": bill_view(rows, today) or (bills_view(bills, today, solar_daily) if bills else None),
         "days": days,
         "low_days": [{"date": x["date"], "cloudy": x.get("cloudy")} for x in low_days],
         "sun_source": "station" if weather else ("model" if out else None),

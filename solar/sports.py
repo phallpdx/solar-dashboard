@@ -2,6 +2,7 @@
 import datetime as dt
 import json
 import re
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -201,6 +202,7 @@ def reddit(sub, limit=25):
             break
         except Exception as e:
             last_error = e
+            time.sleep(3)  # Reddit rate-limits quick retries
     if posts is None:  # the RSS feed has no vote counts, but still shows what people are talking about
         try:
             req = urllib.request.Request(f"https://www.reddit.com/r/{sub}/hot/.rss?limit={limit}", headers=headers)

@@ -18,6 +18,7 @@ import json
 import os
 import statistics
 import sys
+import time
 import traceback
 from zoneinfo import ZoneInfo
 
@@ -568,6 +569,8 @@ def fetch_sports(state, now_utc):
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
     reddit = store.setdefault("reddit", {})
     for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1")):
+        if reddit.get(key + "_at") is None or (now_utc - dt.datetime.fromisoformat(reddit[key + "_at"])).total_seconds() >= 7200:
+            time.sleep(4)
         _refresh(reddit, key, lambda sub=sub: sports.reddit(sub), 2, now_utc, errors)
     return "; ".join(errors) or None
 

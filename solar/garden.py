@@ -85,3 +85,39 @@ def tips(days, soil_f):
         out.append(f"Soil is about {soil_f}°F at 2 inches." +
                    (" Too cold for most seeds to sprout fast; garlic, favas and cover crops don't mind." if soil_f < 50 else ""))
     return out
+
+
+# Food forest care by month for wet-winter western Oregon (OSU Extension and WSU guidance).
+# (months, task, why)
+FOREST = [
+    ((10, 11), "Pick up dropped and mummified fruit", "Removes overwintering brown rot and pests"),
+    ((10, 11), "Rake or shred apple and pear leaves", "Cuts next year's scab; a 5% urea spray at leaf fall helps too"),
+    ((10, 11), "Copper spray on apples and pears before heavy rains", "Prevents anthracnose cankers"),
+    ((10, 11), "Cut spent summer raspberry canes to the ground", "Thin new canes to 4 to 6 per foot and tie them up"),
+    ((10, 11), "Leave trailing blackberry canes on the ground", "Train them onto the trellis in late February"),
+    ((10, 11), "Mulch 3 to 4 inches of wood chips, kept back from trunks", "Add vole guards around young trunks"),
+    ((10, 11), "Plant potted perennials and garlic", "Use mounds in wet spots"),
+    ((10, 11, 12, 1, 2), "Don't prune cherries, plums or peaches", "Wet-season cuts invite bacterial canker; wait for dry summer weather"),
+    ((10, 11, 12, 1, 2, 3), "No nitrogen fertilizer", "It pushes soft growth that freezes; feed in spring"),
+    ((11, 12), "Copper or lime sulfur on peaches and nectarines at leaf fall", "Prevents peach leaf curl"),
+    ((1, 2, 3), "Prune apples, pears, blueberries, grapes and currants", "Do it while they're dormant"),
+    ((1, 2), "Cut fall-bearing raspberries to the ground", "They fruit on new canes"),
+    ((1, 2), "Repeat the leaf curl spray before buds swell", "Second and last peach and nectarine spray"),
+    ((2, 3), "Horticultural oil at delayed-dormant", "Smothers overwintering aphid and scale eggs"),
+    ((1, 2, 3), "Plant bare-root trees and shrubs", "Cheapest and easiest time to plant"),
+    ((2,), "Train blackberry canes onto the trellis", "Late February, before buds break"),
+    ((4, 5), "Fertilize as growth starts", "Compost or a balanced organic feed"),
+    ((6, 7, 8), "Prune stone fruit in dry weather after harvest", "Safe window for cherries, plums and peaches"),
+    ((6, 7, 8), "Remove raspberry canes that just fruited", "Right after harvest"),
+    ((6, 7, 8), "Water deeply once a week in dry spells", "New plantings especially"),
+    ((9,), "Copper spray on apples and pears before the rains", "First anthracnose protection of the season"),
+    ((9,), "Harvest and store apples and pears", "Pick pears firm and ripen them indoors"),
+]
+
+
+def forest_tasks(today):
+    month = today.month
+    nxt = month % 12 + 1
+    now = [{"task": t, "why": w} for months, t, w in FOREST if month in months]
+    coming = [{"task": t, "why": w} for months, t, w in FOREST if nxt in months and month not in months]
+    return {"month": today.strftime("%B"), "next_month": dt.date(2000, nxt, 1).strftime("%B"), "now": now, "next": coming}

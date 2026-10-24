@@ -1,0 +1,13 @@
+{
+  "updated": "2026-10-24",
+  "deals": [
+    {"title": "Arrow Video Shocktober", "store": "Arrow Video", "detail": "Up to 50% off 4K and Blu-ray, plus 2 for $60 on 4K UHD", "ends": "2026-11-02", "url": "https://www.arrowvideo.com/c/campaigns/shocktober/"},
+    {"title": "Amazon horror 4K sale", "store": "Amazon", "detail": "Nope, The Thing, Sinners and The Shining around $13 each (reported Oct 2; prices may have changed)", "ends": null, "url": "https://kotaku.com/amazons-very-good-4k-uhd-blu-ray-sale-is-back-but-this-time-filled-with-horror-and-spooky-movies-2000739388"},
+    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "Goonies, E.T. and more for Prime members (reported Oct 6)", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"}
+  ],
+  "upcoming": [
+    {"title": "Barnes & Noble Criterion 50% off", "detail": "Usually runs in November; not announced yet"},
+    {"title": "Vinegar Syndrome Black Friday sale", "detail": "Usually late November"}
+  ],
+  "more_url": "https://slickdeals.net/deals/bluray-movies/"
+}

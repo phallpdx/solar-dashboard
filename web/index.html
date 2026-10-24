@@ -78,6 +78,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 .sp b{font-size:13px;font-weight:700;line-height:1.25;display:block}.sp small{font-size:12px;color:var(--muted);font-weight:600}
 .aqi{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 .link{font-size:13px;font-weight:600}
+.meta a{color:var(--accent);font-weight:700}
 .teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
 .team-top{display:flex;align-items:center;gap:12px}.team-top img{width:44px;height:44px;object-fit:contain}
 .pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--bg)}
@@ -86,7 +87,44 @@ h2{margin:0;font-size:17px;font-weight:700}
 .hours{display:grid;grid-template-columns:repeat(12,minmax(48px,1fr));gap:4px;overflow-x:auto;padding-bottom:2px}
 .hours div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border-radius:12px;background:var(--bg);font-size:12px;font-weight:600;color:var(--muted)}
 .hours b{font-size:15px;font-weight:800;color:var(--ink)}.hours .r{color:var(--use)}
-.group{display:flex;flex-direction:column;gap:20px}
+.group{display:flex;flex-direction:column;gap:16px;scroll-margin-top:72px;--accent:#5E636E;--tint:#F1F0EC}
+.group[data-sec=today]{--accent:#E0901A;--tint:#FFF4DE}
+.group[data-sec=river]{--accent:#0E8A8A;--tint:#E2F4F2}
+.group[data-sec=nearby]{--accent:#C2410C;--tint:#FDEBDD}
+.group[data-sec=garden]{--accent:#3F8F3A;--tint:#E7F3E2}
+.group[data-sec=coast]{--accent:#1D6FD1;--tint:#E3EEFB}
+.group[data-sec=local]{--accent:#C7356F;--tint:#FBE6EE}
+.group[data-sec=watch]{--accent:#7C4DDB;--tint:#EEE7FB}
+.group[data-sec=sports]{--accent:#C42B2B;--tint:#FBE5E3}
+.group[data-sec=news]{--accent:#3D4A5C;--tint:#E8EBF0}
+.group[data-sec=world]{--accent:#B7791F;--tint:#FBF0DC}
+.group[data-sec=solar]{--accent:#E08A00;--tint:#FFF1D6}
+.sec-head{display:flex;align-items:center;gap:14px;margin-top:18px;padding:14px 16px;border-radius:20px;background:var(--tint)}
+.sec-icon{width:48px;height:48px;flex:none;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:26px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.sec-titles{flex:1;min-width:0}
+.sec-head .sec-h{margin:0;font-size:22px;color:var(--ink)}
+.sec-sub{margin:2px 0 0;font-size:13px;font-weight:600;color:var(--accent)}
+.sec-tools{display:flex;gap:6px}
+.sec-tools button{min-width:40px;min-height:40px;border-radius:12px;border:0;background:#fff;color:var(--ink);font:700 13px Manrope,sans-serif;cursor:pointer;padding:0 10px}
+.sec-tools button[aria-pressed=true]{background:var(--accent);color:#fff}
+.sec-body{display:flex;flex-direction:column;gap:16px}
+.group.folded .sec-body{display:none}
+.group.folded .sec-head{opacity:.85}
+.group .card h2::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:2px}
+.group .card{box-shadow:0 1px 2px rgba(20,20,30,.04)}
+.fold-note{font-size:12px;font-weight:600;color:var(--muted);margin:0 0 0 62px}
+.secnav{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;padding:10px 2px;margin:-6px 0 0;background:rgba(246,245,241,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);scrollbar-width:none}
+.secnav::-webkit-scrollbar{display:none}
+.secnav a{flex:none;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.secnav a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+header{padding:28px 28px 24px;border-radius:28px;background:linear-gradient(135deg,#FFE7B8 0%,#FFD2C2 45%,#CFE6FF 100%);align-items:center}
+header h1{font-size:40px}
+.hero-wx{display:flex;align-items:center;gap:12px;font-weight:800;font-size:28px}
+.hero-wx small{display:block;font-size:13px;font-weight:600;color:var(--body)}
+body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,transparent)}
+.lines>div{font-size:14.5px;line-height:1.4}
+.note{font-size:13.5px}
+@media (max-width:600px){header{padding:20px}header h1{font-size:30px}.sec-icon{width:40px;height:40px;font-size:22px}.sec-head .sec-h{font-size:19px}.fold-note{margin-left:0}}
 .half{flex:1 1 420px}
 .scroll{max-height:560px;overflow-y:auto;overscroll-behavior:contain;margin:0 -8px;padding:0 8px;border-top:1px solid var(--grid)}
 .scroll:focus-visible{outline:2px solid var(--use);outline-offset:2px;border-radius:8px}
@@ -115,280 +153,387 @@ h2{margin:0;font-size:17px;font-weight:700}
 .alert .src{font-size:12px;font-weight:600;opacity:.8}
 .allclear{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--body)}
 .allclear i{width:10px;height:10px;border-radius:50%;background:#3FA34D}
+.group[data-sec=family]{--accent:#E2553F;--tint:#FFE9E3}
+.group.empty{display:none}
+.sec-head.clickable{cursor:pointer}
+.kid-setup[hidden]{display:none}
+#kid-change{color:var(--accent);font-weight:700}
+.mini{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font:700 13px Manrope,sans-serif;cursor:pointer}
+.mini:hover{border-color:var(--ink)}
+.ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.idea{border-radius:16px;padding:12px 14px;background:var(--tint);display:flex;flex-direction:column;gap:4px}
+.idea b{font-size:14.5px;line-height:1.3}
+.idea span{font-size:13px;line-height:1.45;color:var(--body)}
+.idea small{font-size:11.5px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+.kid-setup{background:#fff;border:2px dashed var(--accent);border-radius:20px;padding:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.kid-setup label{display:flex;flex-direction:column;gap:2px;font-size:15px}
+.kid-setup small{font-size:12.5px;color:var(--muted);font-weight:600}
+.kid-setup-row{display:flex;gap:8px}
+.kid-setup input{min-height:40px;border-radius:12px;border:1px solid var(--line);padding:0 10px;font:600 14px Manrope,sans-serif}
+.kid-setup button{min-height:40px;padding:0 18px;border-radius:12px;border:0;background:var(--accent);color:#fff;font:700 14px Manrope,sans-serif;cursor:pointer}
+.task{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--grid);cursor:pointer}
+.task:last-child{border-bottom:0}
+.task input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.task b{display:block;font-size:14.5px;font-weight:700}
+.task small{display:block;font-size:13px;color:var(--muted);font-weight:600}
+.task.done b{text-decoration:line-through;color:var(--muted)}
+.deal{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-bottom:1px solid var(--grid);text-decoration:none;color:var(--ink)}
+.deal:last-child{border-bottom:0}
+.deal b{font-size:15px}
+.deal span{font-size:13.5px;color:var(--body)}
+.deal small{font-size:12px;font-weight:700;color:var(--accent)}
+.learn{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px 18px;font-size:13.5px;line-height:1.5;color:var(--body)}
+.learn p{margin:0 0 8px}
+.secnav a .ic{font-size:16px}
+.fold-note{cursor:pointer}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div><div class="eyebrow" id="stamp">Loading…</div><h1 id="hello">Your day at home</h1></div>
-    <span class="meta" id="place"></span>
+    <div class="hero-wx" id="hero-wx"></div>
   </header>
+
+  <nav class="secnav" id="secnav" aria-label="Jump to section"></nav>
+
   <div id="banner" class="banner" hidden></div>
-  <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
-
-  <div class="row" id="today-row">
-    <section class="card side" aria-labelledby="wx-h">
-      <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
-      <div id="wx"></div>
-    </section>
-    <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
-      <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
-      <p class="summary" id="out-summary"></p>
-      <div class="facts" id="out-facts"></div>
-      <div class="hours" id="hours" aria-label="Next 12 hours"></div>
-    </section>
-  </div>
-  <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
-    <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
-    <div class="fc" id="forecast"></div>
-  </section>
-
-  <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
-    <div class="head"><h2 id="drive-h">Drive times from home</h2><span class="meta" id="drive-meta"></span></div>
-    <div class="facts" id="drives"></div>
-    <p class="note" id="drive-note"></p>
-  </section>
-
-  <section class="tiles" aria-label="Solar right now">
-    <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
-    <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
-    <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
-    <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
-  </section>
-
-  <section id="outside" aria-labelledby="out-h" class="group" hidden>
-    <h2 class="sec-h" id="out-h">Around you</h2>
-    <div class="row">
-      <section class="card wide" aria-labelledby="radar-h">
-        <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
-        <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+  <section class="group" data-sec="today" id="today" aria-labelledby="today-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, alerts, drives and power right now</p></div></div>
+    <div class="sec-body">
+    <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
+  
+    <div class="row" id="today-row">
+      <section class="card side" aria-labelledby="wx-h">
+        <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
+        <div id="wx"></div>
       </section>
-      <section class="card side" aria-labelledby="ship-h">
-        <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-        <div class="map" id="ships">
-          <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
-          <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
-            var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
-          <script src="https://www.vesselfinder.com/aismap.js"></script>
-        </div>
-        <p class="note" id="tides"></p>
-        <div id="ship-list"></div>
+      <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
+        <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
+        <p class="summary" id="out-summary"></p>
+        <div class="facts" id="out-facts"></div>
+        <div class="hours" id="hours" aria-label="Next 12 hours"></div>
       </section>
     </div>
-    <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
-      <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
-      <div class="row" style="gap:24px">
-        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-          <h3 class="sub">Best times today</h3><div class="lines" id="fish-times"></div>
-        </div>
-        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-          <h3 class="sub">What to fish for now</h3><div class="lines" id="fish-season"></div>
-          <div class="minis" id="fish-river"></div>
-        </div>
+    <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
+      <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
+      <div class="fc" id="forecast"></div>
+    </section>
+  
+    <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
+      <div class="head"><h2 id="drive-h">Drive times from home</h2><span class="meta" id="drive-meta"></span></div>
+      <div class="facts" id="drives"></div>
+      <p class="note" id="drive-note"></p>
+    </section>
+  
+    <section class="tiles" aria-label="Solar right now">
+      <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
+      <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
+      <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
+      <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
+    </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="family" id="family" aria-labelledby="family-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🧸</span><div class="sec-titles"><h2 class="sec-h" id="family-h">Little one</h2><p class="sec-sub" id="kid-age">Play ideas and outings that fit her age and the season</p></div></div>
+    <div class="sec-body">
+      <form class="kid-setup" id="kid-setup" hidden>
+        <label for="kid-birth"><b>Her birth month</b><small>Used to match ideas to her age. It stays in this browser only and is never published.</small></label>
+        <div class="kid-setup-row"><input type="month" id="kid-birth" required><button type="submit">Save</button></div>
+      </form>
+      <div class="row">
+        <section class="card half" aria-labelledby="play-h">
+          <div class="head"><h2 id="play-h">Play ideas this week</h2><button class="mini" id="play-more" type="button">More ideas</button></div>
+          <div class="ideas" id="play"></div>
+          <p class="note" id="kid-grow"></p>
+        </section>
+        <section class="card half" aria-labelledby="out-h">
+          <div class="head"><h2 id="out-h">Out and about</h2><span class="meta" id="kid-out-meta"></span></div>
+          <div class="scroll" id="kid-out" tabindex="0" aria-label="Family outings, scrollable" style="max-height:470px"></div>
+          <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
+        </section>
       </div>
-      <p class="note" id="fish-dam"></p>
-      <p class="note" id="fish-links"></p>
-    </section>
-    <div class="row" id="live-row" hidden>
-      <section class="card half" aria-labelledby="quake-h">
-        <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
-        <p class="note" id="volc"></p>
-        <div class="lines" id="quakes"></div>
-      </section>
-      <section class="card half" aria-labelledby="plane-h">
-        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
-        <div class="lines" id="planes"></div>
-        <p class="note" id="pdx"></p>
-      </section>
-    </div>
-    <section class="card" aria-labelledby="fire-h" id="fire-card" hidden>
-      <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
-      <div class="lines" id="fires"></div>
-    </section>
-    <div class="row">
-      <section class="card side" aria-labelledby="moon-h">
-        <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
-        <div id="moon"></div>
-      </section>
-      <section class="card wide" aria-labelledby="sky-h">
-        <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
-        <div class="lines" id="sky"></div>
-      </section>
-    </div>
-    <section class="card" aria-labelledby="birds-h">
-      <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
-      <div class="species" id="birds"></div>
-    </section>
-    <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
-      <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Sauvie Island, zone 8b · next 3 weeks</span></div>
-      <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
-      <div class="lines" id="plant"></div>
-    </section>
-    <div class="row">
-      <section class="card wide" aria-labelledby="bloom-h">
-        <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
-        <div class="species" id="blooms"></div>
-      </section>
-      <section class="card side" aria-labelledby="food-h">
-        <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
-        <div class="chips" id="produce"></div>
-      </section>
     </div>
   </section>
 
-  <section id="coast" aria-labelledby="coast-h" class="group" hidden>
-    <h2 class="sec-h" id="coast-h">Coast house</h2>
-    <div id="coast-alerts" class="alerts"></div>
-    <section class="card" aria-label="Coast house weather">
-      <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
-      <p class="summary" id="coast-summary"></p>
-      <div class="facts" id="coast-facts"></div>
-      <div class="fc" id="coast-fc"></div>
-    </section>
-    <div class="row">
-      <section class="card half" aria-labelledby="minus-h">
-        <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
-        <div class="lines" id="minus"></div>
-        <p class="note" id="coast-links"></p>
-      </section>
-      <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
-        <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
-        <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
-      </section>
-    </div>
-  </section>
-
-  <section id="news" aria-labelledby="news-h" class="group" hidden>
-    <h2 class="sec-h" id="news-h">News and reviews</h2>
-    <div class="row">
-      <section class="card half" aria-labelledby="stories-h">
-        <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
-        <div class="scroll" id="stories" tabindex="0" aria-label="A/V and tech stories, scrollable"></div>
-      </section>
-      <section class="card half" aria-labelledby="reviews-h">
-        <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
-        <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
-      </section>
-    </div>
-  </section>
-
-  <section id="coming" aria-labelledby="coming-h" class="group" hidden>
-    <h2 class="sec-h" id="coming-h">Coming soon</h2>
-    <div class="row">
-      <section class="card half" aria-labelledby="tv-h">
-        <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
-        <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
-        <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
-      </section>
-      <section class="card half" aria-labelledby="alb-h">
-        <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
-        <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
-      </section>
-    </div>
-  </section>
-
-  <section id="local" aria-labelledby="local-h" class="group" hidden>
-    <h2 class="sec-h" id="local-h">Around Portland</h2>
-    <div class="row">
-      <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
-        <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
-        <div class="chips" id="deal-filter" role="group" aria-label="Filter by store"></div>
-        <div class="scroll" id="deals" tabindex="0" aria-label="Sale items, scrollable"></div>
-      </section>
-      <section class="card half" aria-labelledby="food-new-h" id="rest-card" hidden>
-        <div class="head"><h2 id="food-new-h">New restaurants worth trying</h2><span class="meta" id="rest-meta"></span></div>
-        <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
-      </section>
-    </div>
-    <section class="card" aria-labelledby="ski-h" id="ski-card" hidden>
-      <div class="head"><h2 id="ski-h">Mt. Hood ski report</h2><span class="meta" id="ski-meta"></span></div>
-      <p class="summary" id="ski-summary"></p>
-      <div class="facts" id="ski-facts"></div>
-      <div class="fc" id="ski-fc"></div>
-      <p class="note" id="ski-links"></p>
-    </section>
-    <div class="row">
-      <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
-        <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
-        <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
-      </section>
-      <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
-        <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
-        <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
-      </section>
-    </div>
-  </section>
-
-  <section id="more" aria-labelledby="more-h" class="group" hidden>
-    <h2 class="sec-h" id="more-h">Shows, games and markets</h2>
-    <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
-      <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
-      <div class="lines" id="gigs"></div>
-      <p class="note" id="gig-missing"></p>
-    </section>
-    <div class="teams" id="teams"></div>
-    <div class="row">
-      <section class="card wide" aria-labelledby="mkt-h">
-        <div class="head"><h2 id="mkt-h">Markets</h2><span class="meta" id="mkt-meta"></span></div>
-        <p class="summary" id="mkt-summary"></p>
-        <div id="mkt-spark"></div>
-        <div class="lines" id="mkt"></div>
-      </section>
-      <section class="card side" aria-labelledby="f1-h">
-        <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
-        <div id="f1"></div>
-      </section>
-    </div>
-  </section>
-
-  <section id="world" aria-labelledby="world-h" class="group" hidden>
-    <h2 class="sec-h" id="world-h">Bangkok and holidays</h2>
-    <div class="row">
-      <section class="card side" aria-labelledby="bkk-h">
-        <div class="head"><h2 id="bkk-h">Bangkok</h2><span class="meta" id="bkk-time"></span></div>
-        <div id="bkk"></div>
-      </section>
-      <section class="card wide" aria-labelledby="hol-h">
-        <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
-          <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
-        <div class="lines" id="holidays"></div>
-      </section>
-    </div>
-  </section>
-
-  <section aria-labelledby="solar-h" class="group">
-    <h2 class="sec-h" id="solar-h">Solar details</h2>
-    <section class="card" aria-labelledby="main-h">
-      <div class="head"><h2 id="main-h">Power through the day</h2>
-        <div class="seg" role="group" aria-label="Time range">
-          <button data-range="day" aria-pressed="true">Day</button>
-          <button data-range="week" aria-pressed="false">Week</button>
-          <button data-range="month" aria-pressed="false">Month</button>
-        </div>
+  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card wide" aria-labelledby="radar-h">
+          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+        </section>
+        <section class="card side" aria-labelledby="ship-h">
+          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+          <div class="map" id="ships">
+            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+            <script src="https://www.vesselfinder.com/aismap.js"></script>
+          </div>
+          <p class="note" id="tides"></p>
+          <div id="ship-list"></div>
+        </section>
       </div>
-      <div class="legend" id="main-legend"></div>
-      <div class="chart" id="main-chart"></div>
-      <div class="axis" id="main-axis"></div>
-    </section>
-    <div class="row">
-      <section class="card wide" aria-labelledby="mo-h">
-        <div class="head"><h2 id="mo-h">Last 30 days</h2>
-          <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+        <div class="row" style="gap:24px">
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Best times today</h3><div class="lines" id="fish-times"></div>
+          </div>
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">What to fish for now</h3><div class="lines" id="fish-season"></div>
+            <div class="minis" id="fish-river"></div>
+          </div>
         </div>
-        <div id="month-chart"></div>
-        <div class="axis" id="month-axis"></div>
-        <p class="note" id="month-note"></p>
-      </section>
-      <section class="card side" aria-labelledby="bill-h">
-        <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
-        <div id="bill"></div>
+        <p class="note" id="fish-dam"></p>
+        <p class="note" id="fish-links"></p>
       </section>
     </div>
-    <section class="card" aria-labelledby="pn-h">
-      <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
-      <div class="panels" id="panels"></div>
-    </section>
   </section>
+
+  <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Earthquakes, fires, planes and the sky</p></div></div>
+    <div class="sec-body">
+      <div class="row" id="live-row" hidden>
+        <section class="card half" aria-labelledby="quake-h">
+          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
+          <p class="note" id="volc"></p>
+          <div class="lines" id="quakes"></div>
+        </section>
+        <section class="card half" aria-labelledby="plane-h">
+          <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
+          <div class="lines" id="planes"></div>
+          <p class="note" id="pdx"></p>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="fire-h" id="fire-card" hidden>
+        <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
+        <div class="lines" id="fires"></div>
+      </section>
+      <div class="row">
+        <section class="card side" aria-labelledby="moon-h">
+          <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
+          <div id="moon"></div>
+        </section>
+        <section class="card wide" aria-labelledby="sky-h">
+          <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
+          <div class="lines" id="sky"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What to plant, food forest chores, birds and blooms</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
+        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Sauvie Island, zone 8b · next 3 weeks</span></div>
+        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
+        <div class="lines" id="plant"></div>
+      </section>
+      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
+        <div class="head"><h2 id="forest-h">Food forest this month</h2><span class="meta" id="forest-meta"></span></div>
+        <div class="lines" id="forest"></div>
+        <p class="note" id="forest-next"></p>
+      </section>
+      <section class="card" aria-labelledby="birds-h">
+        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
+        <div class="species" id="birds"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="bloom-h">
+          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
+          <div class="species" id="blooms"></div>
+        </section>
+        <section class="card side" aria-labelledby="food-h">
+          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
+          <div class="chips" id="produce"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="coast" id="coast" aria-labelledby="coast-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
+    <div class="sec-body">
+      <div id="coast-alerts" class="alerts"></div>
+      <section class="card" aria-label="Coast house weather">
+        <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
+        <p class="summary" id="coast-summary"></p>
+        <div class="facts" id="coast-facts"></div>
+        <div class="fc" id="coast-fc"></div>
+      </section>
+      <div class="row">
+        <section class="card half" aria-labelledby="minus-h">
+          <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
+          <div class="lines" id="minus"></div>
+          <p class="note" id="coast-links"></p>
+        </section>
+        <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
+          <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
+          <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="local" id="local" aria-labelledby="local-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">Food, drink, music, groceries and the mountain</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
+          <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
+          <div class="chips" id="deal-filter" role="group" aria-label="Filter by store"></div>
+          <div class="scroll" id="deals" tabindex="0" aria-label="Sale items, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="food-new-h" id="rest-card" hidden>
+          <div class="head"><h2 id="food-new-h">New restaurants worth trying</h2><span class="meta" id="rest-meta"></span></div>
+          <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="ski-h" id="ski-card" hidden>
+        <div class="head"><h2 id="ski-h">Mt. Hood ski report</h2><span class="meta" id="ski-meta"></span></div>
+        <p class="summary" id="ski-summary"></p>
+        <div class="facts" id="ski-facts"></div>
+        <div class="fc" id="ski-fc"></div>
+        <p class="note" id="ski-links"></p>
+      </section>
+      <div class="row">
+        <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
+          <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
+          <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
+          <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
+          <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="watch" id="coming" aria-labelledby="watch-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
+    <div class="sec-body">
+      <div class="row" id="watch-row">
+        <section class="card half" aria-labelledby="tv-h">
+          <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
+          <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
+          <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="alb-h">
+          <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
+          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="br-h" id="br-card" hidden>
+        <div class="head"><h2 id="br-h">4K Blu-ray deals</h2><span class="meta" id="br-meta"></span></div>
+        <div class="lines" id="bluray"></div>
+        <p class="note" id="br-upcoming"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="sports" id="more" aria-labelledby="sports-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Shows, games and markets</h2><p class="sec-sub">Concerts, Blazers, Timbers, F1 and the S&amp;P</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
+        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
+        <div class="lines" id="gigs"></div>
+        <p class="note" id="gig-missing"></p>
+      </section>
+      <div class="teams" id="teams"></div>
+      <div class="row">
+        <section class="card wide" aria-labelledby="mkt-h">
+          <div class="head"><h2 id="mkt-h">Markets</h2><span class="meta" id="mkt-meta"></span></div>
+          <p class="summary" id="mkt-summary"></p>
+          <div id="mkt-spark"></div>
+          <div class="lines" id="mkt"></div>
+        </section>
+        <section class="card side" aria-labelledby="f1-h">
+          <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
+          <div id="f1"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="news" id="news" aria-labelledby="news-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card half" aria-labelledby="stories-h">
+          <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
+          <div class="scroll" id="stories" tabindex="0" aria-label="A/V and tech stories, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="reviews-h">
+          <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
+          <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="world" id="world" aria-labelledby="world-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Time, weather and air in Bangkok; USA and Thailand holidays</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card side" aria-labelledby="bkk-h">
+          <div class="head"><h2 id="bkk-h">Bangkok</h2><span class="meta" id="bkk-time"></span></div>
+          <div id="bkk"></div>
+        </section>
+        <section class="card wide" aria-labelledby="hol-h">
+          <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
+            <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
+          <div class="lines" id="holidays"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="solar" id="solar" aria-labelledby="solar-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">Power curves, 30 days, your PGE bill and every panel</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="main-h">
+        <div class="head"><h2 id="main-h">Power through the day</h2>
+          <div class="seg" role="group" aria-label="Time range">
+            <button data-range="day" aria-pressed="true">Day</button>
+            <button data-range="week" aria-pressed="false">Week</button>
+            <button data-range="month" aria-pressed="false">Month</button>
+          </div>
+        </div>
+        <div class="legend" id="main-legend"></div>
+        <div class="chart" id="main-chart"></div>
+        <div class="axis" id="main-axis"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="mo-h">
+          <div class="head"><h2 id="mo-h">Last 30 days</h2>
+            <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+          </div>
+          <div id="month-chart"></div>
+          <div class="axis" id="month-axis"></div>
+          <p class="note" id="month-note"></p>
+        </section>
+        <section class="card side" aria-labelledby="bill-h">
+          <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
+          <div id="bill"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="pn-h">
+        <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
+        <div class="panels" id="panels"></div>
+      </section>
+    </div>
+  </section>
+
+  <footer class="learn" id="learn">
+    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, moves your favorites up, and folds the ones you skip. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
+    <p id="learn-state"></p>
+    <button type="button" class="mini" id="learn-reset">Reset layout</button>
+  </footer>
   <p class="meta" id="foot" style="margin:0"></p>
 </div>
 
@@ -422,7 +567,8 @@ function render() {
     ' · updated ' + gen.toLocaleTimeString(undefined, {hour:'numeric', minute:'2-digit'}) + (sample ? ' · Sample data' : '');
   const hr = new Date().getHours();
   $('hello').textContent = hr < 5 ? 'Good night' : hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
-  $('place').textContent = D.outside ? D.outside.label : '';
+  const o0 = D.outside;
+  $('hero-wx').innerHTML = o0 && o0.now ? `${wxIcon(o0.now.code, 46)}<div>${Math.round(o0.now.temp)}°<small>${esc(o0.label)} · ${wxName(o0.now.code)}</small></div>` : '';
 
   const problems = Object.entries(D.status || {}).filter(([k, v]) => k === 'solar' && v !== 'ok');
   if (sample && D.realStatus) problems.push(['solar', D.realStatus]);
@@ -474,15 +620,18 @@ function render() {
   renderShips();
   renderNews();
   renderComing();
-  renderLocal();
+  const waits = [renderLocal(), renderBluray(), renderKids()];
   renderSki();
   renderDrives();
-  renderCoast();
+  waits.push(renderCoast());
   renderFishing();
   renderGarden();
   renderLive();
   renderMore();
   renderWorld();
+  syncGroups();
+  Promise.allSettled(waits).then(syncGroups);
+  setTimeout(syncGroups, 4000);
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
     `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
 }
@@ -705,7 +854,7 @@ const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function renderOutside() {
   const o = D.outside;
-  $('outside').hidden = $('today-card').hidden = $('fc-card').hidden = !o;
+  $('today-card').hidden = $('fc-card').hidden = !o;
   if (!o) return;
   const t = o.days[0] || {};
   // Plain-language summary of whether it's a good time to be out.
@@ -885,7 +1034,7 @@ const dayLabel = iso => { const [y, m, d] = iso.split('-').map(Number); return n
 let tvPick = 'All';
 function renderComing() {
   const tv = D.streaming || [], al = D.albums || [];
-  $('coming').hidden = !tv.length && !al.length;
+  $('watch-row').hidden = !tv.length && !al.length;
   const services = ['Netflix', 'Apple TV', 'Disney+', 'HBO Max', 'Hulu', 'Prime Video'];
   chipFilter($('tv-filter'), [['All', tv.length], ...services.map(s => [s, tv.filter(x => x.service === s).length])],
     tvPick, n => { tvPick = n; renderComing(); });
@@ -1055,6 +1204,7 @@ function renderSki() {
 function renderGarden() {
   const g = D.garden;
   $('plant-card').hidden = !g || !g.plant.length;
+  renderForest();
   if (!g) return;
   $('plant-tips').innerHTML = g.tips.map(t => `<li>${esc(t)}</li>`).join('');
   $('plant').innerHTML = g.plant.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> <span class="pill">${esc(p.kind)}</span><br><small>${esc(p.how)}</small></span>
@@ -1223,9 +1373,331 @@ function renderMore() {
   }
 }
 
+// ------------------------------------------------------------------ browser-only storage
+const local = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? await r.json() : null; } catch (e) { return null; } };
+const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+
+// ------------------------------------------------------------------ food forest
+function renderForest() {
+  const f = D.garden && D.garden.forest;
+  $('forest-card').hidden = !f || !f.now.length;
+  if (!f) return;
+  const key = 'forest-done-' + todayIso().slice(0, 7);
+  const done = local.get(key, {});
+  $('forest-meta').textContent = `${f.month} · tick them off as you go`;
+  $('forest').innerHTML = f.now.map((t, i) => `<label class="task${done[t.task] ? ' done' : ''}"><input type="checkbox" data-t="${esc(t.task)}"${done[t.task] ? ' checked' : ''}>
+    <span><b>${esc(t.task)}</b><small>${esc(t.why)}</small></span></label>`).join('');
+  $('forest').querySelectorAll('input').forEach(cb => cb.onchange = () => {
+    const d = local.get(key, {});
+    if (cb.checked) d[cb.dataset.t] = 1; else delete d[cb.dataset.t];
+    local.set(key, d);
+    cb.closest('.task').classList.toggle('done', cb.checked);
+  });
+  $('forest-next').textContent = f.next.length ? `Coming up in ${f.next_month}: ${f.next.map(t => t.task.toLowerCase()).join('; ')}.` : '';
+}
+
+// ------------------------------------------------------------------ 4K Blu-ray deals
+async function renderBluray() {
+  const b = await getJson('bluray.json');
+  const today = todayIso();
+  const deals = ((b && b.deals) || []).filter(d => !d.ends || d.ends >= today);
+  $('br-card').hidden = !deals.length;
+  if (!deals.length) return;
+  $('br-meta').innerHTML = `Checked ${dayLabel(b.updated)}` + (b.more_url ? ` · <a href="${esc(b.more_url)}" target="_blank" rel="noopener">More deals</a>` : '');
+  $('bluray').innerHTML = deals.map(d => `<a class="deal" href="${esc(d.url)}" target="_blank" rel="noopener">
+    <b>${esc(d.title)}</b><span>${esc(d.detail)}</span><small>${esc(d.store)}${d.ends ? ' · ends ' + dayLabel(d.ends) : ''}</small></a>`).join('');
+  const up = b.upcoming || [];
+  $('br-upcoming').textContent = up.length ? 'Coming up: ' + up.map(u => `${u.title} (${u.detail.charAt(0).toLowerCase() + u.detail.slice(1)})`).join('; ') + '.' : '';
+}
+
+// ------------------------------------------------------------------ little one
+// Her birth month lives only in this browser (never in the repo or the public data).
+// Ideas: [title, how, from months, to months, months of the year (empty = all year)]
+const PLAY = [
+  ['Leaf pile jumping', 'Rake a pile, jump in, then sort leaves by color or size.', 20, 72, [10, 11]],
+  ['Puddle stomping', 'Rain boots and a jacket, then find the biggest puddle on the island.', 18, 72, [10, 11, 12, 1, 2, 3, 4]],
+  ['Pumpkin scooping', 'Let her scoop the seeds and squish the goop; roast the seeds together.', 24, 72, [10]],
+  ['Pinecone bird feeder', 'Roll a pinecone in sunflower butter and birdseed, hang it where you can watch from a window.', 30, 72, [10, 11, 12, 1, 2]],
+  ['Apple stamping', 'Cut an apple in half, dip in paint and stamp. Look for the star inside.', 24, 60, [9, 10, 11]],
+  ['Nature treasure bag', 'Give her a list in pictures: a pinecone, a red leaf, a smooth rock, a stick.', 30, 72, []],
+  ['Bake muffins together', 'She can dump, pour and stir. Counting scoops sneaks in some math.', 24, 72, []],
+  ['Blanket fort story time', 'Build a fort, bring a flashlight and a stack of books.', 24, 72, [11, 12, 1, 2, 3]],
+  ['Ice rescue', 'Freeze small toys in a tub of water, then rescue them with warm water and spoons.', 24, 60, [12, 1, 2, 7, 8]],
+  ['Freeze dance', 'Dance until the music stops, then freeze. Great listening practice.', 24, 60, []],
+  ['Sticky wall collage', 'Tape contact paper sticky side out on a wall; she sticks on leaves, paper and fabric.', 18, 42, [11, 12, 1, 2]],
+  ['Play dough bakery', 'Rolling pins, cookie cutters and a pretend shop.', 24, 60, [11, 12, 1, 2, 3]],
+  ['Bean in a cup', 'Plant a bean against the side of a clear cup and watch the roots grow.', 30, 72, [3, 4, 5]],
+  ['Worm hunt', 'After rain, flip boards and stones to find worms and roly-polies.', 24, 60, [3, 4, 5, 10, 11]],
+  ['Sidewalk chalk', 'Draw big circles, roads for toy cars and hopscotch squares.', 24, 72, [4, 5, 6, 7, 8, 9]],
+  ['Mud kitchen', 'Old pots, spoons, water and dirt. Serve you a mud pie.', 24, 60, [4, 5, 6, 7, 8, 9]],
+  ['Water table or sprinkler', 'Cups, funnels and boats; or just run through the sprinkler.', 18, 60, [6, 7, 8]],
+  ['Bubble chase', 'Big wands in the yard; see who can pop the most.', 18, 48, [4, 5, 6, 7, 8, 9]],
+  ['Paint with water', 'A bucket of water and a big brush on the fence or deck. No mess.', 18, 42, [5, 6, 7, 8, 9]],
+  ['Two-step direction game', '"Get your boots and bring them to the door." Make it silly to keep it fun.', 24, 40, []],
+  ['Puzzles', 'Chunky 4 to 12 piece puzzles; try 24 pieces once those are easy.', 24, 60, []],
+  ['Pasta necklace', 'String big beads or rigatoni on a shoelace.', 30, 54, []],
+  ['Pretend doctor or tea party', 'Give her the kit and let her run the show.', 24, 60, []],
+  ['Color hunt', 'Pick a color and find five things around the house that match.', 24, 42, []],
+  ['Bath pouring station', 'Cups, a funnel and a colander in the bath.', 18, 42, []],
+  ['Trike or balance bike', 'A quiet stretch of road or the driveway; helmet on.', 30, 60, [4, 5, 6, 7, 8, 9, 10]],
+  ['Frog hops', 'Jump with both feet over a chalk line or a pillow.', 24, 48, []],
+  ['Count the stairs', 'Count out loud on every stairway you climb together.', 30, 48, []],
+  ['Turn-taking board game', 'First Orchard or Hi Ho Cherry-O: practice waiting for a turn.', 30, 60, []],
+  ['Little helper chores', 'Matching socks, washing veggies, feeding the birds.', 24, 60, []],
+  ['Seasonal picture books', 'Grab a few library books about this season and read them on the porch.', 18, 72, []],
+  ['"Why" walk', 'A slow walk where she leads and asks; answer every why.', 30, 60, []],
+  ['Draw a face', 'You draw a circle, she adds eyes and a smile.', 30, 54, []],
+  ['Sandcastle at the coast', 'Buckets, shovels and a moat that fills as the tide comes in.', 18, 72, [5, 6, 7, 8, 9]],
+];
+// Places that suit little kids, by month: [name, why, months, link]
+const OUTINGS = [
+  ['Sandhill cranes on Sauvie Island', 'Thousands winter on the island. Watch from the car along Reeder and Rentenaar roads.', [10, 11, 12, 1, 2, 3], 'https://myodfw.com/wildlife-viewing/locations/sauvie-island-wildlife-area'],
+  ['Pumpkin patches and hayrides', 'Sauvie Island farms; go on a weekday morning to beat the crowds.', [9, 10], 'https://www.travelportland.com/region/pumpkin-patches/'],
+  ['U-pick strawberries', 'Sauvie Island farms, usually early to late June.', [6], null],
+  ['U-pick blueberries', 'Sauvie Island farms, July into August.', [7, 8], null],
+  ['Walton Beach', 'Sandy river beach on the island; shallow water in late summer.', [7, 8, 9], null],
+  ['Pier Park playground', 'Big shady playground and splash fun in St. Johns.', [], null],
+  ['Cathedral Park', 'Picnic under the bridge and watch boats.', [], null],
+  ['Kelley Point Park', 'Beach where the rivers meet; watch big ships go by.', [], null],
+  ['Library storytime', 'Free toddler storytimes at the St. Johns and other Multnomah County libraries.', [], 'https://multcolib.org/events'],
+  ['Oregon Zoo', 'Go right at opening, when animals are most active.', [], 'https://www.oregonzoo.org/'],
+  ['OMSI Science Playground', 'Hands-on play area for kids 6 and under.', [], 'https://omsi.edu/'],
+  ['Oaks Park kiddie rides', 'Small rides and a carousel; open spring through fall.', [4, 5, 6, 7, 8, 9], 'https://www.oakspark.com/'],
+  ['Hoyt Arboretum', 'Easy flat trails; preschool tree walks some mornings.', [], 'https://www.hoytarboretum.org/'],
+  ['Cherry blossoms at the waterfront', 'Tom McCall Waterfront Park, late March to early April.', [3, 4], null],
+  ['Wooden Shoe Tulip Fest', 'Fields of color in Woodburn, with wagon rides.', [4], 'https://www.woodenshoe.com/'],
+  ['Rose Festival Junior Parade', 'Parade made for kids, in early June.', [6], 'https://www.rosefestival.org/'],
+  ['Salmon Street Springs', 'Splash fountain downtown on hot days.', [6, 7, 8, 9], null],
+  ['Christmas Ships', 'Lit-up boat parade on the Willamette and Columbia in December.', [12], 'https://www.christmasships.org/'],
+  ['Snow play on Mt. Hood', 'Sledding at a sno-park (needs an Oregon Sno-Park permit).', [12, 1, 2, 3], null],
+  ['Lan Su Chinese Garden', 'Lanterns and lion dances around Lunar New Year.', [1, 2], 'https://lansugarden.org/'],
+  ['Seaside Aquarium', 'Feed the seals. Near the coast house, open all year.', [], 'https://www.seasideaquarium.com/'],
+  ['Peter Iredale shipwreck', 'Fort Stevens beach near the coast house; best at low tide.', [], null],
+  ['Columbia River Maritime Museum', 'Boats, a real Coast Guard rescue boat and a kids area in Astoria.', [], 'https://www.crmm.org/'],
+];
+// Around this age, from the CDC's "Learn the Signs. Act Early." milestones.
+const GROW = [
+  [24, 'running, kicking a ball, two-word phrases and simple pretend play'],
+  [30, 'following two-step directions, jumping with both feet, twisting lids open and naming a color'],
+  [36, 'back-and-forth conversations, lots of why questions, drawing a circle, stringing beads and dressing in loose clothes'],
+  [48, 'pretending to be someone else, catching a big ball, telling what happens next in a story and drawing a person'],
+];
+let playPage = 0;
+const kidMonths = () => {
+  const b = local.get('kid-birth', null);
+  if (!b || !/^\d{4}-\d{2}$/.test(b)) return null;
+  const [y, m] = b.split('-').map(Number), now = new Date();
+  return (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - m);
+};
+async function renderKids() {
+  const age = kidMonths(), month = new Date().getMonth() + 1;
+  $('kid-setup').hidden = age != null;
+  $('kid-setup').onsubmit = e => { e.preventDefault(); if ($('kid-birth').value) { local.set('kid-birth', $('kid-birth').value); renderKids(); } };
+  $('kid-change').onclick = e => { e.preventDefault(); local.del('kid-birth'); renderKids(); $('kid-birth').focus(); };
+  const a = age == null ? 33 : age;  // until it's set, ideas for a 2 to 3 year old
+  if (age != null) {
+    const y = Math.floor(age / 12), m = age % 12, toBday = (12 - m) % 12;
+    $('kid-age').textContent = `She's ${y} year${y === 1 ? '' : 's'}${m ? `, ${m} month${m === 1 ? '' : 's'}` : ''}` +
+      (toBday === 0 ? ' · birthday month!' : toBday <= 3 ? ` · turns ${y + 1} in ${toBday} month${toBday === 1 ? '' : 's'}` : '') + ' · ideas matched to her age and the season';
+  } else {
+    $('kid-age').textContent = 'Ideas for ages 2 to 3 and this season; add her birth month to match her age';
+  }
+  // Same ideas all day, new ones each day; "More ideas" pages through the rest.
+  const fits = PLAY.filter(p => a >= p[2] && a <= p[3] && (!p[4].length || p[4].includes(month)));
+  const seasonal = fits.filter(p => p[4].length), anytime = fits.filter(p => !p[4].length);
+  const seed = Number(todayIso().replace(/-/g, ''));
+  const mix = (arr, k) => arr.map((p, i) => [((i + 1) * 2654435761 + seed * 40503 + k) % 1000003, p]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+  const pool = [...mix(seasonal, 1), ...mix(anytime, 2)];
+  const per = 6, pages = Math.max(1, Math.ceil(pool.length / per));
+  const pick = pool.slice((playPage % pages) * per, (playPage % pages) * per + per);
+  $('play').innerHTML = pick.map(p => `<div class="idea"><small>${p[4].length ? 'This season' : 'Any day'}</small><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>`).join('');
+  $('play-more').hidden = pages < 2;
+  $('play-more').onclick = () => { playPage++; renderKids(); };
+  const g = [...GROW].reverse().find(x => a >= x[0]);
+  $('kid-grow').textContent = g ? `Around this age many kids are working on ${g[1]}. Play is the best practice. (CDC milestones)` : '';
+  // Dated family events from the daily roundup, then this season's go-to spots.
+  const kj = await getJson('kids.json');
+  const today = todayIso(), soon = new Date(Date.now() + 45 * 864e5).toISOString().slice(0, 10);
+  const events = ((kj && kj.events) || []).filter(e => (e.ends || e.date) >= today && (e.date || today) <= soon)
+    .sort((x, y) => (x.date || today).localeCompare(y.date || today));
+  const spots = OUTINGS.filter(o => o[2].includes(month)).concat(OUTINGS.filter(o => !o[2].length));
+  const when = e => e.date && e.date > today ? (e.ends && e.ends !== e.date ? `${dayLabel(e.date)} to ${dayLabel(e.ends)}` : dayLabel(e.date)) : (e.ends ? `Now through ${dayLabel(e.ends)}` : 'Now');
+  $('kid-out').innerHTML = (events.length ? '<div class="day-h">Coming up</div>' + events.map(e => `<a class="story" href="${esc(e.url)}" target="_blank" rel="noopener"><span><b>${esc(e.title)}</b><small>${[when(e), e.where].filter(Boolean).map(esc).join(' · ')}</small>${e.detail ? `<p>${esc(e.detail)}</p>` : ''}</span></a>`).join('') : '') +
+    '<div class="day-h">Good this time of year</div>' + spots.map(o => `<a class="story" href="${esc(o[3] || 'https://www.google.com/search?q=' + encodeURIComponent(o[0] + ' Oregon'))}" target="_blank" rel="noopener"><span><b>${esc(o[0])}</b><small>${o[2].length ? 'In season now' : 'Any time'}</small><p>${esc(o[1])}</p></span></a>`).join('');
+  $('kid-out-meta').textContent = kj && kj.updated ? `Events checked ${dayLabel(kj.updated)}` : '';
+}
+
+// ------------------------------------------------------------------ sections, jump bar and learning
+// Reading habits are kept only in this browser (localStorage) and never sent anywhere.
+const NAV = {today: 'Today', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
+  watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
+const HABITS = 'dash-habits-v1';
+let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
+const groups = () => [...document.querySelectorAll('.group')];
+const learned = () => habits.days >= 3 && Object.values(habits.score).reduce((a, b) => a + b, 0) >= 600;
+
+function ageHabits() {
+  const t = todayIso();
+  if (habits.day === t) return;
+  const gap = Math.min(30, Math.max(1, Math.round((new Date(t) - new Date(habits.day)) / 864e5)));
+  for (const k in habits.score) habits.score[k] *= Math.pow(0.92, gap);  // older reading counts less
+  habits.day = t;
+  habits.days++;
+  local.set(HABITS, habits);
+}
+
+function arrange() {
+  const foot = $('learn'), all = groups(), base = all.map(g => g.dataset.sec);
+  const order = [...all].sort((a, b) => {
+    const rank = g => g.dataset.sec === 'today' ? -2 : habits.pins[g.dataset.sec] ? -1 : 0;
+    const r = rank(a) - rank(b);
+    if (r || !learned()) return r || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
+    return (habits.score[b.dataset.sec] || 0) - (habits.score[a.dataset.sec] || 0) || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
+  });
+  order.forEach(g => foot.parentNode.insertBefore(g, foot));
+  const total = Object.values(habits.score).reduce((a, b) => a + b, 0);
+  for (const g of all) {
+    const k = g.dataset.sec, choice = habits.folds[k];
+    const auto = learned() && k !== 'today' && !habits.pins[k] && choice !== 'open' && (habits.score[k] || 0) < total * 0.025;
+    setFold(g, choice === 'folded' || (choice !== 'open' && auto), auto && choice !== 'folded');
+  }
+}
+
+function setFold(g, folded, auto) {
+  g.classList.toggle('folded', folded);
+  const b = g.querySelector('.fold-btn');
+  if (b) { b.setAttribute('aria-expanded', String(!folded)); b.textContent = folded ? '▸' : '▾'; b.title = folded ? 'Open this section' : 'Fold this section'; }
+  let note = g.querySelector('.fold-note');
+  if (folded && auto && !note) {
+    note = document.createElement('p');
+    note.className = 'fold-note';
+    note.textContent = 'Folded because you rarely open it. Tap to open.';
+    note.onclick = () => toggleFold(g, false);
+    g.querySelector('.sec-head').after(note);
+  }
+  if (note && (!folded || !auto)) note.remove();
+  g.querySelector('.sec-head').classList.toggle('clickable', folded);
+  if (!folded && g.dataset.sec === 'river' && radarMap) setTimeout(() => radarMap.invalidateSize(), 50);
+}
+
+function toggleFold(g, folded) {
+  habits.folds[g.dataset.sec] = folded ? 'folded' : 'open';
+  local.set(HABITS, habits);
+  setFold(g, folded, false);
+}
+
+function addTools() {
+  for (const g of groups()) {
+    const k = g.dataset.sec, head = g.querySelector('.sec-head');
+    if (head.querySelector('.sec-tools')) continue;
+    const tools = document.createElement('div');
+    tools.className = 'sec-tools';
+    tools.innerHTML = (k === 'today' ? '' : `<button type="button" class="pin-btn" aria-pressed="${!!habits.pins[k]}" title="Keep this section near the top" aria-label="Pin ${NAV[k]}">📌</button>`) +
+      `<button type="button" class="fold-btn" aria-expanded="true" aria-label="Fold or open ${NAV[k]}">▾</button>`;
+    head.appendChild(tools);
+    const pin = tools.querySelector('.pin-btn');
+    if (pin) pin.onclick = e => {
+      e.stopPropagation();
+      if (habits.pins[k]) delete habits.pins[k]; else { habits.pins[k] = 1; if (habits.folds[k] === 'folded') delete habits.folds[k]; }
+      pin.setAttribute('aria-pressed', String(!!habits.pins[k]));
+      local.set(HABITS, habits);
+      arrange(); buildNav(); g.scrollIntoView({behavior: 'smooth'});
+    };
+    tools.querySelector('.fold-btn').onclick = e => { e.stopPropagation(); toggleFold(g, !g.classList.contains('folded')); };
+    head.onclick = () => { if (g.classList.contains('folded')) toggleFold(g, false); };
+  }
+}
+
+function syncGroups() {
+  for (const g of groups()) {
+    const body = g.querySelector('.sec-body');
+    const shown = [...body.querySelectorAll('.card, .alerts, .kid-setup')].some(c => { const h = c.closest('[hidden]'); return !h || !body.contains(h); });
+    g.classList.toggle('empty', !shown);
+  }
+  buildNav();
+}
+
+function buildNav() {
+  const live = groups().filter(g => !g.hidden && !g.classList.contains('empty'));
+  $('secnav').innerHTML = live.map(g => `<a href="#${g.id}" data-sec="${g.dataset.sec}"><span class="ic" aria-hidden="true">${g.querySelector('.sec-icon').textContent}</span>${NAV[g.dataset.sec]}</a>`).join('');
+  $('secnav').querySelectorAll('a').forEach(a => a.onclick = e => {
+    e.preventDefault();
+    const g = document.querySelector(`.group[data-sec="${a.dataset.sec}"]`);
+    if (g.classList.contains('folded')) toggleFold(g, false);
+    habits.score[g.dataset.sec] = (habits.score[g.dataset.sec] || 0) + 10;  // jumping there is a sign of interest
+    g.scrollIntoView({behavior: 'smooth'});
+  });
+  markNav(current);
+  const parts = Object.entries(habits.score).filter(([k]) => NAV[k]).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => NAV[k]);
+  $('learn-state').textContent = !parts.length ? 'Nothing learned yet.' :
+    (learned() ? 'Read most lately: ' : `Still learning (${habits.days} of 3 days so far). Read most so far: `) + parts.join(', ') + '.';
+}
+
+let current = null;
+function markNav(k) {
+  current = k;
+  const nav = $('secnav');
+  nav.querySelectorAll('a').forEach(a => {
+    const on = a.dataset.sec === k;
+    a.classList.toggle('on', on);
+    if (on && (a.offsetLeft < nav.scrollLeft || a.offsetLeft + a.offsetWidth > nav.scrollLeft + nav.clientWidth))
+      nav.scrollTo({left: a.offsetLeft - 16, behavior: 'smooth'});
+  });
+}
+
+function watchReading() {
+  const seen = new Map();
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) seen.set(e.target, e.isIntersecting ? e.intersectionRect.height : 0);
+    let best = null, most = 0;
+    for (const [g, h] of seen) if (h > most) { most = h; best = g; }
+    if (best && best.dataset.sec !== current) markNav(best.dataset.sec);
+  }, {threshold: Array.from({length: 21}, (_, i) => i / 20)});
+  groups().forEach(g => io.observe(g));
+  let active = Date.now();
+  for (const ev of ['scroll', 'pointerdown', 'keydown', 'pointermove', 'touchstart']) addEventListener(ev, () => active = Date.now(), {passive: true});
+  // Each second the page is open, being looked at, and you've moved in the last minute,
+  // credit the section filling most of the screen.
+  let ticks = 0;
+  setInterval(() => {
+    if (document.visibilityState !== 'visible' || Date.now() - active > 60000 || !current) return;
+    let best = null, most = 0;
+    for (const [g, h] of seen) if (h > most) { most = h; best = g; }
+    if (!best || most < innerHeight * 0.3) return;
+    ageHabits();
+    habits.score[best.dataset.sec] = (habits.score[best.dataset.sec] || 0) + 1;
+    if (++ticks % 10 === 0) local.set(HABITS, habits);
+  }, 1000);
+  document.addEventListener('click', e => {
+    const g = e.target.closest('.group');
+    if (g && e.target.closest('a, button, summary, input, .chip')) { habits.score[g.dataset.sec] = (habits.score[g.dataset.sec] || 0) + 15; local.set(HABITS, habits); }
+  });
+  addEventListener('pagehide', () => local.set(HABITS, habits));
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') local.set(HABITS, habits); });
+}
+
+function initLayout() {
+  ageHabits();
+  addTools();
+  arrange();
+  watchReading();
+  $('learn-reset').onclick = () => {
+    habits = {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
+    local.set(HABITS, habits);
+    groups().forEach(g => g.querySelector('.pin-btn') && g.querySelector('.pin-btn').setAttribute('aria-pressed', 'false'));
+    arrange(); buildNav();
+  };
+}
+
 document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { range = b.dataset.range; renderMain(); }));
 
 (async () => {
+  initLayout();
   const realStatus = D && D.status && D.status.solar;
   const d = await load();
   if (!d && !D) { $('stamp').textContent = 'Couldn’t load data'; return; }

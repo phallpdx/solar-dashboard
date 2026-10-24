@@ -667,7 +667,8 @@ def garden_view(state, out, now_utc):
              if t[:10] == today.isoformat() and v is not None]
     if temps:
         soil = round(sum(temps) / len(temps))  # forecast is requested in °F
-    return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil)}
+    return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil),
+            "forest": garden.forest_tasks(today)}
 
 
 def fishing_view(state, out, now_utc):

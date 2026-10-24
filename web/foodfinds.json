@@ -1,0 +1,133 @@
+{
+  "updated": "2026-10-24",
+  "items": [
+    {
+      "name": "Breakside IPA",
+      "maker": "Breakside Brewery",
+      "kind": "Award",
+      "what": "Breakside's flagship IPA took gold in American India Pale Ale at the 2026 Great American Beer Festival, part of a 35-medal haul for Oregon breweries and cideries, third most of any state.",
+      "where_to_buy": [{"store": "Breakside Brewery taprooms", "url": null}],
+      "date": "2026-10-11",
+      "sources": [
+        {"name": "My Neighborhood News: Austin breweries win three medals at 2026 GABF (lists Breakside IPA as gold)", "url": "https://myneighborhoodnews.com/austin/austin-breweries-win-three-medals-at-2026-great-american-beer-festival-with-meanwhile-brewing-taking-home-two-silvers"},
+        {"name": "Brewpublic: 2026 GABF winners, Oregon wins 35 medals", "url": "https://brewpublic.com/beer-awards/2026-great-american-beer-festival-winners-oregon-wins-35-medals-as-washington-wins-17-medals/"},
+        {"name": "Oregon Beverage Alliance release: Oregon takes home 35 medals at GABF", "url": "https://www.nombase.com/newswire/2026/10/14/oregon-breweries-cideries-take-home-35-medals-at-great-american-beer-festival-third-most-in-the-country"}
+      ]
+    },
+    {
+      "name": "Golden Lime Cosmic Crisp cider",
+      "maker": "2 Towns Ciderhouse",
+      "kind": "Award",
+      "what": "A not-yet-officially-launched cider of Cosmic Crisp apples and calamansi golden limes won silver in Fruited Cider at GABF 2026, the festival's biggest cider category with 58 entries; 2 Towns' Huckleberry Cosmic Crisp took bronze for the second year running. For now it's only in a 2 Towns variety pack.",
+      "where_to_buy": [{"store": "2 Towns Ciderhouse (variety pack)", "url": null}],
+      "date": "2026-10-11",
+      "sources": [
+        {"name": "2 Towns Ciderhouse release: two medals in Fruited Cider at 2026 GABF", "url": "https://www.nombase.com/newswire/2026/10/14/2-towns-ciderhouse-wins-two-medals-in-mostentered-cider-category-at-2026-great-american-beer-festival"},
+        {"name": "Brewbound: 2 Towns Ciderhouse wins two medals at 2026 GABF", "url": "https://www.brewbound.com/pr/2026/10/14/2-towns-ciderhouse-wins-two-medals-in-mostentered-cider-category-at-2026-great-american-beer-festival"}
+      ]
+    },
+    {
+      "name": "Pastime Coffee",
+      "maker": "Pastime Coffee",
+      "kind": "New brand",
+      "what": "Founded in 2024, this young Portland roaster just opened its own production roastery in Northeast Portland, built around a 15-kilo Sivetz roaster. Its Sure Thing blend is a light-medium roast with caramel, citrus and nut notes.",
+      "where_to_buy": [{"store": "Trade Coffee (Sure Thing blend)", "url": "https://www.drinktrade.com/products/sure-thing"}],
+      "date": "2026-10-15",
+      "sources": [
+        {"name": "Daily Coffee News: Pastime Coffee goes all in at new Portland production roastery", "url": "https://dailycoffeenews.com/2026/10/15/pastime-coffee-goes-all-in-at-new-portland-production-roastery/"},
+        {"name": "Trade Coffee: Get to know Pastime Coffee", "url": "https://www.drinktrade.com/blogs/roasters/get-to-know-pastime-coffee"}
+      ]
+    },
+    {
+      "name": "Cheers to the Land 2026",
+      "maker": "Oregon Agricultural Trust with 16 Oregon breweries and cideries",
+      "kind": "Seasonal",
+      "what": "This year's run of farmland-benefit beers and ciders from Breakside, Baerlic, Bauman's, Gigantic, Hopworks, Deschutes and others launched with a beer fest at John's Marketplace on October 10. Proceeds support the trust's work to permanently protect Oregon farmland.",
+      "where_to_buy": [],
+      "date": "2026-10-10",
+      "sources": [
+        {"name": "Travel Portland: Cheers to the Land launch party", "url": "https://www.travelportland.com/event/6aa32195e6309d93181feec0/"},
+        {"name": "Mercury Tickets: Cheers to the Land 2026 at John's Marketplace", "url": "https://www.merctickets.com/events/186892657/cheers-to-the-land-2026-johns-marketplace"},
+        {"name": "Visit the Oregon Coast: Cheers to the Land (Lincoln City)", "url": "https://visittheoregoncoast.com/cities/cheers-to-the-land/"}
+      ]
+    },
+    {
+      "name": "Tea-infused bonbon collection",
+      "maker": "Steven Smith Teamaker and Ranger Chocolate Co.",
+      "kind": "New product",
+      "what": "Two Portland makers teamed up on a six-piece bonbon set inspired by Smith teas Lord Bergamot, Golden Light and Masala Chai, previewed at a launch party during the Portland Craft Chocolate Festival. Retail availability wasn't announced.",
+      "where_to_buy": [],
+      "date": "2026-10-03",
+      "sources": [
+        {"name": "PR Newswire: Portland Craft Chocolate Festival returns this weekend", "url": "http://www.prnewswire.com/news-releases/portland-craft-chocolate-festival-returns-this-weekend-as-portland-rallies-around-chocolate-cookies-and-community-302896183.html"},
+        {"name": "PR Newswire: Portland Craft Chocolate Festival returns Oct. 2-4 with 45+ Oregon makers", "url": "https://www.prnewswire.com/news-releases/portland-craft-chocolate-festival-returns-oct-24-with-45-oregon-makers--and-300-entries-for-portlands-best-chocolate-chip-cookie-302883566.html"},
+        {"name": "Food & Beverage Magazine: Portland Craft Chocolate Festival 2026", "url": "https://www.fb101.com/portland-craft-chocolate-festival-2026-c4-cookie-competition-302883566"}
+      ]
+    },
+    {
+      "name": "Glacier Gourmet freeze-dried treats",
+      "maker": "Glacier Gourmet (Redmond)",
+      "kind": "New brand",
+      "what": "A Redmond couple's freeze-dried snack line, launched in 2024, is now in more than 100 Oregon stores. Best sellers are freeze-dried Oregon dark cherry and marionberry pie ice creams, plus fruits, candies and cheesecakes.",
+      "where_to_buy": [{"store": "Made in Oregon (marionberry pie ice cream)", "url": "https://madeinoregon.com/products/glacier-gourmet-freeze-dried-marionberry-pie-ice-cream-3oz"}],
+      "date": "2026-09-23",
+      "sources": [
+        {"name": "Bend Bulletin: Redmond couple brings freeze-dried snacks to over 100 Oregon retailers", "url": "https://bendbulletin.com/2026/09/23/redmond-couple-brings-freeze-dried-snacks-to-over-100-oregon-retailers/"},
+        {"name": "Made in Oregon: Glacier Gourmet Freeze Dried Marionberry Pie Ice Cream", "url": "https://madeinoregon.com/products/glacier-gourmet-freeze-dried-marionberry-pie-ice-cream-3oz"}
+      ]
+    },
+    {
+      "name": "Hollow Jack pumpkin cider",
+      "maker": "2 Towns Ciderhouse",
+      "kind": "Seasonal",
+      "what": "The Corvallis cidery's fall pumpkin cider is back for 2026 in its classic form, with golden delicious pumpkin and a custom blend of pumpkin pie spices, at 6.9% ABV.",
+      "where_to_buy": [{"store": "2 Towns Ciderhouse taproom and online, plus participating retailers", "url": null}],
+      "date": "2026-09-03",
+      "sources": [
+        {"name": "BevNET release: Oh my gourd, Jack is back", "url": "https://bevnet.com/pr/2026/09/03/oh-my-gourd-jack-is-back-pumpkin-cider-season-is-here"},
+        {"name": "New School Beer + Cider: Hollow Jack and Pumpkin Spice return", "url": "https://newschoolbeer.com/home/2026/9/pumpkin-cider-season-is-here-hollow-jack-pumpkin-spice-return"}
+      ]
+    },
+    {
+      "name": "Gluten Free 1-to-1 Baking Flour, new formula",
+      "maker": "Bob's Red Mill (Milwaukie)",
+      "kind": "New product",
+      "what": "Bob's reworked its cup-for-cup gluten-free flour to fix grittiness and aftertaste complaints. It's also the first product in the brand's redesigned packaging.",
+      "where_to_buy": [
+        {"store": "Costco", "url": null},
+        {"store": "Whole Foods", "url": null},
+        {"store": "Sprouts", "url": null},
+        {"store": "Albertsons", "url": null},
+        {"store": "Kroger", "url": null},
+        {"store": "Amazon", "url": null}
+      ],
+      "date": "2026-08-19",
+      "sources": [
+        {"name": "Bob's Red Mill release: perfected formula for Gluten Free 1-to-1 Baking Flour", "url": "https://www.nosh.com/pr/2026/08/19/bobs-red-mill-introduces-perfected-formula-for-gluten-free-1to1-baking-flour-with-improved-taste-and-texture"},
+        {"name": "Baking Business: Bob's Red Mill reformulates signature gluten-free flour", "url": "https://www.bakingbusiness.com/articles/66781-bobs-red-mill-reformulates-signature-gluten-free-flour"}
+      ]
+    },
+    {
+      "name": "2024 Osprey Cuvée Estate Pinot Noir",
+      "maker": "Sokol Blosser",
+      "kind": "New product",
+      "what": "A new estate Pinot blending fruit from Sokol Blosser's Dayton estate and its Kalita Vineyard in Yamhill-Carlton, $80 a bottle. After an August preview, it was set for release in late September.",
+      "where_to_buy": [{"store": "Sokol Blosser tasting room and online", "url": null}],
+      "date": "2026-08-17",
+      "sources": [
+        {"name": "Wine Industry Advisor: Sokol Blosser announces new 2024 Osprey Cuvée Estate Pinot Noir", "url": "https://wineindustryadvisor.com/2026/08/17/sokol-blosser-announces-new-2024-osprey-cuvee-estate-pinot-noir/"}
+      ]
+    },
+    {
+      "name": "Spangler Vineyards Carménère",
+      "maker": "Spangler Vineyards",
+      "kind": "Award",
+      "what": "A Southern Oregon Carménère grown near Jacksonville won best of show at the 14th annual Cascadia International Wine Competition, where King Estate also led the Oregon winners.",
+      "where_to_buy": [{"store": "Spangler Vineyards", "url": null}],
+      "date": "2026-07-29",
+      "sources": [
+        {"name": "Great Northwest Wine: Spangler, King Estate lead Oregon winners at Cascadia International", "url": "https://greatnorthwestwine.com/2026/07/29/spangler-king-estate-lead-oregon-winners-at-14th-annual-cascadia-international/"}
+      ]
+    }
+  ]
+}

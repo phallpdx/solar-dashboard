@@ -825,15 +825,16 @@ def build(state, status, now_utc):
                   if x["produced"] and x["sun"] and x["sun"] > 1.0]
         # Compare against sunlight so far today, not the whole day's.
         sun_today = days[-1]["sun"] if use_station else (out or {}).get("sun_so_far")
-        if len(ratios) >= 5 and sun_today and sun_today > 0.3:
+        performance = {"pct": None, "baseline_days": len(ratios)}
+        if len(ratios) >= 5:
             ratio = statistics.median(ratios)
-            pct = round(solar["today_kwh"] / sun_today / ratio * 100)
-            performance = {"pct": pct, "baseline_days": len(ratios), "kwh_per_sun": round(ratio, 2)}
+            performance["kwh_per_sun"] = round(ratio, 2)
+            # Expected output for the coming days works any time; today's score needs some sun first.
             for d in (out or {}).get("days", []):
                 if d["sun"]:
                     d["solar_kwh"] = round(d["sun"] * ratio)
-        else:
-            performance = {"pct": None, "baseline_days": len(ratios)}
+            if sun_today and sun_today > 0.3:
+                performance["pct"] = round(solar["today_kwh"] / sun_today / ratio * 100)
 
     produced = [x["produced"] for x in days[:-1] if x["produced"]]
     typical = statistics.median(produced) if produced else 0

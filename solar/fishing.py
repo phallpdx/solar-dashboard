@@ -61,16 +61,10 @@ def dam_counts(today):
     if head_i is None:
         raise RuntimeError("DART returned no table: " + text[:200].replace("\n", " "))
     head = [c.strip() for c in rows[head_i]]
-    want = {"Chinook": ("chin",), "Coho": ("coho",), "Steelhead": ("stlhd", "steelhead"),
-            "Sockeye": ("sock",), "Shad": ("shad",), "Lamprey": ("lmpry", "lamprey")}
-    cols = {}
-    for name, keys in want.items():
-        for i, h in enumerate(head):
-            low = h.lower()
-            # Skip jack and wild-only columns; adults are the plain species column.
-            if any(k in low for k in keys) and not low.startswith("j") and "wild" not in low and not low.startswith("w"):
-                cols[name] = i
-                break
+    want = {"Chinook": "Chin", "Coho": "Coho", "Steelhead": "Stlhd", "Sockeye": "Sock", "Shad": "Shad",
+            "Lamprey": "LmpryCombined", "Chum": "Chum", "Pink": "Pink"}
+    cols = {name: head.index(col) for name, col in want.items() if col in head}
+    temp_i = head.index("TempC") if "TempC" in head else None
     date_i = next(i for i, h in enumerate(head) if "date" in h.lower())
     days = []
     for r in rows[head_i + 1:]:
@@ -82,8 +76,14 @@ def dam_counts(today):
                 counts[name] = int(float(r[i]))
             except (IndexError, ValueError):
                 pass
+        temp = None
+        if temp_i is not None:
+            try:
+                temp = float(r[temp_i])
+            except (IndexError, ValueError):
+                pass
         if counts:
-            days.append({"date": r[date_i].strip(), "counts": counts})
+            days.append({"date": r[date_i].strip(), "counts": counts, "temp_c": temp})
     days = days[-7:]
     if not days:
         raise RuntimeError("DART table had no counts; columns: " + ", ".join(head))
@@ -91,7 +91,8 @@ def dam_counts(today):
     for d in days:
         for k, v in d["counts"].items():
             totals[k] = totals.get(k, 0) + v
-    return {"dam": "Bonneville", "days": len(days), "columns": head, "through": days[-1]["date"],
+    temps = [d["temp_c"] for d in days if d["temp_c"] is not None]
+    return {"dam": "Bonneville", "days": len(days), "water_f": round(temps[-1] * 9 / 5 + 32) if temps else None, "through": days[-1]["date"],
             "week": dict(sorted(totals.items(), key=lambda kv: -kv[1])), "last_day": days[-1]["counts"]}
 
 

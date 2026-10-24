@@ -183,8 +183,13 @@ def _albums_on_page(title, year):
     found, heads = [], []
     for table in filter(None, parser.tables):
         grid = _grid(table)
-        if not grid:
+        # Skip navigation rows ("Go to: January | February ...") above the real header.
+        start = next((i for i, row in enumerate(grid)
+                      if any(c["text"].strip().lower().startswith("artist") for c in row)
+                      and any(c["text"].strip().lower().startswith("album") for c in row)), None)
+        if start is None:
             continue
+        grid = grid[start:]
         head = [(c["text"] or "").strip().lower() for c in grid[0]]
         heads.append("/".join(head)[:80])
         col = {name: next((i for i, h in enumerate(head) if h.startswith(name)), None)
@@ -197,7 +202,7 @@ def _albums_on_page(title, year):
                 continue
             date_text = " ".join(row[i]["text"] for i in date_cols if i < len(row))
             squashed = re.sub(r"\s+", "", date_text).upper()
-            month = next((m for m in MONTHS if m in squashed), None)
+            month = next((m for m in MONTHS if m in squashed), None) or next((m for m in MONTHS if m[:3] in squashed), None)
             day = re.findall(r"\d{1,2}", date_text)
             if not month or not day:
                 continue

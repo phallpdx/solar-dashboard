@@ -55,14 +55,13 @@ def weekly(postal_code):
         time.sleep(0.5)
         items = []
         raw = (data.get("items") if isinstance(data, dict) else data) or []
-        sample = {k: v for k, v in (raw[len(raw) // 2] if raw else {}).items() if not isinstance(v, (dict, list))}
         for it in raw:
             name = (it.get("name") or "").strip()
             if not name or it.get("display_type") not in (None, 1):
                 continue
             now = _num(it.get("current_price") or it.get("price"))
             was = _num(it.get("original_price"))
-            pct = round((1 - now / was) * 100) if now and was and was > now else None
+            pct = round((1 - now / was) * 100) if now and was and was > now else (it.get("discount") or None)
             main = it.get("price_text") or it.get("price")
             if main is not None and re.fullmatch(r"\d+(\.\d+)?", str(main)):
                 main = f"${float(main):.2f}"
@@ -72,11 +71,14 @@ def weekly(postal_code):
             items.append({"name": name, "price": price_text or None, "was": was, "pct_off": pct,
                           "deal": (it.get("sale_story") or "").strip() or None,
                           "image": it.get("cutout_image_url") or it.get("clean_image_url"),
-                          "until": (it.get("valid_to") or f.get("valid_to") or "")[:10] or None})
-        # Real discounts first; otherwise keep the ad's own order, which leads with its featured deals.
-        items = sorted(items, key=lambda x: -(x["pct_off"] or 0))
+                          "until": (it.get("valid_to") or f.get("valid_to") or "")[:10] or None,
+                          "_pos": (round(it.get("left") or 0, -2), -(it.get("top") or 0))})
+        # Biggest discounts first, then in the order they appear in the ad (front page first).
+        items = sorted(items, key=lambda x: (-(x["pct_off"] or 0), x["_pos"]))
+        for x in items:
+            del x["_pos"]
         found[store] = {"store": store, "until": (f.get("valid_to") or "")[:10] or None,
-                        "items": items[:PER_STORE], "total": len(items), "sample": sample}
+                        "items": items[:PER_STORE], "total": len(items)}
     missing = [s for s in STORES.values() if s not in found]
     if not found:
         raise RuntimeError("none of the stores have a weekly ad on Flipp; ads found: " + ", ".join(merchants[:40])

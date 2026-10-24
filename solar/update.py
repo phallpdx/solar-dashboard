@@ -614,9 +614,9 @@ def fetch_ski(state, now_utc):
 
 
 def fetch_places(state, now_utc):
-    spots = places.parse(env("PLACES"))
+    spots = places.parse(env("PLACES")) or [(p["label"], p["query"]) for p in load_json("config.json", {}).get("places", [])]
     if not spots:
-        return "Add the PLACES secret."
+        return "No places set up."
     store, errors = state.setdefault("places", {}), []
     # Without a traffic key the drive times never change, so look them up once a day.
     _refresh(store, "commute", lambda: places.commute(spots, env("TOMTOM_KEY")),
@@ -631,7 +631,7 @@ def fetch_places(state, now_utc):
 def fetch_fishing(state, now_utc):
     store, errors = state.setdefault("fishing", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
-    if "columns" not in (store.get("dam") or {}):
+    if "water_f" not in (store.get("dam") or {}):
         store.pop("dam_at", None)
     _refresh(store, "dam", lambda: fishing.dam_counts(today), 6, now_utc, errors)
     _refresh(store, "river", fishing.river, 1, now_utc, errors)
@@ -676,9 +676,9 @@ def fetch_deals(state, now_utc):
     zip_code = load_json("config.json", {}).get("shopping_zip")
     if not zip_code:
         return "Add a shopping ZIP code to config.json."
-    if store.get("v") != 3:  # new ordering and price format
+    if store.get("v") != 4:  # new ordering and price format
         store.clear()
-        store["v"] = 3
+        store["v"] = 4
     _refresh(store, "weekly", lambda: deals.weekly(zip_code), 12, now_utc, errors)
     w = store.get("weekly") or {}
     if w.get("missing"):

@@ -10,5 +10,28 @@
     "lon": -122.77,
     "zoom": 12
   },
-  "shopping_zip": "97203"
+  "shopping_zip": "97203",
+  "places": [
+    {
+      "label": "Home",
+      "query": "Sauvie Island, Oregon"
+    },
+    {
+      "label": "School",
+      "query": "Buckman, Portland, Oregon"
+    },
+    {
+      "label": "Lake Oswego",
+      "query": "Lake Oswego, Oregon"
+    },
+    {
+      "label": "St. Johns",
+      "query": "St. Johns, Portland, Oregon"
+    },
+    {
+      "label": "Coast house",
+      "query": "Surf Pines, Warrenton, Oregon"
+    }
+  ],
+  "places_note": "Neighborhood-level places only; this repo is public."
 }

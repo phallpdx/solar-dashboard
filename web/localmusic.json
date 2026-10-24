@@ -1,6 +1,26 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "releases": [
+    {
+      "artist": "Isabeau Waia'u Walker",
+      "title": "Cloudhunter",
+      "type": "EP",
+      "local": true,
+      "genre": "Indie folk",
+      "label": "Better Company",
+      "date": "",
+      "why": "KEXP's music directors reviewed the Portland songwriter's new EP in their Oct. 19 New Music Reviews for DJs, calling it a beautiful set of evocative indie folk.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
+        },
+        {
+          "name": "Bandcamp",
+          "url": "https://isabeauwalker.bandcamp.com/music"
+        }
+      ]
+    },
     {
       "artist": "Jeffrey Silverstein",
       "title": "Doggone",
@@ -14,6 +34,22 @@
         {
           "name": "Review",
           "url": "https://www.thelineofbestfit.com/albums/jeffrey-silverstein-portlands-leading-cosmic-cowboy-hits-a-rich-seam-on-doggone"
+        }
+      ]
+    },
+    {
+      "artist": "Growing Pains",
+      "title": "Daniel Loves Mandy Forever",
+      "type": "Album",
+      "local": true,
+      "genre": "Indie rock",
+      "label": "",
+      "date": "",
+      "why": "Willamette Week profiled the Portland band's slightly stripped-back follow-up to its shoegaze-leaning records on Oct. 14.",
+      "links": [
+        {
+          "name": "Willamette Week",
+          "url": "https://www.wweek.com/music/2026/10/14/growing-pains-is-not-a-teenage-band-anymore/"
         }
       ]
     },
@@ -190,6 +226,22 @@
       ]
     },
     {
+      "artist": "Dummy",
+      "title": "do you love the color of the sky?",
+      "type": "Album",
+      "local": false,
+      "genre": "Psych pop / post-punk",
+      "label": "Polyvinyl",
+      "date": "",
+      "why": "The band's third album and Polyvinyl debut, reviewed for airplay in KEXP's Oct. 19 New Music Reviews.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
+        }
+      ]
+    },
+    {
       "artist": "Babehoven",
       "title": "I See Them, I See Me",
       "type": "Album",
@@ -246,6 +298,22 @@
         {
           "name": "NACC",
           "url": "https://naccchart.com/"
+        }
+      ]
+    },
+    {
+      "artist": "Fat Dog",
+      "title": "Cancel Me (I'm Tired)",
+      "type": "Album",
+      "local": false,
+      "genre": "Indie / electronic",
+      "label": "Domino",
+      "date": "",
+      "why": "The London seven-piece's second album, reviewed for rotation in KEXP's Oct. 5 New Music Reviews and on KEXP's chart.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/5/new-music-reviews-105/"
         }
       ]
     }

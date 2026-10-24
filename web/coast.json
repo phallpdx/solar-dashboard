@@ -1,19 +1,125 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "events": [
-    {"name": "Smashing Pumpkinheads!", "date": "2026-10-24", "end": null, "town": "Astoria", "summary": "Afternoon pumpkin-smashing party (3 to 6 pm) with food, drinks and tarot readings, part of Astoria's Halloween lineup.", "url": "https://www.travelastoria.com/events/"},
-    {"name": "Creepshow Peepshow III", "date": "2026-10-24", "end": null, "town": "Astoria", "summary": "Horror cabaret at the Columbian Theater, 7 to 11 pm.", "url": "https://www.travelastoria.com/events/"},
-    {"name": "Halloween Spooktacular concert", "date": "2026-10-27", "end": null, "town": "Cannon Beach", "summary": "An hour-long Halloween concert (7 to 8 pm) at Cannon Beach Community Church.", "url": "https://www.meredithlodging.com/blog/oregon-coast/boo-top-five-halloween-activities-oregon-coast"},
-    {"name": "Seaside Halloween Happenin's", "date": "2026-10-30", "end": "2026-10-31", "town": "Seaside", "summary": "Free downtown Halloween weekend with a witches and warlocks paddle, kid carnival, pet parade, trunk-or-treat and a giant pumpkin drop; check final times.", "url": "https://www.meredithlodging.com/blog/oregon-coast/seaside/halloween-happenings-in-seaside-oregon"},
-    {"name": "Seaside Fall Whiskey & Wine Walk", "date": "2026-11-06", "end": "2026-11-07", "town": "Seaside", "summary": "Downtown tasting strolls: whiskey with appetizers Friday 4 to 8 pm, Oregon wine Saturday 3 to 6:30 pm; $20 a walk or $35 for both, 21+.", "url": "https://aftontickets.com/event/buyticket/z59r7lk8jq"},
-    {"name": "Stormy Weather Arts Festival", "date": "2026-11-06", "end": "2026-11-08", "town": "Cannon Beach", "summary": "The 39th annual festival fills galleries across town with artist demos and receptions, plus a Nov. 7 spotlight concert at the Coaster Theatre.", "url": "https://cbchamber.simpletix.com/f/2383"},
-    {"name": "North Coast Symphonic Band: The Art of Dance", "date": "2026-11-08", "end": null, "town": "Astoria", "summary": "Sunday 2 pm concert at the Liberty Theatre.", "url": "https://libertyastoria.org/event/"},
-    {"name": "DREAMPUNK", "date": "2026-11-20", "end": null, "town": "Astoria", "summary": "Themed evening performance show at the Liberty Theatre, 7 pm.", "url": "https://libertyastoria.org/event/"},
-    {"name": "King tides", "date": "2026-11-23", "end": "2026-11-27", "town": "Astoria to Manzanita", "summary": "The first king tide window of the season; NOAA predictions put the biggest tides around Nov. 24 to 26, and the King Tides Project asks for photos.", "url": "https://oregonshores.org/king-tides-cosci/"},
-    {"name": "Seaside Turkey Trot", "date": "2026-11-26", "end": null, "town": "Seaside", "summary": "Thanksgiving morning 5K run/walk on Broadway; check-in at 8 am, start at 9 am.", "url": "https://www.findtherun.com/race/92964/seaside-turkey-trot-5k-fun-run-walk"},
-    {"name": "Blind Pilot", "date": "2026-11-27", "end": null, "town": "Astoria", "summary": "The Oregon folk band plays the Liberty Theater; listings disagree on a 6 or 7 pm start, so check the ticket page.", "url": "https://www.jambase.com/show/blind-pilot-liberty-theater-20261127"},
-    {"name": "Cannon Beach in Lights", "date": "2026-12-01", "end": "2026-12-31", "town": "Cannon Beach", "summary": "A month of holiday lights around town as part of Haystack Holidays.", "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"},
-    {"name": "Cannon Beach Lamp Lighting Ceremony", "date": "2026-12-05", "end": null, "town": "Cannon Beach", "summary": "Free 4 pm lamp lighting in Sandpiper Square to kick off Haystack Holidays.", "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"},
-    {"name": "Ilwaco Crab Pot Christmas", "date": "2026-12-05", "end": null, "town": "Ilwaco (Long Beach Peninsula)", "summary": "The port lights its tree built from crab pots, with Santa, at 4 pm; dates are subject to change.", "url": "https://poiwa.specialdistrict.org/calendar-of-events"}
+    {
+      "name": "Smashing Pumpkinheads!",
+      "date": "2026-10-24",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Afternoon pumpkin-smashing party (3 to 6 pm) with food, drinks and tarot readings, part of Astoria's Halloween lineup.",
+      "url": "https://www.travelastoria.com/events/"
+    },
+    {
+      "name": "Creepshow Peepshow III",
+      "date": "2026-10-24",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Horror cabaret at the Columbian Theater, 7 to 11 pm.",
+      "url": "https://www.travelastoria.com/events/"
+    },
+    {
+      "name": "Halloween Spooktacular concert",
+      "date": "2026-10-27",
+      "end": null,
+      "town": "Cannon Beach",
+      "summary": "An hour-long Halloween concert (7 to 8 pm) at Cannon Beach Community Church.",
+      "url": "https://www.meredithlodging.com/blog/oregon-coast/boo-top-five-halloween-activities-oregon-coast"
+    },
+    {
+      "name": "Seaside Halloween Happenin's",
+      "date": "2026-10-30",
+      "end": "2026-10-31",
+      "town": "Seaside",
+      "summary": "Free downtown Halloween weekend with a witches and warlocks paddle, kid carnival, pet parade, trunk-or-treat and a giant pumpkin drop; check final times.",
+      "url": "https://www.meredithlodging.com/blog/oregon-coast/seaside/halloween-happenings-in-seaside-oregon"
+    },
+    {
+      "name": "Seaside Fall Whiskey & Wine Walk",
+      "date": "2026-11-06",
+      "end": "2026-11-07",
+      "town": "Seaside",
+      "summary": "Downtown tasting strolls: whiskey with appetizers Friday 4 to 8 pm, Oregon wine Saturday 3 to 6:30 pm; $20 a walk or $35 for both, 21+.",
+      "url": "https://aftontickets.com/event/buyticket/z59r7lk8jq"
+    },
+    {
+      "name": "Stormy Weather Arts Festival",
+      "date": "2026-11-06",
+      "end": "2026-11-08",
+      "town": "Cannon Beach",
+      "summary": "The 39th annual festival fills galleries across town with artist demos and receptions, plus a Nov. 7 spotlight concert at the Coaster Theatre.",
+      "url": "https://cbchamber.simpletix.com/f/2383"
+    },
+    {
+      "name": "North Coast Symphonic Band: The Art of Dance",
+      "date": "2026-11-08",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Sunday 2 pm concert at the Liberty Theatre.",
+      "url": "https://libertyastoria.org/event/"
+    },
+    {
+      "name": "DREAMPUNK",
+      "date": "2026-11-20",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Themed evening performance show at the Liberty Theatre, 7 pm.",
+      "url": "https://libertyastoria.org/event/"
+    },
+    {
+      "name": "Battle to the Pacific trail runs",
+      "date": "2026-11-21",
+      "end": null,
+      "town": "Hammond (Fort Stevens State Park)",
+      "summary": "Bivouac Racing's 20K, 15K and 5K trail races plus a 12-mile ruck challenge, starting around 9 am at Coffenbury Lake.",
+      "url": "https://ultrasignup.com/register.aspx?did=143051"
+    },
+    {
+      "name": "King tides",
+      "date": "2026-11-23",
+      "end": "2026-11-27",
+      "town": "Astoria to Manzanita",
+      "summary": "The first king tide window of the season; NOAA predictions put the biggest tides around Nov. 24 to 26, and the King Tides Project asks for photos.",
+      "url": "https://oregonshores.org/king-tides-cosci/"
+    },
+    {
+      "name": "Seaside Turkey Trot",
+      "date": "2026-11-26",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Thanksgiving morning 5K run/walk on Broadway; check-in at 8 am, start at 9 am.",
+      "url": "https://www.findtherun.com/race/92964/seaside-turkey-trot-5k-fun-run-walk"
+    },
+    {
+      "name": "Blind Pilot",
+      "date": "2026-11-27",
+      "end": null,
+      "town": "Astoria",
+      "summary": "The Oregon folk band plays the Liberty Theater; listings disagree on a 6 or 7 pm start, so check the ticket page.",
+      "url": "https://www.jambase.com/show/blind-pilot-liberty-theater-20261127"
+    },
+    {
+      "name": "Cannon Beach in Lights",
+      "date": "2026-12-01",
+      "end": "2026-12-31",
+      "town": "Cannon Beach",
+      "summary": "A month of holiday lights around town as part of Haystack Holidays.",
+      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
+    },
+    {
+      "name": "Cannon Beach Lamp Lighting Ceremony",
+      "date": "2026-12-05",
+      "end": null,
+      "town": "Cannon Beach",
+      "summary": "Free 4 pm lamp lighting in Sandpiper Square to kick off Haystack Holidays.",
+      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
+    },
+    {
+      "name": "Ilwaco Crab Pot Christmas",
+      "date": "2026-12-05",
+      "end": null,
+      "town": "Ilwaco (Long Beach Peninsula)",
+      "summary": "The port lights its tree built from crab pots, with Santa, at 4 pm; dates are subject to change.",
+      "url": "https://poiwa.specialdistrict.org/calendar-of-events"
+    }
   ]
 }

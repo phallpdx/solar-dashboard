@@ -1,7 +1,7 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-10-24",
   "store": "St. Johns Liquor (OLCC store #1142), 8915 N Lombard St, Portland, OR 97203",
-  "note": "OLCC's own sites were unreachable for this run, so this list only includes bottles confirmed as new or trial listings in OLCC's October 2026 price lists through search snippets. Shelf stock at St. Johns could not be checked.",
+  "note": "OLCC's own sites were unreachable again, so new listings come from OLCC's October 2026 price lists and Nov. 1, 2026 price-change file as seen in search snippets. Shelf stock at St. Johns could not be checked.",
   "items": [
     {
       "name": "New Riff Single Barrel Bourbon (4 yr, 110 proof)",
@@ -32,6 +32,16 @@
       "rating_source": "VinePair",
       "why": "New in Oregon: flagged as a trial listing in OLCC's October 2026 price list; VinePair rates the 80-proof blanco a high-quality tequila.",
       "url": "https://vinepair.com/review/santo-fino-blanco"
+    },
+    {
+      "name": "Bardstown Bourbon Company Discovery 2026",
+      "category": "Bourbon",
+      "size": "750 ml",
+      "price": 139.95,
+      "rating": "87",
+      "rating_source": "People's Bourbon Review",
+      "why": "New in Oregon: appears in OLCC's Nov. 1, 2026 price file at $139.95; a Garryana oak-finished blend that Bevin Info called a winner.",
+      "url": "https://www.peoplesbourbonreview.com/reviews/a-review-of-bardstown-bourbon-company-discovery-2026-finished-in-garryana-oak-barrels"
     }
   ]
 }

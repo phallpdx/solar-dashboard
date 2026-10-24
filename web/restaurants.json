@@ -1,0 +1,71 @@
+{
+  "updated": "2026-10-23",
+  "restaurants": [
+    {
+      "name": "JinJu Patisserie",
+      "neighborhood": "N Williams",
+      "cuisine": "Bakery",
+      "price": "",
+      "opened": "Oct 2026",
+      "summary": "The acclaimed patisserie reopened in a new North Williams home (soft opening Oct. 21); Karen Brooks predicts its salt breads are destined for Portland cult status.",
+      "reviews": [
+        {"outlet": "Portland Monthly", "critic": "Karen Brooks", "verdict": "Reopening of the year", "date": "", "url": "https://www.pdxmonthly.com/eat-and-drink/2026/10/jinju-patisserie-bakery-reopening"}
+      ]
+    },
+    {
+      "name": "Bar Siete",
+      "neighborhood": "Laurelhurst (NE Sandy Blvd)",
+      "cuisine": "Mexican",
+      "price": "",
+      "opened": "",
+      "summary": "Oswaldo Bibiano's seventh restaurant and first full bar, in the former Shaku Bar space; WW singled out the $7 small bites, the borrego tatemado and a fiery huevo en diablado.",
+      "reviews": [
+        {"outlet": "Willamette Week", "critic": "", "verdict": "First look: one of Portland's foundational Mexican chefs", "date": "2026-07-23", "url": "https://www.wweek.com/food/2026/07/23/bar-siete-is-the-latest-from-one-of-portlands-foundational-mexican-chefs/"}
+      ]
+    },
+    {
+      "name": "Oscar Food & Wine",
+      "neighborhood": "SE 26th Ave",
+      "cuisine": "French-leaning, natural wine",
+      "price": "",
+      "opened": "Spring 2026",
+      "summary": "A tiny natural-wine spot in the former Kashiwagi sushi space with a fish-heavy menu that WW found transportive despite sitting next to a Plaid Pantry.",
+      "reviews": [
+        {"outlet": "Willamette Week", "critic": "Caitlin Pangares", "verdict": "Pretend you're in Paris", "date": "2026-05-19", "url": "https://www.wweek.com/food/2026/05/19/pretend-youre-in-paris-in-the-parking-lot-of-oscar-food-wine/"}
+      ]
+    },
+    {
+      "name": "OK Chicken & Khao Soi",
+      "neighborhood": "SE Division",
+      "cuisine": "Northern Thai",
+      "price": "",
+      "opened": "Jan 2026",
+      "summary": "Earl Ninsom (Eem, Yaowarat) took over the original Pok Pok space; Portland Monthly calls it easily the buzziest local opening of the year, with a flamethrower-hot som tum Lao.",
+      "reviews": [
+        {"outlet": "Portland Monthly", "critic": "Jordan Michelman", "verdict": "Easily the buzziest local opening of the year", "date": "2026-05-14", "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"}
+      ]
+    },
+    {
+      "name": "Yui",
+      "neighborhood": "SE Belmont",
+      "cuisine": "Thai",
+      "price": "",
+      "opened": "Jan 2026",
+      "summary": "Chef Chalunthorn \"Yui\" Schaeffer's Thai restaurant settled into a permanent SE Belmont home after years of pop-ups, and earned praise in Portland Monthly's roundup of new Thai spots.",
+      "reviews": [
+        {"outlet": "Portland Monthly", "critic": "Jordan Michelman", "verdict": "Praised in a review of three new Thai restaurants", "date": "2026-05-14", "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"}
+      ]
+    },
+    {
+      "name": "Bangkok Belly",
+      "neighborhood": "",
+      "cuisine": "Thai",
+      "price": "",
+      "opened": "",
+      "summary": "A small-menu Thai newcomer whose satay skewers Portland Monthly called the star of the show.",
+      "reviews": [
+        {"outlet": "Portland Monthly", "critic": "Jordan Michelman", "verdict": "Satay skewers are the star", "date": "2026-05-14", "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"}
+      ]
+    }
+  ]
+}

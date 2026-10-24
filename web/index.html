@@ -97,6 +97,10 @@ h2{margin:0;font-size:17px;font-weight:700}
 .story p{margin:4px 0 0;font-size:13px;line-height:1.45;color:var(--body);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .story small{display:block;margin-top:4px;font-size:12px;font-weight:600;color:var(--muted)}
 .story:hover b{text-decoration:underline}
+.chip[aria-pressed]{border:0;font:600 13px Manrope,sans-serif;color:var(--ink);cursor:pointer;min-height:36px;padding:6px 12px}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.story img.poster{width:56px;height:80px;border-radius:8px}
+.day-h{position:sticky;top:0;background:var(--card);padding:10px 0 4px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--grid)}
 .alerts{display:flex;flex-direction:column;gap:10px}
 .alert{border-radius:18px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;border:1px solid}
 .alert.l3{background:#FDECEC;border-color:#F2B8B5;color:#6B1A13}
@@ -200,6 +204,46 @@ h2{margin:0;font-size:17px;font-weight:700}
       <section class="card half" aria-labelledby="reviews-h">
         <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
         <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="coming" aria-labelledby="coming-h" class="group" hidden>
+    <h2 class="sec-h" id="coming-h">Coming soon</h2>
+    <div class="row">
+      <section class="card half" aria-labelledby="tv-h">
+        <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
+        <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
+        <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="alb-h">
+        <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
+        <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="local" aria-labelledby="local-h" class="group" hidden>
+    <h2 class="sec-h" id="local-h">Around Portland</h2>
+    <div class="row">
+      <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
+        <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
+        <div class="chips" id="deal-filter" role="group" aria-label="Filter by store"></div>
+        <div class="scroll" id="deals" tabindex="0" aria-label="Sale items, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="food-new-h" id="rest-card" hidden>
+        <div class="head"><h2 id="food-new-h">New restaurants worth trying</h2><span class="meta" id="rest-meta"></span></div>
+        <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
+        <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
+        <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
+        <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
+        <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
       </section>
     </div>
   </section>
@@ -358,6 +402,8 @@ function render() {
   renderOutside();
   renderShips();
   renderNews();
+  renderComing();
+  renderLocal();
   renderMore();
   renderWorld();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
@@ -751,6 +797,84 @@ const rankLine = r => r ? `<div class="lines"><div><span>${esc(r.group)}</span><
 function ago(iso) {
   const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 60000));
   return m < 60 ? `${m} min ago` : m < 48 * 60 ? `${Math.round(m / 60)} hr ago` : localDay(iso);
+}
+
+function chipFilter(el, names, current, onPick) {
+  el.innerHTML = names.map(([n, count]) => `<button class="chip" aria-pressed="${n === current}" data-n="${esc(n)}">${esc(n)}${count != null ? ` <small>${count}</small>` : ''}</button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.onclick = () => onPick(b.dataset.n));
+}
+const dayLabel = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }); };
+
+let tvPick = 'All';
+function renderComing() {
+  const tv = D.streaming || [], al = D.albums || [];
+  $('coming').hidden = !tv.length && !al.length;
+  const services = ['Netflix', 'Apple TV', 'Disney+', 'HBO Max', 'Hulu', 'Prime Video'];
+  chipFilter($('tv-filter'), [['All', tv.length], ...services.map(s => [s, tv.filter(x => x.service === s).length])],
+    tvPick, n => { tvPick = n; renderComing(); });
+  const list = tv.filter(x => tvPick === 'All' || x.service === tvPick);
+  $('tv').innerHTML = list.map(x => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
+      ${x.image ? `<img class="poster" src="${esc(x.image)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
+      <span><b>${esc(x.title)}</b><small>${[esc(x.service), esc(x.kind), dayLabel(x.date)].join(' · ')}</small>
+      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
+      <small>${[x.genres.slice(0, 3).join(', '), x.runtime ? x.runtime + ' min episodes' : null,
+        x.language && x.language !== 'English' ? esc(x.language) : null].filter(Boolean).map(esc).join(' · ')}</small></span></a>`).join('')
+    || '<p class="note" style="padding:12px 0">Nothing announced yet.</p>';
+  let last = '';
+  $('albums').innerHTML = al.map(x => {
+    const head = x.date !== last ? `<div class="day-h">${dayLabel(x.date)}</div>` : '';
+    last = x.date;
+    const body = `<span><b>${esc(x.artist)} · <i>${esc(x.album)}</i></b><small>${[x.genre, x.label].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</small></span>`;
+    return head + (x.url ? `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">${body}</a>` : `<div class="story">${body}</div>`);
+  }).join('') || '<p class="note" style="padding:12px 0">No albums listed yet.</p>';
+  $('alb-meta').textContent = al.length ? `${al.length} albums, next 60 days · Wikipedia` : '';
+}
+
+let dealPick;
+async function renderLocal() {
+  const dl = D.deals;
+  const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? await r.json() : null; } catch (e) { return null; } };
+  const [rest, liq, pm] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json'), getJson('localmusic.json')]);
+  const stores = (dl && dl.stores) || [];
+  $('deals-card').hidden = !stores.length;
+  if (stores.length) {
+    if (!stores.some(st => st.store === dealPick)) dealPick = stores[0].store;
+    chipFilter($('deal-filter'), stores.map(st => [st.store, null]), dealPick, n => { dealPick = n; renderLocal(); });
+    const st = stores.find(x => x.store === dealPick);
+    $('deal-meta').textContent = st.until ? `Through ${dayLabel(st.until)}` : '';
+    $('deals').innerHTML = st.items.map(x => `<div class="story">
+        ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" onerror="this.remove()" style="object-fit:contain;background:#fff">` : ''}
+        <span><b>${esc(x.name)}</b><small>${[x.price ? esc(x.price) : null, x.was ? 'was $' + x.was.toFixed(2) : null].filter(Boolean).join(' · ')}
+        ${x.pct_off ? ` <span class="pill">${x.pct_off}% off</span>` : ''}</small>${x.deal ? `<p>${esc(x.deal)}</p>` : ''}</span></div>`).join('');
+  }
+  const rs = (rest && rest.restaurants) || [];
+  $('rest-card').hidden = !rs.length;
+  if (rs.length) {
+    $('rest-meta').textContent = `Updated ${fmtDate(rest.updated)}`;
+    $('restaurants').innerHTML = rs.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
+      <small>${[x.cuisine, x.neighborhood, x.price, x.opened ? 'opened ' + x.opened : null].filter(Boolean).map(esc).join(' · ')}</small>
+      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
+      <small>${(x.reviews || []).map(r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.critic ? r.critic + ', ' + r.outlet : r.outlet)}</a>${r.verdict ? ': ' + esc(r.verdict) : ''}`).join('<br>')}</small></span></div>`).join('');
+  }
+  const items = (liq && liq.items) || [];
+  $('liq-card').hidden = !items.length;
+  if (items.length) {
+    $('liq-meta').textContent = `Updated ${fmtDate(liq.updated)}`;
+    $('liquor').innerHTML = items.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
+      <small>${[x.category, x.size, x.price ? '$' + Number(x.price).toFixed(2) : null].filter(Boolean).map(esc).join(' · ')}
+      ${x.rating ? ` <span class="pill">${esc(x.rating)}${x.rating_source ? ' ' + esc(x.rating_source) : ''}</span>` : ''}</small>
+      ${x.why ? `<p>${esc(x.why)}</p>` : ''}${x.url ? `<small><a href="${esc(x.url)}" target="_blank" rel="noopener">Details</a></small>` : ''}</span></div>`).join('');
+  }
+  const rel = (pm && pm.releases) || [];
+  $('pdxm-card').hidden = !rel.length;
+  if (rel.length) {
+    $('pdxm-meta').textContent = `Updated ${fmtDate(pm.updated)}`;
+    $('pdxmusic').innerHTML = rel.map(x => `<div class="story"><span><b>${esc(x.artist)} · <i>${esc(x.title)}</i></b>
+      <small>${[x.type, x.local ? 'Portland' : null, x.genre, x.label, x.date ? dayLabel(x.date) : null].filter(Boolean).map(esc).join(' · ')}</small>
+      ${x.why ? `<p>${esc(x.why)}</p>` : ''}
+      ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
+  }
+  $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden;
 }
 
 function renderNews() {

@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, markets, news, outside, pge, ships, sky, sports, world
+from . import alerts, ambient, aps, deals, markets, news, outside, pge, releases, ships, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -598,6 +598,25 @@ def fetch_news(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_releases(state, now_utc):
+    store, errors = state.setdefault("releases", {}), []
+    _refresh(store, "streaming", releases.streaming, 12, now_utc, errors)
+    _refresh(store, "albums", releases.albums, 12, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_deals(state, now_utc):
+    store, errors = state.setdefault("deals", {}), []
+    zip_code = load_json("config.json", {}).get("shopping_zip")
+    if not zip_code:
+        return "Add a shopping ZIP code to config.json."
+    _refresh(store, "weekly", lambda: deals.weekly(zip_code), 12, now_utc, errors)
+    w = store.get("weekly") or {}
+    if w.get("missing"):
+        errors.append("no weekly ad found for " + ", ".join(w["missing"]) + "; ads nearby: " + ", ".join(w.get("merchants") or []))
+    return "; ".join(errors) or None
+
+
 def alerts_view(state, out, now_utc):
     if not out:
         return None
@@ -711,6 +730,10 @@ def build(state, status, now_utc):
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
         "alerts": alerts_view(state, out, now_utc),
+        "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
+        "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
+        "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
+                  if k in ("stores", "missing")} or None,
         "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
     }
 
@@ -723,7 +746,8 @@ def main():
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
-                     ("news", fetch_news), ("ships", fetch_ships)):
+                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals),
+                     ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

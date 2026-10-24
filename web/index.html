@@ -1132,9 +1132,10 @@ function renderAlerts() {
 function redditBlock(r) {
   if (!r || !r.posts) return '';
   const color = r.mood === 'Upbeat' ? 'up' : r.mood === 'Grumpy' ? 'down' : '';
+  if (r.mood_score == null) return `<h3 class="sub">Talked about on r/${esc(r.sub)}</h3><div class="lines">${r.posts.slice(0, 4).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></span><span></span></div>`).join('')}</div>`;
   return `<h3 class="sub">r/${esc(r.sub)} mood: <span class="${color}">${esc(r.mood)}</span></h3>
     <div class="lines">${r.posts.slice(0, 4).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>${p.flair ? ` <small>${esc(p.flair)}</small>` : ''}</span>
-      <span style="white-space:nowrap;padding-left:12px"><small>▲ ${p.score} · ${p.comments} 💬</small></span></div>`).join('')}</div>`;
+      <span style="white-space:nowrap;padding-left:12px"><small>${p.score != null ? `▲ ${p.score} · ${p.comments} 💬` : ''}</small></span></div>`).join('')}</div>`;
 }
 function teamInsight(t, r) {
   const inj = Array.isArray(t.injuries) ? t.injuries : null;
@@ -1158,9 +1159,19 @@ function renderMore() {
       ${g.tv ? `<div><span>Watch on</span><span>${esc(g.tv)}</span></div>` : ''}</div>` : '<p class="note">No game scheduled yet.</p>';
     const last = l ? `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
   }
   $('teams').innerHTML = teams.join('');
+  fetch('teams.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(tj => {
+    if (!tj || !tj.teams) return;
+    for (const [key, t] of Object.entries(tj.teams)) {
+      const el = $('pulse-' + key);
+      if (!el || !t.pulse) continue;
+      el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3><p class="note">${esc(t.pulse)}</p>` +
+        ((t.storylines || []).length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${t.storylines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
+        `<p class="meta" style="margin:4px 0 0">Summary as of ${fmtDate(tj.updated)}</p>`;
+    }
+  }).catch(() => {});
 
   const f = sp && sp.f1;
   if (f) {
@@ -1168,7 +1179,7 @@ function renderMore() {
     $('f1').innerHTML = `<div class="lines">${f.next.map(r => `<div><span>${esc(r.name)}${r.sprint ? ' <span class="pill">Sprint</span>' : ''}<br><small>${esc(r.where)}</small></span><span style="white-space:nowrap;padding-left:12px">${localWhen(r.utc)}</span></div>`).join('') || '<div><span>Season finished</span><span></span></div>'}</div>
       <h3 style="margin:6px 0 0;font-size:14px">Championship</h3>
       <div class="lines">${f.standings.map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>
-      ${redditBlock(sp.reddit && sp.reddit.f1)}`;
+      <div id="pulse-f1"></div>${redditBlock(sp.reddit && sp.reddit.f1)}`;
   }
 
   if (mk && mk.length) {

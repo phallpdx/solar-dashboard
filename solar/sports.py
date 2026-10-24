@@ -2,7 +2,9 @@
 import datetime as dt
 import json
 import re
+import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 
 ESPN = "https://site.api.espn.com/apis/site/v2/sports"
 STANDINGS = "https://site.api.espn.com/apis/v2/sports"
@@ -138,7 +140,7 @@ def team(league_path, name, standings_level=None):
         "last": done[-1] if done else None,
         "next": upcoming[0] if upcoming else None,
         "injuries": _safe(lambda: injuries(league_path, team_id)),
-        "news": _safe(lambda: news(league_path, team_id)),
+        "news": _safe(lambda: news(league_path, team_id, ("Portland", name.split()[-1]))),
     }
 
 
@@ -169,11 +171,16 @@ def injuries(league_path, team_id):
     return out
 
 
-def news(league_path, team_id, limit=4):
-    data = _get(f"{ESPN}/{league_path}/news?team={team_id}&limit={limit}")
-    return [{"headline": a.get("headline"), "description": a.get("description"),
-             "utc": a.get("published"), "url": ((a.get("links") or {}).get("web") or {}).get("href")}
-            for a in data.get("articles", [])[:limit]]
+def news(league_path, team_id, words=("Portland",), limit=4):
+    """ESPN stories that are actually about the team, not league-wide roundups."""
+    data = _get(f"{ESPN}/{league_path}/news?team={team_id}&limit=25")
+    out = []
+    for a in data.get("articles", []):
+        text = f"{a.get('headline') or ''} {a.get('description') or ''}"
+        if any(w.lower() in text.lower() for w in words):
+            out.append({"headline": a.get("headline"), "description": a.get("description"), "utc": a.get("published"),
+                        "url": ((a.get("links") or {}).get("web") or {}).get("href")})
+    return out[:limit]
 
 
 GOOD = set("win wins won beat great love awesome amazing huge clutch dominant best happy excited proud hype "
@@ -184,10 +191,27 @@ BAD = set("lose loses lost loss bad awful terrible injury injured hurt worst sad
 
 def reddit(sub, limit=25):
     """Hot posts on a team subreddit and a rough mood from their titles, weighted by votes."""
-    req = urllib.request.Request(f"https://www.reddit.com/r/{sub}/hot.json?limit={limit}&raw_json=1",
-                                 headers={"User-Agent": "linux:solar-dashboard:1.0 (personal dashboard)"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        posts = [c["data"] for c in json.load(resp)["data"]["children"]]
+    headers = {"User-Agent": "linux:solar-dashboard:1.0 (personal dashboard)"}
+    posts, last_error = None, None
+    for host in ("www.reddit.com", "old.reddit.com", "api.reddit.com"):
+        try:
+            req = urllib.request.Request(f"https://{host}/r/{sub}/hot.json?limit={limit}&raw_json=1", headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                posts = [c["data"] for c in json.load(resp)["data"]["children"]]
+            break
+        except Exception as e:
+            last_error = e
+    if posts is None:  # the RSS feed has no vote counts, but still shows what people are talking about
+        try:
+            req = urllib.request.Request(f"https://www.reddit.com/r/{sub}/hot/.rss?limit={limit}", headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                root = ET.fromstring(resp.read())
+            ns = {"a": "http://www.w3.org/2005/Atom"}
+            posts = [{"title": e.findtext("a:title", namespaces=ns),
+                      "permalink": urllib.parse.urlparse(e.find("a:link", ns).get("href")).path}
+                     for e in root.findall("a:entry", ns)]
+        except Exception:
+            raise RuntimeError(f"Reddit blocked the request ({last_error})")
     posts = [p for p in posts if not p.get("stickied")]
     score = weight = 0
     for p in posts:

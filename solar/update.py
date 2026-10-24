@@ -560,12 +560,15 @@ def _refresh(store, key, fn, every_hours, now_utc, errors):
 
 def fetch_sports(state, now_utc):
     store, errors = state.setdefault("sports", {}), []
-    if store.get("v") != 3:  # new fields (division rank): fetch again now
+    if store.get("v") != 4:  # new fields (injuries, news): fetch again now
         store.clear()
-        store["v"] = 3
+        store["v"] = 4
     _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), 2.5, now_utc, errors)
     _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), 2.5, now_utc, errors)
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
+    reddit = store.setdefault("reddit", {})
+    for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1")):
+        _refresh(reddit, key, lambda sub=sub: sports.reddit(sub), 2, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -796,7 +799,9 @@ def build(state, status, now_utc):
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
-        "sports": {k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k != "v"} or None,
+        "sports": {**{k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k not in ("v", "reddit")},
+                   "reddit": {k: v for k, v in ((state.get("sports") or {}).get("reddit") or {}).items()
+                              if not k.endswith("_at")}} if state.get("sports") else None,
         "markets": (state.get("markets") or {}).get("quotes"),
         "ships": ships_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],

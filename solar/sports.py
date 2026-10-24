@@ -1,6 +1,7 @@
 """Next games and standings: Trail Blazers, Timbers (ESPN), and Formula 1 (Jolpica/Ergast)."""
 import datetime as dt
 import json
+import re
 import urllib.request
 
 ESPN = "https://site.api.espn.com/apis/site/v2/sports"
@@ -136,7 +137,71 @@ def team(league_path, name, standings_level=None):
         "group_rank": rank,
         "last": done[-1] if done else None,
         "next": upcoming[0] if upcoming else None,
+        "injuries": _safe(lambda: injuries(league_path, team_id)),
+        "news": _safe(lambda: news(league_path, team_id)),
     }
+
+
+def _safe(fn):
+    try:
+        return fn()
+    except Exception as e:
+        return {"error": str(e)[:120]}
+
+
+def injuries(league_path, team_id):
+    """Players on the injury report, from the team roster."""
+    data = _get(f"{ESPN}/{league_path}/teams/{team_id}/roster")
+    athletes = data.get("athletes") or []
+    if athletes and isinstance(athletes[0], dict) and "items" in athletes[0]:  # grouped by position
+        athletes = [a for group in athletes for a in group.get("items", [])]
+    out = []
+    for a in athletes:
+        for inj in a.get("injuries") or []:
+            details = inj.get("details") or {}
+            out.append({"player": a.get("displayName") or a.get("fullName"),
+                        "position": (a.get("position") or {}).get("abbreviation"),
+                        "status": inj.get("status") or (inj.get("type") or {}).get("description"),
+                        "injury": " ".join(x for x in (details.get("location"), details.get("type")) if x) or None,
+                        "detail": details.get("detail"), "return": details.get("returnDate"),
+                        "date": (inj.get("date") or "")[:10] or None})
+            break
+    return out
+
+
+def news(league_path, team_id, limit=4):
+    data = _get(f"{ESPN}/{league_path}/news?team={team_id}&limit={limit}")
+    return [{"headline": a.get("headline"), "description": a.get("description"),
+             "utc": a.get("published"), "url": ((a.get("links") or {}).get("web") or {}).get("href")}
+            for a in data.get("articles", [])[:limit]]
+
+
+GOOD = set("win wins won beat great love awesome amazing huge clutch dominant best happy excited proud hype "
+           "goat incredible fantastic impressive brilliant solid strong comeback victory elite progress".split())
+BAD = set("lose loses lost loss bad awful terrible injury injured hurt worst sad angry frustrating frustrated "
+          "embarrassing trade fire fired sucks disaster blown mess ugly concern worried pathetic boring tank".split())
+
+
+def reddit(sub, limit=25):
+    """Hot posts on a team subreddit and a rough mood from their titles, weighted by votes."""
+    req = urllib.request.Request(f"https://www.reddit.com/r/{sub}/hot.json?limit={limit}&raw_json=1",
+                                 headers={"User-Agent": "linux:solar-dashboard:1.0 (personal dashboard)"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        posts = [c["data"] for c in json.load(resp)["data"]["children"]]
+    posts = [p for p in posts if not p.get("stickied")]
+    score = weight = 0
+    for p in posts:
+        words = set(re.findall(r"[a-z']+", (p.get("title") or "").lower()))
+        w = 1 + min(p.get("score") or 0, 2000) / 200
+        score += w * (len(words & GOOD) - len(words & BAD))
+        weight += w
+    mood = score / weight if weight else 0
+    label = "Upbeat" if mood > 0.15 else "Grumpy" if mood < -0.15 else "Mixed"
+    top = sorted(posts, key=lambda p: -(p.get("score") or 0))[:5]
+    return {"sub": sub, "mood": label, "mood_score": round(mood, 2),
+            "posts": [{"title": p.get("title"), "score": p.get("score"), "comments": p.get("num_comments"),
+                       "flair": p.get("link_flair_text"), "url": "https://www.reddit.com" + (p.get("permalink") or "")}
+                      for p in top]}
 
 
 def f1():

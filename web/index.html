@@ -1129,6 +1129,22 @@ function renderAlerts() {
     `<div class="allclear"><i></i>No strong weather expected in the next ${a.days} days.</div>`;
 }
 
+function redditBlock(r) {
+  if (!r || !r.posts) return '';
+  const color = r.mood === 'Upbeat' ? 'up' : r.mood === 'Grumpy' ? 'down' : '';
+  return `<h3 class="sub">r/${esc(r.sub)} mood: <span class="${color}">${esc(r.mood)}</span></h3>
+    <div class="lines">${r.posts.slice(0, 4).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>${p.flair ? ` <small>${esc(p.flair)}</small>` : ''}</span>
+      <span style="white-space:nowrap;padding-left:12px"><small>▲ ${p.score} · ${p.comments} 💬</small></span></div>`).join('')}</div>`;
+}
+function teamInsight(t, r) {
+  const inj = Array.isArray(t.injuries) ? t.injuries : null;
+  const injHtml = inj == null ? '' : `<h3 class="sub">Injury report</h3>` + (inj.length
+    ? `<div class="lines">${inj.map(i => `<div><span><b style="font-weight:700">${esc(i.player)}</b>${i.position ? ` <small>${esc(i.position)}</small>` : ''}${i.injury || i.detail ? `<br><small>${esc([i.injury, i.detail].filter(Boolean).join(' · '))}${i.return ? ' · back around ' + esc(fmtDate(i.return.slice(0, 10))) : ''}</small>` : ''}</span><span>${esc(i.status || '')}</span></div>`).join('')}</div>`
+    : '<p class="note">Nobody on the injury report.</p>');
+  const news = Array.isArray(t.news) && t.news.length ? `<h3 class="sub">Latest news</h3><div class="lines">${t.news.slice(0, 3).map(n => `<div><span><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a></span><span style="white-space:nowrap;padding-left:12px"><small>${n.utc ? localDay(n.utc) : ''}</small></span></div>`).join('')}</div>` : '';
+  return injHtml + news + redditBlock(r);
+}
+
 function renderMore() {
   renderGigs();
   const sp = D.sports, mk = D.markets;
@@ -1142,7 +1158,7 @@ function renderMore() {
       ${g.tv ? `<div><span>Watch on</span><span>${esc(g.tv)}</span></div>` : ''}</div>` : '<p class="note">No game scheduled yet.</p>';
     const last = l ? `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}</section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
   }
   $('teams').innerHTML = teams.join('');
 
@@ -1151,7 +1167,8 @@ function renderMore() {
     $('f1-meta').textContent = f.season ? `${f.season} season` : '';
     $('f1').innerHTML = `<div class="lines">${f.next.map(r => `<div><span>${esc(r.name)}${r.sprint ? ' <span class="pill">Sprint</span>' : ''}<br><small>${esc(r.where)}</small></span><span style="white-space:nowrap;padding-left:12px">${localWhen(r.utc)}</span></div>`).join('') || '<div><span>Season finished</span><span></span></div>'}</div>
       <h3 style="margin:6px 0 0;font-size:14px">Championship</h3>
-      <div class="lines">${f.standings.map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>`;
+      <div class="lines">${f.standings.map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>
+      ${redditBlock(sp.reddit && sp.reddit.f1)}`;
   }
 
   if (mk && mk.length) {

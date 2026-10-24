@@ -275,7 +275,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     <section class="tiles" aria-label="Solar right now">
       <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
       <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
-      <div class="tile"><span class="k">Panels vs. sunlight</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
+      <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
       <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
     </section>
     </div>
@@ -689,7 +689,10 @@ function render() {
   const p = D.performance;
   if (p && p.pct != null) {
     $('t-perf').innerHTML = `${p.pct}<span class="u">%</span>`;
-    $('t-perf-s').textContent = 'Of what today’s sun should give';
+    // 100% means the panels made what they usually make for this much sunlight (median of the last 30 days).
+    $('t-perf-s').textContent = p.pct > 105 ? 'Better than usual for today’s sunlight (100% is a typical day)'
+      : p.pct < 95 ? 'Below usual for today’s sunlight (100% is a typical day)'
+      : 'About usual for today’s sunlight';
   } else {
     $('t-perf').innerHTML = '<span class="u">–</span>';
     $('t-perf-s').textContent = w ? `Learning your system (${p ? p.baseline_days : 0} of 5 days)` : 'Needs your weather station';

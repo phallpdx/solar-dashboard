@@ -1,0 +1,213 @@
+{
+  "updated": "2026-10-24",
+  "shows": [
+    {
+      "artist": "Buster Williams Trio with George Colligan & Domo Branch",
+      "kind": "Touring",
+      "date": "2026-10-24",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$50",
+      "what": "Veteran bassist Buster Williams (Miles Davis, Herbie Hancock, Sonny Rollins) leads a trio with pianist George Colligan, back in Portland after a year away, and drummer Domo Branch; last of four shows on Oct 23-24 with very limited seating.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {"name": "The 1905 show list (Turntable Tickets)", "url": "https://the1905.turntabletickets.com/"},
+        {"name": "Eugene, Cascades & Coast event listing", "url": "https://www.eugenecascadescoast.org/event/buster-williams-trio-with-george-colligan-&-domo-branch/62795/"}
+      ]
+    },
+    {
+      "artist": "Akila Fields Trio with special guest Noah Bernstein",
+      "kind": "Local",
+      "date": "2026-10-28",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Creative Music Guild presents Portland multi-genre musician Akila Fields with Matthew Holmes and Machado Mijiga, playing from their new album of jazz originals, A Secret Third Thing, with saxophonist Noah Bernstein.",
+      "tickets": "https://the1905.turntabletickets.com/p/45914",
+      "sources": [
+        {"name": "The 1905 (Turntable Tickets)", "url": "https://the1905.turntabletickets.com/p/45914"}
+      ]
+    },
+    {
+      "artist": "Kerry Politzer's Bossa PDX",
+      "kind": "Latin",
+      "date": "2026-10-30",
+      "time": "12:15 pm",
+      "venue": "Lincoln Recital Hall, Portland State University",
+      "price": "Free",
+      "what": "Portland's bossa nova and Brazilian jazz ensemble, led by PSU jazz piano instructor Kerry Politzer with George Colligan on drums, in PSU's free Friday Music @ Midday series.",
+      "tickets": null,
+      "sources": [
+        {"name": "Portland State School of Music & Theater", "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"}
+      ]
+    },
+    {
+      "artist": "John Scofield & Oteil Burbridge",
+      "kind": "Touring",
+      "date": "2026-11-03",
+      "time": "8:00 pm",
+      "venue": "Revolution Hall",
+      "price": null,
+      "what": "Jazz guitarist John Scofield, billed with bassist Oteil Burbridge, in a 21+ show; found on Ticketmaster and resale listings, not on the venue's own page.",
+      "tickets": "https://www.ticketmaster.com/john-scofield-tickets/artist/737786",
+      "sources": [
+        {"name": "Ticketmaster: John Scofield", "url": "https://www.ticketmaster.com/john-scofield-tickets/artist/737786"},
+        {"name": "TickPick event listing", "url": "https://www.tickpick.com/buy-john-scofield-oteil-burbridge-tickets-revolution-hall-portland-11-3-26-8pm/7830653/"}
+      ]
+    },
+    {
+      "artist": "Shelly Rudolph: Swank Snow",
+      "kind": "Vocal",
+      "date": "2026-11-13",
+      "time": "8:00 pm",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Portland jazz singer Shelly Rudolph's holiday-themed set, with new songs from her upcoming album Wild Darling; tickets also get you into the Burly-Q Revue afterward.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/shelly-rudolph/",
+      "sources": [
+        {"name": "Jack London Revue", "url": "https://www.jacklondonrevue.com/tm-event/shelly-rudolph/"}
+      ]
+    },
+    {
+      "artist": "Oz Noy Trio with Brian Charette & Dave Weckl",
+      "kind": "Touring",
+      "date": "2026-11-16",
+      "time": "7:30 pm",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Oz Noy's trio with Brian Charette and Dave Weckl; this Monday show is a second night added due to demand, with the original show on Tue Nov 17 at 7:30 pm.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/oz-noy-trio-w-brian-charette-dave-weckl/",
+      "sources": [
+        {"name": "Jack London Revue", "url": "https://www.jacklondonrevue.com/tm-event/oz-noy-trio-w-brian-charette-dave-weckl/"},
+        {"name": "Jazz Near You (second night, Nov 16)", "url": "https://www.jazznearyou.com/portland/events/oz-noy-trio-w-brian-charette-and-dave-weckl-second-night-added-at-jack-london-revue-on-november-16"},
+        {"name": "Jazz Near You (Nov 17)", "url": "https://www.jazznearyou.com/portland/events/oz-noy-trio-w-brian-charette-and-dave-weckl-at-jack-london-revue-on-november-17"}
+      ]
+    },
+    {
+      "artist": "Thundercat",
+      "kind": "Touring",
+      "date": "2026-11-19",
+      "time": "8:00 pm",
+      "venue": "McMenamins Crystal Ballroom",
+      "price": null,
+      "what": "Thundercat brings his Distracted AF Tour, with Fera opening; all ages, doors 6:30 pm.",
+      "tickets": "https://www.mcmenamins.com/events/277813-thundercat",
+      "sources": [
+        {"name": "McMenamins", "url": "https://www.mcmenamins.com/events/277813-thundercat"}
+      ]
+    },
+    {
+      "artist": "Eric Skye Trio Plays Miles Davis",
+      "kind": "Local",
+      "date": "2026-11-22",
+      "time": "7:00 pm",
+      "venue": "Show Bar at Revolution Hall",
+      "price": "From $32.36",
+      "what": "Portland acoustic guitarist Eric Skye, whose album A Different Kind of Blue reimagined Kind of Blue, plays late-1950s Miles Davis tunes with upright bass and drums; 21+.",
+      "tickets": "https://www.revolutionhall.com/show-bar/",
+      "sources": [
+        {"name": "Revolution Hall: Show Bar", "url": "https://www.revolutionhall.com/show-bar/"},
+        {"name": "Travel Portland event listing", "url": "https://www.travelportland.com/event/6a70ed67186757c18759176c/"}
+      ]
+    },
+    {
+      "artist": "Charlie Brown III and Friends",
+      "kind": "Local",
+      "date": "2026-11-28",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Portland-born keyboardist, producer and musical director Charlie Brown III, who leads the group Greaterkind and tours internationally, plays with friends; all ages.",
+      "tickets": "https://the1905.turntabletickets.com/shows/13238/2026-11-28",
+      "sources": [
+        {"name": "The 1905 (Turntable Tickets)", "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"}
+      ]
+    },
+    {
+      "artist": "Mel Brown B3 Organ Group",
+      "kind": "Local",
+      "date": "2026-12-03",
+      "time": "7:00 pm",
+      "venue": "Jack London Revue",
+      "price": "$26.24-$206.49",
+      "what": "Mel Brown's all-star organ band (all four members are Oregon Music Hall of Fame inductees), which played Thursdays at Jimmy Mak's for 20 years, in the Jazz Titan Thursdays series; 21+.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/mel-brown-b3-organ-group-jazz-titan-thursdays/",
+      "sources": [
+        {"name": "Jack London Revue", "url": "https://www.jacklondonrevue.com/tm-event/mel-brown-b3-organ-group-jazz-titan-thursdays/"}
+      ]
+    },
+    {
+      "artist": "Lau Noah x Adam Neely",
+      "kind": "Touring",
+      "date": "2026-12-05",
+      "time": "8:00 pm",
+      "venue": "Jack London Revue",
+      "price": "$26.24-$206.49",
+      "what": "Lau Noah and Adam Neely, whose debut EP blends jazz and progressive rock with Spanish folk, classical music and Americana.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/lau-noah-x-adam-neely/",
+      "sources": [
+        {"name": "Jack London Revue", "url": "https://www.jacklondonrevue.com/tm-event/lau-noah-x-adam-neely/"}
+      ]
+    },
+    {
+      "artist": "Glenn Miller Orchestra: In the Christmas Mood",
+      "kind": "Big band",
+      "date": "2026-12-08",
+      "time": "7:00 pm",
+      "venue": "Newmark Theatre",
+      "price": null,
+      "what": "The touring Glenn Miller Orchestra's holiday program of classic swing and Christmas favorites; date confirmed by ticket listings, check Portland'5 for face-value tickets.",
+      "tickets": "https://portland5.com/newmark-theatre/events/glenn-miller-orchestra",
+      "sources": [
+        {"name": "Portland'5: Newmark Theatre", "url": "https://portland5.com/newmark-theatre/events/glenn-miller-orchestra"},
+        {"name": "TickPick event listing", "url": "https://www.tickpick.com/buy-glenn-miller-orchestra-in-the-christmas-mood-tickets-newmark-theatre-12-8-26-7pm/7824759/"}
+      ]
+    },
+    {
+      "artist": "Mark Guiliana",
+      "kind": "Touring",
+      "date": "2026-12-11",
+      "time": "8:00 pm",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Drummer and composer Mark Guiliana brings his Beat Music ensemble ahead of the album Beat Music 2.0; Soul'd Out presents, 21+.",
+      "tickets": null,
+      "sources": [
+        {"name": "Jack London Revue: soul jazz listings", "url": "https://www.jacklondonrevue.com/tm_genre/soul-jazz/"},
+        {"name": "Eventworld ticket listing", "url": "https://www.eventworld.com/mark-guiliana-portland-tickets-12-11-2026/event/512087"}
+      ]
+    },
+    {
+      "artist": "Sixth Annual Brown Branch Big Band Holiday Show",
+      "kind": "Big band",
+      "date": "2026-12-14",
+      "time": "6:30 pm",
+      "venue": "Portland Center Stage at The Armory",
+      "price": "$40",
+      "what": "A 15-piece big band directed by Domo Branch and Charlie Brown III, with Hailey Niswanger and Nicole McCabe on sax and vocalist LaRhonda Steele; also Tue Dec 15 at 6:30 pm.",
+      "tickets": "https://www.pcs.org/events/the-brown-branch-big-band",
+      "sources": [
+        {"name": "Portland Center Stage", "url": "https://www.pcs.org/events/the-brown-branch-big-band"}
+      ]
+    },
+    {
+      "artist": "2027 Biamp Portland Jazz Festival (tickets on sale now)",
+      "kind": "Festival",
+      "date": "2027-03-04",
+      "time": null,
+      "venue": "Various venues",
+      "price": null,
+      "what": "PDX Jazz has announced its March 4-13, 2027 festival with Emmylou Harris (Mar 5, Arlene Schnitzer Concert Hall), Lila Downs (Roseland Theater), Larry Carlton, Stanley Clarke + Hiromi and Daniel Lanois, and tickets are now on sale.",
+      "tickets": "https://www.pdxjazz.org/lineup",
+      "sources": [
+        {"name": "PDX Jazz: Festival lineup", "url": "https://www.pdxjazz.org/lineup"},
+        {"name": "KOIN: Inside the 2027 Portland Jazz Festival lineup", "url": "https://www.koin.com/news/portland/a-lifetime-of-music-making-and-new-global-sounds-inside-the-2027-portland-jazz-festival-lineup/"}
+      ]
+    }
+  ],
+  "regulars": [
+    {"name": "Jazz Titan Thursdays (Mel Brown B3 Organ Group and Chuck Israels Jazz Orchestra, alternating)", "when": "Thursdays 7 pm", "venue": "Jack London Revue", "url": "https://www.jacklondonrevue.com/tm-event/mel-brown-b3-organ-group-jazz-titan-thursdays/"},
+    {"name": "Pablo Rivarola's The Session (house band, then jam)", "when": "Tuesdays 8 pm", "venue": "Keys Lounge", "url": "https://jazzoregon.org/events/month/2026-04-07"},
+    {"name": "Music @ Midday (free, often jazz)", "when": "Fridays 12:15 pm during the school term", "venue": "Lincoln Recital Hall, Portland State", "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"}
+  ]
+}

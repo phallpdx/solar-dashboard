@@ -1,0 +1,123 @@
+{
+  "updated": "2026-10-24",
+  "events": [
+    {
+      "title": "Timbers2 host the MLS NEXT Pro Western Conference Semifinal",
+      "date": "2026-10-25",
+      "ends": null,
+      "venue": "Providence Park, Goose Hollow",
+      "kind": "Soccer playoff",
+      "why": "Timbers2, the No. 2 seed, host Ventura County FC at 7 p.m. with free tickets through SeatGeek, after a club-record crowd for their quarterfinal win.",
+      "sources": [
+        {"name": "Portland Timbers", "url": "https://www.timbers.com/t2/news/timbers2-set-to-host-ventura-county-fc-in-western-conference-semifinals-at-providence-park-on-sunday-oct-25-at-7pm-pt"},
+        {"name": "Portland Timbers", "url": "https://www.timbers.com/t2/news/timbers2-to-host-conference-semifinal-sunday-oct-25"}
+      ]
+    },
+    {
+      "title": "Gorillaz with Little Simz and Deltron 3030",
+      "date": "2026-10-30",
+      "ends": null,
+      "venue": "Moda Center, Rose Quarter",
+      "kind": "Concert",
+      "why": "Arena show on The Mountain Tour on a Friday night, so expect Rose Quarter traffic and busy MAX trains.",
+      "sources": [
+        {"name": "KOIN", "url": "https://digital-release.koin.com/entertainment-news/gorillaz-announce-fall-portland-seattle-dates-on-the-mountain-tour/"}
+      ]
+    },
+    {
+      "title": "The Smashing Pumpkins: Rats in a Cage tour",
+      "date": "2026-11-01",
+      "ends": null,
+      "venue": "Moda Center, Rose Quarter",
+      "kind": "Concert",
+      "why": "Arena show marking 30 years of Mellon Collie and the Infinite Sadness, with the album played as the first set.",
+      "sources": [
+        {"name": "KOIN", "url": "https://www.koin.com/news/portland/smashing-pumpkins-mellon-collie-anniversary-2026-tour/amp/"},
+        {"name": "Relix", "url": "https://relix.com/?p=159931"}
+      ]
+    },
+    {
+      "title": "Oddities & Curiosities Expo",
+      "date": "2026-11-07",
+      "ends": "2026-11-08",
+      "venue": "Oregon Convention Center, Lloyd District",
+      "kind": "Expo",
+      "why": "A large traveling oddities market filling three convention halls from 10 a.m. to 5 p.m. both days, the same weekend as a martial arts festival in Hall A.",
+      "sources": [
+        {"name": "Oregon Convention Center", "url": "https://www.oregoncc.org/attend/events/2026/11/oddities-curiosities-expo-2026"},
+        {"name": "Travel Portland", "url": "https://www.travelportland.com/event/6839a9b7f06e831a6c746585/"}
+      ]
+    },
+    {
+      "title": "Kumoricon 2026",
+      "date": "2026-11-13",
+      "ends": "2026-11-15",
+      "venue": "Oregon Convention Center, Lloyd District",
+      "kind": "Convention",
+      "why": "Oregon's biggest anime convention takes over every exhibit hall at the convention center for three days, with heavy crowds around the Lloyd District and MAX.",
+      "sources": [
+        {"name": "Oregon Convention Center", "url": "https://www.oregoncc.org/attend/events/2026/11/kumoricon-2026"},
+        {"name": "Kumoricon", "url": "https://www.kumoricon.org/uploads/sponsorship-and-advertising-opportunities-2026-email.pdf"}
+      ]
+    },
+    {
+      "title": "Oregon vs. Oregon State men's basketball",
+      "date": "2026-11-19",
+      "ends": null,
+      "venue": "Moda Center, Rose Quarter",
+      "kind": "College basketball",
+      "why": "The Civil War rivalry comes to Portland for the first neutral-site regular-season meeting since 1996, a 6 p.m. Thursday tip on Big Ten Network.",
+      "sources": [
+        {"name": "Oregon Ducks", "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"},
+        {"name": "Oregon State Beavers", "url": "https://osubeavers.com/news/2026/10/16/mens-basketball-beavers-to-face-ducks-at-moda-center"}
+      ]
+    },
+    {
+      "title": "ZooLights at the Oregon Zoo",
+      "date": "2026-11-20",
+      "ends": "2027-01-03",
+      "venue": "Oregon Zoo, Washington Park",
+      "kind": "Holiday lights",
+      "why": "Nightly from 4:30 p.m. (closed Nov. 24 to 26 and Dec. 25) with dated tickets sold in advance; it fills the Washington Park lots and the Highway 26 exit on weekends.",
+      "sources": [
+        {"name": "Oregon Zoo", "url": "https://www.oregonzoo.org/lights"}
+      ]
+    },
+    {
+      "title": "OSAA football state championships (6A, 5A and 2A)",
+      "date": "2026-11-26",
+      "ends": "2026-11-28",
+      "venue": "Hillsboro Stadium, Hillsboro",
+      "kind": "High school football",
+      "why": "The OSAA lists Hillsboro Stadium as host for the 6A, 5A and 2A title games; its calendar puts the finals on Nov. 27 and 28, while the 6A bracket page runs through Nov. 26, so check the bracket for each game's day and time.",
+      "sources": [
+        {"name": "OSAA 6A bracket", "url": "https://www.osaa.org/activities/fbl/brackets"},
+        {"name": "OSAA 5A bracket", "url": "https://www.osaa.org/activities/fbl/brackets?div=5A"},
+        {"name": "OSAA 2026-27 calendar", "url": "https://www.osaa.org/docs/calendar/26-27ActivityCalendar.pdf"}
+      ]
+    },
+    {
+      "title": "Trans-Siberian Orchestra: The Ghosts of Christmas Eve",
+      "date": "2026-11-28",
+      "ends": null,
+      "venue": "Moda Center, Rose Quarter",
+      "kind": "Concert",
+      "why": "Two shows (3:30 and 8 p.m.) on the 30th anniversary tour the Saturday after Thanksgiving, so the Rose Quarter is busy most of the day.",
+      "sources": [
+        {"name": "Loudwire", "url": "https://loudwire.com/trans-siberian-orchestra-30th-anniversary-tour-2026/"}
+      ]
+    },
+    {
+      "title": "Christmas Ships Parade",
+      "date": "2026-12-03",
+      "ends": "2026-12-20",
+      "venue": "Willamette and Columbia rivers",
+      "kind": "Parade",
+      "why": "Lit boat fleets sail different stretches of both rivers on most evenings, drawing crowds to riverfront parks and restaurants; the route changes nightly, so check the schedule.",
+      "sources": [
+        {"name": "Travel Oregon", "url": "https://traveloregon.com/things-to-do/events/culture-heritage-events/christmas-ships-parade/"},
+        {"name": "Christmas Ships", "url": "https://www.christmasships.org/parade-schedule"}
+      ]
+    }
+  ]
+}

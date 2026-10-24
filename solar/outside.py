@@ -55,11 +55,11 @@ def air(lat, lon, tz):
     )
 
 
-def tide_station(lat, lon):
+def tide_station(lat, lon, max_km=25.0):
     """Nearest NOAA water-level station within ~25 km, or None for inland homes."""
     data = _get("https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json",
                 type="tidepredictions")
-    best, best_km = None, 25.0
+    best, best_km = None, max_km
     for s in data.get("stations", []):
         km = _km(lat, lon, float(s["lat"]), float(s["lng"]))
         if km < best_km:
@@ -67,11 +67,11 @@ def tide_station(lat, lon):
     return best
 
 
-def tides(station_id, day):
+def tides(station_id, day, hours=48):
     data = _get("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
                 product="predictions", station=station_id, datum="MLLW", units="english",
                 time_zone="lst_ldt", interval="hilo", format="json",
-                begin_date=day.strftime("%Y%m%d"), range=48)
+                begin_date=day.strftime("%Y%m%d"), range=hours)
     return [{"t": p["t"], "ft": round(float(p["v"]), 1), "type": "High" if p["type"] == "H" else "Low"}
             for p in data.get("predictions", [])]
 

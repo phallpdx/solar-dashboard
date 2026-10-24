@@ -1,0 +1,23 @@
+{
+  "updated": "2026-10-23",
+  "releases": [
+    {"artist": "Helen", "title": "Linda's Head", "type": "Album", "local": true, "genre": "Dream pop / shoegaze", "label": "Kranky", "date": "2026-10-02",
+     "why": "First album in over a decade from the trio with Liz Harris (Grouper); covered by Willamette Week, the Portland Mercury and Flood.",
+     "links": [{"name": "Review", "url": "https://www.wweek.com/music/2026/10/01/grouper-side-project-helen-is-back-after-10-years/"}, {"name": "Flood", "url": "https://floodmagazine.com/228854/listen-helen-lindas-head-dead-shark-ii/"}]},
+    {"artist": "Team Dresch", "title": "Furthermore", "type": "Album", "local": true, "genre": "Punk / indie rock", "label": "Jealous Butcher Records", "date": "2026-09-18",
+     "why": "The Portland queercore band's first album in 30 years, announced via Stereogum and covered by BrooklynVegan and The Line of Best Fit.",
+     "links": [{"name": "Stereogum", "url": "https://stereogum.com/2502999/team-dresch-announce-first-new-album-in-30-years-hear-one-song/music"}, {"name": "Interview", "url": "https://www.thelineofbestfit.com/features/interviews/the-team-dresch-encore-we-didnt-know-we-needed"}]},
+    {"artist": "The Thermals", "title": "Under Crushing Rain", "type": "Album", "local": true, "genre": "Indie rock / punk", "label": "Static Catsup Aspic", "date": "2026-09-04",
+     "why": "Hutch Harris's first Thermals album in a decade, a lo-fi throwback to the early records; announced via BrooklynVegan with lead single \"Spirit Collectors\".",
+     "links": [{"name": "BrooklynVegan", "url": "https://www.brooklynvegan.com/the-thermals-announce-first-album-in-10-years-share-spirit-collectors/"}, {"name": "Review", "url": "https://theindyreview.com/2026/09/02/album-review-the-thermals-under-crushing-rain/"}]},
+    {"artist": "Rebecca Sanborn", "title": "Shadow Work", "type": "Album", "local": true, "genre": "Jazz / chamber pop", "label": "PJCE Records", "date": "2026-09-04",
+     "why": "An 18-musician suite from Portland's jazz, classical and indie scenes, produced by Todd Sickafoose; on Willamette Week's fall must-hear list and profiled there.",
+     "links": [{"name": "Bandcamp", "url": "https://pjce.bandcamp.com/album/shadow-work"}, {"name": "WW preview", "url": "https://www.wweek.com/arts/2026/09/01/upcoming-local-albums-were-stoked-on-this-fall/"}]},
+    {"artist": "Laura Veirs", "title": "Temple Songs", "type": "Album", "local": true, "genre": "Folk", "label": "Raven Marching Band Records", "date": "2026-08-14",
+     "why": "Her 14th solo album, recorded almost entirely alone in her backyard studio; reviewed by Willamette Week.",
+     "links": [{"name": "Announcement", "url": "https://klofmag.com/2026/05/laura-veirs-announces-new-album-temple-songs-and-shares-flying-into-darkness/"}]},
+    {"artist": "Seffarine", "title": "Abaraz", "type": "Album", "local": true, "genre": "Moroccan / flamenco / jazz", "label": "", "date": "2026-10-16",
+     "why": "The Portland group blends Moroccan and Southern Spanish traditions with jazz; featured on OPB.",
+     "links": [{"name": "OPB", "url": "https://www.opb.org/article/2026/10/12/poseffarine-new-album-tol/"}]}
+  ]
+}

@@ -48,6 +48,8 @@ jobs:
           AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
           HOME_ADDRESS: ${{ secrets.HOME_ADDRESS }}
           AISSTREAM_KEY: ${{ secrets.AISSTREAM_KEY }}
+          PLACES: ${{ secrets.PLACES }}
+          TOMTOM_KEY: ${{ secrets.TOMTOM_KEY }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |

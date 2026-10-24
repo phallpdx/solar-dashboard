@@ -1,0 +1,45 @@
+name: Publish researched lists
+
+# The daily research runs can only push to claude/* branches. This copies just
+# their list files onto main, after checking each one is valid JSON.
+on:
+  push:
+    branches: ["claude/**"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-lists
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Copy list files from the pushed branch
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git fetch origin "$BRANCH"
+          changed=""
+          for f in concerts restaurants liquor localmusic coast; do
+            path="web/$f.json"
+            if git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
+              git show "origin/$BRANCH:$path" > "/tmp/$f.json"
+              if python3 -m json.tool "/tmp/$f.json" > /dev/null && ! cmp -s "/tmp/$f.json" "$path"; then
+                cp "/tmp/$f.json" "$path"
+                changed="$changed $f"
+              fi
+            fi
+          done
+          if [ -z "$changed" ]; then echo "Nothing new"; exit 0; fi
+          git config user.name "solar-dashboard bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/*.json
+          git commit -m "Update lists:$changed (from $BRANCH)"
+          git push origin main

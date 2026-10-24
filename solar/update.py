@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, deals, fishing, live, markets, news, outside, pge, releases, ships, ski, sky, sports, world
+from . import alerts, ambient, aps, deals, fishing, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -613,6 +613,21 @@ def fetch_ski(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_places(state, now_utc):
+    spots = places.parse(env("PLACES"))
+    if not spots:
+        return "Add the PLACES secret."
+    store, errors = state.setdefault("places", {}), []
+    # Without a traffic key the drive times never change, so look them up once a day.
+    _refresh(store, "commute", lambda: places.commute(spots, env("TOMTOM_KEY")),
+             0 if env("TOMTOM_KEY") else 24, now_utc, errors)
+    coast = dict(spots).get("Coast house")
+    if coast:
+        today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+        _refresh(store, "coast", lambda: places.coast(coast, today), 2, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_fishing(state, now_utc):
     store, errors = state.setdefault("fishing", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
@@ -784,6 +799,8 @@ def build(state, status, now_utc):
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},
                 "resorts": ski.resorts()} if state.get("ski") else None,
         "fishing": fishing_view(state, out, now_utc),
+        "commute": (state.get("places") or {}).get("commute"),
+        "coast": (state.get("places") or {}).get("coast"),
         "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,
         "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
                   if k in ("stores", "missing")} or None,
@@ -800,7 +817,7 @@ def main():
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
-                     ("live", fetch_live),
+                     ("live", fetch_live), ("places", fetch_places),
                      ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"

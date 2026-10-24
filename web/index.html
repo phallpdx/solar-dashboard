@@ -143,6 +143,12 @@ h2{margin:0;font-size:17px;font-weight:700}
     <div class="fc" id="forecast"></div>
   </section>
 
+  <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
+    <div class="head"><h2 id="drive-h">Drive times from home</h2><span class="meta" id="drive-meta"></span></div>
+    <div class="facts" id="drives"></div>
+    <p class="note" id="drive-note"></p>
+  </section>
+
   <section class="tiles" aria-label="Solar right now">
     <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
     <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
@@ -221,6 +227,28 @@ h2{margin:0;font-size:17px;font-weight:700}
       <section class="card side" aria-labelledby="food-h">
         <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
         <div class="chips" id="produce"></div>
+      </section>
+    </div>
+  </section>
+
+  <section id="coast" aria-labelledby="coast-h" class="group" hidden>
+    <h2 class="sec-h" id="coast-h">Coast house</h2>
+    <div id="coast-alerts" class="alerts"></div>
+    <section class="card" aria-label="Coast house weather">
+      <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
+      <p class="summary" id="coast-summary"></p>
+      <div class="facts" id="coast-facts"></div>
+      <div class="fc" id="coast-fc"></div>
+    </section>
+    <div class="row">
+      <section class="card half" aria-labelledby="minus-h">
+        <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
+        <div class="lines" id="minus"></div>
+        <p class="note" id="coast-links"></p>
+      </section>
+      <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
+        <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
+        <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
       </section>
     </div>
   </section>
@@ -443,6 +471,8 @@ function render() {
   renderComing();
   renderLocal();
   renderSki();
+  renderDrives();
+  renderCoast();
   renderFishing();
   renderLive();
   renderMore();
@@ -916,6 +946,75 @@ async function renderLocal() {
       ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
   $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
+}
+
+function renderDrives() {
+  const c = (D.commute || []).filter(x => x.minutes != null);
+  $('drive-card').hidden = !c.length;
+  if (!c.length) return;
+  const live = c.some(x => x.live);
+  $('drive-meta').textContent = live ? 'Live traffic · TomTom' : 'Typical drive, no live traffic';
+  $('drives').innerHTML = c.map(x => {
+    const slow = x.delay >= 5;
+    const hm = m => m >= 60 ? `${Math.floor(m / 60)} h ${m % 60}` : m;
+    return `<div class="mini"><span class="k">${esc(x.label)}</span><span class="v">${hm(x.minutes)} <small>min · ${x.miles} mi</small></span>
+      <span class="meta" style="${slow ? 'color:#B42318' : ''}">${live ? (slow ? `${x.delay} min slower than usual` : 'Normal traffic') : ''}</span></div>`;
+  }).join('');
+  const t = D.outside && D.outside.days[0];
+  const notes = [];
+  if (t && [45, 48].includes(t.code)) notes.push('Fog in the forecast, so allow extra time on the island roads.');
+  if (t && t.lo <= 32) notes.push('Freezing temperatures; the Sauvie Island Bridge and US 30 can be icy early.');
+  if (t && t.rain_in >= 0.5) notes.push('Heavy rain today; expect slower traffic.');
+  $('drive-note').textContent = notes.join(' ') || (live ? '' : 'These are normal drive times. A free TomTom key would add live traffic.');
+}
+
+const coastWhen = iso => { const d = new Date(iso.replace(' ', 'T')); return d.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); };
+async function renderCoast() {
+  const c = D.coast;
+  $('coast').hidden = !c;
+  if (!c) return;
+  const days = c.days || [], now = c.now || {};
+  const official = (c.alerts || []).map(x => ({ ...x, level: ({ Extreme: 3, Severe: 3, Moderate: 2 })[x.severity] || 1 }));
+  $('coast-alerts').innerHTML = official.map(x => `<div class="alert l${x.level}" role="alert">${ALERT_ICON}<div>
+      <b>${esc(x.event)}</b> <span class="src">· coast · ${x.ends ? 'until ' + localWhen(x.ends) : ''}</span>${x.headline ? `<p>${esc(x.headline)}</p>` : ''}
+      ${x.description ? `<details><summary>Details</summary><p style="white-space:pre-line">${esc(x.description)}</p></details>` : ''}</div></div>`).join('');
+  const parts = [];
+  if (now.temperature_2m != null) parts.push(`${Math.round(now.temperature_2m)}° and ${wxName(now.weather_code).toLowerCase()} right now, wind ${Math.round(now.wind_speed_10m || 0)} mph.`);
+  const windy = days.filter(d => d.gust >= 40);
+  if (windy.length) parts.push(`Strong wind ${windy.map(d => DOW[new Date(d.date + 'T12:00').getDay()]).join(', ')} with gusts to ${Math.max(...windy.map(d => d.gust))} mph; good storm watching, and power outages are possible.`);
+  const big = days.filter(d => (d.waves_ft || 0) >= 12);
+  if (big.length) parts.push(`Big surf up to ${Math.max(...big.map(d => d.waves_ft))} ft. Watch for sneaker waves and stay off logs.`);
+  const wet = days.reduce((a, d) => a + (d.rain_in || 0), 0);
+  parts.push(wet >= 0.5 ? `About ${wet.toFixed(1)} in of rain this week.` : 'Mostly dry week.');
+  const nice = days.filter(d => d.hi >= 62 && (d.rain_pct || 0) < 30);
+  if (nice.length) parts.push(`Best beach day: ${dayLabel(nice.sort((a, b) => b.hi - a.hi)[0].date)}.`);
+  $('coast-summary').textContent = parts.join(' ');
+  $('coast-meta').textContent = c.tide_station ? `Tides at ${c.tide_station}` : '';
+  const nextTide = (c.tides || []).find(x => new Date(x.t.replace(' ', 'T')) > new Date());
+  const facts = [];
+  if (c.water_f != null) facts.push(['Ocean temp', `${c.water_f}°`]);
+  if (days[0] && days[0].waves_ft != null) facts.push(['Waves today', `${days[0].waves_ft} <small>ft · ${days[0].period_s}s</small>`]);
+  if (nextTide) facts.push(['Next tide', `${nextTide.type} ${clock(nextTide.t.slice(11))} <small>${nextTide.ft} ft</small>`]);
+  if (days[0]) facts.push(['Sunset', clock(days[0].sunset)]);
+  $('coast-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
+  $('coast-fc').innerHTML = days.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
+    <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.rain_pct != null ? d.rain_pct + '% rain' : ''}</span>
+    <span class="meta">${d.waves_ft != null ? d.waves_ft + ' ft waves' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust : ''}</span></div>`).join('');
+  $('minus').innerHTML = (c.minus_tides || []).map(t => `<div><span>${coastWhen(t.t)}</span><span>${t.ft} ft</span></div>`).join('')
+    || '<div><span>No minus tides in the next two weeks</span><span></span></div>';
+  $('coast-links').innerHTML = ['<a href="https://myodfw.com/articles/how-dig-razor-clams" target="_blank" rel="noopener">Razor clam seasons</a>',
+    '<a href="https://www.oregon.gov/oda/programs/foodsafety/shellfish/pages/shellfishclosures.aspx" target="_blank" rel="noopener">Shellfish safety closures</a>',
+    '<a href="https://tripcheck.com" target="_blank" rel="noopener">Road conditions (TripCheck)</a>'].join(' · ');
+  let ev;
+  try { const r = await fetch('coast.json?t=' + Date.now()); ev = r.ok ? await r.json() : null; } catch (e) { ev = null; }
+  const list = ((ev && ev.events) || []).filter(x => (x.end || x.date) >= new Date().toISOString().slice(0, 10));
+  $('coast-events-card').hidden = !list.length;
+  if (list.length) {
+    $('cev-meta').textContent = `Updated ${fmtDate(ev.updated)}`;
+    $('coast-events').innerHTML = list.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
+      <small>${[dayLabel(x.date) + (x.end && x.end !== x.date ? ' – ' + dayLabel(x.end) : ''), x.town].filter(Boolean).map(esc).join(' · ')}</small>
+      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url ? `<small><a href="${esc(x.url)}" target="_blank" rel="noopener">Details</a></small>` : ''}</span></div>`).join('');
+  }
 }
 
 function renderSki() {

@@ -560,9 +560,9 @@ def _refresh(store, key, fn, every_hours, now_utc, errors):
 
 def fetch_sports(state, now_utc):
     store, errors = state.setdefault("sports", {}), []
-    if store.get("v") != 4:  # new fields (injuries, news): fetch again now
+    if store.get("v") != 5:  # new fields (injuries, news): fetch again now
         store.clear()
-        store["v"] = 4
+        store["v"] = 5
     _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), 2.5, now_utc, errors)
     _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), 2.5, now_utc, errors)
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)

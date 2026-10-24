@@ -30,7 +30,9 @@
     },
     {
       "label": "Coast house",
-      "query": "Surf Pines, Warrenton, Oregon"
+      "lat": 46.08,
+      "lon": -123.92,
+      "name": "Surf Pines, Warrenton"
     }
   ],
   "places_note": "Neighborhood-level places only; this repo is public."

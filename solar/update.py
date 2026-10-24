@@ -614,11 +614,14 @@ def fetch_ski(state, now_utc):
 
 
 def fetch_places(state, now_utc):
-    spots = places.parse(env("PLACES")) or [(p["label"], p["query"]) for p in load_json("config.json", {}).get("places", [])]
+    spots = places.parse(env("PLACES")) or [(p["label"], p.get("query") or (p["lat"], p["lon"]))
+                                                for p in load_json("config.json", {}).get("places", [])]
     if not spots:
         return "No places set up."
     store, errors = state.setdefault("places", {}), []
     # Without a traffic key the drive times never change, so look them up once a day.
+    if any("error" in x for x in store.get("commute") or []):
+        store.pop("commute_at", None)  # retry places that failed
     _refresh(store, "commute", lambda: places.commute(spots, env("TOMTOM_KEY")),
              0 if env("TOMTOM_KEY") else 24, now_utc, errors)
     coast = dict(spots).get("Coast house")

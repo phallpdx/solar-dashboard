@@ -34,6 +34,8 @@ def parse(secret):
 
 def _locate(address):
     """Never let an address reach an error message: errors end up in the public status."""
+    if isinstance(address, (tuple, list)):
+        return tuple(address)
     try:
         return outside.geocode(address)
     except Exception:

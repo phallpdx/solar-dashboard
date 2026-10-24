@@ -7,6 +7,7 @@ toward the river spot in front of home and roughly when they will pass.
 import asyncio
 import datetime as dt
 import json
+import re
 import math
 
 LISTEN_SECONDS = 150
@@ -92,6 +93,63 @@ def merge(cache, fresh, now_utc):
     return cache
 
 
+# UN/LOCODEs ships commonly put in their AIS destination on the lower Columbia and across the Pacific.
+PORTS = {
+    "USPDX": "Portland", "USVAN": "Vancouver, WA", "USKAM": "Kalama", "USLOG": "Longview", "USLON": "Longview",
+    "USLGV": "Longview", "USAST": "Astoria", "USSTH": "St. Helens", "USGHR": "Grays Harbor", "USSEA": "Seattle",
+    "USTIW": "Tacoma", "USEVE": "Everett", "USOAK": "Oakland", "USLAX": "Los Angeles", "USLGB": "Long Beach",
+    "USSFO": "San Francisco", "USPSC": "Pasco", "CAVAN": "Vancouver, BC", "CAPRR": "Prince Rupert",
+    "CNSHA": "Shanghai", "CNNGB": "Ningbo", "CNQDG": "Qingdao", "CNTAO": "Qingdao", "CNTXG": "Tianjin",
+    "CNDLC": "Dalian", "CNXMN": "Xiamen", "CNYTN": "Yantian", "CNNSA": "Nansha", "CNCFD": "Caofeidian",
+    "KRPUS": "Busan", "KRINC": "Incheon", "KRUSN": "Ulsan", "KRKAN": "Gwangyang", "JPTYO": "Tokyo",
+    "JPYOK": "Yokohama", "JPNGO": "Nagoya", "JPOSA": "Osaka", "JPUKB": "Kobe", "JPKSM": "Kashima",
+    "JPCHB": "Chiba", "TWKHH": "Kaohsiung", "TWTXG": "Taichung", "PHMNL": "Manila", "VNSGN": "Ho Chi Minh City",
+    "VNVUT": "Vung Tau", "THLCH": "Laem Chabang", "SGSIN": "Singapore", "IDJKT": "Jakarta", "MYPKG": "Port Klang",
+    "AUSYD": "Sydney", "AUMEL": "Melbourne", "AUNTL": "Newcastle", "NZAKL": "Auckland", "MXZLO": "Manzanillo",
+    "MXLZC": "Lázaro Cárdenas", "PAPAM": "Panama Canal", "PABLB": "Balboa", "CLSAI": "San Antonio", "PECLL": "Callao",
+    "SAJED": "Jeddah", "EGSUZ": "Suez", "INMUN": "Mundra", "BDCGP": "Chittagong", "HKHKG": "Hong Kong",
+}
+COUNTRIES = {"US": "USA", "CA": "Canada", "CN": "China", "KR": "South Korea", "JP": "Japan", "TW": "Taiwan",
+             "PH": "Philippines", "VN": "Vietnam", "TH": "Thailand", "SG": "Singapore", "ID": "Indonesia",
+             "MY": "Malaysia", "AU": "Australia", "NZ": "New Zealand", "MX": "Mexico", "PA": "Panama",
+             "CL": "Chile", "PE": "Peru", "IN": "India", "SA": "Saudi Arabia", "HK": "Hong Kong", "BD": "Bangladesh"}
+LOCAL = ("OPS", "OPPS", "HARBOR", "NARBOR", "COL RIV", "COLUMBIA RIVER", "COL RIVER", "CR HARBOR")
+
+
+def _place(code):
+    code = code.strip().strip("-_,.").upper()
+    squashed = re.sub(r"[\s_]", "", code)
+    if squashed[:5] in PORTS:
+        return PORTS[squashed[:5]]
+    if any(k in code for k in LOCAL):
+        return "Local river work"
+    if re.fullmatch(r"[A-Z]{5}", squashed) and squashed[:2] in COUNTRIES:
+        return f"{COUNTRIES[squashed[:2]]} ({squashed})"
+    if squashed in ("LGV", "PDX", "VAN", "KAM", "AST"):
+        return PORTS["US" + squashed if squashed != "LGV" else "USLGV"]
+    words = re.sub(r"[_,]+", ", ", code).strip(", ")
+    if not (words and re.search(r"[A-Z]{3}", words)):
+        return None
+    words = re.sub(r",\s*(USA|US)$", "", words).title()
+    return re.sub(r", (Or|Wa)\b", lambda m: ", " + m.group(1).upper(), words)
+
+
+def route(destination):
+    """Turn an AIS destination like 'USKAM-CNQDG', 'US PDX' or 'PORTLAND,OR' into (from, to)."""
+    d = (destination or "").strip().upper()
+    if not d or "^" in d or d in ("--", "0", "NOT AVAILABLE", "NONE"):  # ^ marks coded Coast Guard fields
+        return None, None
+    if any(k in d for k in LOCAL):
+        return None, "Local river work"
+    for sep in (">", " - ", "-", "/"):
+        if sep in d and not d.startswith(sep):
+            a, b = d.split(sep, 1)
+            fa, tb = _place(a), _place(b)
+            if fa and tb and fa != tb:
+                return fa, tb
+    return None, _place(d)
+
+
 def approaching(cache, home_lat, home_lon, now_utc):
     """Ships moving toward home, soonest first, plus ones passing right now."""
     out = []
@@ -119,11 +177,19 @@ def approaching(cache, home_lat, home_lon, now_utc):
         else:
             upriver = ship["lat"] > home_lat  # north of home and closing in means heading upriver
         direction = "Headed toward Portland" if upriver else "Headed toward Astoria"
+        origin, dest = route(ship.get("destination"))
+        if not origin:
+            # AIS only carries the destination, so infer where it came from by which way it's going.
+            origin = "the ocean or a downriver port" if upriver else "Portland or Vancouver"
+            origin_guess = True
+        else:
+            origin_guess = False
         out.append({
             "direction": direction,
             "name": (ship.get("name") or f"MMSI {ship['mmsi']}").title(),
             "type": type_name(code) if code else "Vessel",
-            "destination": (ship.get("destination") or "").title() or None,
+            "destination": dest,
+            "origin": origin, "origin_guess": origin_guess,
             "length_m": ship.get("length_m"),
             "km": round(km, 1),
             "knots": round(sog, 1),

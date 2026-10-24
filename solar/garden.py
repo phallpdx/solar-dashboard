@@ -87,30 +87,30 @@ def tips(days, soil_f):
     return out
 
 
-# Food forest care by month for wet-winter western Oregon (OSU Extension and WSU guidance).
+# Food forest care by month for wet-winter western Oregon (OSU Extension and WSU guidance), no sprays.
 # (months, task, why)
 FOREST = [
     ((10, 11), "Pick up dropped and mummified fruit", "Removes overwintering brown rot and pests"),
-    ((10, 11), "Rake or shred apple and pear leaves", "Cuts next year's scab; a 5% urea spray at leaf fall helps too"),
-    ((10, 11), "Copper spray on apples and pears before heavy rains", "Prevents anthracnose cankers"),
+    ((10, 11), "Rake or mow-shred apple and pear leaves", "Cuts down next year's scab"),
     ((10, 11), "Cut spent summer raspberry canes to the ground", "Thin new canes to 4 to 6 per foot and tie them up"),
     ((10, 11), "Leave trailing blackberry canes on the ground", "Train them onto the trellis in late February"),
     ((10, 11), "Mulch 3 to 4 inches of wood chips, kept back from trunks", "Add vole guards around young trunks"),
     ((10, 11), "Plant potted perennials and garlic", "Use mounds in wet spots"),
     ((10, 11, 12, 1, 2), "Don't prune cherries, plums or peaches", "Wet-season cuts invite bacterial canker; wait for dry summer weather"),
     ((10, 11, 12, 1, 2, 3), "No nitrogen fertilizer", "It pushes soft growth that freezes; feed in spring"),
-    ((11, 12), "Copper or lime sulfur on peaches and nectarines at leaf fall", "Prevents peach leaf curl"),
-    ((1, 2, 3), "Prune apples, pears, blueberries, grapes and currants", "Do it while they're dormant"),
+    ((11, 12), "Keep peaches dry under a simple rain cover", "Keeps leaf curl off the buds"),
+    ((11, 12), "Mulch over the raked-up leaves", "Feeds the soil and buries scab spores"),
+    ((1, 2, 3), "Prune apples, pears, blueberries, grapes and currants", "Do it while they're dormant, and cut out any sunken canker spots"),
     ((1, 2), "Cut fall-bearing raspberries to the ground", "They fruit on new canes"),
-    ((1, 2), "Repeat the leaf curl spray before buds swell", "Second and last peach and nectarine spray"),
-    ((2, 3), "Horticultural oil at delayed-dormant", "Smothers overwintering aphid and scale eggs"),
-    ((1, 2, 3), "Plant bare-root trees and shrubs", "Cheapest and easiest time to plant"),
     ((2,), "Train blackberry canes onto the trellis", "Late February, before buds break"),
-    ((4, 5), "Fertilize as growth starts", "Compost or a balanced organic feed"),
+    ((1, 2, 3), "Plant bare-root trees and shrubs", "Pick disease-resistant kinds, like Frost or Avalon Pride peach and scab-resistant apples"),
+    ((4, 5), "Compost or fertilize as growth starts", "Compost or a balanced organic feed"),
+    ((4, 5), "Plant flowering herbs and natives", "They feed the beneficial insects that eat pests"),
     ((6, 7, 8), "Prune stone fruit in dry weather after harvest", "Safe window for cherries, plums and peaches"),
-    ((6, 7, 8), "Remove raspberry canes that just fruited", "Right after harvest"),
+    ((6, 7, 8), "Remove cane berry canes that just fruited", "Right after harvest"),
+    ((6, 7), "Thin fruit", "Bigger fruit and fewer broken branches"),
     ((6, 7, 8), "Water deeply once a week in dry spells", "New plantings especially"),
-    ((9,), "Copper spray on apples and pears before the rains", "First anthracnose protection of the season"),
+    ((9,), "Clean up early fruit drops", "Keeps pests from overwintering"),
     ((9,), "Harvest and store apples and pears", "Pick pears firm and ripen them indoors"),
 ]
 

@@ -682,6 +682,10 @@ def fetch_live(state, now_utc):
     _refresh(store, "quakes", lambda: live.earthquakes(lat, lon), 1, now_utc, errors)
     _refresh(store, "fires", lambda: live.wildfires(lat, lon), 3, now_utc, errors)
     _refresh(store, "planes", lambda: live.planes(lat, lon), 0, now_utc, errors)
+    try:
+        live.add_details(store.get("planes"), state.setdefault("flight_lookups", {}), now_utc)
+    except Exception as e:
+        errors.append(f"flight details: {e}")
     _refresh(store, "pdx", live.pdx_status, 0.3, now_utc, errors)
     return "; ".join(errors) or None
 

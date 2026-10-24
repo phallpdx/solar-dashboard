@@ -254,7 +254,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     </section>
   
     <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
-      <div class="head"><h2 id="drive-h">Drive times from home</h2><span class="meta" id="drive-meta"></span></div>
+      <div class="head"><h2 id="drive-h">Traffic right now</h2><span class="meta" id="drive-meta"></span></div>
       <div class="facts" id="drives"></div>
       <p class="note" id="drive-note"></p>
     </section>
@@ -1055,7 +1055,8 @@ function renderShips() {
   $('ship-list').innerHTML = list.length ? '<div class="lines">' + list.map(s => {
     const m = mins(s);
     const when = s.passing_now || m <= 2 ? 'Passing now' : m < 60 ? `~${m} min` : `~${clock(new Date(s.eta_utc).toTimeString().slice(0, 5))}`;
-    const what = [s.type, s.length_m ? `${s.length_m} m` : null, s.destination ? `to ${s.destination}` : null].filter(Boolean).join(' · ') +
+    const leg = s.origin || s.destination ? `<br><b style="font-weight:700">${s.origin ? (s.origin_guess ? `Likely from ${esc(s.origin)}` : `From ${esc(s.origin)}`) : ''}${s.origin && s.destination ? ' → ' : ''}${s.destination ? `${s.origin ? '' : 'To '}${esc(s.destination)}` : ''}</b>` : '';
+    const what = [s.type, s.length_m ? `${s.length_m} m` : null].filter(Boolean).map(esc).join(' · ') + leg +
       (s.direction ? `<br>${s.direction}` : '');
     return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${what}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('') + '</div>'
@@ -1193,11 +1194,11 @@ async function renderLocal() {
 }
 
 function renderDrives() {
-  const c = (D.commute || []).filter(x => x.minutes != null);
+  const c = (D.commute || []).filter(x => x.minutes != null && x.live);  // live traffic only
   $('drive-card').hidden = !c.length;
   if (!c.length) return;
   const live = c.some(x => x.live);
-  $('drive-meta').textContent = live ? 'Live traffic · TomTom' : 'Typical drive, no live traffic';
+  $('drive-meta').textContent = 'Live traffic · TomTom';
   $('drives').innerHTML = c.map(x => {
     const slow = x.delay >= 5;
     const hm = m => m >= 60 ? `${Math.floor(m / 60)} h ${m % 60}` : m;
@@ -1209,7 +1210,7 @@ function renderDrives() {
   if (t && [45, 48].includes(t.code)) notes.push('Fog in the forecast, so allow extra time on the island roads.');
   if (t && t.lo <= 32) notes.push('Freezing temperatures; the Sauvie Island Bridge and US 30 can be icy early.');
   if (t && t.rain_in >= 0.5) notes.push('Heavy rain today; expect slower traffic.');
-  $('drive-note').textContent = notes.join(' ') || (live ? '' : 'These are normal drive times. A free TomTom key would add live traffic.');
+  $('drive-note').textContent = notes.join(' ');
 }
 
 const coastWhen = iso => { const d = new Date(iso.replace(' ', 'T')); return d.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); };
@@ -1332,7 +1333,11 @@ function renderLive() {
   }
   if (p) {
     $('plane-meta').textContent = `${p.count} planes within about 25 miles`;
-    $('planes').innerHTML = p.closest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(x.callsign)}</a><br><small>${x.feet.toLocaleString()} ft · ${x.mph} mph</small></span><span>${x.miles} mi</span></div>`).join('')
+    const ap = a => a ? `${esc(a.city)}${a.code ? ` (${esc(a.code)})` : ''}` : '?';
+    $('planes').innerHTML = p.closest.map(x => `<div><span style="display:flex;gap:10px;align-items:flex-start">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy" onerror="this.remove()" style="width:64px;height:44px;object-fit:cover;border-radius:8px;flex:none">` : ''}<span>
+      <a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(x.callsign)}</a>${x.airline || x.owner ? ` <small>${esc(x.airline || x.owner)}</small>` : ''}
+      ${x.from || x.to ? `<br><b style="font-weight:700">${ap(x.from)} → ${ap(x.to)}</b>` : ''}
+      <br><small>${[x.aircraft ? esc(x.aircraft) : null, `${x.feet.toLocaleString()} ft`, `${x.mph} mph`].filter(Boolean).join(' · ')}</small></span></span><span>${x.miles} mi</span></div>`).join('')
       || '<div><span>Nothing overhead right now</span><span></span></div>';
   }
   const pdx = l.pdx;

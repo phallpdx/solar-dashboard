@@ -2,6 +2,7 @@
 import datetime as dt
 import json
 import math
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -96,3 +97,58 @@ def pdx_status():
             avg = node.findtext("Avg") or node.findtext(".//Avg") or ""
             out.append({"type": node.tag.replace("_", " "), "reason": reason, "average": avg})
     return {"delays": out}
+
+
+def _airport(a):
+    if not a:
+        return None
+    city = a.get("municipality") or a.get("name")
+    return {"code": a.get("iata_code") or a.get("icao_code"), "city": city}
+
+
+def flight_route(callsign):
+    """Scheduled origin and destination for a flight number (adsbdb.com)."""
+    data = _get("https://api.adsbdb.com/v0/callsign/" + urllib.parse.quote(callsign))
+    r = (data.get("response") or {}) if isinstance(data.get("response"), dict) else {}
+    fr = r.get("flightroute") or {}
+    return {"airline": (fr.get("airline") or {}).get("name"), "from": _airport(fr.get("origin")),
+            "to": _airport(fr.get("destination"))} if fr else {}
+
+
+def aircraft(icao24):
+    """Aircraft type, owner and a photo for an ICAO 24-bit address (adsbdb.com)."""
+    data = _get("https://api.adsbdb.com/v0/aircraft/" + urllib.parse.quote(icao24))
+    r = (data.get("response") or {}) if isinstance(data.get("response"), dict) else {}
+    a = r.get("aircraft") or {}
+    if not a:
+        return {}
+    kind = " ".join(x for x in (a.get("manufacturer"), a.get("type")) if x)
+    return {"type": kind or None, "owner": a.get("registered_owner"), "photo": a.get("url_photo_thumbnail")}
+
+
+def add_details(planes, cache, now_utc, limit=8):
+    """Fill in where each nearby plane is flying from and to, and what it is. Lookups are cached."""
+    routes, craft = cache.setdefault("routes", {}), cache.setdefault("aircraft", {})
+    day = now_utc.strftime("%Y-%m-%d")
+    for p in (planes or {}).get("closest", [])[:limit]:
+        cs, icao = p.get("callsign") or "", (p.get("url") or "").split("icao=")[-1]
+        if cs and (cs not in routes or routes[cs].get("day") != day):
+            try:
+                routes[cs] = {**flight_route(cs), "day": day}
+            except Exception:
+                routes[cs] = {"day": day}  # unknown flight (often private or military); don't retry today
+            time.sleep(0.3)
+        if icao and icao not in craft:
+            try:
+                craft[icao] = aircraft(icao)
+            except Exception:
+                craft[icao] = {}
+            time.sleep(0.3)
+        r, a = routes.get(cs) or {}, craft.get(icao) or {}
+        p.update({"airline": r.get("airline"), "from": r.get("from"), "to": r.get("to"),
+                  "aircraft": a.get("type"), "owner": a.get("owner"), "photo": a.get("photo")})
+    # Keep the caches small.
+    for d in (routes, craft):
+        while len(d) > 400:
+            d.pop(next(iter(d)))
+    return planes

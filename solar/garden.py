@@ -121,3 +121,32 @@ def forest_tasks(today):
     now = [{"task": t, "why": w} for months, t, w in FOREST if month in months]
     coming = [{"task": t, "why": w} for months, t, w in FOREST if nxt in months and month not in months]
     return {"month": today.strftime("%B"), "next_month": dt.date(2000, nxt, 1).strftime("%B"), "now": now, "next": coming}
+
+
+BURN_LINE = "503-621-1242"  # Sauvie Island Fire District 30 burn information line
+
+
+def burn_check(today, days, alerts, aqi):
+    """Is today a sensible day to burn yard debris? Fire districts set the actual daily status, so this
+    reads the conditions they look at and points to the burn line."""
+    if not days:
+        return None
+    d = days[0]
+    no, ok = [], []
+    events = " ".join((a.get("event") or "") for a in alerts or []).lower()
+    if (6, 15) <= (today.month, today.day) <= (9, 30):
+        no.append("It's summer burn ban season in Multnomah County")
+    if "red flag" in events:
+        no.append("Red Flag Warning for fire weather")
+    if "stagnation" in events or "air quality" in events:
+        no.append("Air stagnation or air quality alert")
+    if aqi is not None and aqi > 100:
+        no.append(f"Air quality is poor (AQI {aqi})")
+    if (d.get("gust") or 0) >= 20:
+        no.append(f"Gusts up to {d['gust']} mph")
+    if (d.get("rain_in") or 0) >= 0.3:
+        ok.append("Wet day, so a pile won't spread, but damp debris smokes a lot")
+    elif not no:
+        ok.append(f"Light wind (gusts {d.get('gust') or 0} mph) and decent air")
+    return {"good": not no, "reasons": no or ok, "phone": BURN_LINE,
+            "verdict": "Poor day to burn" if no else "Conditions look OK to burn"}

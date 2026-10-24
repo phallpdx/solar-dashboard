@@ -208,6 +208,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .recap p{margin:4px 0 0;font-size:13.5px;line-height:1.45;color:var(--body)}
 .recap small{display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:var(--accent)}
 .stale{font-size:12px;font-weight:700;color:#9A5B00;margin:4px 0 0}
+.cams{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cam{margin:0;display:flex;flex-direction:column;gap:4px}
+.cam img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--grid)}
+.cam figcaption{font-size:12.5px;font-weight:700;color:var(--body)}
+.cam figcaption small{display:block;font-weight:600;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -252,6 +257,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <div class="head"><h2 id="drive-h">Drive times from home</h2><span class="meta" id="drive-meta"></span></div>
       <div class="facts" id="drives"></div>
       <p class="note" id="drive-note"></p>
+    </section>
+    <section class="card" aria-labelledby="road-h" id="road-card" hidden>
+      <div class="head"><h2 id="road-h">Roads and cameras</h2><span class="meta">ODOT TripCheck · <a href="https://tripcheck.com/" target="_blank" rel="noopener">Full map</a></span></div>
+      <div class="lines" id="road-incidents"></div>
+      <div class="cams" id="cams"></div>
     </section>
   
     <section class="tiles" aria-label="Solar right now">
@@ -374,6 +384,21 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="head"><h2 id="forest-h">Food forest this month</h2><span class="meta" id="forest-meta"></span></div>
         <div class="lines" id="forest"></div>
         <p class="note" id="forest-next"></p>
+      </section>
+      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
+        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
+        <div class="lines" id="pollen"></div>
+        <p class="note" id="pollen-note"></p>
+      </section>
+      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
+        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
+        <div class="lines" id="rare"></div>
+      </section>
+      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
+        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
+        <p class="summary" id="burn-verdict"></p>
+        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
+        <p class="note" id="burn-note"></p>
       </section>
       <section class="card" aria-labelledby="birds-h">
         <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
@@ -675,6 +700,10 @@ function render() {
   renderFishing();
   renderGarden();
   renderHealth();
+  renderRoads();
+  renderRareBirds();
+  renderPollen();
+  renderBurn();
   renderShellfish();
   renderGrid();
   renderLive();
@@ -1487,6 +1516,51 @@ function renderGrid() {
   $('grid-bar').innerHTML = parts.filter(p => p[1] > 0).map(p => `<i style="width:${p[1]}%;background:${p[2]}" title="${p[0]} ${p[1]}%"></i>`).join('');
   $('grid-legend').innerHTML = parts.map(p => `<span><i class="sw" style="background:${p[2]}"></i>${p[0]} ${p[1]}%</span>`).join('');
   $('grid-note').textContent = `This past week, gas and coal plants ran least from ${g.cleanest}, and demand peaked from ${g.peak}. Big loads like the dryer or a car charger are cleanest in that low-gas window.`;
+}
+
+// ------------------------------------------------------------------ roads, rare birds, burn day
+function renderRoads() {
+  const r = D.roads;
+  const cams = (r && r.cameras) || [], inc = (r && r.incidents) || [];
+  $('road-card').hidden = !cams.length && !inc.length;
+  if ($('road-card').hidden) return;
+  const bust = Math.floor(Date.now() / 120000);  // camera stills update every couple of minutes
+  $('road-incidents').innerHTML = inc.length ? inc.map(x => `<div><span><b style="font-weight:700">${esc(x.what)}${x.road ? ' · ' + esc(x.road) : ''}</b><br><small>${esc(x.where)}${x.note ? ' · ' + esc(x.note) : ''}</small></span>
+      <span style="white-space:nowrap;padding-left:12px;${x.severity === 4 ? 'color:#B42318;font-weight:800' : ''}">${esc((x.delay || '').replace('Estimated delay', 'Delay').replace(' minutes', ' min'))}</span></div>`).join('')
+    : '<div><span>Nothing slowing traffic on your usual drives.</span><span></span></div>';
+  $('cams').innerHTML = cams.map(c => `<figure class="cam"><a href="${esc(c.img)}" target="_blank" rel="noopener"><img src="${esc(c.img)}?v=${bust}" alt="${esc(c.title)} camera" loading="lazy" onerror="this.closest('figure').remove()"></a>
+    <figcaption>${esc(c.title)}<small>${esc(c.group)}</small></figcaption></figure>`).join('');
+}
+
+function renderPollen() {
+  const p = D.pollen;
+  $('pollen-card').hidden = !p || !p.length;
+  if ($('pollen-card').hidden) return;
+  const names = [...new Set(p.flatMap(d => d.types.map(t => t.name)))];
+  $('pollen').innerHTML = names.map(n => `<div><span><b style="font-weight:700">${esc(n)}</b></span><span>${p.map((d, i) => {
+      const t = d.types.find(x => x.name === n) || {};
+      const v = t.value ?? 0;
+      return `<span class="pill" style="margin-left:6px;background:${LEVEL_COLORS[Math.min(4, Math.max(0, v - 1))]}22" title="${esc(t.category || 'None')}">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}: ${esc(t.in_season === false ? 'Off season' : (t.category || 'None'))}</span>`;
+    }).join('')}</span></div>`).join('');
+  const plants = p[0].top_plants || [];
+  $('pollen-note').textContent = plants.length ? `Biggest sources today: ${plants.join(', ')}.` : '';
+}
+
+function renderRareBirds() {
+  const b = D.rare_birds;
+  $('rare-card').hidden = !b || !b.length;
+  if ($('rare-card').hidden) return;
+  $('rare').innerHTML = b.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a>${x.confirmed ? ' <span class="pill">Confirmed</span>' : ''}<br><small>${esc(x.where)}${x.count ? ` · ${esc(x.count)} seen` : ''}${x.reports > 1 ? ` · ${x.reports} reports` : ''}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${x.when ? localDay(x.when.replace(' ', 'T')) : ''}</span></div>`).join('');
+}
+
+function renderBurn() {
+  const b = D.garden && D.garden.burn;
+  $('burn-card').hidden = !b;
+  if (!b) return;
+  $('burn-verdict').innerHTML = `<b style="color:${b.good ? '#1F7A3A' : '#B42318'}">${esc(b.verdict)}</b>`;
+  $('burn-why').innerHTML = b.reasons.map(x => `<li>${esc(x)}</li>`).join('');
+  $('burn-note').innerHTML = `The fire district sets the official status each day. Call the Sauvie Island burn line at <a href="tel:${esc(b.phone)}">${esc(b.phone)}</a> before you light anything.`;
 }
 
 // ------------------------------------------------------------------ browser-only storage

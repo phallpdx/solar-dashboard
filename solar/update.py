@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, coastsafety, deals, fishing, garden, grid, health, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
+from . import alerts, ambient, aps, birds, coastsafety, deals, fishing, garden, grid, health, live, markets, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -693,6 +693,13 @@ def fetch_extras(state, now_utc):
     _refresh(store, "grid", grid.status, 0.3, now_utc, errors)
     _refresh(store, "health", lambda: health.wastewater(today), 12, now_utc, errors)
     _refresh(store, "shellfish", coastsafety.status, 6, now_utc, errors)
+    _refresh(store, "cameras", roads.cameras, 24, now_utc, errors)
+    _refresh(store, "roads", roads.incidents, 0.3, now_utc, errors)
+    out = state.get("outside") or {}
+    if env("GOOGLE_POLLEN_KEY") and out.get("lat"):
+        _refresh(store, "pollen", lambda: pollen.forecast(out["lat"], out["lon"], env("GOOGLE_POLLEN_KEY")), 6, now_utc, errors)
+    if env("EBIRD_KEY") and out.get("lat"):
+        _refresh(store, "birds", lambda: birds.notable(out["lat"], out["lon"], env("EBIRD_KEY")), 3, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -705,7 +712,10 @@ def garden_view(state, out, now_utc):
     if temps:
         soil = round(sum(temps) / len(temps))  # forecast is requested in °F
     return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil),
-            "forest": garden.forest_tasks(today)}
+            "forest": garden.forest_tasks(today),
+            "burn": garden.burn_check(today, (out or {}).get("days") or [],
+                                      alerts.active((state.get("outside") or {}).get("nws_alerts") or [], now_utc),
+                                      ((out or {}).get("air") or {}).get("aqi"))}
 
 
 def fishing_view(state, out, now_utc):
@@ -873,6 +883,10 @@ def build(state, status, now_utc):
         "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
         "grid": (state.get("extras") or {}).get("grid"),
         "health": (state.get("extras") or {}).get("health"),
+        "roads": {"cameras": (state.get("extras") or {}).get("cameras") or [],
+                  "incidents": (state.get("extras") or {}).get("roads") or []},
+        "rare_birds": (state.get("extras") or {}).get("birds") if env("EBIRD_KEY") else None,
+        "pollen": (state.get("extras") or {}).get("pollen") if env("GOOGLE_POLLEN_KEY") else None,
         "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
                       "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }

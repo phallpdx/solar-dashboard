@@ -106,20 +106,23 @@ def blooms(lat, lon):
                          term_id=12, term_value_id=13)
 
 
-# Portland and the Willamette Valley, by month (1-12). Peak picks, not every crop.
+# Oregon-grown produce the Oregon Department of Education features each month in its 2026 FFVP Local
+# Calendar (no list for July, when school is out). Not an exhaustive list of what's in season.
+PRODUCE_SOURCE = {"name": "Oregon Dept. of Education FFVP Local Calendar 2026",
+                  "url": "https://www.oregon.gov/ode/students-and-family/childnutrition/SNP/Documents/FFVP%20Local%20Calendar_2026-web.pdf"}
 PRODUCE = {
-    1: ["Storage apples and pears", "Kale", "Leeks", "Winter squash", "Dungeness crab"],
-    2: ["Hazelnuts", "Kale", "Parsnips", "Storage potatoes", "Dungeness crab"],
-    3: ["Nettles", "Purple sprouting broccoli", "Overwintered greens", "Morels (late)"],
-    4: ["Asparagus", "Rhubarb", "Morels", "Radishes", "Spring onions"],
-    5: ["Strawberries", "Asparagus", "Peas", "Rhubarb", "Spring chinook"],
-    6: ["Strawberries", "Cherries", "Marionberries (late)", "Snap peas", "Spring chinook"],
-    7: ["Marionberries", "Blueberries", "Raspberries", "Cherries", "Sweet corn"],
-    8: ["Peaches", "Blueberries", "Tomatoes", "Sweet corn", "Melons", "Albacore"],
-    9: ["Apples", "Pears", "Tomatoes", "Peppers", "Hazelnuts", "Fall chinook"],
-    10: ["Apples", "Pears", "Winter squash", "Chanterelles", "Cranberries", "Pumpkins"],
-    11: ["Chanterelles", "Cranberries", "Brussels sprouts", "Winter squash", "Hazelnuts"],
-    12: ["Dungeness crab", "Kale", "Leeks", "Storage apples", "Citrus (shipped in)"],
+    1: ["Turnips", "Cabbage", "Apples", "Broccoli"],
+    2: ["Kale", "Beets", "Pears", "Apples"],
+    3: ["Cabbage", "Bok choy", "Asparagus", "Pears"],
+    4: ["Broccoli", "Spinach", "Apples"],
+    5: ["Arugula", "Radishes", "Snap peas"],
+    6: ["Snap peas", "Strawberries", "Raspberries"],
+    7: [],
+    8: ["Tomatoes", "Melon", "Grapes"],
+    9: ["Cucumber", "Stone fruit", "Corn"],
+    10: ["Peppers", "Carrots", "Apples"],
+    11: ["Apples", "Cauliflower", "Pears"],
+    12: ["Carrots", "Beets", "Apples"],
 }
 
 

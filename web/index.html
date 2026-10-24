@@ -413,8 +413,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
           <div class="species" id="blooms"></div>
         </section>
-        <section class="card side" aria-labelledby="food-h">
-          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Portland area</span></div>
+        <section class="card side" aria-labelledby="food-h" id="food-card">
+          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
           <div class="chips" id="produce"></div>
         </section>
       </div>
@@ -994,6 +994,7 @@ function renderOutside() {
     : '<div class="empty" style="grid-column:1/-1">Nothing reported nearby lately.</div>';
   $('birds').innerHTML = species(o.birds);
   $('blooms').innerHTML = species(o.blooms);
+  $('food-card').hidden = !o.produce.length;
   $('produce').innerHTML = o.produce.map(p => `<span class="chip">${esc(p)}</span>`).join('');
   renderSky(o);
   initRadar(o);
@@ -1761,6 +1762,7 @@ const SOURCES = {
   'pollen-h': [['Google Pollen API', 'https://developers.google.com/maps/documentation/pollen/overview']],
   'rare-h': [['eBird notable sightings', 'https://ebird.org/']],
   'burn-h': [['Burn line number: Multnomah County fire districts', 'https://patch.com/oregon/gresham/multnomah-county-fire-departments-districts-lift-burn-ban'], NWS, OM],
+  'food-h': [['Oregon Dept. of Education FFVP Local Calendar 2026', 'https://www.oregon.gov/ode/students-and-family/childnutrition/SNP/Documents/FFVP%20Local%20Calendar_2026-web.pdf']],
   'birds-h': [['iNaturalist observations', 'https://www.inaturalist.org/']],
   'bloom-h': [['iNaturalist observations', 'https://www.inaturalist.org/']],
   'coast-wx': [OM, ['Open-Meteo marine', 'https://open-meteo.com/en/docs/marine-weather-api']],

@@ -30,11 +30,12 @@ ECLIPSES = [
     ("2029-01-14", "17:13", "Partial solar eclipse", "North America", None),
 ]
 
-# Peak nights (month, day) and typical hourly rates in dark skies (IMO calendar).
+# Peak nights (month, day) and peak hourly rates (ZHR) in ideal dark skies, from the IMO 2026 meteor shower
+# calendar (https://www.imo.net/files/meteor-shower/cal2026.pdf).
 METEOR_SHOWERS = [
-    (1, 3, "Quadrantids", 80), (4, 22, "Lyrids", 18), (5, 6, "Eta Aquariids", 30),
-    (7, 30, "Southern Delta Aquariids", 20), (8, 12, "Perseids", 100), (10, 21, "Orionids", 20),
-    (11, 17, "Leonids", 15), (12, 14, "Geminids", 120), (12, 22, "Ursids", 10),
+    (1, 3, "Quadrantids", 80), (4, 22, "Lyrids", 18), (5, 6, "Eta Aquariids", 50),
+    (7, 31, "Southern Delta Aquariids", 25), (8, 13, "Perseids", 100), (10, 21, "Orionids", 20),
+    (11, 17, "Leonids", 15), (12, 14, "Geminids", 150), (12, 22, "Ursids", 10),
 ]
 
 
@@ -157,7 +158,7 @@ def upcoming_events(now_utc, lat, lon, limit=8):
             sky = ("dark skies, great timing" if lit < 25 else
                    "some moonlight" if lit < 60 else "a bright moon will wash out fainter ones")
             events.append({"utc": when.isoformat(), "title": f"{name} meteor shower peak",
-                           "detail": f"Up to about {rate} an hour after midnight; {sky}.",
+                           "detail": f"Up to about {rate} an hour under ideal dark skies; {sky}.",
                            "visible": True, "kind": "meteors"})
 
     events.sort(key=lambda e: e["utc"])

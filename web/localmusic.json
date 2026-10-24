@@ -1,23 +1,253 @@
 {
   "updated": "2026-10-23",
   "releases": [
-    {"artist": "Helen", "title": "Linda's Head", "type": "Album", "local": true, "genre": "Dream pop / shoegaze", "label": "Kranky", "date": "2026-10-02",
-     "why": "First album in over a decade from the trio with Liz Harris (Grouper); covered by Willamette Week, the Portland Mercury and Flood.",
-     "links": [{"name": "Review", "url": "https://www.wweek.com/music/2026/10/01/grouper-side-project-helen-is-back-after-10-years/"}, {"name": "Flood", "url": "https://floodmagazine.com/228854/listen-helen-lindas-head-dead-shark-ii/"}]},
-    {"artist": "Team Dresch", "title": "Furthermore", "type": "Album", "local": true, "genre": "Punk / indie rock", "label": "Jealous Butcher Records", "date": "2026-09-18",
-     "why": "The Portland queercore band's first album in 30 years, announced via Stereogum and covered by BrooklynVegan and The Line of Best Fit.",
-     "links": [{"name": "Stereogum", "url": "https://stereogum.com/2502999/team-dresch-announce-first-new-album-in-30-years-hear-one-song/music"}, {"name": "Interview", "url": "https://www.thelineofbestfit.com/features/interviews/the-team-dresch-encore-we-didnt-know-we-needed"}]},
-    {"artist": "The Thermals", "title": "Under Crushing Rain", "type": "Album", "local": true, "genre": "Indie rock / punk", "label": "Static Catsup Aspic", "date": "2026-09-04",
-     "why": "Hutch Harris's first Thermals album in a decade, a lo-fi throwback to the early records; announced via BrooklynVegan with lead single \"Spirit Collectors\".",
-     "links": [{"name": "BrooklynVegan", "url": "https://www.brooklynvegan.com/the-thermals-announce-first-album-in-10-years-share-spirit-collectors/"}, {"name": "Review", "url": "https://theindyreview.com/2026/09/02/album-review-the-thermals-under-crushing-rain/"}]},
-    {"artist": "Rebecca Sanborn", "title": "Shadow Work", "type": "Album", "local": true, "genre": "Jazz / chamber pop", "label": "PJCE Records", "date": "2026-09-04",
-     "why": "An 18-musician suite from Portland's jazz, classical and indie scenes, produced by Todd Sickafoose; on Willamette Week's fall must-hear list and profiled there.",
-     "links": [{"name": "Bandcamp", "url": "https://pjce.bandcamp.com/album/shadow-work"}, {"name": "WW preview", "url": "https://www.wweek.com/arts/2026/09/01/upcoming-local-albums-were-stoked-on-this-fall/"}]},
-    {"artist": "Laura Veirs", "title": "Temple Songs", "type": "Album", "local": true, "genre": "Folk", "label": "Raven Marching Band Records", "date": "2026-08-14",
-     "why": "Her 14th solo album, recorded almost entirely alone in her backyard studio; reviewed by Willamette Week.",
-     "links": [{"name": "Announcement", "url": "https://klofmag.com/2026/05/laura-veirs-announces-new-album-temple-songs-and-shares-flying-into-darkness/"}]},
-    {"artist": "Seffarine", "title": "Abaraz", "type": "Album", "local": true, "genre": "Moroccan / flamenco / jazz", "label": "", "date": "2026-10-16",
-     "why": "The Portland group blends Moroccan and Southern Spanish traditions with jazz; featured on OPB.",
-     "links": [{"name": "OPB", "url": "https://www.opb.org/article/2026/10/12/poseffarine-new-album-tol/"}]}
+    {
+      "artist": "Jeffrey Silverstein",
+      "title": "Doggone",
+      "type": "Album",
+      "local": true,
+      "genre": "Cosmic country / folk",
+      "label": "Full Time Hobby",
+      "date": "2026-10-23",
+      "why": "Third full-length, recorded in Portland with Rose City Band's Rick Pedrosa and guests Devendra Banhart and Merle Law; The Line of Best Fit gave it 8/10 and the Mercury's Spin Cycle covered it.",
+      "links": [
+        {
+          "name": "Review",
+          "url": "https://www.thelineofbestfit.com/albums/jeffrey-silverstein-portlands-leading-cosmic-cowboy-hits-a-rich-seam-on-doggone"
+        }
+      ]
+    },
+    {
+      "artist": "How Strange It Is",
+      "title": "There Is No Evil",
+      "type": "Album",
+      "local": true,
+      "genre": "Shoegaze",
+      "label": "",
+      "date": "",
+      "why": "The Portland shoegaze band's second album, written around frontman Krinsky's North Portland house by I-5; Willamette Week profiled it ahead of the Oct. 22 Show Bar release show.",
+      "links": [
+        {
+          "name": "Willamette Week",
+          "url": "https://www.wweek.com/music/2026/10/20/portland-band-how-strange-it-is-takes-on-everyday-evil-and-infrastructural-decay/"
+        }
+      ]
+    },
+    {
+      "artist": "Guerrilla Teens",
+      "title": "Sympathy for the Decibel",
+      "type": "EP",
+      "local": true,
+      "genre": "Punk 'n' roll",
+      "label": "Sonic Jett Records",
+      "date": "2026-10-16",
+      "why": "New EP from the Portland punk lifers, following 2023's Under the Dagger and 2025's The Monkey's Paw; covered by MHF Magazine.",
+      "links": [
+        {
+          "name": "Bandcamp",
+          "url": "https://guerrillateens.bandcamp.com/music"
+        },
+        {
+          "name": "MHF Magazine",
+          "url": "https://mhf-mag.com/portland-punk-n-roll-lifers-guerrilla-teens-deal-out-the-distortion-on-new-ep-sympathy-for-the-decibel/"
+        }
+      ]
+    },
+    {
+      "artist": "Seffarine",
+      "title": "Abaraz",
+      "type": "Album",
+      "local": true,
+      "genre": "Moroccan / flamenco / jazz",
+      "label": "",
+      "date": "2026-10-16",
+      "why": "The Portland ensemble's new album, inspired by a residency at an oasis on the edge of the Sahara; featured on OPB's Think Out Loud.",
+      "links": [
+        {
+          "name": "OPB",
+          "url": "https://www.opb.org/article/2026/10/12/poseffarine-new-album-tol/"
+        }
+      ]
+    },
+    {
+      "artist": "Helen",
+      "title": "Linda's Head",
+      "type": "Album",
+      "local": true,
+      "genre": "Dream pop / shoegaze",
+      "label": "Kranky",
+      "date": "2026-10-02",
+      "why": "First album in over a decade from the trio with Liz Harris (Grouper); covered by Willamette Week, Stereogum (\"sounds spectacular\"), Flood and Spectrum Culture (84%).",
+      "links": [
+        {
+          "name": "Review",
+          "url": "https://www.wweek.com/music/2026/10/01/grouper-side-project-helen-is-back-after-10-years/"
+        },
+        {
+          "name": "Stereogum",
+          "url": "https://stereogum.com/2507276/group-side-project-helen-return-with-new-album-lindas-head-hear-two-songs/music"
+        },
+        {
+          "name": "Flood",
+          "url": "https://floodmagazine.com/228854/listen-helen-lindas-head-dead-shark-ii/"
+        }
+      ]
+    },
+    {
+      "artist": "Freddy Trujillo",
+      "title": "Ave Trujillo",
+      "type": "Album",
+      "local": true,
+      "genre": "Americana",
+      "label": "El Cortez Records",
+      "date": "2026-09-25",
+      "why": "Fifth solo album from the Richmond Fontaine and Delines bassist, with each song named for a bird; featured on OPB's Think Out Loud.",
+      "links": [
+        {
+          "name": "OPB",
+          "url": "https://www.opb.org/article/2026/09/23/think-out-loud-new-album-portland-artist-freddy-trujillo/"
+        },
+        {
+          "name": "Americana UK",
+          "url": "https://americana-uk.com/?p=186327"
+        }
+      ]
+    },
+    {
+      "artist": "Team Dresch",
+      "title": "Furthermore",
+      "type": "Album",
+      "local": true,
+      "genre": "Punk / indie rock",
+      "label": "Jealous Butcher Records",
+      "date": "2026-09-18",
+      "why": "The Portland queercore band's first album in 30 years, announced via Stereogum and covered by BrooklynVegan and The Line of Best Fit.",
+      "links": [
+        {
+          "name": "Stereogum",
+          "url": "https://stereogum.com/2502999/team-dresch-announce-first-new-album-in-30-years-hear-one-song/music"
+        },
+        {
+          "name": "Interview",
+          "url": "https://www.thelineofbestfit.com/features/interviews/the-team-dresch-encore-we-didnt-know-we-needed"
+        }
+      ]
+    },
+    {
+      "artist": "The Thermals",
+      "title": "Under Crushing Rain",
+      "type": "Album",
+      "local": true,
+      "genre": "Indie rock / punk",
+      "label": "Static Catsup Aspic",
+      "date": "2026-09-04",
+      "why": "Hutch Harris's first Thermals album in a decade, a lo-fi throwback to the early records; announced via BrooklynVegan with lead single \"Spirit Collectors\".",
+      "links": [
+        {
+          "name": "BrooklynVegan",
+          "url": "https://www.brooklynvegan.com/the-thermals-announce-first-album-in-10-years-share-spirit-collectors/"
+        },
+        {
+          "name": "Review",
+          "url": "https://theindyreview.com/2026/09/02/album-review-the-thermals-under-crushing-rain/"
+        }
+      ]
+    },
+    {
+      "artist": "Rebecca Sanborn",
+      "title": "Shadow Work",
+      "type": "Album",
+      "local": true,
+      "genre": "Jazz / chamber pop",
+      "label": "PJCE Records",
+      "date": "2026-09-04",
+      "why": "An 18-musician suite from Portland's jazz, classical and indie scenes, produced by Todd Sickafoose; on Willamette Week's fall must-hear list and profiled there.",
+      "links": [
+        {
+          "name": "Bandcamp",
+          "url": "https://pjce.bandcamp.com/album/shadow-work"
+        },
+        {
+          "name": "WW preview",
+          "url": "https://www.wweek.com/arts/2026/09/01/upcoming-local-albums-were-stoked-on-this-fall/"
+        }
+      ]
+    },
+    {
+      "artist": "Laura Veirs",
+      "title": "Temple Songs",
+      "type": "Album",
+      "local": true,
+      "genre": "Folk",
+      "label": "Raven Marching Band Records",
+      "date": "2026-08-14",
+      "why": "Her 14th solo album, recorded almost entirely alone in her backyard studio; reviewed by Willamette Week.",
+      "links": [
+        {
+          "name": "Announcement",
+          "url": "https://klofmag.com/2026/05/laura-veirs-announces-new-album-temple-songs-and-shares-flying-into-darkness/"
+        }
+      ]
+    },
+    {
+      "artist": "Babehoven",
+      "title": "I See Them, I See Me",
+      "type": "Album",
+      "local": false,
+      "genre": "Indie rock",
+      "label": "Double Double Whammy",
+      "date": "2026-10-16",
+      "why": "No. 1 on KVSC's college radio Top 30 for the week of Oct. 6 and named as a challenger at the top of the NACC chart; announced via Stereogum.",
+      "links": [
+        {
+          "name": "Stereogum",
+          "url": "https://stereogum.com/2504997/babehoven-announce-new-album-i-see-them-i-see-me-hear-lasagna/music"
+        },
+        {
+          "name": "KVSC chart",
+          "url": "https://www.kvsc.org/music/nacc-charts/"
+        }
+      ]
+    },
+    {
+      "artist": "Wishy",
+      "title": "Nature's Pill",
+      "type": "Album",
+      "local": false,
+      "genre": "Indie rock / power pop",
+      "label": "Winspear",
+      "date": "2026-10-02",
+      "why": "The Indianapolis band's second album was No. 2 on KVSC's college radio Top 30 for the week of Oct. 6 and is pushing for the top of the NACC chart.",
+      "links": [
+        {
+          "name": "KVSC chart",
+          "url": "https://www.kvsc.org/music/nacc-charts/"
+        },
+        {
+          "name": "Announcement",
+          "url": "https://www.thenote.com.au/news/wishy-announce-new-album-natures-pill-share-single-lovesick"
+        }
+      ]
+    },
+    {
+      "artist": "beabadoobee",
+      "title": "Pylon",
+      "type": "Album",
+      "local": false,
+      "genre": "Indie rock",
+      "label": "Dirty Hit",
+      "date": "2026-09-18",
+      "why": "No. 1 on the NACC college radio chart for the week of Oct. 14, her second album to top it for more than a week; The Crimson gave it 4 stars.",
+      "links": [
+        {
+          "name": "Review",
+          "url": "https://www.thecrimson.com/article/2026/10/1/pylon-album-review/"
+        },
+        {
+          "name": "NACC",
+          "url": "https://naccchart.com/"
+        }
+      ]
+    }
   ]
 }

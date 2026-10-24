@@ -42,7 +42,7 @@ def forecast(lat, lon, tz):
         daily="weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,"
               "precipitation_sum,sunrise,sunset,daylight_duration,uv_index_max,shortwave_radiation_sum,"
               "wind_speed_10m_max,wind_gusts_10m_max,snowfall_sum",
-        hourly="temperature_2m,precipitation_probability,cloud_cover,shortwave_radiation",
+        hourly="temperature_2m,precipitation_probability,cloud_cover,shortwave_radiation,soil_temperature_6cm",
     )
 
 

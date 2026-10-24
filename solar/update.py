@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, deals, fishing, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
+from . import alerts, ambient, aps, deals, fishing, garden, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -659,6 +659,17 @@ def fetch_live(state, now_utc):
     return "; ".join(errors) or None
 
 
+def garden_view(state, out, now_utc):
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    soil = None
+    hourly = ((state.get("outside") or {}).get("forecast") or {}).get("hourly") or {}
+    temps = [v for t, v in zip(hourly.get("time") or [], hourly.get("soil_temperature_6cm") or [])
+             if t[:10] == today.isoformat() and v is not None]
+    if temps:
+        soil = round(sum(temps) / len(temps))  # forecast is requested in °F
+    return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil)}
+
+
 def fishing_view(state, out, now_utc):
     if not out:
         return None
@@ -815,6 +826,7 @@ def build(state, status, now_utc):
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},
                 "resorts": ski.resorts()} if state.get("ski") else None,
         "fishing": fishing_view(state, out, now_utc),
+        "garden": garden_view(state, out, now_utc),
         "commute": (state.get("places") or {}).get("commute"),
         "coast": (state.get("places") or {}).get("coast"),
         "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,

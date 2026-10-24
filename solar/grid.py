@@ -55,7 +55,7 @@ def status():
     load_hour = {h: [] for h in range(24)}
     for r in rows:
         m = _mix(r)
-        by_hour[r[0].hour].append(m["fossil"])
+        by_hour[r[0].hour].append(r[4])  # MW from gas, coal and biomass
         load_hour[r[0].hour].append(m["load_mw"])
     avg = lambda xs: sum(xs) / len(xs) if xs else 0
     fossil_h = [avg(by_hour[h]) for h in range(24)]

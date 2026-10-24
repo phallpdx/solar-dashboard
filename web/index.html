@@ -1455,7 +1455,7 @@ function renderGrid() {
   $('grid-bar').setAttribute('aria-label', parts.map(p => `${p[0]} ${p[1]}%`).join(', '));
   $('grid-bar').innerHTML = parts.filter(p => p[1] > 0).map(p => `<i style="width:${p[1]}%;background:${p[2]}" title="${p[0]} ${p[1]}%"></i>`).join('');
   $('grid-legend').innerHTML = parts.map(p => `<span><i class="sw" style="background:${p[2]}"></i>${p[0]} ${p[1]}%</span>`).join('');
-  $('grid-note').textContent = `Cleanest hours this past week: ${g.cleanest}. Demand peaks ${g.peak}; running the dryer, dishwasher or car charger outside that window is easiest on the grid.`;
+  $('grid-note').textContent = `This past week, gas and coal plants ran least from ${g.cleanest}, and demand peaked from ${g.peak}. Big loads like the dryer or a car charger are cleanest in that low-gas window.`;
 }
 
 // ------------------------------------------------------------------ browser-only storage

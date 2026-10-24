@@ -247,6 +247,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
         <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
         <p class="summary" id="out-summary"></p>
+        <p class="note" id="day-events" hidden></p>
         <div class="facts" id="out-facts"></div>
         <div class="hours" id="hours" aria-label="Next 12 hours"></div>
       </section>
@@ -453,6 +454,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   <section class="group" data-sec="local" id="local" aria-labelledby="local-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">Food, drink, music, groceries and the mountain</p></div></div>
     <div class="sec-body">
+      <section class="card" aria-labelledby="big-h" id="big-card" hidden>
+        <div class="head"><h2 id="big-h">Big events in town</h2><span class="meta" id="big-meta"></span></div>
+        <div class="lines" id="big"></div>
+      </section>
       <div class="row">
         <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
           <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
@@ -701,7 +706,7 @@ function render() {
   renderShips();
   renderNews();
   renderComing();
-  const waits = [renderLocal(), renderBluray(), renderKids()];
+  const waits = [renderLocal(), renderBluray(), renderKids(), renderBigEvents()];
   renderSki();
   renderDrives();
   waits.push(renderCoast());
@@ -1607,6 +1612,33 @@ function renderForest() {
   $('forest-next').textContent = f.next.length ? `Coming up in ${f.next_month}: ${f.next.map(t => t.task.toLowerCase()).join('; ')}.` : '';
 }
 
+// ------------------------------------------------------------------ big events in town
+// Daily web check of major Portland-area events (events.json), plus home games from ESPN's schedule.
+const HOME_VENUE = {blazers: 'Moda Center', timbers: 'Providence Park'};
+async function renderBigEvents() {
+  const ev = await getJson('events.json');
+  const today = todayIso(), soon = new Date(Date.now() + 60 * 864e5).toISOString().slice(0, 10);
+  const list = ((ev && ev.events) || []).filter(e => (e.ends || e.date) >= today && e.date <= soon)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  $('big-card').hidden = !list.length;
+  $('big-meta').textContent = ev && ev.updated ? `Checked ${dayLabel(ev.updated)} · next 2 months` : '';
+  const when = e => e.date > today ? (e.ends && e.ends !== e.date ? `${dayLabel(e.date)} to ${dayLabel(e.ends)}` : dayLabel(e.date)) : (e.ends && e.ends > today ? `Now through ${dayLabel(e.ends)}` : 'Today');
+  $('big').innerHTML = list.map(e => `<div><span><b style="font-weight:700">${esc(e.title)}</b>${e.kind ? ` <span class="pill">${esc(e.kind)}</span>` : ''}
+    <br><small>${[e.venue, e.why].filter(Boolean).map(esc).join(' · ')}</small>${cite(e.sources || (e.url ? [{name: 'Details', url: e.url}] : []))}</span>
+    <span style="white-space:nowrap;padding-left:12px;text-align:right">${when(e)}</span></div>`).join('');
+  // Heads-up on the Today card for anything big today or tomorrow.
+  const tmrw = new Date(Date.now() + 864e5), tIso = `${tmrw.getFullYear()}-${String(tmrw.getMonth() + 1).padStart(2, '0')}-${String(tmrw.getDate()).padStart(2, '0')}`;
+  const near = list.filter(e => e.date <= tIso).map(e => `${e.title} (${e.date > today ? 'tomorrow' : 'today'}${e.venue ? ', ' + e.venue : ''})`);
+  for (const [key, venue] of Object.entries(HOME_VENUE)) {
+    const g = D.sports && D.sports[key] && D.sports[key].next;
+    if (!g || !g.home || !g.utc) continue;
+    const d = new Date(g.utc), iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if (iso === today || iso === tIso) near.push(`${D.sports[key].name || key} vs ${g.opponent} (${iso === today ? 'today' : 'tomorrow'} ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}, ${venue})`);
+  }
+  $('day-events').hidden = !near.length;
+  $('day-events').innerHTML = near.length ? `<b>Big in town:</b> ${near.map(esc).join('; ')}.` : '';
+}
+
 // ------------------------------------------------------------------ 4K Blu-ray deals
 async function renderBluray() {
   const b = await getJson('bluray.json');
@@ -1772,6 +1804,7 @@ const SOURCES = {
   'deal-h': [['Store flyers via Flipp', 'https://flipp.com/']],
   'food-new-h': [DAILY],
   'ski-h': [['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
+  'big-h': [['Daily web check of venue, league and city event pages; each event links its source', ''], ['Home games: ESPN schedule', 'https://www.espn.com/']],
   'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY],
   'tv-h': [['TVmaze schedule', 'https://www.tvmaze.com/']],
   'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums']],

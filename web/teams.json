@@ -1,0 +1,35 @@
+{"updated": "2026-10-23", "teams": {
+  "blazers": {
+    "mood": "Fired up",
+    "pulse": "Opening night was pure joy: Dame got a huge ovation in his first regular-season game back after 18 months and the Blazers blew out the Suns 124-83 after a 21-0 start. Ja Morant's debut has fans buzzing too. The arena lease fight and new-owner drama are the only clouds.",
+    "storylines": [
+      "Lillard scored 25 in his return from the Achilles injury",
+      "Morant debuted with 14 points, 8 assists and a +33 after the trade that sent Jerami Grant and Kris Murray to Memphis",
+      "New coach Micah Nori started Ja, despite an ESPN report he'd come off the bench",
+      "Moda Center lease talks with local officials face a December 31 deadline",
+      "At Sacramento tonight, then at the Lakers on Tuesday; one listing has Shaedon Sharpe out after knee surgery"
+    ]
+  },
+  "timbers": {
+    "mood": "Frustrated",
+    "pulse": "The playoff push has fizzled. Portland hasn't won an MLS game since September 5 and sits 11th in the West, five points behind Colorado for the last postseason spot, so fans are bracing for the end. A home win over Charlotte on Saturday is the only way to keep hope alive.",
+    "storylines": [
+      "Hosting Charlotte at Providence Park Saturday at 7:30 PT; Charlotte has won both previous meetings",
+      "Winless in seven straight and stuck outside the playoff line",
+      "Kristoffer Velde (8 goals) is expected to lead the line",
+      "Injury list includes Juan Mosquera, Finn Surman and Hunter Sulte",
+      "Bright spot: Timbers2 beat St. Louis 2-0 and host a conference semifinal Sunday"
+    ]
+  },
+  "f1": {
+    "mood": "Buzzing",
+    "pulse": "Kimi Antonelli can clinch the title in Austin this weekend, at 20, which would make him the youngest champion ever. He leads teammate George Russell by 102 points, but he needs a near-perfect Sunday and is downplaying it. Meanwhile the drivers are griping loudly about COTA's bumpy track.",
+    "storylines": [
+      "Antonelli clinches with a win if Russell is 9th or lower and Hamilton is 5th or lower",
+      "He would beat Vettel's record as the youngest champion (Vettel was 23)",
+      "Verstappen and Norris slam COTA's bumps; Max says they're just being patched and worries about his spine",
+      "Mercedes leads Ferrari in the constructors' standings, 578 to 444",
+      "US Grand Prix is Sunday, October 25"
+    ]
+  }
+}}

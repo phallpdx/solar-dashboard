@@ -56,5 +56,5 @@ def status():
 def crab_season(today):
     """Oregon's ocean crabbing closes Oct 16 to Nov 30 every year; bays, estuaries and jetties stay open."""
     if (today.month == 10 and today.day >= 16) or today.month == 11:
-        return "Ocean crabbing is closed until Dec 1 (it closes every Oct 16). Bays, jetties and docks stay open."
+        return "Ocean crabbing is closed until Dec 1 (it closes every Oct 16). Bays, jetties and docks stay open unless closed for biotoxins."
     return None

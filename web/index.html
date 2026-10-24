@@ -151,6 +151,9 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .alert details{margin-top:6px;font-size:13px;line-height:1.5}
 .alert summary{cursor:pointer;font-weight:700;min-height:28px}
 .alert .src{font-size:12px;font-weight:600;opacity:.8}
+.cite{display:block;margin-top:2px;font-size:11.5px;color:var(--muted)}
+.cite a,.src-line a{color:inherit;text-decoration:underline;text-decoration-color:var(--soft)}
+.src-line{margin:10px 0 0;padding-top:8px;border-top:1px solid var(--grid);font-size:11.5px;line-height:1.5;color:var(--muted)}
 .allclear{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--body)}
 .allclear i{width:10px;height:10px;border-radius:50%;background:#3FA34D}
 .group[data-sec=family]{--accent:#E2553F;--tint:#FFE9E3}
@@ -324,10 +327,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
         <div class="row" style="gap:24px">
           <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Best times today</h3><div class="lines" id="fish-times"></div>
+            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
+            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
           </div>
           <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">What to fish for now</h3><div class="lines" id="fish-season"></div>
+            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
             <div class="minis" id="fish-river"></div>
           </div>
         </div>
@@ -376,7 +380,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What to plant, food forest chores, birds and blooms</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
-        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Sauvie Island, zone 8b · next 3 weeks</span></div>
+        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
         <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
         <div class="lines" id="plant"></div>
       </section>
@@ -421,7 +425,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
     <div class="sec-body">
       <div id="coast-alerts" class="alerts"></div>
-      <section class="card" aria-label="Coast house weather">
+      <section class="card" aria-label="Coast house weather" data-src="coast-wx">
         <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
         <p class="summary" id="coast-summary"></p>
         <div class="facts" id="coast-facts"></div>
@@ -613,6 +617,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// Links to the pages that back up a claim: [{name, url}] or [[name, url]].
+const srcLinks = list => (list || []).map(x => Array.isArray(x) ? {name: x[0], url: x[1]} : x).filter(x => x && x.url)
+  .map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name || new URL(x.url).hostname.replace(/^www\./, ''))}</a>`).join(' · ');
+const cite = list => { const l = srcLinks(list); return l ? `<span class="cite">Source: ${l}</span>` : ''; };
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmtDate = iso => { const [y,m,d] = iso.split('-').map(Number); return `${MON[m-1]} ${d}`; };
 const n1 = x => (Math.round(x * 10) / 10).toFixed(1);
@@ -1098,12 +1106,13 @@ async function renderGigs() {
   $('gigs').innerHTML = shows.map(x => {
     const [y, m, d] = x.date.split('-').map(Number);
     const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined });
-    const score = x.score != null ? `<span class="pill">${x.score} ${esc(x.score_source)}</span>` : `<small>${esc(x.score_source)}</small>`;
+    const label = x.score != null ? `<span class="pill">${x.score} ${esc(x.score_source)}</span>` : `<small>${esc(x.score_source)}</small>`;
+    const score = x.score_url ? `<a href="${esc(x.score_url)}" target="_blank" rel="noopener" style="text-decoration:none">${label}</a>` : label;
     return `<div><span><b style="font-weight:700">${esc(x.artist)}</b> · <i>${esc(x.album)}</i> ${score}<br><small>${esc(x.venue)}</small></span>
       <span style="white-space:nowrap;padding-left:12px;text-align:right">${when}<br><a class="link" href="${esc(x.tickets)}" target="_blank" rel="noopener">Tickets</a></span></div>`;
   }).join('');
-  const miss = (g.missing || []).map(x => `${x.artist} (${x.score})`).join(', ');
-  $('gig-missing').textContent = miss ? `Top-rated albums with no Portland show yet: ${miss}.` : '';
+  const miss = (g.missing || []).map(x => x.score_url ? `<a href="${esc(x.score_url)}" target="_blank" rel="noopener">${esc(x.artist)} (${esc(x.score)})</a>` : `${esc(x.artist)} (${esc(x.score)})`).join(', ');
+  $('gig-missing').innerHTML = miss ? `Top-rated albums with no Portland show yet: ${miss}.` : '';
   $('more').hidden = false;
 }
 
@@ -1179,7 +1188,7 @@ async function renderLocal() {
     $('liquor').innerHTML = items.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
       <small>${[x.category, x.size, x.price ? '$' + Number(x.price).toFixed(2) : null].filter(Boolean).map(esc).join(' · ')}
       ${x.rating ? ` <span class="pill">${esc(x.rating)}${x.rating_source ? ' ' + esc(x.rating_source) : ''}</span>` : ''}</small>
-      ${x.why ? `<p>${esc(x.why)}</p>` : ''}${x.url ? `<small><a href="${esc(x.url)}" target="_blank" rel="noopener">Details</a></small>` : ''}</span></div>`).join('');
+      ${x.why ? `<p>${esc(x.why)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
   const rel = (pm && pm.releases) || [];
   $('pdxm-card').hidden = !rel.length;
@@ -1258,7 +1267,7 @@ async function renderCoast() {
     $('cev-meta').textContent = `Updated ${fmtDate(ev.updated)}`;
     $('coast-events').innerHTML = list.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
       <small>${[dayLabel(x.date) + (x.end && x.end !== x.date ? ' – ' + dayLabel(x.end) : ''), x.town].filter(Boolean).map(esc).join(' · ')}</small>
-      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url ? `<small><a href="${esc(x.url)}" target="_blank" rel="noopener">Details</a></small>` : ''}</span></div>`).join('');
+      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
 }
 
@@ -1309,15 +1318,15 @@ function renderFishing() {
   $('fish-meta').textContent = `Off Sauvie Island · ${f.moon}`;
   $('fish-times').innerHTML = f.windows.map(w => `<div><span>${w.score === best && best > 1 ? '<span class="pill">Best</span> ' : ''}${esc(w.why.join(', '))}</span>
     <span style="white-space:nowrap;padding-left:12px">${clock(w.start)} – ${clock(w.end)}</span></div>`).join('') || '<div><span>No tide or moon times yet</span><span></span></div>';
-  $('fish-season').innerHTML = f.season.map(x => `<div><span><b style="font-weight:700">${esc(x.fish)}</b>${x.note ? `<br><small>${esc(x.note)}</small>` : ''}</span><span></span></div>`).join('');
+  const dam = f.dam;
+  const run = dam ? Object.entries(dam.week).filter(([, v]) => v > 0) : [];
+  $('fish-season').innerHTML = run.map(([k, v]) => `<div><span><b style="font-weight:700">${esc(k)}</b></span><span>${v.toLocaleString()}</span></div>`).join('') || '<div><span>No dam counts right now</span><span></span></div>';
   const r = f.river || {};
   const minis = [];
   if (r.stage_ft != null) minis.push(['River level', `${r.stage_ft} <small>ft ${r.stage_change_ft > 0.2 ? 'rising' : r.stage_change_ft < -0.2 ? 'dropping' : 'steady'}</small>`]);
   if (r.water_f != null) minis.push(['Water temp', `${r.water_f}°`]);
   $('fish-river').innerHTML = minis.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
-  const dam = f.dam;
-  $('fish-dam').textContent = dam && Object.keys(dam.week).length ? `Fish over Bonneville Dam, last ${dam.days} days: ` +
-    Object.entries(dam.week).filter(([, v]) => v > 0).map(([k, v]) => `${v.toLocaleString()} ${k.toLowerCase()}`).join(', ') + '. Counts show what’s moving upriver past you.' : '';
+  $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year, so check the rules below before you go.` : '';
   $('fish-links').innerHTML = 'Check seasons and rules before you go: ' + f.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ');
 }
 
@@ -1433,7 +1442,7 @@ function renderMore() {
       ${rc.leaders.length ? `<small>${rc.leaders.slice(0, 3).map(x => `${esc(x.stat)}: ${esc(x.player)} ${esc(x.value)}`).join(' · ')}</small>` : ''}
       ${rc.goals.length ? `<small>Goals: ${rc.goals.map(x => `${esc(x.player || '?')}${x.minute ? ` (${esc(x.minute)})` : ''}`).join(', ')}</small>` : ''}</div>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}<p class="src-line">Sources: <a href="https://www.espn.com/" target="_blank" rel="noopener">ESPN scores, standings and recaps</a>${sp.reddit && sp.reddit[key] ? ' · <a href="https://www.reddit.com/" target="_blank" rel="noopener">Reddit fan threads</a>' : ''}</p></section>`);
   }
   $('teams').innerHTML = teams.join('');
   fetch('teams.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(tj => {
@@ -1443,7 +1452,7 @@ function renderMore() {
       if (!el || !t.pulse) continue;
       el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3><p class="note">${esc(t.pulse)}</p>` +
         ((t.storylines || []).length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${t.storylines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
-        `<p class="meta" style="margin:4px 0 0">Summary as of ${tj.updated_at ? localWhen(tj.updated_at) : fmtDate(tj.updated)}</p>` + pulseStale(tj, sp && sp[key]);
+        `<p class="meta" style="margin:4px 0 0">Summary as of ${tj.updated_at ? localWhen(tj.updated_at) : fmtDate(tj.updated)}</p>` + cite(t.sources) + pulseStale(tj, sp && sp[key]);
     }
   }).catch(() => {});
 
@@ -1587,7 +1596,7 @@ function renderForest() {
   const done = local.get(key, {});
   $('forest-meta').textContent = `${f.month} · tick them off as you go`;
   $('forest').innerHTML = f.now.map((t, i) => `<label class="task${done[t.task] ? ' done' : ''}"><input type="checkbox" data-t="${esc(t.task)}"${done[t.task] ? ' checked' : ''}>
-    <span><b>${esc(t.task)}</b><small>${esc(t.why)}</small></span></label>`).join('');
+    <span><b>${esc(t.task)}</b><small>${esc(t.why)}${cite(t.sources)}</small></span></label>`).join('');
   $('forest').querySelectorAll('input').forEach(cb => cb.onchange = () => {
     const d = local.get(key, {});
     if (cb.checked) d[cb.dataset.t] = 1; else delete d[cb.dataset.t];
@@ -1608,7 +1617,7 @@ async function renderBluray() {
   $('bluray').innerHTML = deals.map(d => `<a class="deal" href="${esc(d.url)}" target="_blank" rel="noopener">
     <b>${esc(d.title)}</b><span>${esc(d.detail)}</span><small>${esc(d.store)}${d.ends ? ' · ends ' + dayLabel(d.ends) : ''}</small></a>`).join('');
   const up = b.upcoming || [];
-  $('br-upcoming').textContent = up.length ? 'Coming up: ' + up.map(u => `${u.title} (${u.detail.charAt(0).toLowerCase() + u.detail.slice(1)})`).join('; ') + '.' : '';
+  $('br-upcoming').innerHTML = up.length ? 'Coming up: ' + up.map(u => { const t = `${esc(u.title)} (${esc(u.detail.charAt(0).toLowerCase() + u.detail.slice(1))})`; return u.url ? `<a href="${esc(u.url)}" target="_blank" rel="noopener">${t}</a>` : t; }).join('; ') + '.' : '';
 }
 
 // ------------------------------------------------------------------ little one
@@ -1650,38 +1659,32 @@ const PLAY = [
   ['Draw a face', 'You draw a circle, she adds eyes and a smile.', 30, 54, []],
   ['Sandcastle at the coast', 'Buckets, shovels and a moat that fills as the tide comes in.', 18, 72, [5, 6, 7, 8, 9]],
 ];
-// Places that suit little kids, by month: [name, why, months, link]
+// Places that suit little kids, by month: [name, what's there, months, page that backs it up]
 const OUTINGS = [
-  ['Sandhill cranes on Sauvie Island', 'Thousands winter on the island. Watch from the car along Reeder and Rentenaar roads.', [10, 11, 12, 1, 2, 3], 'https://myodfw.com/wildlife-viewing/locations/sauvie-island-wildlife-area'],
-  ['Pumpkin patches and hayrides', 'Sauvie Island farms; go on a weekday morning to beat the crowds.', [9, 10], 'https://www.travelportland.com/region/pumpkin-patches/'],
-  ['U-pick strawberries', 'Sauvie Island farms, usually early to late June.', [6], null],
-  ['U-pick blueberries', 'Sauvie Island farms, July into August.', [7, 8], null],
-  ['Walton Beach', 'Sandy river beach on the island; shallow water in late summer.', [7, 8, 9], null],
-  ['Pier Park playground', 'Big shady playground and splash fun in St. Johns.', [], null],
-  ['Cathedral Park', 'Picnic under the bridge and watch boats.', [], null],
-  ['Kelley Point Park', 'Beach where the rivers meet; watch big ships go by.', [], null],
-  ['Library storytime', 'Free toddler storytimes at the St. Johns and other Multnomah County libraries.', [], 'https://multcolib.org/events'],
-  ['Oregon Zoo', 'Go right at opening, when animals are most active.', [], 'https://www.oregonzoo.org/'],
-  ['OMSI Science Playground', 'Hands-on play area for kids 6 and under.', [], 'https://omsi.edu/'],
-  ['Oaks Park kiddie rides', 'Small rides and a carousel; open spring through fall.', [4, 5, 6, 7, 8, 9], 'https://www.oakspark.com/'],
-  ['Hoyt Arboretum', 'Easy flat trails; preschool tree walks some mornings.', [], 'https://www.hoytarboretum.org/'],
-  ['Cherry blossoms at the waterfront', 'Tom McCall Waterfront Park, late March to early April.', [3, 4], null],
-  ['Wooden Shoe Tulip Fest', 'Fields of color in Woodburn, with wagon rides.', [4], 'https://www.woodenshoe.com/'],
-  ['Rose Festival Junior Parade', 'Parade made for kids, in early June.', [6], 'https://www.rosefestival.org/'],
-  ['Salmon Street Springs', 'Splash fountain downtown on hot days.', [6, 7, 8, 9], null],
-  ['Christmas Ships', 'Lit-up boat parade on the Willamette and Columbia in December.', [12], 'https://www.christmasships.org/'],
-  ['Snow play on Mt. Hood', 'Sledding at a sno-park (needs an Oregon Sno-Park permit).', [12, 1, 2, 3], null],
-  ['Lan Su Chinese Garden', 'Lanterns and lion dances around Lunar New Year.', [1, 2], 'https://lansugarden.org/'],
-  ['Seaside Aquarium', 'Feed the seals. Near the coast house, open all year.', [], 'https://www.seasideaquarium.com/'],
-  ['Peter Iredale shipwreck', 'Fort Stevens beach near the coast house; best at low tide.', [], null],
-  ['Columbia River Maritime Museum', 'Boats, a real Coast Guard rescue boat and a kids area in Astoria.', [], 'https://www.crmm.org/'],
+  ['Sandhill cranes on Sauvie Island', 'Cranes stop on the island from fall into early spring, and some stay all winter. Look in the fields from Rentenaar Road; a wildlife area parking permit is required.', [9, 10, 11, 12, 1, 2, 3], 'https://myodfw.com/sauvie-island-wildlife-area-visitors-guide'],
+  ['Pumpkin patches and hayrides', 'Several Sauvie Island farms have pumpkin patches, hayrides and corn mazes.', [9, 10], 'https://www.travelportland.com/region/pumpkin-patches/'],
+  ['Walton Beach', 'Sandy Columbia River beach on Sauvie Island. Summer weekends need a Sauvie Island Beaches parking permit.', [6, 7, 8, 9], 'https://myodfw.com/sauvie-island-wildlife-area-visitors-guide'],
+  ['Pier Park playground', 'Playgrounds, a splash pad, shady trails and a summer pool in St. Johns.', [], 'https://www.portland.gov/parks/pier-park'],
+  ['Cathedral Park', 'Picnic under the St. Johns Bridge, next to the new garden spaces.', [], 'https://www.portland.gov/parks/cathedral-park'],
+  ['Kelley Point Park', 'Where the Columbia and Willamette meet: picnic areas, a paved path and river shores.', [], 'https://www.portland.gov/parks/kelley-point-park'],
+  ['Library storytime', 'Free storytimes at Multnomah County libraries.', [], 'https://multcolib.org/events'],
+  ['Oregon Zoo', 'Open daily; check the hours before you go.', [], 'https://www.oregonzoo.org/visit'],
+  ['Oaks Park', 'Rides and mini golf are open spring through fall; roller skating all year.', [4, 5, 6, 7, 8, 9, 10], 'https://www.oakspark.com/'],
+  ['Hoyt Arboretum', 'Easy trails, plus "Tree Time!" preschool walks.', [], 'https://www.hoytarboretum.org/'],
+  ['Wooden Shoe Tulip Fest', 'Tulip fields in bloom. The 2027 festival is planned for March 19 to April 25.', [3, 4], 'https://www.woodenshoe.com/'],
+  ['Rose Festival Junior Parade', 'A parade of kids, part of the Rose Festival.', [6], 'https://www.rosefestival.org/event/junior-parade'],
+  ['Christmas Ships', 'Lit-up boat parade on the Willamette and Columbia.', [12], 'https://www.christmasships.org/'],
+  ['Lan Su Chinese Garden', 'Lunar New Year celebration with weekly events; in 2026 it ran February 17 to March 8.', [2, 3], 'https://lansugarden.org/events/lunar-new-year/'],
+  ['Seaside Aquarium', 'Feed the seals and see local sea life, near the coast house.', [], 'https://www.seasideaquarium.com/'],
+  ['Peter Iredale shipwreck', 'Historic shipwreck on the beach at Fort Stevens State Park, near the coast house.', [], 'https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=129'],
+  ['Columbia River Maritime Museum', 'Coast Guard and bar pilot exhibits and the Lightship Columbia in Astoria. Kids 5 and under get in free.', [], 'https://www.crmm.org/'],
 ];
-// Around this age, from the CDC's "Learn the Signs. Act Early." milestones.
+// From the CDC's "Learn the Signs. Act Early." checklists: things most kids (75% or more) can do by each age.
 const GROW = [
-  [24, 'running, kicking a ball, two-word phrases and simple pretend play'],
-  [30, 'following two-step directions, jumping with both feet, twisting lids open and naming a color'],
-  [36, 'back-and-forth conversations, lots of why questions, drawing a circle, stringing beads and dressing in loose clothes'],
-  [48, 'pretending to be someone else, catching a big ball, telling what happens next in a story and drawing a person'],
+  [24, '2 years', 'kick a ball, run and put two words together, like "more milk"'],
+  [30, '30 months', 'follow two-step directions, jump off the ground with both feet and twist things like doorknobs or lids'],
+  [36, '3 years', 'hold a back-and-forth conversation, ask who, what, where and why questions, draw a circle after you show her, string beads and put on some clothes herself'],
+  [48, '4 years', 'pretend to be someone else, catch a large ball most of the time, say what comes next in a familiar story and draw a person with three or more body parts'],
 ];
 let playPage = 0;
 const kidMonths = () => {
@@ -1714,8 +1717,8 @@ async function renderKids() {
   $('play').innerHTML = pick.map(p => `<div class="idea"><small>${p[4].length ? 'This season' : 'Any day'}</small><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>`).join('');
   $('play-more').hidden = pages < 2;
   $('play-more').onclick = () => { playPage++; renderKids(); };
-  const g = [...GROW].reverse().find(x => a >= x[0]);
-  $('kid-grow').textContent = g ? `Around this age many kids are working on ${g[1]}. Play is the best practice. (CDC milestones)` : '';
+  const g = GROW.find(x => x[0] > a) || GROW[GROW.length - 1];
+  $('kid-grow').innerHTML = `Coming up: by ${g[1]}, most kids can ${esc(g[2])}. <a href="https://www.cdc.gov/ncbddd/actearly/milestones/index.html" target="_blank" rel="noopener">CDC milestones</a>`;
   // Dated family events from the daily roundup, then this season's go-to spots.
   const kj = await getJson('kids.json');
   const today = todayIso(), soon = new Date(Date.now() + 45 * 864e5).toISOString().slice(0, 10);
@@ -1724,8 +1727,70 @@ async function renderKids() {
   const spots = OUTINGS.filter(o => o[2].includes(month)).concat(OUTINGS.filter(o => !o[2].length));
   const when = e => e.date && e.date > today ? (e.ends && e.ends !== e.date ? `${dayLabel(e.date)} to ${dayLabel(e.ends)}` : dayLabel(e.date)) : (e.ends ? `Now through ${dayLabel(e.ends)}` : 'Now');
   $('kid-out').innerHTML = (events.length ? '<div class="day-h">Coming up</div>' + events.map(e => `<a class="story" href="${esc(e.url)}" target="_blank" rel="noopener"><span><b>${esc(e.title)}</b><small>${[when(e), e.where].filter(Boolean).map(esc).join(' · ')}</small>${e.detail ? `<p>${esc(e.detail)}</p>` : ''}</span></a>`).join('') : '') +
-    '<div class="day-h">Good this time of year</div>' + spots.map(o => `<a class="story" href="${esc(o[3] || 'https://www.google.com/search?q=' + encodeURIComponent(o[0] + ' Oregon'))}" target="_blank" rel="noopener"><span><b>${esc(o[0])}</b><small>${o[2].length ? 'In season now' : 'Any time'}</small><p>${esc(o[1])}</p></span></a>`).join('');
+    '<div class="day-h">Good this time of year</div>' + spots.map(o => `<a class="story" href="${esc(o[3])}" target="_blank" rel="noopener"><span><b>${esc(o[0])}</b><small>${o[2].length ? 'In season now' : 'Any time'}</small><p>${esc(o[1])}</p></span></a>`).join('');
   $('kid-out-meta').textContent = kj && kj.updated ? `Events checked ${dayLabel(kj.updated)}` : '';
+}
+
+// ------------------------------------------------------------------ sources
+// Where every card's facts come from, shown at the bottom of each card. Items with their own source
+// (news, shows, deals, food forest tasks, the daily lists) also link it on the item itself.
+const OM = ['Open-Meteo forecast', 'https://open-meteo.com/'];
+const NWS = ['National Weather Service alerts', 'https://www.weather.gov/'];
+const NOAA_TIDES = ['NOAA Tides & Currents', 'https://tidesandcurrents.noaa.gov/'];
+const APS = ['Your APsystems inverter (EMA)', 'https://www.apsystemsema.com/'];
+const DAILY = ['Daily web check; each item links its source', ''];
+const SOURCES = {
+  'wx-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], OM],
+  'day-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api'], NOAA_TIDES, APS],
+  'fc-h': [OM, ['Expected solar: your system\'s last 30 days of output against Open-Meteo sunshine', 'https://www.apsystemsema.com/']],
+  'drive-h': [['TomTom live traffic routing', 'https://developer.tomtom.com/routing-api/documentation/routing/routing-service']],
+  'road-h': [['ODOT TripCheck cameras and incidents', 'https://www.tripcheck.com/']],
+  'play-h': [['Play ideas are suggestions, not research. Age note: CDC "Learn the Signs. Act Early." milestones', 'https://www.cdc.gov/ncbddd/actearly/milestones/index.html']],
+  'out-h': [['Each place links its own page; dated events come from a daily web check and link their source', '']],
+  'bug-h': [['CDC National Wastewater Surveillance System', 'https://www.cdc.gov/nwss/']],
+  'radar-h': [['NWS NEXRAD radar via Iowa Environmental Mesonet', 'https://mesonet.agron.iastate.edu/'], ['OpenStreetMap', 'https://www.openstreetmap.org/copyright']],
+  'ship-h': [['AIS positions from aisstream.io', 'https://aisstream.io/'], ['VesselFinder', 'https://www.vesselfinder.com/'], ['Where a ship came from is inferred from its heading, so it is labeled "likely"', '']],
+  'fish-h': [['ODFW Columbia zone report', 'https://myodfw.com/recreation-report/fishing-report/columbia-zone'], ['WDFW emergency rules', 'https://wdfw.wa.gov/fishing/regulations/emergency-rules'], ['Columbia Basin Research fish counts', 'https://www.cbr.washington.edu/dart'], ['USGS river gauges', 'https://waterdata.usgs.gov/']],
+  'quake-h': [['USGS earthquake feed', 'https://earthquake.usgs.gov/earthquakes/map/']],
+  'plane-h': [['OpenSky Network', 'https://opensky-network.org/'], ['adsbdb routes and aircraft', 'https://www.adsbdb.com/'], ['FAA airport status', 'https://nasstatus.faa.gov/']],
+  'fire-h': [['NIFC wildfire incidents (WFIGS)', 'https://data-nifc.opendata.arcgis.com/']],
+  'moon-h': [['US Naval Observatory', 'https://aa.usno.navy.mil/data/MoonPhases']],
+  'sky-h': [['US Naval Observatory', 'https://aa.usno.navy.mil/'], ['NASA eclipse catalog', 'https://eclipse.gsfc.nasa.gov/'], ['IMO meteor calendar', 'https://www.imo.net/resources/calendar/'], ['NOAA Space Weather', 'https://www.swpc.noaa.gov/'], ['CelesTrak ISS orbit', 'https://celestrak.org/'], ['Launch Library 2', 'https://thespacedevs.com/llapi']],
+  'plant-h': [['OSU Extension: Growing Your Own (EM 9027), Region 2', 'https://extension.oregonstate.edu/catalog/em-9027-growing-your-own'], OM],
+  'forest-h': [['Each task links the page that backs it up', '']],
+  'pollen-h': [['Google Pollen API', 'https://developers.google.com/maps/documentation/pollen/overview']],
+  'rare-h': [['eBird notable sightings', 'https://ebird.org/']],
+  'burn-h': [['Burn line number: Multnomah County fire districts', 'https://patch.com/oregon/gresham/multnomah-county-fire-departments-districts-lift-burn-ban'], NWS, OM],
+  'birds-h': [['iNaturalist observations', 'https://www.inaturalist.org/']],
+  'bloom-h': [['iNaturalist observations', 'https://www.inaturalist.org/']],
+  'coast-wx': [OM, ['Open-Meteo marine', 'https://open-meteo.com/en/docs/marine-weather-api']],
+  'minus-h': [NOAA_TIDES],
+  'cev-h': [DAILY],
+  'shell-h': [['Oregon Dept. of Agriculture shellfish closures', 'https://www.oregon.gov/oda/programs/foodsafety/shellfish/pages/shellfishclosures.aspx'], ['ODFW crabbing and clamming report', 'https://myodfw.com/recreation-report/crabbing-clamming-report']],
+  'deal-h': [['Store flyers via Flipp', 'https://flipp.com/']],
+  'food-new-h': [DAILY],
+  'ski-h': [['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
+  'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY],
+  'tv-h': [['TVmaze schedule', 'https://www.tvmaze.com/']],
+  'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums']],
+  'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
+  'f1-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1'], ['r/formula1', 'https://www.reddit.com/r/formula1/']],
+  'stories-h': [['Each story links its publisher', '']], 'reviews-h': [['Each review links its publisher', '']],
+  'bkk-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api']],
+  'hol-h': [['Nager.Date', 'https://date.nager.at/'], ['Google public holiday calendars', 'https://calendar.google.com/']],
+  'grid-h': [['Bonneville Power Administration', 'https://transmission.bpa.gov/business/operations/wind/']],
+  'main-h': [APS], 'mo-h': [APS], 'pn-h': [APS], 'bill-h': [['Your PGE account', 'https://portlandgeneral.com/']],
+};
+function addSources() {
+  for (const [id, list] of Object.entries(SOURCES)) {
+    const h = document.getElementById(id) || document.querySelector(`[data-src="${id}"]`);
+    const card = h && (h.closest('section.card') || h);
+    if (!card || card.querySelector(':scope > .src-line')) continue;
+    const p = document.createElement('p');
+    p.className = 'src-line';
+    p.innerHTML = 'Sources: ' + list.map(([n, u]) => u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(n)}</a>` : esc(n)).join(' · ');
+    card.appendChild(p);
+  }
 }
 
 // ------------------------------------------------------------------ sections, jump bar and learning
@@ -1878,6 +1943,7 @@ function watchReading() {
 }
 
 function initLayout() {
+  addSources();
   ageHabits();
   addTools();
   arrange();

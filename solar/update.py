@@ -732,7 +732,6 @@ def fishing_view(state, out, now_utc):
     t = out["days"][0] if out["days"] else {}
     store = state.get("fishing") or {}
     return {
-        "season": [{"fish": f, "note": n} for f, n in fishing.SEASONS[now.month]],
         "windows": fishing.best_times(now.date(), tz, moon.get("transit") if fresh else None,
                                       moon.get("moonrise") if fresh else None, moon.get("moonset") if fresh else None,
                                       out.get("tides") or [], t.get("sunrise"), t.get("sunset")),

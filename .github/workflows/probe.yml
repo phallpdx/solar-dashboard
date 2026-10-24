@@ -26,7 +26,7 @@ jobs:
             i=$((i+1))
             : > body
             code=$(curl -sL -A "Mozilla/5.0 (solar-dashboard personal dashboard)" -e "$u" -o body --max-time 40 -w '%{http_code} %{content_type}' "$u" || echo "fail")
-            { echo "URL: $u"; echo "STATUS: $code"; echo "BYTES: $(wc -c < body 2>/dev/null)"; echo; head -c 400000 body 2>/dev/null; } > "$i.txt"
+            { echo "URL: $u"; echo "STATUS: $code"; echo "BYTES: $(wc -c < body 2>/dev/null)"; echo; head -c 4000000 body 2>/dev/null; } > "$i.txt"
             rm -f body
           done
           git init -q && git checkout -q -b probe

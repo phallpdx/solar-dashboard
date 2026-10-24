@@ -1,5 +1,5 @@
-"""Columbia River fishing outlook: fish counts over Bonneville Dam, river level and temperature, what's in season,
-and the best times to be on the water from tides, moon and light."""
+"""Columbia River fishing outlook: fish counts over Bonneville Dam, river level and temperature, and solunar,
+tide and low-light windows for the day."""
 import csv
 import datetime as dt
 import io
@@ -12,30 +12,6 @@ UA = {"User-Agent": "solar-dashboard (personal home dashboard)"}
 # USGS gauges: Columbia at Vancouver (stage), Columbia at Beaver Army Terminal near Quincy (water temperature).
 GAUGES = [("14144700", "Columbia River at Vancouver"), ("14246900", "Columbia River near Quincy")]
 
-# What's typically worth fishing for on the lower Columbia around Sauvie Island, by month.
-SEASONS = {
-    1: [("Winter steelhead", "Plunking from the beaches on the rising river"), ("Sturgeon", "Catch and release")],
-    2: [("Winter steelhead", "Plunking from the beaches"), ("Spring Chinook", "First early fish show up late in the month"),
-        ("Sturgeon", "Catch and release")],
-    3: [("Spring Chinook", "Springers build through the month; check the season dates"),
-        ("Winter steelhead", "Tail end of the run"), ("Sturgeon", "Catch and release")],
-    4: [("Spring Chinook", "Peak of the springer run"), ("Sturgeon", "Catch and release")],
-    5: [("Spring Chinook", "Late springers, if the season is open"), ("Shad", "Run starts mid-May"),
-        ("Bass and crappie", "Island sloughs and lakes warm up")],
-    6: [("Shad", "Peak run, easy action from shore"), ("Summer Chinook", "Usually opens mid-June"),
-        ("Summer steelhead", "Early fish moving through"), ("Bass and crappie", "Sloughs and Sturgeon Lake")],
-    7: [("Summer steelhead", "Best early mornings"), ("Summer Chinook", None), ("Shad", "Tapering off"),
-        ("Bass and catfish", "Warm water in the sloughs")],
-    8: [("Fall Chinook", "Upriver brights start arriving late August"), ("Summer steelhead", None),
-        ("Bass and catfish", "Warm water in the sloughs")],
-    9: [("Fall Chinook", "Peak of the fall run"), ("Coho", "Building through the month"),
-        ("Summer steelhead", None)],
-    10: [("Coho", "Late coho moving upriver"), ("Fall Chinook", "Tail end; darker fish"),
-         ("Sturgeon", "Catch and release"), ("Crappie", "Sloughs as water cools")],
-    11: [("Coho", "Last of the late run"), ("Sturgeon", "Catch and release"),
-         ("Winter steelhead", "First fish show up late in the month")],
-    12: [("Winter steelhead", "Plunking from the beaches"), ("Sturgeon", "Catch and release")],
-}
 LINKS = [
     ("ODFW fishing report", "https://myodfw.com/recreation-report/fishing-report/columbia-zone"),
     ("ODFW regulation updates", "https://myodfw.com/fishing/regulation-updates"),

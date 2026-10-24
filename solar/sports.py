@@ -178,6 +178,8 @@ def recap(league_path, game, team_id):
             out["goals"].append({"minute": (ev.get("clock") or {}).get("displayValue"), "player": who or None})
     links = [l.get("href") for l in ((data.get("header") or {}).get("links") or []) if "recap" in (l.get("rel") or [])]
     out["url"] = links[0] if links else None
+    if out["summary"]:
+        out["summary"] = out["summary"].lstrip("—–- ").strip()
     if not (out["headline"] or out["leaders"] or out["goals"]):
         raise RuntimeError("ESPN had no recap yet")
     return out

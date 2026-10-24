@@ -54,7 +54,9 @@ def weekly(postal_code):
             continue
         time.sleep(0.5)
         items = []
-        for it in (data.get("items") if isinstance(data, dict) else data) or []:
+        raw = (data.get("items") if isinstance(data, dict) else data) or []
+        sample = {k: v for k, v in (raw[len(raw) // 2] if raw else {}).items() if not isinstance(v, (dict, list))}
+        for it in raw:
             name = (it.get("name") or "").strip()
             if not name or it.get("display_type") not in (None, 1):
                 continue
@@ -65,6 +67,8 @@ def weekly(postal_code):
             if main is not None and re.fullmatch(r"\d+(\.\d+)?", str(main)):
                 main = f"${float(main):.2f}"
             price_text = " ".join(str(p) for p in (it.get("pre_price_text"), main, it.get("post_price_text")) if p).strip()
+            if not price_text and not (it.get("sale_story") or "").strip():
+                continue  # banners and headings, not products
             items.append({"name": name, "price": price_text or None, "was": was, "pct_off": pct,
                           "deal": (it.get("sale_story") or "").strip() or None,
                           "image": it.get("cutout_image_url") or it.get("clean_image_url"),
@@ -72,7 +76,7 @@ def weekly(postal_code):
         # Real discounts first; otherwise keep the ad's own order, which leads with its featured deals.
         items = sorted(items, key=lambda x: -(x["pct_off"] or 0))
         found[store] = {"store": store, "until": (f.get("valid_to") or "")[:10] or None,
-                        "items": items[:PER_STORE], "total": len(items)}
+                        "items": items[:PER_STORE], "total": len(items), "sample": sample}
     missing = [s for s in STORES.values() if s not in found]
     if not found:
         raise RuntimeError("none of the stores have a weekly ad on Flipp; ads found: " + ", ".join(merchants[:40])

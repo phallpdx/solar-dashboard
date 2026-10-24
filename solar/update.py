@@ -676,9 +676,9 @@ def fetch_deals(state, now_utc):
     zip_code = load_json("config.json", {}).get("shopping_zip")
     if not zip_code:
         return "Add a shopping ZIP code to config.json."
-    if store.get("v") != 2:  # new ordering and price format
+    if store.get("v") != 3:  # new ordering and price format
         store.clear()
-        store["v"] = 2
+        store["v"] = 3
     _refresh(store, "weekly", lambda: deals.weekly(zip_code), 12, now_utc, errors)
     w = store.get("weekly") or {}
     if w.get("missing"):

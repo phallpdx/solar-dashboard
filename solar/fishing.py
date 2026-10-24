@@ -91,7 +91,7 @@ def dam_counts(today):
     for d in days:
         for k, v in d["counts"].items():
             totals[k] = totals.get(k, 0) + v
-    return {"dam": "Bonneville", "days": len(days), "through": days[-1]["date"],
+    return {"dam": "Bonneville", "days": len(days), "columns": head, "through": days[-1]["date"],
             "week": dict(sorted(totals.items(), key=lambda kv: -kv[1])), "last_day": days[-1]["counts"]}
 
 

@@ -631,6 +631,8 @@ def fetch_places(state, now_utc):
 def fetch_fishing(state, now_utc):
     store, errors = state.setdefault("fishing", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    if "columns" not in (store.get("dam") or {}):
+        store.pop("dam_at", None)
     _refresh(store, "dam", lambda: fishing.dam_counts(today), 6, now_utc, errors)
     _refresh(store, "river", fishing.river, 1, now_utc, errors)
     return "; ".join(errors) or None
@@ -674,6 +676,9 @@ def fetch_deals(state, now_utc):
     zip_code = load_json("config.json", {}).get("shopping_zip")
     if not zip_code:
         return "Add a shopping ZIP code to config.json."
+    if store.get("v") != 2:  # new ordering and price format
+        store.clear()
+        store["v"] = 2
     _refresh(store, "weekly", lambda: deals.weekly(zip_code), 12, now_utc, errors)
     w = store.get("weekly") or {}
     if w.get("missing"):

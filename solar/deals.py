@@ -1,5 +1,6 @@
 """This week's sale items at nearby grocery stores, from their weekly ads on Flipp."""
 import json
+import re
 import time
 import urllib.parse
 import urllib.request
@@ -60,13 +61,16 @@ def weekly(postal_code):
             now = _num(it.get("current_price") or it.get("price"))
             was = _num(it.get("original_price"))
             pct = round((1 - now / was) * 100) if now and was and was > now else None
-            price_text = " ".join(str(p) for p in (it.get("pre_price_text"), it.get("price_text") or it.get("price"),
-                                                   it.get("post_price_text")) if p).strip()
+            main = it.get("price_text") or it.get("price")
+            if main is not None and re.fullmatch(r"\d+(\.\d+)?", str(main)):
+                main = f"${float(main):.2f}"
+            price_text = " ".join(str(p) for p in (it.get("pre_price_text"), main, it.get("post_price_text")) if p).strip()
             items.append({"name": name, "price": price_text or None, "was": was, "pct_off": pct,
                           "deal": (it.get("sale_story") or "").strip() or None,
                           "image": it.get("cutout_image_url") or it.get("clean_image_url"),
                           "until": (it.get("valid_to") or f.get("valid_to") or "")[:10] or None})
-        items.sort(key=lambda x: (-(x["pct_off"] or 0), x["deal"] is None, x["name"]))
+        # Real discounts first; otherwise keep the ad's own order, which leads with its featured deals.
+        items = sorted(items, key=lambda x: -(x["pct_off"] or 0))
         found[store] = {"store": store, "until": (f.get("valid_to") or "")[:10] or None,
                         "items": items[:PER_STORE], "total": len(items)}
     missing = [s for s in STORES.values() if s not in found]

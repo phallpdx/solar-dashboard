@@ -180,12 +180,13 @@ def _albums_on_page(title, year):
         return None
     parser = _Tables()
     parser.feed(data["parse"]["text"])
-    found = []
+    found, heads = [], []
     for table in filter(None, parser.tables):
         grid = _grid(table)
         if not grid:
             continue
         head = [(c["text"] or "").strip().lower() for c in grid[0]]
+        heads.append("/".join(head)[:80])
         col = {name: next((i for i, h in enumerate(head) if h.startswith(name)), None)
                for name in ("release date", "artist", "album", "genre", "label")}
         if col["artist"] is None or col["album"] is None:
@@ -213,6 +214,8 @@ def _albums_on_page(title, year):
             found.append({"date": when.isoformat(), "artist": text("artist"), "album": text("album"),
                           "genre": text("genre") or None, "label": text("label") or None,
                           "url": album_cell["href"] or row[col["artist"]]["href"]})
+    if not found and heads:
+        raise RuntimeError(f"{len(heads)} tables, headers like {heads[:2]}")
     return found
 
 
@@ -220,19 +223,21 @@ def albums(days=60, limit=250):
     """Notable albums due out in the next couple of months, from Wikipedia's yearly album lists."""
     today = dt.date.today()
     end = today + dt.timedelta(days=days)
-    out, pages = [], []
+    out, pages, notes = [], [], []
     for year in sorted({today.year, end.year}):
         for title in (f"List of {year} albums", f"List of {year} albums (January–June)",
                       f"List of {year} albums (July–December)"):
             try:
                 rows = _albums_on_page(title, year)
-            except Exception:
+                notes.append(f"{title}: {'missing' if rows is None else len(rows)}")
+            except Exception as e:
                 rows = None
+                notes.append(f"{title}: {e}")
             if rows:
                 pages.append(title)
                 out.extend(rows)
     if not pages:
-        raise RuntimeError("couldn't read Wikipedia's album lists")
+        raise RuntimeError("couldn't read Wikipedia's album lists (" + "; ".join(notes) + ")")
     seen, picked = set(), []
     for a in sorted(out, key=lambda x: (x["date"], x["artist"].lower())):
         key = (a["artist"].lower(), a["album"].lower())

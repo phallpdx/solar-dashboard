@@ -98,7 +98,7 @@ def usno_day(day, lat, lon, tz_hours):
                 coords=f"{lat},{lon}", tz=tz_hours)
     props = data["properties"]["data"]
     times = {p["phen"]: p["time"][:5] for p in props.get("moondata", [])}
-    return {"moonrise": times.get("Rise"), "moonset": times.get("Set"),
+    return {"moonrise": times.get("Rise"), "moonset": times.get("Set"), "transit": times.get("Upper Transit"),
             "phase": props.get("curphase"), "lit": props.get("fracillum")}
 
 

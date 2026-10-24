@@ -21,7 +21,7 @@ import sys
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, deals, markets, news, outside, pge, releases, ships, sky, sports, world
+from . import alerts, ambient, aps, deals, fishing, live, markets, news, outside, pge, releases, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -605,6 +605,55 @@ def fetch_releases(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_ski(state, now_utc):
+    store, errors = state.setdefault("ski", {}), []
+    _refresh(store, "snow", ski.snow, 3, now_utc, errors)
+    _refresh(store, "forecast", ski.forecast, 2, now_utc, errors)
+    _refresh(store, "avalanche", ski.avalanche, 3, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_fishing(state, now_utc):
+    store, errors = state.setdefault("fishing", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    _refresh(store, "dam", lambda: fishing.dam_counts(today), 6, now_utc, errors)
+    _refresh(store, "river", fishing.river, 1, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_live(state, now_utc):
+    out = state.get("outside") or {}
+    if not out.get("lat"):
+        return "Needs the home location first."
+    store, errors, lat, lon = state.setdefault("live", {}), [], out["lat"], out["lon"]
+    _refresh(store, "quakes", lambda: live.earthquakes(lat, lon), 1, now_utc, errors)
+    _refresh(store, "fires", lambda: live.wildfires(lat, lon), 3, now_utc, errors)
+    _refresh(store, "planes", lambda: live.planes(lat, lon), 0, now_utc, errors)
+    _refresh(store, "pdx", live.pdx_status, 0.3, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fishing_view(state, out, now_utc):
+    if not out:
+        return None
+    tz = zone("America/Los_Angeles")
+    now = now_utc.astimezone(tz)
+    moon = (state.get("outside") or {}).get("moon_today") or {}
+    fresh = (state.get("outside") or {}).get("moon_today_at", "")[:10] == now_utc.strftime("%Y-%m-%d")
+    t = out["days"][0] if out["days"] else {}
+    store = state.get("fishing") or {}
+    return {
+        "season": [{"fish": f, "note": n} for f, n in fishing.SEASONS[now.month]],
+        "windows": fishing.best_times(now.date(), tz, moon.get("transit") if fresh else None,
+                                      moon.get("moonrise") if fresh else None, moon.get("moonset") if fresh else None,
+                                      out.get("tides") or [], t.get("sunrise"), t.get("sunset")),
+        "dam": store.get("dam"),
+        "river": store.get("river"),
+        "moon": out["moon"]["name"],
+        "links": [{"name": n, "url": u} for n, u in fishing.LINKS],
+    }
+
+
 def fetch_deals(state, now_utc):
     store, errors = state.setdefault("deals", {}), []
     zip_code = load_json("config.json", {}).get("shopping_zip")
@@ -732,6 +781,10 @@ def build(state, status, now_utc):
         "alerts": alerts_view(state, out, now_utc),
         "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
         "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
+        "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},
+                "resorts": ski.resorts()} if state.get("ski") else None,
+        "fishing": fishing_view(state, out, now_utc),
+        "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,
         "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
                   if k in ("stores", "missing")} or None,
         "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
@@ -746,7 +799,8 @@ def main():
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
-                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals),
+                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
+                     ("live", fetch_live),
                      ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"

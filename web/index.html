@@ -101,6 +101,7 @@ h2{margin:0;font-size:17px;font-weight:700}
 .chip[aria-pressed="true"]{background:var(--ink);color:#fff}
 .story img.poster{width:56px;height:80px;border-radius:8px}
 .day-h{position:sticky;top:0;background:var(--card);padding:10px 0 4px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--grid)}
+.sub{margin:0;font-size:14px;font-weight:700}
 .alerts{display:flex;flex-direction:column;gap:10px}
 .alert{border-radius:18px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;border:1px solid}
 .alert.l3{background:#FDECEC;border-color:#F2B8B5;color:#6B1A13}
@@ -168,6 +169,36 @@ h2{margin:0;font-size:17px;font-weight:700}
         <div id="ship-list"></div>
       </section>
     </div>
+    <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+      <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+      <div class="row" style="gap:24px">
+        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+          <h3 class="sub">Best times today</h3><div class="lines" id="fish-times"></div>
+        </div>
+        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+          <h3 class="sub">What to fish for now</h3><div class="lines" id="fish-season"></div>
+          <div class="minis" id="fish-river"></div>
+        </div>
+      </div>
+      <p class="note" id="fish-dam"></p>
+      <p class="note" id="fish-links"></p>
+    </section>
+    <div class="row" id="live-row" hidden>
+      <section class="card half" aria-labelledby="quake-h">
+        <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
+        <p class="note" id="volc"></p>
+        <div class="lines" id="quakes"></div>
+      </section>
+      <section class="card half" aria-labelledby="plane-h">
+        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
+        <div class="lines" id="planes"></div>
+        <p class="note" id="pdx"></p>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="fire-h" id="fire-card" hidden>
+      <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
+      <div class="lines" id="fires"></div>
+    </section>
     <div class="row">
       <section class="card side" aria-labelledby="moon-h">
         <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
@@ -236,6 +267,13 @@ h2{margin:0;font-size:17px;font-weight:700}
         <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
       </section>
     </div>
+    <section class="card" aria-labelledby="ski-h" id="ski-card" hidden>
+      <div class="head"><h2 id="ski-h">Mt. Hood ski report</h2><span class="meta" id="ski-meta"></span></div>
+      <p class="summary" id="ski-summary"></p>
+      <div class="facts" id="ski-facts"></div>
+      <div class="fc" id="ski-fc"></div>
+      <p class="note" id="ski-links"></p>
+    </section>
     <div class="row">
       <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
         <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
@@ -404,6 +442,9 @@ function render() {
   renderNews();
   renderComing();
   renderLocal();
+  renderSki();
+  renderFishing();
+  renderLive();
   renderMore();
   renderWorld();
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
@@ -874,7 +915,77 @@ async function renderLocal() {
       ${x.why ? `<p>${esc(x.why)}</p>` : ''}
       ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
-  $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden;
+  $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
+}
+
+function renderSki() {
+  const k = D.ski;
+  $('ski-card').hidden = !k || (!k.snow && !k.forecast);
+  if ($('ski-card').hidden) return;
+  const sn = k.snow, fc = k.forecast || [], av = k.avalanche;
+  const week = fc.reduce((a, d) => a + (d.snow_in || 0), 0);
+  const parts = [];
+  if (sn) parts.push(sn.depth_in > 0 ? `${sn.depth_in} in of snow on the ground at ${sn.station}` +
+    (sn.new_7d_in ? `, ${sn.new_7d_in} in new this week.` : '.') : `No snow on the ground yet at ${sn.station}.`);
+  parts.push(week >= 1 ? `About ${Math.round(week)} in of snow forecast at Timberline over the next 7 days.` : 'No real snow in the 7-day forecast at Timberline.');
+  if (av && av.danger && !av.off_season) parts.push(`Avalanche danger: ${av.danger}.`);
+  $('ski-summary').textContent = parts.join(' ');
+  $('ski-meta').textContent = sn ? `Snow measured ${fmtDate(sn.date)}` : '';
+  const facts = [];
+  if (sn) {
+    facts.push(['Snow depth', `${sn.depth_in} <small>in</small>`]);
+    facts.push(['Last 24 hours', `${sn.change_24h_in > 0 ? '+' : ''}${sn.change_24h_in ?? '–'} <small>in</small>`]);
+    if (sn.temp_f != null) facts.push(['Temperature', `${Math.round(sn.temp_f)}°`]);
+  }
+  if (fc[0] && fc[0].snow_level_ft) facts.push(['Snow level today', `${fc[0].snow_level_ft.toLocaleString()} <small>ft</small>`]);
+  if (av && av.danger && !av.off_season) facts.push(['Avalanche danger', esc(av.danger)]);
+  $('ski-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
+  $('ski-fc').innerHTML = fc.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
+    <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.snow_in >= 0.5 ? d.snow_in + '" snow' : '&nbsp;'}</span>
+    <span class="meta">${d.snow_level_ft ? 'level ' + (d.snow_level_ft / 1000).toFixed(1) + 'k ft' : ''}</span></div>`).join('');
+  $('ski-links').innerHTML = 'Lifts and grooming: ' + (k.resorts || []).map(r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>`).join(' · ') +
+    (av && av.url ? ` · <a href="${esc(av.url)}" target="_blank" rel="noopener">NWAC avalanche forecast</a>` : '');
+}
+
+function renderFishing() {
+  const f = D.fishing;
+  $('fish-card').hidden = !f;
+  if (!f) return;
+  const best = Math.max(...f.windows.map(w => w.score), 0);
+  $('fish-meta').textContent = `Off Sauvie Island · ${f.moon}`;
+  $('fish-times').innerHTML = f.windows.map(w => `<div><span>${w.score === best && best > 1 ? '<span class="pill">Best</span> ' : ''}${esc(w.why.join(', '))}</span>
+    <span style="white-space:nowrap;padding-left:12px">${clock(w.start)} – ${clock(w.end)}</span></div>`).join('') || '<div><span>No tide or moon times yet</span><span></span></div>';
+  $('fish-season').innerHTML = f.season.map(x => `<div><span><b style="font-weight:700">${esc(x.fish)}</b>${x.note ? `<br><small>${esc(x.note)}</small>` : ''}</span><span></span></div>`).join('');
+  const r = f.river || {};
+  const minis = [];
+  if (r.stage_ft != null) minis.push(['River level', `${r.stage_ft} <small>ft ${r.stage_change_ft > 0.2 ? 'rising' : r.stage_change_ft < -0.2 ? 'dropping' : 'steady'}</small>`]);
+  if (r.water_f != null) minis.push(['Water temp', `${r.water_f}°`]);
+  $('fish-river').innerHTML = minis.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
+  const dam = f.dam;
+  $('fish-dam').textContent = dam && Object.keys(dam.week).length ? `Fish over Bonneville Dam, last ${dam.days} days: ` +
+    Object.entries(dam.week).filter(([, v]) => v > 0).map(([k, v]) => `${v.toLocaleString()} ${k.toLowerCase()}`).join(', ') + '. Counts show what’s moving upriver past you.' : '';
+  $('fish-links').innerHTML = 'Check seasons and rules before you go: ' + f.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ');
+}
+
+function renderLive() {
+  const l = D.live || {};
+  const q = l.quakes, p = l.planes, fires = l.fires || [];
+  $('live-row').hidden = !q && !p;
+  if (q) {
+    $('quake-meta').textContent = `${q.count} within 190 miles · USGS`;
+    const v = Object.entries(q.volcano_counts || {}).filter(([, n]) => n > 0);
+    $('volc').textContent = v.length ? 'Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : 'Quiet under the Cascade volcanoes this week.';
+    $('quakes').innerHTML = q.biggest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${x.mag}</a> ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · felt by ${x.felt}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
+  }
+  if (p) {
+    $('plane-meta').textContent = `${p.count} planes within about 25 miles`;
+    $('planes').innerHTML = p.closest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(x.callsign)}</a><br><small>${x.feet.toLocaleString()} ft · ${x.mph} mph</small></span><span>${x.miles} mi</span></div>`).join('')
+      || '<div><span>Nothing overhead right now</span><span></span></div>';
+  }
+  const pdx = l.pdx;
+  $('pdx').textContent = pdx ? (pdx.delays.length ? 'PDX: ' + pdx.delays.map(d => `${d.type}${d.reason ? ' (' + d.reason + ')' : ''}${d.average ? ', average ' + d.average : ''}`).join('; ') : 'PDX: no FAA delays right now.') : '';
+  $('fire-card').hidden = !fires.length;
+  $('fires').innerHTML = fires.map(x => `<div><span><b style="font-weight:700">${esc(x.name)}</b><br><small>${esc(x.where)} · ${x.miles} miles away</small></span><span style="text-align:right">${x.acres.toLocaleString()} acres<br><small>${x.contained != null ? x.contained + '% contained' : ''}</small></span></div>`).join('');
 }
 
 function renderNews() {

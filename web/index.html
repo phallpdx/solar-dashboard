@@ -247,11 +247,15 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
         <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
         <p class="summary" id="out-summary"></p>
-        <p class="note" id="day-events" hidden></p>
+        <p class="note" id="day-events" hidden><span id="day-big"></span><span id="day-act"></span></p>
         <div class="facts" id="out-facts"></div>
         <div class="hours" id="hours" aria-label="Next 12 hours"></div>
       </section>
     </div>
+    <section class="card" aria-labelledby="plan-h" id="plan-card" hidden>
+      <div class="head"><h2 id="plan-h">Plan ahead</h2><span class="meta" id="plan-meta"></span></div>
+      <div class="lines" id="plan"></div>
+    </section>
     <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
       <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
       <div class="fc" id="forecast"></div>
@@ -343,23 +347,12 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Earthquakes, fires, planes and the sky</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
     <div class="sec-body">
-      <div class="row" id="live-row" hidden>
-        <section class="card half" aria-labelledby="quake-h">
-          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
-          <p class="note" id="volc"></p>
-          <div class="lines" id="quakes"></div>
-        </section>
-        <section class="card half" aria-labelledby="plane-h">
-          <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
-          <div class="lines" id="planes"></div>
-          <p class="note" id="pdx"></p>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="fire-h" id="fire-card" hidden>
-        <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
-        <div class="lines" id="fires"></div>
+      <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
+        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
+        <div class="lines" id="planes"></div>
+        <p class="note" id="pdx"></p>
       </section>
       <div class="row">
         <section class="card side" aria-labelledby="moon-h">
@@ -372,6 +365,17 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div class="lines" id="sky"></div>
           <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
           <div class="lines" id="iss"></div>
+        </section>
+      </div>
+      <div class="row" id="live-row" hidden>
+        <section class="card half" aria-labelledby="quake-h">
+          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
+          <p class="note" id="volc"></p>
+          <div class="lines" id="quakes"></div>
+        </section>
+        <section class="card half" aria-labelledby="fire-h" id="fire-card" hidden>
+          <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
+          <div class="lines" id="fires"></div>
         </section>
       </div>
     </div>
@@ -454,6 +458,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   <section class="group" data-sec="local" id="local" aria-labelledby="local-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">Food, drink, music, groceries and the mountain</p></div></div>
     <div class="sec-body">
+      <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
+        <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
+        <div class="lines" id="finds"></div>
+      </section>
       <section class="card" aria-labelledby="big-h" id="big-card" hidden>
         <div class="head"><h2 id="big-h">Big events in town</h2><span class="meta" id="big-meta"></span></div>
         <div class="lines" id="big"></div>
@@ -474,6 +482,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <p class="summary" id="ski-summary"></p>
         <div class="facts" id="ski-facts"></div>
         <div class="fc" id="ski-fc"></div>
+        <div id="ski-outlook" hidden>
+          <h3 class="sub">Season outlook</h3>
+          <p class="note" id="ski-season"></p>
+          <div class="lines" id="ski-open"></div>
+        </div>
         <p class="note" id="ski-links"></p>
       </section>
       <div class="row">
@@ -706,7 +719,7 @@ function render() {
   renderShips();
   renderNews();
   renderComing();
-  const waits = [renderLocal(), renderBluray(), renderKids(), renderBigEvents()];
+  const waits = [renderLocal(), renderBluray(), renderKids(), renderBigEvents(), renderPlan(), renderSkiOutlook(), renderFinds()];
   renderSki();
   renderDrives();
   waits.push(renderCoast());
@@ -1296,12 +1309,12 @@ function renderSki() {
     facts.push(['Last 24 hours', `${sn.change_24h_in > 0 ? '+' : ''}${sn.change_24h_in ?? '–'} <small>in</small>`]);
     if (sn.temp_f != null) facts.push(['Temperature', `${Math.round(sn.temp_f)}°`]);
   }
-  if (fc[0] && fc[0].snow_level_ft) facts.push(['Snow level today', `${fc[0].snow_level_ft.toLocaleString()} <small>ft</small>`]);
+  if (fc[0] && fc[0].snow_level_ft) facts.push(['Freezing level today', `${fc[0].snow_level_ft.toLocaleString()} <small>ft</small>`]);
   if (av && av.danger && !av.off_season) facts.push(['Avalanche danger', esc(av.danger)]);
   $('ski-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('ski-fc').innerHTML = fc.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
     <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.snow_in >= 0.5 ? d.snow_in + '" snow' : '&nbsp;'}</span>
-    <span class="meta">${d.snow_level_ft ? 'level ' + (d.snow_level_ft / 1000).toFixed(1) + 'k ft' : ''}</span></div>`).join('');
+    <span class="meta">${d.snow_level_ft ? 'freezes at ' + (d.snow_level_ft / 1000).toFixed(1) + 'k ft' : ''}</span></div>`).join('');
   $('ski-links').innerHTML = 'Lifts and grooming: ' + (k.resorts || []).map(r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>`).join(' · ') +
     (av && av.url ? ` · <a href="${esc(av.url)}" target="_blank" rel="noopener">NWAC avalanche forecast</a>` : '');
 }
@@ -1339,7 +1352,8 @@ function renderFishing() {
 function renderLive() {
   const l = D.live || {};
   const q = l.quakes, p = l.planes, fires = l.fires || [];
-  $('live-row').hidden = !q && !p;
+  $('plane-card').hidden = !p;
+  $('live-row').hidden = !q && !(l.fires || []).length;
   if (q) {
     $('quake-meta').textContent = `${q.count} within 190 miles · USGS`;
     const v = Object.entries(q.volcano_counts || {}).filter(([, n]) => n > 0);
@@ -1635,8 +1649,60 @@ async function renderBigEvents() {
     const d = new Date(g.utc), iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     if (iso === today || iso === tIso) near.push(`${D.sports[key].name || key} vs ${g.opponent} (${iso === today ? 'today' : 'tomorrow'} ${d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}, ${venue})`);
   }
-  $('day-events').hidden = !near.length;
-  $('day-events').innerHTML = near.length ? `<b>Big in town:</b> ${near.map(esc).join('; ')}.` : '';
+  $('day-big').innerHTML = near.length ? `<b>Big in town:</b> ${near.map(esc).join('; ')}.` : '';
+  syncDayEvents();
+}
+
+// ------------------------------------------------------------------ plan ahead and ski outlook
+// Both come from a daily web check (planahead.json, skioutlook.json); every item links its source.
+const daysTo = iso => Math.round((new Date(iso + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
+const soonLabel = n => n <= 0 ? 'Today' : n === 1 ? 'Tomorrow' : n < 7 ? `In ${n} days` : null;
+async function renderPlan() {
+  const pa = await getJson('planahead.json');
+  const today = todayIso();
+  const key = x => x.starts && x.starts >= today ? x.starts : (x.by || '9999');
+  const items = ((pa && pa.items) || []).filter(x => (x.by || x.starts || '9999') >= today && !(x.by && x.by < today))
+    .sort((a, b) => key(a).localeCompare(key(b)));
+  $('plan-card').hidden = !items.length;
+  $('plan-meta').textContent = pa && pa.updated ? `Checked ${dayLabel(pa.updated)} · buy-by dates, presales and deadlines` : '';
+  $('plan').innerHTML = items.map(x => {
+    const d = key(x) === '9999' ? null : key(x), n = d ? daysTo(d) : null, soon = n != null ? soonLabel(n) : null;
+    const lead = x.starts && x.starts >= today ? 'Starts' : x.by ? 'By' : '';
+    return `<div><span><b style="font-weight:700">${esc(x.title)}</b>${x.kind ? ` <span class="pill">${esc(x.kind)}</span>` : ''}
+      <br><small>${[x.action, x.why].filter(Boolean).map(esc).join(' · ')}</small>${cite(x.sources)}</span>
+      <span style="white-space:nowrap;padding-left:12px;text-align:right">${soon ? `<b style="color:#B42318">${soon}</b><br>` : ''}${d ? `<small>${lead} ${dayLabel(d)}</small>` : ''}</span></div>`;
+  }).join('');
+  const urgent = items.filter(x => { const d = key(x); return d !== '9999' && daysTo(d) <= 2; });
+  $('day-act').innerHTML = urgent.length ? `<b>Act soon:</b> ${urgent.map(x => esc(x.title)).join('; ')}.` : '';
+  syncDayEvents();
+}
+function syncDayEvents() {
+  const big = $('day-big').innerHTML, act = $('day-act').innerHTML;
+  $('day-events').hidden = !big && !act;
+  $('day-act').style.display = act ? 'block' : 'none';
+}
+async function renderSkiOutlook() {
+  const so = await getJson('skioutlook.json');
+  const box = $('ski-outlook');
+  box.hidden = !so;
+  if (!so) return;
+  const s = so.season || {};
+  $('ski-season').innerHTML = (s.summary ? esc(s.summary) : '') + cite(s.sources) + (so.updated ? ` <span class="cite">Checked ${dayLabel(so.updated)}</span>` : '');
+  $('ski-open').innerHTML = (so.openings || []).map(o => `<div><span><b style="font-weight:700">${esc(o.resort)}</b>${o.status ? ` <span class="pill">${esc(o.status)}</span>` : ''}${o.note ? `<br><small>${esc(o.note)}</small>` : ''}${cite(o.sources)}</span>
+    <span style="white-space:nowrap;padding-left:12px">${o.date ? dayLabel(o.date) : ''}</span></div>`).join('');
+  if ($('ski-card').hidden && (so.openings || []).length) $('ski-card').hidden = false;
+}
+
+// ------------------------------------------------------------------ new Portland food finds
+async function renderFinds() {
+  const ff = await getJson('foodfinds.json');
+  const items = (ff && ff.items) || [];
+  $('finds-card').hidden = !items.length;
+  $('finds-meta').textContent = ff && ff.updated ? `Checked ${dayLabel(ff.updated)} · new brands, products and awards` : '';
+  $('finds').innerHTML = items.map(x => `<div><span><b style="font-weight:700">${esc(x.name)}</b>${x.maker && x.maker !== x.name ? ` <small>${esc(x.maker)}</small>` : ''}${x.kind ? ` <span class="pill">${esc(x.kind)}</span>` : ''}
+    ${x.what ? `<br><small>${esc(x.what)}</small>` : ''}
+    ${(x.where_to_buy || []).length ? `<br><small><b>Where to buy:</b> ${x.where_to_buy.map(w => w.url ? `<a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.store)}</a>` : esc(w.store)).join(', ')}</small>` : ''}${cite(x.sources)}</span>
+    <span style="white-space:nowrap;padding-left:12px">${x.date ? `<small>${dayLabel(x.date)}</small>` : ''}</span></div>`).join('');
 }
 
 // ------------------------------------------------------------------ 4K Blu-ray deals
@@ -1803,7 +1869,9 @@ const SOURCES = {
   'shell-h': [['Oregon Dept. of Agriculture shellfish closures', 'https://www.oregon.gov/oda/programs/foodsafety/shellfish/pages/shellfishclosures.aspx'], ['ODFW crabbing and clamming report', 'https://myodfw.com/recreation-report/crabbing-clamming-report']],
   'deal-h': [['Store flyers via Flipp', 'https://flipp.com/']],
   'food-new-h': [DAILY],
-  'ski-h': [['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
+  'ski-h': [['Season outlook: daily web check of NOAA, resort and NWAC pages, linked on each item', ''], ['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
+  'plan-h': [['Daily web check of venue, ticketing, resort and agency pages; each item links its source', '']],
+  'finds-h': [DAILY],
   'big-h': [['Daily web check of venue, league and city event pages; each event links its source', ''], ['Home games: ESPN schedule', 'https://www.espn.com/']],
   'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY],
   'tv-h': [['TVmaze schedule', 'https://www.tvmaze.com/']],

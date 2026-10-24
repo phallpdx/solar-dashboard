@@ -63,6 +63,8 @@ def forecast():
     with _open(url) as resp:
         f = json.load(resp)
     d, h = f["daily"], f.get("hourly") or {}
+    # Open-Meteo reports heights in feet when imperial units are requested, otherwise meters.
+    to_ft = 1 if (f.get("hourly_units") or {}).get("freezing_level_height") == "ft" else 3.281
     out = []
     for i, day in enumerate(d["time"]):
         levels = [v for t, v in zip(h.get("time", []), h.get("freezing_level_height", []))
@@ -70,7 +72,7 @@ def forecast():
         out.append({"date": day, "code": d["weather_code"][i],
                     "hi": round(d["temperature_2m_max"][i]), "lo": round(d["temperature_2m_min"][i]),
                     "snow_in": round(d["snowfall_sum"][i] or 0, 1), "gust": round(d["wind_gusts_10m_max"][i] or 0),
-                    "snow_level_ft": round(min(levels) * 3.281 / 100) * 100 if levels else None})
+                    "snow_level_ft": round(min(levels) * to_ft / 100) * 100 if levels else None})
     return out
 
 

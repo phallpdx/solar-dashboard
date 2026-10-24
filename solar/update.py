@@ -148,6 +148,14 @@ def fetch_solar(state, now_utc):
                         raise
         solar["power"] = series
         solar["power_day"] = today
+        # Remember every channel that has ever made power. Dual-channel microinverters can have an input
+        # with no panel wired to it; those never produce and are left off the panel grid.
+        live = set(solar.get("ever_live") or [])
+        for data in series.values():
+            for key, values in (data.get("power") or {}).items():
+                if max((fnum(v) for v in values), default=0) >= 5:
+                    live.add(key)
+        solar["ever_live"] = sorted(live)
         solar["last_power_fetch"] = now_utc.isoformat()
         if evening_final:
             solar["final_day"] = today
@@ -211,6 +219,10 @@ def solar_view(state, now_utc):
 
     # Judge panels on energy so far today, not the latest reading: late in the
     # day roof angles and shade make instant watts uneven even on healthy panels.
+    # Channels that have never made power (no panel attached) drop out once others are producing.
+    ever = set(solar.get("ever_live") or [])
+    if ever and any(panels[k][1] > 0.05 for k in panels):
+        panels = {k: v for k, v in panels.items() if k in ever}
     names = sorted(panels, key=_panel_sort)
     median = statistics.median(panels[k][1] for k in names) if names else 0
     panel_list = [{

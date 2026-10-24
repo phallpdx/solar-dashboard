@@ -1,13 +1,19 @@
 {
   "updated": "2026-10-24",
   "deals": [
-    {"title": "Arrow Video Shocktober", "store": "Arrow Video", "detail": "Up to 50% off 4K and Blu-ray, plus 2 for $60 on 4K UHD", "ends": "2026-11-02", "url": "https://www.arrowvideo.com/c/campaigns/shocktober/"},
+    {"title": "Kino Lorber Fall Haul", "store": "Kino Lorber", "detail": "Over 900 titles, with many 4Ks at $17.99 to $18.99, like 3 Days of the Condor and Abbott and Costello Meet Frankenstein; Paul 4K $15.99 and Enter the Ninja 4K $14.99. Reportedly extended to Oct 27 at noon ET.", "ends": "2026-10-27", "url": "https://kinolorber.com/collection/fall-haul-sale-2026"},
+    {"title": "Arrow Video Shocktober", "store": "Arrow Video", "detail": "Up to 50% off hundreds of 4K and Blu-ray titles, plus 2 for $60 on 4K UHD", "ends": "2026-11-02", "url": "https://www.arrowvideo.com/c/campaigns/shocktober/"},
+    {"title": "31 Days of Syntober", "store": "Vinegar Syndrome", "detail": "A new staff-picked film each day at 50% off list, with 3x reward points", "ends": "2026-10-31", "url": "https://vinegarsyndrome.com/pages/31-days-of-syntober"},
+    {"title": "Shout! Factory sale at Amazon", "store": "Amazon", "detail": "Shout and Scream Factory discs discounted, including the Bubba Ho-Tep 4K SteelBook Collector's Edition at $26 (reported Oct 21)", "ends": null, "url": "https://slickdeals.net/f/20187141-shout-factory-blu-ray-sale-at-amazon"},
+    {"title": "Amazon 4K 3 for $33", "store": "Amazon", "detail": "Mix any three eligible 4Ks, about $11 each, like 48 Hrs./Another 48 Hrs., Rocketman and Star Trek (reported Oct 1)", "ends": null, "url": "https://slickdeals.net/f/20085609-4k-uhd-blu-rays-48-hrs-another-48-hrs-double-feature-rocketman-star-trek-2009-3-for-33-many-more-free-s-h"},
     {"title": "Amazon horror 4K sale", "store": "Amazon", "detail": "Nope, The Thing, Sinners and The Shining around $13 each (reported Oct 2; prices may have changed)", "ends": null, "url": "https://kotaku.com/amazons-very-good-4k-uhd-blu-ray-sale-is-back-but-this-time-filled-with-horror-and-spooky-movies-2000739388"},
-    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "Goonies, E.T. and more for Prime members (reported Oct 6)", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"}
+    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "2001: A Space Odyssey, The Shining, The Thing and more for Prime members (reported Oct 6)", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"},
+    {"title": "Vinegar Syndrome 20% off", "store": "Orbit DVD", "detail": "20% off select Vinegar Syndrome titles, stackable with other deals and free shipping", "ends": "2026-10-31", "url": "https://www.orbitdvd.com/collections/vinegar-syndrome-october-2026-sale"}
   ],
   "upcoming": [
-    {"title": "Barnes & Noble Criterion 50% off", "detail": "Usually runs in November; not announced yet"},
-    {"title": "Vinegar Syndrome Black Friday sale", "detail": "Usually late November"}
+    {"title": "Barnes & Noble Criterion 50% off", "detail": "Month-long half-off Criterion sale usually runs through November; not announced yet"},
+    {"title": "Vinegar Syndrome Black Friday sale", "detail": "Usually late November"},
+    {"title": "Next Criterion flash sale", "detail": "The 24-hour 50% off sale just ran around Oct 20; they come about every six months, so the next is likely spring 2027"}
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"
 }

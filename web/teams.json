@@ -1,34 +1,34 @@
-{"updated": "2026-10-24", "updated_at": "2026-10-24T11:02:06Z", "teams": {
+{"updated": "2026-10-24", "updated_at": "2026-10-24T14:10:02Z", "teams": {
   "blazers": {
     "mood": "Happy, not satisfied",
-    "pulse": "Portland is 2-0 after a 128-120 win in Sacramento, but this one wasn't pretty. The Blazers trailed by 12 early and needed a 44-point third quarter to pull away, and Blazer's Edge called the defense a 'wax museum' as the Kings drove right at Dame and Ja. Fans will take the W and worry about the defense later.",
+    "pulse": "Portland is 2-0 after a 128-120 comeback win in Sacramento, its first road win of the year. It wasn't pretty, though: the Blazers needed a 44-point third quarter, and Blazer's Edge was rough on a defense the Kings drove right through. Fans will take the W and worry about the defense later.",
     "storylines": [
-      "Deni Avdija led the way with 26 points, 6 rebounds and 6 assists; Lillard and Toumani Camara had 19 each",
-      "A 15-0 third-quarter run flipped it, and Portland iced it at the line after Sacramento got within 121-118",
-      "Defense was the worry: Sabonis put up 27, 19 and 10, and Kings rookie Darius Acuff Jr. scored 33",
-      "Shooting was streaky, 14 of 49 from three overall",
-      "Next up: at the Lakers on Tuesday"
+      "Deni Avdija led with 26 points, 6 rebounds and 6 assists; Lillard and Toumani Camara had 19 each",
+      "A 15-0 third-quarter run flipped it, and Avdija iced it at the line after Sacramento got within 121-118",
+      "Defense was the worry: Sabonis had 27, 19 and 10, and Kings rookie Darius Acuff Jr. scored 33",
+      "Next up: at the Lakers on Tuesday, 8 PT on NBC and Peacock"
     ]
   },
   "timbers": {
     "mood": "Frustrated",
-    "pulse": "Tonight might be the last real shot. The Timbers are winless in seven, 11th in the West and five points behind Colorado for the last playoff spot with four games left. They host Charlotte, who can clinch its own playoff berth, so fans want a win and don't expect much.",
+    "pulse": "Tonight feels like the last real shot. The Timbers (9-14-7, 34 points) are tied for 11th in the West and winless in seven. They host Charlotte, who can lock up a playoff spot with just a draw, so fans want a win and aren't expecting much.",
     "storylines": [
-      "Charlotte at Providence Park tonight, 7:30 PT",
-      "34 points from 30 games, with seven straight games without a win",
-      "Charlotte has won both previous meetings",
-      "One preview predicts a 1-1 draw, which wouldn't be enough"
+      "Charlotte at Providence Park tonight, 7:30 PT on Apple TV",
+      "First-ever Charlotte visit to Portland; Charlotte has won both previous meetings",
+      "Kristoffer Velde has been the bright spot with 17 goal contributions",
+      "Watch Charlotte's Idan Toklomati, who has a club-record 13 goals",
+      "Previews are split between a 2-1 Timbers win and a 1-1 draw"
     ]
   },
   "f1": {
     "mood": "On edge",
-    "pulse": "Ferrari owned Friday in Austin. Charles Leclerc topped both practices, but Kimi Antonelli was only 0.042s behind in FP2, so his title-clinching weekend is still on track. Qualifying is today and the race is Sunday.",
+    "pulse": "Ferrari owned Friday in Austin, with Charles Leclerc topping both practices, but Kimi Antonelli was only 0.042s back in FP2. Qualifying is today at 2 PT, and Antonelli can clinch the title in Sunday's race.",
     "storylines": [
-      "Antonelli wins the title Sunday with a win if Russell is 9th or lower and Hamilton is 5th or lower; he leads Russell by 102",
-      "Leclerc led FP1 and FP2, with Verstappen 2nd in FP1 and 3rd in FP2; Russell was 5th in FP2",
+      "Antonelli leads Russell by 102 and clinches Sunday with a win if Russell is 9th or lower and Hamilton is 5th or lower",
+      "Leclerc led FP1 and FP2; Verstappen was 2nd and 3rd, Russell 5th in FP2",
       "Antonelli pitted in practice to fix a seat that was moving too much",
       "Stewards cleared Russell after a moment where Leclerc went off track",
-      "The bumpy COTA surface kept tripping drivers up on their qualifying sims"
+      "The bumpy COTA surface is tripping drivers up on qualifying runs"
     ]
   }
 }}

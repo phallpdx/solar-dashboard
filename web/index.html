@@ -198,13 +198,29 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .shell b{font-size:15px}.shell span{font-size:13px;font-weight:600}
 .mixbar{display:flex;height:22px;border-radius:999px;overflow:hidden;background:var(--grid)}
 .mixbar i{display:block;height:100%}
+.hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.refresh{display:flex;align-items:center;gap:12px}
+.refresh .link{color:var(--ink);opacity:.75}
+#refresh-btn[disabled]{opacity:.6;cursor:wait}
+@media (max-width:600px){.hero-right{align-items:flex-start}}
+.recap{background:var(--tint);border-radius:14px;padding:12px 14px;margin-top:8px}
+.recap b{display:block;font-size:14.5px}
+.recap p{margin:4px 0 0;font-size:13.5px;line-height:1.45;color:var(--body)}
+.recap small{display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:var(--accent)}
+.stale{font-size:12px;font-weight:700;color:#9A5B00;margin:4px 0 0}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div><div class="eyebrow" id="stamp">Loading…</div><h1 id="hello">Your day at home</h1></div>
-    <div class="hero-wx" id="hero-wx"></div>
+    <div class="hero-right">
+      <div class="hero-wx" id="hero-wx"></div>
+      <div class="refresh">
+        <button type="button" class="mini" id="refresh-btn" title="Load the newest data now">↻ Refresh</button>
+        <a class="link" id="full-update" href="https://github.com/phallpdx/solar-dashboard/actions/workflows/update.yml" target="_blank" rel="noopener" title="Opens GitHub; press Run workflow there">Run a full update</a>
+      </div>
+    </div>
   </header>
 
   <nav class="secnav" id="secnav" aria-label="Jump to section"></nav>
@@ -1354,6 +1370,15 @@ function teamInsight(t, r) {
   return injHtml + news + redditBlock(r);
 }
 
+// The fan pulse is written twice a day; flag it when a game has finished since.
+function pulseStale(tj, t) {
+  const l = t && t.last;
+  if (!l || !l.completed || !l.utc) return '';
+  const end = new Date(new Date(l.utc).getTime() + 2.5 * 3600e3);
+  const written = tj.updated_at ? new Date(tj.updated_at) : new Date(tj.updated + 'T12:00:00-07:00');
+  return written < end ? `<p class="stale">Written before the ${l.won ? 'win' : 'loss'} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)}; the next pulse comes after 11 pm or 7 am.</p>` : '';
+}
+
 function renderMore() {
   renderGigs();
   const sp = D.sports, mk = D.markets;
@@ -1365,9 +1390,15 @@ function renderMore() {
     const g = t.next, l = t.last;
     const next = g ? `<div class="lines"><div><span>Next: ${g.home ? 'vs' : 'at'} ${esc(g.opponent)}${g.note ? `<br><small>${esc(g.note)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${localWhen(g.utc)}</span></div>
       ${g.tv ? `<div><span>Watch on</span><span>${esc(g.tv)}</span></div>` : ''}</div>` : '<p class="note">No game scheduled yet.</p>';
-    const last = l ? `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>` : '';
+    const last = !l ? '' : !l.completed ? `<p class="note"><b>Live now:</b> ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)}.</p>`
+      : `<p class="note">Last game: ${l.won ? 'won' : 'lost'} ${esc(l.us)}–${esc(l.them)} ${l.home ? 'vs' : 'at'} ${esc(l.opponent)} on ${localDay(l.utc)}.</p>`;
+    const rc = t.recap && !t.recap.error && l && l.completed && t.recap.game_id === l.id ? t.recap : null;
+    const recap = rc ? `<div class="recap">${rc.headline ? `<b>${rc.url ? `<a href="${esc(rc.url)}" target="_blank" rel="noopener">${esc(rc.headline)}</a>` : esc(rc.headline)}</b>` : ''}
+      ${rc.summary ? `<p>${esc(rc.summary)}</p>` : ''}
+      ${rc.leaders.length ? `<small>${rc.leaders.slice(0, 3).map(x => `${esc(x.stat)}: ${esc(x.player)} ${esc(x.value)}`).join(' · ')}</small>` : ''}
+      ${rc.goals.length ? `<small>Goals: ${rc.goals.map(x => `${esc(x.player || '?')}${x.minute ? ` (${esc(x.minute)})` : ''}`).join(', ')}</small>` : ''}</div>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}</section>`);
   }
   $('teams').innerHTML = teams.join('');
   fetch('teams.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(tj => {
@@ -1377,7 +1408,7 @@ function renderMore() {
       if (!el || !t.pulse) continue;
       el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3><p class="note">${esc(t.pulse)}</p>` +
         ((t.storylines || []).length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${t.storylines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
-        `<p class="meta" style="margin:4px 0 0">Summary as of ${fmtDate(tj.updated)}</p>`;
+        `<p class="meta" style="margin:4px 0 0">Summary as of ${tj.updated_at ? localWhen(tj.updated_at) : fmtDate(tj.updated)}</p>` + pulseStale(tj, sp && sp[key]);
     }
   }).catch(() => {});
 
@@ -1791,6 +1822,14 @@ document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click'
   if (D.sample && status && status !== 'ok') D.realStatus = status;
   render();
   setInterval(async () => { const n = await load(); if (n && !n.sample) { D = n; render(); } }, 15 * 60 * 1000);
+  $('refresh-btn').onclick = async () => {
+    const btn = $('refresh-btn');
+    btn.disabled = true; btn.textContent = '↻ Loading…';
+    const n = await load();
+    if (n && !n.sample) { D = n; render(); }
+    btn.disabled = false; btn.textContent = '↻ Refreshed';
+    setTimeout(() => { btn.textContent = '↻ Refresh'; }, 4000);
+  };
 })();
 </script>
 </body>

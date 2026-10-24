@@ -574,11 +574,25 @@ def _refresh(store, key, fn, every_hours, now_utc, errors):
 
 def fetch_sports(state, now_utc):
     store, errors = state.setdefault("sports", {}), []
-    if store.get("v") != 5:  # new fields (injuries, news): fetch again now
+    if store.get("v") != 6:  # new fields (game ids and recaps): fetch again now
         store.clear()
-        store["v"] = 5
-    _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), 2.5, now_utc, errors)
-    _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), 2.5, now_utc, errors)
+        store["v"] = 6
+    watch = store.setdefault("watch", {})
+
+    def every(key):
+        """Check every run from tip-off until a few hours after, so results and recaps show up right away."""
+        for utc in (watch.get(key), ((store.get(key) or {}).get("next") or {}).get("utc")):
+            try:
+                start = dt.datetime.fromisoformat((utc or "").replace("Z", "+00:00"))
+            except ValueError:
+                continue
+            if start - dt.timedelta(minutes=10) <= now_utc <= start + dt.timedelta(hours=5):
+                watch[key] = utc
+                return 0
+        return 2.5
+
+    _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), every("blazers"), now_utc, errors)
+    _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), every("timbers"), now_utc, errors)
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
     reddit = store.setdefault("reddit", {})
     for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1")):
@@ -837,7 +851,7 @@ def build(state, status, now_utc):
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
-        "sports": {**{k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k not in ("v", "reddit")},
+        "sports": {**{k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k not in ("v", "reddit", "watch")},
                    "reddit": {k: v for k, v in ((state.get("sports") or {}).get("reddit") or {}).items()
                               if not k.endswith("_at")}} if state.get("sports") else None,
         "markets": (state.get("markets") or {}).get("quotes"),

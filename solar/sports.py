@@ -44,6 +44,7 @@ def _game(event, team_id):
     broadcasts = [n for b in comp.get("broadcasts", []) for n in (b.get("names") or
                   [b.get("media", {}).get("shortName")]) if n]
     return {
+        "id": event.get("id"),
         "utc": event.get("date"),
         "opponent": (them or {}).get("team", {}).get("displayName"),
         "home": (us or {}).get("homeAway") == "home",
@@ -139,10 +140,47 @@ def team(league_path, name, standings_level=None):
         "standing": info.get("standingSummary"),
         "group_rank": rank,
         "last": done[-1] if done else None,
+        "recap": _safe(lambda: recap(league_path, done[-1], team_id)) if done and _recent_enough(done[-1]) else None,
         "next": upcoming[0] if upcoming else None,
         "injuries": _safe(lambda: injuries(league_path, team_id)),
         "news": _safe(lambda: news(league_path, team_id, ("Portland", name.split()[-1]))),
     }
+
+
+def _recent_enough(game, days=4):
+    cutoff = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=days)).isoformat()[:16]
+    return bool(game.get("id")) and (game.get("utc") or "") >= cutoff
+
+
+def recap(league_path, game, team_id):
+    """What happened in the last game: ESPN's recap story, our top performers and, for soccer, who scored."""
+    data = _get(f"{ESPN}/{league_path}/summary?event={game['id']}")
+    art = data.get("article") or {}
+    out = {"game_id": game["id"], "headline": art.get("headline"),
+           "summary": art.get("description") or None, "leaders": [], "goals": []}
+    story = re.sub(r"<[^>]+>", " ", art.get("story") or "")
+    story = re.sub(r"\s+", " ", story).strip()
+    if story and not out["summary"]:
+        out["summary"] = " ".join(re.split(r"(?<=[.!?]) ", story)[:2])[:400]
+    for side in data.get("leaders") or []:
+        if str((side.get("team") or {}).get("id")) != str(team_id):
+            continue
+        for cat in side.get("leaders") or []:
+            top = (cat.get("leaders") or [{}])[0]
+            who = (top.get("athlete") or {}).get("displayName")
+            if who:
+                out["leaders"].append({"stat": cat.get("displayName") or cat.get("name"), "player": who,
+                                       "value": top.get("displayValue")})
+    for ev in data.get("keyEvents") or []:
+        kind = ((ev.get("type") or {}).get("text") or "").lower()
+        if "goal" in kind and str((ev.get("team") or {}).get("id")) == str(team_id):
+            who = ", ".join((p.get("athlete") or {}).get("displayName", "") for p in ev.get("participants") or [])[:80]
+            out["goals"].append({"minute": (ev.get("clock") or {}).get("displayValue"), "player": who or None})
+    links = [l.get("href") for l in ((data.get("header") or {}).get("links") or []) if "recap" in (l.get("rel") or [])]
+    out["url"] = links[0] if links else None
+    if not (out["headline"] or out["leaders"] or out["goals"]):
+        raise RuntimeError("ESPN had no recap yet")
+    return out
 
 
 def _safe(fn):

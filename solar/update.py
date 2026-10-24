@@ -27,6 +27,8 @@ from . import alerts, ambient, aps, birds, coastsafety, deals, fishing, garden, 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
 MIN_GAP_MIN = int(os.environ.get("APS_MIN_MINUTES", "50"))
+# Google lists 5,000 free Pollen API calls a month; never go past that.
+POLLEN_MONTHLY_CAP = int(os.environ.get("POLLEN_MONTHLY_CAP", "5000"))
 DAY_START, DAY_END = 6, 20  # local hours when panels get polled
 COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 
@@ -713,7 +715,18 @@ def fetch_extras(state, now_utc):
     _refresh(store, "roads", roads.incidents, 0.3, now_utc, errors)
     out = state.get("outside") or {}
     if env("GOOGLE_POLLEN_KEY") and out.get("lat"):
-        _refresh(store, "pollen", lambda: pollen.forecast(out["lat"], out["lon"], env("GOOGLE_POLLEN_KEY")), 6, now_utc, errors)
+        # Count every attempt (failed ones too) against the monthly free cap.
+        month = today.strftime("%Y-%m")  # Google bills by Pacific-time month
+        if (store.get("pollen_calls") or {}).get("month") != month:
+            store["pollen_calls"] = {"month": month, "count": 0}
+        calls = store["pollen_calls"]
+
+        def pollen_call():
+            if calls["count"] >= POLLEN_MONTHLY_CAP:
+                raise RuntimeError(f"monthly cap of {POLLEN_MONTHLY_CAP} calls reached")
+            calls["count"] += 1
+            return pollen.forecast(out["lat"], out["lon"], env("GOOGLE_POLLEN_KEY"))
+        _refresh(store, "pollen", pollen_call, 6, now_utc, errors)
     if env("EBIRD_KEY") and out.get("lat"):
         _refresh(store, "birds", lambda: birds.notable(out["lat"], out["lon"], env("EBIRD_KEY")), 3, now_utc, errors)
     return "; ".join(errors) or None

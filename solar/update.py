@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, deals, fishing, garden, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
+from . import alerts, ambient, aps, coastsafety, deals, fishing, garden, grid, health, live, markets, news, outside, pge, places, releases, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -451,6 +451,8 @@ def fetch_outside(state, now_utc):
     attempt("moon_today", lambda: sky.usno_day(now.date(), lat, lon, tz_hours), 6)
     attempt("phases", lambda: sky.usno_phases(now.date()), 12)
     attempt("aurora", sky.aurora, 3)
+    attempt("iss_tle", sky.iss_tle, 12)
+    attempt("launches", sky.launches, 3)
     attempt("nws_alerts", lambda: alerts.nws(lat, lon))
     attempt("birds", lambda: outside.birds(lat, lon), 6)
     attempt("blooms", lambda: outside.blooms(lat, lon), 12)
@@ -542,8 +544,19 @@ def outside_view(state, now_utc):
         "phases": [p for p in (out.get("phases") or sky.mean_phases(now_utc)) if p["utc"] > now_utc.isoformat()][:4]
                   or sky.mean_phases(now_utc),
         "aurora": out.get("aurora"),
-        "sky_events": sky.upcoming_events(now_utc, out["lat"], out["lon"]),
+        "sky_events": sorted(sky.upcoming_events(now_utc, out["lat"], out["lon"])
+                             + sky.launch_events(out.get("launches"), out["lat"], out["lon"], now_utc),
+                             key=lambda e: e["utc"])[:10],
+        "iss": _iss(out, now_utc),
+        "stargazing": sky.stargazing(next_hours, sky.moon_state(now_utc)["lit_pct"], now),
     }
+
+
+def _iss(out, now_utc):
+    try:
+        return sky.iss_passes(out["iss_tle"], out["lat"], out["lon"], now_utc) if out.get("iss_tle") else None
+    except Exception:
+        return None
 
 
 # ---------------------------------------------------------------- Sports, markets, ships
@@ -659,6 +672,16 @@ def fetch_live(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_extras(state, now_utc):
+    """Grid mix, what's going around, and shellfish safety at the coast."""
+    store, errors = state.setdefault("extras", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    _refresh(store, "grid", grid.status, 0.3, now_utc, errors)
+    _refresh(store, "health", lambda: health.wastewater(today), 12, now_utc, errors)
+    _refresh(store, "shellfish", coastsafety.status, 6, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def garden_view(state, out, now_utc):
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
     soil = None
@@ -747,9 +770,9 @@ def build(state, status, now_utc):
     tz = zone(solar["timezone"] if solar else None)
     today = now_utc.astimezone(tz).strftime("%Y-%m-%d")
 
-    grid = {}
+    meter = {}
     for r in rows:
-        g = grid.setdefault(r["date"], {"import": 0.0, "export": 0.0})
+        g = meter.setdefault(r["date"], {"import": 0.0, "export": 0.0})
         g["import"] += r["import"]
         g["export"] += r["export"]
 
@@ -764,7 +787,7 @@ def build(state, status, now_utc):
     for i in range(29, -1, -1):
         d = (dt.date.fromisoformat(today) - dt.timedelta(days=i)).isoformat()
         produced = (solar or {}).get("daily", {}).get(d)
-        g = grid.get(d)
+        g = meter.get(d)
         used = round(produced + g["import"] - g["export"], 1) if g and produced is not None else None
         sun = (((weather or {}).get("days") or {}).get(d, {}).get("sun_kwh_m2") if use_station
                else model_sun.get(d))
@@ -834,6 +857,10 @@ def build(state, status, now_utc):
         "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
                   if k in ("stores", "missing")} or None,
         "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
+        "grid": (state.get("extras") or {}).get("grid"),
+        "health": (state.get("extras") or {}).get("health"),
+        "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
+                      "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }
 
 
@@ -846,7 +873,7 @@ def main():
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
-                     ("live", fetch_live), ("places", fetch_places),
+                     ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships)):
         try:
             status[name] = fn(state, now_utc) or "ok"

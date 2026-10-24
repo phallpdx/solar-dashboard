@@ -53,7 +53,7 @@ jobs:
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |
-          pip install --quiet tzdata websockets
+          pip install --quiet tzdata websockets sgp4
           python -m solar.update
 
       - name: Save data

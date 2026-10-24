@@ -186,6 +186,18 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .learn p{margin:0 0 8px}
 .secnav a .ic{font-size:16px}
 .fold-note{cursor:pointer}
+.bugs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.bug{border-radius:16px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:6px}
+.bug b{font-size:15px}
+.bug .lvl{font-size:20px;font-weight:800}
+.bug small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.meter{display:flex;gap:3px}.meter i{flex:1;height:8px;border-radius:4px;background:var(--grid)}
+.shells{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.shell{border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.shell.ok{background:#E6F4EA;color:#14532D}.shell.no{background:#FDECEC;color:#7A1D16}
+.shell b{font-size:15px}.shell span{font-size:13px;font-weight:600}
+.mixbar{display:flex;height:22px;border-radius:999px;overflow:hidden;background:var(--grid)}
+.mixbar i{display:block;height:100%}
 </style>
 </head>
 <body>
@@ -254,6 +266,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
         </section>
       </div>
+      <section class="card" aria-labelledby="bug-h" id="bug-card" hidden>
+        <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
+        <div class="bugs" id="bugs"></div>
+        <p class="note" id="bug-note"></p>
+      </section>
     </div>
   </section>
 
@@ -320,7 +337,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         </section>
         <section class="card wide" aria-labelledby="sky-h">
           <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
+          <p class="summary" id="stargaze" hidden></p>
           <div class="lines" id="sky"></div>
+          <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
+          <div class="lines" id="iss"></div>
         </section>
       </div>
     </div>
@@ -377,6 +397,11 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
         </section>
       </div>
+      <section class="card" aria-labelledby="shell-h" id="shell-card" hidden>
+        <div class="head"><h2 id="shell-h">Clamming and crabbing</h2><span class="meta" id="shell-meta"></span></div>
+        <div class="shells" id="shells"></div>
+        <p class="note" id="shell-note"></p>
+      </section>
     </div>
   </section>
 
@@ -494,8 +519,15 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <section class="group" data-sec="solar" id="solar" aria-labelledby="solar-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">Power curves, 30 days, your PGE bill and every panel</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">The grid right now, power curves, your PGE bill and every panel</p></div></div>
     <div class="sec-body">
+      <section class="card" aria-labelledby="grid-h" id="grid-card" hidden>
+        <div class="head"><h2 id="grid-h">Northwest grid right now</h2><span class="meta" id="grid-meta"></span></div>
+        <p class="summary" id="grid-summary"></p>
+        <div class="mixbar" id="grid-bar" role="img"></div>
+        <div class="legend" id="grid-legend"></div>
+        <p class="note" id="grid-note"></p>
+      </section>
       <section class="card" aria-labelledby="main-h">
         <div class="head"><h2 id="main-h">Power through the day</h2>
           <div class="seg" role="group" aria-label="Time range">
@@ -626,6 +658,9 @@ function render() {
   waits.push(renderCoast());
   renderFishing();
   renderGarden();
+  renderHealth();
+  renderShellfish();
+  renderGrid();
   renderLive();
   renderMore();
   renderWorld();
@@ -954,8 +989,16 @@ function renderSky(o) {
     <div class="lines">${(o.phases || []).map(p => `<div><span>${esc(p.phase)}</span><span>${localDay(p.utc)}</span></div>`).join('')}</div>`;
   const a = o.aurora;
   $('aurora').textContent = a ? (a.kp >= 6 ? `Aurora possible ${localDay(a.when_utc)} (Kp ${a.kp})` : `Aurora unlikely (Kp up to ${a.kp})`) : '';
-  $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${localDay(e.utc)}</span></div>`).join('');
+  const sg = o.stargazing;
+  $('stargaze').hidden = !sg;
+  if (sg) $('stargaze').textContent = `${sg.verdict} (${sg.cloud}% cloud cover 9 pm to 1 am, moon ${m.lit_pct}% lit).` + (sg.good ? ' Good night to look up.' : '');
+  const tm = iso => new Date(iso).toLocaleTimeString(undefined, {hour: 'numeric', minute: '2-digit'});
+  $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${e.kind === 'launch' && e.visible ? '🚀 ' : ''}${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${localDay(e.utc)}${e.kind === 'launch' ? '<br><small>' + tm(e.utc) + '</small>' : ''}</span></div>`).join('');
+  const iss = o.iss || [];
+  $('iss-h').hidden = !iss.length;
+  $('iss').innerHTML = iss.map(p => `<div><span><b style="font-weight:700">${localDay(p.utc)} at ${tm(p.utc)}</b><br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high${p.bright ? ' · bright' : ''}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
 }
 
 function renderShips() {
@@ -1371,6 +1414,48 @@ function renderMore() {
     }
     $('mkt').innerHTML = mk.map(q => `<div><span>${esc(q.name)}</span><span>${fmt(q)} &nbsp;${chg(q.day_pct)}</span></div>`).join('');
   }
+}
+
+// ------------------------------------------------------------------ what's going around, shellfish, grid
+const LEVEL_COLORS = ['#3FA34D', '#8BC34A', '#F2B230', '#E8762B', '#C62828'];
+function renderHealth() {
+  const h = D.health;
+  $('bug-card').hidden = !h || !h.items || !h.items.length;
+  if ($('bug-card').hidden) return;
+  const it = h.items;
+  $('bug-meta').innerHTML = `${esc(h.area)} wastewater · week ending ${dayLabel(it[0].week_end)} · <a href="${esc(h.url)}" target="_blank" rel="noopener">CDC</a>`;
+  const arrow = t => t === 'rising' ? '↑ rising' : t === 'falling' ? '↓ falling' : t === 'steady' ? '→ steady' : '';
+  $('bugs').innerHTML = it.map(x => `<div class="bug"><b>${esc(x.name)}</b><span class="lvl" style="color:${LEVEL_COLORS[x.rank ?? 0]}">${esc(x.level || '–')}</span>
+    <div class="meter" aria-hidden="true">${[0, 1, 2, 3, 4].map(i => `<i style="${i <= (x.rank ?? -1) ? `background:${LEVEL_COLORS[x.rank]}` : ''}"></i>`).join('')}</div>
+    <small>${arrow(x.trend)}</small></div>`).join('');
+  const high = it.filter(x => (x.rank ?? 0) >= 3).map(x => x.name);
+  const up = it.filter(x => x.trend === 'rising' && (x.rank ?? 0) >= 2).map(x => x.name);
+  $('bug-note').textContent = high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
+    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.';
+}
+
+function renderShellfish() {
+  const s = D.shellfish;
+  const items = (s && s.items) || [];
+  $('shell-card').hidden = !items.length && !(s && s.crab_season);
+  if ($('shell-card').hidden) return;
+  $('shell-meta').innerHTML = (s.updated ? `ODA biotoxin status, ${esc(s.updated)} · ` : '') + `<a href="${esc(s.url || '#')}" target="_blank" rel="noopener">Details</a>`;
+  $('shells').innerHTML = items.map(x => `<div class="shell ${x.status === 'Open' ? 'ok' : 'no'}"><b>${esc(x.kind)}</b><span>${x.status === 'Open' ? 'Open, safe to eat' : 'Closed'}</span>${x.detail ? `<small>${esc(x.detail.charAt(0).toUpperCase() + x.detail.slice(1))}</small>` : ''}</div>`).join('');
+  $('shell-note').textContent = [s.crab_season, 'Always gut crab and skip the butter. Call the hotline (1-800-448-2474) before you dig.'].filter(Boolean).join(' ');
+}
+
+function renderGrid() {
+  const g = D.grid;
+  $('grid-card').hidden = !g;
+  if (!g) return;
+  const parts = [['Hydro', g.hydro, '#2B7BB9'], ['Wind and solar', g.wind_solar, '#3FA34D'], ['Nuclear', g.nuclear, '#8E6CCF'], ['Gas, coal and biomass', g.fossil, '#9AA0A6']];
+  const [d, t] = g.as_of.split('T');
+  $('grid-meta').innerHTML = `BPA · as of ${clock(t)} · <a href="${esc(g.url)}" target="_blank" rel="noopener">Source</a>`;
+  $('grid-summary').textContent = `${g.clean}% carbon-free right now${g.clean >= g.week_clean + 3 ? ', cleaner than usual' : g.clean <= g.week_clean - 3 ? ', dirtier than usual' : ''} (the past week averaged ${g.week_clean}%).`;
+  $('grid-bar').setAttribute('aria-label', parts.map(p => `${p[0]} ${p[1]}%`).join(', '));
+  $('grid-bar').innerHTML = parts.filter(p => p[1] > 0).map(p => `<i style="width:${p[1]}%;background:${p[2]}" title="${p[0]} ${p[1]}%"></i>`).join('');
+  $('grid-legend').innerHTML = parts.map(p => `<span><i class="sw" style="background:${p[2]}"></i>${p[0]} ${p[1]}%</span>`).join('');
+  $('grid-note').textContent = `Cleanest hours this past week: ${g.cleanest}. Demand peaks ${g.peak}; running the dryer, dishwasher or car charger outside that window is easiest on the grid.`;
 }
 
 // ------------------------------------------------------------------ browser-only storage

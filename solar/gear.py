@@ -16,6 +16,9 @@ SEARCH = "https://portland.craigslist.org/search/msa"
 SKIP = re.compile(r"\b(wanted|wtb|iso|looking for|lessons?|teacher|repair|rehearsal|studio time|band|trade only|"
                   r"for parts|broken|case only|stand only|rental)\b", re.I)
 DEAL = 0.7
+# A part or accessory for a model is not the model: skip the price list for these.
+ACCESSORY = re.compile(r"\b(throne|stand|case|gig ?bag|bag|strap|cover|pickguard|pickups?|neck|body|tuners?|knobs?|"
+                       r"snare|kick|bass drum|tom|hardware|pedal board|footswitch|cable|parts?|manual|box only)\b", re.I)
 
 # (pattern, name, rough used price in dollars). Ballpark used prices; Reverb wins when it has data.
 MODELS = [
@@ -45,7 +48,7 @@ MODELS = [
     (r"vox.*ac-?15", "Vox AC15", 550),
     (r"marshall.*dsl ?40", "Marshall DSL40", 450),
     (r"orange.*rockerverb", "Orange Rockerverb", 1300),
-    (r"boss.*katana", "Boss Katana", 200),
+    (r"boss.*katana(?!.*\b(go|mini|air)\b)", "Boss Katana", 200),
     (r"line ?6.*helix(?! stomp)", "Line 6 Helix", 1100),
     (r"helix stomp|hx stomp", "Line 6 HX Stomp", 450),
     (r"kemper", "Kemper Profiler", 1300),
@@ -60,7 +63,7 @@ MODELS = [
     (r"apollo twin", "UA Apollo Twin", 650),
     (r"roland.*td-?(17|27)", "Roland TD-17/TD-27 kit", 1100),
     (r"alesis.*(nitro|surge|strike)", "Alesis e-kit", 250),
-    (r"(ludwig|dw|tama|pearl|gretsch|yamaha).*(drum|kit|shell)", "Pro drum kit", 700),
+    (r"(ludwig|\bdw\b|tama|pearl|gretsch|yamaha).*(drum ?kit|shell ?pack|\d-piece|\d pc)", "Pro drum kit", 700),
     (r"zildjian.*(k |a custom)|sabian.*(hhx|aax)", "Pro cymbal", 200),
     (r"yamaha.*p-?(45|125|145|225)", "Yamaha P-series piano", 400),
     (r"nord (stage|electro|piano)", "Nord keyboard", 1800),
@@ -109,7 +112,7 @@ def _reverb(query):
 
 def _query(title):
     words = re.sub(r"[^\w\s-]", " ", title).split()
-    return " ".join(w for w in words if not re.fullmatch(r"(?i)obo|firm|\$?\d+|mint|great|excellent|condition|sale|new|used", w))[:60]
+    return " ".join(w for w in words if not re.fullmatch(r"(?i)obo|firm|\$[\d.,]+|[\d,]+\.\d\d|mint|great|excellent|condition|sale|new|used", w))[:60]
 
 
 def deals(found, cache, reverb_budget=25):
@@ -119,7 +122,7 @@ def deals(found, cache, reverb_budget=25):
         title = item["title"]
         if SKIP.search(title):
             continue
-        match = next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
+        match = None if ACCESSORY.search(title) else next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
         ref = {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
         q = _query(title).lower()
         if not ref and q in cache:

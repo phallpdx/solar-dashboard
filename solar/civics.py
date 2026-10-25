@@ -184,9 +184,10 @@ def _congress_session(today):
 
 
 def _exists(url):
+    """The Clerk answers some missing roll calls with a 200 page, so look for a real vote in the body."""
     try:
-        with _open(url, timeout=20):
-            return True
+        with _open(url, timeout=20) as r:
+            return b"<rollcall-vote" in r.read(2000)
     except urllib.error.HTTPError as e:
         if e.code == 404:
             return False
@@ -197,9 +198,11 @@ def _latest_house_roll(year, hint):
     """Highest roll call number for the year: walk up from the last one seen, or search from scratch."""
     url = lambda n: f"https://clerk.house.gov/evs/{year}/roll{n:03d}.xml"
     lo = hint or 0
+    if lo and not _exists(url(lo)):  # a bad hint from an earlier run
+        lo = 0
     if not lo:
         hi = 1
-        while _exists(url(hi)):
+        while hi < 4096 and _exists(url(hi)):
             lo, hi = hi, hi * 2
         while hi - lo > 1:
             mid = (lo + hi) // 2
@@ -220,6 +223,8 @@ def house_votes(today, bioguide, cache, n=6):
         if key not in seen:
             root = _xml(f"https://clerk.house.gov/evs/{today.year}/roll{num:03d}.xml")
             meta = root.find("vote-metadata")
+            if meta is None:
+                continue
             seen[key] = {"num": num, "date": _iso(meta.findtext("action-date"), "%d-%b-%Y"), "bill": (meta.findtext("legis-num") or "").strip(),
                          "question": meta.findtext("vote-question"), "result": meta.findtext("vote-result"),
                          "desc": (meta.findtext("vote-desc") or "").strip(),

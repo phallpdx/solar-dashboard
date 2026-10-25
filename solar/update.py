@@ -670,14 +670,21 @@ def fetch_civics(state, now_utc):
     cache = store.setdefault("vote_cache", {})
 
     def votes():
-        found = {}
+        found, failed = dict(store.get("votes") or {}), []
         for p in people:
             if p["chamber"] == "house":
-                found[p["bioguide"]] = civics.house_votes(today, p["bioguide"], cache)
+                try:
+                    found[p["bioguide"]] = civics.house_votes(today, p["bioguide"], cache)
+                except Exception as e:
+                    failed.append(f"House: {e}")
         lis = [p["lis"] for p in people if p["chamber"] == "senate" and p.get("lis")]
         if lis:
-            for p_lis, rows in civics.senate_votes(today, lis, cache).items():
-                found[p_lis] = rows
+            try:
+                found.update(civics.senate_votes(today, lis, cache))
+            except Exception as e:
+                failed.append(f"Senate: {e}")
+        if failed:
+            errors.extend(failed)
         return found
     _refresh(store, "votes", votes, 3, now_utc, errors)
 

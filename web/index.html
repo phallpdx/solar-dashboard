@@ -216,6 +216,30 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .cam img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--grid)}
 .cam figcaption{font-size:12.5px;font-weight:700;color:var(--body)}
 .cam figcaption small{display:block;font-weight:600;color:var(--muted)}
+.brief{background:var(--ink);color:#F3F1EA;border-radius:26px;padding:24px 26px;display:flex;flex-direction:column;gap:12px}
+.brief-head{display:flex;gap:14px;align-items:center}
+.brief-icon{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.brief h2{font-size:22px;font-weight:800;letter-spacing:-.01em;color:#fff}
+.brief-intro{margin:2px 0 0;font-size:14px;color:#B9BCC4;font-style:italic}
+.brief ol,.brief ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.brief-top li{font-size:16px}
+.brief-top li::marker{color:var(--solar);font-weight:800}
+.brief-top b{background:linear-gradient(transparent 55%,rgba(245,165,36,.45) 55%);color:#fff;font-weight:800}
+.brief-rest li{font-size:14px;color:#C9CBD1}
+.brief a{color:inherit;text-decoration:none}
+.brief a:hover{text-decoration:underline;text-decoration-color:rgba(255,255,255,.4)}
+.brief .sub{color:#8A8F99;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.brief-sign{margin:4px 0 0;font-size:13px;color:#8A8F99;font-style:italic;text-align:right}
+@media (max-width:600px){.brief{padding:20px 18px}.brief-top li{font-size:15px}}
+.group[data-sec=almanac]{--accent:#8B5E34;--tint:#F5ECE1}
+.chip{display:inline-flex;align-items:center;min-height:32px;padding:4px 12px;border-radius:999px;background:var(--tint);font-size:13px;font-weight:600;color:var(--body)}
+.cal-day{margin-top:4px;color:var(--accent)}
+.near-feature{display:flex;gap:14px;align-items:flex-start}
+.near-feature img{width:96px;height:96px;object-fit:cover;border-radius:14px;flex:none;background:var(--grid)}
+.near-feature small{color:var(--muted);font-weight:600}
+.near-feature .note{margin-top:4px}
+.group[data-sec=almanac] .card a,#hol-today a,#trails a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+#near .sub{margin-top:8px}
 </style>
 </head>
 <body>
@@ -231,6 +255,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     </div>
   </header>
 
+  <section class="brief" id="brief" aria-labelledby="brief-h" hidden></section>
+
   <nav class="secnav" id="secnav" aria-label="Jump to section"></nav>
 
   <div id="banner" class="banner" hidden></div>
@@ -238,6 +264,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, alerts, drives and power right now</p></div></div>
     <div class="sec-body">
     <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
+    <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
+      <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
+      <div id="cal"></div>
+    </section>
   
     <div class="row" id="today-row">
       <section class="card side" aria-labelledby="wx-h">
@@ -278,6 +308,29 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
       <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
     </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+    <div class="sec-body">
+      <div class="chips" id="date-facts"></div>
+      <p class="note" id="hol-today" hidden></p>
+      <div class="row">
+        <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
+          <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
+          <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
+          <div class="lines" id="hist-local"></div>
+          <h3 class="sub">Elsewhere</h3>
+          <div class="lines" id="hist"></div>
+          <h3 class="sub">Born today</h3>
+          <div class="lines" id="births"></div>
+        </section>
+        <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
+          <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
+          <div id="near"></div>
+        </section>
+      </div>
     </div>
   </section>
 
@@ -353,6 +406,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
         <div class="lines" id="planes"></div>
         <p class="note" id="pdx"></p>
+      </section>
+      <section class="card" aria-labelledby="trail-h" id="trail-card" hidden>
+        <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
+        <div class="lines" id="trails"></div>
       </section>
       <div class="row">
         <section class="card side" aria-labelledby="moon-h">
@@ -743,6 +800,10 @@ function render() {
   renderLive();
   renderMore();
   renderWorld();
+  renderCalendar();
+  renderAlmanac();
+  renderTrails();
+  waits.push(renderBriefing());
   syncGroups();
   Promise.allSettled(waits).then(syncGroups);
   setTimeout(syncGroups, 4000);
@@ -1923,7 +1984,7 @@ function addSources() {
 
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
-const NAV = {today: 'Today', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
+const NAV = {today: 'Today', almanac: 'This day', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
   watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
@@ -2000,6 +2061,231 @@ function addTools() {
     tools.querySelector('.fold-btn').onclick = e => { e.stopPropagation(); toggleFold(g, !g.classList.contains('folded')); };
     head.onclick = () => { if (g.classList.contains('folded')) toggleFold(g, false); };
   }
+}
+
+// The briefing at the top: everything on the page, ranked by how much it matters today,
+// in the voice of a certain Gotham butler. Each note is [score, section id, sentence].
+const isoLocal = d => d.toLocaleDateString('en-CA');
+const timeOf = iso => new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(':00', '').replace(' AM', ' am').replace(' PM', ' pm');
+const hhmm = t => { const [h, m] = t.split(':').map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`; };
+async function renderBriefing() {
+  const box = $('brief');
+  if (!D) { box.hidden = true; return; }
+  const now = new Date(), today = isoLocal(now), tomorrow = isoLocal(new Date(now.getTime() + 864e5));
+  const daysTo = iso => Math.round((new Date(iso.slice(0, 10) + 'T12:00') - new Date(today + 'T12:00')) / 864e5);
+  const whenWord = iso => { const n = daysTo(iso); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : n > 1 && n < 7 ? 'on ' + DOW[new Date(iso.slice(0, 10) + 'T12:00').getDay()] : 'on ' + fmtDate(iso.slice(0, 10)); };
+  const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
+  const notes = [];
+  const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
+  const [events, plan, kids, jazz, gigs, blu] = await Promise.all(
+    ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json'].map(getJson));
+
+  // Weather and alerts
+  const o = D.outside || {};
+  for (const a of (D.alerts && D.alerts.official) || [])
+    add(100, 'today', `The National Weather Service has issued a <b>${esc(a.event)}</b>. I would take it seriously, sir.`);
+  for (const a of (D.alerts && D.alerts.forecast) || [])
+    add(85, 'today', `The forecast suggests ${esc(a.title.toLowerCase())} ${whenWord(a.date)}. Batten down accordingly.`);
+  const t0 = (o.days || []).find(d => d.date === today), t1 = (o.days || []).find(d => d.date === tomorrow);
+  if (t0) {
+    const wet = t0.rain_pct >= 60;
+    add(wet ? 50 : 40, 'today', `${wet ? 'Rain, I’m afraid' : wxName(t0.code)}: a high of ${t0.hi}° and a low of ${t0.lo}°${wet ? `, with ${n1(t0.rain_in)} inches expected. The umbrella is by the door` : ''}${t0.gust >= 35 ? `, and gusts to ${t0.gust} mph` : ''}. Sunset is at ${hhmm(t0.sunset)}.`);
+  }
+  if (t1 && t0 && t0.rain_pct >= 60 && t1.rain_pct < 40) add(35, 'today', `Tomorrow looks drier, should you wish to postpone anything outdoors.`);
+  if (o.air && o.air.aqi > 100) add(88, 'today', `The air is <b>${esc(o.air.label.toLowerCase())}</b> (AQI ${o.air.aqi}). I would keep the windows shut and the exertion indoors.`);
+  else if (o.air && o.air.aqi > 50) add(15, 'today', `Air quality is ${esc(o.air.label.toLowerCase())} at AQI ${o.air.aqi}. Nothing to trouble yourself over.`);
+
+  // Getting around
+  const slow = (D.commute || []).filter(c => c.delay >= 10).sort((a, b) => b.delay - a.delay)[0];
+  if (slow) add(65, 'today', `The drive to ${esc(slow.label)} is running ${slow.delay} minutes slow, ${slow.minutes} in all. Allow for it.`);
+  const inc = ((D.roads && D.roads.incidents) || []).filter(i => !i.roadwork)[0];
+  if (inc) add(55, 'today', `There is trouble on ${esc(inc.road)}: ${esc(inc.what.toLowerCase())} near ${esc(inc.where)}.`);
+  const pdx = D.live && D.live.pdx && D.live.pdx.delays;
+  if (pdx && pdx.length) add(60, 'nearby', `PDX is reporting delays. Should you be collecting anyone, check before you leave.`);
+
+  // Danger nearby
+  const fire = ((D.live && D.live.fires) || []).filter(f => f.miles <= 60 && f.contained < 100).sort((a, b) => a.miles - b.miles)[0];
+  if (fire) add(80, 'nearby', `The <b>${esc(fire.name)}</b> is burning ${fire.miles} miles off, ${fire.contained ?? 0}% contained.`);
+  const quake = ((D.live && D.live.quakes && D.live.quakes.biggest) || []).filter(q => q.miles <= 60 && q.mag >= 2.5 && (now - new Date(q.utc)) < 3 * 864e5)[0];
+  if (quake) add(quake.mag >= 4 ? 85 : 45, 'nearby', `The earth moved: a magnitude ${quake.mag} ${quake.felt ? `felt by ${quake.felt} people ` : ''}${esc(quake.place)}, ${whenWord(isoLocal(new Date(quake.utc)))}.`);
+  const sick = ((D.health && D.health.items) || []).filter(h => ['High', 'Very High'].includes(h.level));
+  if (sick.length) add(62, 'today', `${sick.map(h => esc(h.name)).join(' and ')} ${sick.length > 1 ? 'are' : 'is'} running high in the wastewater. Wash your hands, sir.`);
+
+  // Deadlines and plans
+  for (const p of (plan && plan.items) || []) {
+    if (p.by && soon(p.by, 2)) add(daysTo(p.by) === 0 ? 92 : 78, 'plan-card', `<b>${esc(p.title)}</b>: ${esc(p.action)} ${daysTo(p.by) === 0 ? 'That deadline is today.' : `It must be done ${whenWord(p.by)}.`}`);
+  }
+  for (const e of (events && events.events) || []) {
+    if (e.date && soon(e.date, 1)) add(daysTo(e.date) === 0 ? 75 : 58, 'big-card', `${daysTo(e.date) === 0 ? 'Today' : 'Tomorrow'} in town: <b>${esc(e.title)}</b>${e.venue && !e.title.includes(e.venue.split(',')[0]) ? ' at ' + esc(e.venue) : ''}.`);
+  }
+  for (const k of (kids && kids.events) || []) {
+    if (k.ends === today) add(72, 'family', `Today is the last day of <b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}. The children may never forgive you otherwise.`);
+    else if (k.date && soon(k.date, 1)) add(56, 'family', `For the little ones ${whenWord(k.date)}: ${esc(k.title)}.`);
+  }
+  const gig = ((gigs && gigs.shows) || []).filter(g => soon(g.date, 2))[0];
+  if (gig) add(daysTo(gig.date) === 0 ? 70 : 52, 'gigs-card', `${esc(gig.artist)} plays ${esc(gig.venue)} ${whenWord(gig.date)}${gig.score ? `, on the strength of an album the critics gave ${gig.score}` : ''}.`);
+  const jz = ((jazz && jazz.shows) || []).filter(j => soon(j.date, 2))[0];
+  if (jz) add(daysTo(jz.date) === 0 ? 66 : 48, 'jazz-card', `For something civilized, ${esc(jz.artist)} at ${esc(jz.venue)} ${whenWord(jz.date)}${jz.time ? ' at ' + esc(jz.time) : ''}.`);
+  const hol = (D.holidays || []).filter(h => h.country === 'USA' && soon(h.date, 7))[0];
+  if (hol) add(daysTo(hol.date) <= 1 ? 68 : 44, 'world', `${esc(hol.name)} is ${daysTo(hol.date) === 0 ? 'today' : `${whenWord(hol.date)}`}.${hol.name === 'Halloween' ? ' I trust the costume is not the usual one.' : ''}`);
+
+  // Sports
+  const sp = D.sports || {};
+  for (const [key, label] of [['blazers', 'the Blazers'], ['timbers', 'the Timbers']]) {
+    const t = sp[key];
+    if (!t) continue;
+    if (t.next && t.next.utc && soon(isoLocal(new Date(t.next.utc)), 1))
+      add(daysTo(isoLocal(new Date(t.next.utc))) === 0 ? 64 : 46, 'more', `${label[0].toUpperCase() + label.slice(1)} play ${t.next.home ? 'host to ' : 'at '}${esc(t.next.opponent)} ${whenWord(isoLocal(new Date(t.next.utc)))} at ${timeOf(t.next.utc)}${t.next.tv ? ' on ' + esc(t.next.tv.split(',')[0]) : ''}.`);
+    if (t.last && t.last.completed && (now - new Date(t.last.utc)) < 2 * 864e5)
+      add(42, 'more', `${t.last.won ? 'Good news' : 'I regret to report'}: ${label} ${t.last.won ? 'beat' : 'lost to'} ${esc(t.last.opponent)} ${t.last.us}–${t.last.them}.${t.recap && t.recap.headline ? ' ' + esc(t.recap.headline) + '.' : ''}`);
+  }
+  const race = sp.f1 && sp.f1.next && sp.f1.next[0];
+  if (race && soon(isoLocal(new Date(race.utc)), 2))
+    add(daysTo(isoLocal(new Date(race.utc))) === 0 ? 63 : 45, 'more', `The ${esc(race.name)} starts ${whenWord(isoLocal(new Date(race.utc)))} at ${timeOf(race.utc)}.`);
+
+  // The sky
+  if (o.aurora && o.aurora.kp >= 6) add(90, 'nearby', `<b>The northern lights may be visible tonight</b> (Kp ${o.aurora.kp}). Look north, away from the city glow.`);
+  else if (o.aurora && o.aurora.kp >= 5) add(60, 'nearby', `A geomagnetic storm (Kp ${o.aurora.kp}) gives an outside chance of aurora low on the northern horizon.`);
+  const iss = (o.iss || []).find(p => p.bright && new Date(p.utc) > now && (new Date(p.utc) - now) < 864e5);
+  if (iss) add(54, 'nearby', `The space station passes overhead at ${timeOf(iss.utc)}, rising in the ${esc(iss.from)}. Bright enough to wave at.`);
+  const sky = (o.sky_events || []).filter(e => e.kind !== 'launch' && soon(isoLocal(new Date(e.utc)), 2))[0];
+  if (sky) add(52, 'nearby', `In the sky ${whenWord(isoLocal(new Date(sky.utc)))}: ${esc(sky.title)}.`);
+  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full, rising at ${hhmm(o.moon.moonrise)}. Gotham’s criminals are fond of it.`);
+  const launch = (o.sky_events || []).filter(e => e.kind === 'launch' && e.visible && soon(isoLocal(new Date(e.utc)), 1))[0];
+  if (launch) add(58, 'nearby', `A rocket launch may be visible from here: ${esc(launch.title)} at ${timeOf(launch.utc)}.`);
+
+  // Wildlife and the river
+  const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];
+  if (rare) add(rare.confirmed ? 50 : 34, 'rare-card', `A ${esc(rare.name)} has been reported at ${esc(rare.where)}. Binoculars are in the hall closet.`);
+  const big = ((D.ships && D.ships.approaching) || []).find(s => s.big);
+  if (big) add(38, 'outside', `A large ship, the ${esc(big.name)}, is ${esc(big.direction.toLowerCase())}${big.eta_utc ? `, passing about ${timeOf(big.eta_utc)}` : ''}.`);
+  const dam = D.fishing && D.fishing.dam;
+  if (dam && dam.week) { const [fish, n] = Object.entries(dam.week)[0] || [];
+    if (fish) add(28, 'fish-card', `${n.toLocaleString()} ${esc(fish)} came over Bonneville this week.`); }
+  const win = D.fishing && D.fishing.windows && D.fishing.windows[0];
+  if (win && win.score >= 2) add(26, 'fish-card', `The best bite looks like ${hhmm(win.start)} to ${hhmm(win.end)} (${esc(win.why.join(', '))}).`);
+
+  // Mountain and coast
+  const sk = D.ski || {};
+  const fresh = (sk.forecast || []).filter(d => soon(d.date, 3)).reduce((n, d) => n + (d.snow_in || 0), 0);
+  if (fresh >= 6) add(62, 'ski-card', `Mt. Hood expects about ${Math.round(fresh)} inches of snow over the next few days. Shall I wax the skis?`);
+  else if (sk.snow && sk.snow.new_7d_in >= 6) add(50, 'ski-card', `${sk.snow.new_7d_in} inches of new snow on Mt. Hood this week.`);
+  const c = D.coast || {}, c0 = (c.days || [])[0];
+  if (c0 && c0.waves_ft >= 14) add(55, 'coast', `The coast is wild today: ${c0.waves_ft}-foot waves and gusts to ${c0.gust} mph. Admire it from the window.`);
+  const minus = (c.minus_tides || []).find(t => soon(t.t.slice(0, 10), 1) && new Date(t.t.replace(' ', 'T')) > now);
+  if (minus) add(40, 'coast', `A minus tide of ${minus.ft} ft at the coast ${whenWord(minus.t)} at ${hhmm(minus.t.slice(11))}, for tidepooling.`);
+
+  // Garden
+  const g = D.garden || {};
+  const closing = (g.plant || []).find(p => p.closing_soon);
+  if (closing) add(44, 'garden', `The window for planting ${esc(closing.name.toLowerCase())} closes soon.`);
+  else if (g.plant && g.plant[0]) add(22, 'garden', `It is time to plant ${esc(g.plant.map(p => p.name.toLowerCase()).slice(0, 3).join(', '))}.`);
+  if (g.forest && g.forest.now && g.forest.now[0]) add(20, 'garden', `In the food forest: ${esc(g.forest.now[0].task.replace(/\.$/, '').toLowerCase())}.`);
+
+  // Shopping and screens
+  const ending = ((blu && blu.deals) || []).filter(d => d.ends && soon(d.ends, 2))[0];
+  if (ending) add(48, 'br-card', `The <b>${esc(ending.title)}</b> ends ${whenWord(ending.ends)}, should the collection need reinforcement.`);
+  const show = (D.streaming || []).filter(s => soon(s.date, 1) && s.kind === 'New series')[0];
+  if (show) add(24, 'coming', `New ${whenWord(show.date)} on ${esc(show.service)}: ${esc(show.name || show.show || show.title || '')}.`);
+  const alb = (D.albums || []).filter(a => soon(a.date, 1))[0];
+  if (alb) add(18, 'coming', `New music ${whenWord(alb.date)}: ${esc(alb.artist)}, “${esc(alb.album)}.”`);
+  const sp5 = (D.markets || []).find(m => m.name === 'S&P 500');
+  if (sp5 && Math.abs(sp5.day_pct) >= 1.5) add(46, 'more', `The markets ${sp5.day_pct > 0 ? 'rallied' : 'fell'} ${Math.abs(sp5.day_pct).toFixed(1)}% on the last trading day.`);
+
+  // The house
+  const s = D.solar || {}, b = D.bill || {};
+  if (b.solar_value_cycle) add(25, 'solar', `The panels have earned you $${Math.round(b.solar_value_cycle)} this billing cycle, which closes ${fmtDate(b.cycle_end)}.`);
+  if (D.grid && D.grid.clean != null) add(12, 'solar', `The Northwest grid is ${D.grid.clean}% clean at the moment, mostly hydro.`);
+  if (D.bangkok) add(10, 'world', `In Bangkok it is ${D.bangkok.temp}° and feels like ${D.bangkok.feels}°.`);
+
+  // The diary, the date and the trails
+  const cal = (D.calendar || []).filter(e => e.date === today && (e.all_day || new Date(e.end || e.start) > now));
+  if (cal.length) add(96, 'cal-card', `On your calendar today: ${cal.slice(0, 3).map(e => `<b>${esc(e.title)}</b>${e.all_day ? '' : ' at ' + timeOf(e.start)}`).join(', ')}${cal.length > 3 ? `, and ${cal.length - 3} more` : ''}.`);
+  else if (D.calendar) {
+    const next = D.calendar.find(e => e.date === tomorrow);
+    add(next ? 52 : 20, 'cal-card', next ? `Your calendar is clear today. Tomorrow: <b>${esc(next.title)}</b>${next.all_day ? '' : ' at ' + timeOf(next.start)}.` : 'Your calendar is clear today, sir.');
+  }
+  const al = D.almanac || {}, hist = al.history;
+  for (const f of al.facts || []) if (/Clocks fall back an hour tonight|Today is the/.test(f)) add(70, 'almanac', esc(f));
+  if (hist && hist.date === today) {
+    const local = hist.local[0], pick = local || hist.selected[0];
+    if (pick) add(local ? 47 : 36, 'almanac', `On this day in ${pick.year}${local ? ', close to home' : ''}: ${esc(pick.text.replace(/\.$/, ''))}.`);
+    const hol = (hist.holidays || []).find(x => !/Christian feast day/.test(x.text));
+    if (hol) add(27, 'almanac', `It is also ${esc(hol.text.replace(/\s*\(.*\)$/, ''))}, for what it’s worth.`);
+  }
+  if (al.nearby && al.nearby.feature) add(21, 'near-card', `Today’s local curiosity: ${esc(al.nearby.feature.title)}, ${al.nearby.feature.miles} miles from the manor.`);
+  const trail = (al.trails || [])[0];
+  if (trail && daysTo(trail.latest.date) >= -3) add(33, 'trail-card', `A fresh report from ${esc(trail.hike)} (${fmtDate(trail.latest.date)})${trail.latest.issues ? `: ${esc(trail.latest.issues.toLowerCase())}` : ''}.`);
+
+  notes.sort((a, b) => b[0] - a[0]);
+  const top = notes.filter(n => n[0] >= 50).slice(0, 4);
+  const lead = top.length ? top : notes.slice(0, 2);
+  const rest = notes.filter(n => !lead.includes(n)).slice(0, 10);
+  const hr = now.getHours();
+  const hello = hr < 5 ? 'You’re up late, Master Parker.' : hr < 12 ? 'Good morning, Master Parker.' : hr < 17 ? 'Good afternoon, Master Parker.' : 'Good evening, Master Parker.';
+  const intro = lead.some(n => n[0] >= 80) ? 'A few matters require your attention.' : lead[0] && lead[0][0] >= 50 ? 'A quiet day, mostly. A few things worth knowing.' : 'Nothing pressing today, sir. A rare luxury.';
+  const item = ([, sec, text]) => `<li><a href="#${sec}">${text}</a></li>`;
+  box.innerHTML = `<div class="brief-head"><span class="brief-icon" aria-hidden="true">🎩</span><div><h2 id="brief-h">${hello}</h2><p class="brief-intro">${intro}</p></div></div>
+    <ol class="brief-top">${lead.map(item).join('')}</ol>
+    ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.map(item).join('')}</ul>` : ''}
+    <p class="brief-sign">Your servant, Alfred</p>`;
+  box.hidden = false;
+}
+
+// ------------------------------------------------------------------ calendar, this day, trails
+const calTime = iso => new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+function calDay(iso) {
+  const n = Math.round((new Date(iso + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
+  return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : DOW[new Date(iso + 'T12:00').getDay()] + ' ' + fmtDate(iso);
+}
+function renderCalendar() {
+  const ev = (D.calendar || []).filter(e => e.all_day ? (e.last_day || e.date) >= todayIso() : new Date(e.end || e.start) > new Date());
+  $('cal-card').hidden = !D.calendar;
+  if (!D.calendar) return;
+  const byDay = {};
+  for (const e of ev) (byDay[e.date] = byDay[e.date] || []).push(e);
+  $('cal-meta').textContent = ev.length ? `${ev.length} in the next week` : '';
+  $('cal').innerHTML = Object.keys(byDay).length ? Object.entries(byDay).map(([d, list]) => `<h3 class="sub cal-day">${calDay(d)}</h3>
+    <div class="lines">${list.map(e => `<div><span>${esc(e.title)}${e.where ? `<br><small>${esc(e.where)}</small>` : ''}</span>
+      <span style="white-space:nowrap;padding-left:12px">${e.all_day ? (e.last_day ? 'Until ' + fmtDate(e.last_day) : 'All day') : calTime(e.start) + '–' + calTime(e.end)}</span></div>`).join('')}</div>`).join('')
+    : '<p class="note">Nothing on the calendar this week.</p>';
+}
+
+function renderAlmanac() {
+  const a = D.almanac || {}, h = a.history;
+  $('almanac').hidden = !(h || a.facts || a.nearby);
+  const pageLink = (p, text) => p && p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${text}</a>` : text;
+  $('hist-meta').textContent = new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+  $('date-facts').innerHTML = (a.facts || []).map(f => `<span class="chip">${esc(f)}</span>`).join('');
+  const hol = (h && h.holidays) || [];
+  $('hol-today').hidden = !hol.length;
+  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${hol.slice(0, 6).map(x => pageLink(x.page, esc(x.text))).join(' · ')}` : '';
+  $('hist-card').hidden = !h;
+  if (h) {
+    const row = x => `<div><span>${pageLink(x.page, esc(x.text))}${x.page && x.page.summary ? `<br><small>${esc(x.page.summary.slice(0, 220))}${x.page.summary.length > 220 ? '…' : ''}</small>` : ''}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`;
+    $('hist-local-h').hidden = !h.local.length;
+    $('hist-local').innerHTML = h.local.map(row).join('');
+    $('hist').innerHTML = h.selected.slice(0, 6).map(row).join('');
+    $('births').innerHTML = h.births.slice(0, 5).map(x => `<div><span>${pageLink(x.page, esc(x.text))}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`).join('');
+  }
+  const nb = a.nearby;
+  $('near-card').hidden = !nb;
+  if (nb) {
+    const f = nb.feature;
+    $('near-meta').textContent = `${nb.count} Wikipedia articles within about 6 miles`;
+    $('near').innerHTML = `<div class="near-feature">${f.image ? `<img src="${esc(f.image)}" alt="" loading="lazy">` : ''}<div>
+      <b>${pageLink(f, esc(f.title))}</b> <small>${f.miles} mi away</small><p class="note">${esc(f.summary || '')}</p></div></div>
+      <h3 class="sub">Also nearby</h3><div class="lines">${nb.others.slice(0, 6).map(x => `<div><span>${pageLink(x, esc(x.title))}</span><span>${x.miles} mi</span></div>`).join('')}</div>`;
+  }
+}
+
+function renderTrails() {
+  const t = (D.almanac || {}).trails;
+  $('trail-card').hidden = !(t && t.length);
+  if (!t || !t.length) return;
+  $('trails').innerHTML = t.map(x => `<div><span><a href="${esc(x.latest.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.hike)}</b></a>
+    ${x.latest.issues ? ` <small>· ${esc(x.latest.issues)}</small>` : ''}${x.latest.text ? `<br><small>“${esc(x.latest.text)}”${x.latest.by ? ' · ' + esc(x.latest.by) : ''}</small>` : ''}</span>
+    <span style="white-space:nowrap;padding-left:12px">${fmtDate(x.latest.date)}<br><small>${x.count} in 3 weeks</small></span></div>`).join('');
 }
 
 function syncGroups() {

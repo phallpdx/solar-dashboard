@@ -16,6 +16,8 @@ Weather station and PGE Green Button downloads.
 
 Repository secrets: `APSYSTEMS_APP_ID`, `APSYSTEMS_APP_SECRET`,
 `APSYSTEMS_SID`, and optionally `AMBIENT_API_KEY` and `AMBIENT_APP_KEY`.
+Optional `CALENDAR_ICS`: your Google Calendar's "Secret address in iCal format"
+(one per line for several calendars). Event titles and places then appear on the dashboard.
 Optional repository variable `PGE_CYCLE_START_DAY` (the day of the month your
 PGE bill cycle starts).
 

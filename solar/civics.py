@@ -18,6 +18,10 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 UA = {"User-Agent": "Mozilla/5.0 (solar-dashboard personal dashboard)"}
+# senate.gov and GovTrack turn away the runner with the short agent above, so they get a browser's.
+BROWSER = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+           "Accept": "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8",
+           "Accept-Language": "en-US,en;q=0.9"}
 CENSUS = "https://geocoding.geo.census.gov/geocoder/geographies/"
 LEGISLATORS = "https://unitedstates.github.io/congress-legislators/legislators-current.json"
 
@@ -35,7 +39,8 @@ VOTE_LINKS = [("Check your registration and ballot", "https://sos.oregon.gov/vot
 
 
 def _open(url, timeout=40):
-    return urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=timeout)
+    headers = BROWSER if re.search(r"//www\.(senate\.gov|govtrack\.us)/", url) else UA
+    return urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=timeout)
 
 
 def _json(url):

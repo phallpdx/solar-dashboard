@@ -667,6 +667,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
             <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
           <div class="lines" id="holidays"></div>
+          <h3 class="sub" id="thai-h" hidden>Thai Buddhist calendar</h3>
+          <div class="lines" id="thai"></div>
         </section>
       </div>
     </div>
@@ -1212,6 +1214,10 @@ function renderWorld() {
     const local = h.local && h.local !== h.name ? `<br><small>${esc(h.local)}</small>` : '';
     return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.country === 'USA' ? 'var(--use)' : 'var(--solar)'}"></i>${esc(h.name)}${local}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('');
+  const thai = D.thai_buddhist || [];
+  $('thai-h').hidden = !thai.length;
+  $('thai').innerHTML = thai.map(t => `<div><span><b style="font-weight:700">${esc(t.name)}</b><br><small>${esc(t.about)}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${t.approx ? 'Around ' : ''}${fmtDate(t.date)}${t.ends ? '–' + fmtDate(t.ends).replace(/^\w+ /, '') : ''}${t.date.slice(0, 4) !== todayIso().slice(0, 4) ? ' ' + t.date.slice(0, 4) : ''}</span></div>`).join('');
 }
 
 async function renderGigs() {
@@ -2156,6 +2162,8 @@ async function renderBriefing() {
   if (gig) add(daysTo(gig.date) === 0 ? 70 : 52, 'gigs-card', `${esc(gig.artist)} plays ${esc(gig.venue)} ${whenWord(gig.date)}${gig.score ? `, on the strength of an album the critics gave ${gig.score}` : ''}.`);
   const jz = ((jazz && jazz.shows) || []).filter(j => soon(j.date, 2))[0];
   if (jz) add(daysTo(jz.date) === 0 ? 66 : 48, 'jazz-card', `For something civilized, ${esc(jz.artist)} at ${esc(jz.venue)} ${whenWord(jz.date)}${jz.time ? ' at ' + esc(jz.time) : ''}.`);
+  const thaiDay = (D.thai_buddhist || []).find(t => soon(t.date, 3) || (t.ends && t.date <= today && t.ends >= today));
+  if (thaiDay) add(daysTo(thaiDay.date) <= 0 ? 58 : 41, 'world', `${daysTo(thaiDay.date) <= 0 ? 'Today is' : `${whenWord(thaiDay.date)[0].toUpperCase() + whenWord(thaiDay.date).slice(1)} is`} <b>${esc(thaiDay.name)}</b> in Thailand. ${esc(thaiDay.about.split('.')[0])}.`);
   const hol = (D.holidays || []).filter(h => h.country === 'USA' && soon(h.date, 7))[0];
   if (hol) add(daysTo(hol.date) <= 1 ? 68 : 44, 'world', `${esc(hol.name)} is ${daysTo(hol.date) === 0 ? 'today' : `${whenWord(hol.date)}`}.${hol.name === 'Halloween' ? ' I trust the costume is not the usual one.' : ''}`);
 

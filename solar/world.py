@@ -37,6 +37,27 @@ def _ics_events(url):
                    "observance": "observance" in fields.get("DESCRIPTION", "").lower()}
 
 
+# Thai Buddhist and cultural days. Most follow the Thai lunar calendar, so their dates are kept here by
+# year (from Thai government holiday announcements); "approx" marks a date not yet announced.
+THAI_BUDDHIST = [
+    ("2026-10-26", None, "Ok Phansa", "End of Buddhist Lent. Temples hold merit-making at dawn, and the Naga fireballs rise over the Mekong.", False),
+    ("2026-11-24", None, "Loy Krathong", "Floating krathongs on rivers and canals under the full moon; Yi Peng lanterns in Chiang Mai.", False),
+    ("2027-02-21", None, "Makha Bucha", "Full-moon day for the Buddha's teaching to 1,250 disciples. Candlelit walks around temples.", False),
+    ("2027-04-13", "2027-04-15", "Songkran", "Thai New Year: water fights, pouring water on elders' hands, and temple visits.", False),
+    ("2027-05-20", None, "Visakha Bucha", "Marks the Buddha's birth, enlightenment and death. Candlelit processions at temples.", False),
+    ("2027-07-18", None, "Asahna Bucha", "Marks the Buddha's first sermon.", False),
+    ("2027-07-19", None, "Khao Phansa", "Start of the three-month Buddhist Lent; candle processions and gifts to monks.", False),
+    ("2027-10-15", None, "Ok Phansa", "End of Buddhist Lent, with merit-making at dawn.", True),
+    ("2027-11-13", None, "Loy Krathong", "Floating krathongs under the full moon; Yi Peng lanterns in Chiang Mai.", True),
+    ("2028-04-13", "2028-04-15", "Songkran", "Thai New Year: water fights, pouring water on elders' hands, and temple visits.", False),
+]
+
+
+def thai_buddhist(today):
+    t = today.isoformat()
+    return [{"date": d, "ends": e, "name": n, "about": a, "approx": x} for d, e, n, a, x in THAI_BUDDHIST if (e or d) >= t][:8]
+
+
 def _nager(country, today):
     """Fallback source: Nager.Date public holidays."""
     events = []

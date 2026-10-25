@@ -998,6 +998,7 @@ def build(state, status, now_utc):
         "ships": ships_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
+        "thai_buddhist": world.thai_buddhist(dt.date.fromisoformat(today)),
         "alerts": alerts_view(state, out, now_utc),
         "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
         "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],

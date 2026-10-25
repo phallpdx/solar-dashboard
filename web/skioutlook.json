@@ -1,12 +1,28 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "season": {
-    "summary": "NOAA has an El Niño Advisory in effect, with a better than 83% chance of a strong to very strong El Niño through January to March 2027. NOAA's winter outlook favors a warmer than average December to February for the Pacific Northwest, with no clear lean on precipitation. El Niño winters usually mean less snowpack here, though the very strong events of 1982-83 and 2015-16 were wetter than normal across much of the Northwest.",
+    "summary": "NOAA's Oct 8 update keeps an El Niño Advisory in effect, with Niño-3.4 at +2.1°C and a better than 83% chance of a strong to very strong El Niño through January to March 2027; the next update is Nov 12. NOAA's winter outlook favors a warmer than average December to February for the Pacific Northwest, with no clear lean on precipitation. El Niño winters usually mean less snowpack here, though the very strong events of 1982-83 and 2015-16 were wetter than normal across much of the Northwest.",
     "sources": [
-      {"name": "NOAA CPC ENSO discussion", "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"},
-      {"name": "NOAA winter outlook", "url": "https://www.noaa.gov/news-release/el-nino-looms-large-over-us-winter-outlook"},
-      {"name": "MyNorthwest", "url": "https://mynorthwest.com/pacific-northwest-weather/el-nino-winter/4286807"},
-      {"name": "USGS Northwest CASC", "url": "https://www.usgs.gov/programs/climate-adaptation-science-centers/regional-super-el-nino-impacts-northwest-us"}
+      {
+        "name": "NOAA CPC ENSO discussion",
+        "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"
+      },
+      {
+        "name": "NOAA CPC ENSO discussion, Oct 2026",
+        "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_disc_oct2026/ensodisc.shtml"
+      },
+      {
+        "name": "NOAA winter outlook",
+        "url": "https://www.noaa.gov/news-release/el-nino-looms-large-over-us-winter-outlook"
+      },
+      {
+        "name": "MyNorthwest",
+        "url": "https://mynorthwest.com/pacific-northwest-weather/el-nino-winter/4286807"
+      },
+      {
+        "name": "USGS Northwest CASC",
+        "url": "https://www.usgs.gov/programs/climate-adaptation-science-centers/regional-super-el-nino-impacts-northwest-us"
+      }
     ]
   },
   "openings": [
@@ -14,19 +30,32 @@
       "resort": "Mt. Hood Meadows",
       "date": "2026-12-04",
       "status": "Planned",
-      "note": "Target opening day, weather dependent; night skiing planned from Dec 18.",
+      "note": "Target opening day, weather dependent; night skiing planned Dec 18 to Mar 7, closing planned Apr 24, 2027.",
       "sources": [
-        {"name": "Mt. Hood Meadows schedule", "url": "https://www.skihood.com/explore/Schedule"},
-        {"name": "SkiCentral", "url": "https://www.skicentral.com/mounthood.html"}
+        {
+          "name": "Mt. Hood Meadows schedule",
+          "url": "https://www.skihood.com/explore/Schedule"
+        },
+        {
+          "name": "SkiCentral",
+          "url": "https://www.skicentral.com/mounthood.html"
+        }
       ]
     },
     {
       "resort": "Timberline",
       "date": null,
       "status": "Depends on snow",
-      "note": "No 2026-27 opening date announced; winter lift tickets go on sale when the season starts.",
+      "note": "No 2026-27 opening date announced; OnTheSnow projects Dec 26, which is an estimate.",
       "sources": [
-        {"name": "Timberline lift tickets", "url": "https://timberlinelodge.com/mountain/lift-tickets/"}
+        {
+          "name": "Timberline lift tickets",
+          "url": "https://timberlinelodge.com/mountain/lift-tickets/"
+        },
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        }
       ]
     },
     {
@@ -35,7 +64,10 @@
       "status": "Depends on snow",
       "note": "No official date; OnTheSnow projects Nov 27, which is an estimate.",
       "sources": [
-        {"name": "OnTheSnow projected openings", "url": "https://www.onthesnow.com/mt-hood/projected-openings"}
+        {
+          "name": "OnTheSnow projected openings",
+          "url": "https://www.onthesnow.com/mt-hood/projected-openings"
+        }
       ]
     },
     {
@@ -44,7 +76,10 @@
       "status": "Depends on snow",
       "note": "No official date; OnTheSnow projects Dec 26, which is an estimate.",
       "sources": [
-        {"name": "OnTheSnow Cooper Spur", "url": "https://www.onthesnow.com/oregon/cooper-spur/ski-resort"}
+        {
+          "name": "OnTheSnow Cooper Spur",
+          "url": "https://www.onthesnow.com/oregon/cooper-spur/ski-resort"
+        }
       ]
     }
   ]

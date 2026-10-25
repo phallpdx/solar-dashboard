@@ -1,17 +1,26 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "items": [
     {
       "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
       "kind": "Tickets",
-      "action": "Register for the artist presale by Sun Oct 25 (11:59 p.m. ET); presale Wed Oct 28, public sale Thu Oct 29 at 10 a.m.",
+      "action": "Register for the artist presale today, Sun Oct 25 (11:59 p.m. ET); presale Wed Oct 28, public sale Thu Oct 29 at 10 a.m.",
       "starts": "2026-10-28",
       "by": "2026-10-25",
       "why": "A 16-date arena run for new album Perfecth with Pixies opening every night, and the presale needs advance registration.",
       "sources": [
-        {"name": "TicketNews", "url": "https://www.ticketnews.com/2026/10/queens-of-the-stone-age-2027-tour-pixies/"},
-        {"name": "Loudwire", "url": "https://loudwire.com/queens-of-the-stone-age-2027-tour-dates-pixies/"},
-        {"name": "Consequence", "url": "https://consequence.net/2026/10/queens-of-the-stone-age-spring-2027-us-arena-tour-pixies/"}
+        {
+          "name": "TicketNews",
+          "url": "https://www.ticketnews.com/2026/10/queens-of-the-stone-age-2027-tour-pixies/"
+        },
+        {
+          "name": "Loudwire",
+          "url": "https://loudwire.com/queens-of-the-stone-age-2027-tour-dates-pixies/"
+        },
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/10/queens-of-the-stone-age-spring-2027-us-arena-tour-pixies/"
+        }
       ]
     },
     {
@@ -22,8 +31,14 @@
       "by": null,
       "why": "Two Portland nights on the newly announced Pirouette tour, with presale access through Laylo sign-up.",
       "sources": [
-        {"name": "The Fader", "url": "https://www.thefader.com/2026/10/22/2hollis-2027-tour-dates-tickets-opener"},
-        {"name": "BroadwayWorld", "url": "https://www.broadwayworld.com/bwwmusic/article/2hollis-to-Launch-North-American-UKEuropean-Tour-February-2027-20261022"}
+        {
+          "name": "The Fader",
+          "url": "https://www.thefader.com/2026/10/22/2hollis-2027-tour-dates-tickets-opener"
+        },
+        {
+          "name": "BroadwayWorld",
+          "url": "https://www.broadwayworld.com/bwwmusic/article/2hollis-to-Launch-North-American-UKEuropean-Tour-February-2027-20261022"
+        }
       ]
     },
     {
@@ -34,8 +49,14 @@
       "by": null,
       "why": "Surprise 2027 North American return with Bullet for My Valentine and The Raven Age.",
       "sources": [
-        {"name": "Live Nation", "url": "https://www.livenation.com/event/vvG1HZ_fUJy6d7/iron-maiden-run-for-your-lives-north-american-tour-2027"},
-        {"name": "Iron Maiden", "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"}
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_fUJy6d7/iron-maiden-run-for-your-lives-north-american-tour-2027"
+        },
+        {
+          "name": "Iron Maiden",
+          "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
+        }
       ]
     },
     {
@@ -46,8 +67,14 @@
       "by": "2026-11-19",
       "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
       "sources": [
-        {"name": "Oregon Ducks", "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"},
-        {"name": "Yahoo Sports", "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"}
+        {
+          "name": "Oregon Ducks",
+          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
+        },
+        {
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
+        }
       ]
     },
     {
@@ -58,7 +85,10 @@
       "by": "2026-11-20",
       "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
       "sources": [
-        {"name": "Oregon Zoo", "url": "https://www.oregonzoo.org/lights"}
+        {
+          "name": "Oregon Zoo",
+          "url": "https://www.oregonzoo.org/lights"
+        }
       ]
     },
     {
@@ -69,8 +99,14 @@
       "by": "2026-12-05",
       "why": "Runs at Keller Auditorium Dec 5 to 24, with a noon show on Christmas Eve.",
       "sources": [
-        {"name": "Oregon Ballet Theatre season", "url": "https://www.obt.org/ballet-performances-in-portland/2026-27-season/"},
-        {"name": "OBT tickets", "url": "https://my.obt.org/817/866"}
+        {
+          "name": "Oregon Ballet Theatre season",
+          "url": "https://www.obt.org/ballet-performances-in-portland/2026-27-season/"
+        },
+        {
+          "name": "OBT tickets",
+          "url": "https://my.obt.org/817/866"
+        }
       ]
     },
     {
@@ -81,8 +117,14 @@
       "by": null,
       "why": "Vancouver's tourism office advises reserving waterfront restaurant seats well in advance on parade nights (Vancouver nights listed Dec 16 to 18).",
       "sources": [
-        {"name": "Christmas Ships parade schedule", "url": "https://www.christmasships.org/parade-schedule"},
-        {"name": "Visit Vancouver WA", "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"}
+        {
+          "name": "Christmas Ships parade schedule",
+          "url": "https://www.christmasships.org/parade-schedule"
+        },
+        {
+          "name": "Visit Vancouver WA",
+          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+        }
       ]
     },
     {
@@ -93,8 +135,14 @@
       "by": null,
       "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
       "sources": [
-        {"name": "Kann FAQ", "url": "https://kannrestaurant.com/faqs"},
-        {"name": "Kann on Resy", "url": "https://resy.com/cities/portland-or/venues/kann"}
+        {
+          "name": "Kann FAQ",
+          "url": "https://kannrestaurant.com/faqs"
+        },
+        {
+          "name": "Kann on Resy",
+          "url": "https://resy.com/cities/portland-or/venues/kann"
+        }
       ]
     },
     {
@@ -105,9 +153,18 @@
       "by": "2026-10-31",
       "why": "Timberline cut pass prices this year and steps them up over time; KATU reports the current adult tier at $849.",
       "sources": [
-        {"name": "Mt. Hood Fusion Pass", "url": "https://www.mthoodfusionpass.com/buy-your-pass/"},
-        {"name": "KATU", "url": "https://katu.com/news/local/timberline-reduces-season-ski-pass-prices-to-where-they-were-in-2021"},
-        {"name": "Freeskier", "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"}
+        {
+          "name": "Mt. Hood Fusion Pass",
+          "url": "https://www.mthoodfusionpass.com/buy-your-pass/"
+        },
+        {
+          "name": "KATU",
+          "url": "https://katu.com/news/local/timberline-reduces-season-ski-pass-prices-to-where-they-were-in-2021"
+        },
+        {
+          "name": "Freeskier",
+          "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
+        }
       ]
     },
     {
@@ -118,7 +175,10 @@
       "by": "2026-10-31",
       "why": "Skibowl's pass page says Tier 1 ends Oct 31; adult passes are listed at $589.",
       "sources": [
-        {"name": "Skibowl season passes", "url": "https://skibowl.com/season-passes/"}
+        {
+          "name": "Skibowl season passes",
+          "url": "https://skibowl.com/season-passes/"
+        }
       ]
     },
     {
@@ -129,7 +189,10 @@
       "by": null,
       "why": "Meadows uses dynamic pricing, so pass prices rise as more are sold.",
       "sources": [
-        {"name": "The Columbian", "url": "https://www.columbian.com/news/2026/apr/04/mt-hood-meadows-ski-area-announces-close-to-season-on-april-12-makes-plans-for-2026-27/"}
+        {
+          "name": "The Columbian",
+          "url": "https://www.columbian.com/news/2026/apr/04/mt-hood-meadows-ski-area-announces-close-to-season-on-april-12-makes-plans-for-2026-27/"
+        }
       ]
     },
     {
@@ -140,7 +203,10 @@
       "by": "2026-11-14",
       "why": "Powder lists the Epic Pass at $1,169 as of Oct 13, with the next increase Nov 15.",
       "sources": [
-        {"name": "Powder", "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"}
+        {
+          "name": "Powder",
+          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
+        }
       ]
     },
     {
@@ -151,20 +217,40 @@
       "by": "2026-12-10",
       "why": "Ikon shows the current price valid until Dec 10; last year sales stopped Dec 11.",
       "sources": [
-        {"name": "Ikon Pass", "url": "https://www.ikonpass.com/en/shop-passes/ikon-pass"},
-        {"name": "Powder", "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"}
+        {
+          "name": "Ikon Pass",
+          "url": "https://www.ikonpass.com/en/shop-passes/ikon-pass"
+        },
+        {
+          "name": "Powder",
+          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
+        }
       ]
     },
     {
       "title": "Oregon Sno-Park permit season starts",
       "kind": "Permit",
-      "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual, $9 for three days or $4 for one day.",
+      "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual (also sold online at DMV2U), $9 for three days or $4 for one day from vendors or a DMV office.",
       "starts": "2026-11-01",
       "by": null,
-      "why": "A permit is required Nov 1 to Apr 30, and parking without one can bring a $30 fine.",
+      "why": "A permit is required Nov 1 to Apr 30, permits aren't sold on site and vendors often sell out, and DMV stopped selling daily and three-day permits online in 2026.",
       "sources": [
-        {"name": "ODOT Sno-Park Program", "url": "https://www.oregon.gov/odot/maintenance/pages/sno-park-program.aspx"},
-        {"name": "TripCheck Sno-Park permits", "url": "https://www.tripcheck.com/Pages/Sno-Parks-Permits"}
+        {
+          "name": "ODOT Sno-Park Program",
+          "url": "https://www.oregon.gov/odot/maintenance/pages/sno-park-program.aspx"
+        },
+        {
+          "name": "TripCheck Sno-Park permits",
+          "url": "https://www.tripcheck.com/Pages/Sno-Parks-Permits"
+        },
+        {
+          "name": "ODOT DMV rule notice (2026)",
+          "url": "https://www.oregon.gov/odot/Get-Involved/OAR%20folders/2025-AONs/DMV_17-2026.pdf"
+        },
+        {
+          "name": "Mt. Hood NF Sno-Park alert",
+          "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
+        }
       ]
     },
     {
@@ -173,10 +259,20 @@
       "action": "Watch Recreation.gov for this year's $5 permits and print yours; digital copies aren't accepted.",
       "starts": null,
       "by": null,
-      "why": "The season runs mid-November through December; last year it opened Nov 14. The 2026 start isn't announced yet.",
+      "why": "The Forest Service says the season is closed and reopens in November 2026; last year it opened Nov 14. Permits are $5 plus a $2.50 Recreation.gov fee, five per household.",
       "sources": [
-        {"name": "US Forest Service", "url": "https://www.fs.usda.gov/r06/mthood/newsroom/releases/cut-your-own-christmas-tree-mt-hood-national-forest"},
-        {"name": "Recreation.gov", "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"}
+        {
+          "name": "Mt. Hood NF Christmas trees",
+          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
+        },
+        {
+          "name": "US Forest Service",
+          "url": "https://www.fs.usda.gov/r06/mthood/newsroom/releases/cut-your-own-christmas-tree-mt-hood-national-forest"
+        },
+        {
+          "name": "Recreation.gov",
+          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
+        }
       ]
     },
     {
@@ -187,7 +283,10 @@
       "by": null,
       "why": "Those are 2025 details; the farm hasn't posted 2026 tree dates yet.",
       "sources": [
-        {"name": "Portland Monthly 2025 tree guide", "url": "https://www.pdxmonthly.com/travel-and-outdoors/christmas-tree-farms-near-portland"}
+        {
+          "name": "Portland Monthly 2025 tree guide",
+          "url": "https://www.pdxmonthly.com/travel-and-outdoors/christmas-tree-farms-near-portland"
+        }
       ]
     },
     {
@@ -198,8 +297,14 @@
       "by": null,
       "why": "Oregon State Parks takes reservations up to six months ahead; Cape Lookout's campground has been closed for improvements since Aug 3, 2026.",
       "sources": [
-        {"name": "Fort Stevens State Park", "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=129"},
-        {"name": "Cape Lookout State Park", "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"}
+        {
+          "name": "Fort Stevens State Park",
+          "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=129"
+        },
+        {
+          "name": "Cape Lookout State Park",
+          "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"
+        }
       ]
     },
     {
@@ -210,7 +315,10 @@
       "by": "2026-10-28",
       "why": "The fall sale was extended through Oct 28, with pumpkins and gourds at 50% off.",
       "sources": [
-        {"name": "Portland Nursery sales", "url": "https://portlandnursery.com/sales/"}
+        {
+          "name": "Portland Nursery sales",
+          "url": "https://portlandnursery.com/sales/"
+        }
       ]
     },
     {
@@ -219,10 +327,16 @@
       "action": "Hold Criterion 4K wish-list buys for November.",
       "starts": null,
       "by": null,
-      "why": "B&N has run the half-off Criterion sale every July and November; the 2026 dates aren't announced yet.",
+      "why": "B&N runs the half-off Criterion sale every July and November (last November's began Nov 7); 2026 dates aren't announced yet.",
       "sources": [
-        {"name": "Jeff Rauseo guide", "url": "https://www.jeffrauseo.com/p/the-criterion-collection-50-off-sale-barnes-and-noble"},
-        {"name": "Slickdeals (Nov 2025 sale)", "url": "https://slickdeals.net/f/18763741-semi-annual-criterion-collection-sale-at-barnes-noble-starts-friday-november-7th"}
+        {
+          "name": "Jeff Rauseo guide",
+          "url": "https://www.jeffrauseo.com/p/the-criterion-collection-50-off-sale-barnes-and-noble"
+        },
+        {
+          "name": "Slickdeals (Nov 2025 sale)",
+          "url": "https://slickdeals.net/f/18763741-semi-annual-criterion-collection-sale-at-barnes-noble-starts-friday-november-7th"
+        }
       ]
     }
   ]

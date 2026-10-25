@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, birds, coastsafety, deals, fishing, garden, grid, health, live, markets, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
+from . import alerts, almanac, ambient, aps, birds, coastsafety, deals, fishing, garden, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -630,6 +630,23 @@ def fetch_world(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_almanac(state, now_utc):
+    """Today in history, places near home, Gorge trip reports and Parker's calendar."""
+    store, errors = state.setdefault("almanac", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    if (store.get("history") or {}).get("date") != today.isoformat():
+        store.pop("history_at", None)
+        store.pop("nearby_at", None)
+    _refresh(store, "history", lambda: almanac.on_this_day(today), 24, now_utc, errors)
+    out = state.get("outside") or {}
+    if out.get("lat"):
+        _refresh(store, "nearby", lambda: almanac.nearby(out["lat"], out["lon"], today), 24, now_utc, errors)
+    _refresh(store, "trails", lambda: almanac.trip_reports(today), 6, now_utc, errors)
+    if env("CALENDAR_ICS"):
+        _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
     _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
@@ -816,6 +833,7 @@ def ships_view(state, now_utc):
 def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
+    al = state.get("almanac") or {}
     all_rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
     rows = [r for r in all_rows if not r.get("bill")]
     bills = [r for r in all_rows if r.get("bill")]
@@ -916,6 +934,10 @@ def build(state, status, now_utc):
                   "incidents": (state.get("extras") or {}).get("roads") or []},
         "rare_birds": (state.get("extras") or {}).get("birds") if env("EBIRD_KEY") else None,
         "pollen": (state.get("extras") or {}).get("pollen") if env("GOOGLE_POLLEN_KEY") else None,
+        "almanac": {"history": al.get("history") if (al.get("history") or {}).get("date") == today else None,
+                    "facts": almanac.date_facts(dt.date.fromisoformat(today)),
+                    "nearby": al.get("nearby"), "trails": al.get("trails")},
+        "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
         "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
                       "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }
@@ -931,7 +953,7 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships)):
+                     ("ships", fetch_ships), ("almanac", fetch_almanac)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

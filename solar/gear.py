@@ -111,6 +111,7 @@ def _reverb(query):
 
 
 def _query(title):
+    title = re.sub(r"\$[\d.,]+|\b[\d,]+\.\d\d\b", " ", title)  # prices in the title
     words = re.sub(r"[^\w\s-]", " ", title).split()
     return " ".join(w for w in words if not re.fullmatch(r"(?i)obo|firm|\$[\d.,]+|[\d,]+\.\d\d|mint|great|excellent|condition|sale|new|used", w))[:60]
 

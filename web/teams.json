@@ -1,54 +1,54 @@
-{"updated": "2026-10-24", "updated_at": "2026-10-24T15:41:03Z", "teams": {
+{"updated": "2026-10-24", "updated_at": "2026-10-25T06:11:29Z", "teams": {
   "blazers": {
     "mood": "Happy, not satisfied",
-    "pulse": "Portland is 2-0 after a 128-120 comeback win in Sacramento. It wasn't pretty, though: Blazer's Edge called it a shaky outing, and the Kings' bigs and rookie guard did a lot of damage. Fans will take the W and worry about the defense later.",
+    "pulse": "No game since Friday, so fans are still chewing on the 128-120 comeback win in Sacramento that made it 2-0. The vibe is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
     "storylines": [
-      "Deni Avdija led with 26 points, 6 rebounds and 6 assists; Lillard and Toumani Camara had 19 each",
-      "Portland came back from 12 down in the first quarter, powered by a 44-point third",
-      "Defense was the worry: Sabonis had 27, 19 and 10, and Kings rookie Darius Acuff Jr. scored 33",
-      "Next up: at Luka and the Lakers on Tuesday, then home vs. Memphis on Thursday"
+      "Portland came back from 12 down, powered by a 44-point third quarter, for its first road win",
+      "Rip City Project says the close call proves the Blazers must put the ball in Avdija's hands more after he took over in the second half",
+      "Defense worry: the Kings kept attacking Lillard and Morant, and Portland was slow closing out on corner threes",
+      "Shaedon Sharpe remains out with a torn right meniscus, expected back no earlier than February",
+      "Next up: at the Lakers on Tuesday"
     ],
     "sources": [
       {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"},
-      {"name": "TSN (AP recap)", "url": "https://www.tsn.ca/nba/article/avdija-scores-26-points-to-lead-trail-blazers-in-win-over-kings/"},
-      {"name": "Sports Illustrated", "url": "https://www.si.com/nba/trailblazers/onsi/blazers-survive-scare-stay-unbeaten-with-win-over-kings"},
-      {"name": "750 The Game", "url": "https://www.750thegame.com/trail-blazers-announce-full-2026-27-regular-season-schedule/"}
+      {"name": "Sports Illustrated", "url": "https://www.si.com/nba/trailblazers/onsi/the-good-and-bad-from-the-blazers-win-over-the-kings"},
+      {"name": "Rip City Project", "url": "https://ripcityproject.com/close-call-kings-proves-blazers-must-put-ball-deni-avdija-hands-more"},
+      {"name": "Yahoo Sports (AP recap)", "url": "https://sports.yahoo.com/articles/deni-avdija-scores-26-points-050744592.html"},
+      {"name": "Athlon Sports", "url": "https://athlonsports.com/nba/sacramento-kings/final-injury-report-for-trail-blazers-kings-will-malik-monk-play"},
+      {"name": "ESPN", "url": "https://www.espn.com/nba/player/_/id/4683021/deni-avdija"}
     ]
   },
   "timbers": {
-    "mood": "Frustrated",
-    "pulse": "Tonight feels like the last real shot. The Timbers (9-14-7, 34 points) are tied for 11th in the West and winless in seven. They host Charlotte, who can clinch a playoff spot with just a draw, so fans want a win and aren't expecting much.",
+    "mood": "Alive again",
+    "pulse": "Finally! The Timbers beat Charlotte 3-2 at Providence Park on Alexander Aravena's header in the sixth minute of stoppage time. It snaps a seven-match winless run and pulls Portland within three points of the West's last playoff spot, so the season isn't dead yet.",
     "storylines": [
-      "Charlotte at Providence Park tonight, 7:30 PT on Apple TV",
-      "First-ever Charlotte visit to Portland; Charlotte won the only previous meeting 2-0 in 2024",
-      "Kristoffer Velde is the go-to guy as the team's top scorer",
-      "Watch Charlotte's Idan Toklomati, who has a club-record 13 goals",
-      "Previews are split between a narrow Timbers win and a 1-1 draw"
+      "Ariel Lassiter scored twice in the first half (11th and 40th minutes) before Charlotte fought back to 2-2",
+      "Aravena won it with a header deep in stoppage time",
+      "The win ended a seven-match winless streak",
+      "Portland is now within three points of the final Western Conference playoff spot",
+      "The loss kept Charlotte from clinching an East playoff berth"
     ],
     "sources": [
-      {"name": "Field Level Media", "url": "https://fieldlevelmedia.com/mls/win-or-draw-vs-timbers-would-punch-charlottes-playoff-ticket/"},
-      {"name": "Charlotte FC", "url": "https://www.charlottefootballclub.com/news/toppling-the-timbers-materials-of-the-match-charlotte-fc-at-portland-timbers"},
-      {"name": "Squawka", "url": "https://www.squawka.com/us/news/mls/match-preview-portland-timbers-vs-charlotte-fc-10-24-26-mls/"},
-      {"name": "Goal", "url": "https://www.goal.com/en-us/news/watch-portland-timbers-v-charlotte-fc-live-stream-online-tv-channel/bltc84726e0a20cbb9c"},
-      {"name": "Statz", "url": "https://statz.ai/news/19609959-portland-vs-charlotte-predictions-betting-tips"}
+      {"name": "KPTV (AP)", "url": "https://www.kptv.com/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-3-2-victory-over-charlotte/"},
+      {"name": "Deadspin", "url": "https://deadspin.com/alexander-aravenas-dramatic-goal-lifts-timbers-past-charlotte-fc/"},
+      {"name": "Yahoo Sports (box score)", "url": "https://sports.yahoo.com/soccer/mls/charlotte-fc-portland-timbers-13587053/"}
     ]
   },
   "f1": {
-    "mood": "On edge",
-    "pulse": "Ferrari owned Friday in Austin, with Charles Leclerc topping both practices, but Kimi Antonelli was only 0.042s back in FP2. Qualifying is today at 2 PT, and Antonelli can clinch the title in Sunday's race, though he himself puts the odds at about one in 25.",
+    "mood": "Title on the line",
+    "pulse": "Kimi Antonelli grabbed pole in Austin and could be world champion after Sunday's race. Ferrari owned Friday but faded when it counted, and Verstappen starts right alongside him, so nobody thinks it's a done deal.",
     "storylines": [
-      "Antonelli leads Russell by 102 and clinches Sunday with a win if Russell is 9th or lower and Hamilton 5th or lower",
-      "Leclerc led FP1 and FP2; Verstappen was 2nd in FP1 and 3rd in FP2",
-      "Antonelli lost time early in FP2 to a loose seat that Mercedes had to fix",
-      "Russell got a black-and-white warning flag for forcing Leclerc off track; stewards took no further action"
+      "Antonelli took pole with a 1:34.035, 0.179s ahead of Verstappen, with Hadjar third",
+      "Verstappen's final lap was deleted and he complained about grip afterward",
+      "Ferrari faded after topping both Friday practices: Leclerc starts 4th, Hamilton 5th",
+      "Russell starts 6th; Antonelli clinches with a win if Russell finishes 9th or lower and Hamilton 5th or lower"
     ],
     "sources": [
-      {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13602756/united-states-gp-charles-leclerc-edges-kimi-antonelli-in-practice-two-to-complete-friday-double-for-ferrari"},
-      {"name": "RaceFans", "url": "https://www.racefans.net/2026/10/23/leclerc-stays-on-top-in-second-practice-at-cota-narrowly-ahead-of-antonelli/"},
-      {"name": "ESPN", "url": "https://www.espn.com/f1/story/_/id/50250038/ferrari-charles-leclerc-sets-pace-second-practice-kimi-antonelli-united-states-grand-prix-circuit-americas-austin-formula-1"},
-      {"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/points-permutations-when-is-the-earliest-antonelli-could-win-world-championship.24UKT2fsQl4GmC5DMrmYUy"},
-      {"name": "Express & Star (PA)", "url": "https://www.expressandstar.com/uk-sports/kimi-antonelli-can-dare-to-dream-after-edging-to-brink-of-drivers-title-9280640"},
-      {"name": "GPFans", "url": "https://www.gpfans.com/en/f1-news/1091897/f1-qualifying-today-us-grand-prix-2026-start-time-schedule-watch-live-free/"}
+      {"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/antonelli-seizes-pole-position-ahead-of-verstappen-in-qualifying-at-the-united-states-gp.4xdH4w09GhNDOJdknowRAk"},
+      {"name": "Motorsport Week", "url": "https://motorsportweek.com/2026/10/24/kimi-antonelli-takes-austin-pole-as-max-verstappens-final-lap-is-deleted"},
+      {"name": "GrandPrix247", "url": "https://www.grandprix247.com/formula-1-news/united-states-grand-prix-qualifying-kimi-antonelli-denies-max-verstappen-ferrari-falters-when-it-matters"},
+      {"name": "RaceFans", "url": "https://www.racefans.net/2026/10/24/2026-united-states-grand-prix-grid/"},
+      {"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/points-permutations-when-is-the-earliest-antonelli-could-win-world-championship.24UKT2fsQl4GmC5DMrmYUy"}
     ]
   }
 }}

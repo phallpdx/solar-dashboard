@@ -106,7 +106,7 @@ def congress_members(state, district):
             "chamber": "senate" if t["type"] == "sen" else "house",
             "party": t.get("party"), "url": t.get("url"), "phone": t.get("phone"),
             "contact": t.get("contact_form") or t.get("url"), "term_ends": t.get("end"),
-            "bioguide": p["id"]["bioguide"], "lis": p["id"].get("lis"),
+            "bioguide": p["id"]["bioguide"], "lis": p["id"].get("lis"), "govtrack": p["id"].get("govtrack"),
         })
     return sorted(people, key=lambda x: x["chamber"] != "senate")
 
@@ -262,6 +262,21 @@ def senate_votes(today, lis_ids, cache, n=6):
         seen.pop(k)
     return {lis: [{k: v[k] for k in ("date", "bill", "question", "result", "desc", "url")} | {"vote": v["positions"][lis]}
                   for v in rows if lis in v["positions"]][:n] for lis in lis_ids}
+
+
+def govtrack_votes(govtrack_id, n=6):
+    """Fallback for senators when senate.gov turns the runner away: GovTrack's record of their votes."""
+    data = _json("https://www.govtrack.us/api/v2/vote_voter?" + urllib.parse.urlencode(
+        {"person": govtrack_id, "order_by": "-created", "limit": n}))
+    out = []
+    for row in data.get("objects") or []:
+        v = row.get("vote") or {}
+        bill = v.get("related_bill") or {}
+        out.append({"date": (v.get("created") or "")[:10] or None,
+                    "bill": bill.get("display_number") if isinstance(bill, dict) else None,
+                    "question": v.get("question"), "result": v.get("result"), "desc": "",
+                    "url": v.get("link"), "vote": (row.get("option") or {}).get("value")})
+    return out
 
 
 # ---------------------------------------------------------------- elections and ballot

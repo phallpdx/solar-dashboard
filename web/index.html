@@ -611,18 +611,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <section class="group" data-sec="sports" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Shows, games and markets</h2><p class="sec-sub">Concerts, Blazers, Timbers, F1 and the S&amp;P</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games, markets and shows</h2><p class="sec-sub">Blazers, Timbers, F1, the S&amp;P, then concerts and jazz</p></div></div>
     <div class="sec-body">
-      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
-        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
-        <div class="lines" id="gigs"></div>
-        <p class="note" id="gig-missing"></p>
-      </section>
-      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
-        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
-        <div class="lines" id="jazz"></div>
-        <p class="note" id="jazz-regulars"></p>
-      </section>
       <div class="teams" id="teams"></div>
       <div class="row">
         <section class="card wide" aria-labelledby="mkt-h">
@@ -636,6 +626,16 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div id="f1"></div>
         </section>
       </div>
+      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
+        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
+        <div class="lines" id="gigs"></div>
+        <p class="note" id="gig-missing"></p>
+      </section>
+      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
+        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
+        <div class="lines" id="jazz"></div>
+        <p class="note" id="jazz-regulars"></p>
+      </section>
     </div>
   </section>
 
@@ -716,7 +716,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <footer class="learn" id="learn">
-    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, moves your favorites up, and folds the ones you skip. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
+    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, and moves your favorites up. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
     <p id="learn-state"></p>
     <button type="button" class="mini" id="learn-reset">Reset layout</button>
   </footer>
@@ -2018,6 +2018,7 @@ const NAV = {today: 'Today', almanac: 'This day', civics: 'Vote', family: 'Littl
   watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
+if (!habits.noAutoFold) { habits.folds = {}; habits.noAutoFold = 1; }  // sections no longer fold on their own; open any folded before
 const groups = () => [...document.querySelectorAll('.group')];
 const learned = () => habits.days >= 3 && Object.values(habits.score).reduce((a, b) => a + b, 0) >= 600;
 
@@ -2040,10 +2041,9 @@ function arrange() {
     return (habits.score[b.dataset.sec] || 0) - (habits.score[a.dataset.sec] || 0) || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
   });
   order.forEach(g => foot.parentNode.insertBefore(g, foot));
-  const total = Object.values(habits.score).reduce((a, b) => a + b, 0);
   for (const g of all) {
     const k = g.dataset.sec, choice = habits.folds[k];
-    const auto = learned() && k !== 'today' && !habits.pins[k] && choice !== 'open' && (habits.score[k] || 0) < total * 0.025;
+    const auto = false;  // never fold a section on its own
     setFold(g, choice === 'folded' || (choice !== 'open' && auto), auto && choice !== 'folded');
   }
 }

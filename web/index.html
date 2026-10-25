@@ -248,7 +248,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .rep{border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .rep-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
 .rep-head small,.rep-links{font-size:12.5px;font-weight:600;color:var(--muted)}
-.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+#gear a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
 .party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
 .party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
 .vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
@@ -576,6 +576,13 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <p class="note" id="ski-links"></p>
       </section>
       <div class="row">
+        <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
+          <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
+          <div class="lines" id="gear"></div>
+          <p class="note">Asking price against what that gear usually sells for used. Check it in person before handing over cash.</p>
+        </section>
+      </div>
+      <div class="row">
         <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
           <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
           <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
@@ -835,6 +842,7 @@ function render() {
   renderAlmanac();
   renderTrails();
   renderCivics();
+  renderGear();
   waits.push(renderBriefing());
   syncGroups();
   Promise.allSettled(waits).then(syncGroups);
@@ -2255,6 +2263,10 @@ async function renderBriefing() {
   const trail = (al.trails || [])[0];
   if (trail && daysTo(trail.latest.date) >= -3) add(33, 'trail-card', `A fresh report from ${esc(trail.hike)} (${fmtDate(trail.latest.date)})${trail.latest.issues ? `: ${esc(trail.latest.issues.toLowerCase())}` : ''}.`);
 
+  // Craigslist
+  const steal = ((D.gear && D.gear.deals) || []).find(d => d.pct_off >= 45 && d.first_seen && daysTo(d.first_seen) >= -1);
+  if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. One might move quickly, sir.`);
+
   // Elections
   const cv = D.civics;
   const el = cv && (cv.elections || [])[0];
@@ -2376,6 +2388,18 @@ function renderCivics() {
   const missing = [!c.keys.congress && 'a free CONGRESS_KEY shows the bills your members of Congress sponsor', !c.keys.openstates && 'a free OPENSTATES_KEY adds your state senator and representative', !c.keys.ballot && 'a GOOGLE_CIVIC_KEY lists what’s on your ballot'].filter(Boolean);
   $('civ-keys').hidden = !missing.length;
   $('civ-keys').textContent = missing.length ? 'To add more: ' + missing.join('; ') + '.' : '';
+}
+
+// ------------------------------------------------------------------ craigslist gear
+function renderGear() {
+  const g = D.gear;
+  $('gear-card').hidden = !g;
+  if (!g) return;
+  $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
+  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}
+      <br><small>Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})${d.where ? ' · ' + esc(d.where) : ''}</small></span>
+      <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off}% under</small></span></div>`).join('')
+    : '<p class="note">Nothing priced well below usual right now.</p>';
 }
 
 function syncGroups() {

@@ -240,6 +240,18 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .near-feature .note{margin-top:4px}
 .group[data-sec=almanac] .card a,#hol-today a,#trails a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
 #near .sub{margin-top:8px}
+.group[data-sec=civics]{--accent:#2F5DA8;--tint:#E4ECF8}
+.elect-next{display:flex;gap:16px;align-items:center;margin-bottom:6px}
+.elect-count{flex:none;width:84px;height:84px;border-radius:20px;background:var(--tint);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent)}
+.elect-count b{font-size:32px;font-weight:800;line-height:1}.elect-count small{font-size:12px;font-weight:700}
+.reps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.rep{border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rep-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+.rep-head small,.rep-links{font-size:12.5px;font-weight:600;color:var(--muted)}
+.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+.party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
+.party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
+.vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -331,6 +343,23 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div id="near"></div>
         </section>
       </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="elect-h">
+        <div class="head"><h2 id="elect-h">Next election</h2></div>
+        <div id="elect"></div>
+      </section>
+      <section class="card" aria-labelledby="reps-h">
+        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
+        <div class="reps" id="reps"></div>
+        <h3 class="sub">Statewide</h3>
+        <div class="lines" id="statewide"></div>
+        <p class="note" id="civ-keys" hidden></p>
+      </section>
     </div>
   </section>
 
@@ -803,6 +832,7 @@ function render() {
   renderCalendar();
   renderAlmanac();
   renderTrails();
+  renderCivics();
   waits.push(renderBriefing());
   syncGroups();
   Promise.allSettled(waits).then(syncGroups);
@@ -1984,7 +2014,7 @@ function addSources() {
 
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
-const NAV = {today: 'Today', almanac: 'This day', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
+const NAV = {today: 'Today', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
   watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
@@ -2217,6 +2247,25 @@ async function renderBriefing() {
   const trail = (al.trails || [])[0];
   if (trail && daysTo(trail.latest.date) >= -3) add(33, 'trail-card', `A fresh report from ${esc(trail.hike)} (${fmtDate(trail.latest.date)})${trail.latest.issues ? `: ${esc(trail.latest.issues.toLowerCase())}` : ''}.`);
 
+  // Elections
+  const cv = D.civics;
+  const el = cv && (cv.elections || [])[0];
+  if (el) {
+    const n = daysTo(el.date), reg = daysTo(el.register_by);
+    if (n === 0) add(100, 'civics', `<b>Today is election day</b>, sir. Ballots must be in a drop box by 8 pm; the post will not do at this hour.`);
+    else if (n <= 3) add(90, 'civics', `<b>The ${esc(el.name.toLowerCase())} is ${whenWord(el.date)}.</b> If your ballot is still on the hall table, I suggest a drop box rather than the post.`);
+    else if (n <= 14) add(76, 'civics', `<b>The ${esc(el.name.toLowerCase())} is in ${n} days</b> (${fmtDate(el.date)}). Your ballot should have arrived; shall I find a pen?`);
+    else if (reg >= 0 && reg <= 7) add(80, 'civics', `Voter registration for the ${esc(el.name.toLowerCase())} closes ${whenWord(el.register_by)}. Do make sure your address is current.`);
+    else if (n <= 45) add(40, 'civics', `The ${esc(el.name.toLowerCase())} is ${fmtDate(el.date)}, ${n} days off.`);
+  }
+  const newVotes = [];
+  for (const p of (cv && cv.people) || []) for (const v of p.votes.slice(0, 2)) {
+    const when = v.date && /^\d{4}-/.test(v.date) && new Date(v.date + 'T12:00');
+    if (when && now - when < 3 * 864e5) newVotes.push([p, v]);
+  }
+  if (newVotes.length) { const [p, v] = newVotes[0];
+    add(32, 'civics', `${esc(p.name)} voted <b>${esc(v.vote)}</b> on ${esc(v.bill || v.question || 'a measure')}${v.desc ? `, ${esc(v.desc.length > 90 ? v.desc.slice(0, 87) + '…' : v.desc)}` : ''}.`); }
+
   notes.sort((a, b) => b[0] - a[0]);
   const top = notes.filter(n => n[0] >= 50).slice(0, 4);
   const lead = top.length ? top : notes.slice(0, 2);
@@ -2286,6 +2335,39 @@ function renderTrails() {
   $('trails').innerHTML = t.map(x => `<div><span><a href="${esc(x.latest.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.hike)}</b></a>
     ${x.latest.issues ? ` <small>· ${esc(x.latest.issues)}</small>` : ''}${x.latest.text ? `<br><small>“${esc(x.latest.text)}”${x.latest.by ? ' · ' + esc(x.latest.by) : ''}</small>` : ''}</span>
     <span style="white-space:nowrap;padding-left:12px">${fmtDate(x.latest.date)}<br><small>${x.count} in 3 weeks</small></span></div>`).join('');
+}
+
+// ------------------------------------------------------------------ civics
+const partyTag = p => p ? `<span class="party p-${esc(p[0])}">${esc(p[0])}</span>` : '';
+function renderCivics() {
+  const c = D.civics;
+  $('civics').hidden = !c;
+  if (!c) return;
+  const d = c.districts, e = c.elections || [];
+  $('civ-meta').textContent = [d.county, d.congress && `Congressional District ${d.congress}`, d.senate && `State Senate ${d.senate}`, d.house && `State House ${d.house}`].filter(Boolean).join(' · ');
+  const next = e[0];
+  if (next) {
+    const n = Math.round((new Date(next.date + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
+    const regOpen = next.register_by >= todayIso();
+    $('elect').innerHTML = `<div class="elect-next"><div class="elect-count"><b>${n === 0 ? 'Today' : n}</b>${n === 0 ? '' : `<small>day${n === 1 ? '' : 's'}</small>`}</div>
+      <div><b>${esc(next.name)}</b> · ${DOW[new Date(next.date + 'T12:00').getDay()]} ${fmtDate(next.date)}
+      <p class="note">${regOpen ? `Register or update your address by ${fmtDate(next.register_by)}. Ballots go out around ${fmtDate(next.ballots_mailed)}.` : n <= 20 ? 'Your ballot should already be in the mail. Drop it off by 8 pm on election day.' : `Registration for this one closed ${fmtDate(next.register_by)}.`}</p></div></div>
+      ${(next.contests || []).length ? `<h3 class="sub">On your ballot</h3><div class="lines">${next.contests.map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.subtitle ? `<br><small>${esc(x.subtitle)}</small>` : ''}${x.candidates ? `<br><small>${x.candidates.map(k => esc(k.name) + (k.party ? ` (${esc(k.party.replace(/ Party$/, ''))})` : '')).join(', ')}</small>` : ''}</span><span>${x.kind === 'measure' ? 'Measure' : ''}</span></div>`).join('')}</div>` : ''}
+      ${e.length > 1 ? `<h3 class="sub">After that</h3><div class="lines">${e.slice(1).map(x => `<div><span>${esc(x.name)}</span><span>${fmtDate(x.date)} ${x.date.slice(0, 4)}</span></div>`).join('')}</div>` : ''}
+      <p class="note">${srcLinks(c.links)}</p>`;
+  }
+  const voteRow = v => `<div><span>${v.bill ? `<b style="font-weight:700">${esc(v.bill)}</b> ` : ''}${esc(v.desc || v.question || '')}<br><small>${esc(v.question || '')}${v.result ? ' · ' + esc(v.result) : ''} · <a href="${esc(v.url)}" target="_blank" rel="noopener">${v.date && /^\d{4}-/.test(v.date) ? fmtDate(v.date) : esc(v.date || 'Details')}</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(v.vote)}</span></div>`;
+  $('reps').innerHTML = c.people.map(p => `<div class="rep">
+      <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>
+        <div class="rep-links">${p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : ''}${p.phone ? ` · <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : ''}${p.email ? ` · <a href="mailto:${esc(p.email)}">Email</a>` : ''}${p.url && p.url !== p.contact ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''}</div></div>
+      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3><div class="lines">${p.votes.slice(0, 4).map(voteRow).join('')}</div>` : ''}
+      ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, 3).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
+      ${p.news.length ? `<h3 class="sub">In the news</h3><div class="lines">${p.news.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${x.date ? fmtDate(x.date) : ''}</small></span></div>`).join('')}</div>` : ''}
+    </div>`).join('');
+  $('statewide').innerHTML = c.statewide.map(s => `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a> ${partyTag(s.party)}</span><span>${esc(s.role)}</span></div>`).join('');
+  const missing = [!c.keys.congress && 'a free CONGRESS_KEY shows the bills your members of Congress sponsor', !c.keys.openstates && 'a free OPENSTATES_KEY adds your state senator and representative', !c.keys.ballot && 'a GOOGLE_CIVIC_KEY lists what’s on your ballot'].filter(Boolean);
+  $('civ-keys').hidden = !missing.length;
+  $('civ-keys').textContent = missing.length ? 'To add more: ' + missing.join('; ') + '.' : '';
 }
 
 function syncGroups() {

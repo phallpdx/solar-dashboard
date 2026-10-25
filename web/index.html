@@ -248,7 +248,12 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .rep{border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .rep-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
 .rep-head small,.rep-links{font-size:12.5px;font-weight:600;color:var(--muted)}
-#gear a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.rec{background:var(--tint);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.rec-k{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.rec b{font-size:19px;font-weight:800;letter-spacing:-.01em}.rec span:not(.rec-k){font-size:13.5px;font-weight:600;color:var(--body)}
+.rec .note{margin:4px 0}
+.rec a,#gear a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
 .party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
 .party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
 .vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
@@ -598,6 +603,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   <section class="group" data-sec="watch" id="coming" aria-labelledby="watch-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
     <div class="sec-body">
+      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
+        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
+        <div class="recs" id="records"></div>
+      </section>
       <div class="row" id="watch-row">
         <section class="card half" aria-labelledby="tv-h">
           <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
@@ -843,7 +852,7 @@ function render() {
   renderTrails();
   renderCivics();
   renderGear();
-  waits.push(renderBriefing());
+  waits.push(renderRecords().then(renderBriefing));
   syncGroups();
   Promise.allSettled(waits).then(syncGroups);
   setTimeout(syncGroups, 4000);
@@ -2263,6 +2272,13 @@ async function renderBriefing() {
   const trail = (al.trails || [])[0];
   if (trail && daysTo(trail.latest.date) >= -3) add(33, 'trail-card', `A fresh report from ${esc(trail.hike)} (${fmtDate(trail.latest.date)})${trail.latest.issues ? `: ${esc(trail.latest.issues.toLowerCase())}` : ''}.`);
 
+  // Records for the morning
+  const rp = renderRecords.picks;
+  if (rp) {
+    const morning = now.getHours() < 12;
+    add(morning ? 66 : 24, 'rec-card', `For the gramophone this ${morning ? 'morning' : 'day'}: <b>${esc(rp.classic[1])}</b> by ${esc(rp.classic[0])} (${rp.classic[2]}). ${esc(rp.classic[4])} And for something newer, <b>${esc(rp.modern[1])}</b> by ${esc(rp.modern[0])}${rp.live ? `, playing ${esc(rp.live.venue)} ${calDay(rp.live.date).toLowerCase()}` : ''}.`);
+  }
+
   // Craigslist
   const steal = ((D.gear && D.gear.deals) || []).find(d => d.pct_off >= 45 && d.first_seen && daysTo(d.first_seen) >= -1);
   if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. One might move quickly, sir.`);
@@ -2400,6 +2416,155 @@ function renderGear() {
       <br><small>Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})${d.where ? ' · ' + esc(d.where) : ''}</small></span>
       <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off}% under</small></span></div>`).join('')
     : '<p class="note">Nothing priced well below usual right now.</p>';
+}
+
+// ------------------------------------------------------------------ morning records
+// Two picks a day: a classic (over 15 years old, critically adored) and a modern cult classic, chosen by
+// how well their tags fit today's season, weather and holidays. [artist, album, year, tags, why]
+const CLASSICS = [
+  ['Nick Drake', 'Pink Moon', 1972, 'fall winter rain quiet full', 'Twenty-eight minutes of voice and guitar, made for grey mornings.'],
+  ['Nick Drake', 'Bryter Layter', 1971, 'fall', 'Strings, brass and that hushed voice; autumn in record form.'],
+  ['Van Morrison', 'Astral Weeks', 1968, 'fall', 'A one-take reverie that critics still put near the top of every list.'],
+  ['Neil Young', 'Harvest Moon', 1992, 'fall full thanks', 'Warm, unhurried, and named for exactly this time of year.'],
+  ['Neil Young', 'Harvest', 1972, 'fall thanks', 'Country-rock comfort food from the man himself.'],
+  ['Elliott Smith', 'Either/Or', 1997, 'fall rain local', 'Portland’s own, recorded in town; perfect for wet streets.'],
+  ['Elliott Smith', 'XO', 1998, 'fall rain local', 'Smith’s lushest set, all Beatles chords and Portland drizzle.'],
+  ['Sufjan Stevens', 'Illinois', 2005, 'fall thanks', 'Banjo, brass and the Midwest in autumn colours.'],
+  ['Fleet Foxes', 'Fleet Foxes', 2008, 'fall spring local', 'Seattle harmonies that sound like Northwest forests.'],
+  ['Bon Iver', 'For Emma, Forever Ago', 2007, 'winter snow', 'Written in a Wisconsin cabin over a snowed-in winter.'],
+  ['Low', 'Things We Lost in the Fire', 2001, 'winter snow quiet', 'Slow, beautiful, and best with frost on the windows.'],
+  ['Low', 'Christmas', 1999, 'xmas', 'The cult holiday record for people who dislike holiday records.'],
+  ['Talk Talk', 'Spirit of Eden', 1988, 'rain quiet', 'Six long pieces that invented post-rock on a rainy afternoon.'],
+  ['Radiohead', 'In Rainbows', 2007, 'fall', 'The warmest Radiohead record, and the one most people keep returning to.'],
+  ['Portishead', 'Dummy', 1994, 'rain night', 'Trip-hop’s grey-sky masterpiece.'],
+  ['Massive Attack', 'Mezzanine', 1998, 'rain night halloween', 'Dark, heavy and gorgeous; made for long wet nights.'],
+  ['Bill Evans Trio', 'Sunday at the Village Vanguard', 1961, 'sunday rain jazz', 'The best way to start a Sunday, recorded on one.'],
+  ['Miles Davis', 'Kind of Blue', 1959, 'any jazz night', 'The best-selling jazz album ever, and it earns it every listen.'],
+  ['John Coltrane', 'Ballads', 1962, 'rain winter jazz', 'Coltrane at his most tender, ideal for rainy mornings.'],
+  ['John Coltrane', 'A Love Supreme', 1965, 'winter newyear jazz', 'A four-part prayer; good for fresh starts.'],
+  ['Vince Guaraldi Trio', 'A Charlie Brown Christmas', 1965, 'xmas', 'Still the coziest record of December.'],
+  ['Stan Getz and João Gilberto', 'Getz/Gilberto', 1964, 'summer sun', 'Bossa nova at its breeziest.'],
+  ['The Beach Boys', 'Pet Sounds', 1966, 'spring summer sun', 'Brian Wilson’s pocket symphony to youth.'],
+  ['The Zombies', 'Odessey and Oracle', 1968, 'spring', 'Baroque pop that opens with “Care of Cell 44” and never lets up.'],
+  ['Kate Bush', 'Hounds of Love', 1985, 'fall halloween', 'Side two is a gothic fever dream; ideal for late October.'],
+  ['Siouxsie and the Banshees', 'Juju', 1981, 'halloween', 'Goth’s spookiest classic, from “Spellbound” on.'],
+  ['The Cure', 'Disintegration', 1989, 'fall rain halloween', 'Grand, gloomy and gorgeous.'],
+  ['Goblin', 'Suspiria', 1977, 'halloween', 'The witchiest film score ever pressed to vinyl.'],
+  ['Tom Waits', 'Rain Dogs', 1985, 'rain fall', 'Junkyard blues for a downpour.'],
+  ['Simon & Garfunkel', 'Bookends', 1968, 'fall', 'Includes “Old Friends” and a whole side about getting older; very October.'],
+  ['Fleetwood Mac', 'Rumours', 1977, 'spring summer', 'Breakup songs that somehow sound like sunshine.'],
+  ['Stevie Wonder', 'Songs in the Key of Life', 1976, 'summer sun', 'Stevie’s sprawling, joyful peak.'],
+  ['Marvin Gaye', "What's Going On", 1971, 'election', 'Soul’s great protest album, timely in any election week.'],
+  ['Bob Dylan', "The Times They Are a-Changin'", 1964, 'election', 'Dylan at his most topical; good listening before you vote.'],
+  ['Bob Dylan', 'Blood on the Tracks', 1975, 'winter', 'Dylan’s heartbreak masterpiece.'],
+  ['Joni Mitchell', 'Blue', 1971, 'xmas winter', 'Home of “River”, the saddest December song there is.'],
+  ['Joni Mitchell', 'Hejira', 1976, 'winter', 'Restless road songs with Jaco Pastorius on bass.'],
+  ['Cocteau Twins', 'Heaven or Las Vegas', 1990, 'spring', 'Dream pop at its most luminous.'],
+  ['Mazzy Star', 'So Tonight That I Might See', 1993, 'night fall', 'Hazy, slow and made for dusk.'],
+  ['Sigur Rós', 'Ágætis byrjun', 1999, 'winter snow', 'Icelandic glacier music.'],
+  ['Brian Eno', 'Music for Airports', 1978, 'rain quiet sunday', 'The original ambient album; perfect with coffee.'],
+  ['Brian Eno', 'Another Green World', 1975, 'spring', 'Eno’s greenest, most playful album.'],
+  ['The Velvet Underground & Nico', 'The Velvet Underground & Nico', 1967, 'sunday', 'Opens with “Sunday Morning”. Need we say more?'],
+  ['Bill Withers', 'Just As I Am', 1971, 'sun summer', 'Home of “Ain’t No Sunshine” and “Grandma’s Hands”.'],
+  ['Al Green', "Let's Stay Together", 1972, 'valentine', 'Sweet soul for sweethearts.'],
+  ['Love', 'Forever Changes', 1967, 'spring summer', 'Psychedelic orchestral folk, sunny with a dark edge.'],
+  ['Neutral Milk Hotel', 'In the Aeroplane Over the Sea', 1998, 'fall', 'The ultimate cult classic, fuzz and singing saw included.'],
+  ['The Microphones', 'The Glow Pt. 2', 2001, 'fall rain local', 'Phil Elverum’s Anacortes masterpiece; it sounds like PNW weather.'],
+  ['Grouper', 'Dragging a Dead Deer Up a Hill', 2008, 'fall rain local quiet', 'Liz Harris of Portland and Astoria, at her most haunting.'],
+  ['Modest Mouse', 'The Moon & Antarctica', 2000, 'winter local', 'Issaquah’s finest, at their most cosmic.'],
+  ['Sleater-Kinney', 'Dig Me Out', 1997, 'local', 'Olympia and Portland punk at full throttle.'],
+  ['Built to Spill', 'Keep It Like a Secret', 1999, 'local summer', 'Boise guitar heroics, big with Northwest indie kids.'],
+  ['Death Cab for Cutie', 'Transatlanticism', 2003, 'rain local fall', 'Bellingham rain, set to music.'],
+  ['Nirvana', 'MTV Unplugged in New York', 1994, 'fall local', 'Lilies, candles and Leadbelly.'],
+  ['Bob Marley and the Wailers', 'Exodus', 1977, 'summer sun', 'Sunshine in a sleeve.'],
+  ['The Kinks', 'The Village Green Preservation Society', 1968, 'spring', 'Ray Davies’ love letter to English village life.'],
+  ['Boards of Canada', 'Music Has the Right to Children', 1998, 'fall', 'Faded-film nostalgia, perfect for fall leaves.'],
+  ['Aphex Twin', 'Selected Ambient Works 85–92', 1992, 'summer night', 'Warm electronic dreams.'],
+  ['D’Angelo', 'Voodoo', 2000, 'winter night', 'Neo-soul’s deepest groove.'],
+  ['Phil Spector', 'A Christmas Gift for You', 1963, 'xmas', 'Wall-of-sound Christmas, still unbeatable.'],
+  ['John Carpenter', 'Halloween (soundtrack)', 1978, 'halloween', 'Five-four piano dread. You know the one.'],
+  ['William Basinski', 'The Disintegration Loops', 2002, 'winter quiet', 'Tape loops decaying in real time; meditative and moving.'],
+  ['Hiroshi Yoshimura', 'Green', 1986, 'spring sunday quiet', 'Japanese ambient that found a cult on YouTube decades later.'],
+];
+const MODERN = [
+  ['Big Thief', 'Dragon New Mountain I Believe in You', 2022, 'fall winter', 'A sprawling, homespun double album with a devoted following.'],
+  ['Phoebe Bridgers', 'Punisher', 2020, 'fall halloween', 'Sad songs from the woman in the skeleton suit; very late October.'],
+  ['Adrianne Lenker', 'Songs', 2020, 'fall rain quiet', 'Recorded alone in a cabin; you can hear the rain on the roof.'],
+  ['Weyes Blood', 'Titanic Rising', 2019, 'rain', 'Seventies-sized ballads about rising water.'],
+  ['Mitski', 'Be the Cowboy', 2018, 'fall', 'Short, sharp, and beloved to the point of obsession.'],
+  ['Sufjan Stevens', 'Carrie & Lowell', 2015, 'fall quiet local', 'Sufjan’s spare masterpiece, with stops in Oregon.'],
+  ['Sufjan Stevens', 'Silver & Gold', 2012, 'xmas', 'Five discs of Christmas songs, some sincere and some very strange.'],
+  ['Kendrick Lamar', 'To Pimp a Butterfly', 2015, 'election', 'A jazz-rap epic about America; timely before an election.'],
+  ['Frank Ocean', 'Blonde', 2016, 'summer night', 'Fans have been waiting on the follow-up ever since.'],
+  ['Japanese Breakfast', 'Jubilee', 2021, 'summer local', 'Michelle Zauner of Eugene, going full technicolor.'],
+  ['Alvvays', 'Blue Rev', 2022, 'summer fall', 'Jangly, fuzzed-out and adored.'],
+  ['Grouper', 'Ruins', 2014, 'rain quiet local', 'Piano and a tin roof, from Portland’s patron saint of drizzle.'],
+  ['The Microphones', 'Microphones in 2020', 2020, 'fall local', 'One 44-minute song about memory, from Anacortes.'],
+  ['Mount Eerie', 'A Crow Looked at Me', 2017, 'winter quiet local', 'Devastating and plainspoken; a cult touchstone.'],
+  ['Jessica Pratt', 'On Your Own Love Again', 2015, 'night quiet', 'Hushed home-recorded folk with a devoted following.'],
+  ['Floating Points, Pharoah Sanders and the LSO', 'Promises', 2021, 'rain quiet sunday jazz', 'A slow-building ambient jazz suite.'],
+  ['Kamasi Washington', 'The Epic', 2015, 'jazz', 'Three hours of cosmic jazz that turned new ears toward the genre.'],
+  ['Beach House', 'Depression Cherry', 2015, 'fall night', 'Dream pop as slow fall dusk.'],
+  ['Beach House', 'Bloom', 2012, 'summer night', 'Warm, swirling and very replayable.'],
+  ['Angel Olsen', 'My Woman', 2016, 'fall', 'Torch songs and guitar burners.'],
+  ['Bon Iver', '22, A Million', 2016, 'winter snow', 'Glitchy, strange and moving.'],
+  ['Fleet Foxes', 'Shore', 2020, 'fall spring equinox local', 'Released on the September equinox, and it sounds like one.'],
+  ['Caroline Polachek', 'Desire, I Want to Turn Into You', 2023, 'spring', 'Art-pop with a fanatical following.'],
+  ['boygenius', 'the record', 2023, 'spring', 'A supergroup with a fan base to match.'],
+  ['Wednesday', 'Rat Saw God', 2023, 'summer', 'Country-tinged noise rock from Asheville.'],
+  ['Black Country, New Road', 'Ants From Up There', 2022, 'winter', 'Chamber rock that fans treat like scripture.'],
+  ['Waxahatchee', 'Saint Cloud', 2020, 'spring', 'Clear-eyed Americana and a fan favorite.'],
+  ['Khruangbin', 'Con Todo El Mundo', 2018, 'summer sun thai', 'Thai-funk-inspired grooves from Texas; a nod to Bangkok.'],
+  ['Tame Impala', 'Currents', 2015, 'summer', 'Psych pop that launched a thousand bedroom producers.'],
+  ['Chelsea Wolfe', 'Abyss', 2015, 'halloween night', 'Heavy, eerie and made for October nights.'],
+  ['Julia Jacklin', 'Crushing', 2019, 'fall', 'Plain-spoken heartbreak with a devoted fan base.'],
+  ['Cate Le Bon', 'Pompeii', 2022, 'winter', 'Odd, elegant and quietly influential.'],
+];
+function recordPicks() {
+  const now = new Date(), m = now.getMonth() + 1, d = now.getDate(), today = todayIso();
+  const tags = {any: 0.1};
+  const season = m === 12 || m <= 2 ? 'winter' : m <= 5 ? 'spring' : m <= 8 ? 'summer' : 'fall';
+  tags[season] = 1;
+  const o = D.outside || {}, t0 = (o.days || []).find(x => x.date === today);
+  if (t0 && t0.rain_pct >= 60) tags.rain = 2;
+  if (t0 && t0.snow_in > 0.2) tags.snow = 3;
+  if (t0 && t0.rain_pct < 20 && t0.hi >= 70) tags.sun = 2;
+  if (o.moon && o.moon.lit_pct >= 97) tags.full = 2;
+  if (now.getDay() === 0) tags.sunday = 2;
+  if (m === 10 && d >= 18) tags.halloween = 4;
+  if (m === 12 && d <= 26) tags.xmas = 4;
+  if (m === 11 && d >= 18 && d <= 28) tags.thanks = 3;
+  if ((m === 12 && d >= 28) || (m === 1 && d <= 3)) tags.newyear = 3;
+  if (m === 2 && d >= 10 && d <= 14) tags.valentine = 4;
+  if ([3, 9].includes(m) && d >= 19 && d <= 23) tags.equinox = 3;
+  const el = D.civics && (D.civics.elections || [])[0];
+  if (el && Math.round((new Date(el.date + 'T12:00') - new Date(today + 'T12:00')) / 864e5) <= 9) tags.election = 3;
+  tags.local = 0.5; tags.thai = (D.thai_buddhist || []).some(x => x.date === today) ? 3 : 0;
+  const day = Math.floor(Date.now() / 864e5);
+  const pick = (list, salt) => {
+    const scored = list.map(r => [r[3].split(' ').reduce((s, k) => s + (tags[k] || 0), 0), r]).sort((a, b) => b[0] - a[0]);
+    const pool = scored.filter(x => x[0] >= scored[0][0] - 1).map(x => x[1]);
+    return pool[(day + salt) % pool.length];
+  };
+  const classic = pick(CLASSICS.filter(r => now.getFullYear() - r[2] > 15), 0);
+  let modern = pick(MODERN, 3), live = null;
+  return {classic, modern, live, why: Object.entries(tags).filter(([k, v]) => v >= 2).map(([k]) => k)};
+}
+const listen = (artist, album) => `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + album)}`;
+async function renderRecords() {
+  const p = recordPicks();
+  // Topical twist: a modern pick that is playing Portland this week beats the calendar.
+  const gigs = await getJson('concerts.json');
+  const soonShow = ((gigs && gigs.shows) || []).find(s => s.date >= todayIso() && (new Date(s.date + 'T12:00') - new Date()) < 7 * 864e5 &&
+    MODERN.some(r => r[0].toLowerCase() === s.artist.toLowerCase()));
+  if (soonShow) { p.modern = MODERN.find(r => r[0].toLowerCase() === soonShow.artist.toLowerCase()); p.live = soonShow; }
+  renderRecords.picks = p;
+  const card = (label, r, extra) => `<div class="rec"><span class="rec-k">${label}</span>
+    <b>${esc(r[1])}</b><span>${esc(r[0])} · ${r[2]}</span><p class="note">${esc(r[4])}${extra || ''}</p>
+    <a class="link" href="${listen(r[0], r[1])}" target="_blank" rel="noopener">Listen on Spotify</a></div>`;
+  $('records').innerHTML = card('The classic', p.classic) +
+    card('The modern classic', p.modern, p.live ? ` Playing ${esc(p.live.venue)} ${calDay(p.live.date).toLowerCase()}.` : '');
+  $('rec-card').hidden = false;
 }
 
 function syncGroups() {

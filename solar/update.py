@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -634,7 +634,7 @@ def fetch_almanac(state, now_utc):
     """Today in history, places near home, Gorge trip reports and Parker's calendar."""
     store, errors = state.setdefault("almanac", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
-    if (store.get("history") or {}).get("date") != today.isoformat():
+    if (store.get("history") or {}).get("date") != today.isoformat() or (store.get("history") or {}).get("v") != 2:
         store.pop("history_at", None)
         store.pop("nearby_at", None)
     _refresh(store, "history", lambda: almanac.on_this_day(today), 24, now_utc, errors)
@@ -728,6 +728,24 @@ def civics_view(state, today):
             "links": [{"name": n, "url": u} for n, u in civics.VOTE_LINKS],
             "keys": {"congress": bool(env("CONGRESS_KEY")), "openstates": bool(env("OPENSTATES_KEY")),
                      "ballot": bool(env("GOOGLE_CIVIC_KEY"))}}
+
+
+def fetch_gear(state, now_utc):
+    """Underpriced music gear on Portland Craigslist, checked twice a day."""
+    store, errors = state.setdefault("gear", {}), []
+
+    def scan():
+        found = gear.listings()
+        first = store.setdefault("first_seen", {})
+        today = now_utc.astimezone(zone("America/Los_Angeles")).date().isoformat()
+        picks = gear.deals(found, store.setdefault("reverb", {}))
+        for d in picks:
+            d["first_seen"] = first.setdefault(d["url"], today)
+        for url in list(first)[:-500]:
+            first.pop(url)
+        return {"deals": picks, "checked": len(found)}
+    _refresh(store, "scan", scan, 12, now_utc, errors)
+    return "; ".join(errors) or None
 
 
 def fetch_news(state, now_utc):
@@ -1023,6 +1041,8 @@ def build(state, status, now_utc):
                     "nearby": al.get("nearby"), "trails": al.get("trails")},
         "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
         "civics": civics_view(state, today),
+        "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
+                if (state.get("gear") or {}).get("scan") else None,
         "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
                       "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }
@@ -1038,7 +1058,7 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics)):
+                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

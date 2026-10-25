@@ -36,20 +36,45 @@ def _entry(x):
             "local": bool(LOCAL.search(" ".join([x.get("text") or ""] + [p["summary"] or "" for p in pages[:2]])))}
 
 
+# Today in history leans fun: wars, crimes and disasters are left out, and firsts, inventions, music,
+# film, sport and space float to the top.
+GRIM = re.compile(r"\b(war|wars|battle|killed|kills|killing|murder\w*|massacre\w*|bomb\w*|attack\w*|invad\w*|invasion|"
+                  r"execut\w*|assassinat\w*|shot|shooting|genocide|siege|terror\w*|crash\w*|disaster|dead|deaths?|died|"
+                  r"fatal\w*|hostage\w*|riot\w*|coup|troops|army|armies|military|soldiers|surrender\w*|bombard\w*|"
+                  r"sinks?|sank|collapse\w*|explosion|hurricane|famine|plague|lynch\w*|kidnap\w*|prison|arrested)\b", re.I)
+FUN = re.compile(r"\b(first|invent\w*|patent\w*|record|released?|premiere\w*|album|single|song|film|movie|opens?|opened|"
+                 r"founded|discover\w*|launch\w*|space|moon|orbit|world series|championship|wins?|won|olympic\w*|"
+                 r"television|radio|broadcast|computer|internet|video game|comic|novel|published|museum|zoo|festival|"
+                 r"debut\w*|unveil\w*|introduc\w*|world's|tallest|largest)\b", re.I)
+
+
+def _cheerful(x):
+    return not GRIM.search(x["text"] or "") and not GRIM.search(((x["page"] or {}).get("summary") or "")[:200])
+
+
+def _fun(x):
+    return len(FUN.findall(x["text"] or "")) + (2 if x["local"] else 0)
+
+
 def on_this_day(day):
-    """Selected events, births, deaths and holidays for this calendar date. Local ones are flagged."""
+    """Lighter events, births and holidays for this calendar date. Local ones are flagged."""
     data = _get(f"{WIKI}/api/rest_v1/feed/onthisday/all/{day.month:02d}/{day.day:02d}")
-    events = [_entry(x) for x in data.get("events") or []]
-    selected = [_entry(x) for x in data.get("selected") or []]
+    events = [_entry(x) for x in (data.get("selected") or []) + (data.get("events") or [])]
     births = [_entry(x) for x in data.get("births") or []]
-    deaths = [_entry(x) for x in data.get("deaths") or []]
-    seen = {x["text"] for x in selected}
+    pool, seen = [], set()
+    for x in events:
+        if x["text"] not in seen and _cheerful(x):
+            seen.add(x["text"])
+            pool.append(x)
+    pool.sort(key=lambda x: -_fun(x))
+    local = [x for x in pool + births if x["local"]][:5]
     return {
+        "v": 2,
         "date": day.isoformat(),
-        "selected": selected[:8],
-        "local": [x for x in events + births + deaths if x["local"] and x["text"] not in seen][:5],
+        "selected": sorted([x for x in pool if not x["local"]][:8], key=lambda x: x["year"] or 0),
+        "local": local,
         "births": sorted(births, key=lambda x: -(x["year"] or 0))[:6],
-        "deaths": deaths[:4],
+        "deaths": [],
         "holidays": [{"text": x.get("text"), "page": _page(x["pages"][0]) if x.get("pages") else None}
                      for x in data.get("holidays") or []][:10],
     }

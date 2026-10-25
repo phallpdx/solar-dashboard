@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, coastsafety, deals, fishing, garden, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -647,6 +647,82 @@ def fetch_almanac(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_civics(state, now_utc):
+    """Districts, representatives and what they've been doing, and upcoming elections."""
+    store, errors = state.setdefault("civics", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    out = state.get("outside") or {}
+    address = env("HOME_ADDRESS")
+    if not (address or out.get("lat")):
+        return "Needs the home location first."
+    fingerprint = (state.get("outside") or {}).get("address_id")
+    if store.get("address_id") != fingerprint:
+        store.clear()
+        store["address_id"] = fingerprint
+    _refresh(store, "districts", lambda: civics.districts(address or None, out.get("lat"), out.get("lon")), 24 * 7, now_utc, errors)
+    d = store.get("districts")
+    if not d:
+        return "; ".join(errors)
+    _refresh(store, "congress", lambda: civics.congress_members(d["state"], d["congress"]), 24, now_utc, errors)
+    if env("OPENSTATES_KEY") and out.get("lat"):
+        _refresh(store, "legislature", lambda: civics.state_legislators(out["lat"], out["lon"], env("OPENSTATES_KEY")), 24, now_utc, errors)
+    people = (store.get("congress") or []) + (store.get("legislature") or [])
+    cache = store.setdefault("vote_cache", {})
+
+    def votes():
+        found = {}
+        for p in people:
+            if p["chamber"] == "house":
+                found[p["bioguide"]] = civics.house_votes(today, p["bioguide"], cache)
+        lis = [p["lis"] for p in people if p["chamber"] == "senate" and p.get("lis")]
+        if lis:
+            for p_lis, rows in civics.senate_votes(today, lis, cache).items():
+                found[p_lis] = rows
+        return found
+    _refresh(store, "votes", votes, 3, now_utc, errors)
+
+    def bills():
+        found = {}
+        for p in people:
+            if p.get("bioguide") and env("CONGRESS_KEY"):
+                found[p["bioguide"]] = civics.sponsored(p["bioguide"], env("CONGRESS_KEY"))
+            elif p.get("openstates_id"):
+                found[p["openstates_id"]] = civics.state_bills(p["openstates_id"], env("OPENSTATES_KEY"))
+        return found
+    if env("CONGRESS_KEY") or env("OPENSTATES_KEY"):
+        _refresh(store, "bills", bills, 24, now_utc, errors)
+    _refresh(store, "news", lambda: {p["name"]: civics.news(p["name"]) for p in people}, 6, now_utc, errors)
+    if env("GOOGLE_CIVIC_KEY") and address:
+        _refresh(store, "ballot", lambda: civics.civic_elections(address, env("GOOGLE_CIVIC_KEY"), today), 24, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def civics_view(state, today):
+    c = state.get("civics") or {}
+    d = c.get("districts")
+    if not d:
+        return None
+    votes, bills, news = c.get("votes") or {}, c.get("bills") or {}, c.get("news") or {}
+    people = []
+    for p in (c.get("congress") or []) + (c.get("legislature") or []):
+        vid = p.get("bioguide") if p["chamber"] == "house" else p.get("lis")
+        people.append({k: v for k, v in p.items() if k not in ("lis",)} | {
+            "votes": votes.get(vid) or [], "bills": bills.get(p.get("bioguide") or p.get("openstates_id")) or [],
+            "news": news.get(p["name"]) or []})
+    ballot = {b["date"]: b for b in c.get("ballot") or [] if b["date"] >= today}
+    elections = []
+    for e in civics.oregon_elections(dt.date.fromisoformat(today)):
+        b = ballot.pop(e["date"], None)
+        elections.append(e | ({"name": b["name"] or e["name"], "contests": b["contests"], "info_url": b["info_url"]} if b else {}))
+    elections += [b for b in ballot.values()]
+    elections.sort(key=lambda e: e["date"])
+    return {"districts": d, "people": people, "elections": elections[:4],
+            "statewide": [{"role": r, "name": n, "party": p, "url": u} for r, n, p, u in civics.OREGON_STATEWIDE],
+            "links": [{"name": n, "url": u} for n, u in civics.VOTE_LINKS],
+            "keys": {"congress": bool(env("CONGRESS_KEY")), "openstates": bool(env("OPENSTATES_KEY")),
+                     "ballot": bool(env("GOOGLE_CIVIC_KEY"))}}
+
+
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
     _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
@@ -938,6 +1014,7 @@ def build(state, status, now_utc):
                     "facts": almanac.date_facts(dt.date.fromisoformat(today)),
                     "nearby": al.get("nearby"), "trails": al.get("trails")},
         "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
+        "civics": civics_view(state, today),
         "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
                       "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }
@@ -953,7 +1030,7 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships), ("almanac", fetch_almanac)):
+                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

@@ -656,9 +656,9 @@ def fetch_civics(state, now_utc):
     if not (address or out.get("lat")):
         return "Needs the home location first."
     fingerprint = (state.get("outside") or {}).get("address_id")
-    if store.get("address_id") != fingerprint:
+    if store.get("address_id") != fingerprint or store.get("v") != 2:  # v2 adds GovTrack ids
         store.clear()
-        store["address_id"] = fingerprint
+        store.update(address_id=fingerprint, v=2)
     _refresh(store, "districts", lambda: civics.districts(address or None, out.get("lat"), out.get("lon")), 24 * 7, now_utc, errors)
     d = store.get("districts")
     if not d:
@@ -681,8 +681,14 @@ def fetch_civics(state, now_utc):
         if lis:
             try:
                 found.update(civics.senate_votes(today, lis, cache))
-            except Exception as e:
-                failed.append(f"Senate: {e}")
+            except Exception as e:  # senate.gov often refuses cloud runners: try GovTrack
+                for p in people:
+                    if p["chamber"] == "senate" and p.get("lis") and p.get("govtrack"):
+                        try:
+                            found[p["lis"]] = civics.govtrack_votes(p["govtrack"])
+                        except Exception as e2:
+                            failed.append(f"Senate: {e}; GovTrack: {e2}")
+                            break
         if failed:
             errors.extend(failed)
         return found
@@ -713,7 +719,7 @@ def civics_view(state, today):
     people = []
     for p in (c.get("congress") or []) + (c.get("legislature") or []):
         vid = p.get("bioguide") if p["chamber"] == "house" else p.get("lis")
-        people.append({k: v for k, v in p.items() if k not in ("lis",)} | {
+        people.append({k: v for k, v in p.items() if k not in ("lis", "govtrack")} | {
             "votes": votes.get(vid) or [], "bills": bills.get(p.get("bioguide") or p.get("openstates_id")) or [],
             "news": news.get(p["name"]) or []})
     ballot = {b["date"]: b for b in c.get("ballot") or [] if b["date"] >= today}

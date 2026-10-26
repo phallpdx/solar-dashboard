@@ -305,11 +305,14 @@ def fetch_weather(state, now_utc):
         recs.sort(key=lambda x: x[0])
         sun = sum(fnum(r.get("solarradiation")) * 5 / 60 / 1000 for _, r in recs)  # kWh/m²
         temps = [fnum(r.get("tempf")) for _, r in recs if r.get("tempf") is not None]
+        rain = [fnum(r.get("dailyrainin")) for _, r in recs if r.get("dailyrainin") is not None]
         entry = days.get(day, {})
         if len(recs) >= entry.get("n", 0):  # keep the most complete copy of a day
             days[day] = {"n": len(recs), "sun_kwh_m2": round(sun, 3),
                          "hi": round(max(temps)) if temps else None,
                          "lo": round(min(temps)) if temps else None}
+        if rain:  # the gauge's running total for the day, so the biggest reading is the day's total
+            days[day]["rain_in"] = round(max(rain + [entry.get("rain_in") or 0]), 2)
     today = now_utc.astimezone(tz).strftime("%Y-%m-%d")
     weather["today_curve"] = [{"t": w.strftime("%H:%M"), "wm2": fnum(r.get("solarradiation"))}
                               for w, r in sorted(by_day.get(today, []), key=lambda x: x[0])]
@@ -345,6 +348,29 @@ def weather_view(state):
         "heat_loss_pct": heat_loss if sun > 200 else None,
         "curve": weather.get("today_curve", []),
         "days": weather.get("days", {}),
+        "rain": rain_view(weather),
+    }
+
+
+def rain_view(weather):
+    """Rainfall from the station's own gauge. Ambient's totals reset at local midnight, Sunday, the 1st and Jan 1."""
+    last = weather.get("latest") or {}
+    if last.get("dailyrainin") is None:
+        return None
+    tz = zone(last.get("tz"))
+    reading_day = dt.datetime.fromtimestamp(last["dateutc"] / 1000, dt.timezone.utc).astimezone(tz).strftime("%Y-%m-%d")
+    fresh = reading_day == weather.get("today")
+    recent = [{"date": d, "in": v.get("rain_in")} for d, v in sorted(weather.get("days", {}).items())[-7:]
+              if v.get("rain_in") is not None]
+    return {
+        "rate_in_hr": fnum(last.get("hourlyrainin")) if fresh else 0,
+        "today_in": fnum(last.get("dailyrainin")) if fresh else 0,
+        "event_in": fnum(last.get("eventrainin")),
+        "week_in": fnum(last.get("weeklyrainin")),
+        "month_in": fnum(last.get("monthlyrainin")),
+        "year_in": fnum(last.get("yearlyrainin")),
+        "last_rain": last.get("lastRain"),
+        "recent": recent,
     }
 
 

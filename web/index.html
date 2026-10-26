@@ -865,6 +865,29 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
 @keyframes puff{0%{opacity:0;transform:translate(0,0) scale(.5)}15%{opacity:.85}100%{opacity:0;transform:translate(26px,-70px) scale(2.4)}}
 @keyframes crawl{0%{transform:translateX(0)}100%{transform:translateX(calc(100vw + 80px))}}
 @keyframes spark{to{transform:translate(var(--dx),var(--dy)) scale(.2) rotate(200deg);opacity:0}}
+/* Go look: mountains, mushrooms, whales, picture of the day; and openings around town */
+.j-mtn{background:linear-gradient(170deg,#E3ECF2 0%,#D7E3E6 55%,#E9E1CF 100%);--jc:#33566B}
+.j-mush{background:linear-gradient(150deg,#F3E7D3,#E6D3B5);--jc:#7A4A1E}
+.j-whale{background:linear-gradient(160deg,#DDEBEC,#C9DEDF);--jc:#1F5B66}
+.j-potd{background:linear-gradient(150deg,#EFE9DF,#E2D8C6);--jc:#5B4A33}
+.mtn{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(60,40,20,.18)}
+.mtn:last-of-type{border-bottom:0}
+.mtn b{font-family:var(--display,inherit);font-size:17px}
+.mtn small,.mush small,.whale small{display:block;color:var(--muted);font-weight:600}
+.mtn-st{white-space:nowrap;text-align:right;font-weight:700;font-size:13.5px}
+.st{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;color:#fff;background:#8A7A66}
+.st.good,.st.out{background:#4E7A2E}.st.possible,.st.clear{background:#C08A2A}.st.slow,.st.hidden{background:#8A7A66}
+.mush{padding:7px 0;border-bottom:1px dashed rgba(60,40,20,.18);display:flex;justify-content:space-between;gap:10px}
+.mush:last-of-type{border-bottom:0}
+.spot{margin:8px 0 0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.45)}
+.spot b{display:block}
+.whale{display:flex;gap:10px;align-items:center;padding:5px 0}
+.whale img{width:46px;height:46px;border-radius:10px;object-fit:cover;flex:none;background:rgba(0,0,0,.08)}
+.whale a,.j-mtn a{color:var(--jc);font-weight:700}
+.potd-img{display:block;border-radius:14px;overflow:hidden;background:rgba(0,0,0,.08)}
+.potd-img img{display:block;width:100%;max-height:340px;object-fit:cover}
+.potd-title{display:block;margin-top:8px;font-family:var(--display,inherit);font-size:18px;font-weight:700;line-height:1.3}
+.open-pick{margin-bottom:8px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent,#A8573A) 12%,transparent)}
 </style>
 </head>
 <body>
@@ -1244,6 +1267,31 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
             </section>
           </div>
         </div>
+        <div class="shelf two-even" data-shelf="golook">
+          <h3 class="shelf-h"><span aria-hidden="true">🏔️</span>Go look</h3>
+          <div class="shelf-grid">
+            <div class="stack">
+              <section class="card joy-card j-mtn" aria-labelledby="mtn-h" id="mtn-card" hidden>
+                <div class="head"><h2 id="mtn-h">Is the mountain out?</h2><span class="meta">From home · Open-Meteo</span></div>
+                <div id="mtn"></div>
+              </section>
+              <section class="card joy-card j-whale" aria-labelledby="whale-h" id="whale-card" hidden>
+                <div class="head"><h2 id="whale-h">Whale watch</h2><span class="meta" id="whale-meta"></span></div>
+                <div id="whale"></div>
+              </section>
+            </div>
+            <div class="stack">
+              <section class="card joy-card j-mush" aria-labelledby="mush-h" id="mush-card" hidden>
+                <div class="head"><h2 id="mush-h">Mushroom forecast</h2><span class="meta" id="mush-meta"></span></div>
+                <div id="mush"></div>
+              </section>
+              <section class="card joy-card j-potd" aria-labelledby="potd-h" id="potd-card" hidden>
+                <div class="head"><h2 id="potd-h">Picture of the day</h2><span class="meta">Wikipedia</span></div>
+                <div id="potd"></div>
+              </section>
+            </div>
+          </div>
+        </div>
         <div class="shelf two-even" data-shelf="talk">
           <h3 class="shelf-h"><span aria-hidden="true">💬</span>Talk and smile</h3>
           <div class="shelf-grid">
@@ -1283,6 +1331,10 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
         <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
         <div class="lines" id="finds"></div>
+      </section>
+      <section class="card" aria-labelledby="open-h" id="open-card" hidden>
+        <div class="head"><h2 id="open-h">Opening around town</h2><span class="meta" id="open-meta"></span></div>
+        <div id="openings"></div>
       </section>
       <section class="card" aria-labelledby="big-h" id="big-card" hidden>
         <div class="head"><h2 id="big-h">Big events in town</h2><span class="meta" id="big-meta"></span></div>
@@ -2138,6 +2190,7 @@ function render() {
   renderTrails();
   renderCivics();
   renderGear();
+  renderOutings();
   waits.push(renderRecords().then(renderBriefing));
   syncGroups();
   Promise.allSettled(waits).then(syncGroups).then(clampLong);
@@ -2215,6 +2268,65 @@ function renderSunset() {
     <div><span class="sun-label">${esc(s.label)}</span><p class="note">${why}</p>
     <p class="note"><b>Look west ${at(t - 15)} – ${at(t + 20)}.</b> The best color often comes 10 minutes after the sun drops.</p></div></div>
     <div class="sun-clouds"><span>High clouds <b>${s.high}%</b></span><span>Mid <b>${s.mid}%</b></span><span>Low <b>${s.low}%</b></span></div>`;
+}
+
+// ------------------------------------------------------------------ go look: mountains, mushrooms, whales, openings
+const hr12 = h => `${h % 12 || 12} ${h < 12 ? 'am' : 'pm'}`;
+const spans = ws => ws.map(([a, b]) => a === b ? hr12(a) : `${hr12(a)}–${hr12(b + 1)}`).join(', ');
+function renderOutings() {
+  const o = D.outings || {}, day = o.daily || {};
+  const today = todayIso(), hour = new Date().getHours();
+  const m = o.mountains;
+  $('mtn-card').hidden = !(m && m.length);
+  if (m && m.length) {
+    $('mtn').innerHTML = m.map(p => {
+      const t = p.days.find(d => d.date === today) || p.days[0], next = p.days.find(d => d.date > today);
+      const now = t.date === today && t.hours.includes(hour), later = t.windows.filter(([, b]) => t.date !== today || b >= hour);
+      const st = now ? '<span class="st out">Out now</span>' : later.length ? `<span class="st clear">${spans(later)}</span>` : '<span class="st hidden">Hidden today</span>';
+      return `<div class="mtn"><div><b>${esc(p.name)}</b><small>Look ${esc(p.look)}, ${p.miles} miles · ${p.feet.toLocaleString()} ft</small></div>
+        <div class="mtn-st">${st}${next ? `<small>Tomorrow: ${next.windows.length ? spans(next.windows) : 'hidden'}</small>` : ''}</div></div>`;
+    }).join('') + (day.featured_peak && day.peak_fact ? `<p class="note"><b>${esc(day.featured_peak)}:</b> ${esc(day.peak_fact[day.featured_peak])}</p>` : '');
+  }
+  const mu = o.mushrooms;
+  $('mush-card').hidden = !mu;
+  if (mu) {
+    const f = mu.forests || [];
+    $('mush-meta').textContent = f.map(x => `${x.name.split(' (')[0]}: ${x.rain14.toFixed(1)}″ rain in 2 weeks${x.soil_f != null ? `, soil ${x.soil_f}°F` : ''}`).join(' · ');
+    const sp = mu.species || [], star = sp.find(x => x.name === day.mushroom);
+    $('mush').innerHTML = (sp.length ? sp.map(x => `<div class="mush"><span>${esc(x.name)}<small>${esc(x.why)}</small></span><span><span class="st ${x.status.toLowerCase()}">${esc(x.status)}</span></span></div>`).join('')
+        : '<p class="note">Nothing much is in season right now. Spring morels start in April.</p>')
+      + (star ? `<div class="spot"><b>Today’s mushroom: ${esc(star.name)}</b><span class="note">${esc(star.habitat)} ${esc(star.tell)}</span></div>` : '')
+      + (day.forage_tip ? `<p class="note">${esc(day.forage_tip)}</p>` : '');
+  }
+  const wh = o.whales, season = day.whale_season;
+  $('whale-card').hidden = !(wh || season);
+  if (wh || season) {
+    $('whale-meta').textContent = season ? season.phase : '';
+    const seen = (wh && wh.sightings) || [];
+    $('whale').innerHTML = (season ? `<p class="note">${esc(season.text)}</p>` : '')
+      + (day.whale_spot ? `<div class="spot"><b>Spot of the day: ${esc(day.whale_spot.name)}</b><span class="note">${esc(day.whale_spot.how)}</span></div>` : '')
+      + (seen.length ? `<h3 class="sub">Seen on the coast lately</h3>${seen.slice(0, 4).map(x => `<div class="whale">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy">` : ''}
+          <span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.what)}</a><small>${x.date ? fmtDate(x.date) : ''}${x.where ? ' · ' + esc(x.where) : ''}</small></span></div>`).join('')}`
+        : '<p class="note">No sightings logged on iNaturalist in the last three weeks.</p>')
+      + (day.whale_fact ? `<p class="note">${esc(day.whale_fact)}</p>` : '');
+  }
+  const pic = o.picture;
+  $('potd-card').hidden = !(pic && pic.image);
+  if (pic && pic.image) {
+    $('potd').innerHTML = `<a class="potd-img" href="${esc(pic.url || pic.full)}" target="_blank" rel="noopener"><img src="${esc(pic.image)}" alt="${esc(pic.title)}" loading="lazy"></a>
+      <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? `<p class="note">${esc(pic.caption.slice(0, 260))}${pic.caption.length > 260 ? '…' : ''}</p>` : ''}${pic.artist ? `<small class="muted">${esc(pic.artist)}</small>` : ''}`;
+  }
+  const op = o.openings;
+  $('open-card').hidden = !(op && op.length);
+  if (op && op.length) {
+    const pick = op[(day.opening_pick || 0) % op.length];
+    $('open-meta').textContent = `${op.length} in the last month · Eater Portland and local news`;
+    const row = x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`;
+    $('openings').innerHTML = `<div class="open-pick"><small><b>Worth a look today</b></small><div class="lines">${row(pick)}</div></div>
+      <div class="lines">${op.filter(x => x !== pick).slice(0, 7).map(row).join('')}</div>`;
+  }
+  const sh = document.querySelector('[data-shelf=golook]');
+  sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden);
 }
 
 function renderApod() {
@@ -3885,6 +3997,18 @@ async function renderBriefing() {
     const next = D.calendar.find(e => e.date === tomorrow);
     add(next ? 52 : 20, 'cal-card', next ? `Your calendar is clear today. Tomorrow: <b>${esc(next.title)}</b>${next.all_day ? '' : ' at ' + timeOf(next.start)}.` : 'Your calendar is clear today, sir.');
   }
+  const og = D.outings || {}, ogd = og.daily || {};
+  const outNow = (og.mountains || []).filter(p => { const t = p.days.find(d => d.date === today); return t && t.hours.includes(now.getHours()); });
+  const clearLater = (og.mountains || []).filter(p => { const t = p.days.find(d => d.date === today); return t && t.windows.some(([, b]) => b > now.getHours()); });
+  if (outNow.length) add(58, 'mtn-card', `${outNow.map(p => esc(p.name)).join(' and ')} ${outNow.length > 1 ? 'are' : 'is'} out right now, sir. Look ${esc(outNow[0].look)}.`);
+  else if (clearLater.length) add(30, 'mtn-card', `${esc(clearLater[0].name)} should show itself later today, ${spans(clearLater[0].days.find(d => d.date === today).windows.filter(([, b]) => b > now.getHours()))}.`);
+  const goodMush = ((og.mushrooms || {}).species || []).filter(x => x.status === 'Good');
+  if (goodMush.length) add(34, 'mush-card', `Conditions favor ${goodMush.slice(0, 2).map(x => esc(x.name.toLowerCase())).join(' and ')} in the forests. A basket in the boot would not go amiss.`);
+  if (ogd.whale_season && ogd.whale_season.level === 'peak') add(40, 'whale-card', `The gray whales are passing the coast in numbers. ${esc(ogd.whale_spot.name)} would serve nicely.`);
+  const ws = (og.whales || {}).sightings || [];
+  if (ws.length && daysTo(ws[0].date || '2000-01-01') >= -3) add(26, 'whale-card', `A ${esc(ws[0].what.toLowerCase())} was logged off the coast ${whenWord(ws[0].date)}.`);
+  const ops = og.openings || [];
+  if (ops.length) add(22, 'open-card', `New in town: ${esc(ops[(ogd.opening_pick || 0) % ops.length].title)}.`);
   const al = D.almanac || {}, hist = al.history;
   for (const f of al.facts || []) if (/Clocks fall back an hour tonight|Today is the/.test(f)) add(70, 'almanac', esc(f));
   if (hist && hist.date === today) {

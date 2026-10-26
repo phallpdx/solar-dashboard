@@ -169,7 +169,7 @@ def book_picks(user, today, n=8):
                 continue
             seen.add(t)
             picks.append({"title": d["title"], "author": author, "year": year, "because": f"You rated {author} highly",
-                          "url": f"https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{d['title']} {author}"}),
+                          "url": "https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{d['title']} {author}"}),
                           "cover": f"https://covers.openlibrary.org/b/id/{d['cover_i']}-M.jpg" if d.get("cover_i") else None})
             break  # one per author keeps the list varied
         if len(picks) >= n:

@@ -673,6 +673,18 @@ def main():
     if unknown:
         sys.exit(f"Unknown list(s): {', '.join(unknown)}. Choose from {', '.join(REFRESHERS)}.")
     try:
+        ids = [m["id"] for m in json.load(urllib.request.urlopen(LLM["url"] + "/v1/models", timeout=60))["data"]]
+    except Exception as e:  # noqa: BLE001
+        sys.exit(f"LM Studio is not answering at {LLM['url']}: {e}")
+    if LLM["model"] not in ids:
+        # LM Studio sometimes lists a model without its publisher prefix.
+        short = LLM["model"].split("/")[-1]
+        match = [i for i in ids if i.split("/")[-1].startswith(short)] or ids
+        if not match:
+            sys.exit("LM Studio has no model loaded.")
+        log(f"Model {LLM['model']} not listed by LM Studio ({', '.join(ids)}); using {match[0]}")
+        LLM["model"] = match[0]
+    try:
         _post("/v1/chat/completions", {"model": LLM["model"], "messages": [{"role": "user", "content": "Say OK."}],
                                        "max_tokens": 5, "chat_template_kwargs": {"enable_thinking": False}})
     except Exception as e:  # noqa: BLE001

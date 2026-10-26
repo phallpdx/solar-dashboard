@@ -2307,7 +2307,7 @@ function renderOutings() {
       + (day.whale_spot ? `<div class="spot"><b>Spot of the day: ${esc(day.whale_spot.name)}</b><span class="note">${esc(day.whale_spot.how)}</span></div>` : '')
       + (seen.length ? `<h3 class="sub">Seen on the coast lately</h3>${seen.slice(0, 4).map(x => `<div class="whale">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy">` : ''}
           <span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.what)}</a><small>${x.date ? fmtDate(x.date) : ''}${x.where ? ' · ' + esc(x.where) : ''}</small></span></div>`).join('')}`
-        : '<p class="note">No sightings logged on iNaturalist in the last three weeks.</p>')
+        : '<p class="note">No whale sightings logged on iNaturalist in the last six weeks.</p>')
       + (day.whale_fact ? `<p class="note">${esc(day.whale_fact)}</p>` : '');
   }
   const pic = o.picture;

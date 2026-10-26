@@ -264,10 +264,10 @@ def whale_season(day):
 
 
 def whales(today):
-    """Whale sightings on the north and central Oregon coast in the last three weeks, from iNaturalist."""
+    """Whale sightings off the Oregon coast in the last six weeks, from iNaturalist."""
     data = _get("https://api.inaturalist.org/v1/observations?" + urllib.parse.urlencode({
-        "taxon_name": "Cetacea", "swlat": 43.9, "swlng": -124.8, "nelat": 46.3, "nelng": -123.75,
-        "d1": (today - dt.timedelta(days=21)).isoformat(), "order_by": "observed_on", "order": "desc",
+        "taxon_name": "Cetacea", "swlat": 41.9, "swlng": -125.2, "nelat": 46.4, "nelng": -123.7,
+        "d1": (today - dt.timedelta(days=45)).isoformat(), "order_by": "observed_on", "order": "desc",
         "per_page": 30, "photos": "true"}))
     out = []
     for o in data.get("results") or []:
@@ -283,6 +283,15 @@ def whales(today):
 OPENING = re.compile(r"\b(open(s|ing|ed)?|now open|debut\w*|coming soon|to open|soft open\w*|new (bar|restaurant|cafe|bakery|brewery|spot|location)|"
                      r"first look|grand opening|reopen\w*)\b", re.I)
 SHUT = re.compile(r"\b(clos(e|es|ed|ing|ure)|shutter\w*|final (day|service)|last call|goodbye)\b", re.I)
+# Google News reaches far beyond Portland: keep stories from local outlets, or that name Portland and no other city.
+LOCAL_SOURCES = re.compile(r"eater portland|portland mercury|willamette week|wweek|oregonian|oregonlive|kgw|koin|kptv|katu|kgw8|"
+                           r"portland monthly|pdx monthly|bridgetown bites|portland business journal|portland tribune|"
+                           r"your oregon news|opb|pamplin|portland food adventures", re.I)
+PDX_WORDS = re.compile(r"\b(portland|pdx|pearl district|alberta|division st\w*|mississippi ave\w*|hawthorne|belmont|"
+                       r"sellwood|st\.? johns|kenton|montavilla|foster|woodstock|beaverton|gresham|vancouver, wa|lake oswego|"
+                       r"tigard|hillsboro|milwaukie|psu|portland state|n(ortheast|orthwest|e|w)? portland|se portland|sw portland)\b", re.I)
+ELSEWHERE = re.compile(r"\b(boston|manchester|seattle|maine|new york|chicago|denver|los angeles|san francisco|austin|"
+                       r"atlanta|miami|dallas|houston|phoenix|las vegas|nashville|philadelphia|uk|london)\b", re.I)
 FOOD = re.compile(r"\b(restaurant|bar|cafe|café|bakery|brewery|brewpub|taproom|pizz\w*|taco\w*|ramen|sushi|coffee|wine|cocktail\w*|"
                   r"diner|deli|cart|pod|kitchen|eatery|bistro|tavern|pub|food hall|dumpling\w*|noodle\w*|bbq|barbecue|ice cream|donut\w*|"
                   r"izakaya|lounge|chef)\b", re.I)
@@ -327,6 +336,9 @@ def openings(today):
         for x in items:
             words = x["title"]
             if not (OPENING.search(words) and FOOD.search(words + " " + (x["summary"] or ""))) or SHUT.search(words):
+                continue
+            src = x["source"] or name or ""
+            if ELSEWHERE.search(words) or not (LOCAL_SOURCES.search(src) or PDX_WORDS.search(words)):
                 continue
             if x["date"] and (today - dt.date.fromisoformat(x["date"])).days > 35:
                 continue

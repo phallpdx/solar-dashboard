@@ -11,6 +11,7 @@ import re
 import math
 
 LISTEN_SECONDS = 150
+POS_MAX_AGE_MIN = 90
 # Columbia River from Longview down to Portland, plus the lower Willamette.
 BOX = [[45.50, -123.20], [46.25, -122.55]]
 
@@ -82,13 +83,24 @@ def listen(key):
     return asyncio.run(_listen(key))
 
 
+def _pos_at(ship):
+    """When the ship's position was last reported. A name-only (static data) message doesn't count."""
+    if ship.get("pos_at"):
+        return dt.datetime.fromisoformat(ship["pos_at"])
+    m = re.match(r"(\d{4}-\d\d-\d\d) (\d\d:\d\d:\d\d)", ship.get("seen") or "")
+    return dt.datetime.fromisoformat(f"{m[1]}T{m[2]}+00:00") if m else None
+
+
 def merge(cache, fresh, now_utc):
-    """Keep ship details (name, type) between runs; drop ships not heard for 6 hours."""
+    """Keep ship details (name, type) between runs; drop ships with no position for 6 hours."""
     for mmsi, ship in fresh.items():
-        cache.setdefault(str(mmsi), {}).update({k: v for k, v in ship.items() if v not in (None, "")})
-        cache[str(mmsi)]["heard"] = now_utc.isoformat()
-    cutoff = (now_utc - dt.timedelta(hours=6)).isoformat()
-    for mmsi in [m for m, s in cache.items() if s.get("heard", "") < cutoff]:
+        cached = cache.setdefault(str(mmsi), {})
+        cached.update({k: v for k, v in ship.items() if v not in (None, "")})
+        cached["heard"] = now_utc.isoformat()
+        if ship.get("lat") is not None:
+            cached["pos_at"] = now_utc.isoformat()
+    cutoff = now_utc - dt.timedelta(hours=6)
+    for mmsi in [m for m, s in cache.items() if (_pos_at(s) or dt.datetime.fromisoformat(s["heard"])) < cutoff]:
         del cache[mmsi]
     return cache
 
@@ -154,7 +166,9 @@ def approaching(cache, home_lat, home_lon, now_utc):
     """Ships moving toward home, soonest first, plus ones passing right now."""
     out = []
     for ship in cache.values():
-        if ship.get("lat") is None:
+        pos_at = _pos_at(ship)
+        # Projecting a position forward gets unreliable fast on a winding river, so skip stale ones.
+        if ship.get("lat") is None or not pos_at or now_utc - pos_at > dt.timedelta(minutes=POS_MAX_AGE_MIN):
             continue
         km = _km(ship["lat"], ship["lon"], home_lat, home_lon)
         sog = ship.get("sog") or 0
@@ -166,8 +180,7 @@ def approaching(cache, home_lat, home_lon, now_utc):
             eta_min = round(km * 1.3 / (sog * 1.852) * 60)
         else:
             continue
-        heard = dt.datetime.fromisoformat(ship["heard"])
-        eta_min -= round((now_utc - heard).total_seconds() / 60)
+        eta_min -= round((now_utc - pos_at).total_seconds() / 60)
         if eta_min < -10 or eta_min > 360:
             continue
         code = ship.get("type")

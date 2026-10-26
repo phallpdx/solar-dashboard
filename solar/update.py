@@ -691,6 +691,10 @@ def fetch_almanac(state, now_utc):
 def fetch_outings(state, now_utc):
     """Mountains out, mushroom outlook, whales, new openings and the picture of the day."""
     store, errors = state.setdefault("outings", {}), []
+    if store.get("v") != 2:  # v2: openings kept to Portland, whales searched wider
+        store.pop("openings_at", None)
+        store.pop("whales_at", None)
+        store["v"] = 2
     now = now_utc.astimezone(zone("America/Los_Angeles"))
     today = now.date()
     out = state.get("outside") or {}

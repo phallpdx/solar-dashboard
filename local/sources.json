@@ -55,7 +55,8 @@
       },
       {
         "name": "Oregon Convention Center",
-        "url": "https://www.oregoncc.org/events"
+        "url": "https://www.oregoncc.org/events",
+        "place": "Oregon Convention Center"
       }
     ],
     "kids": [

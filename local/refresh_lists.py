@@ -324,9 +324,25 @@ def loose_date(s):
         return s
 
 
+JUNK = {"null", "none", "n/a", "na", "tbd", "tba", "unknown", "multiple dates", "various", "-"}
+
+
 def clean(s, limit=400):
-    s = " ".join(str(s or "").split())
+    """Plain one-line text; the model's stand-ins for "nothing" ("null", "N/A") become empty."""
+    s = " ".join(str(s or "").replace("[…]", "").replace("[...]", "").split())
+    if s.lower().rstrip(".") in JUNK:
+        return ""
     return s[:limit].rstrip() if s else ""
+
+
+def strip_tracking(url):
+    """Drops utm_* and similar tracking parameters so the same deal doesn't look like two links."""
+    parts = urllib.parse.urlsplit(url)
+    if not parts.query:
+        return url
+    q = [(k, v) for k, v in urllib.parse.parse_qsl(parts.query, keep_blank_values=True)
+         if not k.lower().startswith(("utm_", "fbclid", "gclid", "mc_"))]
+    return urllib.parse.urlunsplit(parts._replace(query=urllib.parse.urlencode(q)))
 
 
 _url_ok_cache = {}
@@ -354,7 +370,7 @@ def pick_url(url, links, fallback):
     """Uses the model's link only if it was really on the page and still loads."""
     url = (url or "").strip()
     if url.startswith("http") and url in links and url_ok(url):
-        return url
+        return strip_tracking(url)
     return fallback
 
 
@@ -390,8 +406,9 @@ def still_current(item, fields):
 
 
 def merge(old, new, title_key, date_key, keep, sort_key, limit, reverse=False):
-    out = [x for x in old if keep(x)]
-    for item in new:
+    out = []
+    # Old items go through the same duplicate check, so pairs left by earlier runs get cleaned up too.
+    for item in [x for x in old if keep(x)] + list(new):
         if not any(same_thing(item[title_key], item.get(date_key), o[title_key], o.get(date_key)) for o in out):
             out.append(item)
     out.sort(key=sort_key, reverse=reverse)
@@ -476,7 +493,8 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
         text, table = number_links(text)
         text = text[:LLM.get("max_chars_per_page", 9000)]
         key = src["url"] + " " + hashlib.sha1(task.encode()).hexdigest()[:8]
-        digest = hashlib.sha1(text.encode()).hexdigest()
+        # Clock times and long ids change between fetches on some pages without the events changing.
+        digest = hashlib.sha1(re.sub(r"\d{1,2}:\d{2}(:\d{2})?|\d{5,}", "", text).encode()).hexdigest()
         t0 = time.time()
         raw = cached_items(key, digest)
         if raw is not None:
@@ -589,19 +607,27 @@ def refresh_events(data, sources):
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
             return None
+        venue = clean(r.get("venue"), 100)
+        place = src.get("place")
+        if place and place.lower() not in venue.lower():
+            venue = f"{venue}, {place}" if venue else place  # "Hall A" alone means nothing on the dashboard
         return {"title": clean(r["title"], 140), "date": r.get("date"), "ends": r.get("ends"),
-                "venue": clean(r.get("venue"), 100), "kind": r["kind"] if r.get("kind") in kinds else "Other",
+                "venue": venue, "kind": r["kind"] if r.get("kind") in kinds else "Other",
                 "why": clean(r.get("why"), 240),
                 "sources": [{"name": src["name"], "url": pick_url(r.get("url"), links, src["url"])}]}
 
     new = extract(sources, "List BIG upcoming events in Portland, Oregon on this page: arena concerts, big games, conventions, "
                            "festivals, parades, holiday lights. Skip small club shows and classes. ends is the last day or null. "
-                           "why is one sentence on crowds or traffic to expect.",
+                           "why is one short sentence on the crowds or traffic to expect.",
                   {"title": S, "date": DATE, "ends": DATE, "venue": S, "kind": {"type": "string", "enum": kinds}, "why": S, "url": S},
                   build)
     data["events"] = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
                            by_date("date", "ends"), 25)
     return data
+
+
+FAR_TOWNS = ("olympia", "seattle", "tacoma", "eugene", "bend", "corvallis", "albany", "astoria", "seaside",
+             "cannon beach", "hood river", "longview", "kelso", "centralia", "lincoln city", "newport", "medford")
 
 
 def refresh_kids(data, sources):
@@ -610,14 +636,18 @@ def refresh_kids(data, sources):
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
             return None
+        place = (clean(r.get("where")) + " " + clean(r.get("title"))).lower()
+        if any(t in place for t in FAR_TOWNS):
+            return None  # more than about an hour from Portland
         return {"title": clean(r["title"], 140), "date": r.get("date"), "ends": r.get("ends"),
                 "where": clean(r.get("where"), 80), "detail": clean(r.get("detail"), 300),
                 "url": pick_url(r.get("url"), links, src["url"])}
 
     new = extract(sources, "List upcoming events on this page that suit a TODDLER (ages 1 to 4) and family in or near Portland, Oregon. "
                            "Only real events at a place; skip holidays and closures on their own. "
+                           "Skip anything more than about 30 miles from Portland. "
                            "ends is the last day for multi-day events, else null. where is the neighborhood or town. "
-                           "detail is one or two sentences with hours and price if given.",
+                           "detail is one plain sentence in your own words, with hours and price if given.",
                   {"title": S, "date": DATE, "ends": DATE, "where": S, "detail": S, "url": S}, build)
     data["events"] = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
                            by_date("date", "ends"), 25)
@@ -630,8 +660,11 @@ def refresh_bluray(data, sources):
             return None
         if r.get("ends") and (not as_date(r["ends"]) or as_date(r["ends"]) < TODAY):
             return None
+        url = pick_url(r.get("url"), links, None)
+        if not url:
+            return None  # a deal without its own link isn't usable
         return {"title": clean(r["title"], 140), "store": clean(r.get("store"), 60), "detail": clean(r.get("detail"), 300),
-                "ends": r.get("ends"), "url": pick_url(r.get("url"), links, src["url"])}
+                "ends": r.get("ends"), "url": url}
 
     new = extract(sources, "List current Blu-ray or 4K UHD disc deals and sales on this page. store is the retailer. "
                            "detail gives the price and what is included. ends is the end date if stated, else null.",

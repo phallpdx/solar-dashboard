@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "releases": [
     {
       "artist": "Isabeau Waia'u Walker",
@@ -310,6 +310,38 @@
       "label": "Domino",
       "date": "",
       "why": "The London seven-piece's second album, reviewed for rotation in KEXP's Oct. 5 New Music Reviews and on KEXP's chart.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/5/new-music-reviews-105/"
+        }
+      ]
+    },
+    {
+      "artist": "fish narc",
+      "title": "Uncle",
+      "type": "Album",
+      "local": false,
+      "genre": "Alternative rock",
+      "label": "K Records",
+      "date": "",
+      "why": "Fifth album from Ben Funkhouser's project, a guitar-forward alt-rock record produced by Alex Farrar, reviewed for airplay in KEXP's Oct. 19 New Music Reviews.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
+        }
+      ]
+    },
+    {
+      "artist": "Greg Freeman",
+      "title": "All Set The Bone",
+      "type": "Album",
+      "local": false,
+      "genre": "Alt-country",
+      "label": "Transgressive/Canvasback",
+      "date": "",
+      "why": "KEXP's music directors called it an arresting set of rock-forward alt-country in their Oct. 5 New Music Reviews.",
       "links": [
         {
           "name": "KEXP review",

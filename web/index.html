@@ -225,6 +225,47 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .cam img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--grid)}
 .cam figcaption{font-size:12.5px;font-weight:700;color:var(--body)}
 .cam figcaption small{display:block;font-weight:600;color:var(--muted)}
+.brief{background:var(--ink);color:#F3F1EA;border-radius:26px;padding:24px 26px;display:flex;flex-direction:column;gap:12px}
+.brief-head{display:flex;gap:14px;align-items:center}
+.brief-icon{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.brief h2{font-size:22px;font-weight:800;letter-spacing:-.01em;color:#fff}
+.brief-intro{margin:2px 0 0;font-size:14px;color:#B9BCC4;font-style:italic}
+.brief ol,.brief ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.brief-top li{font-size:16px}
+.brief-top li::marker{color:var(--solar);font-weight:800}
+.brief-top b{background:linear-gradient(transparent 55%,rgba(245,165,36,.45) 55%);color:#fff;font-weight:800}
+.brief-rest li{font-size:14px;color:#C9CBD1}
+.brief a{color:inherit;text-decoration:none}
+.brief a:hover{text-decoration:underline;text-decoration-color:rgba(255,255,255,.4)}
+.brief .sub{color:#8A8F99;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.brief-sign{margin:4px 0 0;font-size:13px;color:#8A8F99;font-style:italic;text-align:right}
+@media (max-width:600px){.brief{padding:20px 18px}.brief-top li{font-size:15px}}
+.group[data-sec=almanac]{--accent:#8B5E34;--tint:#F5ECE1}
+.chip{display:inline-flex;align-items:center;min-height:32px;padding:4px 12px;border-radius:999px;background:var(--tint);font-size:13px;font-weight:600;color:var(--body)}
+.cal-day{margin-top:4px;color:var(--accent)}
+.near-feature{display:flex;gap:14px;align-items:flex-start}
+.near-feature img{width:96px;height:96px;object-fit:cover;border-radius:14px;flex:none;background:var(--grid)}
+.near-feature small{color:var(--muted);font-weight:600}
+.near-feature .note{margin-top:4px}
+.group[data-sec=almanac] .card a,#hol-today a,#trails a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+#near .sub{margin-top:8px}
+.group[data-sec=civics]{--accent:#2F5DA8;--tint:#E4ECF8}
+.elect-next{display:flex;gap:16px;align-items:center;margin-bottom:6px}
+.elect-count{flex:none;width:84px;height:84px;border-radius:20px;background:var(--tint);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent)}
+.elect-count b{font-size:32px;font-weight:800;line-height:1}.elect-count small{font-size:12px;font-weight:700}
+.reps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.rep{border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.rep-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+.rep-head small,.rep-links{font-size:12.5px;font-weight:600;color:var(--muted)}
+.recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px}
+.rec{background:var(--tint);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.rec-k{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.rec b{font-size:19px;font-weight:800;letter-spacing:-.01em}.rec span:not(.rec-k){font-size:13.5px;font-weight:600;color:var(--body)}
+.rec .note{margin:4px 0}
+.rec a,#gear a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+.party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
+.party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
+.vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -240,6 +281,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     </div>
   </header>
 
+  <section class="brief" id="brief" aria-labelledby="brief-h" hidden></section>
+
   <nav class="secnav" id="secnav" aria-label="Jump to section"></nav>
 
   <div id="banner" class="banner" hidden></div>
@@ -247,6 +290,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, alerts, drives and power right now</p></div></div>
     <div class="sec-body">
     <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
+    <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
+      <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
+      <div id="cal"></div>
+    </section>
   
     <div class="row" id="today-row">
       <section class="card side" aria-labelledby="wx-h">
@@ -287,6 +334,46 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
       <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
     </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+    <div class="sec-body">
+      <div class="chips" id="date-facts"></div>
+      <p class="note" id="hol-today" hidden></p>
+      <div class="row">
+        <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
+          <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
+          <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
+          <div class="lines" id="hist-local"></div>
+          <h3 class="sub">Elsewhere</h3>
+          <div class="lines" id="hist"></div>
+          <h3 class="sub">Born today</h3>
+          <div class="lines" id="births"></div>
+        </section>
+        <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
+          <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
+          <div id="near"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="elect-h">
+        <div class="head"><h2 id="elect-h">Next election</h2></div>
+        <div id="elect"></div>
+      </section>
+      <section class="card" aria-labelledby="reps-h">
+        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
+        <div class="reps" id="reps"></div>
+        <h3 class="sub">Statewide</h3>
+        <div class="lines" id="statewide"></div>
+        <p class="note" id="civ-keys" hidden></p>
+      </section>
     </div>
   </section>
 
@@ -362,6 +449,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
         <div class="lines" id="planes"></div>
         <p class="note" id="pdx"></p>
+      </section>
+      <section class="card" aria-labelledby="trail-h" id="trail-card" hidden>
+        <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
+        <div class="lines" id="trails"></div>
       </section>
       <div class="row">
         <section class="card side" aria-labelledby="moon-h">
@@ -506,6 +597,13 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <p class="note" id="ski-links"></p>
       </section>
       <div class="row">
+        <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
+          <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
+          <div class="lines" id="gear"></div>
+          <p class="note">Asking price against what that gear usually sells for used. Check it in person before handing over cash.</p>
+        </section>
+      </div>
+      <div class="row">
         <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
           <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
           <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
@@ -521,6 +619,10 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   <section class="group" data-sec="watch" id="coming" aria-labelledby="watch-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
     <div class="sec-body">
+      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
+        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
+        <div class="recs" id="records"></div>
+      </section>
       <div class="row" id="watch-row">
         <section class="card half" aria-labelledby="tv-h">
           <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
@@ -541,18 +643,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <section class="group" data-sec="sports" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Shows, games and markets</h2><p class="sec-sub">Concerts, Blazers, Timbers, F1 and the S&amp;P</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games, markets and shows</h2><p class="sec-sub">Blazers, Timbers, F1, the S&amp;P, then concerts and jazz</p></div></div>
     <div class="sec-body">
-      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
-        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
-        <div class="lines" id="gigs"></div>
-        <p class="note" id="gig-missing"></p>
-      </section>
-      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
-        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
-        <div class="lines" id="jazz"></div>
-        <p class="note" id="jazz-regulars"></p>
-      </section>
       <div class="teams" id="teams"></div>
       <div class="row">
         <section class="card wide" aria-labelledby="mkt-h">
@@ -566,6 +658,16 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div id="f1"></div>
         </section>
       </div>
+      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
+        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
+        <div class="lines" id="gigs"></div>
+        <p class="note" id="gig-missing"></p>
+      </section>
+      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
+        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
+        <div class="lines" id="jazz"></div>
+        <p class="note" id="jazz-regulars"></p>
+      </section>
     </div>
   </section>
 
@@ -597,6 +699,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
           <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
             <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
           <div class="lines" id="holidays"></div>
+          <h3 class="sub" id="thai-h" hidden>Thai Buddhist calendar</h3>
+          <div class="lines" id="thai"></div>
         </section>
       </div>
     </div>
@@ -646,7 +750,7 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
   </section>
 
   <footer class="learn" id="learn">
-    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, moves your favorites up, and folds the ones you skip. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
+    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, and moves your favorites up. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
     <p id="learn-state"></p>
     <button type="button" class="mini" id="learn-reset">Reset layout</button>
   </footer>
@@ -760,6 +864,12 @@ function render() {
   renderLive();
   renderMore();
   renderWorld();
+  renderCalendar();
+  renderAlmanac();
+  renderTrails();
+  renderCivics();
+  renderGear();
+  waits.push(renderRecords().then(renderBriefing));
   syncGroups();
   Promise.allSettled(waits).then(syncGroups);
   setTimeout(syncGroups, 4000);
@@ -1138,6 +1248,10 @@ function renderWorld() {
     const local = h.local && h.local !== h.name ? `<br><small>${esc(h.local)}</small>` : '';
     return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.country === 'USA' ? 'var(--use)' : 'var(--solar)'}"></i>${esc(h.name)}${local}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('');
+  const thai = D.thai_buddhist || [];
+  $('thai-h').hidden = !thai.length;
+  $('thai').innerHTML = thai.map(t => `<div><span><b style="font-weight:700">${esc(t.name)}</b><br><small>${esc(t.about)}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${t.approx ? 'Around ' : ''}${fmtDate(t.date)}${t.ends ? '–' + fmtDate(t.ends).replace(/^\w+ /, '') : ''}${t.date.slice(0, 4) !== todayIso().slice(0, 4) ? ' ' + t.date.slice(0, 4) : ''}</span></div>`).join('');
 }
 
 async function renderGigs() {
@@ -1974,10 +2088,11 @@ function addSources() {
 
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
-const NAV = {today: 'Today', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
+const NAV = {today: 'Today', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
   watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
+if (!habits.noAutoFold) { habits.folds = {}; habits.noAutoFold = 1; }  // sections no longer fold on their own; open any folded before
 const groups = () => [...document.querySelectorAll('.group')];
 const learned = () => habits.days >= 3 && Object.values(habits.score).reduce((a, b) => a + b, 0) >= 600;
 
@@ -2000,10 +2115,9 @@ function arrange() {
     return (habits.score[b.dataset.sec] || 0) - (habits.score[a.dataset.sec] || 0) || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
   });
   order.forEach(g => foot.parentNode.insertBefore(g, foot));
-  const total = Object.values(habits.score).reduce((a, b) => a + b, 0);
   for (const g of all) {
     const k = g.dataset.sec, choice = habits.folds[k];
-    const auto = learned() && k !== 'today' && !habits.pins[k] && choice !== 'open' && (habits.score[k] || 0) < total * 0.025;
+    const auto = false;  // never fold a section on its own
     setFold(g, choice === 'folded' || (choice !== 'open' && auto), auto && choice !== 'folded');
   }
 }
@@ -2051,6 +2165,457 @@ function addTools() {
     tools.querySelector('.fold-btn').onclick = e => { e.stopPropagation(); toggleFold(g, !g.classList.contains('folded')); };
     head.onclick = () => { if (g.classList.contains('folded')) toggleFold(g, false); };
   }
+}
+
+// The briefing at the top: everything on the page, ranked by how much it matters today,
+// in the voice of a certain Gotham butler. Each note is [score, section id, sentence].
+const isoLocal = d => d.toLocaleDateString('en-CA');
+const timeOf = iso => new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(':00', '').replace(' AM', ' am').replace(' PM', ' pm');
+const hhmm = t => { const [h, m] = t.split(':').map(Number); return `${(h % 12) || 12}:${String(m).padStart(2, '0')} ${h < 12 ? 'am' : 'pm'}`; };
+async function renderBriefing() {
+  const box = $('brief');
+  if (!D) { box.hidden = true; return; }
+  const now = new Date(), today = isoLocal(now), tomorrow = isoLocal(new Date(now.getTime() + 864e5));
+  const daysTo = iso => Math.round((new Date(iso.slice(0, 10) + 'T12:00') - new Date(today + 'T12:00')) / 864e5);
+  const whenWord = iso => { const n = daysTo(iso); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : n > 1 && n < 7 ? 'on ' + DOW[new Date(iso.slice(0, 10) + 'T12:00').getDay()] : 'on ' + fmtDate(iso.slice(0, 10)); };
+  const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
+  const notes = [];
+  const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
+  const [events, plan, kids, jazz, gigs, blu] = await Promise.all(
+    ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json'].map(getJson));
+
+  // Weather and alerts
+  const o = D.outside || {};
+  for (const a of (D.alerts && D.alerts.official) || [])
+    add(100, 'today', `The National Weather Service has issued a <b>${esc(a.event)}</b>. I would take it seriously, sir.`);
+  for (const a of (D.alerts && D.alerts.forecast) || [])
+    add(85, 'today', `The forecast suggests ${esc(a.title.toLowerCase())} ${whenWord(a.date)}. Batten down accordingly.`);
+  const t0 = (o.days || []).find(d => d.date === today), t1 = (o.days || []).find(d => d.date === tomorrow);
+  if (t0) {
+    const wet = t0.rain_pct >= 60;
+    add(wet ? 50 : 40, 'today', `${wet ? 'Rain, I’m afraid' : wxName(t0.code)}: a high of ${t0.hi}° and a low of ${t0.lo}°${wet ? `, with ${n1(t0.rain_in)} inches expected. The umbrella is by the door` : ''}${t0.gust >= 35 ? `, and gusts to ${t0.gust} mph` : ''}. Sunset is at ${hhmm(t0.sunset)}.`);
+  }
+  if (t1 && t0 && t0.rain_pct >= 60 && t1.rain_pct < 40) add(35, 'today', `Tomorrow looks drier, should you wish to postpone anything outdoors.`);
+  if (o.air && o.air.aqi > 100) add(88, 'today', `The air is <b>${esc(o.air.label.toLowerCase())}</b> (AQI ${o.air.aqi}). I would keep the windows shut and the exertion indoors.`);
+  else if (o.air && o.air.aqi > 50) add(15, 'today', `Air quality is ${esc(o.air.label.toLowerCase())} at AQI ${o.air.aqi}. Nothing to trouble yourself over.`);
+
+  // Getting around
+  const slow = (D.commute || []).filter(c => c.delay >= 10).sort((a, b) => b.delay - a.delay)[0];
+  if (slow) add(65, 'today', `The drive to ${esc(slow.label)} is running ${slow.delay} minutes slow, ${slow.minutes} in all. Allow for it.`);
+  const inc = ((D.roads && D.roads.incidents) || []).filter(i => !i.roadwork)[0];
+  if (inc) add(55, 'today', `There is trouble on ${esc(inc.road)}: ${esc(inc.what.toLowerCase())} near ${esc(inc.where)}.`);
+  const pdx = D.live && D.live.pdx && D.live.pdx.delays;
+  if (pdx && pdx.length) add(60, 'nearby', `PDX is reporting delays. Should you be collecting anyone, check before you leave.`);
+
+  // Danger nearby
+  const fire = ((D.live && D.live.fires) || []).filter(f => f.miles <= 60 && f.contained < 100).sort((a, b) => a.miles - b.miles)[0];
+  if (fire) add(80, 'nearby', `The <b>${esc(fire.name)}</b> is burning ${fire.miles} miles off, ${fire.contained ?? 0}% contained.`);
+  const quake = ((D.live && D.live.quakes && D.live.quakes.biggest) || []).filter(q => q.miles <= 60 && q.mag >= 2.5 && (now - new Date(q.utc)) < 3 * 864e5)[0];
+  if (quake) add(quake.mag >= 4 ? 85 : 45, 'nearby', `The earth moved: a magnitude ${quake.mag} ${quake.felt ? `felt by ${quake.felt} people ` : ''}${esc(quake.place)}, ${whenWord(isoLocal(new Date(quake.utc)))}.`);
+  const sick = ((D.health && D.health.items) || []).filter(h => ['High', 'Very High'].includes(h.level));
+  if (sick.length) add(62, 'today', `${sick.map(h => esc(h.name)).join(' and ')} ${sick.length > 1 ? 'are' : 'is'} running high in the wastewater. Wash your hands, sir.`);
+
+  // Deadlines and plans
+  for (const p of (plan && plan.items) || []) {
+    if (p.by && soon(p.by, 2)) add(daysTo(p.by) === 0 ? 92 : 78, 'plan-card', `<b>${esc(p.title)}</b>: ${esc(p.action)} ${daysTo(p.by) === 0 ? 'That deadline is today.' : `It must be done ${whenWord(p.by)}.`}`);
+  }
+  for (const e of (events && events.events) || []) {
+    if (e.date && soon(e.date, 1)) add(daysTo(e.date) === 0 ? 75 : 58, 'big-card', `${daysTo(e.date) === 0 ? 'Today' : 'Tomorrow'} in town: <b>${esc(e.title)}</b>${e.venue && !e.title.includes(e.venue.split(',')[0]) ? ' at ' + esc(e.venue) : ''}.`);
+  }
+  for (const k of (kids && kids.events) || []) {
+    if (k.ends === today) add(72, 'family', `Today is the last day of <b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}. The children may never forgive you otherwise.`);
+    else if (k.date && soon(k.date, 1)) add(56, 'family', `For the little ones ${whenWord(k.date)}: ${esc(k.title)}.`);
+  }
+  const gig = ((gigs && gigs.shows) || []).filter(g => soon(g.date, 2))[0];
+  if (gig) add(daysTo(gig.date) === 0 ? 70 : 52, 'gigs-card', `${esc(gig.artist)} plays ${esc(gig.venue)} ${whenWord(gig.date)}${gig.score ? `, on the strength of an album the critics gave ${gig.score}` : ''}.`);
+  const jz = ((jazz && jazz.shows) || []).filter(j => soon(j.date, 2))[0];
+  if (jz) add(daysTo(jz.date) === 0 ? 66 : 48, 'jazz-card', `For something civilized, ${esc(jz.artist)} at ${esc(jz.venue)} ${whenWord(jz.date)}${jz.time ? ' at ' + esc(jz.time) : ''}.`);
+  const thaiDay = (D.thai_buddhist || []).find(t => soon(t.date, 3) || (t.ends && t.date <= today && t.ends >= today));
+  if (thaiDay) add(daysTo(thaiDay.date) <= 0 ? 58 : 41, 'world', `${daysTo(thaiDay.date) <= 0 ? 'Today is' : `${whenWord(thaiDay.date)[0].toUpperCase() + whenWord(thaiDay.date).slice(1)} is`} <b>${esc(thaiDay.name)}</b> in Thailand. ${esc(thaiDay.about.split('.')[0])}.`);
+  const hol = (D.holidays || []).filter(h => h.country === 'USA' && soon(h.date, 7))[0];
+  if (hol) add(daysTo(hol.date) <= 1 ? 68 : 44, 'world', `${esc(hol.name)} is ${daysTo(hol.date) === 0 ? 'today' : `${whenWord(hol.date)}`}.${hol.name === 'Halloween' ? ' I trust the costume is not the usual one.' : ''}`);
+
+  // Sports
+  const sp = D.sports || {};
+  for (const [key, label] of [['blazers', 'the Blazers'], ['timbers', 'the Timbers']]) {
+    const t = sp[key];
+    if (!t) continue;
+    if (t.next && t.next.utc && soon(isoLocal(new Date(t.next.utc)), 1))
+      add(daysTo(isoLocal(new Date(t.next.utc))) === 0 ? 64 : 46, 'more', `${label[0].toUpperCase() + label.slice(1)} play ${t.next.home ? 'host to ' : 'at '}${esc(t.next.opponent)} ${whenWord(isoLocal(new Date(t.next.utc)))} at ${timeOf(t.next.utc)}${t.next.tv ? ' on ' + esc(t.next.tv.split(',')[0]) : ''}.`);
+    if (t.last && t.last.completed && (now - new Date(t.last.utc)) < 2 * 864e5)
+      add(42, 'more', `${t.last.won ? 'Good news' : 'I regret to report'}: ${label} ${t.last.won ? 'beat' : 'lost to'} ${esc(t.last.opponent)} ${t.last.us}–${t.last.them}.${t.recap && t.recap.headline ? ' ' + esc(t.recap.headline) + '.' : ''}`);
+  }
+  const race = sp.f1 && sp.f1.next && sp.f1.next[0];
+  if (race && soon(isoLocal(new Date(race.utc)), 2))
+    add(daysTo(isoLocal(new Date(race.utc))) === 0 ? 63 : 45, 'more', `The ${esc(race.name)} starts ${whenWord(isoLocal(new Date(race.utc)))} at ${timeOf(race.utc)}.`);
+
+  // The sky
+  if (o.aurora && o.aurora.kp >= 6) add(90, 'nearby', `<b>The northern lights may be visible tonight</b> (Kp ${o.aurora.kp}). Look north, away from the city glow.`);
+  else if (o.aurora && o.aurora.kp >= 5) add(60, 'nearby', `A geomagnetic storm (Kp ${o.aurora.kp}) gives an outside chance of aurora low on the northern horizon.`);
+  const iss = (o.iss || []).find(p => p.bright && new Date(p.utc) > now && (new Date(p.utc) - now) < 864e5);
+  if (iss) add(54, 'nearby', `The space station passes overhead at ${timeOf(iss.utc)}, rising in the ${esc(iss.from)}. Bright enough to wave at.`);
+  const sky = (o.sky_events || []).filter(e => e.kind !== 'launch' && soon(isoLocal(new Date(e.utc)), 2))[0];
+  if (sky) add(52, 'nearby', `In the sky ${whenWord(isoLocal(new Date(sky.utc)))}: ${esc(sky.title)}.`);
+  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full, rising at ${hhmm(o.moon.moonrise)}. Gotham’s criminals are fond of it.`);
+  const launch = (o.sky_events || []).filter(e => e.kind === 'launch' && e.visible && soon(isoLocal(new Date(e.utc)), 1))[0];
+  if (launch) add(58, 'nearby', `A rocket launch may be visible from here: ${esc(launch.title)} at ${timeOf(launch.utc)}.`);
+
+  // Wildlife and the river
+  const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];
+  if (rare) add(rare.confirmed ? 50 : 34, 'rare-card', `A ${esc(rare.name)} has been reported at ${esc(rare.where)}. Binoculars are in the hall closet.`);
+  const big = ((D.ships && D.ships.approaching) || []).find(s => s.big);
+  if (big) add(38, 'outside', `A large ship, the ${esc(big.name)}, is ${esc(big.direction.toLowerCase())}${big.eta_utc ? `, passing about ${timeOf(big.eta_utc)}` : ''}.`);
+  const dam = D.fishing && D.fishing.dam;
+  if (dam && dam.week) { const [fish, n] = Object.entries(dam.week)[0] || [];
+    if (fish) add(28, 'fish-card', `${n.toLocaleString()} ${esc(fish)} came over Bonneville this week.`); }
+  const win = D.fishing && D.fishing.windows && D.fishing.windows[0];
+  if (win && win.score >= 2) add(26, 'fish-card', `The best bite looks like ${hhmm(win.start)} to ${hhmm(win.end)} (${esc(win.why.join(', '))}).`);
+
+  // Mountain and coast
+  const sk = D.ski || {};
+  const fresh = (sk.forecast || []).filter(d => soon(d.date, 3)).reduce((n, d) => n + (d.snow_in || 0), 0);
+  if (fresh >= 6) add(62, 'ski-card', `Mt. Hood expects about ${Math.round(fresh)} inches of snow over the next few days. Shall I wax the skis?`);
+  else if (sk.snow && sk.snow.new_7d_in >= 6) add(50, 'ski-card', `${sk.snow.new_7d_in} inches of new snow on Mt. Hood this week.`);
+  const c = D.coast || {}, c0 = (c.days || [])[0];
+  if (c0 && c0.waves_ft >= 14) add(55, 'coast', `The coast is wild today: ${c0.waves_ft}-foot waves and gusts to ${c0.gust} mph. Admire it from the window.`);
+  const minus = (c.minus_tides || []).find(t => soon(t.t.slice(0, 10), 1) && new Date(t.t.replace(' ', 'T')) > now);
+  if (minus) add(40, 'coast', `A minus tide of ${minus.ft} ft at the coast ${whenWord(minus.t)} at ${hhmm(minus.t.slice(11))}, for tidepooling.`);
+
+  // Garden
+  const g = D.garden || {};
+  const closing = (g.plant || []).find(p => p.closing_soon);
+  if (closing) add(44, 'garden', `The window for planting ${esc(closing.name.toLowerCase())} closes soon.`);
+  else if (g.plant && g.plant[0]) add(22, 'garden', `It is time to plant ${esc(g.plant.map(p => p.name.toLowerCase()).slice(0, 3).join(', '))}.`);
+  if (g.forest && g.forest.now && g.forest.now[0]) add(20, 'garden', `In the food forest: ${esc(g.forest.now[0].task.replace(/\.$/, '').toLowerCase())}.`);
+
+  // Shopping and screens
+  const ending = ((blu && blu.deals) || []).filter(d => d.ends && soon(d.ends, 2))[0];
+  if (ending) add(48, 'br-card', `The <b>${esc(ending.title)}</b> ends ${whenWord(ending.ends)}, should the collection need reinforcement.`);
+  const show = (D.streaming || []).filter(s => soon(s.date, 1) && s.kind === 'New series')[0];
+  if (show) add(24, 'coming', `New ${whenWord(show.date)} on ${esc(show.service)}: ${esc(show.name || show.show || show.title || '')}.`);
+  const alb = (D.albums || []).filter(a => soon(a.date, 1))[0];
+  if (alb) add(18, 'coming', `New music ${whenWord(alb.date)}: ${esc(alb.artist)}, “${esc(alb.album)}.”`);
+  const sp5 = (D.markets || []).find(m => m.name === 'S&P 500');
+  if (sp5 && Math.abs(sp5.day_pct) >= 1.5) add(46, 'more', `The markets ${sp5.day_pct > 0 ? 'rallied' : 'fell'} ${Math.abs(sp5.day_pct).toFixed(1)}% on the last trading day.`);
+
+  // The house
+  const s = D.solar || {}, b = D.bill || {};
+  if (b.solar_value_cycle) add(25, 'solar', `The panels have earned you $${Math.round(b.solar_value_cycle)} this billing cycle, which closes ${fmtDate(b.cycle_end)}.`);
+  if (D.grid && D.grid.clean != null) add(12, 'solar', `The Northwest grid is ${D.grid.clean}% clean at the moment, mostly hydro.`);
+  if (D.bangkok) add(10, 'world', `In Bangkok it is ${D.bangkok.temp}° and feels like ${D.bangkok.feels}°.`);
+
+  // The diary, the date and the trails
+  const cal = (D.calendar || []).filter(e => e.date === today && (e.all_day || new Date(e.end || e.start) > now));
+  if (cal.length) add(96, 'cal-card', `On your calendar today: ${cal.slice(0, 3).map(e => `<b>${esc(e.title)}</b>${e.all_day ? '' : ' at ' + timeOf(e.start)}`).join(', ')}${cal.length > 3 ? `, and ${cal.length - 3} more` : ''}.`);
+  else if (D.calendar) {
+    const next = D.calendar.find(e => e.date === tomorrow);
+    add(next ? 52 : 20, 'cal-card', next ? `Your calendar is clear today. Tomorrow: <b>${esc(next.title)}</b>${next.all_day ? '' : ' at ' + timeOf(next.start)}.` : 'Your calendar is clear today, sir.');
+  }
+  const al = D.almanac || {}, hist = al.history;
+  for (const f of al.facts || []) if (/Clocks fall back an hour tonight|Today is the/.test(f)) add(70, 'almanac', esc(f));
+  if (hist && hist.date === today) {
+    const local = hist.local[0], pick = local || hist.selected[0];
+    if (pick) add(local ? 47 : 36, 'almanac', `On this day in ${pick.year}${local ? ', close to home' : ''}: ${esc(pick.text.replace(/\.$/, ''))}.`);
+    const hol = (hist.holidays || []).find(x => !/Christian feast day/.test(x.text));
+    if (hol) add(27, 'almanac', `It is also ${esc(hol.text.replace(/\s*\(.*\)$/, ''))}, for what it’s worth.`);
+  }
+  if (al.nearby && al.nearby.feature) add(21, 'near-card', `Today’s local curiosity: ${esc(al.nearby.feature.title)}, ${al.nearby.feature.miles} miles from the manor.`);
+  const trail = (al.trails || [])[0];
+  if (trail && daysTo(trail.latest.date) >= -3) add(33, 'trail-card', `A fresh report from ${esc(trail.hike)} (${fmtDate(trail.latest.date)})${trail.latest.issues ? `: ${esc(trail.latest.issues.toLowerCase())}` : ''}.`);
+
+  // Records for the morning
+  const rp = renderRecords.picks;
+  if (rp) {
+    const morning = now.getHours() < 12;
+    add(morning ? 66 : 24, 'rec-card', `For the gramophone this ${morning ? 'morning' : 'day'}: <b>${esc(rp.classic[1])}</b> by ${esc(rp.classic[0])} (${rp.classic[2]}). ${esc(rp.classic[4])} And for something newer, <b>${esc(rp.modern[1])}</b> by ${esc(rp.modern[0])}${rp.live ? `, playing ${esc(rp.live.venue)} ${calDay(rp.live.date).toLowerCase()}` : ''}.`);
+  }
+
+  // Craigslist
+  const steal = ((D.gear && D.gear.deals) || []).find(d => d.pct_off >= 45 && d.first_seen && daysTo(d.first_seen) >= -1);
+  if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. One might move quickly, sir.`);
+
+  // Elections
+  const cv = D.civics;
+  const el = cv && (cv.elections || [])[0];
+  if (el) {
+    const n = daysTo(el.date), reg = daysTo(el.register_by);
+    if (n === 0) add(100, 'civics', `<b>Today is election day</b>, sir. Ballots must be in a drop box by 8 pm; the post will not do at this hour.`);
+    else if (n <= 3) add(90, 'civics', `<b>The ${esc(el.name.toLowerCase())} is ${whenWord(el.date)}.</b> If your ballot is still on the hall table, I suggest a drop box rather than the post.`);
+    else if (n <= 14) add(76, 'civics', `<b>The ${esc(el.name.toLowerCase())} is in ${n} days</b> (${fmtDate(el.date)}). Your ballot should have arrived; shall I find a pen?`);
+    else if (reg >= 0 && reg <= 7) add(80, 'civics', `Voter registration for the ${esc(el.name.toLowerCase())} closes ${whenWord(el.register_by)}. Do make sure your address is current.`);
+    else if (n <= 45) add(40, 'civics', `The ${esc(el.name.toLowerCase())} is ${fmtDate(el.date)}, ${n} days off.`);
+  }
+  const newVotes = [];
+  for (const p of (cv && cv.people) || []) for (const v of p.votes.slice(0, 2)) {
+    const when = v.date && /^\d{4}-/.test(v.date) && new Date(v.date + 'T12:00');
+    if (when && now - when < 3 * 864e5) newVotes.push([p, v]);
+  }
+  if (newVotes.length) { const [p, v] = newVotes[0];
+    add(32, 'civics', `${esc(p.name)} voted <b>${esc(v.vote)}</b> on ${esc(v.bill || v.question || 'a measure')}${v.desc ? `, ${esc(v.desc.length > 90 ? v.desc.slice(0, 87) + '…' : v.desc)}` : ''}.`); }
+
+  notes.sort((a, b) => b[0] - a[0]);
+  const top = notes.filter(n => n[0] >= 50).slice(0, 4);
+  const lead = top.length ? top : notes.slice(0, 2);
+  const rest = notes.filter(n => !lead.includes(n)).slice(0, 10);
+  const hr = now.getHours();
+  const hello = hr < 5 ? 'You’re up late, Master Parker.' : hr < 12 ? 'Good morning, Master Parker.' : hr < 17 ? 'Good afternoon, Master Parker.' : 'Good evening, Master Parker.';
+  const intro = lead.some(n => n[0] >= 80) ? 'A few matters require your attention.' : lead[0] && lead[0][0] >= 50 ? 'A quiet day, mostly. A few things worth knowing.' : 'Nothing pressing today, sir. A rare luxury.';
+  const item = ([, sec, text]) => `<li><a href="#${sec}">${text}</a></li>`;
+  box.innerHTML = `<div class="brief-head"><span class="brief-icon" aria-hidden="true">🎩</span><div><h2 id="brief-h">${hello}</h2><p class="brief-intro">${intro}</p></div></div>
+    <ol class="brief-top">${lead.map(item).join('')}</ol>
+    ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.map(item).join('')}</ul>` : ''}
+    <p class="brief-sign">Your servant, Alfred</p>`;
+  box.hidden = false;
+}
+
+// ------------------------------------------------------------------ calendar, this day, trails
+const calTime = iso => new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+function calDay(iso) {
+  const n = Math.round((new Date(iso + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
+  return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : DOW[new Date(iso + 'T12:00').getDay()] + ' ' + fmtDate(iso);
+}
+function renderCalendar() {
+  const ev = (D.calendar || []).filter(e => e.all_day ? (e.last_day || e.date) >= todayIso() : new Date(e.end || e.start) > new Date());
+  $('cal-card').hidden = !D.calendar;
+  if (!D.calendar) return;
+  const byDay = {};
+  for (const e of ev) (byDay[e.date] = byDay[e.date] || []).push(e);
+  $('cal-meta').textContent = ev.length ? `${ev.length} in the next week` : '';
+  $('cal').innerHTML = Object.keys(byDay).length ? Object.entries(byDay).map(([d, list]) => `<h3 class="sub cal-day">${calDay(d)}</h3>
+    <div class="lines">${list.map(e => `<div><span>${esc(e.title)}${e.where ? `<br><small>${esc(e.where)}</small>` : ''}</span>
+      <span style="white-space:nowrap;padding-left:12px">${e.all_day ? (e.last_day ? 'Until ' + fmtDate(e.last_day) : 'All day') : calTime(e.start) + '–' + calTime(e.end)}</span></div>`).join('')}</div>`).join('')
+    : '<p class="note">Nothing on the calendar this week.</p>';
+}
+
+function renderAlmanac() {
+  const a = D.almanac || {}, h = a.history;
+  $('almanac').hidden = !(h || a.facts || a.nearby);
+  const pageLink = (p, text) => p && p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${text}</a>` : text;
+  $('hist-meta').textContent = new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+  $('date-facts').innerHTML = (a.facts || []).map(f => `<span class="chip">${esc(f)}</span>`).join('');
+  const hol = (h && h.holidays) || [];
+  $('hol-today').hidden = !hol.length;
+  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${hol.slice(0, 6).map(x => pageLink(x.page, esc(x.text))).join(' · ')}` : '';
+  $('hist-card').hidden = !h;
+  if (h) {
+    const row = x => `<div><span>${pageLink(x.page, esc(x.text))}${x.page && x.page.summary ? `<br><small>${esc(x.page.summary.slice(0, 220))}${x.page.summary.length > 220 ? '…' : ''}</small>` : ''}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`;
+    $('hist-local-h').hidden = !h.local.length;
+    $('hist-local').innerHTML = h.local.map(row).join('');
+    $('hist').innerHTML = h.selected.slice(0, 6).map(row).join('');
+    $('births').innerHTML = h.births.slice(0, 5).map(x => `<div><span>${pageLink(x.page, esc(x.text))}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`).join('');
+  }
+  const nb = a.nearby;
+  $('near-card').hidden = !nb;
+  if (nb) {
+    const f = nb.feature;
+    $('near-meta').textContent = `${nb.count} Wikipedia articles within about 6 miles`;
+    $('near').innerHTML = `<div class="near-feature">${f.image ? `<img src="${esc(f.image)}" alt="" loading="lazy">` : ''}<div>
+      <b>${pageLink(f, esc(f.title))}</b> <small>${f.miles} mi away</small><p class="note">${esc(f.summary || '')}</p></div></div>
+      <h3 class="sub">Also nearby</h3><div class="lines">${nb.others.slice(0, 6).map(x => `<div><span>${pageLink(x, esc(x.title))}</span><span>${x.miles} mi</span></div>`).join('')}</div>`;
+  }
+}
+
+function renderTrails() {
+  const t = (D.almanac || {}).trails;
+  $('trail-card').hidden = !(t && t.length);
+  if (!t || !t.length) return;
+  $('trails').innerHTML = t.map(x => `<div><span><a href="${esc(x.latest.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.hike)}</b></a>
+    ${x.latest.issues ? ` <small>· ${esc(x.latest.issues)}</small>` : ''}${x.latest.text ? `<br><small>“${esc(x.latest.text)}”${x.latest.by ? ' · ' + esc(x.latest.by) : ''}</small>` : ''}</span>
+    <span style="white-space:nowrap;padding-left:12px">${fmtDate(x.latest.date)}<br><small>${x.count} in 3 weeks</small></span></div>`).join('');
+}
+
+// ------------------------------------------------------------------ civics
+const partyTag = p => p ? `<span class="party p-${esc(p[0])}">${esc(p[0])}</span>` : '';
+function renderCivics() {
+  const c = D.civics;
+  $('civics').hidden = !c;
+  if (!c) return;
+  const d = c.districts, e = c.elections || [];
+  $('civ-meta').textContent = [d.county, d.congress && `Congressional District ${d.congress}`, d.senate && `State Senate ${d.senate}`, d.house && `State House ${d.house}`].filter(Boolean).join(' · ');
+  const next = e[0];
+  if (next) {
+    const n = Math.round((new Date(next.date + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
+    const regOpen = next.register_by >= todayIso();
+    $('elect').innerHTML = `<div class="elect-next"><div class="elect-count"><b>${n === 0 ? 'Today' : n}</b>${n === 0 ? '' : `<small>day${n === 1 ? '' : 's'}</small>`}</div>
+      <div><b>${esc(next.name)}</b> · ${DOW[new Date(next.date + 'T12:00').getDay()]} ${fmtDate(next.date)}
+      <p class="note">${regOpen ? `Register or update your address by ${fmtDate(next.register_by)}. Ballots go out around ${fmtDate(next.ballots_mailed)}.` : n <= 20 ? 'Your ballot should already be in the mail. Drop it off by 8 pm on election day.' : `Registration for this one closed ${fmtDate(next.register_by)}.`}</p></div></div>
+      ${(next.contests || []).length ? `<h3 class="sub">On your ballot</h3><div class="lines">${next.contests.map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.subtitle ? `<br><small>${esc(x.subtitle)}</small>` : ''}${x.candidates ? `<br><small>${x.candidates.map(k => esc(k.name) + (k.party ? ` (${esc(k.party.replace(/ Party$/, ''))})` : '')).join(', ')}</small>` : ''}</span><span>${x.kind === 'measure' ? 'Measure' : ''}</span></div>`).join('')}</div>` : ''}
+      ${e.length > 1 ? `<h3 class="sub">After that</h3><div class="lines">${e.slice(1).map(x => `<div><span>${esc(x.name)}</span><span>${fmtDate(x.date)} ${x.date.slice(0, 4)}</span></div>`).join('')}</div>` : ''}
+      <p class="note">${srcLinks(c.links)}</p>`;
+  }
+  const voteRow = v => `<div><span>${v.bill ? `<b style="font-weight:700">${esc(v.bill)}</b> ` : ''}${esc(v.desc || v.question || '')}<br><small>${esc(v.question || '')}${v.result ? ' · ' + esc(v.result) : ''} · <a href="${esc(v.url)}" target="_blank" rel="noopener">${v.date && /^\d{4}-/.test(v.date) ? fmtDate(v.date) : esc(v.date || 'Details')}</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(v.vote)}</span></div>`;
+  $('reps').innerHTML = c.people.map(p => `<div class="rep">
+      <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>
+        <div class="rep-links">${p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : ''}${p.phone ? ` · <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : ''}${p.email ? ` · <a href="mailto:${esc(p.email)}">Email</a>` : ''}${p.url && p.url !== p.contact ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''}</div></div>
+      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3><div class="lines">${p.votes.slice(0, 4).map(voteRow).join('')}</div>` : ''}
+      ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, 3).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
+      ${p.news.length ? `<h3 class="sub">In the news</h3><div class="lines">${p.news.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${x.date ? fmtDate(x.date) : ''}</small></span></div>`).join('')}</div>` : ''}
+    </div>`).join('');
+  $('statewide').innerHTML = c.statewide.map(s => `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a> ${partyTag(s.party)}</span><span>${esc(s.role)}</span></div>`).join('');
+  const missing = [!c.keys.congress && 'a free CONGRESS_KEY shows the bills your members of Congress sponsor', !c.keys.openstates && 'a free OPENSTATES_KEY adds your state senator and representative', !c.keys.ballot && 'a GOOGLE_CIVIC_KEY lists what’s on your ballot'].filter(Boolean);
+  $('civ-keys').hidden = !missing.length;
+  $('civ-keys').textContent = missing.length ? 'To add more: ' + missing.join('; ') + '.' : '';
+}
+
+// ------------------------------------------------------------------ craigslist gear
+function renderGear() {
+  const g = D.gear;
+  $('gear-card').hidden = !g;
+  if (!g) return;
+  $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
+  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}
+      <br><small>Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})${d.where ? ' · ' + esc(d.where) : ''}</small></span>
+      <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off}% under</small></span></div>`).join('')
+    : '<p class="note">Nothing priced well below usual right now.</p>';
+}
+
+// ------------------------------------------------------------------ morning records
+// Two picks a day: a classic (over 15 years old, critically adored) and a modern cult classic, chosen by
+// how well their tags fit today's season, weather and holidays. [artist, album, year, tags, why]
+const CLASSICS = [
+  ['Nick Drake', 'Pink Moon', 1972, 'fall winter rain quiet full', 'Twenty-eight minutes of voice and guitar, made for grey mornings.'],
+  ['Nick Drake', 'Bryter Layter', 1971, 'fall', 'Strings, brass and that hushed voice; autumn in record form.'],
+  ['Van Morrison', 'Astral Weeks', 1968, 'fall', 'A one-take reverie that critics still put near the top of every list.'],
+  ['Neil Young', 'Harvest Moon', 1992, 'fall full thanks', 'Warm, unhurried, and named for exactly this time of year.'],
+  ['Neil Young', 'Harvest', 1972, 'fall thanks', 'Country-rock comfort food from the man himself.'],
+  ['Elliott Smith', 'Either/Or', 1997, 'fall rain local', 'Portland’s own, recorded in town; perfect for wet streets.'],
+  ['Elliott Smith', 'XO', 1998, 'fall rain local', 'Smith’s lushest set, all Beatles chords and Portland drizzle.'],
+  ['Sufjan Stevens', 'Illinois', 2005, 'fall thanks', 'Banjo, brass and the Midwest in autumn colours.'],
+  ['Fleet Foxes', 'Fleet Foxes', 2008, 'fall spring local', 'Seattle harmonies that sound like Northwest forests.'],
+  ['Bon Iver', 'For Emma, Forever Ago', 2007, 'winter snow', 'Written in a Wisconsin cabin over a snowed-in winter.'],
+  ['Low', 'Things We Lost in the Fire', 2001, 'winter snow quiet', 'Slow, beautiful, and best with frost on the windows.'],
+  ['Low', 'Christmas', 1999, 'xmas', 'The cult holiday record for people who dislike holiday records.'],
+  ['Talk Talk', 'Spirit of Eden', 1988, 'rain quiet', 'Six long pieces that invented post-rock on a rainy afternoon.'],
+  ['Radiohead', 'In Rainbows', 2007, 'fall', 'The warmest Radiohead record, and the one most people keep returning to.'],
+  ['Portishead', 'Dummy', 1994, 'rain night', 'Trip-hop’s grey-sky masterpiece.'],
+  ['Massive Attack', 'Mezzanine', 1998, 'rain night halloween', 'Dark, heavy and gorgeous; made for long wet nights.'],
+  ['Bill Evans Trio', 'Sunday at the Village Vanguard', 1961, 'sunday rain jazz', 'The best way to start a Sunday, recorded on one.'],
+  ['Miles Davis', 'Kind of Blue', 1959, 'any jazz night', 'The best-selling jazz album ever, and it earns it every listen.'],
+  ['John Coltrane', 'Ballads', 1962, 'rain winter jazz', 'Coltrane at his most tender, ideal for rainy mornings.'],
+  ['John Coltrane', 'A Love Supreme', 1965, 'winter newyear jazz', 'A four-part prayer; good for fresh starts.'],
+  ['Vince Guaraldi Trio', 'A Charlie Brown Christmas', 1965, 'xmas', 'Still the coziest record of December.'],
+  ['Stan Getz and João Gilberto', 'Getz/Gilberto', 1964, 'summer sun', 'Bossa nova at its breeziest.'],
+  ['The Beach Boys', 'Pet Sounds', 1966, 'spring summer sun', 'Brian Wilson’s pocket symphony to youth.'],
+  ['The Zombies', 'Odessey and Oracle', 1968, 'spring', 'Baroque pop that opens with “Care of Cell 44” and never lets up.'],
+  ['Kate Bush', 'Hounds of Love', 1985, 'fall halloween', 'Side two is a gothic fever dream; ideal for late October.'],
+  ['Siouxsie and the Banshees', 'Juju', 1981, 'halloween', 'Goth’s spookiest classic, from “Spellbound” on.'],
+  ['The Cure', 'Disintegration', 1989, 'fall rain halloween', 'Grand, gloomy and gorgeous.'],
+  ['Goblin', 'Suspiria', 1977, 'halloween', 'The witchiest film score ever pressed to vinyl.'],
+  ['Tom Waits', 'Rain Dogs', 1985, 'rain fall', 'Junkyard blues for a downpour.'],
+  ['Simon & Garfunkel', 'Bookends', 1968, 'fall', 'Includes “Old Friends” and a whole side about getting older; very October.'],
+  ['Fleetwood Mac', 'Rumours', 1977, 'spring summer', 'Breakup songs that somehow sound like sunshine.'],
+  ['Stevie Wonder', 'Songs in the Key of Life', 1976, 'summer sun', 'Stevie’s sprawling, joyful peak.'],
+  ['Marvin Gaye', "What's Going On", 1971, 'election', 'Soul’s great protest album, timely in any election week.'],
+  ['Bob Dylan', "The Times They Are a-Changin'", 1964, 'election', 'Dylan at his most topical; good listening before you vote.'],
+  ['Bob Dylan', 'Blood on the Tracks', 1975, 'winter', 'Dylan’s heartbreak masterpiece.'],
+  ['Joni Mitchell', 'Blue', 1971, 'xmas winter', 'Home of “River”, the saddest December song there is.'],
+  ['Joni Mitchell', 'Hejira', 1976, 'winter', 'Restless road songs with Jaco Pastorius on bass.'],
+  ['Cocteau Twins', 'Heaven or Las Vegas', 1990, 'spring', 'Dream pop at its most luminous.'],
+  ['Mazzy Star', 'So Tonight That I Might See', 1993, 'night fall', 'Hazy, slow and made for dusk.'],
+  ['Sigur Rós', 'Ágætis byrjun', 1999, 'winter snow', 'Icelandic glacier music.'],
+  ['Brian Eno', 'Music for Airports', 1978, 'rain quiet sunday', 'The original ambient album; perfect with coffee.'],
+  ['Brian Eno', 'Another Green World', 1975, 'spring', 'Eno’s greenest, most playful album.'],
+  ['The Velvet Underground & Nico', 'The Velvet Underground & Nico', 1967, 'sunday', 'Opens with “Sunday Morning”. Need we say more?'],
+  ['Bill Withers', 'Just As I Am', 1971, 'sun summer', 'Home of “Ain’t No Sunshine” and “Grandma’s Hands”.'],
+  ['Al Green', "Let's Stay Together", 1972, 'valentine', 'Sweet soul for sweethearts.'],
+  ['Love', 'Forever Changes', 1967, 'spring summer', 'Psychedelic orchestral folk, sunny with a dark edge.'],
+  ['Neutral Milk Hotel', 'In the Aeroplane Over the Sea', 1998, 'fall', 'The ultimate cult classic, fuzz and singing saw included.'],
+  ['The Microphones', 'The Glow Pt. 2', 2001, 'fall rain local', 'Phil Elverum’s Anacortes masterpiece; it sounds like PNW weather.'],
+  ['Grouper', 'Dragging a Dead Deer Up a Hill', 2008, 'fall rain local quiet', 'Liz Harris of Portland and Astoria, at her most haunting.'],
+  ['Modest Mouse', 'The Moon & Antarctica', 2000, 'winter local', 'Issaquah’s finest, at their most cosmic.'],
+  ['Sleater-Kinney', 'Dig Me Out', 1997, 'local', 'Olympia and Portland punk at full throttle.'],
+  ['Built to Spill', 'Keep It Like a Secret', 1999, 'local summer', 'Boise guitar heroics, big with Northwest indie kids.'],
+  ['Death Cab for Cutie', 'Transatlanticism', 2003, 'rain local fall', 'Bellingham rain, set to music.'],
+  ['Nirvana', 'MTV Unplugged in New York', 1994, 'fall local', 'Lilies, candles and Leadbelly.'],
+  ['Bob Marley and the Wailers', 'Exodus', 1977, 'summer sun', 'Sunshine in a sleeve.'],
+  ['The Kinks', 'The Village Green Preservation Society', 1968, 'spring', 'Ray Davies’ love letter to English village life.'],
+  ['Boards of Canada', 'Music Has the Right to Children', 1998, 'fall', 'Faded-film nostalgia, perfect for fall leaves.'],
+  ['Aphex Twin', 'Selected Ambient Works 85–92', 1992, 'summer night', 'Warm electronic dreams.'],
+  ['D’Angelo', 'Voodoo', 2000, 'winter night', 'Neo-soul’s deepest groove.'],
+  ['Phil Spector', 'A Christmas Gift for You', 1963, 'xmas', 'Wall-of-sound Christmas, still unbeatable.'],
+  ['John Carpenter', 'Halloween (soundtrack)', 1978, 'halloween', 'Five-four piano dread. You know the one.'],
+  ['William Basinski', 'The Disintegration Loops', 2002, 'winter quiet', 'Tape loops decaying in real time; meditative and moving.'],
+  ['Hiroshi Yoshimura', 'Green', 1986, 'spring sunday quiet', 'Japanese ambient that found a cult on YouTube decades later.'],
+];
+const MODERN = [
+  ['Big Thief', 'Dragon New Mountain I Believe in You', 2022, 'fall winter', 'A sprawling, homespun double album with a devoted following.'],
+  ['Phoebe Bridgers', 'Punisher', 2020, 'fall halloween', 'Sad songs from the woman in the skeleton suit; very late October.'],
+  ['Adrianne Lenker', 'Songs', 2020, 'fall rain quiet', 'Recorded alone in a cabin; you can hear the rain on the roof.'],
+  ['Weyes Blood', 'Titanic Rising', 2019, 'rain', 'Seventies-sized ballads about rising water.'],
+  ['Mitski', 'Be the Cowboy', 2018, 'fall', 'Short, sharp, and beloved to the point of obsession.'],
+  ['Sufjan Stevens', 'Carrie & Lowell', 2015, 'fall quiet local', 'Sufjan’s spare masterpiece, with stops in Oregon.'],
+  ['Sufjan Stevens', 'Silver & Gold', 2012, 'xmas', 'Five discs of Christmas songs, some sincere and some very strange.'],
+  ['Kendrick Lamar', 'To Pimp a Butterfly', 2015, 'election', 'A jazz-rap epic about America; timely before an election.'],
+  ['Frank Ocean', 'Blonde', 2016, 'summer night', 'Fans have been waiting on the follow-up ever since.'],
+  ['Japanese Breakfast', 'Jubilee', 2021, 'summer local', 'Michelle Zauner of Eugene, going full technicolor.'],
+  ['Alvvays', 'Blue Rev', 2022, 'summer fall', 'Jangly, fuzzed-out and adored.'],
+  ['Grouper', 'Ruins', 2014, 'rain quiet local', 'Piano and a tin roof, from Portland’s patron saint of drizzle.'],
+  ['The Microphones', 'Microphones in 2020', 2020, 'fall local', 'One 44-minute song about memory, from Anacortes.'],
+  ['Mount Eerie', 'A Crow Looked at Me', 2017, 'winter quiet local', 'Devastating and plainspoken; a cult touchstone.'],
+  ['Jessica Pratt', 'On Your Own Love Again', 2015, 'night quiet', 'Hushed home-recorded folk with a devoted following.'],
+  ['Floating Points, Pharoah Sanders and the LSO', 'Promises', 2021, 'rain quiet sunday jazz', 'A slow-building ambient jazz suite.'],
+  ['Kamasi Washington', 'The Epic', 2015, 'jazz', 'Three hours of cosmic jazz that turned new ears toward the genre.'],
+  ['Beach House', 'Depression Cherry', 2015, 'fall night', 'Dream pop as slow fall dusk.'],
+  ['Beach House', 'Bloom', 2012, 'summer night', 'Warm, swirling and very replayable.'],
+  ['Angel Olsen', 'My Woman', 2016, 'fall', 'Torch songs and guitar burners.'],
+  ['Bon Iver', '22, A Million', 2016, 'winter snow', 'Glitchy, strange and moving.'],
+  ['Fleet Foxes', 'Shore', 2020, 'fall spring equinox local', 'Released on the September equinox, and it sounds like one.'],
+  ['Caroline Polachek', 'Desire, I Want to Turn Into You', 2023, 'spring', 'Art-pop with a fanatical following.'],
+  ['boygenius', 'the record', 2023, 'spring', 'A supergroup with a fan base to match.'],
+  ['Wednesday', 'Rat Saw God', 2023, 'summer', 'Country-tinged noise rock from Asheville.'],
+  ['Black Country, New Road', 'Ants From Up There', 2022, 'winter', 'Chamber rock that fans treat like scripture.'],
+  ['Waxahatchee', 'Saint Cloud', 2020, 'spring', 'Clear-eyed Americana and a fan favorite.'],
+  ['Khruangbin', 'Con Todo El Mundo', 2018, 'summer sun thai', 'Thai-funk-inspired grooves from Texas; a nod to Bangkok.'],
+  ['Tame Impala', 'Currents', 2015, 'summer', 'Psych pop that launched a thousand bedroom producers.'],
+  ['Chelsea Wolfe', 'Abyss', 2015, 'halloween night', 'Heavy, eerie and made for October nights.'],
+  ['Julia Jacklin', 'Crushing', 2019, 'fall', 'Plain-spoken heartbreak with a devoted fan base.'],
+  ['Cate Le Bon', 'Pompeii', 2022, 'winter', 'Odd, elegant and quietly influential.'],
+];
+function recordPicks() {
+  const now = new Date(), m = now.getMonth() + 1, d = now.getDate(), today = todayIso();
+  const tags = {any: 0.1};
+  const season = m === 12 || m <= 2 ? 'winter' : m <= 5 ? 'spring' : m <= 8 ? 'summer' : 'fall';
+  tags[season] = 1;
+  const o = D.outside || {}, t0 = (o.days || []).find(x => x.date === today);
+  if (t0 && t0.rain_pct >= 60) tags.rain = 2;
+  if (t0 && t0.snow_in > 0.2) tags.snow = 3;
+  if (t0 && t0.rain_pct < 20 && t0.hi >= 70) tags.sun = 2;
+  if (o.moon && o.moon.lit_pct >= 97) tags.full = 2;
+  if (now.getDay() === 0) tags.sunday = 2;
+  if (m === 10 && d >= 18) tags.halloween = 4;
+  if (m === 12 && d <= 26) tags.xmas = 4;
+  if (m === 11 && d >= 18 && d <= 28) tags.thanks = 3;
+  if ((m === 12 && d >= 28) || (m === 1 && d <= 3)) tags.newyear = 3;
+  if (m === 2 && d >= 10 && d <= 14) tags.valentine = 4;
+  if ([3, 9].includes(m) && d >= 19 && d <= 23) tags.equinox = 3;
+  const el = D.civics && (D.civics.elections || [])[0];
+  if (el && Math.round((new Date(el.date + 'T12:00') - new Date(today + 'T12:00')) / 864e5) <= 9) tags.election = 3;
+  tags.local = 0.5; tags.thai = (D.thai_buddhist || []).some(x => x.date === today) ? 3 : 0;
+  const day = Math.floor(Date.now() / 864e5);
+  const pick = (list, salt) => {
+    const scored = list.map(r => [r[3].split(' ').reduce((s, k) => s + (tags[k] || 0), 0), r]).sort((a, b) => b[0] - a[0]);
+    const pool = scored.filter(x => x[0] >= scored[0][0] - 1).map(x => x[1]);
+    return pool[(day + salt) % pool.length];
+  };
+  const classic = pick(CLASSICS.filter(r => now.getFullYear() - r[2] > 15), 0);
+  let modern = pick(MODERN, 3), live = null;
+  return {classic, modern, live, why: Object.entries(tags).filter(([k, v]) => v >= 2).map(([k]) => k)};
+}
+const listen = (artist, album) => `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + album)}`;
+async function renderRecords() {
+  const p = recordPicks();
+  // Topical twist: a modern pick that is playing Portland this week beats the calendar.
+  const gigs = await getJson('concerts.json');
+  const soonShow = ((gigs && gigs.shows) || []).find(s => s.date >= todayIso() && (new Date(s.date + 'T12:00') - new Date()) < 7 * 864e5 &&
+    MODERN.some(r => r[0].toLowerCase() === s.artist.toLowerCase()));
+  if (soonShow) { p.modern = MODERN.find(r => r[0].toLowerCase() === soonShow.artist.toLowerCase()); p.live = soonShow; }
+  renderRecords.picks = p;
+  const card = (label, r, extra) => `<div class="rec"><span class="rec-k">${label}</span>
+    <b>${esc(r[1])}</b><span>${esc(r[0])} · ${r[2]}</span><p class="note">${esc(r[4])}${extra || ''}</p>
+    <a class="link" href="${listen(r[0], r[1])}" target="_blank" rel="noopener">Listen on Spotify</a></div>`;
+  $('records').innerHTML = card('The classic', p.classic) +
+    card('The modern classic', p.modern, p.live ? ` Playing ${esc(p.live.venue)} ${calDay(p.live.date).toLowerCase()}.` : '');
+  $('rec-card').hidden = false;
 }
 
 function syncGroups() {

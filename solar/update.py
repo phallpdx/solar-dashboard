@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, ambient, aps, birds, coastsafety, deals, fishing, garden, grid, health, live, markets, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -630,6 +630,133 @@ def fetch_world(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_almanac(state, now_utc):
+    """Today in history, places near home, Gorge trip reports and Parker's calendar."""
+    store, errors = state.setdefault("almanac", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    if (store.get("history") or {}).get("date") != today.isoformat() or (store.get("history") or {}).get("v") != 2:
+        store.pop("history_at", None)
+        store.pop("nearby_at", None)
+    _refresh(store, "history", lambda: almanac.on_this_day(today), 24, now_utc, errors)
+    out = state.get("outside") or {}
+    if out.get("lat"):
+        _refresh(store, "nearby", lambda: almanac.nearby(out["lat"], out["lon"], today), 24, now_utc, errors)
+    _refresh(store, "trails", lambda: almanac.trip_reports(today), 6, now_utc, errors)
+    if env("CALENDAR_ICS"):
+        _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_civics(state, now_utc):
+    """Districts, representatives and what they've been doing, and upcoming elections."""
+    store, errors = state.setdefault("civics", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    out = state.get("outside") or {}
+    address = env("HOME_ADDRESS")
+    if not (address or out.get("lat")):
+        return "Needs the home location first."
+    fingerprint = (state.get("outside") or {}).get("address_id")
+    if store.get("address_id") != fingerprint or store.get("v") != 2:  # v2 adds GovTrack ids
+        store.clear()
+        store.update(address_id=fingerprint, v=2)
+    _refresh(store, "districts", lambda: civics.districts(address or None, out.get("lat"), out.get("lon")), 24 * 7, now_utc, errors)
+    d = store.get("districts")
+    if not d:
+        return "; ".join(errors)
+    _refresh(store, "congress", lambda: civics.congress_members(d["state"], d["congress"]), 24, now_utc, errors)
+    if env("OPENSTATES_KEY") and out.get("lat"):
+        _refresh(store, "legislature", lambda: civics.state_legislators(out["lat"], out["lon"], env("OPENSTATES_KEY")), 24, now_utc, errors)
+    people = (store.get("congress") or []) + (store.get("legislature") or [])
+    cache = store.setdefault("vote_cache", {})
+
+    def votes():
+        found, failed = dict(store.get("votes") or {}), []
+        for p in people:
+            if p["chamber"] == "house":
+                try:
+                    found[p["bioguide"]] = civics.house_votes(today, p["bioguide"], cache)
+                except Exception as e:
+                    failed.append(f"House: {e}")
+        lis = [p["lis"] for p in people if p["chamber"] == "senate" and p.get("lis")]
+        if lis:
+            try:
+                found.update(civics.senate_votes(today, lis, cache))
+            except Exception as e:  # senate.gov often refuses cloud runners: try GovTrack
+                for p in people:
+                    if p["chamber"] == "senate" and p.get("lis") and p.get("govtrack"):
+                        try:
+                            found[p["lis"]] = civics.govtrack_votes(p["govtrack"])
+                        except Exception as e2:
+                            failed.append(f"Senate: {e}; GovTrack: {e2}")
+                            break
+        if failed:
+            errors.extend(failed)
+        return found
+    _refresh(store, "votes", votes, 3, now_utc, errors)
+
+    def bills():
+        found = {}
+        for p in people:
+            if p.get("bioguide") and env("CONGRESS_KEY"):
+                found[p["bioguide"]] = civics.sponsored(p["bioguide"], env("CONGRESS_KEY"))
+            elif p.get("openstates_id"):
+                found[p["openstates_id"]] = civics.state_bills(p["openstates_id"], env("OPENSTATES_KEY"))
+        return found
+    if env("CONGRESS_KEY") or env("OPENSTATES_KEY"):
+        _refresh(store, "bills", bills, 24, now_utc, errors)
+    _refresh(store, "news", lambda: {p["name"]: civics.news(p["name"]) for p in people}, 6, now_utc, errors)
+    if env("GOOGLE_CIVIC_KEY") and address:
+        _refresh(store, "ballot", lambda: civics.civic_elections(address, env("GOOGLE_CIVIC_KEY"), today), 24, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def civics_view(state, today):
+    c = state.get("civics") or {}
+    d = c.get("districts")
+    if not d:
+        return None
+    votes, bills, news = c.get("votes") or {}, c.get("bills") or {}, c.get("news") or {}
+    people = []
+    for p in (c.get("congress") or []) + (c.get("legislature") or []):
+        vid = p.get("bioguide") if p["chamber"] == "house" else p.get("lis")
+        people.append({k: v for k, v in p.items() if k not in ("lis", "govtrack")} | {
+            "votes": votes.get(vid) or [], "bills": bills.get(p.get("bioguide") or p.get("openstates_id")) or [],
+            "news": news.get(p["name"]) or []})
+    ballot = {b["date"]: b for b in c.get("ballot") or [] if b["date"] >= today}
+    elections = []
+    for e in civics.oregon_elections(dt.date.fromisoformat(today)):
+        b = ballot.pop(e["date"], None)
+        elections.append(e | ({"name": b["name"] or e["name"], "contests": b["contests"], "info_url": b["info_url"]} if b else {}))
+    elections += [b for b in ballot.values()]
+    elections.sort(key=lambda e: e["date"])
+    return {"districts": d, "people": people, "elections": elections[:4],
+            "statewide": [{"role": r, "name": n, "party": p, "url": u} for r, n, p, u in civics.OREGON_STATEWIDE],
+            "links": [{"name": n, "url": u} for n, u in civics.VOTE_LINKS],
+            "keys": {"congress": bool(env("CONGRESS_KEY")), "openstates": bool(env("OPENSTATES_KEY")),
+                     "ballot": bool(env("GOOGLE_CIVIC_KEY"))}}
+
+
+def fetch_gear(state, now_utc):
+    """Underpriced music gear on Portland Craigslist, checked twice a day."""
+    store, errors = state.setdefault("gear", {}), []
+    if store.get("v") != 3:  # better matching: score the listings again now
+        store.pop("scan_at", None)
+        store["v"] = 3
+
+    def scan():
+        found = gear.listings()
+        first = store.setdefault("first_seen", {})
+        today = now_utc.astimezone(zone("America/Los_Angeles")).date().isoformat()
+        picks = gear.deals(found, store.setdefault("reverb", {}))
+        for d in picks:
+            d["first_seen"] = first.setdefault(d["url"], today)
+        for url in list(first)[:-500]:
+            first.pop(url)
+        return {"deals": picks, "checked": len(found)}
+    _refresh(store, "scan", scan, 12, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
     _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
@@ -835,6 +962,7 @@ def ships_view(state, now_utc):
 def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
+    al = state.get("almanac") or {}
     all_rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
     rows = [r for r in all_rows if not r.get("bill")]
     bills = [r for r in all_rows if r.get("bill")]
@@ -916,6 +1044,7 @@ def build(state, status, now_utc):
         "ships": ships_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
+        "thai_buddhist": world.thai_buddhist(dt.date.fromisoformat(today)),
         "alerts": alerts_view(state, out, now_utc),
         "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
         "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
@@ -936,6 +1065,13 @@ def build(state, status, now_utc):
                   "incidents": (state.get("extras") or {}).get("roads") or []},
         "rare_birds": (state.get("extras") or {}).get("birds") if env("EBIRD_KEY") else None,
         "pollen": (state.get("extras") or {}).get("pollen") if env("GOOGLE_POLLEN_KEY") else None,
+        "almanac": {"history": al.get("history") if (al.get("history") or {}).get("date") == today else None,
+                    "facts": almanac.date_facts(dt.date.fromisoformat(today)),
+                    "nearby": al.get("nearby"), "trails": al.get("trails")},
+        "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
+        "civics": civics_view(state, today),
+        "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
+                if (state.get("gear") or {}).get("scan") else None,
         "shellfish": {**((state.get("extras") or {}).get("shellfish") or {}),
                       "crab_season": coastsafety.crab_season(dt.date.fromisoformat(today))},
     }
@@ -951,7 +1087,7 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships)):
+                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

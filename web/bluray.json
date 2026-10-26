@@ -1,19 +1,16 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "deals": [
-    {"title": "Kino Lorber Fall Haul", "store": "Kino Lorber", "detail": "Over 900 titles, with many 4Ks at $17.99 to $18.99, like 3 Days of the Condor and Abbott and Costello Meet Frankenstein; Paul 4K $15.99 and Enter the Ninja 4K $14.99. Reportedly extended to Oct 27 at noon ET.", "ends": "2026-10-27", "url": "https://kinolorber.com/collection/fall-haul-sale-2026"},
-    {"title": "Arrow Video Shocktober", "store": "Arrow Video", "detail": "Up to 50% off hundreds of 4K and Blu-ray titles, plus 2 for $60 on 4K UHD", "ends": "2026-11-02", "url": "https://www.arrowvideo.com/c/campaigns/shocktober/"},
-    {"title": "31 Days of Syntober", "store": "Vinegar Syndrome", "detail": "A new staff-picked film each day at 50% off list, with 3x reward points", "ends": "2026-10-31", "url": "https://vinegarsyndrome.com/pages/31-days-of-syntober"},
-    {"title": "Shout! Factory sale at Amazon", "store": "Amazon", "detail": "Shout and Scream Factory discs discounted, including the Bubba Ho-Tep 4K SteelBook Collector's Edition at $26 (reported Oct 21)", "ends": null, "url": "https://slickdeals.net/f/20187141-shout-factory-blu-ray-sale-at-amazon"},
-    {"title": "Amazon 4K 3 for $33", "store": "Amazon", "detail": "Mix any three eligible 4Ks, about $11 each, like 48 Hrs./Another 48 Hrs., Rocketman and Star Trek (reported Oct 1)", "ends": null, "url": "https://slickdeals.net/f/20085609-4k-uhd-blu-rays-48-hrs-another-48-hrs-double-feature-rocketman-star-trek-2009-3-for-33-many-more-free-s-h"},
-    {"title": "Amazon horror 4K sale", "store": "Amazon", "detail": "Nope, The Thing, Sinners and The Shining around $13 each (reported Oct 2; prices may have changed)", "ends": null, "url": "https://kotaku.com/amazons-very-good-4k-uhd-blu-ray-sale-is-back-but-this-time-filled-with-horror-and-spooky-movies-2000739388"},
-    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "2001: A Space Odyssey, The Shining, The Thing and more for Prime members (reported Oct 6)", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"},
-    {"title": "Vinegar Syndrome 20% off", "store": "Orbit DVD", "detail": "20% off select Vinegar Syndrome titles, stackable with other deals and free shipping", "ends": "2026-10-31", "url": "https://www.orbitdvd.com/collections/vinegar-syndrome-october-2026-sale"}
+    {"title": "Kino Lorber Fall Haul", "store": "Kino Lorber", "detail": "Over 900 titles from $4.99, with 4Ks like 3 Days of the Condor at $17.99 (list $39.95). Blu-ray Forum reports the sale was extended to Oct 27 at noon ET.", "ends": "2026-10-27", "url": "https://kinolorber.com/collection/fall-haul-sale-2026"},
+    {"title": "31 Days of Syntober", "store": "Vinegar Syndrome", "detail": "A new featured film each day at 50% off list with 3x reward points (Oct 24's pick was Blood Beat), plus a bundle with Night of the Vamp-Friars for an extra $5 off.", "ends": "2026-10-31", "url": "https://vinegarsyndrome.com/pages/31-days-of-syntober"},
+    {"title": "Blu-ray.com 4K bargains", "store": "Various", "detail": "Listed today: Akira 4K $11.99 (60% off), Mars Attacks! 4K $14.99 and Jaws 4K $14.99 (both half off).", "ends": null, "url": "https://www.blu-ray.com/deals/?category=4kbluray"},
+    {"title": "Us / Get Out 4K double feature", "store": "Amazon", "detail": "$14.99 for both Jordan Peele films on 4K, also matched at Gruv (reported Oct 23).", "ends": null, "url": "https://slickdeals.net/f/20196561-us-get-out-double-feature-4k-uhd-blu-ray-digital-15"},
+    {"title": "Arrow Video Shocktober (UK store)", "store": "Arrow Video", "detail": "Up to 50% off hundreds of 4K UHDs, Blu-rays and limited editions on Arrow's UK store, per HotUKDeals; check the US store for its own pricing.", "ends": "2026-11-02", "url": "https://www.hotukdeals.com/deals/arrow-video-shocktober-sale-up-to-50-off-4k-uhds-blu-rays-eg-cobra-limited-edition-4k-uhd-ps1350-5006780"},
+    {"title": "Amazon 4K 3 for $33", "store": "Amazon", "detail": "Mix any three eligible 4Ks, about $11 each, like 48 Hrs./Another 48 Hrs., Rocketman and Star Trek (reported Oct 1; may have ended).", "ends": null, "url": "https://slickdeals.net/f/20085609-4k-uhd-blu-rays-48-hrs-another-48-hrs-double-feature-rocketman-star-trek-2009-3-for-33-many-more-free-s-h"},
+    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "Two 4Ks for $25 from a long list of titles for Prime members (reported Oct 6; may have ended).", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"}
   ],
   "upcoming": [
-    {"title": "Barnes & Noble Criterion 50% off", "detail": "Month-long half-off Criterion sale usually runs through November; not announced yet"},
-    {"title": "Vinegar Syndrome Black Friday sale", "detail": "Usually late November"},
-    {"title": "Next Criterion flash sale", "detail": "The 24-hour 50% off sale just ran around Oct 20; they come about every six months, so the next is likely spring 2027"}
+    {"title": "Vinegar Syndrome Black Friday", "detail": "Flash pre-order event reported for Nov 1 at 12:01 a.m. ET through Nov 4, with the main Black Friday sale starting Nov 27 at 12:01 a.m. ET.", "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"}
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"
 }

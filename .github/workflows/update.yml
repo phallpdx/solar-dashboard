@@ -52,6 +52,10 @@ jobs:
           TOMTOM_KEY: ${{ secrets.TOMTOM_KEY }}
           EBIRD_KEY: ${{ secrets.EBIRD_KEY }}
           GOOGLE_POLLEN_KEY: ${{ secrets.GOOGLE_POLLEN_KEY }}
+          CALENDAR_ICS: ${{ secrets.CALENDAR_ICS }}
+          CONGRESS_KEY: ${{ secrets.CONGRESS_KEY }}
+          OPENSTATES_KEY: ${{ secrets.OPENSTATES_KEY }}
+          GOOGLE_CIVIC_KEY: ${{ secrets.GOOGLE_CIVIC_KEY }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |

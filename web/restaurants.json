@@ -1,6 +1,40 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "restaurants": [
+    {
+      "name": "Patufet",
+      "neighborhood": "Southeast Portland",
+      "cuisine": "Spanish cafe",
+      "price": "",
+      "opened": "Oct 2026",
+      "summary": "A Spanish-style cafe that opened Oct. 8 in a hand-painted historic house, pouring wine and caffè con panna alongside candied fennel almonds and fig ricotta cake.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "Brings Spanish cafe culture to Southeast",
+          "date": "",
+          "url": "https://www.portlandmercury.com/food-and-drink/restaurant-openings/patufet-brings-spanish-cafe-culture-to-southeast/"
+        }
+      ]
+    },
+    {
+      "name": "Maddoggs",
+      "neighborhood": "Sumner (NE Sandy Blvd, at My-O-My)",
+      "cuisine": "Hot dogs (food cart)",
+      "price": "",
+      "opened": "",
+      "summary": "A mustard-yellow cart on the back patio of the bar My-O-My; The Infatuation recommends the Colombian-style Perro Caliente with pineapple sauce and crushed potato chips, and says the fries are worth ordering on their own.",
+      "reviews": [
+        {
+          "outlet": "The Infatuation",
+          "critic": "",
+          "verdict": "Added to the Portland Hit List",
+          "date": "",
+          "url": "https://www.theinfatuation.com/portland/reviews/maddoggs"
+        }
+      ]
+    },
     {
       "name": "JinJu Patisserie",
       "neighborhood": "N Williams",

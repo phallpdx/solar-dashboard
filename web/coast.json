@@ -1,22 +1,6 @@
 {
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "events": [
-    {
-      "name": "Smashing Pumpkinheads!",
-      "date": "2026-10-24",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Afternoon pumpkin-smashing party (3 to 6 pm) with food, drinks and tarot readings, part of Astoria's Halloween lineup.",
-      "url": "https://www.travelastoria.com/events/"
-    },
-    {
-      "name": "Creepshow Peepshow III",
-      "date": "2026-10-24",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Horror cabaret at the Columbian Theater, 7 to 11 pm.",
-      "url": "https://www.travelastoria.com/events/"
-    },
     {
       "name": "Halloween Spooktacular concert",
       "date": "2026-10-27",
@@ -28,10 +12,18 @@
     {
       "name": "Seaside Halloween Happenin's",
       "date": "2026-10-30",
-      "end": "2026-10-31",
+      "end": "2026-11-01",
       "town": "Seaside",
       "summary": "Free downtown Halloween weekend with a witches and warlocks paddle, kid carnival, pet parade, trunk-or-treat and a giant pumpkin drop; check final times.",
-      "url": "https://www.meredithlodging.com/blog/oregon-coast/seaside/halloween-happenings-in-seaside-oregon"
+      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
+    },
+    {
+      "name": "Singing in the Rain",
+      "date": "2026-11-03",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Singing in the Rain on the Liberty Theatre's November calendar (Tuesday, Nov. 3); see the listing for showtime.",
+      "url": "https://libertyastoria.org/event/"
     },
     {
       "name": "Seaside Fall Whiskey & Wine Walk",
@@ -92,10 +84,10 @@
     {
       "name": "Blind Pilot",
       "date": "2026-11-27",
-      "end": null,
+      "end": "2026-11-28",
       "town": "Astoria",
-      "summary": "The Oregon folk band plays the Liberty Theater; listings disagree on a 6 or 7 pm start, so check the ticket page.",
-      "url": "https://www.jambase.com/show/blind-pilot-liberty-theater-20261127"
+      "summary": "The Oregon folk band plays two nights at the Liberty Theatre (Nov. 27 and 28); check the ticket page for start times.",
+      "url": "https://libertyastoria.org/event/"
     },
     {
       "name": "Cannon Beach in Lights",

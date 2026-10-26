@@ -2,6 +2,34 @@
   "updated": "2026-10-26",
   "items": [
     {
+      "name": "Hotel Reynard",
+      "maker": "The team behind Suttle Lodge and Pals",
+      "kind": "New brand",
+      "what": "Hotel and tavern offering seasonal cooking",
+      "where_to_buy": [],
+      "date": "2026-10-22",
+      "sources": [
+        {
+          "name": "New Troutdale tavern pairs seasonal cooking with eight-room hotel",
+          "url": "https://www.oregonlive.com/dining/2026/10/the-team-behind-suttle-lodge-and-pals-is-opening-a-hotel-and-tavern-in-troutdale.html"
+        }
+      ]
+    },
+    {
+      "name": "LoRell's",
+      "maker": "Darell Preston",
+      "kind": "New brand",
+      "what": "Chicago-style fried chicken business",
+      "where_to_buy": [],
+      "date": "2026-10-21",
+      "sources": [
+        {
+          "name": "After the Lloyd Center, LoRell's opens on N. Russell Street — here's how to find it",
+          "url": "https://www.oregonlive.com/food/2026/10/after-lloyd-center-closes-lorells-chicken-shack-lands-in-north-portland.html"
+        }
+      ]
+    },
+    {
       "name": "Pastime Coffee",
       "maker": "Pastime Coffee",
       "kind": "New brand",
@@ -318,44 +346,6 @@
         {
           "name": "Baking Business: Bob's Red Mill reformulates signature gluten-free flour",
           "url": "https://www.bakingbusiness.com/articles/66781-bobs-red-mill-reformulates-signature-gluten-free-flour"
-        }
-      ]
-    },
-    {
-      "name": "2024 Osprey Cuvée Estate Pinot Noir",
-      "maker": "Sokol Blosser",
-      "kind": "New product",
-      "what": "A new estate Pinot blending fruit from Sokol Blosser's Dayton estate and its Kalita Vineyard in Yamhill-Carlton, $80 a bottle. After an August preview, it was set for release in late September.",
-      "where_to_buy": [
-        {
-          "store": "Sokol Blosser tasting room and online",
-          "url": null
-        }
-      ],
-      "date": "2026-08-17",
-      "sources": [
-        {
-          "name": "Wine Industry Advisor: Sokol Blosser announces new 2024 Osprey Cuvée Estate Pinot Noir",
-          "url": "https://wineindustryadvisor.com/2026/08/17/sokol-blosser-announces-new-2024-osprey-cuvee-estate-pinot-noir/"
-        }
-      ]
-    },
-    {
-      "name": "Spangler Vineyards Carménère",
-      "maker": "Spangler Vineyards",
-      "kind": "Award",
-      "what": "A Southern Oregon Carménère grown near Jacksonville won best of show at the 14th annual Cascadia International Wine Competition, where King Estate also led the Oregon winners.",
-      "where_to_buy": [
-        {
-          "store": "Spangler Vineyards",
-          "url": null
-        }
-      ],
-      "date": "2026-07-29",
-      "sources": [
-        {
-          "name": "Great Northwest Wine: Spangler, King Estate lead Oregon winners at Cascadia International",
-          "url": "https://greatnorthwestwine.com/2026/07/29/spangler-king-estate-lead-oregon-winners-at-14th-annual-cascadia-international/"
         }
       ]
     }

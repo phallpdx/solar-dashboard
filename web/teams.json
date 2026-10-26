@@ -1,111 +1,93 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-26T14:15:41Z",
+  "updated_at": "2026-10-26T22:57:56Z",
   "teams": {
     "blazers": {
-      "mood": "Happy, not satisfied",
-      "pulse": "Quiet Monday: no game since Friday's 128-120 comeback win in Sacramento, so fans are riding a 2-0 start. The mood is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are excited by the team's undefeated 2-0 start and rising power rankings. However, there is concern regarding the league-wide injury bug and recent catastrophic injuries to other players.",
       "storylines": [
-        "Portland came back from 12 down, powered by a 44-point third quarter, for its first road win",
-        "Rip City Project says the close call proves the Blazers must put the ball in Avdija's hands more after he took over in the second half",
-        "Defense worry: the Kings kept attacking Lillard and Morant, and Portland was slow closing out on corner threes",
-        "Shaedon Sharpe remains out with a torn right meniscus, expected back no earlier than February",
-        "Next up: at the Lakers on Tuesday night"
+        "Blazers are 2-0 with wins over the Suns and Kings.",
+        "Team ranked #15 in NBA.com's new power rankings.",
+        "Upcoming game against the Los Angeles Lakers.",
+        "Discussion regarding player profiles and roster depth."
       ],
       "sources": [
         {
           "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/117527/portland-trail-blazers-stats-three-poinnters-assists-damian-lillard-avdija-camara"
         },
         {
-          "name": "Sports Illustrated",
-          "url": "https://www.si.com/nba/trailblazers/onsi/the-good-and-bad-from-the-blazers-win-over-the-kings"
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/117514/portland-trail-blazers-nba-power-rankings-los-angeles-lakers-luka-doncic-damian-lillard-ja-morant"
         },
         {
-          "name": "Rip City Project",
-          "url": "https://ripcityproject.com/close-call-kings-proves-blazers-must-put-ball-deni-avdija-hands-more"
-        },
-        {
-          "name": "Yahoo Sports (AP recap)",
-          "url": "https://sports.yahoo.com/articles/deni-avdija-scores-26-points-050744592.html"
-        },
-        {
-          "name": "Athlon Sports",
-          "url": "https://athlonsports.com/nba/sacramento-kings/final-injury-report-for-trail-blazers-kings-will-malik-monk-play"
-        },
-        {
-          "name": "Legion Report",
-          "url": "https://legionreport.com/trail-blazers-vs-lakers/"
+          "name": "r/ripcity",
+          "url": "https://www.reddit.com/r/ripcity/comments/1xg3l81/blazers_ranked_15_in_nbacoms_new_power_rankings/"
         }
       ]
     },
     "timbers": {
-      "mood": "Alive again",
-      "pulse": "Fans are still buzzing about Saturday's 3-2 win over Charlotte, won on Alexander Aravena's goal in the sixth minute of stoppage time. It snapped a seven-match winless run and pulled Portland within three points of the West's last playoff spot, with a quick midweek trip to St. Louis up next.",
+      "mood": "bittersweet and reflective",
+      "pulse": "Fans are processing the news that club captain Diego Chara will retire following the 2027 Sprint Season. There is also a sense of community solidarity regarding support for the Rose City Riveters and Timbers Army.",
       "storylines": [
-        "Ariel Lassiter scored twice in the first half before Charlotte fought back to 2-2",
-        "The winner: Ian Smith's corner, flicked on by Cole Bassett, finished by Aravena at the goal line",
-        "Eric Izoita chipped in two assists",
-        "The win ended a 0-4-3 skid; Portland is 10-14-7 with 37 points, three back of the final West playoff spot",
-        "Next up: at St. Louis on Wednesday (5:30 p.m. Pacific), then Houston at home Nov. 1 before Decision Day at Austin"
+        "Diego Chara announces he will retire after the 2027 MLS Sprint Season.",
+        "Homegrown player Eric Izoita signed to a first-team hybrid contract.",
+        "Timbers Academy player Ian Miller named to U.S. U-16 Boys domestic training camp.",
+        "Kellen Tamblyn named to the 2026 MLS NEXT All-Star Game roster."
       ],
       "sources": [
         {
-          "name": "Timbers.com recap",
-          "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"
         },
         {
-          "name": "OPB (AP)",
-          "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"
+          "name": "r/timbers",
+          "url": "https://www.reddit.com/r/timbers/comments/1xg60vk/official_news_the_upcoming_sprint_season_will_be/"
         },
         {
-          "name": "Stumptown Footy",
-          "url": "https://stumptownfooty.substack.com/p/match-recap-and-reaction-portland-d06"
+          "name": "r/timbers",
+          "url": "https://www.reddit.com/r/timbers/comments/1xfj66u/rtimbers_stands_with_the_rose_city_riveters/"
         },
         {
-          "name": "Deadspin",
-          "url": "https://deadspin.com/alexander-aravenas-dramatic-goal-lifts-timbers-past-charlotte-fc/"
-        },
-        {
-          "name": "Squawka preview",
-          "url": "https://www.squawka.com/ca/news/mls/match-preview-st-louis-city-vs-portland-timbers-10-28-26-mls/"
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/timbers-sign-homegrown-player-eric-izoita-to-first-team-contract"
         }
       ]
     },
     "f1": {
-      "mood": "Champagne on ice",
-      "pulse": "Kimi Antonelli won Austin from pole, his ninth win of the year, but the title party had to wait. Russell finishing 8th and Hamilton 4th kept it alive, though Antonelli needs just two points in Mexico City this Sunday to wrap it up.",
+      "mood": "Excitement and frustration",
+      "pulse": "Fans are celebrating Kimi Antonelli's dominant victory and his move toward the world title. However, there is significant debate regarding George Russell's poor form and Max Verstappen's recurring radio issues.",
       "storylines": [
-        "Antonelli beat Leclerc by 13.078s, with Verstappen third",
-        "Antonelli leads Russell 365 to 242, a 123-point gap with 125 points left",
-        "Mexico City math: ninth or better clinches it, and even a pointless day does it unless Russell or Hamilton wins",
-        "Russell called his Austin pace \"rubbish\"; Verstappen said Red Bull's pace and tyres weren't good enough",
-        "Ferrari bounced back on Sunday with Leclerc second after fading in qualifying"
+        "Kimi Antonelli needs two more points to clinch the championship after his ninth win of the season.",
+        "George Russell struggles with the Mercedes W17's difficult operating window, scoring only 6 points in his last three races.",
+        "Max Verstappen finished third in the US GP as Red Bull admits Mercedes and Antonelli were faster.",
+        "Ferrari expresses frustration after Charles Leclerc's pace in Austin was sufficient for victory but resulted in P2.",
+        "Fernando Alonso calls for Aston Martin car improvements to avoid incidents like his collision with Alex Albon."
       ],
       "sources": [
         {
-          "name": "Formula1.com",
-          "url": "https://www.formula1.com/en/latest/article/antonelli-surges-to-dominant-victory-in-united-states-grand-prix-ahead-of-leclerc-and-verstappen.6kmBQv9FNTW7LzkDj8S34j"
+          "name": "Formula 1",
+          "url": "https://www.formula1.com/en/latest/article/5-key-betting-lessons-learnt-after-kimi-antonelli-wins-the-united-states-grand-prix.4KrTb1yIoxsJJP5cD25hwN"
         },
         {
-          "name": "RacingNews365",
-          "url": "https://racingnews365.com/how-kimi-antonelli-can-win-the-f1-title-in-mexican-grand-prix"
+          "name": "Formula 1",
+          "url": "https://www.formula1.com/en/latest/article/we-just-have-to-work-it-out-with-him-wolff-admits-russell-struggling-to-find-operating-window-for-mercedes-w17.6pbdYv34V9nrlo6P0EoJQQ"
         },
         {
-          "name": "Grande Prêmio",
-          "url": "https://grandepremio.com/en/f1/what-does-andrea-kimi-antonelli-need-to-win-the-2026-f1-title-in-mexico/"
+          "name": "Formula 1",
+          "url": "https://www.formula1.com/en/latest/article/5-winners-and-5-losers-from-austin.17w6sgHeulLQ51qh9e1b6I"
         },
         {
-          "name": "GrandPrix.com",
-          "url": "https://www.grandprix.com/races/united-states-gp-2026-race-notes.html"
+          "name": "Formula 1",
+          "url": "https://www.formula1.com/en/latest/article/dont-think-we-can-use-any-excuse-red-bulls-mekies-admits-antonelli-and-mercedes-faster-than-us-in-us-gp.2q77epiHSatdl0aexWkf3M"
         },
         {
-          "name": "Yahoo Sports",
-          "url": "https://sports.yahoo.com/articles/george-russell-admits-us-grand-001312467.html"
+          "name": "Formula 1",
+          "url": "https://www.formula1.com/en/latest/article/vasseur-admits-to-ferrari-frustration-as-pace-was-there-to-fight-for-victory.2dt48UPXlFVMj5yaSrWC3V"
         },
         {
-          "name": "Bozeman Daily Chronicle (AP)",
-          "url": "https://www.bozemandailychronicle.com/wire/sports/verstappens-hot-form-cools-off-as-red-bull-goes-backward-in-frustrating-us-grand-prix/article_3bc39095-b1a5-5bd4-842d-2611536361a0.html"
+          "name": "r/formula1",
+          "url": "https://www.reddit.com/r/formula1/comments/1xfhib0/the_race_radio_issues_have_become_a_recurring/"
         }
       ]
     }

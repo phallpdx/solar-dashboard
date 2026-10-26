@@ -3,28 +3,28 @@
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
     {
-      "title": "Sauvie Island Pumpkin Patch and corn maze",
-      "date": null,
-      "ends": "2026-10-31",
-      "where": "Sauvie Island",
-      "detail": "Pumpkins and an 8-acre corn maze, listed daily 10 to 6 through Oct 31 with prices starting at $12. Last season's FAQ said kids under 6 were free; confirm this year.",
-      "url": "https://www.travelportland.com/events/corn-maize-sauvie-island"
-    },
-    {
-      "title": "Bella Organic pumpkin patch",
-      "date": null,
-      "ends": "2026-10-31",
-      "where": "Sauvie Island",
-      "detail": "Free hayrides out to a corn maze and pumpkin field. Go in daytime, since the maze is haunted on weekend evenings.",
-      "url": "https://www.travelportland.com/region/pumpkin-patches/"
-    },
-    {
-      "title": "Toddler Storytime at St. Johns Library",
-      "date": null,
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-10-26",
       "ends": null,
-      "where": "St. Johns Library",
-      "detail": "Tuesdays 12:30 to 1:15 in the large community room, for toddlers and a favorite adult, with Oct 27, Nov 3 and Nov 10 posted. Free; limited tickets handed out 15 minutes before.",
-      "url": "https://multcolib.org/events-classes/toddler-storytime-1047"
+      "where": "Libraries across Washington County",
+      "detail": "There's a storytime pretty much every day of the week at Washington County Libraries! These range from: Preschool Storytimes, Family Storytimes, Toddler Times, Book Babies, storytimes in various languages, and […]",
+      "url": "https://pdxparent.com/event-single/storytime-at-washington-county-libraries/2026-10-26/"
+    },
+    {
+      "title": "Make Memories With Llamas, a Corn Maze and Pumpkins at Frog Pond Farm",
+      "date": "2026-10-26",
+      "ends": null,
+      "where": "Frog Pond Farm, 2995 SW Advance Rd, Wilsonville, OR, United States",
+      "detail": "Llamas in the Pumpkin Patch? Only at Frog Pond Farm. Open daily starting September 18, Frog Pond Farm is a place where animals take center stage, memories are made, and […]",
+      "url": "https://pdxparent.com/event-single/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/2026-10-26/"
+    },
+    {
+      "title": "Corn Maze & Fall Fun at Bella Organic Farm",
+      "date": "2026-10-26",
+      "ends": "2026-10-31",
+      "where": "Bella Organic Farm, 16205 NW Gillihan Rd., Portland, OR, United States",
+      "detail": "Get lost in their family-friendly corn maze, featuring a \"Five Kind Acts\" theme, open daily August 22-October 31! Starting September 26, enjoy extended fall hours with even more pumpkin patch […]",
+      "url": "https://pdxparent.com/event-single/corn-maze-fall-fun-at-bella-organic-farm/2026-10-26/"
     },
     {
       "title": "Seaside Halloween Happenin's",
@@ -41,6 +41,22 @@
       "where": "Hammond (Warrenton)",
       "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.",
       "url": "https://koa.com/campgrounds/astoria/events/"
+    },
+    {
+      "title": "Sauvie Island Pumpkin Patch and corn maze",
+      "date": null,
+      "ends": "2026-10-31",
+      "where": "Sauvie Island",
+      "detail": "Pumpkins and an 8-acre corn maze, listed daily 10 to 6 through Oct 31 with prices starting at $12. Last season's FAQ said kids under 6 were free; confirm this year.",
+      "url": "https://www.travelportland.com/events/corn-maize-sauvie-island"
+    },
+    {
+      "title": "Bella Organic pumpkin patch",
+      "date": null,
+      "ends": "2026-10-31",
+      "where": "Sauvie Island",
+      "detail": "Free hayrides out to a corn maze and pumpkin field. Go in daytime, since the maze is haunted on weekend evenings.",
+      "url": "https://www.travelportland.com/region/pumpkin-patches/"
     },
     {
       "title": "Curiosity Kids at OMSI",
@@ -107,6 +123,30 @@
       "url": "https://www.pdxpipeline.com/portland-shopping-information-christmas-holidays-local-goods-events/"
     },
     {
+      "title": "Veterans Day",
+      "date": "2026-11-11",
+      "ends": null,
+      "where": "Oregon Zoo",
+      "detail": "The Oregon Zoo is proud to offer free admission on Veterans Day for military members, veterans and their families from 9:30 a.m. to 3:30 p.m.",
+      "url": "https://www.oregonzoo.org/events/veterans-day"
+    },
+    {
+      "title": "Curiosity Kids: Sasquatch Science Team",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland, Oregon",
+      "detail": "Event held from 9 am - 10 am in the Discovery Lab.",
+      "url": "https://omsi.edu/events/curiosity-kids-sasquatch-science-team/"
+    },
+    {
+      "title": "ZooLights Sensory-Friendly",
+      "date": "2026-11-16",
+      "ends": null,
+      "where": "Oregon Zoo",
+      "detail": "Guests with different sensory processing needs and their families can enjoy the wonder of ZooLights from 4:30 to 8:30 p.m.",
+      "url": "https://www.oregonzoo.org/sensory-night"
+    },
+    {
       "title": "ZooLights",
       "date": "2026-11-20",
       "ends": "2027-01-03",
@@ -145,6 +185,14 @@
       "where": "Esther Short Park, Vancouver WA",
       "detail": "Free Rotary celebration where Santa arrives escorted by the Christmas Ships. The Christmas Ships calendar lists it for Nov 27, though the Rotary hasn't posted 2026 details yet.",
       "url": "https://www.christmasships.org/parade-schedule"
+    },
+    {
+      "title": "Curiosity Kids: Design and Discover",
+      "date": "2026-11-28",
+      "ends": "2026-12-05",
+      "where": "Portland, Oregon",
+      "detail": "Event held from 9 am - 10 am.",
+      "url": "https://omsi.edu/events/curiosity-kids-design-and-discover/"
     },
     {
       "title": "Christmas Ships Parade",

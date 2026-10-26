@@ -1,7 +1,7 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "season": {
-    "summary": "NOAA's Oct 8 update keeps an El Niño Advisory in effect, with Niño-3.4 at +2.1°C and a better than 83% chance of a strong to very strong El Niño through January to March 2027; the next update is Nov 12. NOAA's winter outlook favors a warmer than average December to February for the Pacific Northwest, with no clear lean on precipitation. El Niño winters usually mean less snowpack here, though the very strong events of 1982-83 and 2015-16 were wetter than normal across much of the Northwest.",
+    "summary": "A strong-to-very strong El Niño is currently strengthening and is likely to persist through January-March 2027. There is an 83% chance of this strength for the October-December period, with a 70% chance for November-January. The next ENSO Diagnostics Discussion is scheduled for 12 November 2026. The provided text does not state what El Niño usually means for Pacific Northwest snowpack.",
     "sources": [
       {
         "name": "NOAA CPC ENSO discussion",
@@ -28,10 +28,14 @@
   "openings": [
     {
       "resort": "Mt. Hood Meadows",
-      "date": "2026-12-04",
+      "date": "2026-12-18",
       "status": "Planned",
-      "note": "Target opening day, weather dependent; night skiing planned Dec 18 to Mar 7, closing planned Apr 24, 2027.",
+      "note": "The opening date of Dec 18 is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "Mt. Hood Meadows schedule",
           "url": "https://www.skihood.com/explore/Schedule"
@@ -44,9 +48,9 @@
     },
     {
       "resort": "Timberline",
-      "date": null,
-      "status": "Depends on snow",
-      "note": "No 2026-27 opening date announced; OnTheSnow projects Dec 26, which is an estimate.",
+      "date": "2026-12-26",
+      "status": "Planned",
+      "note": "The opening date of Dec 26 is a projection and subject to change.",
       "sources": [
         {
           "name": "Timberline lift tickets",
@@ -60,10 +64,14 @@
     },
     {
       "resort": "Mt. Hood Skibowl",
-      "date": null,
-      "status": "Depends on snow",
-      "note": "No official date; OnTheSnow projects Nov 27, which is an estimate.",
+      "date": "2026-11-27",
+      "status": "Planned",
+      "note": "The opening date of Nov 27 is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "OnTheSnow projected openings",
           "url": "https://www.onthesnow.com/mt-hood/projected-openings"
@@ -72,10 +80,14 @@
     },
     {
       "resort": "Cooper Spur",
-      "date": null,
-      "status": "Depends on snow",
-      "note": "No official date; OnTheSnow projects Dec 26, which is an estimate.",
+      "date": "2026-12-26",
+      "status": "Planned",
+      "note": "The opening date of Dec 26 is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "OnTheSnow Cooper Spur",
           "url": "https://www.onthesnow.com/oregon/cooper-spur/ski-resort"

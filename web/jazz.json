@@ -18,6 +18,22 @@
       ]
     },
     {
+      "artist": "Cory Limuaco Tribute to Herbie Hancock",
+      "kind": "Local",
+      "date": "2026-10-29",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Cory Limuaco returns to The 1905 for A Tribute to Herbie Hancock, Pt. 2 — a celebration of one of music’s most innovative visionaries and his boundary-pushing blend of jazz, funk, soul, and fusion.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Kerry Politzer's Bossa PDX",
       "kind": "Latin",
       "date": "2026-10-30",
@@ -30,6 +46,22 @@
         {
           "name": "Portland State School of Music & Theater",
           "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"
+        }
+      ]
+    },
+    {
+      "artist": "Luther S. Allison Trio",
+      "kind": "Touring",
+      "date": "2026-10-30",
+      "time": "null",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Accomplished multi-instrumentalist Luther S. Allison has set himself apart as one of the most in-demand artists in jazz today.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

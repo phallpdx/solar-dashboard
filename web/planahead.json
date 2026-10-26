@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "items": [
     {
       "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
@@ -42,20 +42,110 @@
       ]
     },
     {
-      "title": "Iron Maiden, Moda Center (Apr 18, 2027)",
-      "kind": "Tickets",
-      "action": "General sale opened Fri Oct 23 at 10 a.m. through Live Nation; buy face value there rather than resale.",
+      "title": "Portland Nursery Last Call fall sale",
+      "kind": "Buy",
+      "action": "Get spring bulbs and garlic at 30% off at either SE Portland store by Wed Oct 28.",
       "starts": null,
-      "by": null,
-      "why": "Surprise 2027 North American return with Bullet for My Valentine and The Raven Age.",
+      "by": "2026-10-28",
+      "why": "The fall sale was extended through Oct 28, with pumpkins and gourds at 50% off.",
       "sources": [
         {
-          "name": "Live Nation",
-          "url": "https://www.livenation.com/event/vvG1HZ_fUJy6d7/iron-maiden-run-for-your-lives-north-american-tour-2027"
+          "name": "Portland Nursery sales",
+          "url": "https://portlandnursery.com/sales/"
+        }
+      ]
+    },
+    {
+      "title": "Timberline and Mt. Hood Fusion season passes",
+      "kind": "Deadline",
+      "action": "Buy before Nov 1, when prices go up again; Fusion Passes stop selling after Nov 29.",
+      "starts": null,
+      "by": "2026-10-31",
+      "why": "Timberline cut pass prices this year and steps them up over time; KATU reports the current adult tier at $849.",
+      "sources": [
+        {
+          "name": "Mt. Hood Fusion Pass",
+          "url": "https://www.mthoodfusionpass.com/buy-your-pass/"
         },
         {
-          "name": "Iron Maiden",
-          "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
+          "name": "KATU",
+          "url": "https://katu.com/news/local/timberline-reduces-season-ski-pass-prices-to-where-they-were-in-2021"
+        },
+        {
+          "name": "Freeskier",
+          "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
+        }
+      ]
+    },
+    {
+      "title": "Skibowl season pass Tier 1 pricing",
+      "kind": "Deadline",
+      "action": "Buy by Oct 31 to keep Tier 1 pricing (the Skibowl homepage says Nov 3, so check).",
+      "starts": null,
+      "by": "2026-10-31",
+      "why": "Skibowl's pass page says Tier 1 ends Oct 31; adult passes are listed at $589.",
+      "sources": [
+        {
+          "name": "Skibowl season passes",
+          "url": "https://skibowl.com/season-passes/"
+        }
+      ]
+    },
+    {
+      "title": "Kann: December reservations",
+      "kind": "Book",
+      "action": "Book on Resy Nov 1 at noon, when the next month's tables are released.",
+      "starts": "2026-11-01",
+      "by": null,
+      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
+      "sources": [
+        {
+          "name": "Kann FAQ",
+          "url": "https://kannrestaurant.com/faqs"
+        },
+        {
+          "name": "Kann on Resy",
+          "url": "https://resy.com/cities/portland-or/venues/kann"
+        }
+      ]
+    },
+    {
+      "title": "Oregon Sno-Park permit season starts",
+      "kind": "Permit",
+      "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual (also sold online at DMV2U), $9 for three days or $4 for one day from vendors or a DMV office.",
+      "starts": "2026-11-01",
+      "by": null,
+      "why": "A permit is required Nov 1 to Apr 30, permits aren't sold on site and vendors often sell out, and DMV stopped selling daily and three-day permits online in 2026.",
+      "sources": [
+        {
+          "name": "ODOT Sno-Park Program",
+          "url": "https://www.oregon.gov/odot/maintenance/pages/sno-park-program.aspx"
+        },
+        {
+          "name": "TripCheck Sno-Park permits",
+          "url": "https://www.tripcheck.com/Pages/Sno-Parks-Permits"
+        },
+        {
+          "name": "ODOT DMV rule notice (2026)",
+          "url": "https://www.oregon.gov/odot/Get-Involved/OAR%20folders/2025-AONs/DMV_17-2026.pdf"
+        },
+        {
+          "name": "Mt. Hood NF Sno-Park alert",
+          "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
+        }
+      ]
+    },
+    {
+      "title": "Epic Pass price increase",
+      "kind": "Deadline",
+      "action": "Buy before Nov 15 to beat the next price step; sales end Dec 6.",
+      "starts": null,
+      "by": "2026-11-14",
+      "why": "Powder lists the Epic Pass at $1,169 as of Oct 13, with the next increase Nov 15.",
+      "sources": [
+        {
+          "name": "Powder",
+          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
         }
       ]
     },
@@ -110,106 +200,6 @@
       ]
     },
     {
-      "title": "Christmas Ships viewing dinner",
-      "kind": "Book",
-      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
-      "starts": null,
-      "by": null,
-      "why": "Vancouver's tourism office advises reserving waterfront restaurant seats well in advance on parade nights (Vancouver nights listed Dec 16 to 18).",
-      "sources": [
-        {
-          "name": "Christmas Ships parade schedule",
-          "url": "https://www.christmasships.org/parade-schedule"
-        },
-        {
-          "name": "Visit Vancouver WA",
-          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
-        }
-      ]
-    },
-    {
-      "title": "Kann: December reservations",
-      "kind": "Book",
-      "action": "Book on Resy Nov 1 at noon, when the next month's tables are released.",
-      "starts": "2026-11-01",
-      "by": null,
-      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
-      "sources": [
-        {
-          "name": "Kann FAQ",
-          "url": "https://kannrestaurant.com/faqs"
-        },
-        {
-          "name": "Kann on Resy",
-          "url": "https://resy.com/cities/portland-or/venues/kann"
-        }
-      ]
-    },
-    {
-      "title": "Timberline and Mt. Hood Fusion season passes",
-      "kind": "Deadline",
-      "action": "Buy before Nov 1, when prices go up again; Fusion Passes stop selling after Nov 29.",
-      "starts": null,
-      "by": "2026-10-31",
-      "why": "Timberline cut pass prices this year and steps them up over time; KATU reports the current adult tier at $849.",
-      "sources": [
-        {
-          "name": "Mt. Hood Fusion Pass",
-          "url": "https://www.mthoodfusionpass.com/buy-your-pass/"
-        },
-        {
-          "name": "KATU",
-          "url": "https://katu.com/news/local/timberline-reduces-season-ski-pass-prices-to-where-they-were-in-2021"
-        },
-        {
-          "name": "Freeskier",
-          "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
-        }
-      ]
-    },
-    {
-      "title": "Skibowl season pass Tier 1 pricing",
-      "kind": "Deadline",
-      "action": "Buy by Oct 31 to keep Tier 1 pricing (the Skibowl homepage says Nov 3, so check).",
-      "starts": null,
-      "by": "2026-10-31",
-      "why": "Skibowl's pass page says Tier 1 ends Oct 31; adult passes are listed at $589.",
-      "sources": [
-        {
-          "name": "Skibowl season passes",
-          "url": "https://skibowl.com/season-passes/"
-        }
-      ]
-    },
-    {
-      "title": "Mt. Hood Meadows season pass",
-      "kind": "Buy",
-      "action": "Buy sooner rather than later; there is no fixed deadline.",
-      "starts": null,
-      "by": null,
-      "why": "Meadows uses dynamic pricing, so pass prices rise as more are sold.",
-      "sources": [
-        {
-          "name": "The Columbian",
-          "url": "https://www.columbian.com/news/2026/apr/04/mt-hood-meadows-ski-area-announces-close-to-season-on-april-12-makes-plans-for-2026-27/"
-        }
-      ]
-    },
-    {
-      "title": "Epic Pass price increase",
-      "kind": "Deadline",
-      "action": "Buy before Nov 15 to beat the next price step; sales end Dec 6.",
-      "starts": null,
-      "by": "2026-11-14",
-      "why": "Powder lists the Epic Pass at $1,169 as of Oct 13, with the next increase Nov 15.",
-      "sources": [
-        {
-          "name": "Powder",
-          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
-        }
-      ]
-    },
-    {
       "title": "Ikon Pass final sales window",
       "kind": "Deadline",
       "action": "Buy by Dec 10 at the current $1,529 adult price.",
@@ -228,28 +218,52 @@
       ]
     },
     {
-      "title": "Oregon Sno-Park permit season starts",
-      "kind": "Permit",
-      "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual (also sold online at DMV2U), $9 for three days or $4 for one day from vendors or a DMV office.",
-      "starts": "2026-11-01",
+      "title": "Iron Maiden, Moda Center (Apr 18, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Fri Oct 23 at 10 a.m. through Live Nation; buy face value there rather than resale.",
+      "starts": null,
       "by": null,
-      "why": "A permit is required Nov 1 to Apr 30, permits aren't sold on site and vendors often sell out, and DMV stopped selling daily and three-day permits online in 2026.",
+      "why": "Surprise 2027 North American return with Bullet for My Valentine and The Raven Age.",
       "sources": [
         {
-          "name": "ODOT Sno-Park Program",
-          "url": "https://www.oregon.gov/odot/maintenance/pages/sno-park-program.aspx"
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_fUJy6d7/iron-maiden-run-for-your-lives-north-american-tour-2027"
         },
         {
-          "name": "TripCheck Sno-Park permits",
-          "url": "https://www.tripcheck.com/Pages/Sno-Parks-Permits"
+          "name": "Iron Maiden",
+          "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
+        }
+      ]
+    },
+    {
+      "title": "Christmas Ships viewing dinner",
+      "kind": "Book",
+      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
+      "starts": null,
+      "by": null,
+      "why": "Vancouver's tourism office advises reserving waterfront restaurant seats well in advance on parade nights (Vancouver nights listed Dec 16 to 18).",
+      "sources": [
+        {
+          "name": "Christmas Ships parade schedule",
+          "url": "https://www.christmasships.org/parade-schedule"
         },
         {
-          "name": "ODOT DMV rule notice (2026)",
-          "url": "https://www.oregon.gov/odot/Get-Involved/OAR%20folders/2025-AONs/DMV_17-2026.pdf"
-        },
+          "name": "Visit Vancouver WA",
+          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+        }
+      ]
+    },
+    {
+      "title": "Mt. Hood Meadows season pass",
+      "kind": "Buy",
+      "action": "Buy sooner rather than later; there is no fixed deadline.",
+      "starts": null,
+      "by": null,
+      "why": "Meadows uses dynamic pricing, so pass prices rise as more are sold.",
+      "sources": [
         {
-          "name": "Mt. Hood NF Sno-Park alert",
-          "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
+          "name": "The Columbian",
+          "url": "https://www.columbian.com/news/2026/apr/04/mt-hood-meadows-ski-area-announces-close-to-season-on-april-12-makes-plans-for-2026-27/"
         }
       ]
     },
@@ -304,20 +318,6 @@
         {
           "name": "Cape Lookout State Park",
           "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"
-        }
-      ]
-    },
-    {
-      "title": "Portland Nursery Last Call fall sale",
-      "kind": "Buy",
-      "action": "Get spring bulbs and garlic at 30% off at either SE Portland store by Wed Oct 28.",
-      "starts": null,
-      "by": "2026-10-28",
-      "why": "The fall sale was extended through Oct 28, with pumpkins and gourds at 50% off.",
-      "sources": [
-        {
-          "name": "Portland Nursery sales",
-          "url": "https://portlandnursery.com/sales/"
         }
       ]
     },

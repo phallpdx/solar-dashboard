@@ -450,6 +450,47 @@ header .refresh .link{color:#fff;opacity:.9}
 .rain-bars i{display:block;width:100%;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,#5AA2FF,#1D6FD1)}
 .rain-bars small{font-size:10.5px;font-weight:700;color:#3B5B85}
 @media (prefers-reduced-motion:reduce){.rain.raining .rain-drop{animation:none}}
+.j-read{background:linear-gradient(150deg,#FFF3E6,#F7E1C8);--jc:#8B4A12}
+#longread{display:flex;flex-direction:column;gap:6px}
+#longread .sub{margin-top:8px}
+.read-pub{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8B4A12}
+.read-title{font-family:var(--display,inherit);font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+.read-by{font-size:14px;font-weight:600;color:var(--body);font-style:italic}
+.read-fresh{display:block;padding:6px 0;border-top:1px solid rgba(139,74,18,.15);font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none}
+.read-fresh:hover{text-decoration:underline}
+.j-trend{background:linear-gradient(150deg,#F3E9FF,#FFE3F3);--jc:#8A2BB8}
+.trend-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.trend-tabs .chip{background:rgba(255,255,255,.7)}
+.trend-tabs .chip[aria-pressed="true"]{background:#8A2BB8;color:#fff}
+.trend-list{margin:0;padding:0;list-style:none;counter-reset:t;display:flex;flex-direction:column}
+.trend-list li{counter-increment:t;display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(138,43,184,.12)}
+.trend-list li:last-child{border-bottom:0}
+.trend-list li::before{content:counter(t);flex:none;width:26px;height:26px;border-radius:50%;background:#8A2BB8;color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
+.trend-list a{flex:1;min-width:0;display:flex;flex-direction:column;text-decoration:none;color:var(--ink)}
+.trend-list b{font-size:14.5px;font-weight:700;line-height:1.3}.trend-list small{font-size:12px;font-weight:600;color:var(--body);line-height:1.35}
+.trend-list a:hover b{text-decoration:underline}
+.heat{flex:none;font-size:12px;font-weight:800;color:#8A2BB8;background:rgba(255,255,255,.7);border-radius:999px;padding:3px 8px}
+.j-books{background:linear-gradient(150deg,#EAF4F0,#D6ECE3);--jc:#1F6B52}
+.book{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(31,107,82,.12);text-decoration:none;color:var(--ink)}
+.book:last-of-type{border-bottom:0}
+.book img,.book-ph{width:44px;height:64px;flex:none;border-radius:6px;object-fit:cover;background:rgba(255,255,255,.7);display:grid;place-items:center;font-size:22px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.book span:last-child{display:flex;flex-direction:column}
+.book b{font-size:14.5px;line-height:1.3}.book small{font-size:12.5px;font-weight:600;color:var(--body)}.book .why{color:#1F6B52}
+.stars{color:#D99A00;letter-spacing:-1px}
+.yard-card{background:linear-gradient(160deg,#fff,#EEF6EA)}
+.yds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.yd{background:#fff;border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;box-shadow:inset 0 0 0 1px var(--line)}
+.yd .d{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#3F8F3A}
+.yd b{font-family:var(--display,inherit);font-size:22px}.yd b span{font-size:15px;color:var(--muted)}
+.yd small{font-size:11.5px;font-weight:600;color:var(--muted)}.yd .r{color:var(--use)}
+.yard-alert{margin:0;background:#E3F0FF;border-radius:14px;padding:10px 12px;font-size:14px;font-weight:700;color:#173E73}
+.shade-card{background:linear-gradient(160deg,#fff,#FFF4E3)}
+.shade-day{display:flex;flex-direction:column;gap:8px}
+.shade-day+.shade-day{margin-top:8px;padding-top:12px;border-top:1px solid var(--grid)}
+.shade-k{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#9A5B00}
+.shade-step{display:flex;gap:12px;align-items:center}
+.shade-ic{width:40px;height:40px;flex:none;border-radius:14px;background:#FFF0D1;display:grid;place-items:center;font-size:20px}
+.shade-step div{display:flex;flex-direction:column}.shade-step b{font-size:15px}.shade-step small{font-size:12.5px;font-weight:600;color:var(--body)}
 </style>
 </head>
 <body>
@@ -497,6 +538,16 @@ header .refresh .link{color:#fff;opacity:.9}
       <div class="head"><h2 id="loads-h">Run big loads on sunshine</h2><span class="meta" id="loads-meta">From the solar forecast and your system's usual output</span></div>
       <div class="loads" id="loads"></div>
     </section>
+    <div class="row">
+      <section class="card half yard-card" aria-labelledby="yard-h" id="yard-card" hidden>
+        <div class="head"><h2 id="yard-h">Your yard vs. the forecast</h2><span class="meta" id="yard-meta"></span></div>
+        <div id="yard"></div>
+      </section>
+      <section class="card half shade-card" aria-labelledby="shade-h" id="shade-card" hidden>
+        <div class="head"><h2 id="shade-h">Window shades</h2><span class="meta" id="shade-meta"></span></div>
+        <div id="shades"></div>
+      </section>
+    </div>
     <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
       <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
       <div id="cal"></div>
@@ -531,6 +582,19 @@ header .refresh .link{color:#fff;opacity:.9}
           <div class="head"><h2 id="wins-h">Solar wins</h2><span class="meta" id="wins-meta"></span></div>
           <p class="joy-big" id="wins-big"></p>
           <div class="joy-stats" id="wins-stats"></div>
+        </section>
+        <section class="card joy-card j-read" aria-labelledby="read-h" id="read-card" hidden>
+          <div class="head"><h2 id="read-h">Today's long read</h2></div>
+          <div id="longread"></div>
+        </section>
+        <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
+          <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
+          <div class="trend-tabs" id="trend-tabs"></div>
+          <div id="trends"></div>
+        </section>
+        <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
+          <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
+          <div id="books"></div>
         </section>
         <section class="card joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
           <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
@@ -1219,8 +1283,83 @@ function renderGood() {
     <span><b>${esc(x.title)}</b>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}<small>${esc(x.source)}${x.local ? ' · Oregon' : ''}</small></span></a>`).join('');
 }
 
+// ------------------------------------------------------------------ yard, shades, reading, trends
+const deg = x => `${x > 0 ? '+' : x < 0 ? '−' : '±'}${Math.abs(Math.round(x))}°`;
+function renderYard() {
+  const y = D.yard;
+  $('yard-card').hidden = !y;
+  if (!y) return;
+  $('yard-meta').textContent = `Learned from ${y.days} full days of your station`;
+  const warm = v => Math.abs(v) < 1 ? 'right on the forecast' : v > 0 ? `${Math.round(v)}° warmer than forecast` : `${Math.round(-v)}° cooler than forecast`;
+  const rain = y.rain_ratio == null ? 'Not enough rainy days yet to compare your gauge with the forecast.'
+    : y.rain_ratio > 1.15 ? `Your gauge catches about ${Math.round((y.rain_ratio - 1) * 100)}% more rain than forecast.`
+    : y.rain_ratio < 0.85 ? `Your gauge catches about ${Math.round((1 - y.rain_ratio) * 100)}% less rain than forecast.`
+    : 'Your gauge catches about what the forecast says.';
+  const rows = y.ahead.map(a => `<div class="yd"><span class="d">${a.date === todayIso() ? 'Today' : DOW[new Date(a.date + 'T12:00').getDay()]}</span>
+    <b>${a.hi}° <span>/ ${a.lo}°</span></b><small>forecast ${a.model_hi}° / ${a.model_lo}°</small>${a.rain_in >= 0.05 ? `<small class="r">~${a.rain_in.toFixed(2)} in</small>` : ''}</div>`).join('');
+  $('yard').innerHTML = `<p class="summary">Afternoons here run <b>${warm(y.hi_bias)}</b>, nights <b>${warm(y.lo_bias)}</b>. ${rain}</p>
+    ${y.frost ? `<p class="yard-alert">🥶 Frost risk ${y.frost.date === todayIso() ? 'tonight' : DOW[new Date(y.frost.date + 'T12:00').getDay()]}: your yard should hit about ${y.frost.lo}°. Cover tender plants.</p>` : ''}
+    <div class="yds">${rows}</div><p class="note">Adjusted for your yard. These numbers sharpen as your station logs more days.</p>`;
+}
+
+function renderShades() {
+  const sh = D.shades;
+  $('shade-card').hidden = !(sh && sh.plans.length);
+  if (!sh || !sh.plans.length) return;
+  $('shade-meta').textContent = sh.indoor_f ? `Inside now ${sh.indoor_f}°` : '';
+  const icon = s => s.do === 'open' ? (s.where === 'windows' ? '🪟' : '☀️') : '🌙';
+  const modeWord = {heat: 'Heating day: use the sun, then hold the heat', cool: 'Cooling day: block the sun', mild: 'Mild day'};
+  $('shades').innerHTML = sh.plans.map(p => `<div class="shade-day"><span class="shade-k">${p.date === todayIso() ? 'Today' : 'Tomorrow'} · ${modeWord[p.mode]} · high ${p.high}°</span>
+    ${p.steps.map(s => `<div class="shade-step"><span class="shade-ic" aria-hidden="true">${s.do === 'keep closed' ? '🌥️' : icon(s)}</span>
+      <div><b>${s.do === 'keep closed' ? 'Keep shades closed' : `${s.do === 'open' ? 'Open' : 'Close'} ${s.where === 'all' ? 'all shades' : s.where === 'windows' ? 'the windows' : s.where + ' shades'}`} ${s.do === 'keep closed' ? '' : 'at ' + clock(s.time)}</b>
+      <small>${esc(s.why)}</small></div></div>`).join('')}</div>`).join('');
+}
+
+function renderLongRead() {
+  const r = D.long_read, fresh = D.longreads || [];
+  $('read-card').hidden = !r;
+  if (!r) return;
+  $('longread').innerHTML = `<span class="read-pub">${esc(r.pub)} · ${r.year}</span>
+    <b class="read-title">${esc(r.title)}</b><span class="read-by">by ${esc(r.author)}</span>
+    <p class="note">${esc(r.why)}</p>
+    <a class="joy-btn" href="${esc(r.url)}" target="_blank" rel="noopener">📖 Read it</a>
+    ${fresh.length ? `<h3 class="sub">Fresh from Longreads</h3>${fresh.slice(0, 3).map(x => `<a class="read-fresh" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join('')}` : ''}`;
+}
+
+let trendTab = 'google';
+function renderTrends() {
+  const t = D.trending;
+  const tabs = [['google', 'Searches', t && t.google], ['wiki', 'Wikipedia', t && t.wiki], ['reddit', 'Reddit', t && t.reddit]].filter(x => x[2] && x[2].length);
+  $('trend-card').hidden = !tabs.length;
+  if (!tabs.length) return;
+  if (!tabs.some(x => x[0] === trendTab)) trendTab = tabs[0][0];
+  $('trend-tabs').innerHTML = tabs.map(([k, label]) => `<button type="button" class="chip" aria-pressed="${k === trendTab}" data-k="${k}">${label}</button>`).join('');
+  $('trend-tabs').querySelectorAll('button').forEach(b => b.onclick = () => { trendTab = b.dataset.k; renderTrends(); });
+  const list = tabs.find(x => x[0] === trendTab)[2];
+  const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'K' : n;
+  $('trend-meta').textContent = trendTab === 'google' ? 'Rising US searches' : trendTab === 'wiki' ? 'Most read yesterday' : 'Top today';
+  $('trends').innerHTML = `<ol class="trend-list">${list.slice(0, 6).map(x => trendTab === 'google'
+    ? `<li><a href="${esc(x.url || 'https://www.google.com/search?q=' + encodeURIComponent(x.title))}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.story ? `<small>${esc(x.story)}${x.source ? ' · ' + esc(x.source) : ''}</small>` : ''}</a><span class="heat">${esc(x.traffic)}</span></li>`
+    : trendTab === 'wiki'
+    ? `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.about ? `<small>${esc(x.about)}</small>` : ''}</a><span class="heat">${fmt(x.views)}</span></li>`
+    : `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b><small>r/${esc(x.sub)} · ${fmt(x.comments)} comments</small></a><span class="heat">▲${fmt(x.score)}</span></li>`).join('')}</ol>`;
+}
+
+function renderBooks() {
+  const b = D.books;
+  $('books-card').hidden = !b;
+  if (!b) return;
+  $('books-meta').textContent = `From your ${b.read_count} books on Goodreads`;
+  const stars = n => n ? '★'.repeat(n) : '';
+  $('books').innerHTML = (b.picks.length ? b.picks.slice(0, 5).map(x => `<a class="book" href="${esc(x.url)}" target="_blank" rel="noopener">
+      ${x.cover ? `<img src="${esc(x.cover)}" alt="" loading="lazy">` : '<span class="book-ph" aria-hidden="true">📚</span>'}
+      <span><b>${esc(x.title)}</b><small>${esc(x.author)} · ${x.year}</small><small class="why">${esc(x.because)}</small></span></a>`).join('')
+    : '<p class="note">No new books from your favorite authors right now.</p>') +
+    (b.recent.length ? `<p class="note">Recently read: ${b.recent.map(r => `${esc(r.title)} <span class="stars">${stars(r.rating)}</span>`).join(' · ')}</p>` : '');
+}
+
 function renderJoy() {
-  [renderLoads, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood].forEach(tryRender);
+  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks].forEach(tryRender);
 }
 
 // Long cards start trimmed with a "Show all" button so the page stays skimmable.

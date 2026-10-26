@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -681,6 +681,25 @@ def fetch_almanac(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_culture(state, now_utc):
+    """What's trending, book picks from Goodreads and long reads."""
+    store, errors = state.setdefault("culture", {}), []
+    today = now_utc.astimezone(zone("America/Los_Angeles")).date()
+    _refresh(store, "trends", culture.google_trends, 1.5, now_utc, errors)
+    if (store.get("wiki") or {}).get("date") != today.isoformat():
+        store.pop("wiki_at", None)
+    _refresh(store, "wiki", lambda: {"date": today.isoformat(), "articles": culture.wiki_most_read(today)}, 24, now_utc, errors)
+    _refresh(store, "reddit", culture.reddit_popular, 3, now_utc, errors)
+    _refresh(store, "longreads", culture.fresh_longreads, 12, now_utc, errors)
+    user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
+    if user:
+        if store.get("books_user") != user:
+            store.pop("books_at", None)
+            store["books_user"] = user
+        _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_civics(state, now_utc):
     """Districts, representatives and what they've been doing, and upcoming elections."""
     store, errors = state.setdefault("civics", {}), []
@@ -743,6 +762,95 @@ def fetch_civics(state, now_utc):
     if env("GOOGLE_CIVIC_KEY") and address:
         _refresh(store, "ballot", lambda: civics.civic_elections(address, env("GOOGLE_CIVIC_KEY"), today), 24, now_utc, errors)
     return "; ".join(errors) or None
+
+
+def yard_view(state, now_utc):
+    """How this yard differs from the forecast model, learned from the station's full days, and what that means next."""
+    weather, f = state.get("weather") or {}, (state.get("outside") or {}).get("forecast") or {}
+    daily = f.get("daily") or {}
+    model = {d: i for i, d in enumerate(daily.get("time") or [])}
+    today = now_utc.astimezone(zone("America/Los_Angeles")).strftime("%Y-%m-%d")
+    pairs = [(d, v, model[d]) for d, v in sorted((weather.get("days") or {}).items())
+             if d < today and d in model and v.get("n", 0) >= 240 and v.get("hi") is not None]
+    if len(pairs) < 2:
+        return None
+    col = lambda k, i: (daily.get(k) or [None] * (i + 1))[i]
+    hi_bias = statistics.median(v["hi"] - col("temperature_2m_max", i) for _, v, i in pairs)
+    lo_bias = statistics.median(v["lo"] - col("temperature_2m_min", i) for _, v, i in pairs)
+    wet = [(v["rain_in"], col("precipitation_sum", i)) for _, v, i in pairs
+           if v.get("rain_in") is not None and (col("precipitation_sum", i) or 0) >= 0.1]
+    rain_ratio = sum(a for a, _ in wet) / sum(b for _, b in wet) if wet else None
+    ahead = []
+    for d in sorted(model):
+        if d < today or len(ahead) >= 3:
+            continue
+        i = model[d]
+        hi, lo = col("temperature_2m_max", i), col("temperature_2m_min", i)
+        if hi is None or lo is None:
+            continue
+        ahead.append({"date": d, "model_hi": round(hi), "model_lo": round(lo),
+                      "hi": round(hi + hi_bias), "lo": round(lo + lo_bias),
+                      "rain_in": round((col("precipitation_sum", i) or 0) * (rain_ratio or 1), 2)})
+    frost = next((a for a in ahead if a["lo"] <= 33), None)
+    return {"days": len(pairs), "hi_bias": round(hi_bias, 1), "lo_bias": round(lo_bias, 1),
+            "rain_ratio": round(rain_ratio, 2) if rain_ratio is not None else None, "rain_days": len(wet),
+            "ahead": ahead, "frost": frost}
+
+
+def shades_view(state, now_utc, yard):
+    """When to open or close window shades to save on heating or cooling, from the hourly forecast and indoor temp."""
+    f = (state.get("outside") or {}).get("forecast") or {}
+    hourly, daily = f.get("hourly") or {}, f.get("daily") or {}
+    if not hourly.get("time") or not daily.get("time"):
+        return None
+    tz = zone("America/Los_Angeles")
+    now = now_utc.astimezone(tz)
+    indoor = fnum(((state.get("weather") or {}).get("latest") or {}).get("tempinf")) or None
+    bias = (yard or {}).get("hi_bias") or 0
+    plans = []
+    for offset in (0, 1):
+        day = (now + dt.timedelta(days=offset)).strftime("%Y-%m-%d")
+        if day not in daily["time"]:
+            continue
+        i = daily["time"].index(day)
+        hi = (daily["temperature_2m_max"][i] or 0) + bias
+        sunrise, sunset = (daily["sunrise"][i] or "T")[11:16], (daily["sunset"][i] or "T")[11:16]
+        hours = [(t[11:13], w or 0, temp) for t, w, temp in zip(hourly["time"], hourly["shortwave_radiation"], hourly["temperature_2m"])
+                 if t[:10] == day]
+        sunny = [h for h, w, _ in hours if w >= 300]
+        mode = "cool" if hi >= 75 or (indoor and indoor >= 77 and hi >= 68) else "heat" if hi < 65 else "mild"
+        steps = []
+        if mode == "cool" and sunny:
+            east = [h for h in sunny if int(h) <= 11]
+            south = [h for h in sunny if 11 <= int(h) <= 15]
+            west = [h for h in sunny if int(h) >= 15]
+            if east:
+                steps.append({"time": sunrise, "do": "close", "where": "east-facing", "why": f"Morning sun until about {int(east[-1])}:00"})
+            if south:
+                steps.append({"time": f"{int(south[0]) - 1:02d}:00", "do": "close", "where": "south-facing", "why": "Strongest sun of the day"})
+            if west:
+                steps.append({"time": f"{int(west[0]) - 1:02d}:00", "do": "close", "where": "west-facing", "why": f"Low afternoon sun heats rooms most, high near {round(hi)}°"})
+            cool_eve = next((t for t, _, temp in hours if int(t) >= 17 and temp is not None and indoor and temp + bias < indoor - 3), None)
+            if cool_eve:
+                steps.append({"time": f"{cool_eve}:00", "do": "open", "where": "windows", "why": "Outside gets cooler than inside: let the breeze cool the house"})
+        elif mode == "heat":
+            if sunny:
+                steps.append({"time": f"{int(sunny[0]) - 1:02d}:00", "do": "open", "where": "south and west-facing",
+                              "why": f"Free solar heat from about {int(sunny[0]) - 1}:00 to {int(sunny[-1])}:00"})
+            else:
+                steps.append({"time": sunrise, "do": "keep closed", "where": "all", "why": "Too cloudy for useful solar heat; closed shades insulate the glass"})
+            steps.append({"time": sunset, "do": "close", "where": "all", "why": "Trap the day's heat once the sun is down"})
+        else:
+            if len(sunny) >= 3:
+                steps.append({"time": f"{int(sunny[0]) - 1:02d}:00", "do": "open", "where": "sunny-side", "why": "Mild day: sun is welcome, no heating or cooling needed"})
+            steps.append({"time": sunset, "do": "close", "where": "all", "why": "Hold the warmth overnight"})
+        if offset == 0:
+            if now.strftime("%H:%M") >= sunset:
+                continue  # today's sun is done; tomorrow's plan is what matters
+            steps = [s for s in steps if s["time"] >= now.strftime("%H:%M") or s["do"] == "keep closed"]
+        if steps:
+            plans.append({"date": day, "mode": mode, "high": round(hi), "steps": steps})
+    return {"indoor_f": round(indoor) if indoor else None, "plans": plans} if plans else None
 
 
 def sunset_scores(hourly, days):
@@ -1047,6 +1155,7 @@ def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
     al = state.get("almanac") or {}
+    cu = state.get("culture") or {}
     all_rows = pge.read_folder(os.path.join(DATA_DIR, "pge"))
     rows = [r for r in all_rows if not r.get("bill")]
     bills = [r for r in all_rows if r.get("bill")]
@@ -1121,6 +1230,8 @@ def build(state, status, now_utc):
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
         "loads": loads_view(state, (performance or {}).get("kwh_per_sun"), now_utc),
+        "yard": (yard := yard_view(state, now_utc)),
+        "shades": shades_view(state, now_utc, yard),
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
         "sports": {**{k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k not in ("v", "reddit", "watch")},
                    "reddit": {k: v for k, v in ((state.get("sports") or {}).get("reddit") or {}).items()
@@ -1158,6 +1269,11 @@ def build(state, status, now_utc):
         "picks": daily.picks(dt.date.fromisoformat(today)),
         "album_birthdays": (al.get("albums") or {}).get("albums") if (al.get("albums") or {}).get("date") == today else None,
         "good_news": al.get("good_news"),
+        "trending": {"google": cu.get("trends"), "wiki": (cu.get("wiki") or {}).get("articles")
+                     if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
+        "books": cu.get("books") if cu.get("books_user") else None,
+        "long_read": culture.long_read(dt.date.fromisoformat(today)),
+        "longreads": cu.get("longreads"),
         "civics": civics_view(state, today),
         "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
                 if (state.get("gear") or {}).get("scan") else None,
@@ -1176,7 +1292,8 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear)):
+                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
+                     ("culture", fetch_culture)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

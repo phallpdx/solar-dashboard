@@ -1,10 +1,10 @@
 {
-  "updated": "2026-10-25",
-  "updated_at": "2026-10-26T06:17:12Z",
+  "updated": "2026-10-26",
+  "updated_at": "2026-10-26T14:15:41Z",
   "teams": {
     "blazers": {
       "mood": "Happy, not satisfied",
-      "pulse": "Still no game since Friday's 128-120 comeback win in Sacramento, so fans are riding a 2-0 start. The mood is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
+      "pulse": "Quiet Monday: no game since Friday's 128-120 comeback win in Sacramento, so fans are riding a 2-0 start. The mood is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
       "storylines": [
         "Portland came back from 12 down, powered by a 44-point third quarter, for its first road win",
         "Rip City Project says the close call proves the Blazers must put the ball in Avdija's hands more after he took over in the second half",
@@ -47,7 +47,7 @@
         "The winner: Ian Smith's corner, flicked on by Cole Bassett, finished by Aravena at the goal line",
         "Eric Izoita chipped in two assists",
         "The win ended a 0-4-3 skid; Portland is 10-14-7 with 37 points, three back of the final West playoff spot",
-        "Next up: at St. Louis on Wednesday, then Houston at home Nov. 1 before Decision Day at Austin"
+        "Next up: at St. Louis on Wednesday (5:30 p.m. Pacific), then Houston at home Nov. 1 before Decision Day at Austin"
       ],
       "sources": [
         {
@@ -65,17 +65,21 @@
         {
           "name": "Deadspin",
           "url": "https://deadspin.com/alexander-aravenas-dramatic-goal-lifts-timbers-past-charlotte-fc/"
+        },
+        {
+          "name": "Squawka preview",
+          "url": "https://www.squawka.com/ca/news/mls/match-preview-st-louis-city-vs-portland-timbers-10-28-26-mls/"
         }
       ]
     },
     "f1": {
       "mood": "Champagne on ice",
-      "pulse": "Kimi Antonelli won Austin from pole, his ninth win of the year, but the title party has to wait a week. Russell finishing 8th and Hamilton 4th kept it alive, though Antonelli now needs just two points in Mexico City to wrap it up.",
+      "pulse": "Kimi Antonelli won Austin from pole, his ninth win of the year, but the title party had to wait. Russell finishing 8th and Hamilton 4th kept it alive, though Antonelli needs just two points in Mexico City this Sunday to wrap it up.",
       "storylines": [
         "Antonelli beat Leclerc by 13.078s, with Verstappen third",
         "Antonelli leads Russell 365 to 242, a 123-point gap with 125 points left",
         "Mexico City math: ninth or better clinches it, and even a pointless day does it unless Russell or Hamilton wins",
-        "Verstappen said Red Bull's pace and tyres weren't good enough and admitted the late Virtual Safety Car helped him hold off Hamilton",
+        "Russell called his Austin pace \"rubbish\"; Verstappen said Red Bull's pace and tyres weren't good enough",
         "Ferrari bounced back on Sunday with Leclerc second after fading in qualifying"
       ],
       "sources": [
@@ -96,8 +100,8 @@
           "url": "https://www.grandprix.com/races/united-states-gp-2026-race-notes.html"
         },
         {
-          "name": "Sky Sports",
-          "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/george-russell-admits-us-grand-001312467.html"
         },
         {
           "name": "Bozeman Daily Chronicle (AP)",

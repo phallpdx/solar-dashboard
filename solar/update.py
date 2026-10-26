@@ -692,6 +692,13 @@ def fetch_culture(state, now_utc):
     _refresh(store, "reddit", culture.reddit_popular, 3, now_utc, errors)
     _refresh(store, "longreads", culture.fresh_longreads, 12, now_utc, errors)
     user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
+    if user and not user.isdigit():
+        if store.get("goodreads_name") != user:
+            try:
+                store["goodreads_id"], store["goodreads_name"] = culture.resolve_goodreads(user), user
+            except Exception as e:
+                errors.append(f"goodreads: {e}")
+        user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
         if store.get("books_user") != user:
             store.pop("books_at", None)

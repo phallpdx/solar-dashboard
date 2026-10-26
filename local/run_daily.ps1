@@ -37,6 +37,7 @@ if (-not $modelWasLoaded) { Lms @('load', $model, '--context-length', "$($cfg.lm
 
 # Python also gets its own console, and writes its progress straight to
 # <date>-lists.log so it can be followed while the run is going.
+$env:SOLAR_PARENT_PID = $PID  # Python stops itself if this script is ended
 $env:SOLAR_LISTS_LOG = Join-Path $logDir ('{0:yyyy-MM-dd}-lists.log' -f (Get-Date))
 $py = Get-Command py -ErrorAction SilentlyContinue
 $pyArgs = @("`"$(Join-Path $here 'refresh_lists.py')`"") + $args

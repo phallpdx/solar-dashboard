@@ -23,6 +23,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -48,6 +49,39 @@ def log(*args):
     if LOG_FILE:  # set by run_daily.ps1 so progress shows up while the run is going
         with open(LOG_FILE, "a", encoding="utf-8") as f:
             f.write(line + "\n")
+
+
+def _alive(pid):
+    if os.name != "nt":
+        try:
+            os.kill(pid, 0)
+            return True
+        except OSError:
+            return False
+    import ctypes  # on Windows os.kill(pid, 0) would end the process, so ask the kernel instead
+    k32 = ctypes.windll.kernel32
+    handle = k32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+    if not handle:
+        return False
+    code = ctypes.c_ulong()
+    k32.GetExitCodeProcess(handle, ctypes.byref(code))
+    k32.CloseHandle(handle)
+    return code.value == 259  # STILL_ACTIVE
+
+
+def watch_parent():
+    """Stops this run when run_daily.ps1 goes away, so End in Task Scheduler stops everything."""
+    pid = int(os.environ.get("SOLAR_PARENT_PID") or 0)
+    if not pid:
+        return
+
+    def loop():
+        while _alive(pid):
+            time.sleep(10)
+        log("The scheduled task was stopped; stopping too.")
+        os._exit(1)
+
+    threading.Thread(target=loop, daemon=True).start()
 
 
 # ---------------------------------------------------------------- fetching
@@ -712,6 +746,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true", help="write results to local/out/ instead of pushing")
     ap.add_argument("--check-sources", action="store_true", help="fetch every source and report, then stop")
     args = ap.parse_args()
+    watch_parent()
     if args.check_sources:
         check_sources()
         return 0

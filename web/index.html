@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Noto+Sans+Runic&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
 *{box-sizing:border-box}
@@ -780,7 +780,6 @@ header>div,header>.hero-right{position:relative;z-index:1}
 header.sunny::before{display:none}
 #vine{position:fixed;top:0;left:0;height:16px;width:0;z-index:40;pointer-events:none;background:var(--vine) repeat-x left center/120px 18px;filter:drop-shadow(0 1px 0 rgba(255,250,230,.8))}
 #vine::after{content:"🐌";position:absolute;right:-14px;top:-4px;font-size:16px}
-.drift{position:fixed;top:-30px;z-index:15;pointer-events:none;font-size:16px;opacity:.75}
 .spark.trail{font-size:12px;margin:-6px 0 0 -4px}
 @media (prefers-reduced-motion:no-preference){
   .scene .sky-sun svg .rays{animation:spin 26s linear infinite;transform-origin:32px 32px}
@@ -794,7 +793,6 @@ header.sunny::before{display:none}
   .group[data-sec=river].drawn .doodle{animation:jump 3.6s ease-in-out 2.2s infinite}
   .group[data-sec=solar].drawn .doodle{animation:zap 2.8s steps(1) 2.2s infinite}
   .group[data-sec=family].drawn .doodle{animation:beat 1.6s ease-in-out 2.2s infinite}
-  .drift{animation:page-fall linear forwards}
   .sec-icon:hover,.tile:hover .big{animation:wiggle .7s ease-in-out}
   .card:hover>.head h2{animation:wiggle-x .6s ease-in-out}
   .hero-wx svg{animation:float 5s ease-in-out infinite}
@@ -809,7 +807,6 @@ header.sunny::before{display:none}
 @keyframes jump{0%,60%,100%{transform:none}70%{transform:translate(-8px,-16px) rotate(-25deg)}82%{transform:translate(-14px,-4px) rotate(15deg)}}
 @keyframes zap{0%,100%{opacity:.7}10%{opacity:.15}14%{opacity:1;stroke:#E0A21E}20%{opacity:.7}}
 @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
-@keyframes page-fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),110vh) rotate(var(--rot))}}
 @keyframes wiggle-x{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
 @keyframes float{50%{transform:translateY(-4px)}}
 
@@ -845,7 +842,6 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
   /* The poem writes itself */
   .poem-text.writing span{opacity:0;clip-path:inset(0 100% 0 0);animation:quill .9s ease forwards}
   /* Sky critters */
-  header>.leaf{top:-24px;animation:fall linear infinite}
   header>.firefly{width:6px;height:6px;border-radius:50%;background:#FFE58A;box-shadow:0 0 10px 3px rgba(255,220,110,.75);animation:fly ease-in-out infinite alternate,blink 2.6s ease-in-out infinite}
   .spark{animation:spark .85s cubic-bezier(.2,.7,.3,1) forwards}
 }
@@ -977,8 +973,6 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
 .stop.soon .n{color:var(--rubric)}
 #vine::after{display:none}
 .spark{color:var(--gold) !important;text-shadow:0 0 6px rgba(255,214,120,.9)}
-.drift{opacity:.6}.drift svg{width:16px;height:16px;fill:#8A5A22;stroke:#3A2614;stroke-width:1}
-header>.leaf svg{width:15px;height:15px;fill:#9A6A2A;stroke:#3A2614;stroke-width:1}
 /* Calmer motion: things drift and glimmer, nothing boils or bounces */
 @media (prefers-reduced-motion:no-preference){
   header::after,.sec-head:hover::before,.card:hover::before{animation:none}
@@ -994,6 +988,24 @@ header>.leaf svg{width:15px;height:15px;fill:#9A6A2A;stroke:#3A2614;stroke-width
 .sec-tools button{background:#F5EAD0;border:1px solid rgba(58,38,20,.6);border-radius:2px;box-shadow:inset 0 0 0 2px #F5EAD0,inset 0 0 0 3px rgba(58,38,20,.25);color:var(--inkline)}
 .dd .summary b{background:none;border-bottom:1px solid var(--gold)}
 @keyframes gild{0%,100%{text-shadow:1px 1px 0 var(--gold),0 0 1px rgba(0,0,0,.3)}50%{text-shadow:1px 1px 0 #E8C25A,0 0 10px rgba(232,194,90,.7)}}
+/* Ithildin: starlight and moon-runes that only show when the page moves */
+#vine{z-index:120;height:2px;background:linear-gradient(90deg,rgba(190,225,255,0),rgba(190,225,255,.9));box-shadow:0 0 8px 1px rgba(140,200,255,.75);filter:none;transition:box-shadow .3s}
+#vine::after{display:block;content:"";position:absolute;right:-9px;top:-8px;width:18px;height:18px;background:radial-gradient(circle,#fff 0 12%,rgba(220,240,255,.9) 22%,rgba(150,205,255,0) 62%);clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);filter:drop-shadow(0 0 4px #9FD0FF)}
+#vine.flare{box-shadow:0 0 16px 3px rgba(160,215,255,.95)}
+.rune{position:fixed;z-index:30;pointer-events:none;font-family:'Noto Sans Runic',serif;font-weight:700;line-height:1;color:#3D86D4;opacity:0;text-shadow:0 0 1px #DFF1FF,0 0 6px rgba(140,200,255,.95),0 0 14px rgba(90,165,245,.8),0 0 26px rgba(90,165,245,.5)}
+.durin{position:absolute;inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);pointer-events:none;overflow:visible}
+.durin rect{fill:none;stroke:#BFE2FF;stroke-width:2;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;filter:drop-shadow(0 0 3px #7FC0FF) drop-shadow(0 0 7px #4F9BE8)}
+.runeline{position:absolute;right:24px;bottom:12px;max-width:60%;overflow:hidden;white-space:nowrap;text-overflow:clip;font:13px/1 'Noto Sans Runic',serif;letter-spacing:.32em;color:#5E86AE;opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  .rune{animation:rune-rise 2.5s cubic-bezier(.2,.7,.3,1) forwards}
+  .drawn .durin rect{animation:durin-trace 2.6s cubic-bezier(.45,.05,.3,1) .15s forwards}
+  .drawn .runeline{animation:runes-wake 3.4s ease .9s forwards}
+  .sec-head:hover .durin rect{opacity:.85;transition:opacity .4s}
+}
+@media (max-width:600px){.runeline{display:none}}
+@keyframes rune-rise{0%{opacity:0;transform:translate(0,0) scale(.5);filter:blur(3px)}18%{opacity:1;transform:translate(0,calc(var(--dy) * 14px)) scale(1);filter:blur(0)}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) * 130px)) scale(1.2);filter:blur(1px)}}
+@keyframes durin-trace{0%{stroke-dashoffset:1;opacity:1}65%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:.3}}
+@keyframes runes-wake{0%{opacity:0;color:#E6F4FF;text-shadow:0 0 10px #7FC0FF}35%{opacity:1;color:#E6F4FF;text-shadow:0 0 3px #2D5F8F,0 0 10px #7FC0FF}100%{opacity:.55;color:#5E86AE;text-shadow:none}}
 </style>
 </head>
 <body>
@@ -1744,23 +1756,16 @@ function critters() {
   const now = new Date(), h = now.getHours(), mo = now.getMonth() + 1;
   const night = h >= 18 || h < 7;
   head.classList.toggle('night', night);
-  const kind = night ? null : mo >= 9 && mo <= 11 ? ['🍂', '🍁', '🍂'] : mo >= 3 && mo <= 5 ? ['🌸', '🍃'] : mo >= 6 && mo <= 8 ? ['🦋', '🍃'] : ['❄️'];
   const rnd = (a, b) => a + Math.random() * (b - a);
   // Smoke from the hobbit hole's chimney, and a snail on a very long trip across the hills
   const sprite = (cls, text, css) => { const s = document.createElement('span'); s.className = 'sprite ' + cls; s.setAttribute('aria-hidden', 'true'); s.textContent = text || ''; s.style.cssText = css || ''; head.prepend(s); };
   sprite('chimney');
   for (let i = 0; i < 3; i++) sprite('puff', '', `animation-delay:${i * 1.7}s`);
-  for (let i = 0; i < (night ? 16 : 9); i++) {
+  for (let i = 0; i < (night ? 16 : 0); i++) {
     const s = document.createElement('span');
     s.setAttribute('aria-hidden', 'true');
-    if (night) {
-      s.className = 'sprite firefly';
-      s.style.cssText = `left:${rnd(4, 96)}%;top:${rnd(15, 80)}%;--dx:${rnd(-60, 60)}px;--dy:${rnd(-40, 40)}px;animation-duration:${rnd(5, 10)}s,${rnd(1.8, 3.6)}s;animation-delay:${rnd(-8, 0)}s,${rnd(-3, 0)}s`;
-    } else {
-      s.className = 'sprite leaf';
-      s.innerHTML = INK_LEAF;
-      s.style.cssText = `left:${rnd(2, 95)}%;font-size:${rnd(14, 22)}px;--dx:${rnd(-80, 80)}px;--rot:${rnd(-360, 360)}deg;animation-duration:${rnd(9, 16)}s;animation-delay:${rnd(-16, 0)}s`;
-    }
+    s.className = 'sprite firefly';
+    s.style.cssText = `left:${rnd(4, 96)}%;top:${rnd(15, 80)}%;--dx:${rnd(-60, 60)}px;--dy:${rnd(-40, 40)}px;animation-duration:${rnd(5, 10)}s,${rnd(1.8, 3.6)}s;animation-delay:${rnd(-8, 0)}s,${rnd(-3, 0)}s`;
     head.prepend(s);
   }
 }
@@ -1806,7 +1811,6 @@ function pen(seed) {
 }
 const ink = (d, cls = 'ink') => `<path class="${cls}" pathLength="1" d="${d}"/>`;
 
-const INK_LEAF = '<svg viewBox="0 0 16 16"><path d="M2 14C3 6 8 2 14 2c0 7-4 11-12 12zM2 14l7-7"/></svg>';
 const DOODLE = {
   sun: 'M33 22a11 11 0 1 0 .1 0M33 4v7M33 52v7M8 33h7M51 33h7M15 15l5 5M46 46l5 5M51 15l-5 5M20 46l-5 5',
   heart: 'M33 52C14 38 10 28 14 20s16-8 19 3c3-11 15-11 19-3s0 18-19 32',
@@ -2069,7 +2073,8 @@ function scene() {
   sc.innerHTML = sun + Array.from({length: Math.max(day ? 1 : 0, cloudy)}, (_, i) => cloud(i)).join('') + (day && !fall ? bird(0) + bird(1) + bird(2) : '') + fall;
 }
 
-// Little wonders that follow you around: a vine that grows as you scroll, a sparkle trail from your wand, and leaves on the breeze.
+// Little wonders that follow you around: a line of starlight marking how far you've read, a sparkle trail from your wand,
+// ithildin runes that rise off the page as you scroll, and section borders that trace themselves in silver like the Doors of Durin.
 function wonders() {
   if (wonders.done || calm()) return;
   wonders.done = true;
@@ -2093,21 +2098,36 @@ function wonders() {
       setTimeout(() => s.remove(), 900);
     }, {passive: true});
   }
-  const mo = new Date().getMonth() + 1, kinds = mo >= 9 && mo <= 11 ? ['🍂', '🍁', '🍃'] : mo >= 3 && mo <= 5 ? ['🌸', '🍃'] : mo >= 6 && mo <= 8 ? ['🦋', '🌼'] : ['❄️', '✨'];
-  const breeze = () => {
-    if (document.visibilityState === 'visible') {
-      const s = document.createElement('span');
-      s.className = 'drift';
-      s.setAttribute('aria-hidden', 'true');
-      s.innerHTML = kinds[0] === '❄️' ? '✧' : INK_LEAF;
-      const dur = 18 + Math.random() * 14;
-      s.style.cssText = `left:${Math.random() * 95}vw;--dx:${(Math.random() - .5) * 300}px;--rot:${(Math.random() - .5) * 720}deg;animation-duration:${dur}s`;
-      document.body.append(s);
-      setTimeout(() => s.remove(), dur * 1000);
-    }
-    setTimeout(breeze, 9000 + Math.random() * 9000);
+  // Each section's title, written out again in runes along the bottom of its border
+  const FUTHARK = {a: 'ᚨ', b: 'ᛒ', c: 'ᚲ', d: 'ᛞ', e: 'ᛖ', f: 'ᚠ', g: 'ᚷ', h: 'ᚺ', i: 'ᛁ', j: 'ᛃ', k: 'ᚲ', l: 'ᛚ', m: 'ᛗ', n: 'ᚾ', o: 'ᛟ', p: 'ᛈ', q: 'ᚲ', r: 'ᚱ', s: 'ᛊ', t: 'ᛏ', u: 'ᚢ', v: 'ᚹ', w: 'ᚹ', x: 'ᛉ', y: 'ᛃ', z: 'ᛉ'};
+  const runes = t => t.toLowerCase().split(/[^a-z]+/).filter(Boolean).map(w => [...w].map(c => FUTHARK[c]).join('')).join('᛫');
+  document.querySelectorAll('.sec-head').forEach(head => {
+    const h = head.querySelector('.sec-h');
+    head.insertAdjacentHTML('beforeend', `<svg class="durin" aria-hidden="true"><rect width="100%" height="100%" rx="16" pathLength="1"/></svg><span class="runeline" aria-hidden="true">${runes(h ? h.textContent : 'speak friend and enter')}</span>`);
+  });
+  // Scroll faster and more runes wake up
+  const GLYPHS = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
+  let lastY = scrollY, budget = 0, live = 0;
+  const rise = up => {
+    if (live > 22) return;
+    live++;
+    const s = document.createElement('span');
+    s.className = 'rune';
+    s.setAttribute('aria-hidden', 'true');
+    s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+    const side = Math.random() < .5, x = side ? 1 + Math.random() * 11 : 88 + Math.random() * 10;
+    s.style.cssText = `left:${x}vw;top:${15 + Math.random() * 75}vh;font-size:${20 + Math.random() * 18}px;--dx:${(Math.random() - .5) * 40}px;--dy:${up ? 1 : -1}`;
+    document.body.append(s);
+    setTimeout(() => { s.remove(); live--; }, 2600);
   };
-  setTimeout(breeze, 3000);
+  addEventListener('scroll', () => {
+    const dy = scrollY - lastY;
+    lastY = scrollY;
+    budget += Math.abs(dy);
+    vine.classList.toggle('flare', Math.abs(dy) > 60);
+    for (let n = 0; budget > 110 && n < 3; n++) { budget -= 110; rise(dy < 0); }
+    budget = Math.min(budget, 330);
+  }, {passive: true});
 }
 
 // Every card's title is reworded each day, so the page reads fresh every morning even when the facts are steady.

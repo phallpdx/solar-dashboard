@@ -666,7 +666,8 @@ def fetch_civics(state, now_utc):
     _refresh(store, "congress", lambda: civics.congress_members(d["state"], d["congress"]), 24, now_utc, errors)
     if env("OPENSTATES_KEY") and out.get("lat"):
         _refresh(store, "legislature", lambda: civics.state_legislators(out["lat"], out["lon"], env("OPENSTATES_KEY")), 24, now_utc, errors)
-    people = (store.get("congress") or []) + (store.get("legislature") or [])
+    in_congress = {p["name"] for p in store.get("congress") or []}
+    people = (store.get("congress") or []) + [p for p in store.get("legislature") or [] if p["name"] not in in_congress]
     cache = store.setdefault("vote_cache", {})
 
     def votes():
@@ -717,7 +718,8 @@ def civics_view(state, today):
         return None
     votes, bills, news = c.get("votes") or {}, c.get("bills") or {}, c.get("news") or {}
     people = []
-    for p in (c.get("congress") or []) + (c.get("legislature") or []):
+    in_congress = {p["name"] for p in c.get("congress") or []}
+    for p in (c.get("congress") or []) + [p for p in c.get("legislature") or [] if p["name"] not in in_congress]:
         vid = p.get("bioguide") if p["chamber"] == "house" else p.get("lis")
         people.append({k: v for k, v in p.items() if k not in ("lis", "govtrack")} | {
             "votes": votes.get(vid) or [], "bills": bills.get(p.get("bioguide") or p.get("openstates_id")) or [],

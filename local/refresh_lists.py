@@ -172,7 +172,7 @@ def ask_model(task, text, schema):
         "model": LLM["model"],
         "messages": messages,
         "temperature": 0.1,
-        "max_tokens": 4096,
+        "max_tokens": 3000,
         # Gemma's thinking step is slow on this laptop and not needed for extraction.
         "chat_template_kwargs": {"enable_thinking": False},
         "response_format": {"type": "json_schema", "json_schema": {"name": "result", "strict": True, "schema": schema}},

@@ -1,13 +1,13 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "items": [
     {
       "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
       "kind": "Tickets",
-      "action": "Register for the artist presale today, Sun Oct 25 (11:59 p.m. ET); presale Wed Oct 28, public sale Thu Oct 29 at 10 a.m.",
-      "starts": "2026-10-28",
-      "by": "2026-10-25",
-      "why": "A 16-date arena run for new album Perfecth with Pixies opening every night, and the presale needs advance registration.",
+      "action": "Presale registration closed Oct 25; if you registered, watch for your presale (TicketNews says Wed Oct 28, while Ticketmaster's listing has shown Tue Oct 27 at 10 a.m. PDT). Public sale Thu Oct 29 at 10 a.m.",
+      "starts": "2026-10-27",
+      "by": "2026-10-29",
+      "why": "A 16-date arena run for new album Perfecth with Pixies opening every night; sources disagree on the presale day, so check Ticketmaster.",
       "sources": [
         {
           "name": "TicketNews",
@@ -20,6 +20,10 @@
         {
           "name": "Consequence",
           "url": "https://consequence.net/2026/10/queens-of-the-stone-age-spring-2027-us-arena-tour-pixies/"
+        },
+        {
+          "name": "Ticketmaster QOTSA tour page",
+          "url": "https://www.ticketmaster.com/queens-of-the-stone-age-tickets/artist/730011"
         }
       ]
     },
@@ -56,6 +60,54 @@
         {
           "name": "Iron Maiden",
           "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
+        }
+      ]
+    },
+    {
+      "title": "Portland Thorns NWSL playoff match (possible home quarterfinal)",
+      "kind": "Tickets",
+      "action": "Watch Thorns.com after the Nov 1 regular-season finale at Houston to see if Portland hosts a quarterfinal, then buy direct from the club.",
+      "starts": null,
+      "by": null,
+      "why": "The Thorns clinched a 10th straight playoff berth on Oct 23, but their seed (and whether they host) won't be set until after Nov 1; last year's home quarterfinal drew 19,309.",
+      "sources": [
+        {
+          "name": "Portland Thorns",
+          "url": "https://www.thorns.com/news/portland-thorns-clinch-2026-playoff-berth-with-1-0-win-against-north-carolina-courage"
+        },
+        {
+          "name": "KPTV",
+          "url": "https://www.kptv.com/2026/10/24/portland-thorns-clinch-playoff-spot-with-win-over-north-carolina-courage/"
+        },
+        {
+          "name": "OPB (2025 quarterfinal)",
+          "url": "https://www.opb.org/article/2025/11/10/portland-thorns-advance-playoffs-turner-scores-1-0-soccer-victory"
+        }
+      ]
+    },
+    {
+      "title": "Angine de Poitrine, Crystal Ballroom (Dec 10 and 11)",
+      "kind": "Tickets",
+      "action": "Check Ticketmaster, the listed official seller, for face-value seats before turning to resale.",
+      "starts": null,
+      "by": "2026-12-10",
+      "why": "Two nights at the Crystal Ballroom, with resale listings starting around $168 to $205 a ticket.",
+      "sources": [
+        {
+          "name": "Songkick",
+          "url": "https://www.songkick.com/concerts/43217166-angine-de-poitrine-at-mcmenamins-crystal-ballroom"
+        },
+        {
+          "name": "Stereoboard",
+          "url": "https://www.stereoboard.com/angine-de-poitrine-tickets/portland"
+        },
+        {
+          "name": "TicketSmarter (Dec 10)",
+          "url": "https://www.ticketsmarter.com/e/angine-de-poitrine-tickets-portland-12-10-2026-mcmenamins-crystal-ballroom/3385574"
+        },
+        {
+          "name": "TickPick (Dec 11)",
+          "url": "https://www.tickpick.com/buy-angine-de-poitrine-tickets-mcmenamins-crystal-ballroom-12-11-26-8pm/7965595/"
         }
       ]
     },

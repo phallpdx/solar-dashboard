@@ -656,9 +656,9 @@ def fetch_civics(state, now_utc):
     if not (address or out.get("lat")):
         return "Needs the home location first."
     fingerprint = (state.get("outside") or {}).get("address_id")
-    if store.get("address_id") != fingerprint or store.get("v") != 2:  # v2 adds GovTrack ids
+    if store.get("address_id") != fingerprint or store.get("v") != 3:  # v3 drops Congress from the state legislators
         store.clear()
-        store.update(address_id=fingerprint, v=2)
+        store.update(address_id=fingerprint, v=3)
     _refresh(store, "districts", lambda: civics.districts(address or None, out.get("lat"), out.get("lon")), 24 * 7, now_utc, errors)
     d = store.get("districts")
     if not d:

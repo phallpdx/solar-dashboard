@@ -665,6 +665,8 @@ def fetch_civics(state, now_utc):
         return "; ".join(errors)
     _refresh(store, "congress", lambda: civics.congress_members(d["state"], d["congress"]), 24, now_utc, errors)
     if env("OPENSTATES_KEY") and out.get("lat"):
+        if {p["name"] for p in store.get("legislature") or []} & {p["name"] for p in store.get("congress") or []}:
+            store.pop("legislature_at", None)  # an older list mixed in members of Congress
         _refresh(store, "legislature", lambda: civics.state_legislators(out["lat"], out["lon"], env("OPENSTATES_KEY")), 24, now_utc, errors)
     people = (store.get("congress") or []) + (store.get("legislature") or [])
     cache = store.setdefault("vote_cache", {})

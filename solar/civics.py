@@ -121,7 +121,8 @@ def state_legislators(lat, lon, key):
     out = []
     for p in data.get("results") or []:
         role = p.get("current_role") or {}
-        if role.get("org_classification") not in ("upper", "lower"):
+        # people.geo also returns members of Congress: keep the state legislature only.
+        if (p.get("jurisdiction") or {}).get("classification") != "state" or role.get("org_classification") not in ("upper", "lower"):
             continue
         out.append({"name": p["name"], "party": p.get("party"),
                     "role": f"State {'Senator' if role['org_classification'] == 'upper' else 'Representative'}, District {role.get('district')}",

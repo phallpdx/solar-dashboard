@@ -56,6 +56,7 @@ jobs:
           CONGRESS_KEY: ${{ secrets.CONGRESS_KEY }}
           OPENSTATES_KEY: ${{ secrets.OPENSTATES_KEY }}
           GOOGLE_CIVIC_KEY: ${{ secrets.GOOGLE_CIVIC_KEY }}
+          NASA_KEY: ${{ secrets.NASA_KEY }}
           PGE_CYCLE_START_DAY: ${{ vars.PGE_CYCLE_START_DAY }}
           DATA_DIR: data
         run: |

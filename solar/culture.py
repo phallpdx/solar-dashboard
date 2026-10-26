@@ -83,9 +83,24 @@ def reddit_popular(n=8):
 # ---------------------------------------------------------------- books
 
 def goodreads_user(text):
-    """Accept a profile link, a shelf link or a bare id."""
+    """Accept a profile link, a shelf link, a bare id or a custom username like goodreads.com/phallpdx."""
     m = re.search(r"(\d{3,})", text or "")
+    if m:
+        return m.group(1)
+    m = re.search(r"(?:goodreads\.com/)?([A-Za-z][\w.-]{1,40})/?$", (text or "").strip())
     return m.group(1) if m else None
+
+
+def resolve_goodreads(user):
+    """Turn a custom username into the numeric id the shelf feeds need."""
+    if user.isdigit():
+        return user
+    with _open(f"https://www.goodreads.com/{urllib.parse.quote(user)}", {"User-Agent": "Mozilla/5.0 (solar-dashboard personal dashboard)"}) as r:
+        page = r.geturl() + " " + r.read().decode("utf-8", "replace")
+    m = re.search(r"/user/show/(\d+)", page) or re.search(r"/review/list(?:_rss)?/(\d+)", page)
+    if not m:
+        raise RuntimeError(f"Couldn't find the Goodreads id for {user}")
+    return m.group(1)
 
 
 def _shelf(user, shelf):

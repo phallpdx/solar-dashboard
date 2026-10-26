@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-25",
   "shows": [
     {
       "artist": "Akila Fields Trio with special guest Noah Bernstein",
@@ -30,22 +30,6 @@
         {
           "name": "Portland State School of Music & Theater",
           "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"
-        }
-      ]
-    },
-    {
-      "artist": "Artichoke Jazz Jam",
-      "kind": "Local",
-      "date": "2026-11-01",
-      "time": "7:00 pm",
-      "venue": "Artichoke Music",
-      "price": "Free",
-      "what": "A free, all-ages open jazz jam for all levels, led by drummer Max Tucker, with a house band opening the night; found on Travel Portland's calendar, not checked against the venue's own page.",
-      "tickets": null,
-      "sources": [
-        {
-          "name": "Travel Portland event listing",
-          "url": "https://www.travelportland.com/event/6ac140c637f73d3f6c416068/"
         }
       ]
     },

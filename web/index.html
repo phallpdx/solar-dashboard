@@ -199,6 +199,15 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .shell{border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
 .shell.ok{background:#E6F4EA;color:#14532D}.shell.no{background:#FDECEC;color:#7A1D16}
 .shell b{font-size:15px}.shell span{font-size:13px;font-weight:600}
+.breaks{display:flex;flex-direction:column;gap:12px}
+.brk{background:var(--bg);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.brk-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 10px}
+.brk b{font-size:15px}.brk .now{font-size:13px;font-weight:600;color:var(--body)}.brk small{font-size:12px;font-weight:600;color:var(--muted)}
+.rt{display:inline-block;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.rt0{background:#ECEBE7;color:#5E636E}.rt1{background:#FDECEC;color:#7A1D16}.rt2{background:#FFF4DB;color:#7A5200}.rt3{background:#E6F4EA;color:#14532D}.rt4{background:#D7ECFF;color:#0B4A8B}
+.sdays{display:grid;grid-template-columns:repeat(5,minmax(84px,1fr));gap:6px;overflow-x:auto;padding-bottom:2px}
+.sday{background:var(--card);border-radius:12px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;font-size:12px;font-weight:600;color:var(--body)}
+.sday .d{font-weight:700;color:var(--ink)}
 .mixbar{display:flex;height:22px;border-radius:999px;overflow:hidden;background:var(--grid)}
 .mixbar i{display:block;height:100%}
 .hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
@@ -527,6 +536,13 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="facts" id="coast-facts"></div>
         <div class="fc" id="coast-fc"></div>
       </section>
+      <section class="card" aria-labelledby="surf-h" id="surf-card" hidden>
+        <div class="head"><h2 id="surf-h">Surf report</h2><span class="meta" id="surf-meta"></span></div>
+        <p class="summary" id="surf-summary"></p>
+        <div class="facts" id="surf-facts"></div>
+        <div class="breaks" id="surf-breaks"></div>
+        <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
+      </section>
       <div class="row">
         <section class="card half" aria-labelledby="minus-h">
           <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
@@ -835,6 +851,7 @@ function render() {
   renderSki();
   renderDrives();
   waits.push(renderCoast());
+  renderSurf();
   renderFishing();
   renderGarden();
   renderHealth();
@@ -1410,6 +1427,40 @@ async function renderCoast() {
       <small>${[dayLabel(x.date) + (x.end && x.end !== x.date ? ' – ' + dayLabel(x.end) : ''), x.town].filter(Boolean).map(esc).join(' · ')}</small>
       ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
+}
+
+const WIND_WORD = { light: 'light wind', offshore: 'offshore', cross: 'cross-shore', onshore: 'onshore', sheltered: 'sheltered from the wind' };
+const surfWind = x => x.wind === 'light' ? 'light wind' : `${x.wind_mph} mph ${x.wind_dir || ''} ${x.wind === 'sheltered' ? '(sheltered)' : WIND_WORD[x.wind] || ''}`.replace(/\s+/g, ' ').trim();
+function renderSurf() {
+  const s = D.surf, breaks = (s && s.breaks) || [];
+  $('surf-card').hidden = !breaks.length;
+  if (!breaks.length) return;
+  const b = s.buoy;
+  $('surf-meta').innerHTML = b ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.station)}</a> · ${localWhen(b.at)}` : '';
+  const parts = [];
+  const top = [...breaks].sort((x, y) => y.now.score - x.now.score)[0];
+  if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
+  else parts.push(`Best bet right now: ${top.name}, ${top.now.rating.toLowerCase()} at ${top.now.surf_ft} ft (${top.now.period_s} s ${top.now.swell_dir || ''} swell, ${surfWind(top.now)}).`);
+  const ahead = breaks.flatMap(x => x.days.map(d => ({ ...d, name: x.name }))).filter(d => d.score >= 3);
+  if (ahead.length) {
+    const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
+    parts.push(`Pick of the week: ${dayLabel(d.date)} at ${d.name}, ${d.rating.toLowerCase()} ${d.surf_ft} ft from about ${clock(d.from)} to ${clock(d.to)}.`);
+  } else parts.push('Nothing better than fair in the next five days.');
+  $('surf-summary').textContent = parts.join(' ');
+  const facts = [];
+  if (b) {
+    facts.push(['Buoy waves', `${b.wave_ft} <small>ft${b.period_s ? ' · ' + b.period_s + 's' : ''}${b.dir ? ' · ' + esc(b.dir) : ''}</small>`]);
+    if (b.water_f != null) facts.push(['Water', `${b.water_f}°`]);
+  }
+  $('surf-facts').innerHTML = facts.map(([a, v]) => `<div class="mini"><span class="k">${a}</span><span class="v">${v}</span></div>`).join('');
+  $('surf-breaks').innerHTML = breaks.map(x => `<div class="brk">
+    <div class="brk-top"><b>${esc(x.name)}</b><span class="rt rt${x.now.score}">${esc(x.now.rating)} now</span></div>
+    <span class="now">${x.now.surf_ft} ft · ${x.now.period_s} s ${esc(x.now.swell_dir || '')} swell · ${esc(surfWind(x.now))}</span>
+    <small>${esc(x.note)}</small>
+    <div class="sdays">${x.days.slice(0, 5).map((d, i) => `<div class="sday"><span class="d">${i === 0 && d.date === D.today ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>
+      <span class="rt rt${d.score}">${esc(d.rating)}</span><span>${d.surf_ft} ft · ${d.period_s}s</span>
+      <span>${d.score > 0 ? clock(d.from) + (d.to !== d.from ? '–' + clock(d.to) : '') : '&nbsp;'}</span></div>`).join('')}</div>
+  </div>`).join('');
 }
 
 function renderSki() {

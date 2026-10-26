@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -787,6 +787,25 @@ def fetch_ski(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_surf(state, now_utc):
+    store, errors = state.setdefault("surf", {}), []
+    _refresh(store, "forecast", surf.forecast, 2, now_utc, errors)
+    _refresh(store, "buoy", lambda: surf.buoy(now_utc), 0.9, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def surf_view(state, now_utc):
+    """Ratings are worked out here, not at fetch time, so "now" stays current between forecast pulls."""
+    store = state.get("surf") or {}
+    if not store.get("forecast"):
+        return None
+    try:
+        breaks = surf.report(store["forecast"], now_utc.astimezone(zone("America/Los_Angeles")))
+    except Exception:
+        return None
+    return {"breaks": breaks, "buoy": store.get("buoy"), "updated": store.get("forecast_at")}
+
+
 def fetch_places(state, now_utc):
     spots = places.parse(env("PLACES")) or [(p["label"], p.get("query") or (p["lat"], p["lon"]))
                                                 for p in load_json("config.json", {}).get("places", [])]
@@ -1035,6 +1054,7 @@ def build(state, status, now_utc):
         "garden": garden_view(state, out, now_utc),
         "commute": (state.get("places") or {}).get("commute"),
         "coast": (state.get("places") or {}).get("coast"),
+        "surf": surf_view(state, now_utc),
         "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,
         "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
                   if k in ("stores", "missing")} or None,
@@ -1065,7 +1085,7 @@ def main():
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
-                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("fishing", fetch_fishing),
+                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear)):
         try:

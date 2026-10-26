@@ -181,10 +181,9 @@ def ask_model(task, text, schema):
         "temperature": 0.1,
         "max_tokens": 3000,
         # Gemma's thinking step is slow on this laptop and not needed for extraction.
-        # LM Studio honours different switches for different models, so send each.
-        "chat_template_kwargs": {"enable_thinking": False},
+        # LM Studio honours reasoning_effort for Gemma 4; enable_thinking is for other models.
         "reasoning_effort": "none",
-        "reasoning": {"effort": "none"},
+        "chat_template_kwargs": {"enable_thinking": False},
         "response_format": {"type": "json_schema", "json_schema": {"name": "result", "strict": True, "schema": schema}},
     }
     for attempt in range(2):
@@ -703,7 +702,7 @@ def main():
     try:
         reply = _post("/v1/chat/completions", {
             "model": LLM["model"], "messages": [{"role": "user", "content": "Say OK."}], "max_tokens": 20,
-            "chat_template_kwargs": {"enable_thinking": False}, "reasoning_effort": "none", "reasoning": {"effort": "none"}})
+            "chat_template_kwargs": {"enable_thinking": False}, "reasoning_effort": "none"})
     except Exception as e:  # noqa: BLE001
         sys.exit(f"LM Studio is not answering at {LLM['url']} with model {LLM['model']}: {e}")
     message = reply["choices"][0]["message"]

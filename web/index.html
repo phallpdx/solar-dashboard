@@ -3000,8 +3000,10 @@ function renderSky(o) {
 function renderShips() {
   const sh = D.ships;
   if (!sh) { $('ship-list').innerHTML = ''; return; }
-  const list = sh.approaching;
   const mins = s => Math.round((new Date(s.eta_utc) - Date.now()) / 60000);
+  // Ships that should have passed a while ago drop off until the next listen says where they are.
+  const list = sh.approaching.filter(s => mins(s) > -10);
+  const heard = sh.listened ? ` Last listened ${ago(sh.listened.at)}, heard ${sh.listened.heard} ship${sh.listened.heard === 1 ? '' : 's'}.` : '';
   $('ship-list').innerHTML = list.length ? '<div class="lines">' + list.map(s => {
     const m = mins(s);
     const when = s.passing_now || m <= 2 ? 'Passing now' : m < 60 ? `~${m} min` : `~${clock(new Date(s.eta_utc).toTimeString().slice(0, 5))}`;
@@ -3009,8 +3011,8 @@ function renderShips() {
     const what = [s.type, s.length_m ? `${s.length_m} m` : null].filter(Boolean).map(esc).join(' · ') + leg +
       (s.direction ? `<br>${s.direction}` : '');
     return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${what}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
-  }).join('') + '</div>'
-    : `<p class="note">No ships heading your way right now (${sh.in_area} seen on the river in the last few hours).</p>`;
+  }).join('') + `</div><p class="note">${heard.trim()}</p>`
+    : `<p class="note">No ships heading your way right now (${sh.in_area} seen on the river in the last few hours).${heard}</p>`;
 }
 
 function renderWorld() {

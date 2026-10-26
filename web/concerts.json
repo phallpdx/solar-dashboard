@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {"artist": "Julia Jacklin", "album": "The Gem", "score": 81, "score_source": "Metacritic",
@@ -16,7 +16,7 @@
      "date": "2026-10-30", "venue": "Mississippi Studios (sold out)", "tickets": "https://mississippistudios.com/"},
     {"artist": "The Tallest Man on Earth", "album": "Just Beyond Endless Mountain", "score": 82, "score_source": "Metacritic",
      "score_url": "https://www.metacritic.com/music/just-beyond-endless-mountain/the-tallest-man-on-earth/",
-     "date": "2026-11-08", "venue": "Revolution Hall", "tickets": "https://www.revolutionhall.com/"},
+     "date": "2026-11-08", "venue": "Revolution Hall", "tickets": "https://www.ticketmaster.com/event/Z7r9jZ1A70zog"},
     {"artist": "Bonobo", "album": "Distance in Static", "score": 74, "score_source": "Metacritic",
      "score_url": "https://www.metacritic.com/music/distance-in-static/bonobo/",
      "date": "2026-11-15", "venue": "Roseland Theater", "tickets": "https://roselandpdx.com/event/bonobo/roseland-theater/portland-oregon/"},
@@ -29,6 +29,9 @@
     {"artist": "feeble little horse", "album": "bitknot", "score": 79, "score_source": "Metacritic",
      "score_url": "https://www.metacritic.com/music/bitknot/feeble-little-horse",
      "date": "2026-12-05", "venue": "Wonder Ballroom", "tickets": "https://wonderballroom.com/event/feeble-little-horse-bitknot-tour/wonder-ballroom/portland-oregon/"},
+    {"artist": "Anna von Hausswolff", "album": "ICONOCLASTS", "score": 88, "score_source": "Metacritic",
+     "score_url": "https://www.metacritic.com/music/iconoclasts/anna-von-hausswolff",
+     "date": "2027-01-11", "venue": "Wonder Ballroom", "tickets": "https://wonderballroom.com/event/anna-von-hausswolff-iconoclasts-tour/wonder-ballroom/portland-oregon/"},
     {"artist": "Iceage", "album": "For Love of Grace & the Hereafter", "score": 87, "score_source": "Metacritic",
      "score_url": "https://www.metacritic.com/music/for-love-of-grace-the-hereafter/iceage",
      "date": "2027-04-03", "venue": "Aladdin Theater", "tickets": "https://www.aladdin-theater.com/"}

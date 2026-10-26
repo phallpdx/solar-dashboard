@@ -710,6 +710,9 @@ def fetch_culture(state, now_utc):
 def fetch_science(state, now_utc):
     """Fresh science findings and what they mean."""
     store, errors = state.setdefault("science", {}), []
+    if store.get("v") != 2:  # v2 leaves out the astronomy picture of the day
+        store.pop("items_at", None)
+        store["v"] = 2
     _refresh(store, "items", science.breakthroughs, 2, now_utc, errors)
     return "; ".join(errors) or None
 

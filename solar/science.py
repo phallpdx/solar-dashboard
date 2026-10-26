@@ -16,6 +16,7 @@ SOURCES = [
 # Words that tend to mark a finding rather than a column, deal or listicle.
 FINDING = re.compile(r"\b(discover\w*|first|new\w*|reveal\w*|find\w*|found|breakthrough|scientists?|researchers?|study|"
                      r"evidence|detect\w*|observ\w*|unveil\w*|solv\w*|prove[ds]?|proof|could|may|oldest|largest|smallest)\b", re.I)
+APOD = re.compile(r"(APOD: )?\d{4} \w+ \d{1,2} [–-] ")
 SKIP = re.compile(r"\b(podcast|quiz|crossword|puzzle|deal|deals|sale|review:|opinion|letters?|newsletter|how to watch|"
                   r"best .* to buy|weekly|this week in|photos of the week|book club)\b", re.I)
 
@@ -55,7 +56,7 @@ def breakthroughs(n=7, per_source=3):
     scored = []
     for it in items:
         title, summary = _clean(it["title"], 200), _clean(it.get("summary", ""), 230)
-        if SKIP.search(title) or not summary:
+        if SKIP.search(title) or APOD.match(title) or not summary:  # the picture of the day has its own card
             continue
         age_h = (now - dt.datetime.fromisoformat(it["utc"])).total_seconds() / 3600
         score = len(FINDING.findall(title + " " + summary)) * 1.5 - age_h / 18

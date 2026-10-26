@@ -95,10 +95,17 @@ def _strip_tags(s):
 
 def fetch(url, timeout=30):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "en-US"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        raw = resp.read(3_000_000)
-        charset = resp.headers.get_content_charset() or "utf-8"
-        return raw.decode(charset, "replace"), resp.headers.get("Content-Type", "")
+    for wait in (20, 60, None):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read(3_000_000)
+                charset = resp.headers.get_content_charset() or "utf-8"
+                return raw.decode(charset, "replace"), resp.headers.get("Content-Type", "")
+        except urllib.error.HTTPError as e:
+            # Reddit answers 429 when feeds are read back to back; wait and try again.
+            if e.code != 429 or wait is None:
+                raise
+            time.sleep(wait)
 
 
 def page_text(source, max_age_days=None):

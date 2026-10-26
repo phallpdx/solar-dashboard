@@ -700,9 +700,9 @@ def fetch_culture(state, now_utc):
                 errors.append(f"goodreads: {e}")
         user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
-        if store.get("books_user") != user or store.get("books_v") != 2:  # v2 skips reprints and classic authors
+        if store.get("books_user") != user or store.get("books_v") != 3:  # v3 also skips new editions of old books
             store.pop("books_at", None)
-            store["books_user"], store["books_v"] = user, 2
+            store["books_user"], store["books_v"] = user, 3
         _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
     return "; ".join(errors) or None
 
@@ -710,9 +710,9 @@ def fetch_culture(state, now_utc):
 def fetch_science(state, now_utc):
     """Fresh science findings and what they mean."""
     store, errors = state.setdefault("science", {}), []
-    if store.get("v") != 2:  # v2 leaves out the astronomy picture of the day
+    if store.get("v") != 3:  # v3 leaves out policy stories and fixes topic labels
         store.pop("items_at", None)
-        store["v"] = 2
+        store["v"] = 3
     _refresh(store, "items", science.breakthroughs, 2, now_utc, errors)
     return "; ".join(errors) or None
 

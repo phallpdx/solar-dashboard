@@ -18,13 +18,13 @@ FINDING = re.compile(r"\b(discover\w*|first|new\w*|reveal\w*|find\w*|found|break
                      r"evidence|detect\w*|observ\w*|unveil\w*|solv\w*|prove[ds]?|proof|could|may|oldest|largest|smallest)\b", re.I)
 APOD = re.compile(r"(APOD: )?\d{4} \w+ \d{1,2} [–-] ")
 SKIP = re.compile(r"\b(podcast|quiz|crossword|puzzle|deal|deals|sale|review:|opinion|letters?|newsletter|how to watch|"
-                  r"best .* to buy|weekly|this week in|photos of the week|book club)\b", re.I)
+                  r"best .* to buy|weekly|this week in|photos of the week|book club|pentagon|military|white house|lawsuit|tariffs?)\b", re.I)
 
 TOPICS = [
-    ("🔭", "Space", r"\b(galax|star|planet|nasa|telescope|astro|cosmic|universe|moon|mars|jupiter|black hole|asteroid|comet|webb|solar system|exoplanet|orbit)"),
+    ("🔭", "Space", r"\b(galax|stars?\b|planet|nasa|telescope|astro|cosmic|universe|moon|mars|jupiter|black hole|asteroid|comet|webb|solar system|exoplanet|orbit)"),
     ("🧬", "Biology", r"\b(gene|dna|cell|protein|virus|bacteri|evolution|species|brain|neuro|microb|immune|enzyme)"),
-    ("💊", "Health", r"\b(cancer|disease|vaccine|drug|patient|health|medic|heart|diabet|alzheimer|therapy|clinical)"),
-    ("🦖", "Fossils", r"\b(fossil|dinosaur|ancient|archaeolog|neanderthal|prehistoric|bones?|million years)"),
+    ("💊", "Health", r"\b(cancer|disease|vaccine|asthma|lungs?\b|drug|patient|health|medic|heart|diabet|alzheimer|therapy|clinical)"),
+    ("🦖", "Fossils", r"\b(fossil|dinosaur|archaeolog|neanderthal|prehistoric|bones?|million years)"),
     ("🌍", "Earth & climate", r"\b(climate|ocean|earthquake|volcan|glacier|ice sheet|warming|carbon|weather|wildfire|forest|coral)"),
     ("🐾", "Animals", r"\b(animal|bird|fish|whale|insect|bee|frog|shark|mammal|octopus|spider|dog|cat)s?\b"),
     ("⚛️", "Physics", r"\b(quantum|physic|particle|atom|laser|photon|electron|neutrino|gravity|superconduct)"),

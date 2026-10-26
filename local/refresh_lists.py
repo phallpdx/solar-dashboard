@@ -368,7 +368,14 @@ def same_thing(a_title, a_date, b_title, b_date):
     a, b = words(a_title), words(b_title)
     if not a or not b:
         return False
+    if a_date and a_date == b_date and _first_word(a_title) == _first_word(b_title):
+        return True  # "Gorillaz The Mountain Tour" and "Gorillaz with Little Simz" on the same night
     return len(a & b) / min(len(a), len(b)) >= 0.6
+
+
+def _first_word(title):
+    found = re.findall(r"[a-z0-9]+", (title or "").lower())
+    return next((w for w in found if w not in ("the", "a", "an")), "")
 
 
 def last_date(item, fields):
@@ -498,19 +505,21 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
     return found
 
 
-def future_ok(*fields):
+def future_ok(*fields, days=400):
+    """Dates must be real, still to come, and within `days`: pages list next summer's
+    festivals with guessed first-of-the-month dates, which aren't worth showing yet."""
     def check(r):
         dates = [as_date(r.get(f)) for f in fields]
         if any(r.get(f) and not d for f, d in zip(fields, dates)):
             return False  # a date that isn't a real date
         dates = [d for d in dates if d]
-        return bool(dates) and max(dates) >= TODAY and min(dates) <= TODAY + dt.timedelta(days=400)
+        return bool(dates) and max(dates) >= TODAY and min(dates) <= TODAY + dt.timedelta(days=days)
     return check
 
 
 def refresh_jazz(data, sources):
     kinds = ["Local", "Touring", "Big band", "Vocal", "Latin", "Festival"]
-    ok = future_ok("date")
+    ok = future_ok("date", days=75)
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("artist")):
@@ -533,7 +542,7 @@ def refresh_jazz(data, sources):
 
 def refresh_concerts(data, sources):
     """Moves an artist from 'missing' to 'shows' once a venue lists a Portland date."""
-    ok = future_ok("date")
+    ok = future_ok("date", days=400)
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("artist")):
@@ -575,7 +584,7 @@ def refresh_concerts(data, sources):
 
 def refresh_events(data, sources):
     kinds = ["Concert", "Sports", "Convention", "Expo", "Festival", "Parade", "Holiday", "Holiday lights", "Theater", "Other"]
-    ok = future_ok("date", "ends")
+    ok = future_ok("date", "ends", days=90)
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
@@ -596,7 +605,7 @@ def refresh_events(data, sources):
 
 
 def refresh_kids(data, sources):
-    ok = future_ok("date", "ends")
+    ok = future_ok("date", "ends", days=60)
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
@@ -606,6 +615,7 @@ def refresh_kids(data, sources):
                 "url": pick_url(r.get("url"), links, src["url"])}
 
     new = extract(sources, "List upcoming events on this page that suit a TODDLER (ages 1 to 4) and family in or near Portland, Oregon. "
+                           "Only real events at a place; skip holidays and closures on their own. "
                            "ends is the last day for multi-day events, else null. where is the neighborhood or town. "
                            "detail is one or two sentences with hours and price if given.",
                   {"title": S, "date": DATE, "ends": DATE, "where": S, "detail": S, "url": S}, build)
@@ -650,7 +660,8 @@ def refresh_foodfinds(data, sources):
                 "date": r["date"], "sources": [{"name": clean(r.get("headline"), 140) or src["name"], "url": url}]}
 
     new = extract(sources, "From these news items, list NEW food or drink products, brands, seasonal releases or awards from makers "
-                           "in OREGON (Portland especially). Skip anything not from Oregon. date is the news date. "
+                           "in OREGON (Portland especially) that people can buy to take home. Skip restaurants, bars, hotels and "
+                           "anything not from Oregon. date is the news date. "
                            f"kind is one of {kinds}. url is the article link. buy_url and buy_store only if the item gives one, else null.",
                   {"name": S, "maker": S, "kind": {"type": "string", "enum": kinds}, "what": S, "date": DATE,
                    "headline": S, "url": S, "buy_store": NS, "buy_url": NS}, build, max_age_days=14)
@@ -663,7 +674,7 @@ def refresh_foodfinds(data, sources):
 
 def refresh_planahead(data, sources):
     kinds = ["Tickets", "Book", "Buy", "Deadline", "Permit"]
-    ok = future_ok("by", "starts")
+    ok = future_ok("by", "starts", days=120)
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):

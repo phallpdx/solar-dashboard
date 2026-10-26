@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Noto+Sans+Runic&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Noto+Sans+Runic&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&family=Shrikhand&family=Jost:wght@400..800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
 *{box-sizing:border-box}
@@ -1006,6 +1006,253 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
 @keyframes rune-rise{0%{opacity:0;transform:translate(0,0) scale(.5);filter:blur(3px)}18%{opacity:1;transform:translate(0,calc(var(--dy) * 14px)) scale(1);filter:blur(0)}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) * 130px)) scale(1.2);filter:blur(1px)}}
 @keyframes durin-trace{0%{stroke-dashoffset:1;opacity:1}65%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:.3}}
 @keyframes runes-wake{0%{opacity:0;color:#E6F4FF;text-shadow:0 0 10px #7FC0FF}35%{opacity:1;color:#E6F4FF;text-shadow:0 0 3px #2D5F8F,0 0 10px #7FC0FF}100%{opacity:.55;color:#5E86AE;text-shadow:none}}
+/* ================= River farmhouse catalog: midcentury modern colors and shapes on Whole Earth Catalog newsprint ================= */
+:root{--paper:#F1E9D6;--sheet:#F8F2E4;--ink:#1F1A14;--body:#3A332A;--muted:#6B6153;--soft:#B7AA92;--line:rgba(31,26,20,.22);--grid:rgba(31,26,20,.1);--axis:rgba(31,26,20,.3);
+  --bg:var(--paper);--card:var(--sheet);--inkline:#1F1A14;--mustard:#D9A21B;--orange:#D2561E;--teal:#1F7A74;--olive:#6F7A22;--brick:#A8432A;--sky:#4C7FA6;--plum:#6E4A6A;--walnut:#6B4A2A;
+  --gold:var(--mustard);--rubric:var(--orange);--use:#2F6FA8;--solar:#E09A1A;
+  --hand:'Jost',Manrope,system-ui,sans-serif;--pen:'Jost',Manrope,system-ui,sans-serif;--display:'Jost',Manrope,system-ui,sans-serif;--type:'Courier Prime','Courier New',monospace;color-scheme:light}
+html{background:var(--paper)}
+body{background-color:var(--paper);color:var(--ink);font-family:var(--pen);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .25 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:auto,800px 800px;background-attachment:fixed}
+body,.summary,.note,.lines,.story,.deal{font-family:var(--pen)}
+a{color:var(--teal)}
+::selection{background:var(--mustard);color:var(--ink)}
+
+/* No more Middle-earth: runes, starlight, illuminated capitals and flourishes stay off */
+.rune,.durin,.runeline,.scribble,header>.scene,header>.sprite{display:none !important}
+.sec-h .cap{font:inherit !important;color:inherit !important;text-shadow:none !important;animation:none !important;margin:0}
+.group .card:not(.joy-card)>.head h2::before{content:none}
+#vine{height:4px;background:linear-gradient(90deg,var(--orange),var(--mustard));box-shadow:none}
+#vine::after{display:none}
+
+/* Header: a poster of the farmhouse on the river, with a big flat sun (or moon) */
+header,header.night,header.sunny{color:var(--ink);border-radius:0;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:40px 40px 150px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 150' preserveAspectRatio='xMaxYMax slice'%3E %3Cpath d='M0 78 C120 60 240 66 360 74 S620 58 760 70 1040 56 1200 66 1460 58 1600 64 V112 H0Z' fill='%239AA548'/%3E %3Cpath d='M0 92 C70 80 110 86 150 76 C190 84 230 74 280 86 C330 78 380 88 430 80 C480 90 540 78 600 88 C660 80 720 90 780 82 C840 90 900 78 960 88 C1020 80 1080 90 1140 82 C1200 88 1240 80 1290 88 V112 H0Z' fill='%235E6E26'/%3E %3Cg transform='translate%281420 0%29'%3E %3Crect x='-6' y='52' width='12' height='52' fill='%235A3418'/%3E %3Ccircle cx='0' cy='40' r='26' fill='%236E7E2A'/%3E%3Ccircle cx='-22' cy='54' r='20' fill='%237A8A2E'/%3E%3Ccircle cx='22' cy='52' r='22' fill='%2366762A'/%3E%3Ccircle cx='4' cy='22' r='18' fill='%237A8A2E'/%3E %3C/g%3E %3Cg transform='translate%281250 0%29'%3E %3Cpath d='M-6 58 L70 18 L146 58Z' fill='%235A3418'/%3E %3Crect x='4' y='56' width='132' height='48' fill='%23E2A62A'/%3E %3Cpath d='M14 56v48M26 56v48M38 56v48M50 56v48M62 56v48M74 56v48M86 56v48M98 56v48M110 56v48M122 56v48' stroke='%23C98A1E' stroke-width='1.5'/%3E %3Crect x='60' y='30' width='20' height='16' fill='%23FFE7A0'/%3E%3Cpath d='M70 30v16M60 38h20' stroke='%235A3418' stroke-width='2'/%3E %3Crect x='18' y='68' width='26' height='20' fill='%23FFE7A0' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='96' y='68' width='26' height='20' fill='%23FFE7A0' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='58' y='72' width='22' height='32' fill='%23A63C1E' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='108' y='22' width='12' height='26' fill='%238A4A22'/%3E %3C/g%3E %3Crect y='100' width='1600' height='8' fill='%237A5A32'/%3E %3Crect y='108' width='1600' height='42' fill='%232E7C78'/%3E %3Crect y='122' width='1600' height='14' fill='%233A8C86'/%3E %3Cpath d='M40 118h70M220 128h90M420 116h60M600 132h110M820 120h70M1010 130h90M1190 117h60M1350 127h100M1520 120h50M140 142h80M500 144h70M920 143h90M1300 145h60' stroke='%23B8DDD2' stroke-width='3' stroke-linecap='round' opacity='.75'/%3E %3C/svg%3E") right bottom/100% 150px no-repeat,linear-gradient(180deg,#F6E3B4 0%,#F3CF86 55%,#EDB765 100%)}
+header.night{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 150' preserveAspectRatio='xMaxYMax slice'%3E %3Cpath d='M0 78 C120 60 240 66 360 74 S620 58 760 70 1040 56 1200 66 1460 58 1600 64 V112 H0Z' fill='%239AA548'/%3E %3Cpath d='M0 92 C70 80 110 86 150 76 C190 84 230 74 280 86 C330 78 380 88 430 80 C480 90 540 78 600 88 C660 80 720 90 780 82 C840 90 900 78 960 88 C1020 80 1080 90 1140 82 C1200 88 1240 80 1290 88 V112 H0Z' fill='%235E6E26'/%3E %3Cg transform='translate%281420 0%29'%3E %3Crect x='-6' y='52' width='12' height='52' fill='%235A3418'/%3E %3Ccircle cx='0' cy='40' r='26' fill='%236E7E2A'/%3E%3Ccircle cx='-22' cy='54' r='20' fill='%237A8A2E'/%3E%3Ccircle cx='22' cy='52' r='22' fill='%2366762A'/%3E%3Ccircle cx='4' cy='22' r='18' fill='%237A8A2E'/%3E %3C/g%3E %3Cg transform='translate%281250 0%29'%3E %3Cpath d='M-6 58 L70 18 L146 58Z' fill='%235A3418'/%3E %3Crect x='4' y='56' width='132' height='48' fill='%23E2A62A'/%3E %3Cpath d='M14 56v48M26 56v48M38 56v48M50 56v48M62 56v48M74 56v48M86 56v48M98 56v48M110 56v48M122 56v48' stroke='%23C98A1E' stroke-width='1.5'/%3E %3Crect x='60' y='30' width='20' height='16' fill='%23FFE7A0'/%3E%3Cpath d='M70 30v16M60 38h20' stroke='%235A3418' stroke-width='2'/%3E %3Crect x='18' y='68' width='26' height='20' fill='%23FFE7A0' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='96' y='68' width='26' height='20' fill='%23FFE7A0' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='58' y='72' width='22' height='32' fill='%23A63C1E' stroke='%235A3418' stroke-width='3'/%3E %3Crect x='108' y='22' width='12' height='26' fill='%238A4A22'/%3E %3C/g%3E %3Crect y='100' width='1600' height='8' fill='%237A5A32'/%3E %3Crect y='108' width='1600' height='42' fill='%232E7C78'/%3E %3Crect y='122' width='1600' height='14' fill='%233A8C86'/%3E %3Cpath d='M40 118h70M220 128h90M420 116h60M600 132h110M820 120h70M1010 130h90M1190 117h60M1350 127h100M1520 120h50M140 142h80M500 144h70M920 143h90M1300 145h60' stroke='%23B8DDD2' stroke-width='3' stroke-linecap='round' opacity='.75'/%3E %3C/svg%3E") right bottom/100% 150px no-repeat,linear-gradient(180deg,#1E3A4A 0%,#2C4E58 60%,#476458 100%)}
+header::before,header.night::before{display:block;animation:none;left:52%;right:auto;top:30px;width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle,var(--orange) 0 38%,transparent 38.5% 46%,var(--orange) 46.5% 52%,transparent 52.5% 60%,var(--orange) 60.5% 64%,transparent 64.5%);opacity:.95}
+header.night::before{background:radial-gradient(circle,#F1E9D6 0 40%,transparent 40.5%);box-shadow:none}
+header::after{display:none}
+header h1,header.night h1{font-family:var(--display);font-style:normal;font-weight:800;font-size:68px;letter-spacing:-.03em;line-height:.95;color:var(--ink);text-shadow:none}
+header.night h1,header.night .eyebrow,header.night .hero-wx,header.night .hero-wx small,header.night .refresh .link{color:#F6EEDC}
+header.night .hero-wx svg *{stroke:#F6EEDC}
+header .eyebrow{font-family:var(--type);font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.hero-wx,.hero-wx small{color:var(--ink)}.hero-wx svg *{stroke:var(--ink)}
+header .refresh .link{color:var(--ink)}
+@media (max-width:600px){header,header.night,header.sunny{padding:26px 20px 140px;box-shadow:4px 4px 0 var(--ink)}header h1,header.night h1{font-size:46px}header::before,header.night::before{left:auto;right:-56px;top:-56px;width:120px;height:120px}}
+
+/* Alfred's note: typed on a ruled index card */
+.brief{color:var(--ink);border-radius:0;border:1.5px solid var(--ink);box-shadow:5px 5px 0 rgba(31,26,20,.85);
+  background:linear-gradient(180deg,transparent 64px,rgba(210,86,30,.55) 64px 66px,transparent 66px),repeating-linear-gradient(transparent 0 29px,rgba(76,127,166,.22) 29px 30px),#FBF7EC}
+.brief::before,.brief::after{display:none}
+.brief h2{font-family:var(--display);font-style:normal;font-weight:800;font-size:32px;letter-spacing:-.02em;color:var(--ink)}
+.brief-intro,.brief .sub,.brief-sign{font-family:var(--type);font-style:normal;color:var(--muted)}
+.brief ol,.brief ul,.brief li{font-family:var(--type)}
+.brief-top b{color:var(--ink);background:linear-gradient(transparent 60%,rgba(217,162,27,.55) 60%);border:0}
+.brief-top li::marker{color:var(--orange)}
+.brief-rest li{color:var(--body)}
+.brief-more summary{color:var(--orange);font-family:var(--type)}
+.brief-icon{background:var(--mustard);border:1.5px solid var(--ink);border-radius:50%;box-shadow:none;color:var(--ink)}
+
+/* Nav: catalog index tabs */
+.secnav{background:rgba(241,233,214,.94);border-bottom:2px solid var(--ink);backdrop-filter:none}
+.secnav a{font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:var(--sheet);border:1.5px solid var(--ink);border-radius:0;box-shadow:none}
+.secnav a:hover{background:var(--mustard)}
+.secnav a.on{background:var(--ink);color:var(--paper);border-color:var(--ink);box-shadow:none}
+
+/* Section colors: Eames-era orange, mustard, teal, olive and brick */
+.group[data-sec=today]{--accent:#D9A21B}.group[data-sec=solar]{--accent:#D2561E}.group[data-sec=family]{--accent:#A8432A}.group[data-sec=garden]{--accent:#6F7A22}
+.group[data-sec=river]{--accent:#1F7A74}.group[data-sec=doodles]{--accent:#C47A1E}.group[data-sec=delights]{--accent:#D2561E}.group[data-sec=nearby]{--accent:#4C7FA6}
+.group[data-sec=coast]{--accent:#2F7F95}.group[data-sec=roads]{--accent:#6B4A2A}.group[data-sec=local]{--accent:#A8432A}.group[data-sec=music]{--accent:#6E4A6A}
+.group[data-sec=sports]{--accent:#C2601E}.group[data-sec=watch]{--accent:#5E5A8A}.group[data-sec=civics]{--accent:#4C7FA6}.group[data-sec=almanac]{--accent:#8A6A3A}
+.group[data-sec=science]{--accent:#1F7A74}.group[data-sec=news]{--accent:#5A5248}.group[data-sec=world]{--accent:#C49A1E}
+.group[data-sec]{--tint:color-mix(in srgb,var(--accent) 12%,#F8F2E4)}
+
+/* Section heads: catalog section openers, a heavy rule over a big grotesque title */
+.sec-head,.group[data-tier] .sec-head,.group[data-sec=delights] .sec-head{background:none;color:var(--ink);border-radius:0;outline:0;box-shadow:none;padding:14px 0 12px;
+  border-top:7px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.sec-head::before,.group[data-tier] .sec-head::before{display:block;content:"";position:absolute;inset:auto auto -1.5px 0;width:120px;height:7px;border:0;outline:0;background:var(--accent);filter:none}
+.sec-head::after{display:none}
+.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-family:var(--display);font-weight:800;font-size:40px;letter-spacing:-.025em;text-transform:none;line-height:1;color:var(--ink);text-shadow:none;animation:none}
+.group[data-tier=town] .sec-head .sec-h{font-size:34px}.group[data-tier=world] .sec-head .sec-h{font-size:30px}
+.sec-sub,.group[data-tier] .sec-sub{font-family:var(--type);font-style:normal;font-size:14.5px;color:var(--muted);margin-top:6px}
+.sec-icon,.group[data-tier] .sec-icon{background:var(--accent) !important;border:2px solid var(--ink) !important;box-shadow:none !important;border-radius:50% !important;width:56px;height:56px}
+.sec-icon::after{display:none}
+.sec-icon svg{stroke:#F8F2E4;stroke-width:3.2}
+.doodle{stroke:var(--ink);opacity:.4}
+.sec-tools button{background:var(--sheet);border:1.5px solid var(--ink);border-radius:0;box-shadow:none;color:var(--ink)}
+.sec-tools button[aria-pressed=true]{background:var(--mustard);color:var(--ink)}
+@media (max-width:600px){.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-size:30px}.sec-icon,.group[data-tier] .sec-icon{width:44px;height:44px}}
+
+/* Tier dividers: black bands like the catalog's chapter pages */
+.tier-h{background:var(--ink);color:var(--paper);padding:14px 20px;margin-top:40px;border:0}
+.tier-h>span:first-child{display:none}
+.tier-h b{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.04em;text-transform:uppercase;color:var(--paper);text-shadow:none;padding:0;background:none;box-shadow:none;transform:none}
+.tier-h b::before,.tier-h b::after{content:none}
+.tier-h small{font-family:var(--type);font-style:normal;font-size:14px;color:#D9CDB2}
+
+/* Cards: flat sheets with a hard ink edge */
+.card,.tile,.joy-card{color:var(--ink);background:var(--sheet);border:1.5px solid var(--ink);border-radius:0;box-shadow:none}
+.card::before,.tile::before{display:none}
+.group .card:not(.joy-card){border-top:6px solid var(--accent)}
+.card h2,.group .card h2{font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.015em;color:var(--ink)}
+.group .joy-card h2{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--jc,var(--ink))}
+.meta{font-family:var(--type);font-style:normal;font-size:12.5px;font-weight:400;color:var(--muted)}
+.lines small,.tile .k,.tile .s,.legend,.axis{color:var(--muted)}
+.day-h{background:var(--sheet);color:var(--muted);font-family:var(--type)}
+.card.clamped::after{background:linear-gradient(transparent,var(--sheet) 75%)}
+.joy-card{background:color-mix(in srgb,var(--jc,#6B6153) 9%,#F8F2E4);border-top:6px solid var(--jc,var(--ink))}
+.j-apod{background:#1F2A33;color:#F1E9D6;--jc:#E9B949}
+.j-apod .note,.j-apod .apod-more summary{color:#D9CDB2}
+.look-card,.loads-card,.yard-card,.shade-card{background:var(--sheet)}
+.src-line{font-family:var(--type);border-top:1px dashed var(--line)}
+.row>.card,.shelf-grid>.card,.stack>.card,.card{rotate:0deg !important}
+.card:hover{translate:none}
+
+/* Tiles: four flat color blocks */
+.tiles .tile:nth-child(n){color:#F8F2E4;border:1.5px solid var(--ink)}
+.tiles .tile:nth-child(1){background:var(--orange)}.tiles .tile:nth-child(2){background:var(--mustard);color:var(--ink)}
+.tiles .tile:nth-child(3){background:var(--olive)}.tiles .tile:nth-child(4){background:var(--teal)}
+.tiles .tile .big{color:inherit;text-shadow:none;font-family:var(--display);font-weight:800}
+.tiles .tile .k,.tiles .tile .s,.tiles .tile .u{color:inherit;opacity:.85}
+.tiles .tile .k{font-family:var(--type)}
+
+/* Small parts inside cards */
+.sp,.bug,.brk,.idea,.rec,.load,.yd,.look-col,.look-weather p,.joy-stats div,.sun-clouds span,.drum-ic,.good-ic,.rain-drop,.rain-tot span,.heat,.trend-tabs .chip,.spot,.shade-ic,.sday,.fd,.hours div,
+.facts .mini,.facts>div,.mini,.pill,.chip,.rep,.recap,.open-pick,.kid-setup,.empty,.banner,.party,.yard-alert,.ask{
+  background:#EFE6D1;color:var(--ink);box-shadow:none;border:1px solid rgba(31,26,20,.28);border-radius:2px}
+.fd,.hours div,.idea,.rec,.recap{background:var(--tint)}
+.load-day,.shade-k,.joy-stats small,.read-pub,.rec-k,.idea small,.deal small,.recap small,.cal-day,.yd .d,.rain-k{font-family:var(--type);color:var(--orange)}
+.load-bar{background:#E6DBC2}.load-bar i{background:var(--orange)}
+.progress{background:#E6DBC2}.progress div{background:var(--ink)}
+.ask{font-family:var(--display);font-weight:600;color:var(--ink);border-radius:0}
+.rain,.rain.raining{background:color-mix(in srgb,var(--sky) 14%,#F8F2E4);border:1px solid rgba(31,26,20,.28);border-radius:2px}
+.rain-bars i{background:var(--sky);border-radius:0}
+.thai-script{color:var(--olive)}
+.sun-score .ring{background:radial-gradient(closest-side,#F8F2E4 78%,transparent 79% 100%),conic-gradient(var(--orange) calc(var(--p)*1%),#E6DBC2 0)}
+.sun-label{color:var(--brick)}
+.trend-list li::before{background:var(--ink)}
+.chip[aria-pressed="true"],.trend-tabs .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.stars{color:var(--mustard)}
+
+/* Type: one grotesque for everything, a typewriter for the fine print */
+.read-title,.poem-title,.drum-song,.sci-title,.potd-title,.apod-title,.joy-big,.sun-label,.rec b,.load b,.mtn b,.yd b,.big,.fd .t,.rain-top b,.elect-count b{font-family:var(--display);font-style:normal;font-weight:700;letter-spacing:-.02em}
+.poem-text{font-family:'Courier Prime',monospace;font-size:15px;color:var(--ink)}
+.shelf-h{font-family:var(--display);font-style:normal;font-weight:800;font-size:22px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.shelf-h::after{height:3px;border-radius:0;background:var(--ink);opacity:1}
+.dd text,.dd .hand,.moon-cap b,.moon-row b,.dd-unit b,.stop .n,.book-today b{font-family:var(--display);font-style:normal;font-weight:600}
+.dd-unit small,.stop .w b,.moon-row p,.moon-cap,.book-today .k{font-family:var(--type)}
+.stop .mark{background:var(--mustard);border-color:var(--ink)}
+.dd .summary b{border-bottom:3px solid var(--mustard)}
+
+/* Buttons: square, inked, they fill with mustard on hover */
+.mini,.joy-btn,.unclamp,header .mini,.kid-setup button,.seg button[aria-pressed="true"]{font-family:var(--display);font-weight:600;font-size:14px;background:var(--sheet);color:var(--ink);border:1.5px solid var(--ink);border-radius:0;box-shadow:none}
+.mini:hover,.joy-btn:hover,.unclamp:hover{background:var(--mustard);color:var(--ink);transform:none;box-shadow:none}
+.seg{background:var(--sheet);border:1.5px solid var(--ink);border-radius:0}
+.seg button{border-radius:0;font-family:var(--display)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.learn{background:var(--sheet);border:1.5px solid var(--ink);border-radius:0;box-shadow:none;font-family:var(--type)}
+
+@media (prefers-reduced-motion:no-preference){
+  .magic .card.ink{filter:none;transform:translateY(10px)}
+  .sec-icon{animation:none}
+  .group:hover .sec-icon{animation:none;transform:rotate(-12deg)}
+  .sec-icon{transition:transform .3s ease}
+}
+/* ---- Funkier: Shrikhand headlines, rainbow stripes, rounded corners and starburst badges ---- */
+:root{--funk:'Shrikhand',var(--display);--stripes:linear-gradient(180deg,var(--orange) 0 33.4%,var(--mustard) 0 66.7%,var(--teal) 0)}
+header h1,header.night h1{font-family:var(--funk);font-weight:400;font-size:70px;letter-spacing:0;line-height:1.05;color:var(--brick);text-shadow:3px 3px 0 var(--mustard),6px 6px 0 var(--ink)}
+header.night h1{color:#F6EEDC;text-shadow:3px 3px 0 var(--orange),6px 6px 0 #0F1A20}
+header,header.night,header.sunny{border-radius:28px;border-width:2.5px;box-shadow:8px 8px 0 var(--ink);overflow:hidden}
+header::before,header.night::before{background:repeating-linear-gradient(180deg,var(--orange) 0 14px,transparent 14px 18px);border-radius:50%;
+  -webkit-mask:linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0);box-shadow:0 0 0 10px #F3CF86,0 0 0 18px var(--mustard),0 0 0 26px #F3CF86,0 0 0 34px var(--orange)}
+header.night::before{background:#F1E9D6;box-shadow:0 0 0 10px #2C4E58,0 0 0 14px rgba(241,233,214,.35)}
+@media (max-width:600px){header h1,header.night h1{font-size:48px;text-shadow:2px 2px 0 var(--mustard),4px 4px 0 var(--ink)}}
+
+.secnav a{border-radius:999px;padding:0 16px}
+.secnav a.on{background:var(--orange);border-color:var(--ink);color:#FFF6E6;box-shadow:2px 2px 0 var(--ink)}
+.secnav a:hover{background:var(--mustard)}
+
+.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-family:var(--funk);font-weight:400;letter-spacing:0;line-height:1.1;font-size:40px}
+.group[data-tier=town] .sec-head .sec-h{font-size:34px}.group[data-tier=world] .sec-head .sec-h{font-size:28px}
+.sec-head,.group[data-tier] .sec-head,.group[data-sec=delights] .sec-head{border-top:0;padding-top:20px}
+.sec-head::before,.group[data-tier] .sec-head::before{inset:0 0 auto 0;width:auto;height:15px;background:linear-gradient(180deg,var(--ink) 0 5px,transparent 5px 7px,var(--accent) 7px 11px,transparent 11px 12px,var(--ink) 12px)}
+.sec-icon,.group[data-tier] .sec-icon{border:0 !important;border-radius:0 !important;width:64px;height:64px;
+  clip-path:polygon(50% 0%,59% 16%,75% 7%,77% 25%,95% 25%,88% 42%,100% 50%,88% 58%,95% 75%,77% 75%,75% 93%,59% 84%,50% 100%,41% 84%,25% 93%,23% 75%,5% 75%,12% 58%,0% 50%,12% 42%,5% 25%,23% 25%,25% 7%,41% 16%)}
+.sec-icon svg{width:50%;height:50%}
+@media (prefers-reduced-motion:no-preference){.group:hover .sec-icon{transform:rotate(30deg)}.sec-icon{transition:transform .5s cubic-bezier(.34,1.6,.5,1)}}
+@media (max-width:600px){.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-size:30px}.sec-icon,.group[data-tier] .sec-icon{width:50px;height:50px}}
+
+.tier-h{background:var(--walnut);border-radius:22px 22px 0 0;margin-bottom:22px;box-shadow:0 6px 0 var(--orange),0 12px 0 var(--mustard),0 18px 0 var(--teal)}
+.tier-h b{font-family:var(--funk);font-weight:400;font-size:28px;letter-spacing:.01em;text-transform:none;color:#FFF3DA}
+
+.card,.joy-card{border-radius:18px;border-width:2px;box-shadow:4px 4px 0 rgba(31,26,20,.9);overflow:hidden}
+.card:has(.leaflet-container,iframe){overflow:hidden}
+.group .card:not(.joy-card){border-top-width:2px;background-image:linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 8px,color-mix(in srgb,var(--accent) 45%,#F8F2E4) 8px 11px,transparent 11px)}
+.joy-card{border-top-width:2px;background-image:linear-gradient(180deg,var(--jc,var(--ink)) 0 6px,transparent 6px 8px,color-mix(in srgb,var(--jc,#6B6153) 45%,#F8F2E4) 8px 11px,transparent 11px)}
+.tiles .tile:nth-child(n){border-radius:24px;border-width:2px;box-shadow:4px 4px 0 var(--ink);
+  background-image:repeating-linear-gradient(180deg,transparent 0 calc(100% - 22px),rgba(255,246,226,.22) calc(100% - 22px) calc(100% - 17px),transparent calc(100% - 17px) calc(100% - 12px),rgba(255,246,226,.22) calc(100% - 12px) calc(100% - 7px),transparent calc(100% - 7px))}
+.tiles .tile .big{font-family:var(--funk);font-weight:400;font-size:46px}
+.mini,.joy-btn,.unclamp,header .mini,.kid-setup button,.seg,.seg button{border-radius:999px}
+.mini:hover,.joy-btn:hover,.unclamp:hover{box-shadow:2px 2px 0 var(--ink)}
+.sp,.bug,.brk,.idea,.rec,.load,.yd,.look-col,.joy-stats div,.sday,.fd,.hours div,.facts .mini,.facts>div,.rep,.recap,.open-pick,.ask,.rain,.chip,.pill{border-radius:12px}
+.shelf-h{font-family:var(--funk);font-weight:400;font-size:26px;letter-spacing:0;text-transform:none}
+.shelf-h::after{height:9px;background:linear-gradient(180deg,var(--orange) 0 3px,var(--mustard) 0 6px,var(--teal) 0)}
+.brief{border-radius:6px}
+.brief h2{font-family:var(--funk);font-weight:400;font-size:34px;letter-spacing:0;color:var(--brick)}
+.learn{border-radius:18px}
+#vine{height:6px;background:var(--stripes)}
+/* ---- Warm it up: teak-paneled walls, manila and color-tinted cards, solid color section signs ---- */
+:root{--sheet:#F4E3BF;--paper:#F4E3BF;--card:#F4E3BF;--line:rgba(31,26,20,.25)}
+html{background:#8A5530}
+body{background-color:#8F5A32;
+  background-image:repeating-linear-gradient(90deg,transparent 0 118px,rgba(40,20,8,.55) 118px 121px,rgba(255,215,160,.12) 121px 123px,transparent 123px 124px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .14' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .16 0 0 0 0 .05 0 0 0 .75 0'/%3E%3C/filter%3E%3Crect width='360' height='360' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(1200px 600px at 50% -100px,rgba(255,200,120,.35),transparent 70%);
+  background-size:auto,360px 360px,auto;background-attachment:fixed}
+.secnav{background:rgba(58,32,16,.93);border-bottom:3px solid var(--mustard)}
+.secnav a{background:#F4E3BF}
+
+/* Section signs: a solid color panel with a cream headline */
+.sec-head,.group[data-tier] .sec-head,.group[data-sec=delights] .sec-head{background:var(--accent);color:#FFF4DC;border:2px solid var(--ink);border-radius:20px;padding:24px 22px 18px;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+.sec-head::before,.group[data-tier] .sec-head::before{inset:0 0 auto 0;height:12px;background:linear-gradient(180deg,var(--orange) 0 4px,var(--mustard) 4px 8px,var(--teal) 8px)}
+.group[data-sec=solar] .sec-head::before,.group[data-sec=delights] .sec-head::before{background:linear-gradient(180deg,var(--mustard) 0 4px,var(--brick) 4px 8px,var(--teal) 8px)}
+.group[data-sec=river] .sec-head::before,.group[data-sec=science] .sec-head::before{background:linear-gradient(180deg,var(--orange) 0 4px,var(--mustard) 4px 8px,var(--olive) 8px)}
+.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{color:#FFF4DC;text-shadow:3px 3px 0 rgba(31,26,20,.55)}
+.sec-sub,.group[data-tier] .sec-sub{color:#FFF4DC;opacity:.9}
+.sec-icon,.group[data-tier] .sec-icon{background:var(--mustard) !important}
+.group[data-sec=today] .sec-icon,.group[data-sec=world] .sec-icon,.group[data-sec=doodles] .sec-icon{background:var(--orange) !important}
+.sec-icon svg{stroke:var(--ink)}
+.doodle{stroke:#FFF4DC;opacity:.35}
+.sec-tools button{background:#FFF4DC;border-radius:999px}
+.group[data-sec=today] .sec-head .sec-h,.group[data-sec=world] .sec-head .sec-h{color:var(--ink);text-shadow:3px 3px 0 rgba(255,244,220,.6)}
+.group[data-sec=today] .sec-sub,.group[data-sec=world] .sec-sub{color:var(--ink)}
+
+/* Tier bands on the wall */
+.tier-h{background:#2A1A10;border:2px solid var(--ink)}
+.tier-h small{color:#E9CFA0}
+
+/* Cards: manila, each tinted toward its section's color */
+.card,.joy-card{background-color:color-mix(in srgb,var(--accent,#C47A1E) 16%,#F4E3BF)}
+.joy-card{background-color:color-mix(in srgb,var(--jc,#C47A1E) 18%,#F4E3BF)}
+.tile{background-color:#F4E3BF}
+.sp,.bug,.brk,.load,.yd,.look-col,.look-weather p,.joy-stats div,.sun-clouds span,.drum-ic,.good-ic,.rain-drop,.rain-tot span,.heat,.trend-tabs .chip,.spot,.shade-ic,.sday,
+.facts .mini,.facts>div,.mini,.pill,.chip,.rep,.open-pick,.kid-setup,.empty,.banner,.party,.yard-alert,.ask{background:rgba(255,248,232,.55)}
+.fd,.hours div,.idea,.rec,.recap{background:color-mix(in srgb,var(--accent) 22%,#FBF0D8)}
+.day-h{background:color-mix(in srgb,var(--accent) 16%,#F4E3BF)}
+.card.clamped::after{background:linear-gradient(transparent,color-mix(in srgb,var(--accent,#C47A1E) 16%,#F4E3BF) 75%)}
+.j-apod{background-color:#1F2A33}
+.brief{background:linear-gradient(180deg,transparent 64px,rgba(210,86,30,.55) 64px 66px,transparent 66px),repeating-linear-gradient(transparent 0 29px,rgba(76,127,166,.22) 29px 30px),#FBF2DC}
+
+/* Anything sitting straight on the wall gets cream ink or a little card of its own */
+.shelf-h{color:#FFF4DC;text-shadow:2px 2px 0 rgba(31,26,20,.6)}
+.shelf-h span{text-shadow:none}
+.allclear,.fold-note,#foot,.sec-body>.note{color:#FFF4DC}
+.sec-body>.note,.sec-body>.chips{background:rgba(31,20,10,.45);border-radius:14px;padding:10px 14px}
+.allclear{background:rgba(31,20,10,.45);border-radius:999px;padding:6px 14px;align-self:flex-start}
+#foot{padding:0 4px}
 </style>
 </head>
 <body>
@@ -1032,132 +1279,134 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
 
   <div id="banner" class="banner" hidden></div>
   <section class="group" data-sec="today" data-tier="top" id="today" aria-labelledby="today-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, power, your calendar and the road</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, your calendar and what to plan for</p></div></div>
     <div class="sec-body">
-    <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
-    <div class="row" id="today-row">
-      <section class="card side" aria-labelledby="wx-h">
-        <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
-        <div id="wx"></div>
+      <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
+      <div class="row" id="today-row">
+        <section class="card side" aria-labelledby="wx-h">
+          <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
+          <div id="wx"></div>
+        </section>
+        <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
+          <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
+          <p class="summary" id="out-summary"></p>
+          <p class="note" id="day-events" hidden><span id="day-big"></span><span id="day-act"></span></p>
+          <div class="facts" id="out-facts"></div>
+          <div class="hours" id="hours" aria-label="Next 12 hours"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
+        <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
+        <div id="cal"></div>
       </section>
-      <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
-        <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
-        <p class="summary" id="out-summary"></p>
-        <p class="note" id="day-events" hidden><span id="day-big"></span><span id="day-act"></span></p>
-        <div class="facts" id="out-facts"></div>
-        <div class="hours" id="hours" aria-label="Next 12 hours"></div>
+      <section class="card" aria-labelledby="plan-h" id="plan-card" hidden>
+        <div class="head"><h2 id="plan-h">Plan ahead</h2><span class="meta" id="plan-meta"></span></div>
+        <div class="lines" id="plan"></div>
+      </section>
+      <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
+        <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
+        <div class="fc" id="forecast"></div>
+      </section>
+      <div class="row">
+        <section class="card half yard-card" aria-labelledby="yard-h" id="yard-card" hidden>
+          <div class="head"><h2 id="yard-h">Your yard vs. the forecast</h2><span class="meta" id="yard-meta"></span></div>
+          <div id="yard"></div>
+        </section>
+        <section class="card half shade-card" aria-labelledby="shade-h" id="shade-card" hidden>
+          <div class="head"><h2 id="shade-h">Window shades</h2><span class="meta" id="shade-meta"></span></div>
+          <div id="shades"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="solar" data-tier="home" id="solar" aria-labelledby="solar-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Sun and power</h2><p class="sec-sub">What the roof is making, when to run big loads, the grid, your PGE bill and every panel</p></div></div>
+    <div class="sec-body">
+      <section class="tiles" aria-label="Solar right now">
+        <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
+        <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
+        <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
+        <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
+      </section>
+      <section class="card loads-card" aria-labelledby="loads-h" id="loads-card" hidden>
+        <div class="head"><h2 id="loads-h">Run big loads on sunshine</h2><span class="meta" id="loads-meta">From the solar forecast and your system's usual output</span></div>
+        <div class="loads" id="loads"></div>
+      </section>
+      <section class="card joy-card j-wins" aria-labelledby="wins-h" id="wins-card" hidden>
+        <div class="head"><h2 id="wins-h">Solar wins</h2><span class="meta" id="wins-meta"></span></div>
+        <p class="joy-big" id="wins-big"></p>
+        <div class="joy-stats" id="wins-stats"></div>
+      </section>
+      <section class="card" aria-labelledby="grid-h" id="grid-card" hidden>
+        <div class="head"><h2 id="grid-h">Northwest grid right now</h2><span class="meta" id="grid-meta"></span></div>
+        <p class="summary" id="grid-summary"></p>
+        <div class="mixbar" id="grid-bar" role="img"></div>
+        <div class="legend" id="grid-legend"></div>
+        <p class="note" id="grid-note"></p>
+      </section>
+      <section class="card" aria-labelledby="main-h">
+        <div class="head"><h2 id="main-h">Power through the day</h2>
+          <div class="seg" role="group" aria-label="Time range">
+            <button data-range="day" aria-pressed="true">Day</button>
+            <button data-range="week" aria-pressed="false">Week</button>
+            <button data-range="month" aria-pressed="false">Month</button>
+          </div>
+        </div>
+        <div class="legend" id="main-legend"></div>
+        <div class="chart" id="main-chart"></div>
+        <div class="axis" id="main-axis"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="mo-h">
+          <div class="head"><h2 id="mo-h">Last 30 days</h2>
+            <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+          </div>
+          <div id="month-chart"></div>
+          <div class="axis" id="month-axis"></div>
+          <p class="note" id="month-note"></p>
+        </section>
+        <section class="card side" aria-labelledby="bill-h">
+          <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
+          <div id="bill"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="pn-h">
+        <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
+        <div class="panels" id="panels"></div>
       </section>
     </div>
-    <section class="tiles" aria-label="Solar right now">
-      <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
-      <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
-      <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
-      <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
-    </section>
-    <section class="card loads-card" aria-labelledby="loads-h" id="loads-card" hidden>
-      <div class="head"><h2 id="loads-h">Run big loads on sunshine</h2><span class="meta" id="loads-meta">From the solar forecast and your system's usual output</span></div>
-      <div class="loads" id="loads"></div>
-    </section>
+  </section>
+
+<section class="group" data-sec="family" data-tier="home" id="family" aria-labelledby="family-h">
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🧸</span><div class="sec-titles"><h2 class="sec-h" id="family-h">Little one</h2><p class="sec-sub" id="kid-age">Play ideas and outings that fit her age and the season</p></div></div>
+  <div class="sec-body">
+    <form class="kid-setup" id="kid-setup" hidden>
+      <label for="kid-birth"><b>Her birth month</b><small>Used to match ideas to her age. It stays in this browser only and is never published.</small></label>
+      <div class="kid-setup-row"><input type="month" id="kid-birth" required><button type="submit">Save</button></div>
+    </form>
     <div class="row">
-      <section class="card half yard-card" aria-labelledby="yard-h" id="yard-card" hidden>
-        <div class="head"><h2 id="yard-h">Your yard vs. the forecast</h2><span class="meta" id="yard-meta"></span></div>
-        <div id="yard"></div>
+      <section class="card half" aria-labelledby="play-h">
+        <div class="head"><h2 id="play-h">Play ideas this week</h2><button class="mini" id="play-more" type="button">More ideas</button></div>
+        <div class="ideas" id="play"></div>
+        <p class="note" id="kid-grow"></p>
       </section>
-      <section class="card half shade-card" aria-labelledby="shade-h" id="shade-card" hidden>
-        <div class="head"><h2 id="shade-h">Window shades</h2><span class="meta" id="shade-meta"></span></div>
-        <div id="shades"></div>
-      </section>
-    </div>
-    <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
-      <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
-      <div id="cal"></div>
-    </section>
-    <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
-      <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
-      <div class="fc" id="forecast"></div>
-    </section>
-    <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
-      <div class="head"><h2 id="drive-h">Traffic right now</h2><span class="meta" id="drive-meta"></span></div>
-      <div class="facts" id="drives"></div>
-      <p class="note" id="drive-note"></p>
-    </section>
-    <section class="card" aria-labelledby="plan-h" id="plan-card" hidden>
-      <div class="head"><h2 id="plan-h">Plan ahead</h2><span class="meta" id="plan-meta"></span></div>
-      <div class="lines" id="plan"></div>
-    </section>
-    <section class="card" aria-labelledby="road-h" id="road-card" hidden>
-      <div class="head"><h2 id="road-h">Roads and cameras</h2><span class="meta">ODOT TripCheck · <a href="https://tripcheck.com/" target="_blank" rel="noopener">Full map</a></span></div>
-      <div class="lines" id="road-incidents"></div>
-      <div class="cams" id="cams"></div>
-    </section>
-  
-    </div>
-  </section>
-
-  <section class="group" data-sec="doodles" data-tier="home" id="doodles" aria-labelledby="doodles-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">✏️</span><div class="sec-titles"><h2 class="sec-h" id="doodles-h">Your world, in doodles</h2><p class="sec-sub">Little charts drawn from your own roof, sky, shelf and calendar</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card half dd" aria-labelledby="harvest-h" id="harvest-card" hidden>
-          <div class="head"><h2 id="harvest-h">Sunshine in the bank</h2><span class="meta" id="harvest-meta"></span></div>
-          <p class="summary" id="harvest-sum"></p>
-          <div class="dd-units" id="harvest-units"></div>
-          <div id="moon-trip"></div>
-        </section>
-        <section class="card half dd" aria-labelledby="light-h" id="light-card" hidden>
-          <div class="head"><h2 id="light-h">The light is leaving</h2><span class="meta" id="light-meta"></span></div>
-          <p class="summary" id="light-sum"></p>
-          <div id="light-chart"></div>
-        </section>
-      </div>
-      <div class="row">
-        <section class="card half dd" aria-labelledby="road-ahead-h" id="ahead-card" hidden>
-          <div class="head"><h2 id="road-ahead-h">The road ahead</h2><span class="meta">Days until</span></div>
-          <div id="ahead"></div>
-        </section>
-        <section class="card half dd" aria-labelledby="therm-h" id="therm-card" hidden>
-          <div class="head"><h2 id="therm-h">Home, the beach and Bangkok</h2><span class="meta" id="therm-meta">Right now</span></div>
-          <div id="therms"></div>
-          <p class="note" id="therm-note"></p>
-        </section>
-      </div>
-      <section class="card dd" aria-labelledby="shelf-h" id="shelf-card" hidden>
-        <div class="head"><h2 id="shelf-h">Your bookshelf</h2><span class="meta" id="shelf-meta"></span></div>
-        <div id="shelf"></div>
-        <p class="note" id="shelf-note"></p>
+      <section class="card half" aria-labelledby="out-h">
+        <div class="head"><h2 id="out-h">Out and about</h2><span class="meta" id="kid-out-meta"></span></div>
+        <div class="scroll" id="kid-out" tabindex="0" aria-label="Family outings, scrollable" style="max-height:470px"></div>
+        <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
       </section>
     </div>
-  </section>
-
-  <section class="group" data-sec="family" data-tier="home" id="family" aria-labelledby="family-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🧸</span><div class="sec-titles"><h2 class="sec-h" id="family-h">Little one</h2><p class="sec-sub" id="kid-age">Play ideas and outings that fit her age and the season</p></div></div>
-    <div class="sec-body">
-      <form class="kid-setup" id="kid-setup" hidden>
-        <label for="kid-birth"><b>Her birth month</b><small>Used to match ideas to her age. It stays in this browser only and is never published.</small></label>
-        <div class="kid-setup-row"><input type="month" id="kid-birth" required><button type="submit">Save</button></div>
-      </form>
-      <div class="row">
-        <section class="card half" aria-labelledby="play-h">
-          <div class="head"><h2 id="play-h">Play ideas this week</h2><button class="mini" id="play-more" type="button">More ideas</button></div>
-          <div class="ideas" id="play"></div>
-          <p class="note" id="kid-grow"></p>
-        </section>
-        <section class="card half" aria-labelledby="out-h">
-          <div class="head"><h2 id="out-h">Out and about</h2><span class="meta" id="kid-out-meta"></span></div>
-          <div class="scroll" id="kid-out" tabindex="0" aria-label="Family outings, scrollable" style="max-height:470px"></div>
-          <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="bug-h" id="bug-card" hidden>
-        <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
-        <div class="bugs" id="bugs"></div>
-        <p class="note" id="bug-note"></p>
-      </section>
-    </div>
-  </section>
+    <section class="card" aria-labelledby="bug-h" id="bug-card" hidden>
+      <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
+      <div class="bugs" id="bugs"></div>
+      <p class="note" id="bug-note"></p>
+    </section>
+  </div>
+</section>
 
   <section class="group" data-sec="garden" data-tier="home" id="garden" aria-labelledby="garden-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening out there, what to do about it, and who's visiting</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening on the land, what to do about it, who's visiting and what's fruiting in the woods</p></div></div>
     <div class="sec-body">
       <section class="card look-card" aria-labelledby="look-h" id="look-card" hidden>
         <div class="head"><h2 id="look-h">Out on the land today</h2><span class="meta" id="look-meta"></span></div>
@@ -1206,49 +1455,185 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
           <div class="chips" id="produce"></div>
         </section>
       </div>
+      <section class="card joy-card j-mush" aria-labelledby="mush-h" id="mush-card" hidden>
+        <div class="head"><h2 id="mush-h">Mushroom forecast</h2><span class="meta" id="mush-meta"></span></div>
+        <div id="mush"></div>
+      </section>
     </div>
   </section>
 
-  <section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card wide" aria-labelledby="radar-h">
-          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
-          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
-        </section>
-        <section class="card side" aria-labelledby="ship-h">
-          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-          <div class="map" id="ships">
-            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
-            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
-              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
-            <script src="https://www.vesselfinder.com/aismap.js"></script>
-          </div>
-          <p class="note" id="tides"></p>
-          <div id="ship-list"></div>
-        </section>
+<section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
+  <div class="sec-body">
+    <div class="row">
+      <section class="card wide" aria-labelledby="radar-h">
+        <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+        <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+      </section>
+      <section class="card side" aria-labelledby="ship-h">
+        <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+        <div class="map" id="ships">
+          <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+          <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+            var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+          <script src="https://www.vesselfinder.com/aismap.js"></script>
+        </div>
+        <p class="note" id="tides"></p>
+        <div id="ship-list"></div>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+      <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+      <div class="row" style="gap:24px">
+        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+          <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
+          <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
+        </div>
+        <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+          <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
+          <div class="minis" id="fish-river"></div>
+        </div>
       </div>
-      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
-        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
-        <div class="row" style="gap:24px">
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
-            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
-          </div>
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
-            <div class="minis" id="fish-river"></div>
+      <p class="note" id="fish-dam"></p>
+      <p class="note" id="fish-links"></p>
+    </section>
+  </div>
+</section>
+
+<section class="group" data-sec="doodles" data-tier="home" id="doodles" aria-labelledby="doodles-h">
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">✏️</span><div class="sec-titles"><h2 class="sec-h" id="doodles-h">Your world, in doodles</h2><p class="sec-sub">Little charts drawn from your own roof, sky, shelf and calendar</p></div></div>
+  <div class="sec-body">
+    <div class="row">
+      <section class="card half dd" aria-labelledby="harvest-h" id="harvest-card" hidden>
+        <div class="head"><h2 id="harvest-h">Sunshine in the bank</h2><span class="meta" id="harvest-meta"></span></div>
+        <p class="summary" id="harvest-sum"></p>
+        <div class="dd-units" id="harvest-units"></div>
+        <div id="moon-trip"></div>
+      </section>
+      <section class="card half dd" aria-labelledby="light-h" id="light-card" hidden>
+        <div class="head"><h2 id="light-h">The light is leaving</h2><span class="meta" id="light-meta"></span></div>
+        <p class="summary" id="light-sum"></p>
+        <div id="light-chart"></div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card half dd" aria-labelledby="road-ahead-h" id="ahead-card" hidden>
+        <div class="head"><h2 id="road-ahead-h">The road ahead</h2><span class="meta">Days until</span></div>
+        <div id="ahead"></div>
+      </section>
+      <section class="card half dd" aria-labelledby="therm-h" id="therm-card" hidden>
+        <div class="head"><h2 id="therm-h">Home, the beach and Bangkok</h2><span class="meta" id="therm-meta">Right now</span></div>
+        <div id="therms"></div>
+        <p class="note" id="therm-note"></p>
+      </section>
+    </div>
+    <section class="card dd" aria-labelledby="shelf-h" id="shelf-card" hidden>
+      <div class="head"><h2 id="shelf-h">Your bookshelf</h2><span class="meta" id="shelf-meta"></span></div>
+      <div id="shelf"></div>
+      <p class="note" id="shelf-note"></p>
+    </section>
+  </div>
+</section>
+
+  <section class="group" data-sec="delights" data-tier="fun" id="delights" aria-labelledby="delights-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">Something to read, something to talk about, and a picture, new every day</p></div></div>
+    <div class="sec-body">
+      <div class="joy" id="joy">
+        <div class="shelf" data-shelf="read">
+          <h3 class="shelf-h"><span aria-hidden="true">📖</span>Read</h3>
+          <div class="shelf-grid">
+            <section class="card joy-card j-read" aria-labelledby="read-h" id="read-card" hidden>
+              <div class="head"><h2 id="read-h">Today's long read</h2></div>
+              <div id="longread"></div>
+            </section>
+            <section class="card joy-card j-poem" aria-labelledby="poem-h" id="poem-card" hidden>
+              <div class="head"><h2 id="poem-h">Poem of the day</h2><span class="meta" id="poem-why"></span></div>
+              <div id="poem"></div>
+            </section>
+            <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
+              <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
+              <div id="books"></div>
+            </section>
           </div>
         </div>
-        <p class="note" id="fish-dam"></p>
-        <p class="note" id="fish-links"></p>
+        <div class="shelf two-even" data-shelf="talk">
+          <h3 class="shelf-h"><span aria-hidden="true">💬</span>Talk and smile</h3>
+          <div class="shelf-grid">
+            <div class="stack">
+              <section class="card joy-card j-ask" aria-labelledby="ask-h" id="ask-card" hidden>
+                <div class="head"><h2 id="ask-h">Dinner question for your kid</h2></div>
+                <p class="ask" id="ask"></p>
+              </section>
+              <section class="card joy-card j-thai" aria-labelledby="thai-h" id="thai-card" hidden>
+                <div class="head"><h2 id="thai-h">Thai phrase of the day</h2></div>
+                <div id="thai-phrase"></div>
+              </section>
+            </div>
+            <section class="card joy-card j-good" aria-labelledby="good-h" id="good-card" hidden>
+              <div class="head"><h2 id="good-h">Good news</h2><span class="meta">Oregon stories first</span></div>
+              <div id="good"></div>
+            </section>
+          </div>
+        </div>
+        <div class="shelf one" data-shelf="look">
+          <h3 class="shelf-h"><span aria-hidden="true">🖼️</span>Picture of the day</h3>
+          <div class="shelf-grid">
+              <section class="card joy-card j-potd" aria-labelledby="potd-h" id="potd-card" hidden>
+                <div class="head"><h2 id="potd-h">Picture of the day</h2><span class="meta">Wikipedia</span></div>
+                <div id="potd"></div>
+              </section>
+          </div>
+        </div>
+        <div class="shelf one" data-shelf="online">
+          <h3 class="shelf-h"><span aria-hidden="true">📈</span>Online right now</h3>
+          <div class="shelf-grid">
+            <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
+              <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
+              <div class="trend-tabs" id="trend-tabs"></div>
+              <div id="trends"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="nearby" data-tier="fun" id="nearby" aria-labelledby="nearby-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌙</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">The sky</h2><p class="sec-sub">Tonight's sunset, the moon, what's coming up overhead and who's flying over</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card half joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
+          <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
+          <div id="sunset"></div>
+        </section>
+        <section class="card half joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
+          <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
+          <div id="apod"></div>
+        </section>
+      </div>
+      <div class="row">
+        <section class="card side" aria-labelledby="moon-h">
+          <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
+          <div id="moon"></div>
+        </section>
+        <section class="card wide" aria-labelledby="sky-h">
+          <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
+          <p class="summary" id="stargaze" hidden></p>
+          <div class="lines" id="sky"></div>
+          <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
+          <div class="lines" id="iss"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
+        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
+        <div class="lines" id="planes"></div>
+        <p class="note" id="pdx"></p>
       </section>
     </div>
   </section>
 
   <section class="group" data-sec="coast" data-tier="fun" id="coast" aria-labelledby="coast-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Beach getaway</h2><p class="sec-sub">Surf, tides and weather down at Surf Pines, for your next trip</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Beach getaway</h2><p class="sec-sub">Surf, tides, whales and weather down at Surf Pines, for your next trip</p></div></div>
     <div class="sec-body">
       <div id="coast-alerts" class="alerts"></div>
       <section class="card" aria-label="Beach getaway weather" data-src="coast-wx">
@@ -1281,170 +1666,64 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
         <div class="shells" id="shells"></div>
         <p class="note" id="shell-note"></p>
       </section>
+      <section class="card joy-card j-whale" aria-labelledby="whale-h" id="whale-card" hidden>
+        <div class="head"><h2 id="whale-h">Whale watch</h2><span class="meta" id="whale-meta"></span></div>
+        <div id="whale"></div>
+      </section>
     </div>
   </section>
 
-  <section class="group" data-sec="solar" data-tier="home" id="solar" aria-labelledby="solar-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">The grid right now, power curves, your PGE bill and every panel</p></div></div>
+  <section class="group" data-sec="roads" data-tier="town" id="roads" aria-labelledby="roads-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⛰️</span><div class="sec-titles"><h2 class="sec-h" id="roads-h">Roads and mountains</h2><p class="sec-sub">Traffic, road cameras, trail reports, Mt. Hood, and quakes and fires further down</p></div></div>
     <div class="sec-body">
-      <section class="card" aria-labelledby="grid-h" id="grid-card" hidden>
-        <div class="head"><h2 id="grid-h">Northwest grid right now</h2><span class="meta" id="grid-meta"></span></div>
-        <p class="summary" id="grid-summary"></p>
-        <div class="mixbar" id="grid-bar" role="img"></div>
-        <div class="legend" id="grid-legend"></div>
-        <p class="note" id="grid-note"></p>
+      <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
+        <div class="head"><h2 id="drive-h">Traffic right now</h2><span class="meta" id="drive-meta"></span></div>
+        <div class="facts" id="drives"></div>
+        <p class="note" id="drive-note"></p>
       </section>
-      <section class="card" aria-labelledby="main-h">
-        <div class="head"><h2 id="main-h">Power through the day</h2>
-          <div class="seg" role="group" aria-label="Time range">
-            <button data-range="day" aria-pressed="true">Day</button>
-            <button data-range="week" aria-pressed="false">Week</button>
-            <button data-range="month" aria-pressed="false">Month</button>
-          </div>
-        </div>
-        <div class="legend" id="main-legend"></div>
-        <div class="chart" id="main-chart"></div>
-        <div class="axis" id="main-axis"></div>
+      <section class="card" aria-labelledby="road-h" id="road-card" hidden>
+        <div class="head"><h2 id="road-h">Roads and cameras</h2><span class="meta">ODOT TripCheck · <a href="https://tripcheck.com/" target="_blank" rel="noopener">Full map</a></span></div>
+        <div class="lines" id="road-incidents"></div>
+        <div class="cams" id="cams"></div>
       </section>
       <div class="row">
-        <section class="card wide" aria-labelledby="mo-h">
-          <div class="head"><h2 id="mo-h">Last 30 days</h2>
-            <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
-          </div>
-          <div id="month-chart"></div>
-          <div class="axis" id="month-axis"></div>
-          <p class="note" id="month-note"></p>
+        <section class="card half joy-card j-mtn" aria-labelledby="mtn-h" id="mtn-card" hidden>
+          <div class="head"><h2 id="mtn-h">Is the mountain out?</h2><span class="meta">From home · Open-Meteo</span></div>
+          <div id="mtn"></div>
         </section>
-        <section class="card side" aria-labelledby="bill-h">
-          <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
-          <div id="bill"></div>
+        <section class="card half" aria-labelledby="trail-h" id="trail-card" hidden>
+          <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
+          <div class="lines" id="trails"></div>
         </section>
       </div>
-      <section class="card" aria-labelledby="pn-h">
-        <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
-        <div class="panels" id="panels"></div>
+      <section class="card" aria-labelledby="ski-h" id="ski-card" hidden>
+        <div class="head"><h2 id="ski-h">Mt. Hood ski report</h2><span class="meta" id="ski-meta"></span></div>
+        <p class="summary" id="ski-summary"></p>
+        <div class="facts" id="ski-facts"></div>
+        <div class="fc" id="ski-fc"></div>
+        <div id="ski-outlook" hidden>
+          <h3 class="sub">Season outlook</h3>
+          <p class="note" id="ski-season"></p>
+          <div class="lines" id="ski-open"></div>
+        </div>
+        <p class="note" id="ski-links"></p>
       </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="delights" data-tier="fun" id="delights" aria-labelledby="delights-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">A little something new every day</p></div></div>
-    <div class="sec-body">
-      <div class="joy" id="joy">
-        <section class="card joy-card j-wins" aria-labelledby="wins-h" id="wins-card" hidden>
-          <div class="head"><h2 id="wins-h">Solar wins</h2><span class="meta" id="wins-meta"></span></div>
-          <p class="joy-big" id="wins-big"></p>
-          <div class="joy-stats" id="wins-stats"></div>
+      <div class="row" id="live-row" hidden>
+        <section class="card half" aria-labelledby="quake-h">
+          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
+          <p class="note" id="volc"></p>
+          <div class="lines" id="quakes"></div>
         </section>
-        <div class="shelf" data-shelf="read">
-          <h3 class="shelf-h"><span aria-hidden="true">📖</span>Read</h3>
-          <div class="shelf-grid">
-            <section class="card joy-card j-read" aria-labelledby="read-h" id="read-card" hidden>
-              <div class="head"><h2 id="read-h">Today's long read</h2></div>
-              <div id="longread"></div>
-            </section>
-            <section class="card joy-card j-poem" aria-labelledby="poem-h" id="poem-card" hidden>
-              <div class="head"><h2 id="poem-h">Poem of the day</h2><span class="meta" id="poem-why"></span></div>
-              <div id="poem"></div>
-            </section>
-            <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
-              <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
-              <div id="books"></div>
-            </section>
-          </div>
-        </div>
-        <div class="shelf two-even" data-shelf="listen">
-          <h3 class="shelf-h"><span aria-hidden="true">🎧</span>Listen</h3>
-          <div class="shelf-grid">
-            <div class="stack">
-              <section class="card joy-card j-local" aria-labelledby="artist-h" id="artist-card" hidden>
-                <div class="head"><h2 id="artist-h">Local artist of the day</h2><span class="meta">Portland &amp; Oregon</span></div>
-                <div id="local-artist"></div>
-              </section>
-              <section class="card joy-card j-drum" aria-labelledby="drum-h" id="drum-card" hidden>
-                <div class="head"><h2 id="drum-h">Drum break of the day</h2></div>
-                <div id="drum"></div>
-              </section>
-            </div>
-            <section class="card joy-card j-albums" aria-labelledby="bday-h" id="bday-card" hidden>
-              <div class="head"><h2 id="bday-h">Album birthdays</h2><span class="meta">Released on this date · Wikidata</span></div>
-              <div id="bdays"></div>
-            </section>
-          </div>
-        </div>
-        <div class="shelf two" data-shelf="look">
-          <h3 class="shelf-h"><span aria-hidden="true">🌅</span>Look up</h3>
-          <div class="shelf-grid">
-            <section class="card joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
-              <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
-              <div id="sunset"></div>
-            </section>
-            <section class="card joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
-              <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
-              <div id="apod"></div>
-            </section>
-          </div>
-        </div>
-        <div class="shelf two-even" data-shelf="golook">
-          <h3 class="shelf-h"><span aria-hidden="true">🏔️</span>Go look</h3>
-          <div class="shelf-grid">
-            <div class="stack">
-              <section class="card joy-card j-mtn" aria-labelledby="mtn-h" id="mtn-card" hidden>
-                <div class="head"><h2 id="mtn-h">Is the mountain out?</h2><span class="meta">From home · Open-Meteo</span></div>
-                <div id="mtn"></div>
-              </section>
-              <section class="card joy-card j-whale" aria-labelledby="whale-h" id="whale-card" hidden>
-                <div class="head"><h2 id="whale-h">Whale watch</h2><span class="meta" id="whale-meta"></span></div>
-                <div id="whale"></div>
-              </section>
-            </div>
-            <div class="stack">
-              <section class="card joy-card j-mush" aria-labelledby="mush-h" id="mush-card" hidden>
-                <div class="head"><h2 id="mush-h">Mushroom forecast</h2><span class="meta" id="mush-meta"></span></div>
-                <div id="mush"></div>
-              </section>
-              <section class="card joy-card j-potd" aria-labelledby="potd-h" id="potd-card" hidden>
-                <div class="head"><h2 id="potd-h">Picture of the day</h2><span class="meta">Wikipedia</span></div>
-                <div id="potd"></div>
-              </section>
-            </div>
-          </div>
-        </div>
-        <div class="shelf two-even" data-shelf="talk">
-          <h3 class="shelf-h"><span aria-hidden="true">💬</span>Talk and smile</h3>
-          <div class="shelf-grid">
-            <div class="stack">
-              <section class="card joy-card j-ask" aria-labelledby="ask-h" id="ask-card" hidden>
-                <div class="head"><h2 id="ask-h">Dinner question for your kid</h2></div>
-                <p class="ask" id="ask"></p>
-              </section>
-              <section class="card joy-card j-thai" aria-labelledby="thai-h" id="thai-card" hidden>
-                <div class="head"><h2 id="thai-h">Thai phrase of the day</h2></div>
-                <div id="thai-phrase"></div>
-              </section>
-            </div>
-            <section class="card joy-card j-good" aria-labelledby="good-h" id="good-card" hidden>
-              <div class="head"><h2 id="good-h">Good news</h2><span class="meta">Oregon stories first</span></div>
-              <div id="good"></div>
-            </section>
-          </div>
-        </div>
-        <div class="shelf one" data-shelf="online">
-          <h3 class="shelf-h"><span aria-hidden="true">📈</span>Online right now</h3>
-          <div class="shelf-grid">
-            <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
-              <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
-              <div class="trend-tabs" id="trend-tabs"></div>
-              <div id="trends"></div>
-            </section>
-          </div>
-        </div>
+        <section class="card half" aria-labelledby="fire-h" id="fire-card" hidden>
+          <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
+          <div class="lines" id="fires"></div>
+        </section>
       </div>
     </div>
   </section>
 
   <section class="group" data-sec="local" data-tier="town" id="local" aria-labelledby="local-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">Food, drink, music, groceries and the mountain</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food and openings, big events, grocery sales and the liquor store</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
         <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
@@ -1469,30 +1748,7 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
           <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
         </section>
       </div>
-      <section class="card" aria-labelledby="ski-h" id="ski-card" hidden>
-        <div class="head"><h2 id="ski-h">Mt. Hood ski report</h2><span class="meta" id="ski-meta"></span></div>
-        <p class="summary" id="ski-summary"></p>
-        <div class="facts" id="ski-facts"></div>
-        <div class="fc" id="ski-fc"></div>
-        <div id="ski-outlook" hidden>
-          <h3 class="sub">Season outlook</h3>
-          <p class="note" id="ski-season"></p>
-          <div class="lines" id="ski-open"></div>
-        </div>
-        <p class="note" id="ski-links"></p>
-      </section>
       <div class="row">
-        <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
-          <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
-          <div class="lines" id="gear"></div>
-          <p class="note">Asking price against what that gear usually sells for used. Check it in person before handing over cash.</p>
-        </section>
-      </div>
-      <div class="row">
-        <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
-          <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
-          <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
-        </section>
         <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
           <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
           <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
@@ -1501,8 +1757,62 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
     </div>
   </section>
 
+  <section class="group" data-sec="music" data-tier="town" id="music" aria-labelledby="music-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to put on, shows and jazz around town, new albums and gear</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
+        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
+        <div class="recs" id="records"></div>
+      </section>
+      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
+        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
+        <div class="lines" id="gigs"></div>
+        <p class="note" id="gig-missing"></p>
+      </section>
+      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
+        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
+        <div class="lines" id="jazz"></div>
+        <p class="note" id="jazz-regulars"></p>
+      </section>
+      <div class="shelf " data-shelf="listen">
+        <h3 class="shelf-h"><span aria-hidden="true">🎧</span>Of the day</h3>
+        <div class="shelf-grid">
+          <section class="card joy-card j-local" aria-labelledby="artist-h" id="artist-card" hidden>
+            <div class="head"><h2 id="artist-h">Local artist of the day</h2><span class="meta">Portland &amp; Oregon</span></div>
+            <div id="local-artist"></div>
+          </section>
+          <section class="card joy-card j-drum" aria-labelledby="drum-h" id="drum-card" hidden>
+            <div class="head"><h2 id="drum-h">Drum break of the day</h2></div>
+            <div id="drum"></div>
+          </section>
+          <section class="card joy-card j-albums" aria-labelledby="bday-h" id="bday-card" hidden>
+            <div class="head"><h2 id="bday-h">Album birthdays</h2><span class="meta">Released on this date · Wikidata</span></div>
+            <div id="bdays"></div>
+          </section>
+        </div>
+      </div>
+      <div class="row">
+        <section class="card half" aria-labelledby="alb-h">
+          <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
+          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
+          <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
+          <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
+        </section>
+      </div>
+      <div class="row">
+        <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
+          <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
+          <div class="lines" id="gear"></div>
+          <p class="note">Asking price against what that gear usually sells for used. Check it in person before handing over cash.</p>
+        </section>
+      </div>
+    </div>
+  </section>
+
   <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games, markets and shows</h2><p class="sec-sub">Blazers, Timbers, F1, the S&amp;P, then concerts and jazz</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, F1 and the S&amp;P</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
       <div class="row">
@@ -1517,35 +1827,17 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
           <div id="f1"></div>
         </section>
       </div>
-      <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
-        <div class="head"><h2 id="gig-h">Shows worth seeing</h2><span class="meta" id="gig-meta"></span></div>
-        <div class="lines" id="gigs"></div>
-        <p class="note" id="gig-missing"></p>
-      </section>
-      <section class="card" aria-labelledby="jazz-h" id="jazz-card" hidden>
-        <div class="head"><h2 id="jazz-h">Jazz in Portland</h2><span class="meta" id="jazz-meta"></span></div>
-        <div class="lines" id="jazz"></div>
-        <p class="note" id="jazz-regulars"></p>
-      </section>
     </div>
   </section>
 
   <section class="group" data-sec="watch" data-tier="town" id="coming" aria-labelledby="watch-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">On screen</h2><p class="sec-sub">New on streaming and 4K disc deals</p></div></div>
     <div class="sec-body">
-      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
-        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
-        <div class="recs" id="records"></div>
-      </section>
       <div class="row" id="watch-row">
         <section class="card half" aria-labelledby="tv-h">
           <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
           <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
           <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
-        </section>
-        <section class="card half" aria-labelledby="alb-h">
-          <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
-          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
         </section>
       </div>
       <section class="card" aria-labelledby="br-h" id="br-card" hidden>
@@ -1556,126 +1848,87 @@ header::after{border:1.5px solid rgba(58,38,20,.7);outline:1px solid rgba(58,38,
     </div>
   </section>
 
-  <section class="group" data-sec="nearby" data-tier="town" id="nearby" aria-labelledby="nearby-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
-        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
-        <div class="lines" id="planes"></div>
-        <p class="note" id="pdx"></p>
-      </section>
-      <section class="card" aria-labelledby="trail-h" id="trail-card" hidden>
-        <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
-        <div class="lines" id="trails"></div>
-      </section>
-      <div class="row">
-        <section class="card side" aria-labelledby="moon-h">
-          <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
-          <div id="moon"></div>
-        </section>
-        <section class="card wide" aria-labelledby="sky-h">
-          <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
-          <p class="summary" id="stargaze" hidden></p>
-          <div class="lines" id="sky"></div>
-          <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
-          <div class="lines" id="iss"></div>
-        </section>
-      </div>
-      <div class="row" id="live-row" hidden>
-        <section class="card half" aria-labelledby="quake-h">
-          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
-          <p class="note" id="volc"></p>
-          <div class="lines" id="quakes"></div>
-        </section>
-        <section class="card half" aria-labelledby="fire-h" id="fire-card" hidden>
-          <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
-          <div class="lines" id="fires"></div>
-        </section>
-      </div>
-    </div>
-  </section>
+<section class="group" data-sec="civics" data-tier="world" id="civics" aria-labelledby="civics-h" hidden>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+  <div class="sec-body">
+    <section class="card" aria-labelledby="elect-h">
+      <div class="head"><h2 id="elect-h">Next election</h2></div>
+      <div id="elect"></div>
+    </section>
+    <section class="card" aria-labelledby="reps-h">
+      <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
+      <div class="reps" id="reps"></div>
+      <h3 class="sub">Statewide</h3>
+      <div class="lines" id="statewide"></div>
+      <p class="note" id="civ-keys" hidden></p>
+    </section>
+  </div>
+</section>
 
-  <section class="group" data-sec="civics" data-tier="world" id="civics" aria-labelledby="civics-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="elect-h">
-        <div class="head"><h2 id="elect-h">Next election</h2></div>
-        <div id="elect"></div>
+<section class="group" data-sec="almanac" data-tier="world" id="almanac" aria-labelledby="almanac-h" hidden>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+  <div class="sec-body">
+    <div class="chips" id="date-facts"></div>
+    <p class="note" id="hol-today" hidden></p>
+    <div class="row">
+      <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
+        <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
+        <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
+        <div class="lines" id="hist-local"></div>
+        <h3 class="sub">Elsewhere</h3>
+        <div class="lines" id="hist"></div>
+        <h3 class="sub">Born today</h3>
+        <div class="lines" id="births"></div>
       </section>
-      <section class="card" aria-labelledby="reps-h">
-        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
-        <div class="reps" id="reps"></div>
-        <h3 class="sub">Statewide</h3>
-        <div class="lines" id="statewide"></div>
-        <p class="note" id="civ-keys" hidden></p>
+      <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
+        <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
+        <div id="near"></div>
       </section>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="group" data-sec="almanac" data-tier="world" id="almanac" aria-labelledby="almanac-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
-    <div class="sec-body">
-      <div class="chips" id="date-facts"></div>
-      <p class="note" id="hol-today" hidden></p>
-      <div class="row">
-        <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
-          <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
-          <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
-          <div class="lines" id="hist-local"></div>
-          <h3 class="sub">Elsewhere</h3>
-          <div class="lines" id="hist"></div>
-          <h3 class="sub">Born today</h3>
-          <div class="lines" id="births"></div>
-        </section>
-        <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
-          <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
-          <div id="near"></div>
-        </section>
-      </div>
-    </div>
-  </section>
+<section class="group" data-sec="science" data-tier="world" id="science" aria-labelledby="science-h" hidden>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs and what they mean, from Quanta, Science News and more</p></div></div>
+  <div class="sec-body">
+    <div class="sci-grid" id="sci"></div>
+  </div>
+</section>
 
-  <section class="group" data-sec="science" data-tier="world" id="science" aria-labelledby="science-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs and what they mean, from Quanta, Science News and more</p></div></div>
-    <div class="sec-body">
-      <div class="sci-grid" id="sci"></div>
+<section class="group" data-sec="news" data-tier="world" id="news" aria-labelledby="news-h">
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
+  <div class="sec-body">
+    <div class="row">
+      <section class="card half" aria-labelledby="stories-h">
+        <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
+        <div class="scroll" id="stories" tabindex="0" aria-label="A/V and tech stories, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="reviews-h">
+        <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
+        <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
+      </section>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="group" data-sec="news" data-tier="world" id="news" aria-labelledby="news-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card half" aria-labelledby="stories-h">
-          <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
-          <div class="scroll" id="stories" tabindex="0" aria-label="A/V and tech stories, scrollable"></div>
-        </section>
-        <section class="card half" aria-labelledby="reviews-h">
-          <div class="head"><h2 id="reviews-h">Consumer reviews</h2><span class="meta" id="reviews-meta"></span></div>
-          <div class="scroll" id="reviews" tabindex="0" aria-label="Product reviews, scrollable"></div>
-        </section>
-      </div>
+<section class="group" data-sec="world" data-tier="world" id="world" aria-labelledby="world-h">
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Time, weather and air in Bangkok; USA and Thailand holidays</p></div></div>
+  <div class="sec-body">
+    <div class="row">
+      <section class="card side" aria-labelledby="bkk-h">
+        <div class="head"><h2 id="bkk-h">Bangkok</h2><span class="meta" id="bkk-time"></span></div>
+        <div id="bkk"></div>
+      </section>
+      <section class="card wide" aria-labelledby="hol-h">
+        <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
+          <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
+        <div class="lines" id="holidays"></div>
+        <h3 class="sub" id="thai-h" hidden>Thai Buddhist calendar</h3>
+        <div class="lines" id="thai"></div>
+      </section>
     </div>
-  </section>
-
-  <section class="group" data-sec="world" data-tier="world" id="world" aria-labelledby="world-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Time, weather and air in Bangkok; USA and Thailand holidays</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card side" aria-labelledby="bkk-h">
-          <div class="head"><h2 id="bkk-h">Bangkok</h2><span class="meta" id="bkk-time"></span></div>
-          <div id="bkk"></div>
-        </section>
-        <section class="card wide" aria-labelledby="hol-h">
-          <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
-            <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
-          <div class="lines" id="holidays"></div>
-          <h3 class="sub" id="thai-h" hidden>Thai Buddhist calendar</h3>
-          <div class="lines" id="thai"></div>
-        </section>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
   <footer class="learn" id="learn">
     <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, and moves your favorites up. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
     <p id="learn-state"></p>
@@ -1829,10 +2082,13 @@ const DOODLE = {
   swirl: 'M33 33c0-3 5-3 5 0 0 6-10 6-10 0 0-9 15-9 15 0 0 12-20 12-20 0 0-15 25-15 25 0',
   globe: 'M33 10a23 23 0 1 0 .1 0M10 33h46M33 10c-10 10-10 36 0 46M33 10c10 10 10 36 0 46',
   pencil: 'M14 52l4-14 28-28 10 10-28 28zM18 38l10 10M40 16l10 10',
+  moon: 'M42 10a23 23 0 1 0 14 36A19 19 0 0 1 42 10z',
+  peak: 'M4 54l20-34 10 14 8-12 20 32zM18 30l6 4 6-4',
+  eye: 'M6 33c14-18 40-18 54 0-14 18-40 18-54 0zM33 25a8 8 0 1 0 .1 0',
   shell: 'M12 50c0-22 42-22 42 0zM33 30v20M22 34l6 16M44 34l-6 16',
 };
 const SEC_DOODLE = {today: 'sun', doodles: 'pencil', family: 'heart', garden: 'sprout', river: 'fish', coast: 'shell', solar: 'bolt', delights: 'star',
-  local: 'cup', sports: 'ball', watch: 'note', nearby: 'plane', civics: 'check', almanac: 'book', science: 'flask', news: 'swirl', world: 'globe'};
+  local: 'cup', sports: 'ball', watch: 'eye', music: 'note', roads: 'peak', nearby: 'moon', civics: 'check', almanac: 'book', science: 'flask', news: 'swirl', world: 'globe'};
 
 function sketch() {
   if (sketch.done) return;
@@ -2132,78 +2388,79 @@ function wonders() {
 
 // Every card's title is reworded each day, so the page reads fresh every morning even when the facts are steady.
 const DAILY_TITLES = {
-  'wx-h': ['The weather at home', 'What the sky is doing', 'Wind and weather on the island'],
-  'day-h': ['The shape of the day', 'Hours of this day', 'How the day will run'],
-  'loads-h': ['Chores for the sunny hours', 'When the sun pays for work', 'Wash day by sunlight'],
-  'shade-h': ['Shutters, open or shut', 'Keeping warmth within', 'Shades and sunlight'],
-  'cal-h': ['Matters on the calendar', 'Your appointed days', 'What the week holds'],
-  'fc-h': ['Weather for the week', 'Seven days of sky', 'The week’s weather'],
-  'drive-h': ['The roads at this hour', 'How long the journeys run', 'Traffic on the roads'],
-  'plan-h': ['Worth planning for', 'Mark these days', 'Things ahead to plan'],
-  'road-h': ['Watch on the roads', 'Road cameras and trouble', 'Before you set out'],
-  'harvest-h': ['The sun’s harvest', 'What the roof gathered', 'Sunlight stored and spent'],
-  'road-ahead-h': ['Days until', 'Milestones on the road', 'What lies ahead'],
-  'therm-h': ['Home, the sea and the East', 'Three places, one hour', 'Warmth near and far'],
-  'shelf-h': ['The shelf of books read', 'Your library so far', 'Books you have finished'],
-  'play-h': ['Small adventures this week', 'Things to do together', 'Play for the little one'],
-  'out-h': ['Outings for the family', 'Places to wander together', 'Family journeys'],
-  'bug-h': ['Illness going around', 'Coughs and fevers about', 'What’s spreading in town'],
-  'look-h': ['What to look for on the land', 'Signs in the field today', 'A walk on the land'],
-  'plant-h': ['Into the ground now', 'Time for sowing', 'What to plant now'],
-  'forest-h': ['Work in the food forest', 'Tending the orchard wood', 'Food forest tasks'],
-  'pollen-h': ['Pollen on the wind', 'What’s in the air', 'Pollen today'],
-  'rare-h': ['Rare birds about', 'Uncommon wings nearby', 'Rare visitors sighted'],
-  'burn-h': ['May you burn today', 'Fire for the brush pile', 'Burning, allowed or not'],
-  'birds-h': ['Birds of the island', 'Wings seen nearby', 'Birds around you'],
-  'bloom-h': ['Wildflowers in bloom', 'Native flowers now', 'What blooms in the wild'],
-  'food-h': ['Fruits of the season', 'What’s ripe now', 'Food in season'],
-  'radar-h': ['Rain on the radar', 'Showers on their way', 'Watching the rain'],
-  'ship-h': ['Ships upon the river', 'Vessels on the Columbia', 'River traffic'],
-  'fish-h': ['Fishing the great river', 'Will the fish bite', 'Columbia fishing'],
-  'surf-h': ['The waves this week', 'Surf on the western shore', 'Surf report'],
-  'minus-h': ['The lowest tides', 'When the sea draws back', 'Tide-pool days'],
-  'cev-h': ['Doings on the coast', 'Near the sea', 'Happening by the shore'],
-  'shell-h': ['Clams and crab', 'Shellfish, safe or not', 'Digging and crabbing'],
-  'grid-h': ['Where the power comes from', 'The grid this hour', 'River, wind and fire'],
-  'mo-h': ['A month of sunlight', 'Thirty days of solar', 'The month’s harvest'],
-  'bill-h': ['The power bill', 'This billing cycle', 'Reckoning with PGE'],
+  'wx-h': ['On the porch right now', 'Your weather station says', 'Out the window'],
+  'day-h': ['The shape of today', 'How today looks', 'Today, hour by hour'],
+  'loads-h': ['Best hours for the dryer', 'When the sun pays for chores', 'Laundry on sunshine'],
+  'shade-h': ['Shades, open or shut', 'Curtain call', 'Sun in, sun out'],
+  'cal-h': ['On the docket', 'Coming up for you', 'Your week ahead'],
+  'fc-h': ['The week in weather', 'Seven days out', 'What the sky has planned'],
+  'drive-h': ['How the roads look', 'Drive times', 'Getting around today'],
+  'plan-h': ['Worth planning for', 'Mark the calendar', 'Coming soon'],
+  'road-h': ['Eyes on the road', 'Road cams and slowdowns', 'Before you head out'],
+  'harvest-h': ['What the roof made', 'Sunshine, spent wisely', 'Your solar, in real life'],
+  'road-ahead-h': ['Counting down', 'Coming up the lane', 'Milestones ahead'],
+  'therm-h': ['Three places, one moment', 'Warm here, warm there', 'Temperature check'],
+  'shelf-h': ['Everything you have read', 'The library so far', 'Spines on the shelf'],
+  'play-h': ['Things to do together', 'Little adventures', 'This week, for fun'],
+  'out-h': ['Kid outings nearby', 'Places to go together', 'Family trips'],
+  'bug-h': ['Bugs making the rounds', 'Germ report', 'Sniffles watch'],
+  'look-h': ['What to look for today', 'Walk the land', 'Notes from the field'],
+  'plant-h': ['Into the ground now', 'Sow and plant', 'Planting window'],
+  'forest-h': ['Chores in the food forest', 'Forest garden to-dos', 'Tending the forest'],
+  'pollen-h': ['Sneeze forecast', 'What is in the air', 'Pollen count'],
+  'rare-h': ['Unusual visitors', 'Rare birds about', 'Birders are buzzing'],
+  'burn-h': ['Can you burn today?', 'Brush pile check', 'Burn or wait'],
+  'birds-h': ['Who is visiting', 'Feathered neighbors', 'Birds seen nearby'],
+  'bloom-h': ['Wildflowers out now', 'What is blooming', 'Native blooms'],
+  'food-h': ['Fresh this month', 'Eating with the season', 'What is ripe'],
+  'radar-h': ['Rain on the way?', 'Radar loop', 'Watch the showers'],
+  'ship-h': ['Ships passing by', 'Out on the channel', 'River traffic'],
+  'fish-h': ['Fishing report', 'Will they bite?', 'On the Columbia'],
+  'surf-h': ['Waves this week', 'Should you paddle out?', 'Surf check'],
+  'minus-h': ['Low tides for tide pools', 'Tidepool days', 'Extra-low tides'],
+  'cev-h': ['Going on at the coast', 'Coast happenings', 'Near the beach'],
+  'shell-h': ['Clams and crab', 'Shellfish check', 'Can you dig today?'],
+  'grid-h': ['Where your power comes from', 'The grid this hour', 'How clean is the grid'],
+  'mo-h': ['The month in sunshine', 'A month of solar', 'Day by day'],
+  'bill-h': ['Your power bill', 'This billing cycle', 'What PGE will see'],
   'pn-h': ['Every panel', 'Panel by panel', 'The array right now'],
-  'wins-h': ['Small solar triumphs', 'Good tidings from the roof', 'Solar wins'],
-  'read-h': ['A long tale for today', 'Something long and good', 'Settle in with this'],
-  'poem-h': ['A poem for the day', 'Verse for today', 'Words to read aloud'],
-  'books-h': ['Your next book', 'For the nightstand', 'Books chosen for you'],
-  'artist-h': ['A Portland maker', 'Local artist of the day', 'Made here, heard here'],
-  'drum-h': ['The beat of the day', 'A drummer to hear', 'Drum break of the day'],
-  'bday-h': ['Records a year older', 'Albums born today', 'Record birthdays'],
-  'apod-h': ['A picture from the heavens', 'The stars today', 'From the deeps of space'],
-  'ask-h': ['A question for supper', 'Talk at the table', 'Ask over dinner'],
-  'thai-h': ['A word in Thai', 'Speak a little Thai', 'Thai for today'],
-  'good-h': ['Good tidings', 'Something kind in the world', 'Good news'],
-  'trend-h': ['What folk are searching', 'Talk of the day', 'Trending now'],
-  'finds-h': ['New tables in Portland', 'Fresh places to eat', 'Food finds'],
-  'big-h': ['Great doings in town', 'Big nights in Portland', 'Events in town'],
-  'deal-h': ['Bargains at market', 'Groceries on sale', 'This week’s deals'],
-  'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski report'],
-  'mkt-h': ['Markets and coin', 'Stocks at a glance', 'The markets'],
-  'gig-h': ['Music worth the journey', 'Shows to see', 'Live music ahead'],
-  'jazz-h': ['Jazz in the city', 'Where the jazz plays', 'Portland jazz'],
-  'rec-h': ['A record for the morning', 'Put this on', 'Morning listening'],
-  'tv-h': ['New tales to watch', 'Fresh on streaming', 'Something to watch'],
-  'alb-h': ['New records', 'Albums just out', 'Fresh music'],
-  'plane-h': ['Wings overhead', 'Aircraft above you', 'Planes overhead'],
-  'trail-h': ['Word from the Gorge trails', 'Trail reports', 'Paths in the Gorge'],
-  'moon-h': ['The moon', 'Moon tonight', 'The moon’s phase'],
-  'sky-h': ['Signs in the sky', 'Coming up overhead', 'Look up soon'],
-  'quake-h': ['The earth shaking', 'Earthquakes this week', 'Tremors nearby'],
-  'fire-h': ['Fires in the region', 'Wildfire watch', 'Smoke and flame'],
-  'elect-h': ['The coming vote', 'Your next election', 'To the ballot'],
-  'reps-h': ['Those who speak for you', 'Your representatives', 'Your elected officials'],
-  'hist-h': ['On this day of old', 'Today in history', 'From the old records'],
-  'near-h': ['History near home', 'Old tales of this place', 'Local history'],
-  'stories-h': ['News of gadgets and screens', 'Tech and A/V news', 'The week in tech'],
-  'reviews-h': ['Worth the coin?', 'What reviewers say', 'Fresh reviews'],
-  'bkk-h': ['Bangkok today', 'News from Krung Thep', 'Far away in Bangkok'],
-  'hol-h': ['Feast days ahead', 'Holidays to come', 'Days of celebration'],
+  'wins-h': ['Solar bragging rights', 'Good solar news', 'Little wins'],
+  'read-h': ['A great read for today', 'Something long and good', 'Settle in with this'],
+  'poem-h': ['A poem for today', "Today's verse", 'Read this one aloud'],
+  'books-h': ['Your next book', 'Books picked for you', 'For the nightstand'],
+  'artist-h': ['Portland artist to know', 'Meet a local artist', 'Made in Portland'],
+  'drum-h': ['Groove of the day', 'Listen to this drummer', 'Break of the day'],
+  'bday-h': ['Albums turning a year older', 'Happy birthday, records', 'Record birthdays'],
+  'apod-h': ['Picture from the cosmos', 'A view from space', "NASA's picture today"],
+  'ask-h': ['Ask over dinner', 'Table talk', 'A question for tonight'],
+  'thai-h': ['Thai to try today', 'Say it in Thai', 'A little Thai'],
+  'good-h': ['Something nice', 'Faith in humanity', 'Happy news'],
+  'trend-h': ['What people are searching', 'The internet today', 'Trending now'],
+  'finds-h': ['Tasty new finds', 'New places to eat', 'Portland food news'],
+  'big-h': ['Happening in town', 'Big nights out', 'In Portland soon'],
+  'deal-h': ['On sale this week', 'Grocery deals', 'Cheap eats this week'],
+  'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski conditions'],
+  'mkt-h': ['Money check', 'How markets look', 'Stocks at a glance'],
+  'f1-h': ['F1 corner', 'Race weekend watch', 'Lights out soon'],
+  'gig-h': ['Gigs worth a ticket', 'Live music ahead', 'See a show'],
+  'jazz-h': ['Jazz tonight and soon', 'Where the jazz is', 'Swing by'],
+  'rec-h': ['Spin this today', 'Put this record on', 'Morning listening'],
+  'tv-h': ['New to stream', 'Something to watch', 'Fresh on streaming'],
+  'alb-h': ['Fresh albums', 'New music out', 'Records just released'],
+  'plane-h': ['Up above you', 'Planes overhead', 'Who is flying over'],
+  'trail-h': ['Gorge trails lately', 'Trail notes', 'Hikers say'],
+  'moon-h': ['The moon tonight', 'Moon watch', 'Lunar notes'],
+  'sky-h': ['Look up soon', 'Sky events ahead', 'Things to see overhead'],
+  'quake-h': ['Shakes this week', 'Rumbles nearby', 'Quake check'],
+  'fire-h': ['Fire watch', 'Wildfires in the region', 'Smoke sources'],
+  'elect-h': ['Your next vote', 'Election coming up', 'Ballot box'],
+  'reps-h': ['Your representatives', 'Who speaks for you', 'Your elected folks'],
+  'hist-h': ['On this date', 'This day in history', 'Long ago today'],
+  'near-h': ['History close to home', 'Local history', 'Right around here'],
+  'stories-h': ['Tech and A/V headlines', 'Gadget news', 'In the tech world'],
+  'reviews-h': ['Fresh reviews', 'Worth buying?', 'What reviewers say'],
+  'bkk-h': ['Bangkok today', 'Over in Bangkok', 'Krung Thep now'],
+  'hol-h': ['Holidays ahead', 'Days to celebrate', 'Coming celebrations'],
 };
 function dailyTitles() {
   const n = Math.floor((new Date(todayIso() + 'T12:00') - new Date(2020, 0, 1)) / 864e5);
@@ -2452,8 +2709,7 @@ function renderOutings() {
     $('openings').innerHTML = `<div class="open-pick"><small><b>Worth a look today</b></small><div class="lines">${row(pick)}</div></div>
       <div class="lines">${op.filter(x => x !== pick).slice(0, 7).map(row).join('')}</div>`;
   }
-  const sh = document.querySelector('[data-shelf=golook]');
-  sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden);
+  document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
 }
 
 function renderApod() {
@@ -3891,13 +4147,13 @@ function addSources() {
 
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
-const NAV = {today: 'Today', doodles: 'Doodles', delights: 'Daily fun', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Beach', local: 'Portland',
-  watch: 'Watch', sports: 'Games', science: 'Science', news: 'News', world: 'Bangkok', solar: 'Solar'};
+const NAV = {today: 'Today', solar: 'Power', family: 'Little one', garden: 'Garden', river: 'River', doodles: 'Doodles', delights: 'Daily fun', nearby: 'Sky', coast: 'Beach',
+  roads: 'Roads', local: 'Portland', music: 'Music', sports: 'Games', watch: 'Screen', civics: 'Vote', almanac: 'This day', science: 'Science', news: 'News', world: 'Bangkok'};
 const TIERS = ['home', 'fun', 'town', 'world'];
 const TIER_LABEL = {
-  home: '<span aria-hidden="true">🏡</span><span><b>Home and family</b><small>Your house, your land, your people</small></span>',
-  fun: '<span aria-hidden="true">🎈</span><span><b>Just for fun</b><small>Little delights, and the beach getaway</small></span>',
-  town: '<span aria-hidden="true">🌲</span><span><b>Out and about</b><small>Portland, games, shows and the sky overhead</small></span>',
+  home: '<span aria-hidden="true">🏡</span><span><b>Home on the river</b><small>Your power, your people, your land and the river</small></span>',
+  fun: '<span aria-hidden="true">🎈</span><span><b>Just for fun</b><small>Daily delights, the sky tonight and the beach getaway</small></span>',
+  town: '<span aria-hidden="true">🌲</span><span><b>Out and about</b><small>Roads and mountains, Portland, music, games and the screen</small></span>',
   world: '<span aria-hidden="true">🌍</span><span><b>The wider world</b><small>Worth knowing, when you have a minute</small></span>',
 };
 const HABITS = 'dash-habits-v1';
@@ -4020,13 +4276,13 @@ async function renderBriefing() {
   const inc = ((D.roads && D.roads.incidents) || []).filter(i => !i.roadwork)[0];
   if (inc) add(55, 'today', `There is trouble on ${esc(inc.road)}: ${esc(inc.what.toLowerCase())} near ${esc(inc.where)}.`);
   const pdx = D.live && D.live.pdx && D.live.pdx.delays;
-  if (pdx && pdx.length) add(60, 'nearby', `PDX is reporting delays. Should you be collecting anyone, check before you leave.`);
+  if (pdx && pdx.length) add(60, 'plane-card', `PDX is reporting delays. Should you be collecting anyone, check before you leave.`);
 
   // Danger nearby
   const fire = ((D.live && D.live.fires) || []).filter(f => f.miles <= 60 && f.contained < 100).sort((a, b) => a.miles - b.miles)[0];
-  if (fire) add(80, 'nearby', `The <b>${esc(fire.name)}</b> is burning ${fire.miles} miles off, ${fire.contained ?? 0}% contained.`);
+  if (fire) add(80, 'fire-card', `The <b>${esc(fire.name)}</b> is burning ${fire.miles} miles off, ${fire.contained ?? 0}% contained.`);
   const quake = ((D.live && D.live.quakes && D.live.quakes.biggest) || []).filter(q => q.miles <= 60 && q.mag >= 2.5 && (now - new Date(q.utc)) < 3 * 864e5)[0];
-  if (quake) add(quake.mag >= 4 ? 85 : 45, 'nearby', `The earth moved: a magnitude ${quake.mag} ${quake.felt ? `felt by ${quake.felt} people ` : ''}${esc(quake.place)}, ${whenWord(isoLocal(new Date(quake.utc)))}.`);
+  if (quake) add(quake.mag >= 4 ? 85 : 45, 'live-row', `The earth moved: a magnitude ${quake.mag} ${quake.felt ? `felt by ${quake.felt} people ` : ''}${esc(quake.place)}, ${whenWord(isoLocal(new Date(quake.utc)))}.`);
   const sick = ((D.health && D.health.items) || []).filter(h => ['High', 'Very High'].includes(h.level));
   if (sick.length) add(62, 'today', `${sick.map(h => esc(h.name)).join(' and ')} ${sick.length > 1 ? 'are' : 'is'} running high in the wastewater. Wash your hands, sir.`);
 
@@ -4109,7 +4365,7 @@ async function renderBriefing() {
   const show = (D.streaming || []).filter(s => soon(s.date, 1) && s.kind === 'New series')[0];
   if (show) add(24, 'coming', `New ${whenWord(show.date)} on ${esc(show.service)}: ${esc(show.name || show.show || show.title || '')}.`);
   const alb = (D.albums || []).filter(a => soon(a.date, 1))[0];
-  if (alb) add(18, 'coming', `New music ${whenWord(alb.date)}: ${esc(alb.artist)}, “${esc(alb.album)}.”`);
+  if (alb) add(18, 'music', `New music ${whenWord(alb.date)}: ${esc(alb.artist)}, “${esc(alb.album)}.”`);
   const sp5 = (D.markets || []).find(m => m.name === 'S&P 500');
   if (sp5 && Math.abs(sp5.day_pct) >= 1.5) add(46, 'more', `The markets ${sp5.day_pct > 0 ? 'rallied' : 'fell'} ${Math.abs(sp5.day_pct).toFixed(1)}% on the last trading day.`);
 

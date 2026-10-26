@@ -65,8 +65,15 @@ def reddit_popular(n=8):
             break
         except Exception:
             posts = None
-    if posts is None:
-        raise RuntimeError("Reddit blocked the request")
+    if posts is None:  # Reddit often refuses cloud runners' JSON requests; the RSS feed usually still works
+        with _open("https://www.reddit.com/r/popular/top/.rss?t=day&limit=25", headers) as r:
+            root = ET.fromstring(r.read())
+        ns = {"a": "http://www.w3.org/2005/Atom"}
+        posts = []
+        for e in root.findall("a:entry", ns):
+            cat = e.find("a:category", ns)
+            posts.append({"title": e.findtext("a:title", namespaces=ns), "subreddit": cat.get("term") if cat is not None else "",
+                          "permalink": urllib.parse.urlparse(e.find("a:link", ns).get("href")).path})
     posts = [p for p in posts if not p.get("over_18") and not p.get("stickied")]
     return [{"title": p.get("title"), "sub": p.get("subreddit"), "score": p.get("score"),
              "comments": p.get("num_comments"), "url": "https://www.reddit.com" + (p.get("permalink") or "")}

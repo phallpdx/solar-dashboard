@@ -1,55 +1,109 @@
-{"updated": "2026-10-25", "updated_at": "2026-10-26T02:03:43Z", "teams": {
-  "blazers": {
-    "mood": "Happy, not satisfied",
-    "pulse": "Still no game since Friday's 128-120 comeback win in Sacramento, so fans are riding a 2-0 start. The mood is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
-    "storylines": [
-      "Portland came back from 12 down, powered by a 44-point third quarter, for its first road win",
-      "Rip City Project says the close call proves the Blazers must put the ball in Avdija's hands more after he took over in the second half",
-      "Defense worry: the Kings kept attacking Lillard and Morant, and Portland was slow closing out on corner threes",
-      "Shaedon Sharpe remains out with a torn right meniscus, expected back no earlier than February",
-      "Next up: at the Lakers on Tuesday night"
-    ],
-    "sources": [
-      {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"},
-      {"name": "Sports Illustrated", "url": "https://www.si.com/nba/trailblazers/onsi/the-good-and-bad-from-the-blazers-win-over-the-kings"},
-      {"name": "Rip City Project", "url": "https://ripcityproject.com/close-call-kings-proves-blazers-must-put-ball-deni-avdija-hands-more"},
-      {"name": "Yahoo Sports (AP recap)", "url": "https://sports.yahoo.com/articles/deni-avdija-scores-26-points-050744592.html"},
-      {"name": "Athlon Sports", "url": "https://athlonsports.com/nba/sacramento-kings/final-injury-report-for-trail-blazers-kings-will-malik-monk-play"},
-      {"name": "Legion Report", "url": "https://legionreport.com/trail-blazers-vs-lakers/"}
-    ]
-  },
-  "timbers": {
-    "mood": "Alive again",
-    "pulse": "Fans are still buzzing about Saturday's 3-2 win over Charlotte, won on Alexander Aravena's goal in the sixth minute of stoppage time. It snapped a seven-match winless run and pulled Portland within three points of the West's last playoff spot, so the season isn't dead yet.",
-    "storylines": [
-      "Ariel Lassiter scored twice in the first half before Charlotte fought back to 2-2",
-      "The winner: Ian Smith's corner, flicked on by Cole Bassett, finished by Aravena at the goal line",
-      "Eric Izoita chipped in two assists",
-      "The win ended a 0-4-3 skid; Portland is 10-14-7 with 37 points, three back of the final West playoff spot",
-      "The loss kept Charlotte from clinching an East playoff berth"
-    ],
-    "sources": [
-      {"name": "Timbers.com recap", "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"},
-      {"name": "OPB (AP)", "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"},
-      {"name": "Stumptown Footy", "url": "https://stumptownfooty.substack.com/p/match-recap-and-reaction-portland-d06"},
-      {"name": "Deadspin", "url": "https://deadspin.com/alexander-aravenas-dramatic-goal-lifts-timbers-past-charlotte-fc/"}
-    ]
-  },
-  "f1": {
-    "mood": "Champagne on ice",
-    "pulse": "Kimi Antonelli won Austin from pole, his ninth win of the year, but the title party has to wait at least a week. Russell finishing 8th and Hamilton 4th, each one spot better than Antonelli needed, kept it alive, so everyone's now looking at Mexico City.",
-    "storylines": [
-      "Antonelli beat Leclerc by 13.078s, with Verstappen third",
-      "Antonelli leads Russell 365 to 242, a 123-point gap with 125 points left",
-      "Verstappen said Red Bull's pace and tyres weren't good enough and admitted the late Virtual Safety Car helped him hold off Hamilton",
-      "Ferrari bounced back on Sunday with Leclerc second after fading in qualifying"
-    ],
-    "sources": [
-      {"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/antonelli-surges-to-dominant-victory-in-united-states-grand-prix-ahead-of-leclerc-and-verstappen.6kmBQv9FNTW7LzkDj8S34j"},
-      {"name": "GrandPrix.com", "url": "https://www.grandprix.com/races/united-states-gp-2026-race-notes.html"},
-      {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"},
-      {"name": "Yahoo Sports", "url": "https://sports.yahoo.com/f1/breaking-news/live/f1-united-states-grand-prix-results-starting-grid-schedule-how-to-watch-best-bets-and-weather-164555058.html"},
-      {"name": "Bozeman Daily Chronicle (AP)", "url": "https://www.bozemandailychronicle.com/wire/sports/verstappens-hot-form-cools-off-as-red-bull-goes-backward-in-frustrating-us-grand-prix/article_3bc39095-b1a5-5bd4-842d-2611536361a0.html"}
-    ]
+{
+  "updated": "2026-10-25",
+  "updated_at": "2026-10-26T06:17:12Z",
+  "teams": {
+    "blazers": {
+      "mood": "Happy, not satisfied",
+      "pulse": "Still no game since Friday's 128-120 comeback win in Sacramento, so fans are riding a 2-0 start. The mood is glad for the W but uneasy about the defense, and some want the offense run through Deni Avdija more.",
+      "storylines": [
+        "Portland came back from 12 down, powered by a 44-point third quarter, for its first road win",
+        "Rip City Project says the close call proves the Blazers must put the ball in Avdija's hands more after he took over in the second half",
+        "Defense worry: the Kings kept attacking Lillard and Morant, and Portland was slow closing out on corner threes",
+        "Shaedon Sharpe remains out with a torn right meniscus, expected back no earlier than February",
+        "Next up: at the Lakers on Tuesday night"
+      ],
+      "sources": [
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"
+        },
+        {
+          "name": "Sports Illustrated",
+          "url": "https://www.si.com/nba/trailblazers/onsi/the-good-and-bad-from-the-blazers-win-over-the-kings"
+        },
+        {
+          "name": "Rip City Project",
+          "url": "https://ripcityproject.com/close-call-kings-proves-blazers-must-put-ball-deni-avdija-hands-more"
+        },
+        {
+          "name": "Yahoo Sports (AP recap)",
+          "url": "https://sports.yahoo.com/articles/deni-avdija-scores-26-points-050744592.html"
+        },
+        {
+          "name": "Athlon Sports",
+          "url": "https://athlonsports.com/nba/sacramento-kings/final-injury-report-for-trail-blazers-kings-will-malik-monk-play"
+        },
+        {
+          "name": "Legion Report",
+          "url": "https://legionreport.com/trail-blazers-vs-lakers/"
+        }
+      ]
+    },
+    "timbers": {
+      "mood": "Alive again",
+      "pulse": "Fans are still buzzing about Saturday's 3-2 win over Charlotte, won on Alexander Aravena's goal in the sixth minute of stoppage time. It snapped a seven-match winless run and pulled Portland within three points of the West's last playoff spot, with a quick midweek trip to St. Louis up next.",
+      "storylines": [
+        "Ariel Lassiter scored twice in the first half before Charlotte fought back to 2-2",
+        "The winner: Ian Smith's corner, flicked on by Cole Bassett, finished by Aravena at the goal line",
+        "Eric Izoita chipped in two assists",
+        "The win ended a 0-4-3 skid; Portland is 10-14-7 with 37 points, three back of the final West playoff spot",
+        "Next up: at St. Louis on Wednesday, then Houston at home Nov. 1 before Decision Day at Austin"
+      ],
+      "sources": [
+        {
+          "name": "Timbers.com recap",
+          "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"
+        },
+        {
+          "name": "OPB (AP)",
+          "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"
+        },
+        {
+          "name": "Stumptown Footy",
+          "url": "https://stumptownfooty.substack.com/p/match-recap-and-reaction-portland-d06"
+        },
+        {
+          "name": "Deadspin",
+          "url": "https://deadspin.com/alexander-aravenas-dramatic-goal-lifts-timbers-past-charlotte-fc/"
+        }
+      ]
+    },
+    "f1": {
+      "mood": "Champagne on ice",
+      "pulse": "Kimi Antonelli won Austin from pole, his ninth win of the year, but the title party has to wait a week. Russell finishing 8th and Hamilton 4th kept it alive, though Antonelli now needs just two points in Mexico City to wrap it up.",
+      "storylines": [
+        "Antonelli beat Leclerc by 13.078s, with Verstappen third",
+        "Antonelli leads Russell 365 to 242, a 123-point gap with 125 points left",
+        "Mexico City math: ninth or better clinches it, and even a pointless day does it unless Russell or Hamilton wins",
+        "Verstappen said Red Bull's pace and tyres weren't good enough and admitted the late Virtual Safety Car helped him hold off Hamilton",
+        "Ferrari bounced back on Sunday with Leclerc second after fading in qualifying"
+      ],
+      "sources": [
+        {
+          "name": "Formula1.com",
+          "url": "https://www.formula1.com/en/latest/article/antonelli-surges-to-dominant-victory-in-united-states-grand-prix-ahead-of-leclerc-and-verstappen.6kmBQv9FNTW7LzkDj8S34j"
+        },
+        {
+          "name": "RacingNews365",
+          "url": "https://racingnews365.com/how-kimi-antonelli-can-win-the-f1-title-in-mexican-grand-prix"
+        },
+        {
+          "name": "Grande Prêmio",
+          "url": "https://grandepremio.com/en/f1/what-does-andrea-kimi-antonelli-need-to-win-the-2026-f1-title-in-mexico/"
+        },
+        {
+          "name": "GrandPrix.com",
+          "url": "https://www.grandprix.com/races/united-states-gp-2026-race-notes.html"
+        },
+        {
+          "name": "Sky Sports",
+          "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"
+        },
+        {
+          "name": "Bozeman Daily Chronicle (AP)",
+          "url": "https://www.bozemandailychronicle.com/wire/sports/verstappens-hot-form-cools-off-as-red-bull-goes-backward-in-frustrating-us-grand-prix/article_3bc39095-b1a5-5bd4-842d-2611536361a0.html"
+        }
+      ]
+    }
   }
-}}
+}

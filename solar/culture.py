@@ -133,7 +133,9 @@ def _reissue(title, author, year):
 
 
 REPACKAGED = re.compile(r"\b(collection|collected|stories|trilogy|omnibus|box(ed)? set|books? \d|volumes? \d|summary|study guide|"
-                        r"sampler|selected|complete|works of|novels|anthology|calendar|journal|coloring)\b", re.I)
+                        r"sampler|selected|complete|works of|novels|anthology|calendar|journal|coloring|best of|other tales)\b", re.I)
+# Translations share an English book's listing, so skip titles that are plainly in another language.
+ENGLISH_TITLE = re.compile(r"(?!(la|el|los|las|le|les|der|die|das|il) )[\x00-\x7F‘’“”–—…]+$", re.I)
 
 
 def _long_gone(author, today):
@@ -180,8 +182,10 @@ def book_picks(user, today, n=8):
     authors = sorted(score, key=score.get, reverse=True)[:12]
     loved = {a: max((b for b in read if b["author"] == a), key=lambda b: b["rating"])["title"] for a in authors}
     fields = "title,first_publish_year,key,cover_i,author_name,language"
+    same = lambda a, b: re.sub(r"[^a-z]", "", a.lower()) == re.sub(r"[^a-z]", "", b.lower())
     ok = lambda d, author: (d.get("title") and not REPACKAGED.search(d["title"]) and len(d.get("author_name") or [author]) <= 1
-                            and "eng" in (d.get("language") or ["eng"]))
+                            and any(same(a, author) for a in d.get("author_name") or [author])  # Open Library matches loosely
+                            and "eng" in (d.get("language") or ["eng"]) and ENGLISH_TITLE.match(d["title"]))
     picks, backlist, seen = [], [], set(known)
     for author in authors:
         short = re.split(r"[:(]", loved[author])[0].strip()

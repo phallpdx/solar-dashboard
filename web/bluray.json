@@ -1,16 +1,69 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "deals": [
-    {"title": "Kino Lorber Fall Haul", "store": "Kino Lorber", "detail": "Over 900 titles from $4.99, with 4Ks like 3 Days of the Condor at $17.99 (list $39.95). Blu-ray Forum reports the sale was extended to Oct 27 at noon ET.", "ends": "2026-10-27", "url": "https://kinolorber.com/collection/fall-haul-sale-2026"},
-    {"title": "31 Days of Syntober", "store": "Vinegar Syndrome", "detail": "A new featured film each day at 50% off list with 3x reward points (Oct 24's pick was Blood Beat), plus a bundle with Night of the Vamp-Friars for an extra $5 off.", "ends": "2026-10-31", "url": "https://vinegarsyndrome.com/pages/31-days-of-syntober"},
-    {"title": "Blu-ray.com 4K bargains", "store": "Various", "detail": "Listed today: Akira 4K $11.99 (60% off), Mars Attacks! 4K $14.99 and Jaws 4K $14.99 (both half off).", "ends": null, "url": "https://www.blu-ray.com/deals/?category=4kbluray"},
-    {"title": "Us / Get Out 4K double feature", "store": "Amazon", "detail": "$14.99 for both Jordan Peele films on 4K, also matched at Gruv (reported Oct 23).", "ends": null, "url": "https://slickdeals.net/f/20196561-us-get-out-double-feature-4k-uhd-blu-ray-digital-15"},
-    {"title": "Arrow Video Shocktober (UK store)", "store": "Arrow Video", "detail": "Up to 50% off hundreds of 4K UHDs, Blu-rays and limited editions on Arrow's UK store, per HotUKDeals; check the US store for its own pricing.", "ends": "2026-11-02", "url": "https://www.hotukdeals.com/deals/arrow-video-shocktober-sale-up-to-50-off-4k-uhds-blu-rays-eg-cobra-limited-edition-4k-uhd-ps1350-5006780"},
-    {"title": "Amazon 4K 3 for $33", "store": "Amazon", "detail": "Mix any three eligible 4Ks, about $11 each, like 48 Hrs./Another 48 Hrs., Rocketman and Star Trek (reported Oct 1; may have ended).", "ends": null, "url": "https://slickdeals.net/f/20085609-4k-uhd-blu-rays-48-hrs-another-48-hrs-double-feature-rocketman-star-trek-2009-3-for-33-many-more-free-s-h"},
-    {"title": "Prime 4K 2 for $25", "store": "Amazon", "detail": "Two 4Ks for $25 from a long list of titles for Prime members (reported Oct 6; may have ended).", "ends": null, "url": "https://slickdeals.net/f/20120112-prime-members-4k-uhd-blu-rays-various-2-for-25-free-s-h"}
+    {
+      "title": "Kino Lorber Fall Haul",
+      "store": "Kino Lorber",
+      "detail": "Over 900 titles from $4.99, with 4Ks like 3 Days of the Condor at $17.99 (list $39.95). Blu-ray Forum reports the sale was extended to Oct 27 at noon ET.",
+      "ends": "2026-10-27",
+      "url": "https://kinolorber.com/collection/fall-haul-sale-2026"
+    },
+    {
+      "title": "31 Days of Syntober",
+      "store": "Vinegar Syndrome",
+      "detail": "A new featured film each day at 50% off list with 3x reward points, posted at 12:01 pm ET (Oct 25's pick was The Cellar, from $17.49), plus a bundle with Night of the Vamp-Friars for an extra $5 off.",
+      "ends": "2026-10-31",
+      "url": "https://vinegarsyndrome.com/pages/31-days-of-syntober"
+    },
+    {
+      "title": "Blu-ray.com 4K bargains",
+      "store": "Various",
+      "detail": "Recently listed at Amazon: Akira 4K $11.99 (60% off), Mars Attacks! 4K $14.99 and Jaws 50th Anniversary 4K $14.99 (both half off). Prices move daily.",
+      "ends": null,
+      "url": "https://www.blu-ray.com/deals/?category=4kbluray"
+    },
+    {
+      "title": "Us / Get Out 4K double feature",
+      "store": "Amazon",
+      "detail": "$14.99 for both Jordan Peele films on 4K, also matched at Gruv (reported Oct 23).",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20196561-us-get-out-double-feature-4k-uhd-blu-ray-digital-15"
+    },
+    {
+      "title": "Arrow Video Shocktober (UK store)",
+      "store": "Arrow Video",
+      "detail": "Up to 50% off hundreds of 4K UHDs, Blu-rays and limited editions on Arrow's UK store, per HotUKDeals; check the US store for its own pricing.",
+      "ends": "2026-11-02",
+      "url": "https://www.hotukdeals.com/deals/arrow-video-shocktober-sale-up-to-50-off-4k-uhds-blu-rays-eg-cobra-limited-edition-4k-uhd-ps1350-5006780"
+    },
+    {
+      "title": "The Mummy Trilogy 4K",
+      "store": "Amazon",
+      "detail": "All three Brendan Fraser-era Mummy films on 4K UHD for $19.99 (reported Oct 23).",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20197881-the-mummy-trilogy-4k-ultra-hd-blu-ray-digital-4k-uhd-19-99-amazon-com"
+    },
+    {
+      "title": "Interstellar 4K",
+      "store": "Amazon",
+      "detail": "$14.96, about $5 below the next best price when posted (reported Oct 20).",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20185323-14-96-interstellar-4k-uhd-blu-ray-digital-at-amazon"
+    },
+    {
+      "title": "Hellboy 4K",
+      "store": "Amazon",
+      "detail": "$15.39 with free shipping, though Amazon lists it as shipping in 1 to 2 months (reported Oct 25).",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20204214-hellboy-4k-uhd-blu-ray-digital-15-40-free-s-h"
+    }
   ],
   "upcoming": [
-    {"title": "Vinegar Syndrome Black Friday", "detail": "Flash pre-order event reported for Nov 1 at 12:01 a.m. ET through Nov 4, with the main Black Friday sale starting Nov 27 at 12:01 a.m. ET.", "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"}
+    {
+      "title": "Vinegar Syndrome Black Friday",
+      "detail": "Flash pre-order event reported for Nov 1 at 12:01 a.m. ET through Nov 4, with the main Black Friday sale starting Nov 27 at 12:01 a.m. ET.",
+      "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
+    }
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"
 }

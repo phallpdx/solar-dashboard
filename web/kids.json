@@ -1,24 +1,158 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
-    {"title": "Howloween at the Oregon Zoo", "date": null, "ends": "2026-10-25", "where": "Oregon Zoo", "detail": "Last day of daytime costumed fun with three trick-or-treat zones and a carousel or train ride. Zoo admission bought online in advance plus a $5 Treat and Ride Pass for each trick-or-treater; billed as best for ages 2 to 10.", "url": "https://www.oregonzoo.org/howloween"},
-    {"title": "Booverton", "date": "2026-10-25", "ends": null, "where": "Downtown Beaverton", "detail": "Free daytime trick-or-treating at participating businesses from 11 to 3, with a free Boo Bus to ride.", "url": "https://pdxparent.com/daytime-trick-or-treating/"},
-    {"title": "Sauvie Island Pumpkin Patch and corn maze", "date": null, "ends": "2026-10-31", "where": "Sauvie Island", "detail": "Pumpkins and an 8-acre corn maze, listed daily 10 to 6 through Oct 31 with prices starting at $12. Last season's FAQ said kids under 6 were free; confirm this year.", "url": "https://www.travelportland.com/events/corn-maize-sauvie-island"},
-    {"title": "Bella Organic pumpkin patch", "date": null, "ends": "2026-10-31", "where": "Sauvie Island", "detail": "Free hayrides out to a corn maze and pumpkin field. Go in daytime, since the maze is haunted on weekend evenings.", "url": "https://www.travelportland.com/region/pumpkin-patches/"},
-    {"title": "Toddler Storytime at St. Johns Library", "date": null, "ends": null, "where": "St. Johns Library", "detail": "Tuesdays 12:30 to 1:15 for toddlers and a favorite adult. Free, with limited tickets handed out 15 minutes before.", "url": "https://multcolib.org/events-classes/toddler-storytime-1047"},
-    {"title": "Seaside Halloween Happenin's", "date": "2026-10-30", "ends": "2026-11-01", "where": "Downtown Seaside", "detail": "Family festival with a kids' activity zone and downtown trick-or-treating, plus a giant pumpkin drop at 3 pm on Sunday, Nov 1.", "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"},
-    {"title": "Halloween weekend at Astoria KOA", "date": "2026-10-30", "ends": "2026-11-01", "where": "Hammond (Warrenton)", "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.", "url": "https://koa.com/campgrounds/astoria/events/"},
-    {"title": "Native Games and Storytelling", "date": "2026-11-01", "ends": null, "where": "St. Johns Library", "detail": "Native American Heritage Month program with traditional games and stories from a community storyteller, 12 to 1:15. Free.", "url": "https://multcolib.libnet.info/event/16627845"},
-    {"title": "Black Family Storytime", "date": "2026-11-01", "ends": null, "where": "St. Johns Library", "detail": "Sunday storytime from 3:30 to 4:15 in the large community room. Free.", "url": "https://multcolib.libnet.info/event/16628559"},
-    {"title": "Sensory Sunday at Columbia River Maritime Museum", "date": "2026-11-01", "ends": null, "where": "Astoria", "detail": "Calm family morning from 9:30 to 11 with lowered sound, a quiet station and a craft, held the first Sunday of the month. The Nov 1 date follows that pattern but isn't confirmed; regular admission applies.", "url": "https://autismsocietyoregon.org/events/tag/museum/"},
-    {"title": "Portland Holiday Market", "date": "2026-11-06", "ends": "2026-11-08", "where": "Portland Expo Center, North Portland", "detail": "Big holiday craft, food and gift show, Fri and Sat 10 to 7 and Sun 10 to 6 (one page on the site says 5 on Sunday).", "url": "https://www.portlandholidaymarket.com/attendee-info/show-info"},
-    {"title": "Christmas tree arrival at Pioneer Courthouse Square", "date": "2026-11-10", "ends": null, "where": "Downtown Portland", "detail": "Free late-morning welcome for the Square's big tree, 11 to 12:30, with Santa and free hot chocolate.", "url": "https://www.pdxpipeline.com/portland-shopping-information-christmas-holidays-local-goods-events/"},
-    {"title": "ZooLights", "date": "2026-11-20", "ends": "2027-01-03", "where": "Oregon Zoo", "detail": "Holiday lights nightly from 4:30, with dated tickets bought in advance. Dates reported by an events guide; the zoo says more details are coming.", "url": "https://thrillzing.com/seasonal-events/zoolights-2026-oregon-zoo/"},
-    {"title": "Pioneer Courthouse Square tree lighting", "date": "2026-11-27", "ends": null, "where": "Downtown Portland", "detail": "Free sing-along with Santa lighting the tree, reported for 5:30 to 6:45. Another listing says Nov 29, so confirm before going.", "url": "https://www.stayportland.com/guide/portland-fall-winter-holidays"},
-    {"title": "Christmas Festival of Lights at The Grotto", "date": "2026-11-27", "ends": "2026-12-30", "where": "The Grotto, NE Portland", "detail": "Walk-through holiday lights; The Grotto lists Nov 27 to Dec 30, 2026.", "url": "https://thegrotto.org/christmas/"},
-    {"title": "Winter Wonderland drive-through lights", "date": "2026-11-27", "ends": "2026-12-31", "where": "Portland International Raceway, North Portland", "detail": "Drive-through light show, so a toddler can stay cozy in a car seat. A Portland travel guide reports the Nov 27 to Dec 31 dates as confirmed.", "url": "https://www.stayportland.com/guide/portland-fall-winter-holidays"},
-    {"title": "Vancouver Community Tree Lighting", "date": "2026-11-27", "ends": null, "where": "Esther Short Park, Vancouver WA", "detail": "Free Rotary celebration where Santa arrives by tugboat with the Christmas Ships. A travel guide reports Nov 27; the organizers haven't posted 2026 details yet.", "url": "https://www.stayportland.com/guide/portland-fall-winter-holidays"},
-    {"title": "Christmas Ships Parade", "date": "2026-12-03", "ends": "2026-12-20", "where": "Columbia and Willamette rivers", "detail": "Lit-up boats cruise past riverside parks on selected nights; free to watch from shore. The official site has the 2026 Columbia and Willamette schedules.", "url": "https://www.christmasships.org/parade-schedule"}
+    {
+      "title": "Sauvie Island Pumpkin Patch and corn maze",
+      "date": null,
+      "ends": "2026-10-31",
+      "where": "Sauvie Island",
+      "detail": "Pumpkins and an 8-acre corn maze, listed daily 10 to 6 through Oct 31 with prices starting at $12. Last season's FAQ said kids under 6 were free; confirm this year.",
+      "url": "https://www.travelportland.com/events/corn-maize-sauvie-island"
+    },
+    {
+      "title": "Bella Organic pumpkin patch",
+      "date": null,
+      "ends": "2026-10-31",
+      "where": "Sauvie Island",
+      "detail": "Free hayrides out to a corn maze and pumpkin field. Go in daytime, since the maze is haunted on weekend evenings.",
+      "url": "https://www.travelportland.com/region/pumpkin-patches/"
+    },
+    {
+      "title": "Toddler Storytime at St. Johns Library",
+      "date": null,
+      "ends": null,
+      "where": "St. Johns Library",
+      "detail": "Tuesdays 12:30 to 1:15 in the large community room, for toddlers and a favorite adult, with Oct 27, Nov 3 and Nov 10 posted. Free; limited tickets handed out 15 minutes before.",
+      "url": "https://multcolib.org/events-classes/toddler-storytime-1047"
+    },
+    {
+      "title": "Seaside Halloween Happenin's",
+      "date": "2026-10-30",
+      "ends": "2026-11-01",
+      "where": "Downtown Seaside",
+      "detail": "Family festival with a kids' activity zone and downtown trick-or-treating, plus a giant pumpkin drop at 3 pm on Sunday, Nov 1.",
+      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
+    },
+    {
+      "title": "Halloween weekend at Astoria KOA",
+      "date": "2026-10-30",
+      "ends": "2026-11-01",
+      "where": "Hammond (Warrenton)",
+      "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.",
+      "url": "https://koa.com/campgrounds/astoria/events/"
+    },
+    {
+      "title": "Curiosity Kids at OMSI",
+      "date": "2026-10-31",
+      "ends": "2026-11-28",
+      "where": "OMSI, Portland",
+      "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Oct 31, Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
+      "url": "https://omsi.edu/curiosity-kids/"
+    },
+    {
+      "title": "Native Games and Storytelling",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "St. Johns Library",
+      "detail": "Native American Heritage Month program with traditional games and stories from a community storyteller, 12 to 1:15. Free.",
+      "url": "https://multcolib.libnet.info/event/16627845"
+    },
+    {
+      "title": "Black Family Storytime",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "St. Johns Library",
+      "detail": "Sunday storytime from 3:30 to 4:15 in the large community room. Free.",
+      "url": "https://multcolib.libnet.info/event/16628559"
+    },
+    {
+      "title": "Sensory Sunday at Columbia River Maritime Museum",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "Astoria",
+      "detail": "Calm family morning from 9:30 to 11 with lowered sound, a quiet station and a craft, held the first Sunday of the month. The Nov 1 date follows that pattern but isn't confirmed; regular admission applies.",
+      "url": "https://autismsocietyoregon.org/events/tag/museum/"
+    },
+    {
+      "title": "OMSI $5 Day",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "OMSI, Portland",
+      "detail": "Museum admission is $5 per person, with planetarium and theater shows also $5. OMSI expects crowds and suggests buying tickets online ahead.",
+      "url": "https://omsi.edu/events/5-day/"
+    },
+    {
+      "title": "Fall Discount Days at the Oregon Zoo",
+      "date": "2026-11-02",
+      "ends": "2026-11-08",
+      "where": "Oregon Zoo",
+      "detail": "$13 admission from 9:30 to 3:30. The zoo's events calendar lists Nov 2 to 8, but the event page still shows last year's dates, so confirm before going.",
+      "url": "https://www.oregonzoo.org/events"
+    },
+    {
+      "title": "Portland Holiday Market",
+      "date": "2026-11-06",
+      "ends": "2026-11-08",
+      "where": "Portland Expo Center, North Portland",
+      "detail": "Big holiday craft, food and gift show, Fri and Sat 10 to 7 and Sun 10 to 6 (one page on the site says 5 on Sunday).",
+      "url": "https://www.portlandholidaymarket.com/attendee-info/show-info"
+    },
+    {
+      "title": "Christmas tree arrival at Pioneer Courthouse Square",
+      "date": "2026-11-10",
+      "ends": null,
+      "where": "Downtown Portland",
+      "detail": "Free late-morning welcome for the Square's big tree, 11 to 12:30, with Santa and free hot chocolate.",
+      "url": "https://www.pdxpipeline.com/portland-shopping-information-christmas-holidays-local-goods-events/"
+    },
+    {
+      "title": "ZooLights",
+      "date": "2026-11-20",
+      "ends": "2027-01-03",
+      "where": "Oregon Zoo",
+      "detail": "Holiday lights nightly from 4:30, closed Nov 24 to 26 and Dec 25. Ticketed separately from daytime zoo admission; Any Night tickets can be bought ahead.",
+      "url": "https://www.oregonzoo.org/lights"
+    },
+    {
+      "title": "Pioneer Courthouse Square tree lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Downtown Portland",
+      "detail": "Free sing-along with Santa lighting the tree, reported for 5:30 to 6:45. Another listing says Nov 29, so confirm before going.",
+      "url": "https://www.stayportland.com/guide/portland-fall-winter-holidays"
+    },
+    {
+      "title": "Christmas Festival of Lights at The Grotto",
+      "date": "2026-11-27",
+      "ends": "2026-12-30",
+      "where": "The Grotto, NE Portland",
+      "detail": "Walk-through holiday lights; The Grotto lists Nov 27 to Dec 30, 2026.",
+      "url": "https://thegrotto.org/christmas/"
+    },
+    {
+      "title": "Winter Wonderland drive-through lights",
+      "date": "2026-11-27",
+      "ends": "2026-12-31",
+      "where": "Portland International Raceway, North Portland",
+      "detail": "Drive-through light show, so a toddler can stay cozy in a car seat. A Portland travel guide reports the Nov 27 to Dec 31 dates as confirmed.",
+      "url": "https://www.stayportland.com/guide/portland-fall-winter-holidays"
+    },
+    {
+      "title": "Vancouver Community Tree Lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Esther Short Park, Vancouver WA",
+      "detail": "Free Rotary celebration where Santa arrives escorted by the Christmas Ships. The Christmas Ships calendar lists it for Nov 27, though the Rotary hasn't posted 2026 details yet.",
+      "url": "https://www.christmasships.org/parade-schedule"
+    },
+    {
+      "title": "Christmas Ships Parade",
+      "date": "2026-12-03",
+      "ends": "2026-12-20",
+      "where": "Columbia and Willamette rivers",
+      "detail": "Lit-up boats cruise past riverside parks on selected nights; free to watch from shore. The official site has the 2026 Columbia and Willamette schedules.",
+      "url": "https://www.christmasships.org/parade-schedule"
+    }
   ]
 }

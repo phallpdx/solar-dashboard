@@ -209,7 +209,7 @@ def ask_model(task, text, schema):
                                       "Never invent dates, prices or links. Links on the page are numbered like (#12); for a link "
                                       "field give that number, e.g. \"#12\". Keep every text field short, under 20 words. "
                                       "Write dates as YYYY-MM-DD. Write compact JSON with no indentation or line breaks. "
-                                      f"Today is {TODAY:%A, %B %d, %Y}. Reply with JSON only."},
+                                      f"Today is {TODAY:%A, %B %d, %Y} ({TODAY.isoformat()}). Reply with JSON only."},
         {"role": "user", "content": f"{task}\n\n--- PAGE ---\n{text}\n--- END ---"},
     ]
     payload = {
@@ -274,7 +274,7 @@ def items_schema(props, required=None):
 
 S = {"type": "string"}
 NS = {"type": ["string", "null"]}
-DATE = {"anyOf": [{"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}, {"type": "null"}],
+DATE = {"anyOf": [{"type": "string", "pattern": "^20(2[6-9]|3[0-9])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"}, {"type": "null"}],
         "description": "YYYY-MM-DD or null"}
 DATE_FIELDS = ("date", "ends", "starts", "by")
 
@@ -294,7 +294,15 @@ MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", 
 def loose_date(s):
     """Reads the dates a model writes despite being asked for YYYY-MM-DD:
     "October 26", "Tue, Oct 27, 2026", "10/26". Without a year, the next one to come."""
-    if not s or as_date(s):
+    d = as_date(s)
+    if d and d.year < 2000:
+        # Gemma sometimes puts the month in the year ("1027-10-27"); keep month and day.
+        try:
+            d = dt.date(TODAY.year, d.month, d.day)
+        except ValueError:
+            return s
+        return (d if d >= TODAY - dt.timedelta(days=60) else d.replace(year=d.year + 1)).isoformat()
+    if not s or d:
         return s
     text = str(s).lower()
     m = re.search(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?", text)

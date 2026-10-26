@@ -520,6 +520,12 @@ header .refresh .link{color:#fff;opacity:.9}
 .book img,.book-ph{width:44px;height:64px;flex:none;border-radius:6px;object-fit:cover;background:rgba(255,255,255,.7);display:grid;place-items:center;font-size:22px;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 .book span:last-child{display:flex;flex-direction:column}
 .book b{font-size:14.5px;line-height:1.3}.book small{font-size:12.5px;font-weight:600;color:var(--body)}.book .why{color:#1F6B52}
+.book .book-svg{width:44px;height:64px;flex:none}
+.book-today{display:flex;gap:16px;align-items:center;padding:4px 0 12px;text-decoration:none;color:var(--ink);border-bottom:1.5px dashed rgba(59,42,24,.3)}
+.book-today img,.book-today .book-svg{width:86px;height:124px;flex:none;border-radius:4px;object-fit:cover;box-shadow:3px 4px 0 rgba(59,42,24,.25);rotate:-3deg}
+.book-today span:last-child{display:flex;flex-direction:column;gap:2px}
+.book-today .k{font-family:var(--pen);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#B4553A}
+.book-today b{font-family:var(--hand);font-size:30px;line-height:1}.book-today small{font-size:13px;color:var(--body)}.book-today .why{color:#1F6B52;font-weight:600}
 .stars{color:#D99A00;letter-spacing:-1px}
 .yard-card{background:linear-gradient(160deg,#fff,#EEF6EA)}
 .yds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -719,8 +725,9 @@ header>.snail{bottom:6px;left:-40px;font-size:22px}
 .tier-h small{font-family:var(--pen);font-size:16px}
 
 /* Cards rest a little crooked, like things pinned into a sketchbook (never ones holding a map) */
-.row>.card:nth-child(odd):not(:has(.leaflet-container,iframe,canvas)){rotate:-.4deg}
-.row>.card:nth-child(even):not(:has(.leaflet-container,iframe,canvas)){rotate:.45deg}
+.row>.card:nth-child(odd):not(:has(.leaflet-container,iframe,canvas)){rotate:calc(-.4deg + var(--tilt,0deg))}
+.row>.card:nth-child(even):not(:has(.leaflet-container,iframe,canvas)){rotate:calc(.45deg - var(--tilt,0deg))}
+html[data-day='1'] .joy-card::after{left:28%;rotate:6deg}html[data-day='2'] .joy-card::after{left:72%;rotate:-7deg;background:rgba(190,215,160,.75)}
 .shelf-grid>.card:nth-child(3n+1),.stack>.card:nth-child(odd){rotate:-.6deg}.shelf-grid>.card:nth-child(3n+2){rotate:.5deg}
 .card{transition:rotate .35s cubic-bezier(.34,1.6,.5,1),translate .35s cubic-bezier(.34,1.6,.5,1)}
 .card:hover{rotate:0deg;translate:0 -3px}
@@ -760,6 +767,52 @@ header>.snail{bottom:6px;left:-40px;font-size:22px}
 .moon-cap b{display:block;font-family:var(--hand);font-size:30px;color:var(--ink);line-height:1}
 @media (max-width:600px){.dd-unit b{font-size:27px}.dd-units{gap:10px 12px}}
 
+/* The sky over the hobbit hole: a sun that follows the real time of day, drifting clouds, birds and weather */
+header>.scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;border-radius:inherit}
+header>div,header>.hero-right{position:relative;z-index:1}
+.scene .sky-sun{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px}
+.scene .sky-sun svg{width:100%;height:100%;overflow:visible}
+.scene .cloud{position:absolute;left:-180px;width:150px}
+.scene .bird{position:absolute;left:-40px;width:22px}
+.scene .weather{position:absolute;inset:0;opacity:.4}
+.scene .weather.rain{background:repeating-linear-gradient(105deg,transparent 0 14px,rgba(70,100,140,.5) 14px 15.5px,transparent 15.5px 40px);background-size:120px 120px}
+.scene .weather.snow{background:radial-gradient(circle,#fff 1.6px,transparent 2.2px) 0 0/34px 34px,radial-gradient(circle,#fff 1.2px,transparent 1.8px) 17px 11px/34px 34px}
+header.sunny::before{display:none}
+#vine{position:fixed;top:0;left:0;height:16px;width:0;z-index:40;pointer-events:none;background:var(--vine) repeat-x left center/120px 18px;filter:drop-shadow(0 1px 0 rgba(255,250,230,.8))}
+#vine::after{content:"🐌";position:absolute;right:-14px;top:-4px;font-size:16px}
+.drift{position:fixed;top:-30px;z-index:15;pointer-events:none;font-size:16px;opacity:.75}
+.spark.trail{font-size:12px;margin:-6px 0 0 -4px}
+@media (prefers-reduced-motion:no-preference){
+  .scene .sky-sun svg .rays{animation:spin 26s linear infinite;transform-origin:32px 32px}
+  .scene .cloud{animation:drift-x linear infinite}
+  .scene .bird{animation:fly-by linear infinite}
+  .scene .bird path{animation:flap .45s ease-in-out infinite alternate;transform-origin:11px 6px}
+  .scene .weather.rain{animation:rain-fall .5s linear infinite}
+  .scene .weather.snow{animation:snow-fall 6s linear infinite}
+  .drawn .doodle{animation:doodle-bob 4.5s ease-in-out 2.2s infinite}
+  .group[data-sec=today].drawn .doodle,.group[data-sec=delights].drawn .doodle{animation:spin 24s linear 2.2s infinite}
+  .group[data-sec=river].drawn .doodle{animation:jump 3.6s ease-in-out 2.2s infinite}
+  .group[data-sec=solar].drawn .doodle{animation:zap 2.8s steps(1) 2.2s infinite}
+  .group[data-sec=family].drawn .doodle{animation:beat 1.6s ease-in-out 2.2s infinite}
+  .drift{animation:page-fall linear forwards}
+  .sec-icon:hover,.tile:hover .big{animation:wiggle .7s ease-in-out}
+  .card:hover>.head h2{animation:wiggle-x .6s ease-in-out}
+  .hero-wx svg{animation:float 5s ease-in-out infinite}
+}
+@keyframes spin{to{rotate:360deg}}
+@keyframes drift-x{to{transform:translateX(calc(100vw + 360px))}}
+@keyframes fly-by{0%{transform:translate(0,0)}50%{transform:translate(55vw,-26px)}100%{transform:translate(110vw,10px)}}
+@keyframes flap{to{transform:scaleY(-.6)}}
+@keyframes rain-fall{to{background-position:-30px 120px}}
+@keyframes snow-fall{to{background-position:20px 340px,40px 351px}}
+@keyframes doodle-bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(5deg)}}
+@keyframes jump{0%,60%,100%{transform:none}70%{transform:translate(-8px,-16px) rotate(-25deg)}82%{transform:translate(-14px,-4px) rotate(15deg)}}
+@keyframes zap{0%,100%{opacity:.7}10%{opacity:.15}14%{opacity:1;stroke:#E0A21E}20%{opacity:.7}}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+@keyframes page-fall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),110vh) rotate(var(--rot))}}
+@keyframes wiggle-x{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+@keyframes float{50%{transform:translateY(-4px)}}
+
 /* ================= A little magic (all of it switches off with reduced motion) ================= */
 header>.sprite{position:absolute;z-index:0;pointer-events:none}
 .spark{position:fixed;z-index:99;pointer-events:none;margin:-9px 0 0 -6px;font:700 17px/1 var(--hand);text-shadow:1px 1px 0 rgba(59,42,24,.35)}
@@ -781,7 +834,7 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
   /* Moving pictures */
   .apod-img img{animation:portrait 24s ease-in-out infinite alternate;transform-origin:50% 40%}
   .sci img,.story img{animation:pan 26s ease-in-out infinite alternate}
-  .book img{animation:sway 7s ease-in-out infinite;transform-origin:50% 100%}
+  .book img,.book .book-svg,.book-today img,.book-today .book-svg{animation:sway 7s ease-in-out infinite;transform-origin:50% 100%}
   .book:nth-child(2n) img{animation-delay:-3s}
   /* The round doors breathe, and wiggle when you come near */
   .sec-icon{animation:breathe 6s ease-in-out infinite}
@@ -1832,6 +1885,161 @@ function tideDoodle(tides, seed) {
     <text class="emo" x="${rd(bx - 12)}" y="${rd(by - 2)}">⛵</text><text class="sm" x="${rd(bx - 10)}" y="${rd(Math.min(100, by + 22))}">now</text></svg>`;
 }
 
+// The sky in the header: the sun rides its real arc from sunrise to sunset, with clouds for today's cover and the weather falling.
+function scene() {
+  const head = document.querySelector('header'), o = D.outside;
+  if (!head || !o || !o.now) return;
+  let sc = head.querySelector('.scene');
+  if (!sc) { sc = document.createElement('div'); sc.className = 'scene'; sc.setAttribute('aria-hidden', 'true'); head.prepend(sc); }
+  const t = o.days.find(d => d.date === todayIso()) || o.days[0], m = s => { const [h, mi] = (s || '0:0').split(':').map(Number); return h * 60 + mi; };
+  const now = new Date(), nowM = now.getHours() * 60 + now.getMinutes(), rise = m(t.sunrise), set = m(t.sunset);
+  const day = nowM >= rise && nowM <= set, f = (nowM - rise) / Math.max(1, set - rise), P = pen(53);
+  head.classList.toggle('sunny', day);
+  const kind = wxOf(o.now.code)[2], cloudy = Math.min(4, Math.round((o.now.cloud || 0) / 25) + (['rain', 'storm', 'snow'].includes(kind) ? 1 : 0));
+  const rays = Array.from({length: 12}, (_, i) => { const a = i * Math.PI / 6; return P.line(32 + Math.cos(a) * 20, 32 + Math.sin(a) * 20, 32 + Math.cos(a) * 29, 32 + Math.sin(a) * 29, .8); }).join(' ');
+  const sun = day ? `<div class="sky-sun" style="left:${(6 + f * 88).toFixed(1)}%;top:${(62 - Math.sin(Math.PI * f) * 46).toFixed(1)}%" title="">
+      <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#FFE6A0" opacity=".55"/><circle cx="32" cy="32" r="15" fill="#FFD25E"/>
+      <path class="rays" d="${rays}" fill="none" stroke="#C98A1F" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="${P.circle(32, 32, 15, .6)}" fill="none" stroke="#7A5126" stroke-width="2"/><path d="M26 34q6 5 12 0" fill="none" stroke="#7A5126" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="27" cy="28" r="1.6" fill="#7A5126"/><circle cx="37" cy="28" r="1.6" fill="#7A5126"/></svg></div>` : '';
+  const cloud = i => { const C = pen(61 + i); return `<svg class="cloud" viewBox="0 0 150 70" style="top:${8 + i * 17}%;width:${120 + (i % 2) * 50}px;animation-duration:${70 + i * 23}s;animation-delay:${-(i * 29 + 7)}s">
+      <path d="${C.curve([[20, 58], [12, 40], [32, 30], [46, 14], [72, 12], [90, 26], [112, 22], [134, 38], [128, 58], [20, 58]], 1.2)}" fill="${kind === 'storm' ? '#C9C6C9' : '#FFFDF6'}" fill-opacity=".9" stroke="#5A3E1C" stroke-width="2" stroke-linecap="round"/></svg>`; };
+  const bird = i => `<svg class="bird" viewBox="0 0 22 12" style="top:${18 + i * 12}%;animation-duration:${26 + i * 9}s;animation-delay:${-i * 11}s"><path d="M1 8q5-7 10 0q5-7 10 0" fill="none" stroke="#3B2A18" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+  const fall = ['rain', 'storm'].includes(kind) ? '<div class="weather rain"></div>' : kind === 'snow' ? '<div class="weather snow"></div>' : '';
+  sc.innerHTML = sun + Array.from({length: Math.max(day ? 1 : 0, cloudy)}, (_, i) => cloud(i)).join('') + (day && !fall ? bird(0) + bird(1) + bird(2) : '') + fall;
+}
+
+// Little wonders that follow you around: a vine that grows as you scroll, a sparkle trail from your wand, and leaves on the breeze.
+function wonders() {
+  if (wonders.done || calm()) return;
+  wonders.done = true;
+  const vine = document.createElement('div');
+  vine.id = 'vine';
+  document.body.append(vine);
+  const grow = () => { const h = document.documentElement; vine.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 100).toFixed(1) + '%'; };
+  addEventListener('scroll', grow, {passive: true});
+  grow();
+  if (matchMedia('(pointer: fine)').matches) {
+    let last = 0;
+    addEventListener('pointermove', e => {
+      const t = performance.now();
+      if (t - last < 55) return;
+      last = t;
+      const s = document.createElement('span');
+      s.className = 'spark trail';
+      s.textContent = '✦·✧⋆'[Math.floor(Math.random() * 4)];
+      s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--dx:${(Math.random() - .5) * 20}px;--dy:${10 + Math.random() * 20}px;color:${['#E0A21E', '#C98A1F', '#B4553A'][Math.floor(Math.random() * 3)]}`;
+      document.body.append(s);
+      setTimeout(() => s.remove(), 900);
+    }, {passive: true});
+  }
+  const mo = new Date().getMonth() + 1, kinds = mo >= 9 && mo <= 11 ? ['🍂', '🍁', '🍃'] : mo >= 3 && mo <= 5 ? ['🌸', '🍃'] : mo >= 6 && mo <= 8 ? ['🦋', '🌼'] : ['❄️', '✨'];
+  const breeze = () => {
+    if (document.visibilityState === 'visible') {
+      const s = document.createElement('span');
+      s.className = 'drift';
+      s.setAttribute('aria-hidden', 'true');
+      s.textContent = kinds[Math.floor(Math.random() * kinds.length)];
+      const dur = 18 + Math.random() * 14;
+      s.style.cssText = `left:${Math.random() * 95}vw;--dx:${(Math.random() - .5) * 300}px;--rot:${(Math.random() - .5) * 720}deg;animation-duration:${dur}s`;
+      document.body.append(s);
+      setTimeout(() => s.remove(), dur * 1000);
+    }
+    setTimeout(breeze, 9000 + Math.random() * 9000);
+  };
+  setTimeout(breeze, 3000);
+}
+
+// Every card's title is reworded each day, so the page reads fresh every morning even when the facts are steady.
+const DAILY_TITLES = {
+  'wx-h': ['On the porch right now', 'Your weather station says', 'Out the window'],
+  'day-h': ['The shape of today', 'How today looks', 'Today, hour by hour'],
+  'loads-h': ['Best hours for the dryer', 'When the sun pays for chores', 'Laundry on sunshine'],
+  'shade-h': ['Shades, open or shut', 'Curtain call', 'Sun in, sun out'],
+  'cal-h': ['On the docket', 'Coming up for you', 'Your week ahead'],
+  'fc-h': ['The week in weather', 'Seven days out', 'What the sky has planned'],
+  'drive-h': ['How the roads look', 'Drive times', 'Getting around today'],
+  'plan-h': ['Worth planning for', 'Mark the calendar', 'Coming soon'],
+  'road-h': ['Eyes on the road', 'Road cams and slowdowns', 'Before you head out'],
+  'harvest-h': ['What the roof made', 'Sunshine, spent wisely', 'Your solar, in real life'],
+  'road-ahead-h': ['Counting down', 'Coming up the lane', 'Milestones ahead'],
+  'therm-h': ['Three places, one moment', 'Warm here, warm there', 'Temperature check'],
+  'shelf-h': ['Everything you have read', 'The library so far', 'Spines on the shelf'],
+  'play-h': ['Things to do together', 'Little adventures', 'This week, for fun'],
+  'out-h': ['Kid outings nearby', 'Places to go together', 'Family trips'],
+  'bug-h': ['Bugs making the rounds', 'Germ report', 'Sniffles watch'],
+  'look-h': ['What to look for today', 'Walk the land', 'Notes from the field'],
+  'plant-h': ['Into the ground now', 'Sow and plant', 'Planting window'],
+  'forest-h': ['Chores in the food forest', 'Forest garden to-dos', 'Tending the forest'],
+  'pollen-h': ['Sneeze forecast', 'What is in the air', 'Pollen count'],
+  'rare-h': ['Unusual visitors', 'Rare birds about', 'Birders are buzzing'],
+  'burn-h': ['Can you burn today?', 'Brush pile check', 'Burn or wait'],
+  'birds-h': ['Who is visiting', 'Feathered neighbors', 'Birds seen nearby'],
+  'bloom-h': ['Wildflowers out now', 'What is blooming', 'Native blooms'],
+  'food-h': ['Fresh this month', 'Eating with the season', 'What is ripe'],
+  'radar-h': ['Rain on the way?', 'Radar loop', 'Watch the showers'],
+  'ship-h': ['Ships passing by', 'Out on the channel', 'River traffic'],
+  'fish-h': ['Fishing report', 'Will they bite?', 'On the Columbia'],
+  'surf-h': ['Waves this week', 'Should you paddle out?', 'Surf check'],
+  'minus-h': ['Low tides for tide pools', 'Tidepool days', 'Extra-low tides'],
+  'cev-h': ['Going on at the coast', 'Coast happenings', 'Near the beach'],
+  'shell-h': ['Clams and crab', 'Shellfish check', 'Can you dig today?'],
+  'grid-h': ['Where your power comes from', 'The grid this hour', 'How clean is the grid'],
+  'mo-h': ['The month in sunshine', 'A month of solar', 'Day by day'],
+  'bill-h': ['Your power bill', 'This billing cycle', 'What PGE will see'],
+  'pn-h': ['Every panel', 'Panel by panel', 'The array right now'],
+  'wins-h': ['Solar bragging rights', 'Good solar news', 'Little wins'],
+  'read-h': ['A great read for today', 'Something long and good', 'Settle in with this'],
+  'poem-h': ['A poem for today', "Today's verse", 'Read this one aloud'],
+  'books-h': ['Your next book', 'Books picked for you', 'For the nightstand'],
+  'artist-h': ['Portland artist to know', 'Meet a local artist', 'Made in Portland'],
+  'drum-h': ['Groove of the day', 'Listen to this drummer', 'Break of the day'],
+  'bday-h': ['Albums turning a year older', 'Happy birthday, records', 'Record birthdays'],
+  'apod-h': ['Picture from the cosmos', 'A view from space', "NASA's picture today"],
+  'ask-h': ['Ask over dinner', 'Table talk', 'A question for tonight'],
+  'thai-h': ['Thai to try today', 'Say it in Thai', 'A little Thai'],
+  'good-h': ['Something nice', 'Faith in humanity', 'Happy news'],
+  'trend-h': ['What people are searching', 'The internet today', 'Trending now'],
+  'finds-h': ['Tasty new finds', 'New places to eat', 'Portland food news'],
+  'big-h': ['Happening in town', 'Big nights out', 'In Portland soon'],
+  'deal-h': ['On sale this week', 'Grocery deals', 'Cheap eats this week'],
+  'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski conditions'],
+  'mkt-h': ['Money check', 'How markets look', 'Stocks at a glance'],
+  'f1-h': ['F1 corner', 'Race weekend watch', 'Lights out soon'],
+  'gig-h': ['Gigs worth a ticket', 'Live music ahead', 'See a show'],
+  'jazz-h': ['Jazz tonight and soon', 'Where the jazz is', 'Swing by'],
+  'rec-h': ['Spin this today', 'Put this record on', 'Morning listening'],
+  'tv-h': ['New to stream', 'Something to watch', 'Fresh on streaming'],
+  'alb-h': ['Fresh albums', 'New music out', 'Records just released'],
+  'plane-h': ['Up above you', 'Planes overhead', 'Who is flying over'],
+  'trail-h': ['Gorge trails lately', 'Trail notes', 'Hikers say'],
+  'moon-h': ['The moon tonight', 'Moon watch', 'Lunar notes'],
+  'sky-h': ['Look up soon', 'Sky events ahead', 'Things to see overhead'],
+  'quake-h': ['Shakes this week', 'Rumbles nearby', 'Quake check'],
+  'fire-h': ['Fire watch', 'Wildfires in the region', 'Smoke sources'],
+  'elect-h': ['Your next vote', 'Election coming up', 'Ballot box'],
+  'reps-h': ['Your representatives', 'Who speaks for you', 'Your elected folks'],
+  'hist-h': ['On this date', 'This day in history', 'Long ago today'],
+  'near-h': ['History close to home', 'Local history', 'Right around here'],
+  'stories-h': ['Tech and A/V headlines', 'Gadget news', 'In the tech world'],
+  'reviews-h': ['Fresh reviews', 'Worth buying?', 'What reviewers say'],
+  'bkk-h': ['Bangkok today', 'Over in Bangkok', 'Krung Thep now'],
+  'hol-h': ['Holidays ahead', 'Days to celebrate', 'Coming celebrations'],
+};
+function dailyTitles() {
+  const n = Math.floor((new Date(todayIso() + 'T12:00') - new Date(2020, 0, 1)) / 864e5);
+  for (const [id, alts] of Object.entries(DAILY_TITLES)) {
+    const h = $(id);
+    if (!h) continue;
+    if (!h.dataset.base) h.dataset.base = h.textContent;
+    const all = [h.dataset.base, ...alts];
+    h.textContent = all[n % all.length];
+  }
+  // The sketchbook looks a little different each day too: cards lean and tape lands in new spots.
+  document.documentElement.style.setProperty('--tilt', ((n % 5) - 2) * 0.18 + 'deg');
+  document.documentElement.dataset.day = n % 3;
+}
+
 async function load() {
   for (const url of ['dashboard.json', 'sample.json']) {
     try {
@@ -2152,16 +2360,33 @@ function renderBooks() {
   if (!b) return;
   $('books-meta').textContent = `From your ${b.read_count} books on Goodreads`;
   const stars = n => n ? '★'.repeat(n) : '';
-  $('books').innerHTML = (b.picks.length ? b.picks.slice(0, 5).map(x => `<a class="book" href="${esc(x.url)}" target="_blank" rel="noopener">
-      ${x.cover ? `<img src="${esc(x.cover)}" alt="" loading="lazy">` : '<span class="book-ph" aria-hidden="true">📚</span>'}
-      <span><b>${esc(x.title)}</b><small>${esc(x.author)} · ${x.year}</small><small class="why">${esc(x.because)}</small></span></a>`).join('')
-    : '<p class="note">No new books from your favorite authors right now.</p>') +
+  // One pick for today, changing each day: new books first, then unread favorites, then your to-read pile.
+  const all = [...(b.picks || []), ...(b.backlist || []), ...(b.pile || [])];
+  const day = Math.floor((new Date(todayIso() + 'T12:00') - new Date(2020, 0, 1)) / 864e5);
+  const pick = all.length ? all[day % all.length] : null, rest = all.filter(x => x !== pick).slice(0, 3);
+  const cover = x => x.cover ? `<img src="${esc(x.cover)}" alt="" loading="lazy">` : bookDoodle(x);
+  $('books').innerHTML = (pick ? `<a class="book-today" href="${esc(pick.url)}" target="_blank" rel="noopener">${cover(pick)}
+      <span><small class="k">Today's pick</small><b>${esc(pick.title)}</b><small>${esc(pick.author)}${pick.year ? ' · ' + pick.year : ''}</small><small class="why">${esc(pick.because)}</small></span></a>` : '') +
+    (rest.length ? rest.map(x => `<a class="book" href="${esc(x.url)}" target="_blank" rel="noopener">${cover(x)}
+      <span><b>${esc(x.title)}</b><small>${esc(x.author)}${x.year ? ' · ' + x.year : ''}</small><small class="why">${esc(x.because)}</small></span></a>`).join('')
+    : pick ? '' : '<p class="note">Rate a few more books on Goodreads and suggestions will show up here.</p>') +
     (b.recent.length ? `<p class="note">Recently read: ${b.recent.map(r => `${esc(r.title)} <span class="stars">${stars(r.rating)}</span>`).join(' · ')}</p>` : '');
+}
+
+// A little drawn book cover when Open Library has no picture.
+function bookDoodle(x) {
+  const c = ['#B4553A', '#5E8A2C', '#3D6E8C', '#C98A1F', '#6E5288'][(x.title.length + x.author.length) % 5], P = pen(x.title.length * 7 + 3);
+  const words = x.title.split(' '), lines = [];
+  for (const w of words) { const l = lines[lines.length - 1]; if (l && (l + ' ' + w).length <= 11) lines[lines.length - 1] = l + ' ' + w; else lines.push(w); }
+  return `<svg class="book-svg dd drawn" viewBox="0 0 80 112" aria-hidden="true"><rect x="6" y="4" width="68" height="104" rx="3" fill="${c}"/>
+    <rect x="6" y="4" width="8" height="104" fill="rgba(0,0,0,.18)"/>${ink(P.rect(6, 4, 68, 104, .8))}${ink(P.line(18, 78, 66, 78, .5), 'ink thin')}
+    ${lines.slice(0, 4).map((l, i) => `<text x="42" y="${24 + i * 13}" text-anchor="middle" style="fill:#FFF8E6;font-size:12px">${esc(l.slice(0, 13))}</text>`).join('')}
+    <text x="42" y="94" text-anchor="middle" style="fill:#FFF8E6;font-size:9.5px">${esc(x.author.split(' ').slice(-1)[0])}</text></svg>`;
 }
 
 function renderJoy() {
   const shelves = () => document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
-  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, shelves].forEach(tryRender);
+  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, scene, dailyTitles, shelves].forEach(tryRender);
 }
 
 // Long cards start trimmed with a "Show all" button so the page stays skimmable.
@@ -4087,12 +4312,16 @@ document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click'
   render();
   sketch();
   magic();
+  wonders();
   // Pick up each new update (every 15 min or so) while the page is open, and right away when you come back to it.
-  let checked = Date.now();
+  // At midnight the page redraws for the new day even before the new data lands, then again when it does.
+  let checked = Date.now(), day = todayIso();
   const refresh = async () => {
     checked = Date.now();
     const n = await load();
-    if (n && !n.sample && n.generated_at !== D.generated_at) { D = n; render(); }
+    const fresh = n && !n.sample && n.generated_at !== D.generated_at;
+    if (fresh) D = n;
+    if (fresh || day !== todayIso()) { day = todayIso(); render(); }
   };
   setInterval(refresh, 5 * 60 * 1000);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && Date.now() - checked > 60 * 1000) refresh(); });

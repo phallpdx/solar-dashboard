@@ -7,6 +7,53 @@ import urllib.parse
 
 # key: (title, poet, year, text, excerpt?)
 POEMS = {
+    "dreamwithin": ("A Dream Within a Dream", "Edgar Allan Poe", 1849, """Take this kiss upon the brow!
+And, in parting from you now,
+Thus much let me avow —
+You are not wrong, who deem
+That my days have been a dream;
+Yet if hope has flown away
+In a night, or in a day,
+In a vision, or in none,
+Is it therefore the less gone?
+All that we see or seem
+Is but a dream within a dream.
+
+I stand amid the roar
+Of a surf-tormented shore,
+And I hold within my hand
+Grains of the golden sand —
+How few! yet how they creep
+Through my fingers to the deep,
+While I weep — while I weep!
+O God! Can I not grasp
+Them with a tighter clasp?
+O God! can I not save
+One from the pitiless wave?
+Is all that we see or seem
+But a dream within a dream?""", False),
+    "alone": ("Alone", "Edgar Allan Poe", 1829, """From childhood's hour I have not been
+As others were—I have not seen
+As others saw—I could not bring
+My passions from a common spring—
+From the same source I have not taken
+My sorrow—I could not awaken
+My heart to joy at the same tone—
+And all I lov'd—I lov'd alone—
+Then—in my childhood—in the dawn
+Of a most stormy life—was drawn
+From ev'ry depth of good and ill
+The mystery which binds me still—
+From the torrent, or the spring—
+From the red cliff of the mountain—
+From the sun that 'round me roll'd
+In its autumn tint of gold—
+From the lightning in the sky
+As it pass'd me flying by—
+From the thunder, and the storm—
+And the cloud that took the form
+(When the rest of Heaven was blue)
+Of a demon in my view—""", False),
     "raven": ("The Raven", "Edgar Allan Poe", 1845, """Once upon a midnight dreary, while I pondered, weak and weary,
 Over many a quaint and curious volume of forgotten lore—
 While I nodded, nearly napping, suddenly there came a tapping,
@@ -435,7 +482,7 @@ def _occasions(day):
         (d(6, 20), d(6, 21), "The summer solstice", ["sonnet18"]),
         (d(7, 3), d(7, 4), "Independence Day", ["itoo", "colossus"]),
         (labor - dt.timedelta(days=2), labor, "Labor Day weekend", ["america"]),
-        (d(10, 24), d(10, 31), "Halloween week", ["raven"]),
+        (d(10, 24), d(10, 31), "Halloween week", ["alone", "dreamwithin", "raven"]),
         (d(10, 28), d(10, 28), "The Statue of Liberty was dedicated on this day in 1886", ["colossus"]),
         (d(11, 1), d(11, 2), "Día de los Muertos", ["death"]),
         (d(11, 10), d(11, 11), "Veterans Day", ["flanders"]),
@@ -484,14 +531,19 @@ def _weather(today, season):
 
 
 def poem_of_the_day(day, today_forecast=None):
-    hits = [o for o in _occasions(day) if o[0] <= day <= o[1]]
+    # An occasion's poems count down to its day, one per day with the main one on the day itself,
+    # so a week-long window never shows the same poem twice. Other days follow the weather and season.
+    # A month-long occasion gets every other day.
+    near = lambda o: (o[1] - day).days < len(o[3])
+    hits = [o for o in _occasions(day) if o[0] <= day <= o[1] and (near(o) or ((o[1] - o[0]).days >= 14 and day.toordinal() % 2 == 0))]
     if hits:
         start, end, why, keys = min(hits, key=lambda o: (o[1] - o[0]).days)
+        key = keys[len(keys) - 1 - (end - day).days] if near((start, end, why, keys)) else keys[day.toordinal() // 2 % len(keys)]
     else:
         season = _season(day)
         weather = _weather(today_forecast, season)
         keys, why = weather or (SEASONS[season], f"It's {season}")
-    key = keys[day.toordinal() % len(keys)]
+        key = keys[day.toordinal() % len(keys)]
     title, poet, year, text, excerpt = POEMS[key]
     return {"title": title, "poet": poet, "year": year, "text": text, "excerpt": excerpt, "why": why,
             "url": "https://duckduckgo.com/?" + urllib.parse.urlencode({"q": f"! poetryfoundation {title} {poet}"})}

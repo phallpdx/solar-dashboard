@@ -116,7 +116,20 @@ def _shelf(user, shelf):
 
 
 def _norm(title):
-    return re.sub(r"[^a-z0-9]+", " ", re.split(r"[:(]", title.lower())[0]).strip()
+    t = re.sub(r"[^a-z0-9]+", " ", re.split(r"[:(]", title.lower())[0]).strip()
+    return re.sub(r"^(a|an|the) ", "", t)
+
+
+def _reissue(title, author, year):
+    """True when the same title by the same author came out years earlier (a new edition, not a new book)."""
+    url = "https://openlibrary.org/search.json?" + urllib.parse.urlencode(
+        {"title": _norm(title), "author": author, "sort": "old", "limit": 5, "fields": "title,first_publish_year"})
+    try:
+        with _open(url) as r:
+            docs = json.load(r).get("docs") or []
+    except Exception:
+        return False
+    return any(_norm(d.get("title") or "") == _norm(title) and (d.get("first_publish_year") or year) < year - 2 for d in docs)
 
 
 REPACKAGED = re.compile(r"\b(collection|collected|stories|trilogy|omnibus|box(ed)? set|books? \d|volumes? \d|summary|study guide|"
@@ -168,6 +181,8 @@ def book_picks(user, today, n=8):
                     or len(d.get("author_name") or [author]) > 1 or "eng" not in (d.get("language") or ["eng"])):
                 continue
             seen.add(t)
+            if _reissue(d["title"], author, year):
+                continue
             picks.append({"title": d["title"], "author": author, "year": year, "because": f"You rated {author} highly",
                           "url": "https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{d['title']} {author}"}),
                           "cover": f"https://covers.openlibrary.org/b/id/{d['cover_i']}-M.jpg" if d.get("cover_i") else None})

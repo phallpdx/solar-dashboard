@@ -726,9 +726,9 @@ def fetch_culture(state, now_utc):
                 errors.append(f"goodreads: {e}")
         user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
-        if store.get("books_user") != user or store.get("books_v") != 4:  # v4 adds unread classics by loved authors and the to-read pile
+        if store.get("books_user") != user or store.get("books_v") != 5:  # v5 adds unread classics, the to-read pile, and skips translations
             store.pop("books_at", None)
-            store["books_user"], store["books_v"] = user, 4
+            store["books_user"], store["books_v"] = user, 5
         _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
     return "; ".join(errors) or None
 

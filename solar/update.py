@@ -48,6 +48,9 @@ def zone(name):
         return ZoneInfo("America/Los_Angeles")
 
 
+LOCAL = zone("America/Los_Angeles")
+
+
 def env(name):
     return (os.environ.get(name) or "").strip()
 
@@ -606,8 +609,12 @@ def _iss(out, now_utc):
 
 def _refresh(store, key, fn, every_hours, now_utc, errors):
     stamp = store.get(key + "_at")
-    if stamp and (now_utc - dt.datetime.fromisoformat(stamp)).total_seconds() < every_hours * 3600:
-        return
+    if stamp:
+        then = dt.datetime.fromisoformat(stamp)
+        # Anything checked at most daily also starts fresh at local midnight, so each morning has the new day's picks.
+        new_day = every_hours <= 24 and then.astimezone(LOCAL).date() != now_utc.astimezone(LOCAL).date()
+        if not new_day and (now_utc - then).total_seconds() < every_hours * 3600:
+            return
     try:
         store[key] = fn()
         store[key + "_at"] = now_utc.isoformat()
@@ -700,9 +707,9 @@ def fetch_culture(state, now_utc):
                 errors.append(f"goodreads: {e}")
         user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
-        if store.get("books_user") != user or store.get("books_v") != 3:  # v3 also skips new editions of old books
+        if store.get("books_user") != user or store.get("books_v") != 4:  # v4 adds unread classics by loved authors and the to-read pile
             store.pop("books_at", None)
-            store["books_user"], store["books_v"] = user, 3
+            store["books_user"], store["books_v"] = user, 4
         _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
     return "; ".join(errors) or None
 

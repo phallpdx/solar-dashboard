@@ -147,8 +147,23 @@ def _long_gone(author, today):
     return bool(years) and int(years[-1]) < today.year - 3
 
 
+def _ol_search(params):
+    try:
+        with _open("https://openlibrary.org/search.json?" + urllib.parse.urlencode(params)) as r:
+            return json.load(r).get("docs") or []
+    except Exception:
+        return []
+
+
+def _book(d, author, because, year=None):
+    return {"title": d["title"], "author": author, "year": year or d.get("first_publish_year"), "because": because,
+            "url": "https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{d['title']} {author}"}),
+            "cover": f"https://covers.openlibrary.org/b/id/{d['cover_i']}-M.jpg" if d.get("cover_i") else None}
+
+
 def book_picks(user, today, n=8):
-    """New and recent books by the authors you rate highest, skipping ones already on your shelves."""
+    """Books for you: new ones by the authors you rate highest, the best-known ones of theirs you haven't read,
+    and what's waiting on your to-read pile. Anything already on your shelves is skipped."""
     read = _shelf(user, "read")
     if not read:
         raise RuntimeError("The Goodreads shelf came back empty; is the profile public?")
@@ -163,34 +178,34 @@ def book_picks(user, today, n=8):
         if b["author"]:
             score[b["author"]] = score.get(b["author"], 0) + {5: 3, 4: 2, 3: 0.5}.get(b["rating"], 0.25)
     authors = sorted(score, key=score.get, reverse=True)[:12]
-    picks, seen = [], set()
+    loved = {a: max((b for b in read if b["author"] == a), key=lambda b: b["rating"])["title"] for a in authors}
+    fields = "title,first_publish_year,key,cover_i,author_name,language"
+    ok = lambda d, author: (d.get("title") and not REPACKAGED.search(d["title"]) and len(d.get("author_name") or [author]) <= 1
+                            and "eng" in (d.get("language") or ["eng"]))
+    picks, backlist, seen = [], [], set(known)
     for author in authors:
-        if _long_gone(author, today):
-            continue  # a classic author's "new" books are reprints and compilations
-        url = "https://openlibrary.org/search.json?" + urllib.parse.urlencode(
-            {"author": author, "sort": "new", "limit": 15, "fields": "title,first_publish_year,key,cover_i,author_name,language"})
-        try:
-            with _open(url) as r:
-                docs = json.load(r).get("docs") or []
-        except Exception:
-            continue
-        for d in docs:
-            year = d.get("first_publish_year") or 0
+        short = re.split(r"[:(]", loved[author])[0].strip()
+        if not _long_gone(author, today):  # a classic author's "new" books are reprints and compilations
+            for d in _ol_search({"author": author, "sort": "new", "limit": 15, "fields": fields}):
+                year, t = d.get("first_publish_year") or 0, _norm(d.get("title") or "")
+                if today.year - 2 <= year <= today.year and t not in seen and ok(d, author) and not _reissue(d["title"], author, year):
+                    seen.add(t)
+                    picks.append(_book(d, author, f"New from {author}, since you loved {short}", year))
+                    break  # one per author keeps the list varied
+        # Their best-known books you haven't read yet, so there's always something good to suggest.
+        for d in _ol_search({"author": author, "sort": "editions", "limit": 8, "fields": fields}):
             t = _norm(d.get("title") or "")
-            if (year < today.year - 2 or year > today.year or not t or t in known or t in seen or REPACKAGED.search(d.get("title") or "")
-                    or len(d.get("author_name") or [author]) > 1 or "eng" not in (d.get("language") or ["eng"])):
-                continue
-            seen.add(t)
-            if _reissue(d["title"], author, year):
-                continue
-            picks.append({"title": d["title"], "author": author, "year": year, "because": f"You rated {author} highly",
-                          "url": "https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{d['title']} {author}"}),
-                          "cover": f"https://covers.openlibrary.org/b/id/{d['cover_i']}-M.jpg" if d.get("cover_i") else None})
-            break  # one per author keeps the list varied
-        if len(picks) >= n:
+            if t and t not in seen and ok(d, author) and (d.get("first_publish_year") or 0) <= today.year:
+                seen.add(t)
+                backlist.append(_book(d, author, f"You haven't read this one, and you loved {short}"))
+                break
+        if len(picks) >= n and len(backlist) >= n:
             break
+    pile = [{"title": b["title"], "author": b["author"], "year": int(b["year"]) if (b["year"] or "").isdigit() else None,
+             "because": "Already waiting on your to-read pile", "cover": None,
+             "url": "https://www.goodreads.com/search?" + urllib.parse.urlencode({"q": f"{b['title']} {b['author']}"})} for b in to_read[:5]]
     recent = sorted([b for b in read if b["read_at"]], key=lambda b: _when(b["read_at"]), reverse=True)[:3]
-    return {"picks": picks, "read_count": len(read), "to_read_count": len(to_read),
+    return {"picks": picks, "backlist": backlist[:n], "pile": pile, "read_count": len(read), "to_read_count": len(to_read),
             "recent": [{"title": b["title"], "author": b["author"], "rating": b["rating"]} for b in recent],
             "top_authors": authors[:5]}
 

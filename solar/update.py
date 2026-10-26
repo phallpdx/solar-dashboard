@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outside, pge, places, poems, pollen, releases, roads, science, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -688,6 +688,25 @@ def fetch_almanac(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_outings(state, now_utc):
+    """Mountains out, mushroom outlook, whales, new openings and the picture of the day."""
+    store, errors = state.setdefault("outings", {}), []
+    now = now_utc.astimezone(zone("America/Los_Angeles"))
+    today = now.date()
+    out = state.get("outside") or {}
+    if out.get("lat"):
+        def skies():
+            w = outings.weather(out["lat"], out["lon"])
+            return {"mountains": outings.mountains(w, out["lat"], out["lon"], now), "mushrooms": outings.mushrooms(w, today)}
+        _refresh(store, "skies", skies, 1, now_utc, errors)
+    _refresh(store, "whales", lambda: outings.whales(today), 12, now_utc, errors)
+    _refresh(store, "openings", lambda: outings.openings(today), 6, now_utc, errors)
+    if (store.get("picture") or {}).get("date") != today.isoformat():
+        store.pop("picture_at", None)
+    _refresh(store, "picture", lambda: outings.wiki_picture(today), 24, now_utc, errors)
+    return "; ".join(errors) or None
+
+
 def fetch_culture(state, now_utc):
     """What's trending, book picks from Goodreads and long reads."""
     store, errors = state.setdefault("culture", {}), []
@@ -1178,6 +1197,16 @@ def ships_view(state, now_utc):
 
 # ---------------------------------------------------------------- Assemble
 
+def outings_view(state, today):
+    o = state.get("outings") or {}
+    day = dt.date.fromisoformat(today)
+    pic = o.get("picture")
+    sk = o.get("skies") or {}
+    return {"mountains": sk.get("mountains"), "mushrooms": sk.get("mushrooms"), "whales": o.get("whales"),
+            "openings": o.get("openings"), "picture": pic if (pic or {}).get("date") == today else None,
+            "daily": outings.rotation(day, sk.get("mushrooms"))}
+
+
 def build(state, status, now_utc):
     solar = solar_view(state, now_utc)
     weather = weather_view(state)
@@ -1296,6 +1325,7 @@ def build(state, status, now_utc):
         "picks": daily.picks(dt.date.fromisoformat(today)),
         "album_birthdays": (al.get("albums") or {}).get("albums") if (al.get("albums") or {}).get("date") == today else None,
         "good_news": al.get("good_news"),
+        "outings": outings_view(state, today),
         "trending": {"google": cu.get("trends"), "wiki": (cu.get("wiki") or {}).get("articles")
                      if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
         "books": cu.get("books") if cu.get("books_user") else None,
@@ -1322,7 +1352,7 @@ def main():
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
-                     ("culture", fetch_culture), ("science", fetch_science)):
+                     ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

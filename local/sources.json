@@ -3,7 +3,7 @@
     "url": "http://localhost:1234",
     "model": "google/gemma-4-26b-a4b-qat",
     "context_length": 16384,
-    "max_chars_per_page": 9000,
+    "max_chars_per_page": 6000,
     "timeout_seconds": 900
   },
   "push_branch": "claude/local-lists",

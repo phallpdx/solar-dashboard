@@ -1342,7 +1342,7 @@ function renderTrends() {
     ? `<li><a href="${esc(x.url || 'https://www.google.com/search?q=' + encodeURIComponent(x.title))}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.story ? `<small>${esc(x.story)}${x.source ? ' · ' + esc(x.source) : ''}</small>` : ''}</a><span class="heat">${esc(x.traffic)}</span></li>`
     : trendTab === 'wiki'
     ? `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.about ? `<small>${esc(x.about)}</small>` : ''}</a><span class="heat">${fmt(x.views)}</span></li>`
-    : `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b><small>r/${esc(x.sub)} · ${fmt(x.comments)} comments</small></a><span class="heat">▲${fmt(x.score)}</span></li>`).join('')}</ol>`;
+    : `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b><small>r/${esc(x.sub)}${x.comments != null ? ` · ${fmt(x.comments)} comments` : ''}</small></a>${x.score != null ? `<span class="heat">▲${fmt(x.score)}</span>` : ''}</li>`).join('')}</ol>`;
 }
 
 function renderBooks() {

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Noto+Sans+Runic&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&family=Jost:wght@400..800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Noto+Sans+Runic&family=EB+Garamond:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&family=Shrikhand&family=Jost:wght@400..800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
 *{box-sizing:border-box}
@@ -1161,6 +1161,98 @@ header .refresh .link{color:var(--ink)}
   .group:hover .sec-icon{animation:none;transform:rotate(-12deg)}
   .sec-icon{transition:transform .3s ease}
 }
+/* ---- Funkier: Shrikhand headlines, rainbow stripes, rounded corners and starburst badges ---- */
+:root{--funk:'Shrikhand',var(--display);--stripes:linear-gradient(180deg,var(--orange) 0 33.4%,var(--mustard) 0 66.7%,var(--teal) 0)}
+header h1,header.night h1{font-family:var(--funk);font-weight:400;font-size:70px;letter-spacing:0;line-height:1.05;color:var(--brick);text-shadow:3px 3px 0 var(--mustard),6px 6px 0 var(--ink)}
+header.night h1{color:#F6EEDC;text-shadow:3px 3px 0 var(--orange),6px 6px 0 #0F1A20}
+header,header.night,header.sunny{border-radius:28px;border-width:2.5px;box-shadow:8px 8px 0 var(--ink);overflow:hidden}
+header::before,header.night::before{background:repeating-linear-gradient(180deg,var(--orange) 0 14px,transparent 14px 18px);border-radius:50%;
+  -webkit-mask:linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0);box-shadow:0 0 0 10px #F3CF86,0 0 0 18px var(--mustard),0 0 0 26px #F3CF86,0 0 0 34px var(--orange)}
+header.night::before{background:#F1E9D6;box-shadow:0 0 0 10px #2C4E58,0 0 0 14px rgba(241,233,214,.35)}
+@media (max-width:600px){header h1,header.night h1{font-size:48px;text-shadow:2px 2px 0 var(--mustard),4px 4px 0 var(--ink)}}
+
+.secnav a{border-radius:999px;padding:0 16px}
+.secnav a.on{background:var(--orange);border-color:var(--ink);color:#FFF6E6;box-shadow:2px 2px 0 var(--ink)}
+.secnav a:hover{background:var(--mustard)}
+
+.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-family:var(--funk);font-weight:400;letter-spacing:0;line-height:1.1;font-size:40px}
+.group[data-tier=town] .sec-head .sec-h{font-size:34px}.group[data-tier=world] .sec-head .sec-h{font-size:28px}
+.sec-head,.group[data-tier] .sec-head,.group[data-sec=delights] .sec-head{border-top:0;padding-top:20px}
+.sec-head::before,.group[data-tier] .sec-head::before{inset:0 0 auto 0;width:auto;height:15px;background:linear-gradient(180deg,var(--ink) 0 5px,transparent 5px 7px,var(--accent) 7px 11px,transparent 11px 12px,var(--ink) 12px)}
+.sec-icon,.group[data-tier] .sec-icon{border:0 !important;border-radius:0 !important;width:64px;height:64px;
+  clip-path:polygon(50% 0%,59% 16%,75% 7%,77% 25%,95% 25%,88% 42%,100% 50%,88% 58%,95% 75%,77% 75%,75% 93%,59% 84%,50% 100%,41% 84%,25% 93%,23% 75%,5% 75%,12% 58%,0% 50%,12% 42%,5% 25%,23% 25%,25% 7%,41% 16%)}
+.sec-icon svg{width:50%;height:50%}
+@media (prefers-reduced-motion:no-preference){.group:hover .sec-icon{transform:rotate(30deg)}.sec-icon{transition:transform .5s cubic-bezier(.34,1.6,.5,1)}}
+@media (max-width:600px){.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{font-size:30px}.sec-icon,.group[data-tier] .sec-icon{width:50px;height:50px}}
+
+.tier-h{background:var(--walnut);border-radius:22px 22px 0 0;margin-bottom:22px;box-shadow:0 6px 0 var(--orange),0 12px 0 var(--mustard),0 18px 0 var(--teal)}
+.tier-h b{font-family:var(--funk);font-weight:400;font-size:28px;letter-spacing:.01em;text-transform:none;color:#FFF3DA}
+
+.card,.joy-card{border-radius:18px;border-width:2px;box-shadow:4px 4px 0 rgba(31,26,20,.9);overflow:hidden}
+.card:has(.leaflet-container,iframe){overflow:hidden}
+.group .card:not(.joy-card){border-top-width:2px;background-image:linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 8px,color-mix(in srgb,var(--accent) 45%,#F8F2E4) 8px 11px,transparent 11px)}
+.joy-card{border-top-width:2px;background-image:linear-gradient(180deg,var(--jc,var(--ink)) 0 6px,transparent 6px 8px,color-mix(in srgb,var(--jc,#6B6153) 45%,#F8F2E4) 8px 11px,transparent 11px)}
+.tiles .tile:nth-child(n){border-radius:24px;border-width:2px;box-shadow:4px 4px 0 var(--ink);
+  background-image:repeating-linear-gradient(180deg,transparent 0 calc(100% - 22px),rgba(255,246,226,.22) calc(100% - 22px) calc(100% - 17px),transparent calc(100% - 17px) calc(100% - 12px),rgba(255,246,226,.22) calc(100% - 12px) calc(100% - 7px),transparent calc(100% - 7px))}
+.tiles .tile .big{font-family:var(--funk);font-weight:400;font-size:46px}
+.mini,.joy-btn,.unclamp,header .mini,.kid-setup button,.seg,.seg button{border-radius:999px}
+.mini:hover,.joy-btn:hover,.unclamp:hover{box-shadow:2px 2px 0 var(--ink)}
+.sp,.bug,.brk,.idea,.rec,.load,.yd,.look-col,.joy-stats div,.sday,.fd,.hours div,.facts .mini,.facts>div,.rep,.recap,.open-pick,.ask,.rain,.chip,.pill{border-radius:12px}
+.shelf-h{font-family:var(--funk);font-weight:400;font-size:26px;letter-spacing:0;text-transform:none}
+.shelf-h::after{height:9px;background:linear-gradient(180deg,var(--orange) 0 3px,var(--mustard) 0 6px,var(--teal) 0)}
+.brief{border-radius:6px}
+.brief h2{font-family:var(--funk);font-weight:400;font-size:34px;letter-spacing:0;color:var(--brick)}
+.learn{border-radius:18px}
+#vine{height:6px;background:var(--stripes)}
+/* ---- Warm it up: teak-paneled walls, manila and color-tinted cards, solid color section signs ---- */
+:root{--sheet:#F4E3BF;--paper:#F4E3BF;--card:#F4E3BF;--line:rgba(31,26,20,.25)}
+html{background:#8A5530}
+body{background-color:#8F5A32;
+  background-image:repeating-linear-gradient(90deg,transparent 0 118px,rgba(40,20,8,.55) 118px 121px,rgba(255,215,160,.12) 121px 123px,transparent 123px 124px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .14' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .16 0 0 0 0 .05 0 0 0 .75 0'/%3E%3C/filter%3E%3Crect width='360' height='360' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(1200px 600px at 50% -100px,rgba(255,200,120,.35),transparent 70%);
+  background-size:auto,360px 360px,auto;background-attachment:fixed}
+.secnav{background:rgba(58,32,16,.93);border-bottom:3px solid var(--mustard)}
+.secnav a{background:#F4E3BF}
+
+/* Section signs: a solid color panel with a cream headline */
+.sec-head,.group[data-tier] .sec-head,.group[data-sec=delights] .sec-head{background:var(--accent);color:#FFF4DC;border:2px solid var(--ink);border-radius:20px;padding:24px 22px 18px;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+.sec-head::before,.group[data-tier] .sec-head::before{inset:0 0 auto 0;height:12px;background:linear-gradient(180deg,var(--orange) 0 4px,var(--mustard) 4px 8px,var(--teal) 8px)}
+.group[data-sec=solar] .sec-head::before,.group[data-sec=delights] .sec-head::before{background:linear-gradient(180deg,var(--mustard) 0 4px,var(--brick) 4px 8px,var(--teal) 8px)}
+.group[data-sec=river] .sec-head::before,.group[data-sec=science] .sec-head::before{background:linear-gradient(180deg,var(--orange) 0 4px,var(--mustard) 4px 8px,var(--olive) 8px)}
+.sec-head .sec-h,.group[data-tier] .sec-head .sec-h{color:#FFF4DC;text-shadow:3px 3px 0 rgba(31,26,20,.55)}
+.sec-sub,.group[data-tier] .sec-sub{color:#FFF4DC;opacity:.9}
+.sec-icon,.group[data-tier] .sec-icon{background:var(--mustard) !important}
+.group[data-sec=today] .sec-icon,.group[data-sec=world] .sec-icon,.group[data-sec=doodles] .sec-icon{background:var(--orange) !important}
+.sec-icon svg{stroke:var(--ink)}
+.doodle{stroke:#FFF4DC;opacity:.35}
+.sec-tools button{background:#FFF4DC;border-radius:999px}
+.group[data-sec=today] .sec-head .sec-h,.group[data-sec=world] .sec-head .sec-h{color:var(--ink);text-shadow:3px 3px 0 rgba(255,244,220,.6)}
+.group[data-sec=today] .sec-sub,.group[data-sec=world] .sec-sub{color:var(--ink)}
+
+/* Tier bands on the wall */
+.tier-h{background:#2A1A10;border:2px solid var(--ink)}
+.tier-h small{color:#E9CFA0}
+
+/* Cards: manila, each tinted toward its section's color */
+.card,.joy-card{background-color:color-mix(in srgb,var(--accent,#C47A1E) 16%,#F4E3BF)}
+.joy-card{background-color:color-mix(in srgb,var(--jc,#C47A1E) 18%,#F4E3BF)}
+.tile{background-color:#F4E3BF}
+.sp,.bug,.brk,.load,.yd,.look-col,.look-weather p,.joy-stats div,.sun-clouds span,.drum-ic,.good-ic,.rain-drop,.rain-tot span,.heat,.trend-tabs .chip,.spot,.shade-ic,.sday,
+.facts .mini,.facts>div,.mini,.pill,.chip,.rep,.open-pick,.kid-setup,.empty,.banner,.party,.yard-alert,.ask{background:rgba(255,248,232,.55)}
+.fd,.hours div,.idea,.rec,.recap{background:color-mix(in srgb,var(--accent) 22%,#FBF0D8)}
+.day-h{background:color-mix(in srgb,var(--accent) 16%,#F4E3BF)}
+.card.clamped::after{background:linear-gradient(transparent,color-mix(in srgb,var(--accent,#C47A1E) 16%,#F4E3BF) 75%)}
+.j-apod{background-color:#1F2A33}
+.brief{background:linear-gradient(180deg,transparent 64px,rgba(210,86,30,.55) 64px 66px,transparent 66px),repeating-linear-gradient(transparent 0 29px,rgba(76,127,166,.22) 29px 30px),#FBF2DC}
+
+/* Anything sitting straight on the wall gets cream ink or a little card of its own */
+.shelf-h{color:#FFF4DC;text-shadow:2px 2px 0 rgba(31,26,20,.6)}
+.shelf-h span{text-shadow:none}
+.allclear,.fold-note,#foot,.sec-body>.note{color:#FFF4DC}
+.sec-body>.note,.sec-body>.chips{background:rgba(31,20,10,.45);border-radius:14px;padding:10px 14px}
+.allclear{background:rgba(31,20,10,.45);border-radius:999px;padding:6px 14px;align-self:flex-start}
+#foot{padding:0 4px}
 </style>
 </head>
 <body>

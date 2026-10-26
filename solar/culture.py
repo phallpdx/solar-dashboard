@@ -119,6 +119,21 @@ def _norm(title):
     return re.sub(r"[^a-z0-9]+", " ", re.split(r"[:(]", title.lower())[0]).strip()
 
 
+REPACKAGED = re.compile(r"\b(collection|collected|stories|trilogy|omnibus|box(ed)? set|books? \d|volumes? \d|summary|study guide|"
+                        r"sampler|selected|complete|works of|novels|anthology|calendar|journal|coloring)\b", re.I)
+
+
+def _long_gone(author, today):
+    """True when Open Library says the author died more than a few years ago."""
+    try:
+        with _open("https://openlibrary.org/search/authors.json?" + urllib.parse.urlencode({"q": author, "limit": 1})) as r:
+            doc = (json.load(r).get("docs") or [{}])[0]
+    except Exception:
+        return False
+    years = re.findall(r"\b(1\d{3}|20\d{2})\b", doc.get("death_date") or "")
+    return bool(years) and int(years[-1]) < today.year - 3
+
+
 def book_picks(user, today, n=8):
     """New and recent books by the authors you rate highest, skipping ones already on your shelves."""
     read = _shelf(user, "read")
@@ -137,6 +152,8 @@ def book_picks(user, today, n=8):
     authors = sorted(score, key=score.get, reverse=True)[:12]
     picks, seen = [], set()
     for author in authors:
+        if _long_gone(author, today):
+            continue  # a classic author's "new" books are reprints and compilations
         url = "https://openlibrary.org/search.json?" + urllib.parse.urlencode(
             {"author": author, "sort": "new", "limit": 15, "fields": "title,first_publish_year,key,cover_i,author_name,language"})
         try:
@@ -147,7 +164,8 @@ def book_picks(user, today, n=8):
         for d in docs:
             year = d.get("first_publish_year") or 0
             t = _norm(d.get("title") or "")
-            if year < today.year - 2 or not t or t in known or t in seen or "eng" not in (d.get("language") or ["eng"]):
+            if (year < today.year - 2 or year > today.year or not t or t in known or t in seen or REPACKAGED.search(d.get("title") or "")
+                    or len(d.get("author_name") or [author]) > 1 or "eng" not in (d.get("language") or ["eng"])):
                 continue
             seen.add(t)
             picks.append({"title": d["title"], "author": author, "year": year, "because": f"You rated {author} highly",

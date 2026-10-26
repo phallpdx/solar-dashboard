@@ -272,9 +272,19 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 /* ---------- daily fun ---------- */
 .group[data-sec=delights]{--accent:#D9468F;--tint:#FFE6F2}
 .group[data-sec=delights] .sec-head{background:linear-gradient(120deg,#FFE3F1 0%,#FFF0D1 50%,#E2F0FF 100%)}
-.joy{columns:3 300px;column-gap:16px}
-.joy>.card{break-inside:avoid;margin:0 0 16px;width:100%}
-.joy>.j-wins{column-span:all}
+.joy{display:flex;flex-direction:column;gap:26px}
+.shelf{display:flex;flex-direction:column;gap:12px}
+.shelf-h{margin:0;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#8A5A7A}
+.shelf-h span{font-size:18px;letter-spacing:0}
+.shelf-h::after{content:"";flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(217,70,143,.35),rgba(255,154,61,.25) 40%,transparent)}
+.shelf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.shelf.two .shelf-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}
+.shelf.one .shelf-grid{grid-template-columns:minmax(0,1fr)}
+.shelf.two-even .shelf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
+.stack>.card{flex:1}
+@media (max-width:1000px){.shelf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shelf-grid>.card:last-child:nth-child(odd){grid-column:1/-1}}
+@media (max-width:640px){.shelf-grid,.shelf.two .shelf-grid,.shelf.two-even .shelf-grid{grid-template-columns:minmax(0,1fr)}}
 .joy-card{border:0;position:relative;overflow:hidden}
 .joy-card h2::before{display:none!important}
 .joy-card h2{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--jc,#5E636E)}
@@ -285,6 +295,50 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .j-albums{background:linear-gradient(150deg,#EFE6FF,#E1D6FB);--jc:#5B34B8}
 .j-thai{background:linear-gradient(150deg,#E2F6EE,#CDEFE4);--jc:#0D7A5F}
 .j-ask{background:linear-gradient(150deg,#E5F0FF,#D4E6FF);--jc:#1D5FB8}
+.j-local{background:linear-gradient(150deg,#E4F1FB,#F6E3D3);--jc:#24607F}
+.j-local .local-kind{text-transform:capitalize;color:#24607F;font-weight:700}
+.local-start{margin:0;font-size:14px;color:var(--body)}
+.j-poem{background:linear-gradient(160deg,#FBF6EC,#EFE4D2);--jc:#6B4A2B}
+.poem-title{display:block;font-family:var(--display,inherit);font-size:24px;font-weight:700;line-height:1.2}
+.poem-by{display:block;font-size:13.5px;font-weight:600;font-style:italic;color:var(--body);margin-bottom:6px}
+.poem-text{margin:2px 0 4px;font-family:var(--display,Georgia,serif);font-size:15.5px;line-height:1.5;color:#2B2118}
+.poem-text span{display:block;padding-left:1.2em;text-indent:-1.2em}
+.poem-text .gap{height:.7em}
+.poem-long{max-height:22em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
+.poem-more{align-self:flex-start;border:0;background:none;padding:0;font:inherit;font-size:13.5px;font-weight:700;color:#6B4A2B;cursor:pointer}
+#poem{display:flex;flex-direction:column;gap:4px}
+.group[data-sec=science]{--accent:#0F7B8C;--tint:#E0F3F5}
+.sci-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.sci-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.sci-grid{grid-template-columns:minmax(0,1fr)}}
+.card.sci{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:var(--ink);transition:transform .15s}
+.card.sci:hover{transform:translateY(-2px)}
+.card.sci:hover .sci-title{text-decoration:underline}
+.sci img{width:100%;height:150px;object-fit:cover;border-radius:14px}
+.sci-lead{grid-column:1/-1}
+.sci-lead img{height:260px}
+@media (min-width:900px){.card.sci.sci-lead{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-auto-rows:min-content;column-gap:28px;align-content:center}
+.sci-lead img,.sci-lead .sci-ph{grid-column:1;grid-row:1/span 5;height:100%;min-height:240px}.sci-lead>:not(img):not(.sci-ph){grid-column:2}}
+.sci-lead .sci-title{font-size:24px}
+.sci-ph{display:grid;place-items:center;height:150px;border-radius:14px;font-size:54px;background:radial-gradient(circle at 30% 30%,#E6F6F7,#C9E9EC 60%,#B5DDE2)}
+.sci-topic{align-self:flex-start;justify-self:start;font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#0F7B8C;background:#E0F3F5;border-radius:999px;padding:3px 10px}
+.sci-title{font-family:var(--display,inherit);font-size:17.5px;font-weight:700;line-height:1.25}
+.sci-means{font-size:14px;line-height:1.5;color:var(--body)}
+.sci-means i{display:block;font-style:normal;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#0F7B8C;margin-bottom:2px}
+.sci small{margin-top:auto;font-size:12px;font-weight:600;color:var(--soft)}
+.look-card{background:linear-gradient(160deg,#F1F7EA 0%,#FBF4E2 100%);border:0}
+.look-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.look-col{background:rgba(255,255,255,.65);border-radius:18px;padding:14px 16px}
+.look-col h3{margin:0 0 6px;font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.look-forest h3{color:#3F7A2A}.look-prairie h3{color:#9A6A12}
+.look-col ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
+.look-col li{padding:9px 0 9px 22px;position:relative;font-size:14.5px;line-height:1.5;border-top:1px solid rgba(0,0,0,.06)}
+.look-col li:first-child{border-top:0}
+.look-col li::before{content:"";position:absolute;left:4px;top:16px;width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.35}
+.look-forest li::before{background:#3F7A2A;opacity:.6}.look-prairie li::before{background:#C68A1A;opacity:.7}
+.look-weather{display:flex;flex-direction:column;gap:6px}
+.look-weather p{margin:0;display:flex;gap:10px;align-items:flex-start;background:#FFF;border-radius:14px;padding:10px 14px;font-size:14px;line-height:1.45;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+@media (max-width:700px){.look-cols{grid-template-columns:1fr}}
 .j-good{background:linear-gradient(150deg,#F0F8DF,#E1F1C4);--jc:#4B7A12}
 .joy-big{margin:0;font-size:22px;line-height:1.35;font-weight:600;letter-spacing:-.01em}
 .joy-big b{font-weight:800}
@@ -583,47 +637,84 @@ header .refresh .link{color:#fff;opacity:.9}
           <p class="joy-big" id="wins-big"></p>
           <div class="joy-stats" id="wins-stats"></div>
         </section>
-        <section class="card joy-card j-read" aria-labelledby="read-h" id="read-card" hidden>
-          <div class="head"><h2 id="read-h">Today's long read</h2></div>
-          <div id="longread"></div>
-        </section>
-        <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
-          <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
-          <div class="trend-tabs" id="trend-tabs"></div>
-          <div id="trends"></div>
-        </section>
-        <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
-          <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
-          <div id="books"></div>
-        </section>
-        <section class="card joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
-          <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
-          <div id="sunset"></div>
-        </section>
-        <section class="card joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
-          <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
-          <div id="apod"></div>
-        </section>
-        <section class="card joy-card j-drum" aria-labelledby="drum-h" id="drum-card" hidden>
-          <div class="head"><h2 id="drum-h">Drum break of the day</h2></div>
-          <div id="drum"></div>
-        </section>
-        <section class="card joy-card j-albums" aria-labelledby="bday-h" id="bday-card" hidden>
-          <div class="head"><h2 id="bday-h">Album birthdays</h2><span class="meta">Released on this date · Wikidata</span></div>
-          <div id="bdays"></div>
-        </section>
-        <section class="card joy-card j-thai" aria-labelledby="thai-h" id="thai-card" hidden>
-          <div class="head"><h2 id="thai-h">Thai phrase of the day</h2></div>
-          <div id="thai-phrase"></div>
-        </section>
-        <section class="card joy-card j-ask" aria-labelledby="ask-h" id="ask-card" hidden>
-          <div class="head"><h2 id="ask-h">Dinner question for your kid</h2></div>
-          <p class="ask" id="ask"></p>
-        </section>
-        <section class="card joy-card j-good" aria-labelledby="good-h" id="good-card" hidden>
-          <div class="head"><h2 id="good-h">Good news</h2><span class="meta">Oregon stories first</span></div>
-          <div id="good"></div>
-        </section>
+        <div class="shelf" data-shelf="read">
+          <h3 class="shelf-h"><span aria-hidden="true">📖</span>Read</h3>
+          <div class="shelf-grid">
+            <section class="card joy-card j-read" aria-labelledby="read-h" id="read-card" hidden>
+              <div class="head"><h2 id="read-h">Today's long read</h2></div>
+              <div id="longread"></div>
+            </section>
+            <section class="card joy-card j-poem" aria-labelledby="poem-h" id="poem-card" hidden>
+              <div class="head"><h2 id="poem-h">Poem of the day</h2><span class="meta" id="poem-why"></span></div>
+              <div id="poem"></div>
+            </section>
+            <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
+              <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
+              <div id="books"></div>
+            </section>
+          </div>
+        </div>
+        <div class="shelf two-even" data-shelf="listen">
+          <h3 class="shelf-h"><span aria-hidden="true">🎧</span>Listen</h3>
+          <div class="shelf-grid">
+            <div class="stack">
+              <section class="card joy-card j-local" aria-labelledby="artist-h" id="artist-card" hidden>
+                <div class="head"><h2 id="artist-h">Local artist of the day</h2><span class="meta">Portland &amp; Oregon</span></div>
+                <div id="local-artist"></div>
+              </section>
+              <section class="card joy-card j-drum" aria-labelledby="drum-h" id="drum-card" hidden>
+                <div class="head"><h2 id="drum-h">Drum break of the day</h2></div>
+                <div id="drum"></div>
+              </section>
+            </div>
+            <section class="card joy-card j-albums" aria-labelledby="bday-h" id="bday-card" hidden>
+              <div class="head"><h2 id="bday-h">Album birthdays</h2><span class="meta">Released on this date · Wikidata</span></div>
+              <div id="bdays"></div>
+            </section>
+          </div>
+        </div>
+        <div class="shelf two" data-shelf="look">
+          <h3 class="shelf-h"><span aria-hidden="true">🌅</span>Look up</h3>
+          <div class="shelf-grid">
+            <section class="card joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
+              <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
+              <div id="sunset"></div>
+            </section>
+            <section class="card joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
+              <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
+              <div id="apod"></div>
+            </section>
+          </div>
+        </div>
+        <div class="shelf two-even" data-shelf="talk">
+          <h3 class="shelf-h"><span aria-hidden="true">💬</span>Talk and smile</h3>
+          <div class="shelf-grid">
+            <div class="stack">
+              <section class="card joy-card j-ask" aria-labelledby="ask-h" id="ask-card" hidden>
+                <div class="head"><h2 id="ask-h">Dinner question for your kid</h2></div>
+                <p class="ask" id="ask"></p>
+              </section>
+              <section class="card joy-card j-thai" aria-labelledby="thai-h" id="thai-card" hidden>
+                <div class="head"><h2 id="thai-h">Thai phrase of the day</h2></div>
+                <div id="thai-phrase"></div>
+              </section>
+            </div>
+            <section class="card joy-card j-good" aria-labelledby="good-h" id="good-card" hidden>
+              <div class="head"><h2 id="good-h">Good news</h2><span class="meta">Oregon stories first</span></div>
+              <div id="good"></div>
+            </section>
+          </div>
+        </div>
+        <div class="shelf one" data-shelf="online">
+          <h3 class="shelf-h"><span aria-hidden="true">📈</span>Online right now</h3>
+          <div class="shelf-grid">
+            <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
+              <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
+              <div class="trend-tabs" id="trend-tabs"></div>
+              <div id="trends"></div>
+            </section>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -651,6 +742,97 @@ header .refresh .link{color:#fff;opacity:.9}
         <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
         <div class="bugs" id="bugs"></div>
         <p class="note" id="bug-note"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening out there, what to do about it, and who's visiting</p></div></div>
+    <div class="sec-body">
+      <section class="card look-card" aria-labelledby="look-h" id="look-card" hidden>
+        <div class="head"><h2 id="look-h">Out on the land today</h2><span class="meta" id="look-meta"></span></div>
+        <div class="look-weather" id="look-weather" hidden></div>
+        <div class="look-cols">
+          <div class="look-col look-forest"><h3><span aria-hidden="true">🍐</span> In the food forest</h3><ul id="look-forest"></ul></div>
+          <div class="look-col look-prairie"><h3><span aria-hidden="true">🌾</span> On the prairie</h3><ul id="look-prairie"></ul></div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
+        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
+        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
+        <div class="lines" id="plant"></div>
+      </section>
+      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
+        <div class="head"><h2 id="forest-h">Food forest to-dos</h2><span class="meta" id="forest-meta"></span></div>
+        <div class="lines" id="forest"></div>
+        <p class="note" id="forest-next"></p>
+      </section>
+      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
+        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
+        <div class="lines" id="pollen"></div>
+        <p class="note" id="pollen-note"></p>
+      </section>
+      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
+        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
+        <div class="lines" id="rare"></div>
+      </section>
+      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
+        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
+        <p class="summary" id="burn-verdict"></p>
+        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
+        <p class="note" id="burn-note"></p>
+      </section>
+      <section class="card" aria-labelledby="birds-h">
+        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
+        <div class="species" id="birds"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="bloom-h">
+          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
+          <div class="species" id="blooms"></div>
+        </section>
+        <section class="card side" aria-labelledby="food-h" id="food-card">
+          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
+          <div class="chips" id="produce"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card wide" aria-labelledby="radar-h">
+          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+        </section>
+        <section class="card side" aria-labelledby="ship-h">
+          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+          <div class="map" id="ships">
+            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+            <script src="https://www.vesselfinder.com/aismap.js"></script>
+          </div>
+          <p class="note" id="tides"></p>
+          <div id="ship-list"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+        <div class="row" style="gap:24px">
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
+            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
+          </div>
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
+            <div class="minis" id="fish-river"></div>
+          </div>
+        </div>
+        <p class="note" id="fish-dam"></p>
+        <p class="note" id="fish-links"></p>
       </section>
     </div>
   </section>
@@ -800,89 +982,6 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card wide" aria-labelledby="radar-h">
-          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
-          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
-        </section>
-        <section class="card side" aria-labelledby="ship-h">
-          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-          <div class="map" id="ships">
-            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
-            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
-              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
-            <script src="https://www.vesselfinder.com/aismap.js"></script>
-          </div>
-          <p class="note" id="tides"></p>
-          <div id="ship-list"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
-        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
-        <div class="row" style="gap:24px">
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
-            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
-          </div>
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
-            <div class="minis" id="fish-river"></div>
-          </div>
-        </div>
-        <p class="note" id="fish-dam"></p>
-        <p class="note" id="fish-links"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What to plant, food forest chores, birds and blooms</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
-        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
-        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
-        <div class="lines" id="plant"></div>
-      </section>
-      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
-        <div class="head"><h2 id="forest-h">Food forest this month</h2><span class="meta" id="forest-meta"></span></div>
-        <div class="lines" id="forest"></div>
-        <p class="note" id="forest-next"></p>
-      </section>
-      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
-        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
-        <div class="lines" id="pollen"></div>
-        <p class="note" id="pollen-note"></p>
-      </section>
-      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
-        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
-        <div class="lines" id="rare"></div>
-      </section>
-      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
-        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
-        <p class="summary" id="burn-verdict"></p>
-        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
-        <p class="note" id="burn-note"></p>
-      </section>
-      <section class="card" aria-labelledby="birds-h">
-        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
-        <div class="species" id="birds"></div>
-      </section>
-      <div class="row">
-        <section class="card wide" aria-labelledby="bloom-h">
-          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
-          <div class="species" id="blooms"></div>
-        </section>
-        <section class="card side" aria-labelledby="food-h" id="food-card">
-          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
-          <div class="chips" id="produce"></div>
-        </section>
-      </div>
-    </div>
-  </section>
-
   <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
     <div class="sec-body">
@@ -922,6 +1021,23 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
+  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="elect-h">
+        <div class="head"><h2 id="elect-h">Next election</h2></div>
+        <div id="elect"></div>
+      </section>
+      <section class="card" aria-labelledby="reps-h">
+        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
+        <div class="reps" id="reps"></div>
+        <h3 class="sub">Statewide</h3>
+        <div class="lines" id="statewide"></div>
+        <p class="note" id="civ-keys" hidden></p>
+      </section>
+    </div>
+  </section>
+
   <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
     <div class="sec-body">
@@ -945,20 +1061,10 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+  <section class="group" data-sec="science" id="science" aria-labelledby="science-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs and what they mean, from Quanta, Science News and more</p></div></div>
     <div class="sec-body">
-      <section class="card" aria-labelledby="elect-h">
-        <div class="head"><h2 id="elect-h">Next election</h2></div>
-        <div id="elect"></div>
-      </section>
-      <section class="card" aria-labelledby="reps-h">
-        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
-        <div class="reps" id="reps"></div>
-        <h3 class="sub">Statewide</h3>
-        <div class="lines" id="statewide"></div>
-        <p class="note" id="civ-keys" hidden></p>
-      </section>
+      <div class="sci-grid" id="sci"></div>
     </div>
   </section>
 
@@ -1263,6 +1369,12 @@ function renderPicks() {
   $('thai-phrase').innerHTML = `<p class="thai-script" lang="th">${esc(t.thai)}</p>
     <p class="thai-roman">${esc(t.roman)}</p><p class="thai-mean">“${esc(t.meaning)}”</p>${t.tip ? `<p class="note">${esc(t.tip)}</p>` : ''}`;
   $('ask').textContent = p.question;
+  const a = p.artist;
+  $('artist-card').hidden = !a;
+  if (a) $('local-artist').innerHTML = `<div class="drum"><span class="drum-ic" aria-hidden="true">${a.icon}</span><div>
+      <b class="drum-song">${esc(a.name)}</b><span class="local-kind">${esc(a.kind)}</span></div></div>
+    <p class="note">${esc(a.note)}</p><p class="local-start">Start with <b>${esc(a.start)}</b></p>
+    <a class="joy-btn" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.verb)}</a>`;
 }
 
 function renderBirthdays() {
@@ -1272,6 +1384,32 @@ function renderBirthdays() {
   $('bdays').innerHTML = list.slice(0, 6).map(a => `<a class="bday" href="${listen(a.artist, a.title)}" target="_blank" rel="noopener">
     <span class="cake" aria-hidden="true">${a.age % 10 === 0 || a.age % 25 === 0 ? '🎉' : '🎂'}</span>
     <span><b>${esc(a.title)}</b><small>${esc(a.artist)} · ${a.year}</small></span><span class="age">${a.age}</span></a>`).join('');
+}
+
+function renderPoem() {
+  const p = D.poem;
+  $('poem-card').hidden = !p;
+  if (!p) return;
+  $('poem-why').textContent = p.why;
+  $('poem').innerHTML = `<b class="poem-title">${esc(p.title)}</b><span class="poem-by">${esc(p.poet)} · ${p.year}</span>
+    <div class="poem-text${p.text.split('\n').length > 14 ? ' poem-long' : ''}">${p.text.split('\n').map(l => l.trim() ? `<span>${esc(l)}</span>` : '<span class="gap"></span>').join('')}</div>
+    ${p.text.split('\n').length > 14 ? '<button type="button" class="poem-more">Keep reading ▾</button>' : ''}${p.excerpt ? '<p class="note">An excerpt. The rest is worth it.</p>' : ''}
+    <a class="joy-btn" href="${esc(p.url)}" target="_blank" rel="noopener">${p.excerpt ? 'Read the whole poem' : 'More about this poem'}</a>`;
+  const more = $('poem').querySelector('.poem-more');
+  if (more) more.onclick = () => { $('poem').querySelector('.poem-text').classList.remove('poem-long'); more.remove(); };
+}
+
+function renderScience() {
+  const list = D.science || [];
+  $('science').hidden = !list.length;
+  if (!list.length) return;
+  const ago = u => { const h = Math.max(0, (Date.now() - new Date(u)) / 36e5); return h < 1 ? 'just now' : h < 24 ? `${Math.round(h)}h ago` : `${Math.round(h / 24)}d ago`; };
+  $('sci').innerHTML = list.map((x, i) => `<a class="card sci${i === 0 ? ' sci-lead' : ''}" href="${esc(x.url)}" target="_blank" rel="noopener">
+    ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;sci-ph&quot; aria-hidden=&quot;true&quot;>${x.icon}</span>'">` : `<span class="sci-ph" aria-hidden="true">${x.icon}</span>`}
+    <span class="sci-topic"><span aria-hidden="true">${x.icon}</span> ${esc(x.topic)}</span>
+    <b class="sci-title">${esc(x.title)}</b>
+    <span class="sci-means"><i>What it means</i>${esc(x.means)}</span>
+    <small>${esc(x.source)} · ${ago(x.utc)}</small></a>`).join('');
 }
 
 function renderGood() {
@@ -1359,7 +1497,8 @@ function renderBooks() {
 }
 
 function renderJoy() {
-  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks].forEach(tryRender);
+  const shelves = () => document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
+  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, shelves].forEach(tryRender);
 }
 
 // Long cards start trimmed with a "Show all" button so the page stays skimmable.
@@ -2303,6 +2442,18 @@ const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now())
 const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
 // ------------------------------------------------------------------ food forest
+function renderLook() {
+  const l = D.garden && D.garden.look;
+  $('look-card').hidden = !l;
+  if (!l) return;
+  $('look-meta').textContent = `Things to look for · ${l.month} on Sauvie Island`;
+  const li = list => list.map(t => `<li>${esc(t)}</li>`).join('');
+  $('look-forest').innerHTML = li(l.forest);
+  $('look-prairie').innerHTML = li(l.prairie);
+  $('look-weather').hidden = !l.weather.length;
+  $('look-weather').innerHTML = l.weather.map(t => `<p><span aria-hidden="true">🌦️</span>${esc(t)}</p>`).join('');
+}
+
 function renderForest() {
   const f = D.garden && D.garden.forest;
   $('forest-card').hidden = !f || !f.now.length;
@@ -2611,7 +2762,7 @@ function addSources() {
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
 const NAV = {today: 'Today', delights: 'Daily fun', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
-  watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
+  watch: 'Watch', sports: 'Games', science: 'Science', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
 if (!habits.noAutoFold) { habits.folds = {}; habits.noAutoFold = 1; }  // sections no longer fold on their own; open any folded before

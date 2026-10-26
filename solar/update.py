@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outside, pge, places, poems, pollen, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -700,10 +700,17 @@ def fetch_culture(state, now_utc):
                 errors.append(f"goodreads: {e}")
         user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
-        if store.get("books_user") != user:
+        if store.get("books_user") != user or store.get("books_v") != 2:  # v2 skips reprints and classic authors
             store.pop("books_at", None)
-            store["books_user"] = user
+            store["books_user"], store["books_v"] = user, 2
         _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_science(state, now_utc):
+    """Fresh science findings and what they mean."""
+    store, errors = state.setdefault("science", {}), []
+    _refresh(store, "items", science.breakthroughs, 3, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -1085,8 +1092,11 @@ def garden_view(state, out, now_utc):
              if t[:10] == today.isoformat() and v is not None]
     if temps:
         soil = round(sum(temps) / len(temps))  # forecast is requested in °F
+    station = (state.get("weather") or {}).get("days") or {}
+    recent_rain = sum((station.get((today - dt.timedelta(days=i)).isoformat()) or {}).get("rain_in") or 0 for i in range(3))
     return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil),
             "forest": garden.forest_tasks(today),
+            "look": nature.look_for(today, (out or {}).get("days") or [], recent_rain),
             "burn": garden.burn_check(today, (out or {}).get("days") or [],
                                       alerts.active((state.get("outside") or {}).get("nws_alerts") or [], now_utc),
                                       ((out or {}).get("air") or {}).get("aqi"))}
@@ -1280,6 +1290,8 @@ def build(state, status, now_utc):
                      if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
         "books": cu.get("books") if cu.get("books_user") else None,
         "long_read": culture.long_read(dt.date.fromisoformat(today)),
+        "poem": poems.poem_of_the_day(dt.date.fromisoformat(today), ((out or {}).get("days") or [None])[0]),
+        "science": (state.get("science") or {}).get("items"),
         "longreads": cu.get("longreads"),
         "civics": civics_view(state, today),
         "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
@@ -1300,7 +1312,7 @@ def main():
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
-                     ("culture", fetch_culture)):
+                     ("culture", fetch_culture), ("science", fetch_science)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

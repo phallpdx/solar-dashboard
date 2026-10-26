@@ -432,6 +432,24 @@ header .refresh .link{color:#fff;opacity:.9}
 /* footer */
 .learn{border:0;border-radius:24px;box-shadow:0 8px 24px -16px rgba(60,40,10,.2)}
 @media (prefers-reduced-motion:reduce){header::before{animation:none}.joy-card:hover,.secnav a:hover{transform:none}}
+.rain{background:linear-gradient(160deg,#E6F1FF,#D3E6FF);border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.rain.raining{background:linear-gradient(160deg,#CFE3FF,#A9CCFF)}
+.rain-top{display:flex;gap:12px;align-items:center}
+.rain-drop{font-size:30px;width:48px;height:48px;flex:none;border-radius:16px;background:rgba(255,255,255,.75);display:grid;place-items:center}
+.rain.raining .rain-drop{animation:drip 1.6s ease-in-out infinite}
+@keyframes drip{50%{transform:translateY(3px)}}
+.rain-top div{display:flex;flex-direction:column}
+.rain-k{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#1D5FB8}
+.rain-top b{font-family:var(--display,inherit);font-size:30px;font-weight:700;line-height:1.1;color:#0F2F5C}.rain-top b small{font-size:15px;font-weight:600}
+.rain-s{font-size:12.5px;font-weight:600;color:#3B5B85}
+.rain-tot{display:flex;flex-wrap:wrap;gap:6px}
+.rain-tot span{background:rgba(255,255,255,.75);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:600;color:#3B5B85}
+.rain-tot b{color:#0F2F5C}
+.rain-bars{display:flex;gap:6px;align-items:flex-end;height:64px}
+.rain-bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.rain-bars i{display:block;width:100%;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,#5AA2FF,#1D6FD1)}
+.rain-bars small{font-size:10.5px;font-weight:700;color:#3B5B85}
+@media (prefers-reduced-motion:reduce){.rain.raining .rain-drop{animation:none}}
 </style>
 </head>
 <body>
@@ -1314,7 +1332,28 @@ function renderWeather() {
       <div class="mini"><span class="k">Humidity</span><span class="v">${w.humidity ?? '–'}<small>%</small></span></div>
       <div class="mini"><span class="k">Wind</span><span class="v">${w.wind_mph} <small>mph ${esc(w.wind_dir)}</small></span></div>
     </div>
+    ${rainBlock(w.rain)}
     <p class="note">${note}</p></div>`;
+}
+
+// Rain from the station's own gauge: today, the current storm, and running totals.
+function rainBlock(r) {
+  if (!r) return '';
+  const inch = x => x == null ? '–' : x < 0.01 && x > 0 ? 'trace' : x.toFixed(2);
+  const since = r.last_rain ? Math.round((Date.now() - new Date(r.last_rain)) / 60000) : null;
+  const ago = since == null ? '' : since < 90 ? `${since} min ago` : since < 48 * 60 ? `${Math.round(since / 60)} hr ago` : `${Math.round(since / 1440)} days ago`;
+  const status = r.rate_in_hr > 0 ? `Raining now · ${inch(r.rate_in_hr)} in/hr`
+    : r.today_in > 0 ? `Dry right now · last rain ${ago}` : ago ? `Last rain ${ago}` : 'No rain recorded yet';
+  const max = Math.max(0.1, ...r.recent.map(d => d.in || 0));
+  const bars = r.recent.length >= 2 ? `<div class="rain-bars" aria-label="Rain by day">${r.recent.map(d => `<div title="${fmtDate(d.date)}: ${inch(d.in)} in">
+      <i style="height:${Math.max(3, (d.in || 0) / max * 100)}%"></i><small>${DOW[new Date(d.date + 'T12:00').getDay()][0]}</small></div>`).join('')}</div>` : '';
+  return `<div class="rain${r.rate_in_hr > 0 ? ' raining' : ''}">
+    <div class="rain-top"><span class="rain-drop" aria-hidden="true">💧</span>
+      <div><span class="rain-k">Rain today</span><b>${inch(r.today_in)}<small> in</small></b><span class="rain-s">${status}</span></div></div>
+    <div class="rain-tot">
+      ${r.event_in > 0 ? `<span>This storm <b>${inch(r.event_in)}"</b></span>` : ''}
+      <span>This week <b>${inch(r.week_in)}"</b></span><span>This month <b>${inch(r.month_in)}"</b></span><span>Since Jan 1 <b>${inch(r.year_in)}"</b></span>
+    </div>${bars}</div>`;
 }
 
 function renderMonth() {
@@ -1444,7 +1483,9 @@ function renderOutside() {
   // Plain-language summary of whether it's a good time to be out.
   const wet = o.next_hours.slice(0, 6).filter(h => (h.rain_pct || 0) >= 50);
   const parts = [];
-  parts.push(wet.length ? `Rain likely around ${clock(wet[0].t)}.` : 'Dry for the next six hours.');
+  const gauge = D.weather && D.weather.rain;
+  if (gauge && gauge.rate_in_hr > 0) parts.push(`Raining at the house now (${gauge.today_in.toFixed(2)} in today).`);
+  else parts.push(wet.length ? `Rain likely around ${clock(wet[0].t)}.` : 'Dry for the next six hours.');
   if (o.air.aqi != null) parts.push(`Air quality is ${o.air.label.toLowerCase()} (AQI ${o.air.aqi}).`);
   if ((t.uv || 0) >= 6) parts.push(`UV peaks at ${Math.round(t.uv)}, so bring sunscreen.`);
   if ((t.wind || 0) >= 20) parts.push(`Gusty, up to ${t.wind} mph.`);
@@ -2535,6 +2576,9 @@ async function renderBriefing() {
   const t0 = (o.days || []).find(d => d.date === today), t1 = (o.days || []).find(d => d.date === tomorrow);
   if (t0) {
     const wet = t0.rain_pct >= 60;
+    const gauge = D.weather && D.weather.rain;
+    if (gauge && gauge.rate_in_hr > 0) add(62, 'today', `It’s raining at the house right now: ${gauge.today_in.toFixed(2)} inches in the gauge so far today.`);
+    else if (gauge && gauge.today_in >= 0.1) add(36, 'today', `Your rain gauge caught ${gauge.today_in.toFixed(2)} inches today${gauge.event_in > gauge.today_in ? `, ${gauge.event_in.toFixed(2)} for this storm` : ''}.`);
     add(wet ? 50 : 40, 'today', `${wet ? 'Rain, I’m afraid' : wxName(t0.code)}: a high of ${t0.hi}° and a low of ${t0.lo}°${wet ? `, with ${n1(t0.rain_in)} inches expected. The umbrella is by the door` : ''}${t0.gust >= 35 ? `, and gusts to ${t0.gust} mph` : ''}. Sunset is at ${hhmm(t0.sunset)}.`);
   }
   if (t1 && t0 && t0.rain_pct >= 60 && t1.rain_pct < 40) add(35, 'today', `Tomorrow looks drier, should you wish to postpone anything outdoors.`);

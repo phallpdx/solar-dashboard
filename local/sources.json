@@ -1,0 +1,68 @@
+{
+  "lmstudio": {
+    "url": "http://localhost:1234",
+    "model": "google/gemma-4-26b-a4b-qat",
+    "context_length": 16384,
+    "max_chars_per_page": 9000,
+    "timeout_seconds": 900
+  },
+  "push_branch": "claude/local-lists",
+  "lists": {
+    "jazz": [
+      {"name": "PDX Jazz", "url": "https://www.pdxjazz.org/events/"},
+      {"name": "The 1905 (Turntable Tickets)", "url": "https://the1905.turntabletickets.com/"},
+      {"name": "Jack London Revue", "url": "https://www.jacklondonrevue.com/events/"}
+    ],
+    "concerts": [
+      {"name": "McMenamins Crystal Ballroom", "url": "https://www.crystalballroompdx.com/events"},
+      {"name": "Aladdin Theater", "url": "https://www.aladdin-theater.com/"},
+      {"name": "Wonder Ballroom", "url": "https://wonderballroom.com/"},
+      {"name": "Mississippi Studios", "url": "https://mississippistudios.com/calendar/"},
+      {"name": "Revolution Hall", "url": "https://www.revolutionhall.com/"},
+      {"name": "Roseland Theater", "url": "https://roselandpdx.com/"}
+    ],
+    "events": [
+      {"name": "Travel Portland", "url": "https://www.travelportland.com/events/"},
+      {"name": "Rose Quarter", "url": "https://www.rosequarter.com/events"},
+      {"name": "Oregon Convention Center", "url": "https://www.oregoncc.org/events"}
+    ],
+    "kids": [
+      {"name": "PDX Parent", "url": "https://www.pdxparent.com/calendar/"},
+      {"name": "Oregon Zoo", "url": "https://www.oregonzoo.org/events"},
+      {"name": "OMSI", "url": "https://omsi.edu/events/"}
+    ],
+    "bluray": [
+      {"name": "Slickdeals", "url": "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1&q=blu-ray"},
+      {"name": "Blu-ray.com deals", "url": "https://www.blu-ray.com/deals/"}
+    ],
+    "foodfinds": [
+      {"name": "Daily Coffee News", "url": "https://dailycoffeenews.com/feed/"},
+      {"name": "New School Beer", "url": "https://newschoolbeer.com/feed"},
+      {"name": "Brewbound", "url": "https://www.brewbound.com/feed"}
+    ],
+    "planahead": [
+      {"name": "TicketNews", "url": "https://www.ticketnews.com/feed/"},
+      {"name": "Portland Monthly", "url": "https://www.pdxmonthly.com/arts-and-culture"},
+      {"name": "Travel Portland", "url": "https://www.travelportland.com/events/"}
+    ],
+    "skioutlook": [
+      {"name": "NOAA CPC ENSO discussion", "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml", "use": "season"},
+      {"name": "OnTheSnow Oregon projected openings", "url": "https://www.onthesnow.com/oregon/projected-openings", "use": "openings"},
+      {"name": "Mt. Hood Meadows schedule", "url": "https://www.skihood.com/explore/Schedule", "use": "openings"}
+    ],
+    "teams": {
+      "blazers": [
+        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/rss/index.xml"},
+        {"name": "r/ripcity", "url": "https://www.reddit.com/r/ripcity/top/.rss?t=day"}
+      ],
+      "timbers": [
+        {"name": "Stumptown Footy", "url": "https://stumptownfooty.substack.com/feed"},
+        {"name": "r/timbers", "url": "https://www.reddit.com/r/timbers/top/.rss?t=day"}
+      ],
+      "f1": [
+        {"name": "Formula 1", "url": "https://www.formula1.com/en/latest/all.xml"},
+        {"name": "r/formula1", "url": "https://www.reddit.com/r/formula1/top/.rss?t=day"}
+      ]
+    }
+  }
+}

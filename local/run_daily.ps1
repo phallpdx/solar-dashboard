@@ -8,9 +8,6 @@ New-Item -ItemType Directory -Force $logDir | Out-Null
 Get-ChildItem $logDir -Filter *.log | Where-Object LastWriteTime -lt (Get-Date).AddDays(-30) | Remove-Item
 Start-Transcript -Path (Join-Path $logDir ('{0:yyyy-MM-dd}.log' -f (Get-Date))) -Append | Out-Null
 
-# Windows PowerShell's transcript misses output from programs like python
-# unless it is passed through as text, so it goes through Log.
-function Log { process { "$_" } }
 $env:PYTHONUNBUFFERED = '1'
 $env:PYTHONIOENCODING = 'utf-8'
 
@@ -38,10 +35,19 @@ $modelWasLoaded = @(Loaded-Models) -match [regex]::Escape($model.Split('/')[-1])
 if (-not $modelWasLoaded) { Lms @('load', $model, '--context-length', "$($cfg.lmstudio.context_length)", '-y') }
 "LM Studio server was running: $serverWasRunning; model was loaded: $([bool]$modelWasLoaded)"
 
+# Python also gets its own console, and writes its progress straight to
+# <date>-lists.log so it can be followed while the run is going.
+$env:SOLAR_LISTS_LOG = Join-Path $logDir ('{0:yyyy-MM-dd}-lists.log' -f (Get-Date))
 $py = Get-Command py -ErrorAction SilentlyContinue
-if ($py) { & $py.Source -3 (Join-Path $here 'refresh_lists.py') @args 2>&1 | Log }
-else { & python (Join-Path $here 'refresh_lists.py') @args 2>&1 | Log }
-$code = $LASTEXITCODE
+$pyArgs = @("`"$(Join-Path $here 'refresh_lists.py')`"") + $args
+if ($py) { $exe = $py.Source; $pyArgs = @('-3') + $pyArgs } else { $exe = 'python' }
+$out = [IO.Path]::GetTempFileName()
+$proc = Start-Process $exe -ArgumentList $pyArgs -Wait -PassThru -WindowStyle Hidden `
+    -RedirectStandardOutput $out -RedirectStandardError "$out.err"
+Get-Content "$out.err" -ErrorAction SilentlyContinue  # errors that stopped Python, if any
+Remove-Item $out, "$out.err" -ErrorAction SilentlyContinue
+$code = $proc.ExitCode
+"Lists progress is in $env:SOLAR_LISTS_LOG"
 
 if (-not $modelWasLoaded) { Lms @('unload', $model) }
 if (-not $serverWasRunning) { Lms @('server', 'stop') }

@@ -39,8 +39,15 @@ UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) solar-dashboard-local/1.0"
 TODAY = dt.date.today()
 
 
+LOG_FILE = os.environ.get("SOLAR_LISTS_LOG")
+
+
 def log(*args):
-    print(time.strftime("%H:%M:%S"), *args, flush=True)
+    line = " ".join([time.strftime("%H:%M:%S"), *map(str, args)])
+    print(line, flush=True)
+    if LOG_FILE:  # set by run_daily.ps1 so progress shows up while the run is going
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
 
 
 # ---------------------------------------------------------------- fetching
@@ -174,12 +181,15 @@ def ask_model(task, text, schema):
         "temperature": 0.1,
         "max_tokens": 3000,
         # Gemma's thinking step is slow on this laptop and not needed for extraction.
+        # LM Studio honours reasoning_effort for Gemma 4; enable_thinking is for other models.
+        "reasoning_effort": "none",
         "chat_template_kwargs": {"enable_thinking": False},
         "response_format": {"type": "json_schema", "json_schema": {"name": "result", "strict": True, "schema": schema}},
     }
     for attempt in range(2):
         try:
-            content = _post("/v1/chat/completions", payload)["choices"][0]["message"]["content"] or ""
+            choice = _post("/v1/chat/completions", payload)["choices"][0]
+            content = choice["message"].get("content") or ""
         except urllib.error.HTTPError as e:
             if e.code == 400 and "response_format" in payload:
                 payload.pop("response_format")  # model or server without structured output
@@ -192,6 +202,11 @@ def ask_model(task, text, schema):
         parsed = _parse_json(content)
         if parsed is not None:
             return parsed
+        if choice.get("finish_reason") == "length":
+            # Asking again would spend the same minutes the same way.
+            thought = len(choice["message"].get("reasoning_content") or "")
+            log(f"  model ran out of tokens{' while thinking' if thought else ''}; skipping this page")
+            return None
         log("  model reply was not JSON, retrying")
     return None
 
@@ -685,10 +700,16 @@ def main():
         log(f"Model {LLM['model']} not listed by LM Studio ({', '.join(ids)}); using {match[0]}")
         LLM["model"] = match[0]
     try:
-        _post("/v1/chat/completions", {"model": LLM["model"], "messages": [{"role": "user", "content": "Say OK."}],
-                                       "max_tokens": 5, "chat_template_kwargs": {"enable_thinking": False}})
+        reply = _post("/v1/chat/completions", {
+            "model": LLM["model"], "messages": [{"role": "user", "content": "Say OK."}], "max_tokens": 20,
+            "chat_template_kwargs": {"enable_thinking": False}, "reasoning_effort": "none"})
     except Exception as e:  # noqa: BLE001
         sys.exit(f"LM Studio is not answering at {LLM['url']} with model {LLM['model']}: {e}")
+    message = reply["choices"][0]["message"]
+    if message.get("reasoning_content") and not (message.get("content") or "").strip():
+        # With thinking on, one page takes 5+ minutes and usually runs out of tokens.
+        sys.exit(f"{LLM['model']} is still thinking before it answers. Turn thinking off for it in LM Studio "
+                 "(My Models, the gear next to the model), then run again.")
 
     base, lists = current_lists(names)
     changed, failed = {}, []

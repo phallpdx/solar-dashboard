@@ -675,7 +675,7 @@ def fetch_almanac(state, now_utc):
     if (store.get("albums") or {}).get("date") != today.isoformat():
         store.pop("albums_at", None)
     _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
-    _refresh(store, "good_news", daily.good_news, 3, now_utc, errors)
+    _refresh(store, "good_news", daily.good_news, 2, now_utc, errors)
     if env("CALENDAR_ICS"):
         _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
     return "; ".join(errors) or None
@@ -685,11 +685,11 @@ def fetch_culture(state, now_utc):
     """What's trending, book picks from Goodreads and long reads."""
     store, errors = state.setdefault("culture", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
-    _refresh(store, "trends", culture.google_trends, 1.5, now_utc, errors)
+    _refresh(store, "trends", culture.google_trends, 1, now_utc, errors)
     if (store.get("wiki") or {}).get("date") != today.isoformat():
         store.pop("wiki_at", None)
     _refresh(store, "wiki", lambda: {"date": today.isoformat(), "articles": culture.wiki_most_read(today)}, 24, now_utc, errors)
-    _refresh(store, "reddit", culture.reddit_popular, 3, now_utc, errors)
+    _refresh(store, "reddit", culture.reddit_popular, 2, now_utc, errors)
     _refresh(store, "longreads", culture.fresh_longreads, 12, now_utc, errors)
     user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
     if user and not user.isdigit():
@@ -710,7 +710,7 @@ def fetch_culture(state, now_utc):
 def fetch_science(state, now_utc):
     """Fresh science findings and what they mean."""
     store, errors = state.setdefault("science", {}), []
-    _refresh(store, "items", science.breakthroughs, 3, now_utc, errors)
+    _refresh(store, "items", science.breakthroughs, 2, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -965,7 +965,7 @@ def fetch_gear(state, now_utc):
 
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
-    _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
+    _refresh(store, "stories", news.top_stories, 1, now_utc, errors)
     if (store.get("reviews") or {}).get("v") != 2:  # pick up filter changes now
         store.pop("reviews_at", None)
     _refresh(store, "reviews", news.reviews, 3, now_utc, errors)
@@ -1046,7 +1046,7 @@ def fetch_live(state, now_utc):
         return "Needs the home location first."
     store, errors, lat, lon = state.setdefault("live", {}), [], out["lat"], out["lon"]
     _refresh(store, "quakes", lambda: live.earthquakes(lat, lon), 1, now_utc, errors)
-    _refresh(store, "fires", lambda: live.wildfires(lat, lon), 3, now_utc, errors)
+    _refresh(store, "fires", lambda: live.wildfires(lat, lon), 1, now_utc, errors)
     _refresh(store, "planes", lambda: live.planes(lat, lon), 0, now_utc, errors)
     try:
         live.add_details(store.get("planes"), state.setdefault("flight_lookups", {}), now_utc)

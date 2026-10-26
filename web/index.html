@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,0..100,0..1&family=Uncial+Antiqua&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
 *{box-sizing:border-box}
@@ -422,6 +422,27 @@ header .refresh .link{color:#fff;opacity:.9}
 .sec-tools button{min-width:40px;min-height:40px;border-radius:12px;border:0;color:var(--ink);font:700 13px Manrope,sans-serif;cursor:pointer;padding:0 10px;background:rgba(255,255,255,.92)}
 .group[data-sec=delights] .sec-head{background:linear-gradient(115deg,#FF5FA2 0%,#FF9A3D 45%,#FFC93C 70%,#4FC3F7 100%)}
 @media (max-width:600px){.sec-head{padding:16px}.sec-head .sec-h{font-size:25px}.sec-icon{width:48px;height:48px;font-size:26px}}
+/* Tiers: your own world gets the loudest headers, the wider world the quietest. */
+.tier-h{display:flex;align-items:center;gap:14px;margin:34px 4px -4px;padding-bottom:12px;border-bottom:2px solid rgba(40,30,20,.12)}
+.tier-h>span:first-child{font-size:30px}
+.tier-h b{display:block;font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:-.01em;color:var(--ink);line-height:1.1}
+.tier-h small{display:block;font-size:13.5px;font-weight:600;color:var(--muted);margin-top:2px}
+.tier-h.tier-home{margin-top:22px}
+.group[data-tier=home] .sec-head{padding:24px 26px}
+.group[data-tier=home] .sec-head .sec-h{font-size:36px}
+.group[data-tier=town] .sec-head{background:linear-gradient(120deg,var(--tint) 0%,#fff 130%);color:var(--ink);box-shadow:none;padding:16px 20px;border-radius:24px}
+.group[data-tier=town] .sec-head .sec-h{color:var(--ink);font-size:27px}
+.group[data-tier=town] .sec-sub{color:color-mix(in srgb,var(--accent) 80%,#000)}
+.group[data-tier=town] .sec-head::after{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.group[data-tier=town] .sec-icon{width:50px;height:50px;font-size:28px;border-radius:16px}
+.group[data-tier=world] .sec-head{background:transparent;color:var(--ink);box-shadow:none;padding:6px 4px 10px;border-radius:0;border-bottom:3px solid color-mix(in srgb,var(--accent) 45%,transparent)}
+.group[data-tier=world] .sec-head::after{display:none}
+.group[data-tier=world] .sec-head .sec-h{color:var(--ink);font-size:23px}
+.group[data-tier=world] .sec-sub{color:var(--muted);font-size:13px}
+.group[data-tier=world] .sec-icon{width:40px;height:40px;font-size:22px;border-radius:12px;transform:none;box-shadow:none;background:var(--tint)}
+.group[data-tier=world] .sec-tools button{background:var(--tint)}
+.group[data-tier=world] .card:not(.joy-card){border-top-width:3px}
+@media (max-width:600px){.group[data-tier=home] .sec-head .sec-h{font-size:28px}.group[data-tier=town] .sec-head .sec-h{font-size:22px}.group[data-tier=world] .sec-head .sec-h{font-size:20px}.tier-h b{font-size:22px}}
 /* cards */
 .card{border:0;border-radius:28px;padding:24px 26px;box-shadow:0 1px 2px rgba(60,40,10,.05),0 8px 24px -14px rgba(60,40,10,.18)}
 .group .card:not(.joy-card){border-top:5px solid color-mix(in srgb,var(--accent) 75%,#fff)}
@@ -484,15 +505,15 @@ header .refresh .link{color:#fff;opacity:.9}
 .j-trend{background:linear-gradient(150deg,#F3E9FF,#FFE3F3);--jc:#8A2BB8}
 .trend-tabs{display:flex;gap:6px;flex-wrap:wrap}
 .trend-tabs .chip{background:rgba(255,255,255,.7)}
-.trend-tabs .chip[aria-pressed="true"]{background:#8A2BB8;color:#fff}
+.trend-tabs .chip[aria-pressed="true"]{background:#9A3F55;color:#fff}
 .trend-list{margin:0;padding:0;list-style:none;counter-reset:t;display:flex;flex-direction:column}
 .trend-list li{counter-increment:t;display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(138,43,184,.12)}
 .trend-list li:last-child{border-bottom:0}
-.trend-list li::before{content:counter(t);flex:none;width:26px;height:26px;border-radius:50%;background:#8A2BB8;color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
+.trend-list li::before{content:counter(t);flex:none;width:26px;height:26px;border-radius:50%;background:#9A3F55;color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
 .trend-list a{flex:1;min-width:0;display:flex;flex-direction:column;text-decoration:none;color:var(--ink)}
 .trend-list b{font-size:14.5px;font-weight:700;line-height:1.3}.trend-list small{font-size:12px;font-weight:600;color:var(--body);line-height:1.35}
 .trend-list a:hover b{text-decoration:underline}
-.heat{flex:none;font-size:12px;font-weight:800;color:#8A2BB8;background:rgba(255,255,255,.7);border-radius:999px;padding:3px 8px}
+.heat{flex:none;font-size:12px;font-weight:800;color:#9A3F55;background:rgba(255,255,255,.7);border-radius:999px;padding:3px 8px}
 .j-books{background:linear-gradient(150deg,#EAF4F0,#D6ECE3);--jc:#1F6B52}
 .book{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(31,107,82,.12);text-decoration:none;color:var(--ink)}
 .book:last-of-type{border-bottom:0}
@@ -514,6 +535,144 @@ header .refresh .link{color:#fff;opacity:.9}
 .shade-step{display:flex;gap:12px;align-items:center}
 .shade-ic{width:40px;height:40px;flex:none;border-radius:14px;background:#FFF0D1;display:grid;place-items:center;font-size:20px}
 .shade-step div{display:flex;flex-direction:column}.shade-step b{font-size:15px}.shade-step small{font-size:12.5px;font-weight:600;color:var(--body)}
+/* ================= Shire theme: parchment, moss and honey ================= */
+:root{--bg:#F2E8D0;--card:#FFFAEE;--line:#E2D3B0;--grid:#ECE0C3;--axis:#D6C49C;--ink:#2E2315;--muted:#7A6646;--body:#4A3B26;--soft:#C7B58E;
+  --display:'Fraunces',Georgia,serif;--moss:#5B7A2E;--bark:#6B4526;--honey:#D49A2E;--berry:#A8433A;
+  --vine:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='18'%3E%3Cpath d='M0 9 Q30 1 60 9 T120 9' fill='none' stroke='%236B8A3A' stroke-width='1.6'/%3E%3Cellipse cx='30' cy='5' rx='5.5' ry='2.4' transform='rotate(-25 30 5)' fill='%237FA046'/%3E%3Cellipse cx='90' cy='13' rx='5.5' ry='2.4' transform='rotate(25 90 13)' fill='%237FA046'/%3E%3Ccircle cx='60' cy='9' r='2' fill='%23B4553A'/%3E%3C/svg%3E")}
+body{background-color:var(--bg);color:var(--ink);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .32 0 0 0 0 .15 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(1400px 600px at 50% -200px,#FFF4D6,transparent 70%),radial-gradient(900px 900px at 110% 40%,rgba(127,160,70,.10),transparent 60%),radial-gradient(900px 900px at -10% 75%,rgba(212,154,46,.10),transparent 60%)}
+h1,h2,.sec-h,.big,.read-title,.poem-title,.sci-title,.drum-song,.joy-big,.tier-h b{font-variation-settings:"SOFT" 100,"WONK" 1}
+
+/* Section colors, earthy */
+.group[data-sec=today]{--accent:#C98A1F}.group[data-sec=family]{--accent:#B4553A}.group[data-sec=garden]{--accent:#5E8A2C}
+.group[data-sec=river]{--accent:#3F7F76}.group[data-sec=coast]{--accent:#3D6E8C}.group[data-sec=solar]{--accent:#C2901A}
+.group[data-sec=local]{--accent:#A24D5E}.group[data-sec=sports]{--accent:#9A4A2B}.group[data-sec=watch]{--accent:#6E5288}
+.group[data-sec=nearby]{--accent:#4E6380}.group[data-sec=civics]{--accent:#4F6A8F}.group[data-sec=almanac]{--accent:#8B5E34}
+.group[data-sec=science]{--accent:#3F7F76}.group[data-sec=news]{--accent:#6B5B48}.group[data-sec=world]{--accent:#A8742A}
+.group[data-sec]{--tint:color-mix(in srgb,var(--accent) 13%,#FFF8E6)}
+
+/* The hero: dawn over the hills */
+header{--hills:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 70 C150 20 300 30 420 60 S700 30 820 50 1050 20 1200 45 V120 H0Z' fill='%23A7BF6E'/%3E%3Cpath d='M0 92 C180 55 330 70 520 88 S860 60 1000 78 1150 70 1200 74 V120 H0Z' fill='%237FA046'/%3E%3Cpath d='M0 108 C240 88 420 98 640 106 S1000 92 1200 100 V120 H0Z' fill='%235B7A2E'/%3E%3Ccircle cx='980' cy='70' r='16' fill='%235B7A2E'/%3E%3Ccircle cx='1004' cy='64' r='20' fill='%23688C33'/%3E%3Crect x='1000' y='80' width='5' height='14' fill='%236B4526'/%3E%3Ccircle cx='260' cy='76' r='13' fill='%23688C33'/%3E%3Crect x='257' y='86' width='4' height='10' fill='%236B4526'/%3E%3Cellipse cx='610' cy='99' rx='26' ry='22' fill='%23557228'/%3E%3Ccircle cx='610' cy='101' r='11' fill='%2389A84C' stroke='%236B4526' stroke-width='3'/%3E%3Ccircle cx='616' cy='101' r='1.6' fill='%23D49A2E'/%3E%3C/svg%3E");color:var(--ink);padding:38px 38px 92px;border-radius:40px;box-shadow:0 22px 44px -24px rgba(90,60,20,.55);
+  background:var(--hills) bottom/100% 100px no-repeat,linear-gradient(180deg,#FCD98A 0%,#F7C58A 38%,#F3D9B2 70%,#EAE3C4 100%)}
+header.night{background:linear-gradient(rgba(16,20,44,.42),rgba(16,20,44,.42)),var(--hills) bottom/100% 100px no-repeat,
+    radial-gradient(1.5px 1.5px at 12% 22%,#FFF6D8 60%,transparent),radial-gradient(1px 1px at 28% 12%,#FFF 60%,transparent),radial-gradient(1.5px 1.5px at 46% 30%,#FFF6D8 60%,transparent),
+    radial-gradient(1px 1px at 63% 16%,#FFF 60%,transparent),radial-gradient(1.5px 1.5px at 78% 34%,#FFF6D8 60%,transparent),radial-gradient(1px 1px at 88% 10%,#FFF 60%,transparent),
+    radial-gradient(1px 1px at 36% 44%,#FFF 60%,transparent),radial-gradient(1px 1px at 55% 8%,#FFF6D8 60%,transparent),
+    linear-gradient(180deg,#1A2142 0%,#2E3560 45%,#5A4A66 100%);box-shadow:0 22px 44px -24px rgba(20,20,60,.7)}
+header.night::before{background:radial-gradient(circle at 50% 50%,#FFF8E0 0 16%,rgba(255,244,210,.3) 21%,rgba(255,240,200,0) 60%);width:180px;height:180px;right:auto;left:52%;top:-50px;animation:none}
+@media (max-width:600px){header.night::before{left:auto;right:-40px;top:-60px}}
+header.night h1{color:#FFF3D6;text-shadow:0 2px 18px rgba(0,0,0,.4)}
+header.night .eyebrow,header.night .hero-wx,header.night .hero-wx small,header.night .refresh .link{color:#F3E6C8}
+header.night .hero-wx svg *{stroke:#F3E6C8}
+header::before{background:radial-gradient(circle,rgba(255,250,220,1),rgba(255,226,140,.55) 35%,rgba(255,210,120,0) 70%);right:-40px;top:-120px}
+header::after{display:none}
+header h1{color:#3A2A14;text-shadow:0 1px 0 rgba(255,250,230,.6)}
+header .eyebrow{color:#7A5126}
+.hero-wx{color:#3A2A14}.hero-wx small{color:#6B4F2A}
+.hero-wx svg *{stroke:#5A3E1C}
+header .refresh .link{color:#5A3E1C}
+header .mini{background:rgba(255,250,236,.92);box-shadow:0 2px 0 rgba(107,69,38,.25)}
+@media (max-width:600px){header{padding:26px 22px 84px}}
+
+/* Alfred's study: lamplight and dark wood */
+.brief{background:radial-gradient(600px 220px at 8% 0%,rgba(255,190,90,.18),transparent 70%),linear-gradient(155deg,#2A3320 0%,#2B2416 55%,#33231A 100%);box-shadow:0 22px 44px -24px rgba(40,30,10,.8);border:1px solid rgba(212,154,46,.25)}
+.brief-icon{background:radial-gradient(circle at 50% 35%,#FFE3A0,#D49A2E 70%);box-shadow:0 0 22px rgba(255,190,90,.45)}
+
+/* Nav: little wooden tags */
+.secnav{background:rgba(242,232,208,.88)}
+.secnav a{background:#FFF8E6;box-shadow:0 1px 0 rgba(107,69,38,.18),inset 0 0 0 1px rgba(107,69,38,.12)}
+.secnav a.on{background:var(--moss);color:#FFF8E6;box-shadow:0 2px 8px -2px rgba(91,122,46,.6)}
+
+/* Section banners: home gets the full hillside, town a quilted panel, the world a quiet line */
+.sec-head{background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 86%,#FFE3A0) 0%,color-mix(in srgb,var(--accent) 84%,#2E2315) 100%);
+  box-shadow:0 16px 30px -20px color-mix(in srgb,var(--accent) 80%,#000)}
+.sec-head::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:34px;pointer-events:none;opacity:.9;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 26 C200 4 360 10 520 22 S860 6 1040 18 1160 12 1200 16 V40 H0Z' fill='%23FFF8E6' fill-opacity='.16'/%3E%3Cpath d='M0 34 C240 20 480 26 700 32 S1040 22 1200 28 V40 H0Z' fill='%23FFF8E6' fill-opacity='.14'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+.sec-head::after{background:radial-gradient(circle,rgba(255,236,170,.35),rgba(255,236,170,0) 70%)}
+.sec-icon{position:relative;border-radius:50%;transform:none;background:radial-gradient(circle at 50% 38%,#FFFBEA,#F2DFB4);
+  border:4px solid #7A5230;box-shadow:0 0 0 3px rgba(255,246,222,.45),0 8px 16px -8px rgba(0,0,0,.45)}
+.sec-icon::after{content:"";position:absolute;right:6px;top:calc(50% - 3px);width:6px;height:6px;border-radius:50%;background:#D49A2E;box-shadow:0 0 0 1px #8A5A22}
+.group:hover .sec-icon{transform:rotate(-8deg) scale(1.06)}
+.group[data-tier=town] .sec-head{background:color-mix(in srgb,var(--accent) 12%,#FFF8E6);outline:2px dashed color-mix(in srgb,var(--accent) 35%,transparent);outline-offset:-8px}
+.group[data-tier=town] .sec-head::before{display:none}
+.group[data-tier=town] .sec-icon{border-width:3px;border-radius:50%}
+.group[data-tier=world] .sec-head{background:transparent;outline:0}
+.group[data-tier=world] .sec-head::before{display:none}
+.group[data-tier=world] .sec-icon{border-radius:50%;border:2px solid color-mix(in srgb,var(--accent) 40%,#C7B58E);box-shadow:none}
+.group[data-tier=world] .sec-icon::after{display:none}
+
+/* Wooden signposts between areas, on a vine */
+.tier-h{border-bottom:0;padding-bottom:26px;background:var(--vine) repeat-x left bottom/120px 18px}
+.tier-h b{display:inline-block;font-family:'Uncial Antiqua',var(--display);font-weight:400;font-size:24px;letter-spacing:.01em;color:#FFF3D6;
+  padding:9px 20px 7px;border-radius:8px 16px 8px 16px;transform:rotate(-1.2deg);
+  background:repeating-linear-gradient(92deg,rgba(255,255,255,.04) 0 3px,rgba(0,0,0,.05) 3px 7px),linear-gradient(180deg,#8E5C33,#6A4223);
+  box-shadow:inset 0 0 0 2px rgba(255,236,190,.12),0 5px 0 -1px #4A2C14,0 10px 18px -10px rgba(40,25,10,.7)}
+.tier-h small{margin-top:8px;font-style:italic;color:#7A6646}
+.tier-h>span:first-child{font-size:34px;filter:drop-shadow(0 3px 2px rgba(60,40,10,.25))}
+
+/* Cards: cream parchment with a soft shadow */
+.card{border-color:var(--line);box-shadow:0 1px 0 rgba(120,90,40,.08),0 12px 26px -20px rgba(90,60,20,.55)}
+.group .card:not(.joy-card){border-top:5px solid color-mix(in srgb,var(--accent) 70%,#FFF3D6)}
+.tile{box-shadow:0 1px 0 rgba(120,90,40,.08),0 12px 26px -20px rgba(90,60,20,.55)}
+.joy-btn{background:#4A3320;color:#FFF6E2}
+.joy-btn:hover{background:#5B7A2E;opacity:1}
+
+/* Daily fun: a harvest banner and earthy pastels */
+.group[data-sec=delights]{--accent:#A8573A}
+.group[data-sec=delights] .sec-head{background:linear-gradient(115deg,#5B7A2E 0%,#9A8A2E 30%,#D49A2E 60%,#B4553A 100%)}
+.shelf-h{color:#6B4526}
+.shelf-h::after{height:18px;border-radius:0;background:var(--vine) repeat-x left center/120px 18px;opacity:.85}
+.j-drum{background:linear-gradient(150deg,#F8E4D6,#F1D1BC)}
+.j-albums{background:linear-gradient(150deg,#EFE5EE,#E3D4E2);--jc:#6E4A78}
+.j-albums .bday .age{background:#6E4A78}
+.j-thai{background:linear-gradient(150deg,#E5F0DE,#D4E7CB)}
+.j-ask{background:linear-gradient(150deg,#E6EEEC,#D5E4E1);--jc:#2F6A6A}
+.j-trend{background:linear-gradient(150deg,#F4E7E6,#EFDCCB);--jc:#9A3F55}
+.j-apod{background:radial-gradient(500px 300px at 80% 0%,rgba(212,154,46,.18),transparent 70%),#14212A}
+.j-local{background:linear-gradient(150deg,#E8EFE6,#F3E2CC);--jc:#3F6A4A}
+.j-good{background:linear-gradient(150deg,#EEF4DC,#DDEBC3)}
+
+/* ================= A little magic (all of it switches off with reduced motion) ================= */
+header>.sprite{position:absolute;z-index:0;pointer-events:none}
+.spark{position:fixed;z-index:99;pointer-events:none;width:10px;height:10px;margin:-5px 0 0 -5px;background:#FFD86B;
+  clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);filter:drop-shadow(0 0 4px rgba(255,210,100,.9))}
+@media (prefers-reduced-motion:no-preference){
+  /* Cards ink in as they come into view, like writing on a map */
+  .magic .card.ink{opacity:0;transform:translateY(18px) scale(.985);filter:blur(3px) sepia(.7)}
+  .magic .card.ink.inked{opacity:1;transform:none;filter:none;transition:opacity .9s ease,transform 1s cubic-bezier(.2,.8,.2,1),filter 1.2s ease}
+  /* Moving pictures */
+  .apod-img img{animation:portrait 24s ease-in-out infinite alternate;transform-origin:50% 40%}
+  .sci img,.story img{animation:pan 26s ease-in-out infinite alternate}
+  .book img{animation:sway 7s ease-in-out infinite;transform-origin:50% 100%}
+  .book:nth-child(2n) img{animation-delay:-3s}
+  /* The round doors breathe, and wiggle when you come near */
+  .sec-icon{animation:breathe 6s ease-in-out infinite}
+  .group:nth-child(2n) .sec-icon{animation-delay:-2.5s}
+  .group:hover .sec-icon{animation:wiggle .7s ease-in-out}
+  /* Lamplight in Alfred's study */
+  .brief-icon{animation:flicker 3.4s ease-in-out infinite}
+  /* A glimmer passes over the daily cards */
+  .joy-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,244,210,.5) 50%,transparent 65%);transform:translateX(-130%)}
+  .joy-card:hover::after{transform:translateX(130%);transition:transform 1.2s ease}
+  /* The poem writes itself */
+  .poem-text.writing span{opacity:0;clip-path:inset(0 100% 0 0);animation:quill .9s ease forwards}
+  /* Sky critters */
+  header>.leaf{top:-24px;animation:fall linear infinite}
+  header>.firefly{width:6px;height:6px;border-radius:50%;background:#FFE58A;box-shadow:0 0 10px 3px rgba(255,220,110,.75);animation:fly ease-in-out infinite alternate,blink 2.6s ease-in-out infinite}
+  .spark{animation:spark .85s cubic-bezier(.2,.7,.3,1) forwards}
+}
+@keyframes portrait{0%{transform:scale(1.03)}50%{transform:scale(1.1) translate(-1.5%,1%)}100%{transform:scale(1.06) translate(1.5%,-1%)}}
+@keyframes pan{0%{object-position:30% 35%}100%{object-position:70% 65%}}
+@keyframes sway{50%{transform:rotate(-2deg) translateY(-1px)}}
+@keyframes breathe{50%{transform:translateY(-2px) rotate(3deg)}}
+@keyframes wiggle{25%{transform:rotate(-10deg) scale(1.08)}60%{transform:rotate(8deg) scale(1.08)}}
+@keyframes flicker{0%,100%{box-shadow:0 0 20px rgba(255,190,90,.45)}38%{box-shadow:0 0 32px rgba(255,205,110,.7)}44%{box-shadow:0 0 14px rgba(255,180,80,.3)}72%{box-shadow:0 0 26px rgba(255,195,95,.55)}}
+@keyframes quill{to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes fall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:.95}85%{opacity:.9}100%{transform:translate(var(--dx),300px) rotate(var(--rot));opacity:0}}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy))}}
+@keyframes blink{50%{opacity:.15}}
+@keyframes spark{to{transform:translate(var(--dx),var(--dy)) scale(.2) rotate(200deg);opacity:0}}
 </style>
 </head>
 <body>
@@ -534,7 +693,7 @@ header .refresh .link{color:#fff;opacity:.9}
   <nav class="secnav" id="secnav" aria-label="Jump to section"></nav>
 
   <div id="banner" class="banner" hidden></div>
-  <section class="group" data-sec="today" id="today" aria-labelledby="today-h">
+  <section class="group" data-sec="today" data-tier="top" id="today" aria-labelledby="today-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, power, your calendar and the road</p></div></div>
     <div class="sec-body">
     <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
@@ -597,7 +756,204 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="delights" id="delights" aria-labelledby="delights-h">
+  <section class="group" data-sec="family" data-tier="home" id="family" aria-labelledby="family-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🧸</span><div class="sec-titles"><h2 class="sec-h" id="family-h">Little one</h2><p class="sec-sub" id="kid-age">Play ideas and outings that fit her age and the season</p></div></div>
+    <div class="sec-body">
+      <form class="kid-setup" id="kid-setup" hidden>
+        <label for="kid-birth"><b>Her birth month</b><small>Used to match ideas to her age. It stays in this browser only and is never published.</small></label>
+        <div class="kid-setup-row"><input type="month" id="kid-birth" required><button type="submit">Save</button></div>
+      </form>
+      <div class="row">
+        <section class="card half" aria-labelledby="play-h">
+          <div class="head"><h2 id="play-h">Play ideas this week</h2><button class="mini" id="play-more" type="button">More ideas</button></div>
+          <div class="ideas" id="play"></div>
+          <p class="note" id="kid-grow"></p>
+        </section>
+        <section class="card half" aria-labelledby="out-h">
+          <div class="head"><h2 id="out-h">Out and about</h2><span class="meta" id="kid-out-meta"></span></div>
+          <div class="scroll" id="kid-out" tabindex="0" aria-label="Family outings, scrollable" style="max-height:470px"></div>
+          <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="bug-h" id="bug-card" hidden>
+        <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
+        <div class="bugs" id="bugs"></div>
+        <p class="note" id="bug-note"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="garden" data-tier="home" id="garden" aria-labelledby="garden-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening out there, what to do about it, and who's visiting</p></div></div>
+    <div class="sec-body">
+      <section class="card look-card" aria-labelledby="look-h" id="look-card" hidden>
+        <div class="head"><h2 id="look-h">Out on the land today</h2><span class="meta" id="look-meta"></span></div>
+        <div class="look-weather" id="look-weather" hidden></div>
+        <div class="look-cols">
+          <div class="look-col look-forest"><h3><span aria-hidden="true">🍐</span> In the food forest</h3><ul id="look-forest"></ul></div>
+          <div class="look-col look-prairie"><h3><span aria-hidden="true">🌾</span> On the prairie</h3><ul id="look-prairie"></ul></div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
+        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
+        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
+        <div class="lines" id="plant"></div>
+      </section>
+      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
+        <div class="head"><h2 id="forest-h">Food forest to-dos</h2><span class="meta" id="forest-meta"></span></div>
+        <div class="lines" id="forest"></div>
+        <p class="note" id="forest-next"></p>
+      </section>
+      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
+        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
+        <div class="lines" id="pollen"></div>
+        <p class="note" id="pollen-note"></p>
+      </section>
+      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
+        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
+        <div class="lines" id="rare"></div>
+      </section>
+      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
+        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
+        <p class="summary" id="burn-verdict"></p>
+        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
+        <p class="note" id="burn-note"></p>
+      </section>
+      <section class="card" aria-labelledby="birds-h">
+        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
+        <div class="species" id="birds"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="bloom-h">
+          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
+          <div class="species" id="blooms"></div>
+        </section>
+        <section class="card side" aria-labelledby="food-h" id="food-card">
+          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
+          <div class="chips" id="produce"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card wide" aria-labelledby="radar-h">
+          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+        </section>
+        <section class="card side" aria-labelledby="ship-h">
+          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+          <div class="map" id="ships">
+            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+            <script src="https://www.vesselfinder.com/aismap.js"></script>
+          </div>
+          <p class="note" id="tides"></p>
+          <div id="ship-list"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+        <div class="row" style="gap:24px">
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
+            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
+          </div>
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
+            <div class="minis" id="fish-river"></div>
+          </div>
+        </div>
+        <p class="note" id="fish-dam"></p>
+        <p class="note" id="fish-links"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="coast" data-tier="home" id="coast" aria-labelledby="coast-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
+    <div class="sec-body">
+      <div id="coast-alerts" class="alerts"></div>
+      <section class="card" aria-label="Coast house weather" data-src="coast-wx">
+        <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
+        <p class="summary" id="coast-summary"></p>
+        <div class="facts" id="coast-facts"></div>
+        <div class="fc" id="coast-fc"></div>
+      </section>
+      <section class="card" aria-labelledby="surf-h" id="surf-card" hidden>
+        <div class="head"><h2 id="surf-h">Surf report</h2><span class="meta" id="surf-meta"></span></div>
+        <p class="summary" id="surf-summary"></p>
+        <div class="facts" id="surf-facts"></div>
+        <div class="breaks" id="surf-breaks"></div>
+        <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
+      </section>
+      <div class="row">
+        <section class="card half" aria-labelledby="minus-h">
+          <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
+          <div class="lines" id="minus"></div>
+          <p class="note" id="coast-links"></p>
+        </section>
+        <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
+          <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
+          <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="shell-h" id="shell-card" hidden>
+        <div class="head"><h2 id="shell-h">Clamming and crabbing</h2><span class="meta" id="shell-meta"></span></div>
+        <div class="shells" id="shells"></div>
+        <p class="note" id="shell-note"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="solar" data-tier="home" id="solar" aria-labelledby="solar-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">The grid right now, power curves, your PGE bill and every panel</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="grid-h" id="grid-card" hidden>
+        <div class="head"><h2 id="grid-h">Northwest grid right now</h2><span class="meta" id="grid-meta"></span></div>
+        <p class="summary" id="grid-summary"></p>
+        <div class="mixbar" id="grid-bar" role="img"></div>
+        <div class="legend" id="grid-legend"></div>
+        <p class="note" id="grid-note"></p>
+      </section>
+      <section class="card" aria-labelledby="main-h">
+        <div class="head"><h2 id="main-h">Power through the day</h2>
+          <div class="seg" role="group" aria-label="Time range">
+            <button data-range="day" aria-pressed="true">Day</button>
+            <button data-range="week" aria-pressed="false">Week</button>
+            <button data-range="month" aria-pressed="false">Month</button>
+          </div>
+        </div>
+        <div class="legend" id="main-legend"></div>
+        <div class="chart" id="main-chart"></div>
+        <div class="axis" id="main-axis"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="mo-h">
+          <div class="head"><h2 id="mo-h">Last 30 days</h2>
+            <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
+          </div>
+          <div id="month-chart"></div>
+          <div class="axis" id="month-axis"></div>
+          <p class="note" id="month-note"></p>
+        </section>
+        <section class="card side" aria-labelledby="bill-h">
+          <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
+          <div id="bill"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="pn-h">
+        <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
+        <div class="panels" id="panels"></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="delights" data-tier="fun" id="delights" aria-labelledby="delights-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">A little something new every day</p></div></div>
     <div class="sec-body">
       <div class="joy" id="joy">
@@ -688,125 +1044,7 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="family" id="family" aria-labelledby="family-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🧸</span><div class="sec-titles"><h2 class="sec-h" id="family-h">Little one</h2><p class="sec-sub" id="kid-age">Play ideas and outings that fit her age and the season</p></div></div>
-    <div class="sec-body">
-      <form class="kid-setup" id="kid-setup" hidden>
-        <label for="kid-birth"><b>Her birth month</b><small>Used to match ideas to her age. It stays in this browser only and is never published.</small></label>
-        <div class="kid-setup-row"><input type="month" id="kid-birth" required><button type="submit">Save</button></div>
-      </form>
-      <div class="row">
-        <section class="card half" aria-labelledby="play-h">
-          <div class="head"><h2 id="play-h">Play ideas this week</h2><button class="mini" id="play-more" type="button">More ideas</button></div>
-          <div class="ideas" id="play"></div>
-          <p class="note" id="kid-grow"></p>
-        </section>
-        <section class="card half" aria-labelledby="out-h">
-          <div class="head"><h2 id="out-h">Out and about</h2><span class="meta" id="kid-out-meta"></span></div>
-          <div class="scroll" id="kid-out" tabindex="0" aria-label="Family outings, scrollable" style="max-height:470px"></div>
-          <p class="note"><a href="#" id="kid-change">Change birth month</a></p>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="bug-h" id="bug-card" hidden>
-        <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
-        <div class="bugs" id="bugs"></div>
-        <p class="note" id="bug-note"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening out there, what to do about it, and who's visiting</p></div></div>
-    <div class="sec-body">
-      <section class="card look-card" aria-labelledby="look-h" id="look-card" hidden>
-        <div class="head"><h2 id="look-h">Out on the land today</h2><span class="meta" id="look-meta"></span></div>
-        <div class="look-weather" id="look-weather" hidden></div>
-        <div class="look-cols">
-          <div class="look-col look-forest"><h3><span aria-hidden="true">🍐</span> In the food forest</h3><ul id="look-forest"></ul></div>
-          <div class="look-col look-prairie"><h3><span aria-hidden="true">🌾</span> On the prairie</h3><ul id="look-prairie"></ul></div>
-        </div>
-      </section>
-      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
-        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
-        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
-        <div class="lines" id="plant"></div>
-      </section>
-      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
-        <div class="head"><h2 id="forest-h">Food forest to-dos</h2><span class="meta" id="forest-meta"></span></div>
-        <div class="lines" id="forest"></div>
-        <p class="note" id="forest-next"></p>
-      </section>
-      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
-        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
-        <div class="lines" id="pollen"></div>
-        <p class="note" id="pollen-note"></p>
-      </section>
-      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
-        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
-        <div class="lines" id="rare"></div>
-      </section>
-      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
-        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
-        <p class="summary" id="burn-verdict"></p>
-        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
-        <p class="note" id="burn-note"></p>
-      </section>
-      <section class="card" aria-labelledby="birds-h">
-        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
-        <div class="species" id="birds"></div>
-      </section>
-      <div class="row">
-        <section class="card wide" aria-labelledby="bloom-h">
-          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
-          <div class="species" id="blooms"></div>
-        </section>
-        <section class="card side" aria-labelledby="food-h" id="food-card">
-          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
-          <div class="chips" id="produce"></div>
-        </section>
-      </div>
-    </div>
-  </section>
-
-  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card wide" aria-labelledby="radar-h">
-          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
-          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
-        </section>
-        <section class="card side" aria-labelledby="ship-h">
-          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-          <div class="map" id="ships">
-            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
-            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
-              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
-            <script src="https://www.vesselfinder.com/aismap.js"></script>
-          </div>
-          <p class="note" id="tides"></p>
-          <div id="ship-list"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
-        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
-        <div class="row" style="gap:24px">
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
-            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
-          </div>
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
-            <div class="minis" id="fish-river"></div>
-          </div>
-        </div>
-        <p class="note" id="fish-dam"></p>
-        <p class="note" id="fish-links"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="local" id="local" aria-labelledby="local-h">
+  <section class="group" data-sec="local" data-tier="town" id="local" aria-labelledby="local-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">Food, drink, music, groceries and the mountain</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
@@ -860,33 +1098,7 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="watch" id="coming" aria-labelledby="watch-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
-        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
-        <div class="recs" id="records"></div>
-      </section>
-      <div class="row" id="watch-row">
-        <section class="card half" aria-labelledby="tv-h">
-          <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
-          <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
-          <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
-        </section>
-        <section class="card half" aria-labelledby="alb-h">
-          <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
-          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="br-h" id="br-card" hidden>
-        <div class="head"><h2 id="br-h">4K Blu-ray deals</h2><span class="meta" id="br-meta"></span></div>
-        <div class="lines" id="bluray"></div>
-        <p class="note" id="br-upcoming"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="sports" id="more" aria-labelledby="sports-h">
+  <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games, markets and shows</h2><p class="sec-sub">Blazers, Timbers, F1, the S&amp;P, then concerts and jazz</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
@@ -915,43 +1127,33 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="coast" id="coast" aria-labelledby="coast-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
+  <section class="group" data-sec="watch" data-tier="town" id="coming" aria-labelledby="watch-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">Watch and listen</h2><p class="sec-sub">New shows, new albums and disc deals</p></div></div>
     <div class="sec-body">
-      <div id="coast-alerts" class="alerts"></div>
-      <section class="card" aria-label="Coast house weather" data-src="coast-wx">
-        <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
-        <p class="summary" id="coast-summary"></p>
-        <div class="facts" id="coast-facts"></div>
-        <div class="fc" id="coast-fc"></div>
+      <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
+        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
+        <div class="recs" id="records"></div>
       </section>
-      <section class="card" aria-labelledby="surf-h" id="surf-card" hidden>
-        <div class="head"><h2 id="surf-h">Surf report</h2><span class="meta" id="surf-meta"></span></div>
-        <p class="summary" id="surf-summary"></p>
-        <div class="facts" id="surf-facts"></div>
-        <div class="breaks" id="surf-breaks"></div>
-        <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
-      </section>
-      <div class="row">
-        <section class="card half" aria-labelledby="minus-h">
-          <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
-          <div class="lines" id="minus"></div>
-          <p class="note" id="coast-links"></p>
+      <div class="row" id="watch-row">
+        <section class="card half" aria-labelledby="tv-h">
+          <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
+          <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
+          <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
         </section>
-        <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
-          <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
-          <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
+        <section class="card half" aria-labelledby="alb-h">
+          <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
+          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
         </section>
       </div>
-      <section class="card" aria-labelledby="shell-h" id="shell-card" hidden>
-        <div class="head"><h2 id="shell-h">Clamming and crabbing</h2><span class="meta" id="shell-meta"></span></div>
-        <div class="shells" id="shells"></div>
-        <p class="note" id="shell-note"></p>
+      <section class="card" aria-labelledby="br-h" id="br-card" hidden>
+        <div class="head"><h2 id="br-h">4K Blu-ray deals</h2><span class="meta" id="br-meta"></span></div>
+        <div class="lines" id="bluray"></div>
+        <p class="note" id="br-upcoming"></p>
       </section>
     </div>
   </section>
 
-  <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
+  <section class="group" data-sec="nearby" data-tier="town" id="nearby" aria-labelledby="nearby-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
@@ -990,7 +1192,7 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
+  <section class="group" data-sec="civics" data-tier="world" id="civics" aria-labelledby="civics-h" hidden>
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="elect-h">
@@ -1007,7 +1209,7 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
+  <section class="group" data-sec="almanac" data-tier="world" id="almanac" aria-labelledby="almanac-h" hidden>
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
     <div class="sec-body">
       <div class="chips" id="date-facts"></div>
@@ -1030,14 +1232,14 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="science" id="science" aria-labelledby="science-h" hidden>
+  <section class="group" data-sec="science" data-tier="world" id="science" aria-labelledby="science-h" hidden>
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs and what they mean, from Quanta, Science News and more</p></div></div>
     <div class="sec-body">
       <div class="sci-grid" id="sci"></div>
     </div>
   </section>
 
-  <section class="group" data-sec="news" id="news" aria-labelledby="news-h">
+  <section class="group" data-sec="news" data-tier="world" id="news" aria-labelledby="news-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
     <div class="sec-body">
       <div class="row">
@@ -1053,7 +1255,7 @@ header .refresh .link{color:#fff;opacity:.9}
     </div>
   </section>
 
-  <section class="group" data-sec="world" id="world" aria-labelledby="world-h">
+  <section class="group" data-sec="world" data-tier="world" id="world" aria-labelledby="world-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Time, weather and air in Bangkok; USA and Thailand holidays</p></div></div>
     <div class="sec-body">
       <div class="row">
@@ -1069,49 +1271,6 @@ header .refresh .link{color:#fff;opacity:.9}
           <div class="lines" id="thai"></div>
         </section>
       </div>
-    </div>
-  </section>
-
-  <section class="group" data-sec="solar" id="solar" aria-labelledby="solar-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Solar details</h2><p class="sec-sub">The grid right now, power curves, your PGE bill and every panel</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="grid-h" id="grid-card" hidden>
-        <div class="head"><h2 id="grid-h">Northwest grid right now</h2><span class="meta" id="grid-meta"></span></div>
-        <p class="summary" id="grid-summary"></p>
-        <div class="mixbar" id="grid-bar" role="img"></div>
-        <div class="legend" id="grid-legend"></div>
-        <p class="note" id="grid-note"></p>
-      </section>
-      <section class="card" aria-labelledby="main-h">
-        <div class="head"><h2 id="main-h">Power through the day</h2>
-          <div class="seg" role="group" aria-label="Time range">
-            <button data-range="day" aria-pressed="true">Day</button>
-            <button data-range="week" aria-pressed="false">Week</button>
-            <button data-range="month" aria-pressed="false">Month</button>
-          </div>
-        </div>
-        <div class="legend" id="main-legend"></div>
-        <div class="chart" id="main-chart"></div>
-        <div class="axis" id="main-axis"></div>
-      </section>
-      <div class="row">
-        <section class="card wide" aria-labelledby="mo-h">
-          <div class="head"><h2 id="mo-h">Last 30 days</h2>
-            <div class="legend"><span><i class="sw" style="background:var(--solar)"></i>Produced</span><span id="ly-legend"><i style="width:14px;border-top:3px solid var(--ink)"></i>Last year</span><span id="used-legend"><i class="sw" style="background:var(--use)"></i>Used (PGE meter)</span></div>
-          </div>
-          <div id="month-chart"></div>
-          <div class="axis" id="month-axis"></div>
-          <p class="note" id="month-note"></p>
-        </section>
-        <section class="card side" aria-labelledby="bill-h">
-          <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
-          <div id="bill"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="pn-h">
-        <div class="head"><h2 id="pn-h">Panels right now</h2><span class="meta" id="pn-meta" style="font-size:13px"></span></div>
-        <div class="panels" id="panels"></div>
-      </section>
     </div>
   </section>
   <footer class="learn" id="learn">
@@ -1136,6 +1295,90 @@ const money = x => (x < 0 ? '−$' : '$') + Math.abs(x).toFixed(2);
 const mins = t => { const [h, m] = t.split(' ').pop().split(':').map(Number); return h * 60 + m; };
 const hourLabel = m => { const h = Math.floor(m / 60) % 24; return (h % 12 || 12) + (h < 12 ? ' am' : ' pm'); };
 let D, range = 'day';
+
+// ------------------------------------------------------------------ a little magic
+// Cards ink in as they scroll into view, numbers count up, the poem writes itself, critters drift through the header
+// and buttons throw a few sparks. None of it runs when the device asks for reduced motion.
+const calm = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function magic() {
+  if (magic.done || calm() || !('IntersectionObserver' in window)) return;
+  magic.done = true;
+  document.documentElement.classList.add('magic');
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const c = e.target;
+    io.unobserve(c);
+    c.classList.add('inked');
+    setTimeout(() => c.classList.remove('ink', 'inked'), 1300);
+    countUp(c);
+    if (c.id === 'poem-card') quill(c);
+  }), {rootMargin: '0px 0px -6% 0px'});
+  document.querySelectorAll('.card').forEach(c => { c.classList.add('ink'); io.observe(c); });
+  critters();
+  document.addEventListener('click', e => { if (e.target.closest('button, .joy-btn, .secnav a')) sparkle(e.clientX, e.clientY); });
+}
+
+function countUp(root) {
+  root.querySelectorAll('.big, .joy-stats b').forEach(el => {
+    const node = [...el.childNodes].find(n => n.nodeType === 3 && /\d/.test(n.textContent));
+    const m = node && node.textContent.match(/^(\D*?)(\d[\d,]*(?:\.\d+)?)([\s\S]*)$/);
+    if (!m) return;
+    const target = parseFloat(m[2].replace(/,/g, '')), dec = (m[2].split('.')[1] || '').length, comma = m[2].includes(',');
+    if (!(target > 0)) return;
+    const fmt = v => comma ? v.toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec}) : v.toFixed(dec);
+    const t0 = performance.now();
+    const step = now => {
+      const k = Math.min(1, (now - t0) / 1200);
+      node.textContent = m[1] + fmt(k < 1 ? target * (1 - Math.pow(1 - k, 3)) : target) + m[3];
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+function quill(card) {
+  const box = card.querySelector('.poem-text');
+  if (!box) return;
+  const lines = [...box.querySelectorAll('span:not(.gap)')];
+  const gap = Math.min(0.35, 7 / Math.max(1, lines.length));
+  lines.forEach((l, i) => { l.style.animationDelay = (0.3 + i * gap).toFixed(2) + 's'; });
+  box.classList.add('writing');
+}
+
+function critters() {
+  const head = document.querySelector('header');
+  if (!head) return;
+  const now = new Date(), h = now.getHours(), mo = now.getMonth() + 1;
+  const night = h >= 18 || h < 7;
+  head.classList.toggle('night', night);
+  const kind = night ? null : mo >= 9 && mo <= 11 ? ['🍂', '🍁', '🍂'] : mo >= 3 && mo <= 5 ? ['🌸', '🍃'] : mo >= 6 && mo <= 8 ? ['🦋', '🍃'] : ['❄️'];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  for (let i = 0; i < (night ? 16 : 9); i++) {
+    const s = document.createElement('span');
+    s.setAttribute('aria-hidden', 'true');
+    if (night) {
+      s.className = 'sprite firefly';
+      s.style.cssText = `left:${rnd(4, 96)}%;top:${rnd(15, 80)}%;--dx:${rnd(-60, 60)}px;--dy:${rnd(-40, 40)}px;animation-duration:${rnd(5, 10)}s,${rnd(1.8, 3.6)}s;animation-delay:${rnd(-8, 0)}s,${rnd(-3, 0)}s`;
+    } else {
+      s.className = 'sprite leaf';
+      s.textContent = kind[i % kind.length];
+      s.style.cssText = `left:${rnd(2, 95)}%;font-size:${rnd(14, 22)}px;--dx:${rnd(-80, 80)}px;--rot:${rnd(-360, 360)}deg;animation-duration:${rnd(9, 16)}s;animation-delay:${rnd(-16, 0)}s`;
+    }
+    head.prepend(s);
+  }
+}
+
+function sparkle(x, y) {
+  for (let i = 0; i < 10; i++) {
+    const s = document.createElement('span');
+    const a = Math.random() * Math.PI * 2, d = 24 + Math.random() * 40;
+    s.className = 'spark';
+    s.style.cssText = `left:${x}px;top:${y}px;--dx:${Math.cos(a) * d}px;--dy:${Math.sin(a) * d}px;background:${['#FFD86B', '#FFF1B8', '#F2B544'][i % 3]}`;
+    document.body.append(s);
+    setTimeout(() => s.remove(), 900);
+  }
+}
 
 async function load() {
   for (const url of ['dashboard.json', 'sample.json']) {
@@ -2731,6 +2974,12 @@ function addSources() {
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
 const NAV = {today: 'Today', delights: 'Daily fun', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
   watch: 'Watch', sports: 'Games', science: 'Science', news: 'News', world: 'Bangkok', solar: 'Solar'};
+const TIERS = ['home', 'fun', 'town', 'world'];
+const TIER_LABEL = {
+  home: '<span aria-hidden="true">🏡</span><span><b>Home and family</b><small>Your house, your land, your people</small></span>',
+  town: '<span aria-hidden="true">🌲</span><span><b>Out and about</b><small>Portland, games, shows and the sky overhead</small></span>',
+  world: '<span aria-hidden="true">🌍</span><span><b>The wider world</b><small>Worth knowing, when you have a minute</small></span>',
+};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
 if (!habits.noAutoFold) { habits.folds = {}; habits.noAutoFold = 1; }  // sections no longer fold on their own; open any folded before
@@ -2750,7 +2999,9 @@ function ageHabits() {
 function arrange() {
   const foot = $('learn'), all = groups(), base = all.map(g => g.dataset.sec);
   const order = [...all].sort((a, b) => {
-    const rank = g => g.dataset.sec === 'today' ? -3 : g.dataset.sec === 'delights' ? -2 : habits.pins[g.dataset.sec] ? -1 : 0;
+    // Your own world first: home and family, then the daily fun, then town, then the wider world.
+    // Within a tier, pins come first and then what you read most.
+    const rank = g => g.dataset.sec === 'today' ? -1 : TIERS.indexOf(g.dataset.tier) * 2 - (habits.pins[g.dataset.sec] ? 1 : 0);
     const r = rank(a) - rank(b);
     if (r || !learned()) return r || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
     return (habits.score[b.dataset.sec] || 0) - (habits.score[a.dataset.sec] || 0) || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
@@ -3280,8 +3531,24 @@ function syncGroups() {
   buildNav();
 }
 
+// A heading above the first showing section of each tier.
+function tierLabels(live) {
+  document.querySelectorAll('.tier-h').forEach(h => h.remove());
+  let tier = null;
+  for (const g of live) {
+    if (g.dataset.tier !== tier && TIER_LABEL[g.dataset.tier]) {
+      const h = document.createElement('div');
+      h.className = 'tier-h tier-' + g.dataset.tier;
+      h.innerHTML = TIER_LABEL[g.dataset.tier];
+      g.before(h);
+    }
+    tier = g.dataset.tier;
+  }
+}
+
 function buildNav() {
   const live = groups().filter(g => !g.hidden && !g.classList.contains('empty'));
+  tierLabels(live);
   $('secnav').innerHTML = live.map(g => `<a href="#${g.id}" data-sec="${g.dataset.sec}"><span class="ic" aria-hidden="true">${g.querySelector('.sec-icon').textContent}</span>${NAV[g.dataset.sec]}</a>`).join('');
   $('secnav').querySelectorAll('a').forEach(a => a.onclick = e => {
     e.preventDefault();
@@ -3364,7 +3631,16 @@ document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click'
   D = d || D;
   if (D.sample && status && status !== 'ok') D.realStatus = status;
   render();
-  setInterval(async () => { const n = await load(); if (n && !n.sample) { D = n; render(); } }, 15 * 60 * 1000);
+  magic();
+  // Pick up each new update (every 15 min or so) while the page is open, and right away when you come back to it.
+  let checked = Date.now();
+  const refresh = async () => {
+    checked = Date.now();
+    const n = await load();
+    if (n && !n.sample && n.generated_at !== D.generated_at) { D = n; render(); }
+  };
+  setInterval(refresh, 5 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && Date.now() - checked > 60 * 1000) refresh(); });
   $('refresh-btn').onclick = async () => {
     const btn = $('refresh-btn');
     btn.disabled = true; btn.textContent = '↻ Loading…';

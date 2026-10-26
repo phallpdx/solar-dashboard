@@ -1,15 +1,15 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-26T22:57:56Z",
+  "updated_at": "2026-10-26T23:16:46Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by the team's undefeated 2-0 start and rising power rankings. However, there is concern regarding the league-wide injury bug and recent catastrophic injuries to other players.",
+      "mood": "Optimistic and excited",
+      "pulse": "Fans are celebrating an undefeated 2-0 start and rising power rankings. There is excitement for the upcoming game against the Lakers.",
       "storylines": [
-        "Blazers are 2-0 with wins over the Suns and Kings.",
-        "Team ranked #15 in NBA.com's new power rankings.",
-        "Upcoming game against the Los Angeles Lakers.",
-        "Discussion regarding player profiles and roster depth."
+        "Undefeated 2-0 start to the season",
+        "Ranked #15 in NBA.com power rankings",
+        "Next game against Los Angeles Lakers",
+        "Focus on mobile defense and rebounding"
       ],
       "sources": [
         {
@@ -27,13 +27,13 @@
       ]
     },
     "timbers": {
-      "mood": "bittersweet and reflective",
-      "pulse": "Fans are processing the news that club captain Diego Chara will retire following the 2027 Sprint Season. There is also a sense of community solidarity regarding support for the Rose City Riveters and Timbers Army.",
+      "mood": "reflective and supportive",
+      "pulse": "Fans are processing Diego Chara's retirement announcement for after the 2027 season. There is also strong community solidarity regarding local groups.",
       "storylines": [
-        "Diego Chara announces he will retire after the 2027 MLS Sprint Season.",
-        "Homegrown player Eric Izoita signed to a first-team hybrid contract.",
-        "Timbers Academy player Ian Miller named to U.S. U-16 Boys domestic training camp.",
-        "Kellen Tamblyn named to the 2026 MLS NEXT All-Star Game roster."
+        "Diego Chara to retire after 2027 Sprint Season",
+        "Eric Izoita signed to first-team contract",
+        "Ian Miller named to U.S. U-16 domestic camp",
+        "Kellen Tamblyn named to MLS NEXT All-Star Game"
       ],
       "sources": [
         {
@@ -56,13 +56,12 @@
     },
     "f1": {
       "mood": "Excitement and frustration",
-      "pulse": "Fans are celebrating Kimi Antonelli's dominant victory and his move toward the world title. However, there is significant debate regarding George Russell's poor form and Max Verstappen's recurring radio issues.",
+      "pulse": "Fans are celebrating Antonelli's dominance and title charge. Others are frustrated by Russell's performance and Verstappen's radio issues.",
       "storylines": [
-        "Kimi Antonelli needs two more points to clinch the championship after his ninth win of the season.",
-        "George Russell struggles with the Mercedes W17's difficult operating window, scoring only 6 points in his last three races.",
-        "Max Verstappen finished third in the US GP as Red Bull admits Mercedes and Antonelli were faster.",
-        "Ferrari expresses frustration after Charles Leclerc's pace in Austin was sufficient for victory but resulted in P2.",
-        "Fernando Alonso calls for Aston Martin car improvements to avoid incidents like his collision with Alex Albon."
+        "Antonelli nears first world title after Austin win",
+        "Mercedes W17 operating window issues for Russell",
+        "Verstappen facing recurring radio problems",
+        "Five drivers fighting for second place in standings"
       ],
       "sources": [
         {

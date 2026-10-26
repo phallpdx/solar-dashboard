@@ -2,6 +2,48 @@
   "updated": "2026-10-26",
   "events": [
     {
+      "title": "Dermot Kennedy",
+      "date": "2026-10-27",
+      "ends": null,
+      "venue": "Theater of the Clouds",
+      "kind": "Concert",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/dermot-kennedy-oct-27-2026"
+        }
+      ]
+    },
+    {
+      "title": "Functional Fabric Fair powered by Performance Days",
+      "date": "2026-10-27",
+      "ends": "2026-10-28",
+      "venue": "Halls B-C-D-E",
+      "kind": "Convention",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/10/functional-fabric-fair-powered-performance-days"
+        }
+      ]
+    },
+    {
+      "title": "ZERO TO THREE LEARN Conference 2026",
+      "date": "2026-10-28",
+      "ends": "2026-10-29",
+      "venue": "Hall A",
+      "kind": "Convention",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/10/zero-three-learn-conference-2026"
+        }
+      ]
+    },
+    {
       "title": "Bryson Tiller The Neo Trapsoul Tour",
       "date": "2026-10-29",
       "ends": null,
@@ -40,6 +82,20 @@
         {
           "name": "Rose Quarter",
           "url": "https://www.rosequarter.com/calendar-events/gorillaz-oct-30-2026"
+        }
+      ]
+    },
+    {
+      "title": "CANVAS 2026",
+      "date": "2026-10-30",
+      "ends": "2026-11-04",
+      "venue": "Halls A1-B-C",
+      "kind": "Convention",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/10/canvas-2026"
         }
       ]
     },
@@ -190,6 +246,20 @@
       ]
     },
     {
+      "title": "Major League Table Tennis",
+      "date": "2026-11-20",
+      "ends": "2026-11-22",
+      "venue": "Hall A",
+      "kind": "Sports",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/11/major-league-table-tennis"
+        }
+      ]
+    },
+    {
       "title": "OSAA football state championships (6A, 5A and 2A)",
       "date": "2026-11-26",
       "ends": "2026-11-28",
@@ -258,6 +328,20 @@
       ]
     },
     {
+      "title": "USA Track and Field Annual Meeting",
+      "date": "2026-11-29",
+      "ends": "2026-12-07",
+      "venue": "Oregon Ballroom",
+      "kind": "Convention",
+      "why": "null",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/11/usa-track-and-field-annual-meeting"
+        }
+      ]
+    },
+    {
       "title": "Christmas Ships Parade",
       "date": "2026-12-03",
       "ends": "2026-12-20",
@@ -308,90 +392,6 @@
         {
           "name": "Discotech",
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
-        }
-      ]
-    },
-    {
-      "title": "Ram PBR Portland",
-      "date": "2027-01-22",
-      "ends": "2027-01-23",
-      "venue": "Moda Center",
-      "kind": "Sports",
-      "why": "Multiple dates",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
-        }
-      ]
-    },
-    {
-      "title": "Harlem Globetrotters Rivalry Tour",
-      "date": "2027-01-31",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Sports",
-      "why": "Multiple dates",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
-        }
-      ]
-    },
-    {
-      "title": "Portland Winter Light Festival",
-      "date": "2027-02-01",
-      "ends": null,
-      "venue": "Portland",
-      "kind": "Holiday lights",
-      "why": "Brighten your February with a visit to Portland’s annual Winter Lights Festival, where you’ll find glowing sculptures, twinkling lights, lively events and more.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
-        }
-      ]
-    },
-    {
-      "title": "Biamp Portland Jazz Festival",
-      "date": "2027-03-01",
-      "ends": null,
-      "venue": "venues across the city",
-      "kind": "Festival",
-      "why": "For 10 days in March, the Biamp Portland Jazz Festival comes to life in venues across the city, featuring performances spanning jazz, soul and experimental sound.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-jazz-festival/"
-        }
-      ]
-    },
-    {
-      "title": "Portland Pride",
-      "date": "2027-06-01",
-      "ends": null,
-      "venue": "downtown Portland",
-      "kind": "Festival",
-      "why": "The Portland Pride Waterfront Festival and Parade is a family-friendly LGBTQIA+ community celebration held in downtown Portland every summer.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-pride/"
-        }
-      ]
-    },
-    {
-      "title": "Waterfront Blues Festival",
-      "date": "2027-07-01",
-      "ends": null,
-      "venue": "downtown Portland’s Waterfront Park",
-      "kind": "Festival",
-      "why": "Every Fourth of July weekend, the Waterfront Blues Festival takes over downtown Portland’s Waterfront Park.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/waterfront-blues-festival/"
         }
       ]
     }

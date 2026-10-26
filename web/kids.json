@@ -27,6 +27,22 @@
       "url": "https://pdxparent.com/event-single/corn-maze-fall-fun-at-bella-organic-farm/2026-10-26/"
     },
     {
+      "title": "Lee Farms Fall Festival & Pumpkin Patch",
+      "date": "2026-10-26",
+      "ends": null,
+      "where": "Lee Farms",
+      "detail": "Corn maze, hayrides, and farm animals. 9:00 am - 6:00 pm.",
+      "url": "https://pdxparent.com/series/lee-farms-fall-festival-pumpkin-patch/"
+    },
+    {
+      "title": "Boo Bash",
+      "date": "2026-10-26",
+      "ends": "2026-10-31",
+      "where": "Olympia, WA",
+      "detail": "Family-friendly thrills and spooky treats. 10:00 am - 4:00 pm.",
+      "url": "https://pdxparent.com/series/boo-bash-2/"
+    },
+    {
       "title": "Seaside Halloween Happenin's",
       "date": "2026-10-30",
       "ends": "2026-11-01",
@@ -184,22 +200,6 @@
       "ends": null,
       "where": "Esther Short Park, Vancouver WA",
       "detail": "Free Rotary celebration where Santa arrives escorted by the Christmas Ships. The Christmas Ships calendar lists it for Nov 27, though the Rotary hasn't posted 2026 details yet.",
-      "url": "https://www.christmasships.org/parade-schedule"
-    },
-    {
-      "title": "Curiosity Kids: Design and Discover",
-      "date": "2026-11-28",
-      "ends": "2026-12-05",
-      "where": "Portland, Oregon",
-      "detail": "Event held from 9 am - 10 am.",
-      "url": "https://omsi.edu/events/curiosity-kids-design-and-discover/"
-    },
-    {
-      "title": "Christmas Ships Parade",
-      "date": "2026-12-03",
-      "ends": "2026-12-20",
-      "where": "Columbia and Willamette rivers",
-      "detail": "Lit-up boats cruise past riverside parks on selected nights; free to watch from shore. The official site has the 2026 Columbia and Willamette schedules.",
       "url": "https://www.christmasships.org/parade-schedule"
     }
   ]

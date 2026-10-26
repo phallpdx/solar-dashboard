@@ -1,7 +1,7 @@
 {
   "updated": "2026-10-26",
   "season": {
-    "summary": "A strong-to-very strong El Niño is currently strengthening and is likely to persist through January-March 2027. There is an 83% chance of this strength for the October-December period, with a 70% chance for November-January. The next ENSO Diagnostics Discussion is scheduled for 12 November 2026. The provided text does not state what El Niño usually means for Pacific Northwest snowpack.",
+    "summary": "A strong-to-very strong El Niño is strengthening and likely through early 2027. There is an 83% chance of this magnitude for October-December. The next update is 2026-11-12. El Niño impacts are not guaranteed but are more likely with this magnitude.",
     "sources": [
       {
         "name": "NOAA CPC ENSO discussion",
@@ -30,7 +30,7 @@
       "resort": "Mt. Hood Meadows",
       "date": "2026-12-18",
       "status": "Planned",
-      "note": "The opening date of Dec 18 is a projection and subject to change.",
+      "note": "The date is a projection and subject to change.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",
@@ -50,7 +50,7 @@
       "resort": "Timberline",
       "date": "2026-12-26",
       "status": "Planned",
-      "note": "The opening date of Dec 26 is a projection and subject to change.",
+      "note": "The date is a projection and subject to change.",
       "sources": [
         {
           "name": "Timberline lift tickets",
@@ -66,7 +66,7 @@
       "resort": "Mt. Hood Skibowl",
       "date": "2026-11-27",
       "status": "Planned",
-      "note": "The opening date of Nov 27 is a projection and subject to change.",
+      "note": "The date is a projection and subject to change.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",
@@ -82,7 +82,7 @@
       "resort": "Cooper Spur",
       "date": "2026-12-26",
       "status": "Planned",
-      "note": "The opening date of Dec 26 is a projection and subject to change.",
+      "note": "The date is a projection and subject to change.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",

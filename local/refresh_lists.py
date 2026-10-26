@@ -16,6 +16,7 @@ Only the standard library is used, so a plain Python install is enough.
 """
 import argparse
 import datetime as dt
+import hashlib
 import html
 import json
 import os
@@ -205,8 +206,10 @@ def ask_model(task, text, schema):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
     messages = [
         {"role": "system", "content": "You extract facts from web pages into JSON. Use only what the page says. "
-                                      "Never invent dates, prices or links; copy links exactly as they appear in (parentheses) "
-                                      f"or [brackets]. Today is {TODAY:%A, %B %d, %Y}. Reply with JSON only."},
+                                      "Never invent dates, prices or links. Links on the page are numbered like (#12); for a link "
+                                      "field give that number, e.g. \"#12\". Keep every text field short, under 20 words. "
+                                      "Write dates as YYYY-MM-DD. Write compact JSON with no indentation or line breaks. "
+                                      f"Today is {TODAY:%A, %B %d, %Y}. Reply with JSON only."},
         {"role": "user", "content": f"{task}\n\n--- PAGE ---\n{text}\n--- END ---"},
     ]
     payload = {
@@ -265,7 +268,7 @@ def _parse_json(content):
 
 def items_schema(props, required=None):
     item = {"type": "object", "properties": props, "required": required or list(props), "additionalProperties": False}
-    return {"type": "object", "properties": {"items": {"type": "array", "items": item}},
+    return {"type": "object", "properties": {"items": {"type": "array", "items": item, "maxItems": 12}},
             "required": ["items"], "additionalProperties": False}
 
 
@@ -390,8 +393,56 @@ def by_date(*fields):
 
 # ---------------------------------------------------------------- lists
 
-def extract(sources, task, props, build, max_age_days=None):
-    """Runs one extraction task over each source and returns the built items."""
+LINK_FIELDS = ("url", "buy_url")
+
+
+def number_links(text):
+    """Swaps each link for a short number: a URL costs the model 30-40 tokens to copy, "#12" costs two."""
+    table = {}
+
+    def swap(m):
+        n = table.setdefault(m.group(2), len(table) + 1)
+        return f"{m.group(1)}#{n}{m.group(3)}"
+
+    text = re.sub(r"([(\[])(https?://[^)\]\s]+)([)\]])", swap, text)
+    return text, {n: url for url, n in table.items()}
+
+
+def unnumber(value, table):
+    m = re.fullmatch(r"#?(\d+)", str(value or "").strip())
+    return table.get(int(m.group(1))) if m else value
+
+
+CACHE_PATH = os.path.join(HERE, "cache", "pages.json")
+_cache = None
+
+
+def cached_items(key, digest):
+    global _cache
+    if _cache is None:
+        try:
+            _cache = json.load(open(CACHE_PATH, encoding="utf-8"))
+        except (OSError, ValueError):
+            _cache = {}
+    entry = _cache.get(key)
+    return entry["items"] if entry and entry["hash"] == digest else None
+
+
+def remember_items(key, digest, items):
+    _cache[key] = {"hash": digest, "items": items, "seen": TODAY.isoformat()}
+    for k in [k for k, v in _cache.items() if v.get("seen", "") < (TODAY - dt.timedelta(days=14)).isoformat()]:
+        del _cache[k]
+    os.makedirs(os.path.dirname(CACHE_PATH), exist_ok=True)
+    with open(CACHE_PATH, "w", encoding="utf-8") as f:
+        json.dump(_cache, f)
+
+
+def extract(sources, task, props, build, max_age_days=None, focus=None):
+    """Runs one extraction task over each source and returns the built items.
+
+    The model is the slow part (about 10 tokens a second on the laptop), so a page
+    whose text hasn't changed since an earlier run reuses that run's answer, and
+    `focus` can cut a page down to the lines worth reading, or to nothing."""
     found = []
     for src in sources:
         try:
@@ -402,21 +453,40 @@ def extract(sources, task, props, build, max_age_days=None):
         if len(text) < 200:
             log(f"  {src['name']}: almost no text (the page probably needs JavaScript)")
             continue
+        if focus:
+            text = focus(text)
+            if not text:
+                log(f"  {src['name']}: nothing relevant on the page, skipped the model")
+                continue
+        text, table = number_links(text)
         text = text[:LLM.get("max_chars_per_page", 9000)]
-        log(f"  {src['name']}: asking the model ({len(text)} chars)")
+        key = src["url"] + " " + hashlib.sha1(task.encode()).hexdigest()[:8]
+        digest = hashlib.sha1(text.encode()).hexdigest()
         t0 = time.time()
-        result = ask_model(task, text, items_schema(props))
-        raw = (result or {}).get("items") or []
+        raw = cached_items(key, digest)
+        if raw is not None:
+            how = "page unchanged, reused the last answer"
+        else:
+            log(f"  {src['name']}: asking the model ({len(text)} chars)")
+            result = ask_model(task, text, items_schema(props))
+            raw = (result or {}).get("items") or []
+            if result is not None:
+                remember_items(key, digest, raw)
+            how = f"{time.time() - t0:.0f}s"
         kept = 0
         for r in raw:
+            r = dict(r)
             for f in DATE_FIELDS:
                 if f in r:
                     r[f] = loose_date(r[f])
+            for f in LINK_FIELDS:
+                if f in r:
+                    r[f] = unnumber(r[f], table)
             item = build(r, src, links)
             if item:
                 found.append(item)
                 kept += 1
-        log(f"  {src['name']}: {kept} of {len(raw)} items passed checks ({time.time() - t0:.0f}s)")
+        log(f"  {src['name']}: {kept} of {len(raw)} items passed checks ({how})")
     return found
 
 
@@ -445,7 +515,7 @@ def refresh_jazz(data, sources):
 
     new = extract(sources, "List every upcoming JAZZ performance in the Portland, Oregon area on this page. "
                            f"kind is one of {kinds}. time like '7:30 pm' or null. price like '$25' or null. "
-                           "what is one plain sentence about the act. url is the event or ticket link.",
+                           "what is one plain sentence about the act. url is the event or ticket link number.",
                   {"artist": S, "kind": {"type": "string", "enum": kinds}, "date": DATE, "time": NS, "venue": S,
                    "price": NS, "what": S, "url": S}, build)
     data["shows"] = merge(data.get("shows", []), new, "artist", "date", lambda x: still_current(x, ["date"]),
@@ -468,8 +538,17 @@ def refresh_concerts(data, sources):
     if not missing:
         data["shows"] = shows
         return data
-    listed = extract(sources, "List every upcoming concert on this venue calendar: headlining artist, date, venue and the event or ticket url.",
-                     {"artist": S, "date": DATE, "venue": S, "url": S}, build)
+    names = [m["artist"].lower() for m in missing]
+
+    def focus(text):
+        # Only the calendar lines that name an artist we're waiting on, plus a little context.
+        lines = text.splitlines()
+        keep = sorted({j for i, l in enumerate(lines) if any(n in l.lower() for n in names)
+                       for j in range(max(0, i - 2), min(len(lines), i + 4))})
+        return "\n".join(lines[j] for j in keep)
+
+    listed = extract(sources, "List the upcoming concerts on this venue calendar excerpt: headlining artist, date, venue and the event or ticket url.",
+                     {"artist": S, "date": DATE, "venue": S, "url": S}, build, focus=focus)
     still_missing = []
     for m in missing:
         name = words(m["artist"])

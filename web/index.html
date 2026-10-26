@@ -12,6 +12,7 @@
 <style>
 :root{--bg:#F6F5F1;--card:#FFFFFF;--line:#E4E2DC;--grid:#EEECE7;--axis:#D9D6CF;--ink:#15171C;--muted:#5E636E;--body:#3D414A;--soft:#C9CBD1;--solar:#F5A524;--use:#2563EB;--sun:#8A8F99}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-variant-numeric:tabular-nums}
 .wrap{max-width:1200px;margin:0 auto;padding:40px 24px 56px;display:flex;flex-direction:column;gap:20px}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
@@ -235,6 +236,8 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .brief-top li::marker{color:var(--solar);font-weight:800}
 .brief-top b{background:linear-gradient(transparent 55%,rgba(245,165,36,.45) 55%);color:#fff;font-weight:800}
 .brief-rest li{font-size:14px;color:#C9CBD1}
+.brief-more summary{cursor:pointer;font-size:13px;font-weight:700;color:#FFC94D;min-height:32px;display:flex;align-items:center}
+.brief-more ul{margin-top:6px}
 .brief a{color:inherit;text-decoration:none}
 .brief a:hover{text-decoration:underline;text-decoration-color:rgba(255,255,255,.4)}
 .brief .sub{color:#8A8F99;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
@@ -266,6 +269,92 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 .party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
 .party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
 .vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
+/* ---------- daily fun ---------- */
+.group[data-sec=delights]{--accent:#D9468F;--tint:#FFE6F2}
+.group[data-sec=delights] .sec-head{background:linear-gradient(120deg,#FFE3F1 0%,#FFF0D1 50%,#E2F0FF 100%)}
+.joy{columns:3 300px;column-gap:16px}
+.joy>.card{break-inside:avoid;margin:0 0 16px;width:100%}
+.joy>.j-wins{column-span:all}
+.joy-card{border:0;position:relative;overflow:hidden}
+.joy-card h2::before{display:none!important}
+.joy-card h2{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--jc,#5E636E)}
+.j-wins{background:linear-gradient(150deg,#FFF6D8,#FFE2B0);--jc:#9A5B00}
+.j-sunset{background:linear-gradient(170deg,#FFE1C7 0%,#FFC7B8 45%,#E9C6F0 100%);--jc:#9C3D1E}
+.j-apod{background:#0F1424;color:#E9ECF5;--jc:#9FB3FF}
+.j-drum{background:linear-gradient(150deg,#FDE6E6,#FFD9C4);--jc:#B3261E}
+.j-albums{background:linear-gradient(150deg,#EFE6FF,#E1D6FB);--jc:#5B34B8}
+.j-thai{background:linear-gradient(150deg,#E2F6EE,#CDEFE4);--jc:#0D7A5F}
+.j-ask{background:linear-gradient(150deg,#E5F0FF,#D4E6FF);--jc:#1D5FB8}
+.j-good{background:linear-gradient(150deg,#F0F8DF,#E1F1C4);--jc:#4B7A12}
+.joy-big{margin:0;font-size:22px;line-height:1.35;font-weight:600;letter-spacing:-.01em}
+.joy-big b{font-weight:800}
+.joy-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.joy-stats div{background:rgba(255,255,255,.7);border-radius:16px;padding:10px 14px;display:flex;flex-direction:column;gap:1px}
+.joy-stats small{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#9A5B00}
+.joy-stats b{font-size:20px;font-weight:800}
+.joy-stats span{font-size:12px;font-weight:600;color:var(--body)}
+.sun-score{display:flex;gap:16px;align-items:center}
+.sun-score .ring{--c:#E8590C;flex:none;width:92px;height:92px;border-radius:50%;display:flex;align-items:baseline;justify-content:center;padding-top:28px;
+  background:radial-gradient(closest-side,#FFF4EC 78%,transparent 79% 100%),conic-gradient(#F76707 calc(var(--p)*1%),rgba(255,255,255,.55) 0)}
+.sun-score .ring b{font-size:28px;font-weight:800;line-height:1}.sun-score .ring small{font-size:11px;font-weight:700;color:var(--muted)}
+.sun-label{font-size:24px;font-weight:800;letter-spacing:-.01em;color:#7A2E10}
+.sun-score .note{margin-top:4px}
+.sun-clouds{display:flex;flex-wrap:wrap;gap:8px}
+.sun-clouds span{background:rgba(255,255,255,.6);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:600;color:var(--body)}
+.apod-img{position:relative;display:block;border-radius:16px;overflow:hidden;background:#1B2238}
+.apod-img img{display:block;width:100%;max-height:420px;object-fit:cover}
+.apod-img .play{position:absolute;inset:0;display:grid;place-items:center;font-size:44px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.apod-title{display:block;font-size:19px;font-weight:800;color:#fff;line-height:1.3}
+.j-apod .muted{display:block;margin-top:-8px;color:#9AA3BD;font-size:12.5px;font-weight:600}
+.j-apod .note{color:#C9CFE0}
+.apod-more summary{cursor:pointer;font-size:13.5px;line-height:1.5;color:#C9CFE0;list-style:none}
+.apod-more[open] summary{display:none}
+.drum{display:flex;gap:14px;align-items:center}
+.drum-ic{font-size:40px;width:64px;height:64px;flex:none;border-radius:20px;background:rgba(255,255,255,.7);display:grid;place-items:center}
+.drum div{display:flex;flex-direction:column;gap:1px}
+.drum-song{font-size:21px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.drum span{font-size:13.5px;font-weight:600;color:var(--body)}
+.drum .drum-who{color:#B3261E;font-weight:700}
+.joy-btn{align-self:flex-start;display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;text-decoration:none}
+.joy-btn:hover{opacity:.85}
+.bday{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(91,52,184,.12);text-decoration:none;color:var(--ink)}
+.bday:last-child{border-bottom:0}
+.bday .cake{font-size:22px}
+.bday span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column}
+.bday b{font-size:14.5px;font-weight:700;line-height:1.3}.bday small{font-size:12.5px;font-weight:600;color:var(--body)}
+.bday .age{flex:none;min-width:40px;text-align:center;border-radius:999px;background:#5B34B8;color:#fff;font-size:13px;font-weight:800;padding:3px 8px}
+.bday .age::after{content:" yrs";font-weight:600;font-size:11px;opacity:.8}
+.bday:hover b{text-decoration:underline}
+.thai-script{margin:0;font-size:40px;line-height:1.25;font-weight:600;color:#0B4F3E}
+.thai-roman{margin:0;font-size:18px;font-weight:800;letter-spacing:.01em}
+.thai-mean{margin:0;font-size:16px;font-style:italic;color:var(--body)}
+.ask{margin:0;position:relative;background:#fff;border-radius:20px 20px 20px 6px;padding:18px 20px;font-size:19px;line-height:1.4;font-weight:700;color:#173E73;box-shadow:0 2px 0 rgba(29,95,184,.12)}
+.good-ic{width:72px;height:72px;flex:none;border-radius:12px;background:rgba(255,255,255,.7);display:grid;place-items:center;font-size:30px}
+.j-good .story{border-bottom-color:rgba(75,122,18,.15)}
+/* sunniest hours */
+.loads-card{background:linear-gradient(135deg,#FFFBEF,#FFF1CF)}
+.loads{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px}
+.load{background:#fff;border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.load-day{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9A5B00}
+.load b{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.load span:last-child{font-size:13.5px;line-height:1.45;color:var(--body)}
+.load-bar{height:8px;border-radius:999px;background:#FDEBC2;overflow:hidden}.load-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#F5A524,#F76707)}
+/* long cards */
+.card.clamped{max-height:880px;overflow:hidden;position:relative}
+.card.clamped::after{content:"";position:absolute;left:0;right:0;bottom:0;height:140px;background:linear-gradient(transparent,var(--card) 75%);pointer-events:none}
+.unclamp{align-self:center;z-index:2;min-height:40px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font:700 13.5px Manrope,sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(20,20,30,.08)}
+.card.clamped .unclamp{position:absolute;bottom:18px;left:50%;transform:translateX(-50%)}
+.unclamp:hover{border-color:var(--ink)}
+/* overall polish */
+.group .card{transition:box-shadow .2s ease,transform .2s ease}
+@media (hover:hover){.group .card:hover{box-shadow:0 6px 24px rgba(20,20,30,.07)}}
+.sec-head{background:linear-gradient(120deg,var(--tint),#fff 140%)}
+.sec-icon{transform:rotate(-4deg);transition:transform .2s}
+.group:hover .sec-icon{transform:rotate(0) scale(1.05)}
+.tiles .tile:not(.dark){background:linear-gradient(160deg,#fff,#FFF8EA)}
+.tile.dark{background:linear-gradient(150deg,#1D2029,#15171C)}
+.tile.dark .big{color:#FFC94D}
+.card h2{letter-spacing:-.01em}
 </style>
 </head>
 <body>
@@ -287,14 +376,9 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
 
   <div id="banner" class="banner" hidden></div>
   <section class="group" data-sec="today" id="today" aria-labelledby="today-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, alerts, drives and power right now</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, power, your calendar and the road</p></div></div>
     <div class="sec-body">
     <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
-    <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
-      <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
-      <div id="cal"></div>
-    </section>
-  
     <div class="row" id="today-row">
       <section class="card side" aria-labelledby="wx-h">
         <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
@@ -308,19 +392,32 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="hours" id="hours" aria-label="Next 12 hours"></div>
       </section>
     </div>
-    <section class="card" aria-labelledby="plan-h" id="plan-card" hidden>
-      <div class="head"><h2 id="plan-h">Plan ahead</h2><span class="meta" id="plan-meta"></span></div>
-      <div class="lines" id="plan"></div>
+    <section class="tiles" aria-label="Solar right now">
+      <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
+      <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
+      <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
+      <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
+    </section>
+    <section class="card loads-card" aria-labelledby="loads-h" id="loads-card" hidden>
+      <div class="head"><h2 id="loads-h">Run big loads on sunshine</h2><span class="meta" id="loads-meta">From the solar forecast and your system's usual output</span></div>
+      <div class="loads" id="loads"></div>
+    </section>
+    <section class="card" aria-labelledby="cal-h" id="cal-card" hidden>
+      <div class="head"><h2 id="cal-h">Your calendar</h2><span class="meta" id="cal-meta"></span></div>
+      <div id="cal"></div>
     </section>
     <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
       <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
       <div class="fc" id="forecast"></div>
     </section>
-  
     <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
       <div class="head"><h2 id="drive-h">Traffic right now</h2><span class="meta" id="drive-meta"></span></div>
       <div class="facts" id="drives"></div>
       <p class="note" id="drive-note"></p>
+    </section>
+    <section class="card" aria-labelledby="plan-h" id="plan-card" hidden>
+      <div class="head"><h2 id="plan-h">Plan ahead</h2><span class="meta" id="plan-meta"></span></div>
+      <div class="lines" id="plan"></div>
     </section>
     <section class="card" aria-labelledby="road-h" id="road-card" hidden>
       <div class="head"><h2 id="road-h">Roads and cameras</h2><span class="meta">ODOT TripCheck · <a href="https://tripcheck.com/" target="_blank" rel="noopener">Full map</a></span></div>
@@ -328,52 +425,47 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       <div class="cams" id="cams"></div>
     </section>
   
-    <section class="tiles" aria-label="Solar right now">
-      <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
-      <div class="tile"><span class="k" id="t-today-k">Produced today</span><span class="big" id="t-today">–</span><span class="s" id="t-today-s"></span></div>
-      <div class="tile"><span class="k">Panel performance</span><span class="big" id="t-perf">–</span><span class="s" id="t-perf-s"></span></div>
-      <div class="tile"><span class="k" id="t-bill-k">PGE this cycle</span><span class="big" id="t-bill">–</span><span class="s" id="t-bill-s"></span></div>
-    </section>
     </div>
   </section>
 
-  <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+  <section class="group" data-sec="delights" id="delights" aria-labelledby="delights-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">A little something new every day</p></div></div>
     <div class="sec-body">
-      <div class="chips" id="date-facts"></div>
-      <p class="note" id="hol-today" hidden></p>
-      <div class="row">
-        <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
-          <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
-          <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
-          <div class="lines" id="hist-local"></div>
-          <h3 class="sub">Elsewhere</h3>
-          <div class="lines" id="hist"></div>
-          <h3 class="sub">Born today</h3>
-          <div class="lines" id="births"></div>
+      <div class="joy" id="joy">
+        <section class="card joy-card j-wins" aria-labelledby="wins-h" id="wins-card" hidden>
+          <div class="head"><h2 id="wins-h">Solar wins</h2><span class="meta" id="wins-meta"></span></div>
+          <p class="joy-big" id="wins-big"></p>
+          <div class="joy-stats" id="wins-stats"></div>
         </section>
-        <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
-          <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
-          <div id="near"></div>
+        <section class="card joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
+          <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
+          <div id="sunset"></div>
+        </section>
+        <section class="card joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
+          <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
+          <div id="apod"></div>
+        </section>
+        <section class="card joy-card j-drum" aria-labelledby="drum-h" id="drum-card" hidden>
+          <div class="head"><h2 id="drum-h">Drum break of the day</h2></div>
+          <div id="drum"></div>
+        </section>
+        <section class="card joy-card j-albums" aria-labelledby="bday-h" id="bday-card" hidden>
+          <div class="head"><h2 id="bday-h">Album birthdays</h2><span class="meta">Released on this date · Wikidata</span></div>
+          <div id="bdays"></div>
+        </section>
+        <section class="card joy-card j-thai" aria-labelledby="thai-h" id="thai-card" hidden>
+          <div class="head"><h2 id="thai-h">Thai phrase of the day</h2></div>
+          <div id="thai-phrase"></div>
+        </section>
+        <section class="card joy-card j-ask" aria-labelledby="ask-h" id="ask-card" hidden>
+          <div class="head"><h2 id="ask-h">Dinner question for your kid</h2></div>
+          <p class="ask" id="ask"></p>
+        </section>
+        <section class="card joy-card j-good" aria-labelledby="good-h" id="good-card" hidden>
+          <div class="head"><h2 id="good-h">Good news</h2><span class="meta">Oregon stories first</span></div>
+          <div id="good"></div>
         </section>
       </div>
-    </div>
-  </section>
-
-  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="elect-h">
-        <div class="head"><h2 id="elect-h">Next election</h2></div>
-        <div id="elect"></div>
-      </section>
-      <section class="card" aria-labelledby="reps-h">
-        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
-        <div class="reps" id="reps"></div>
-        <h3 class="sub">Statewide</h3>
-        <div class="lines" id="statewide"></div>
-        <p class="note" id="civ-keys" hidden></p>
-      </section>
     </div>
   </section>
 
@@ -400,164 +492,6 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
         <div class="head"><h2 id="bug-h">What's going around</h2><span class="meta" id="bug-meta"></span></div>
         <div class="bugs" id="bugs"></div>
         <p class="note" id="bug-note"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
-    <div class="sec-body">
-      <div class="row">
-        <section class="card wide" aria-labelledby="radar-h">
-          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
-          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
-        </section>
-        <section class="card side" aria-labelledby="ship-h">
-          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
-          <div class="map" id="ships">
-            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
-            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
-              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
-            <script src="https://www.vesselfinder.com/aismap.js"></script>
-          </div>
-          <p class="note" id="tides"></p>
-          <div id="ship-list"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
-        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
-        <div class="row" style="gap:24px">
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
-            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
-          </div>
-          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
-            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
-            <div class="minis" id="fish-river"></div>
-          </div>
-        </div>
-        <p class="note" id="fish-dam"></p>
-        <p class="note" id="fish-links"></p>
-      </section>
-    </div>
-  </section>
-
-  <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
-        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
-        <div class="lines" id="planes"></div>
-        <p class="note" id="pdx"></p>
-      </section>
-      <section class="card" aria-labelledby="trail-h" id="trail-card" hidden>
-        <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
-        <div class="lines" id="trails"></div>
-      </section>
-      <div class="row">
-        <section class="card side" aria-labelledby="moon-h">
-          <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
-          <div id="moon"></div>
-        </section>
-        <section class="card wide" aria-labelledby="sky-h">
-          <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
-          <p class="summary" id="stargaze" hidden></p>
-          <div class="lines" id="sky"></div>
-          <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
-          <div class="lines" id="iss"></div>
-        </section>
-      </div>
-      <div class="row" id="live-row" hidden>
-        <section class="card half" aria-labelledby="quake-h">
-          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
-          <p class="note" id="volc"></p>
-          <div class="lines" id="quakes"></div>
-        </section>
-        <section class="card half" aria-labelledby="fire-h" id="fire-card" hidden>
-          <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
-          <div class="lines" id="fires"></div>
-        </section>
-      </div>
-    </div>
-  </section>
-
-  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What to plant, food forest chores, birds and blooms</p></div></div>
-    <div class="sec-body">
-      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
-        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
-        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
-        <div class="lines" id="plant"></div>
-      </section>
-      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
-        <div class="head"><h2 id="forest-h">Food forest this month</h2><span class="meta" id="forest-meta"></span></div>
-        <div class="lines" id="forest"></div>
-        <p class="note" id="forest-next"></p>
-      </section>
-      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
-        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
-        <div class="lines" id="pollen"></div>
-        <p class="note" id="pollen-note"></p>
-      </section>
-      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
-        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
-        <div class="lines" id="rare"></div>
-      </section>
-      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
-        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
-        <p class="summary" id="burn-verdict"></p>
-        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
-        <p class="note" id="burn-note"></p>
-      </section>
-      <section class="card" aria-labelledby="birds-h">
-        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
-        <div class="species" id="birds"></div>
-      </section>
-      <div class="row">
-        <section class="card wide" aria-labelledby="bloom-h">
-          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
-          <div class="species" id="blooms"></div>
-        </section>
-        <section class="card side" aria-labelledby="food-h" id="food-card">
-          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
-          <div class="chips" id="produce"></div>
-        </section>
-      </div>
-    </div>
-  </section>
-
-  <section class="group" data-sec="coast" id="coast" aria-labelledby="coast-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
-    <div class="sec-body">
-      <div id="coast-alerts" class="alerts"></div>
-      <section class="card" aria-label="Coast house weather" data-src="coast-wx">
-        <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
-        <p class="summary" id="coast-summary"></p>
-        <div class="facts" id="coast-facts"></div>
-        <div class="fc" id="coast-fc"></div>
-      </section>
-      <section class="card" aria-labelledby="surf-h" id="surf-card" hidden>
-        <div class="head"><h2 id="surf-h">Surf report</h2><span class="meta" id="surf-meta"></span></div>
-        <p class="summary" id="surf-summary"></p>
-        <div class="facts" id="surf-facts"></div>
-        <div class="breaks" id="surf-breaks"></div>
-        <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
-      </section>
-      <div class="row">
-        <section class="card half" aria-labelledby="minus-h">
-          <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
-          <div class="lines" id="minus"></div>
-          <p class="note" id="coast-links"></p>
-        </section>
-        <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
-          <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
-          <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
-        </section>
-      </div>
-      <section class="card" aria-labelledby="shell-h" id="shell-card" hidden>
-        <div class="head"><h2 id="shell-h">Clamming and crabbing</h2><span class="meta" id="shell-meta"></span></div>
-        <div class="shells" id="shells"></div>
-        <p class="note" id="shell-note"></p>
       </section>
     </div>
   </section>
@@ -671,6 +605,204 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
     </div>
   </section>
 
+  <section class="group" data-sec="coast" id="coast" aria-labelledby="coast-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Coast house</h2><p class="sec-sub">Surf, tides, weather and events near Surf Pines</p></div></div>
+    <div class="sec-body">
+      <div id="coast-alerts" class="alerts"></div>
+      <section class="card" aria-label="Coast house weather" data-src="coast-wx">
+        <div class="head"><h2>This week at the coast</h2><span class="meta" id="coast-meta"></span></div>
+        <p class="summary" id="coast-summary"></p>
+        <div class="facts" id="coast-facts"></div>
+        <div class="fc" id="coast-fc"></div>
+      </section>
+      <section class="card" aria-labelledby="surf-h" id="surf-card" hidden>
+        <div class="head"><h2 id="surf-h">Surf report</h2><span class="meta" id="surf-meta"></span></div>
+        <p class="summary" id="surf-summary"></p>
+        <div class="facts" id="surf-facts"></div>
+        <div class="breaks" id="surf-breaks"></div>
+        <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
+      </section>
+      <div class="row">
+        <section class="card half" aria-labelledby="minus-h">
+          <div class="head"><h2 id="minus-h">Minus tides</h2><span class="meta">Best for tide pools and clamming</span></div>
+          <div class="lines" id="minus"></div>
+          <p class="note" id="coast-links"></p>
+        </section>
+        <section class="card half" aria-labelledby="cev-h" id="coast-events-card" hidden>
+          <div class="head"><h2 id="cev-h">Happening nearby</h2><span class="meta" id="cev-meta"></span></div>
+          <div class="scroll" id="coast-events" tabindex="0" aria-label="Coast events, scrollable" style="max-height:420px"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="shell-h" id="shell-card" hidden>
+        <div class="head"><h2 id="shell-h">Clamming and crabbing</h2><span class="meta" id="shell-meta"></span></div>
+        <div class="shells" id="shells"></div>
+        <p class="note" id="shell-note"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="river" id="outside" aria-labelledby="river-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
+    <div class="sec-body">
+      <div class="row">
+        <section class="card wide" aria-labelledby="radar-h">
+          <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
+          <div class="map" id="radar" role="img" aria-label="Rain radar map around your home"></div>
+        </section>
+        <section class="card side" aria-labelledby="ship-h">
+          <div class="head"><h2 id="ship-h">Ships on the river</h2><a class="link" id="ship-link" target="_blank" rel="noopener">Open full map</a></div>
+          <div class="map" id="ships">
+            <!-- VesselFinder's official embed loader; it writes the map frame in place. -->
+            <script>var width = "100%"; var height = "360"; var latitude = "45.72"; var longitude = "-122.77";
+              var zoom = "12"; var names = true; var clicktoact = false; var store_pos = false;</script>
+            <script src="https://www.vesselfinder.com/aismap.js"></script>
+          </div>
+          <p class="note" id="tides"></p>
+          <div id="ship-list"></div>
+        </section>
+      </div>
+      <section class="card" aria-labelledby="fish-h" id="fish-card" hidden>
+        <div class="head"><h2 id="fish-h">Fishing the Columbia</h2><span class="meta" id="fish-meta"></span></div>
+        <div class="row" style="gap:24px">
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Solunar and tide windows today</h3><div class="lines" id="fish-times"></div>
+            <p class="note" style="font-size:12px">Solunar periods are an old angler rule of thumb, not proven science. <a href="https://en.wikipedia.org/wiki/Solunar_theory" target="_blank" rel="noopener">About solunar theory</a></p>
+          </div>
+          <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
+            <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
+            <div class="minis" id="fish-river"></div>
+          </div>
+        </div>
+        <p class="note" id="fish-dam"></p>
+        <p class="note" id="fish-links"></p>
+      </section>
+    </div>
+  </section>
+
+  <section class="group" data-sec="garden" id="garden" aria-labelledby="garden-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What to plant, food forest chores, birds and blooms</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="plant-h" id="plant-card" hidden>
+        <div class="head"><h2 id="plant-h">Plant now</h2><span class="meta">Portland area (OSU Region 2) · next 3 weeks</span></div>
+        <ul class="note" id="plant-tips" style="margin:0;padding-left:18px"></ul>
+        <div class="lines" id="plant"></div>
+      </section>
+      <section class="card" aria-labelledby="forest-h" id="forest-card" hidden>
+        <div class="head"><h2 id="forest-h">Food forest this month</h2><span class="meta" id="forest-meta"></span></div>
+        <div class="lines" id="forest"></div>
+        <p class="note" id="forest-next"></p>
+      </section>
+      <section class="card" aria-labelledby="pollen-h" id="pollen-card" hidden>
+        <div class="head"><h2 id="pollen-h">Pollen</h2><span class="meta">Next 3 days · Google Pollen</span></div>
+        <div class="lines" id="pollen"></div>
+        <p class="note" id="pollen-note"></p>
+      </section>
+      <section class="card" aria-labelledby="rare-h" id="rare-card" hidden>
+        <div class="head"><h2 id="rare-h">Rare birds nearby</h2><span class="meta">Notable eBird reports within 9 miles, last 7 days</span></div>
+        <div class="lines" id="rare"></div>
+      </section>
+      <section class="card" aria-labelledby="burn-h" id="burn-card" hidden>
+        <div class="head"><h2 id="burn-h">Burn day check</h2><span class="meta">For yard debris</span></div>
+        <p class="summary" id="burn-verdict"></p>
+        <ul class="note" id="burn-why" style="margin:0;padding-left:18px"></ul>
+        <p class="note" id="burn-note"></p>
+      </section>
+      <section class="card" aria-labelledby="birds-h">
+        <div class="head"><h2 id="birds-h">Birds around you</h2><span class="meta">Reported within 10 miles, last 2 weeks · iNaturalist</span></div>
+        <div class="species" id="birds"></div>
+      </section>
+      <div class="row">
+        <section class="card wide" aria-labelledby="bloom-h">
+          <div class="head"><h2 id="bloom-h">Native plants in bloom</h2><span class="meta">Seen flowering nearby this month</span></div>
+          <div class="species" id="blooms"></div>
+        </section>
+        <section class="card side" aria-labelledby="food-h" id="food-card">
+          <div class="head"><h2 id="food-h">In season now</h2><span class="meta">Oregon-grown, a few picks</span></div>
+          <div class="chips" id="produce"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="nearby" id="nearby" aria-labelledby="nearby-h">
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌋</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">Around you</h2><p class="sec-sub">Planes, the sky, and quakes and fires further down</p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
+        <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
+        <div class="lines" id="planes"></div>
+        <p class="note" id="pdx"></p>
+      </section>
+      <section class="card" aria-labelledby="trail-h" id="trail-card" hidden>
+        <div class="head"><h2 id="trail-h">Gorge trail reports</h2><span class="meta">Washington side · <a href="https://www.wta.org/go-outside/trip-reports" target="_blank" rel="noopener">WTA</a></span></div>
+        <div class="lines" id="trails"></div>
+      </section>
+      <div class="row">
+        <section class="card side" aria-labelledby="moon-h">
+          <div class="head"><h2 id="moon-h">Moon</h2><span class="meta" id="moon-meta"></span></div>
+          <div id="moon"></div>
+        </section>
+        <section class="card wide" aria-labelledby="sky-h">
+          <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
+          <p class="summary" id="stargaze" hidden></p>
+          <div class="lines" id="sky"></div>
+          <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
+          <div class="lines" id="iss"></div>
+        </section>
+      </div>
+      <div class="row" id="live-row" hidden>
+        <section class="card half" aria-labelledby="quake-h">
+          <div class="head"><h2 id="quake-h">Earthquakes this week</h2><span class="meta" id="quake-meta"></span></div>
+          <p class="note" id="volc"></p>
+          <div class="lines" id="quakes"></div>
+        </section>
+        <section class="card half" aria-labelledby="fire-h" id="fire-card" hidden>
+          <div class="head"><h2 id="fire-h">Wildfires in Oregon and Washington</h2><span class="meta">Active fires over 100 acres within 250 miles · NIFC</span></div>
+          <div class="lines" id="fires"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="almanac" id="almanac" aria-labelledby="almanac-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+    <div class="sec-body">
+      <div class="chips" id="date-facts"></div>
+      <p class="note" id="hol-today" hidden></p>
+      <div class="row">
+        <section class="card half" aria-labelledby="hist-h" id="hist-card" hidden>
+          <div class="head"><h2 id="hist-h">Today in history</h2><span class="meta" id="hist-meta"></span></div>
+          <h3 class="sub" id="hist-local-h" hidden>Around here</h3>
+          <div class="lines" id="hist-local"></div>
+          <h3 class="sub">Elsewhere</h3>
+          <div class="lines" id="hist"></div>
+          <h3 class="sub">Born today</h3>
+          <div class="lines" id="births"></div>
+        </section>
+        <section class="card half" aria-labelledby="near-h" id="near-card" hidden>
+          <div class="head"><h2 id="near-h">History near home</h2><span class="meta" id="near-meta"></span></div>
+          <div id="near"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-sec="civics" id="civics" aria-labelledby="civics-h" hidden>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🗳️</span><div class="sec-titles"><h2 class="sec-h" id="civics-h">Elections and your representatives</h2><p class="sec-sub" id="civ-meta"></p></div></div>
+    <div class="sec-body">
+      <section class="card" aria-labelledby="elect-h">
+        <div class="head"><h2 id="elect-h">Next election</h2></div>
+        <div id="elect"></div>
+      </section>
+      <section class="card" aria-labelledby="reps-h">
+        <div class="head"><h2 id="reps-h">Who represents you</h2><span class="meta">Votes from the House Clerk and Senate · news from Google News</span></div>
+        <div class="reps" id="reps"></div>
+        <h3 class="sub">Statewide</h3>
+        <div class="lines" id="statewide"></div>
+        <p class="note" id="civ-keys" hidden></p>
+      </section>
+    </div>
+  </section>
+
   <section class="group" data-sec="news" id="news" aria-labelledby="news-h">
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
     <div class="sec-body">
@@ -748,7 +880,6 @@ body{background:var(--bg) radial-gradient(1200px 400px at 50% -100px,#FFF3DA,tra
       </section>
     </div>
   </section>
-
   <footer class="learn" id="learn">
     <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, and moves your favorites up. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
     <p id="learn-state"></p>
@@ -865,16 +996,150 @@ function render() {
   renderMore();
   renderWorld();
   renderCalendar();
+  renderJoy();
   renderAlmanac();
   renderTrails();
   renderCivics();
   renderGear();
   waits.push(renderRecords().then(renderBriefing));
   syncGroups();
-  Promise.allSettled(waits).then(syncGroups);
-  setTimeout(syncGroups, 4000);
+  Promise.allSettled(waits).then(syncGroups).then(clampLong);
+  setTimeout(() => { syncGroups(); clampLong(); }, 4000);
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
     `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
+}
+
+// ------------------------------------------------------------------ daily fun
+const tryRender = fn => { try { fn(); } catch (e) { console.error(fn.name, e); } };
+const kwhWord = x => x >= 1000 ? `${(x / 1000).toFixed(x >= 10000 ? 0 : 1)} MWh` : `${Math.round(x).toLocaleString()} kWh`;
+
+function renderLoads() {
+  const L = D.loads, cap = (D.solar && D.solar.capacity_kw) || 10;
+  $('loads-card').hidden = !(L && L.length);
+  if (!L || !L.length) return;
+  const tip = kw => kw >= 7 ? 'Enough sun for the EV, laundry and dishes all at once.'
+    : kw >= 3.5 ? 'Plenty for the dryer or dishwasher, maybe both.'
+    : kw >= 1.5 ? 'Enough for a wash cycle or the dishwasher.'
+    : 'Not much sun. If you’re on Time of Day pricing, at least skip 5–9 pm on weekdays.';
+  $('loads').innerHTML = L.map(x => {
+    const day = x.date === todayIso() ? 'Today' : 'Tomorrow';
+    return `<div class="load"><span class="load-day">${day}</span>
+      <b>${clock(x.from)} – ${clock(x.to)}</b>
+      <div class="load-bar" aria-hidden="true"><i style="width:${Math.min(100, x.kw / cap * 100 * 1.6)}%"></i></div>
+      <span>About <strong>${x.kw} kW</strong> from the panels then, ~${x.day_kwh} kWh all day. ${tip(x.kw)}</span></div>`;
+  }).join('');
+}
+
+function renderWins() {
+  const days = (D.days || []).filter(d => d.produced != null), s = D.solar, sum = (s && s.summary) || {};
+  $('wins-card').hidden = !(days.length > 3 && s);
+  if ($('wins-card').hidden) return;
+  const past = days.slice(0, -1), y = past[past.length - 1];
+  const best = past.reduce((a, d) => d.produced > a.produced ? d : a, past[0]);
+  let streak = 0;
+  for (let i = past.length - 1; i >= 0 && past[i].last_year != null && past[i].produced > past[i].last_year; i--) streak++;
+  const vsLy = y.last_year ? Math.round((y.produced / y.last_year - 1) * 100) : null;
+  let big;
+  if (best === y) big = `🏆 Yesterday was your best day in ${past.length} days: <b>${Math.round(y.produced)} kWh</b>.`;
+  else if (streak >= 3) big = `🔥 <b>${streak} days in a row</b> beating the same day last year.`;
+  else if (vsLy != null && vsLy > 0) big = `☀️ Yesterday made <b>${Math.round(y.produced)} kWh</b>, ${vsLy}% more than the same day last year.`;
+  else if (D.performance && D.performance.pct >= 100) big = `💪 Panels are running at <b>${D.performance.pct}%</b> of a typical day for this much sun.`;
+  else big = `☀️ Your panels have made <b>${kwhWord(sum.year || 0)}</b> so far this year.`;
+  $('wins-big').innerHTML = big;
+  const rate = (D.bill && D.bill.rate) || 0;
+  // EIA: an average US home uses about 10,800 kWh a year, roughly 29.6 kWh a day.
+  const homeYears = sum.lifetime ? sum.lifetime / 10800 : 0;
+  const stats = [
+    ['This month', kwhWord(sum.month || 0), rate ? `≈ $${Math.round((sum.month || 0) * rate)} of power` : ''],
+    ['This year', kwhWord(sum.year || 0), rate ? `≈ $${Math.round((sum.year || 0) * rate).toLocaleString()}` : ''],
+    ['Since install', kwhWord(sum.lifetime || 0), homeYears ? `${homeYears.toFixed(1)} years of an average US home` : ''],
+    ['Best lately', `${Math.round(best.produced)} kWh`, fmtDate(best.date)],
+  ];
+  $('wins-stats').innerHTML = stats.map(([k, v, n]) => `<div><small>${k}</small><b>${v}</b>${n ? `<span>${n}</span>` : ''}</div>`).join('');
+  $('wins-meta').textContent = streak >= 3 && best !== y ? '' : streak ? `${streak}-day streak vs last year` : '';
+}
+
+function renderSunset() {
+  const list = (D.outside && D.outside.sunsets) || [];
+  const now = new Date();
+  const s = list.find(x => new Date(`${x.date}T${x.sunset}`) > new Date(now.getTime() - 30 * 60000));
+  $('sunset-card').hidden = !s;
+  if (!s) return;
+  const today = s.date === todayIso();
+  $('sunset-h').textContent = today ? 'Tonight’s sunset' : 'Tomorrow’s sunset';
+  $('sunset-meta').textContent = `Sets at ${clock(s.sunset)}`;
+  const [h, m] = s.sunset.split(':').map(Number), t = h * 60 + m;
+  const at = x => clock(`${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`);
+  const why = s.score >= 60 ? 'High and mid clouds to catch the color, and not much low cloud in the way.'
+    : s.low > 60 ? 'A thick low cloud deck will probably hide it.'
+    : Math.max(s.mid, s.high) < 10 ? 'Clear skies: a clean glow, but few clouds to light up.'
+    : s.rain_pct > 50 ? 'Rain likely around sunset.' : 'Some color possible if gaps open up.';
+  $('sunset').innerHTML = `<div class="sun-score" style="--p:${s.score}"><div class="ring"><b>${s.score}</b><small>/100</small></div>
+    <div><span class="sun-label">${esc(s.label)}</span><p class="note">${why}</p>
+    <p class="note"><b>Look west ${at(t - 15)} – ${at(t + 20)}.</b> The best color often comes 10 minutes after the sun drops.</p></div></div>
+    <div class="sun-clouds"><span>High clouds <b>${s.high}%</b></span><span>Mid <b>${s.mid}%</b></span><span>Low <b>${s.low}%</b></span></div>`;
+}
+
+function renderApod() {
+  const a = D.apod;
+  $('apod-card').hidden = !(a && a.image);
+  if (!a || !a.image) return;
+  $('apod').innerHTML = `<a href="${esc(a.video || a.page)}" target="_blank" rel="noopener" class="apod-img">
+      <img src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy">${a.video ? '<span class="play">▶</span>' : ''}</a>
+    <b class="apod-title">${esc(a.title)}</b>${a.credit ? `<small class="muted">${esc(a.credit)}</small>` : ''}
+    <details class="apod-more"><summary>${esc(a.explanation.slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(a.explanation)}</p></details>`;
+}
+
+function renderPicks() {
+  const p = D.picks;
+  for (const id of ['drum-card', 'thai-card', 'ask-card']) $(id).hidden = !p;
+  if (!p) return;
+  const d = p.drum;
+  $('drum').innerHTML = `<div class="drum"><span class="drum-ic" aria-hidden="true">🥁</span><div>
+      <b class="drum-song">${esc(d.song)}</b><span>${esc(d.artist)} · ${d.year}</span>
+      ${d.drummer ? `<span class="drum-who">Drums: ${esc(d.drummer)}</span>` : ''}</div></div>
+    <p class="note">${esc(d.note)}</p>
+    <a class="joy-btn" href="${esc(d.listen)}" target="_blank" rel="noopener">▶ Listen</a>`;
+  const t = p.thai;
+  $('thai-phrase').innerHTML = `<p class="thai-script" lang="th">${esc(t.thai)}</p>
+    <p class="thai-roman">${esc(t.roman)}</p><p class="thai-mean">“${esc(t.meaning)}”</p>${t.tip ? `<p class="note">${esc(t.tip)}</p>` : ''}`;
+  $('ask').textContent = p.question;
+}
+
+function renderBirthdays() {
+  const list = D.album_birthdays || [];
+  $('bday-card').hidden = !list.length;
+  if (!list.length) return;
+  $('bdays').innerHTML = list.slice(0, 6).map(a => `<a class="bday" href="${listen(a.artist, a.title)}" target="_blank" rel="noopener">
+    <span class="cake" aria-hidden="true">${a.age % 10 === 0 || a.age % 25 === 0 ? '🎉' : '🎂'}</span>
+    <span><b>${esc(a.title)}</b><small>${esc(a.artist)} · ${a.year}</small></span><span class="age">${a.age}</span></a>`).join('');
+}
+
+function renderGood() {
+  const g = D.good_news || [];
+  $('good-card').hidden = !g.length;
+  if (!g.length) return;
+  $('good').innerHTML = g.map(x => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
+    ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy">` : '<span class="good-ic" aria-hidden="true">🌻</span>'}
+    <span><b>${esc(x.title)}</b>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}<small>${esc(x.source)}${x.local ? ' · Oregon' : ''}</small></span></a>`).join('');
+}
+
+function renderJoy() {
+  [renderLoads, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood].forEach(tryRender);
+}
+
+// Long cards start trimmed with a "Show all" button so the page stays skimmable.
+function clampLong() {
+  document.querySelectorAll('.sec-body .card:not(.no-clamp)').forEach(c => {
+    if (c.dataset.clampDone || c.hidden) return;
+    if ([...c.children].reduce((a, el) => a + el.offsetHeight, 0) < 1100) return;  // content height, not a row-stretched box
+    c.dataset.clampDone = 1;
+    c.classList.add('clamped');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'unclamp'; b.textContent = 'Show all ▾';
+    b.onclick = () => { const open = c.classList.toggle('clamped'); b.textContent = open ? 'Show all ▾' : 'Show less ▴'; if (open) c.scrollIntoView({block: 'nearest'}); };
+    c.appendChild(b);
+  });
 }
 
 function renderMain() {
@@ -2088,7 +2353,7 @@ function addSources() {
 
 // ------------------------------------------------------------------ sections, jump bar and learning
 // Reading habits are kept only in this browser (localStorage) and never sent anywhere.
-const NAV = {today: 'Today', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
+const NAV = {today: 'Today', delights: 'Daily fun', almanac: 'This day', civics: 'Vote', family: 'Little one', river: 'River', nearby: 'Nearby', garden: 'Garden', coast: 'Coast', local: 'Portland',
   watch: 'Watch', sports: 'Games', news: 'News', world: 'Bangkok', solar: 'Solar'};
 const HABITS = 'dash-habits-v1';
 let habits = local.get(HABITS, null) || {score: {}, day: todayIso(), days: 1, pins: {}, folds: {}};
@@ -2109,7 +2374,7 @@ function ageHabits() {
 function arrange() {
   const foot = $('learn'), all = groups(), base = all.map(g => g.dataset.sec);
   const order = [...all].sort((a, b) => {
-    const rank = g => g.dataset.sec === 'today' ? -2 : habits.pins[g.dataset.sec] ? -1 : 0;
+    const rank = g => g.dataset.sec === 'today' ? -3 : g.dataset.sec === 'delights' ? -2 : habits.pins[g.dataset.sec] ? -1 : 0;
     const r = rank(a) - rank(b);
     if (r || !learned()) return r || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
     return (habits.score[b.dataset.sec] || 0) - (habits.score[a.dataset.sec] || 0) || base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec);
@@ -2151,7 +2416,7 @@ function addTools() {
     if (head.querySelector('.sec-tools')) continue;
     const tools = document.createElement('div');
     tools.className = 'sec-tools';
-    tools.innerHTML = (k === 'today' ? '' : `<button type="button" class="pin-btn" aria-pressed="${!!habits.pins[k]}" title="Keep this section near the top" aria-label="Pin ${NAV[k]}">📌</button>`) +
+    tools.innerHTML = (k === 'today' || k === 'delights' ? '' : `<button type="button" class="pin-btn" aria-pressed="${!!habits.pins[k]}" title="Keep this section near the top" aria-label="Pin ${NAV[k]}">📌</button>`) +
       `<button type="button" class="fold-btn" aria-expanded="true" aria-label="Fold or open ${NAV[k]}">▾</button>`;
     head.appendChild(tools);
     const pin = tools.querySelector('.pin-btn');
@@ -2223,8 +2488,8 @@ async function renderBriefing() {
     if (e.date && soon(e.date, 1)) add(daysTo(e.date) === 0 ? 75 : 58, 'big-card', `${daysTo(e.date) === 0 ? 'Today' : 'Tomorrow'} in town: <b>${esc(e.title)}</b>${e.venue && !e.title.includes(e.venue.split(',')[0]) ? ' at ' + esc(e.venue) : ''}.`);
   }
   for (const k of (kids && kids.events) || []) {
-    if (k.ends === today) add(72, 'family', `Today is the last day of <b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}. The children may never forgive you otherwise.`);
-    else if (k.date && soon(k.date, 1)) add(56, 'family', `For the little ones ${whenWord(k.date)}: ${esc(k.title)}.`);
+    if (k.ends === today) add(72, 'family', `Today is the last day of <b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}. Your little one may never forgive you otherwise.`);
+    else if (k.date && soon(k.date, 1)) add(56, 'family', `For the little one ${whenWord(k.date)}: ${esc(k.title)}.`);
   }
   const gig = ((gigs && gigs.shows) || []).filter(g => soon(g.date, 2))[0];
   if (gig) add(daysTo(gig.date) === 0 ? 70 : 52, 'gigs-card', `${esc(gig.artist)} plays ${esc(gig.venue)} ${whenWord(gig.date)}${gig.score ? `, on the strength of an album the critics gave ${gig.score}` : ''}.`);
@@ -2256,7 +2521,7 @@ async function renderBriefing() {
   if (iss) add(54, 'nearby', `The space station passes overhead at ${timeOf(iss.utc)}, rising in the ${esc(iss.from)}. Bright enough to wave at.`);
   const sky = (o.sky_events || []).filter(e => e.kind !== 'launch' && soon(isoLocal(new Date(e.utc)), 2))[0];
   if (sky) add(52, 'nearby', `In the sky ${whenWord(isoLocal(new Date(sky.utc)))}: ${esc(sky.title)}.`);
-  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full, rising at ${hhmm(o.moon.moonrise)}. Gotham’s criminals are fond of it.`);
+  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full${o.moon.moonrise ? `, rising at ${hhmm(o.moon.moonrise)}` : ''}. Gotham’s criminals are fond of it.`);
   const launch = (o.sky_events || []).filter(e => e.kind === 'launch' && e.visible && soon(isoLocal(new Date(e.utc)), 1))[0];
   if (launch) add(58, 'nearby', `A rocket launch may be visible from here: ${esc(launch.title)} at ${timeOf(launch.utc)}.`);
 
@@ -2353,6 +2618,14 @@ async function renderBriefing() {
   if (newVotes.length) { const [p, v] = newVotes[0];
     add(32, 'civics', `${esc(p.name)} voted <b>${esc(v.vote)}</b> on ${esc(v.bill || v.question || 'a measure')}${v.desc ? `, ${esc(v.desc.length > 90 ? v.desc.slice(0, 87) + '…' : v.desc)}` : ''}.`); }
 
+  const sunset = ((o.sunsets) || []).find(x => x.date === today);
+  if (sunset && sunset.score >= 70 && now < new Date(`${today}T${sunset.sunset}`))
+    add(48, 'delights', `The sunset at ${hhmm(sunset.sunset)} should be rather ${sunset.label.toLowerCase()}. I’d step outside, sir.`);
+  const solarDays = (D.days || []).filter(d => d.produced != null).slice(0, -1);
+  const yday = solarDays[solarDays.length - 1];
+  if (yday && solarDays.length > 7 && solarDays.every(d => d.produced <= yday.produced))
+    add(40, 'delights', `Yesterday the panels made ${Math.round(yday.produced)} kWh, the best in ${solarDays.length} days. Splendid.`);
+
   notes.sort((a, b) => b[0] - a[0]);
   const top = notes.filter(n => n[0] >= 50).slice(0, 4);
   const lead = top.length ? top : notes.slice(0, 2);
@@ -2363,7 +2636,8 @@ async function renderBriefing() {
   const item = ([, sec, text]) => `<li><a href="#${sec}">${text}</a></li>`;
   box.innerHTML = `<div class="brief-head"><span class="brief-icon" aria-hidden="true">🎩</span><div><h2 id="brief-h">${hello}</h2><p class="brief-intro">${intro}</p></div></div>
     <ol class="brief-top">${lead.map(item).join('')}</ol>
-    ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.map(item).join('')}</ul>` : ''}
+    ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.slice(0, 6).map(item).join('')}</ul>` : ''}
+    ${rest.length > 6 ? `<details class="brief-more"><summary>${rest.length - 6} more from Alfred</summary><ul class="brief-rest">${rest.slice(6).map(item).join('')}</ul></details>` : ''}
     <p class="brief-sign">Your servant, Alfred</p>`;
   box.hidden = false;
 }

@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -526,6 +526,8 @@ def outside_view(state, now_utc):
                                "rain_pct": hourly["precipitation_probability"][i],
                                "cloud": hourly["cloud_cover"][i]})
 
+    sunsets = sunset_scores(hourly, days[:2])
+
     aq = (out.get("air") or {}).get("current") or {}
     aqi = aq.get("us_aqi")
     levels = [(50, "Good"), (100, "Moderate"), (150, "Unhealthy for sensitive groups"),
@@ -545,6 +547,7 @@ def outside_view(state, now_utc):
         "sun_by_day": sun_by_day,
         "sun_so_far": round(sun_so_far, 3),
         "sun_curve": sun_curve,
+        "sunsets": sunsets,
         "air": {"aqi": aqi, "label": next(l for lim, l in levels if (aqi or 0) <= lim) if aqi is not None else None,
                 "pm25": aq.get("pm2_5"), "ozone": aq.get("ozone")},
         "tide_station": out.get("tide_station"),
@@ -642,6 +645,11 @@ def fetch_almanac(state, now_utc):
     if out.get("lat"):
         _refresh(store, "nearby", lambda: almanac.nearby(out["lat"], out["lon"], today), 24, now_utc, errors)
     _refresh(store, "trails", lambda: almanac.trip_reports(today), 6, now_utc, errors)
+    _refresh(store, "apod", lambda: sky.apod(env("NASA_KEY") or "DEMO_KEY"), 3, now_utc, errors)
+    if (store.get("albums") or {}).get("date") != today.isoformat():
+        store.pop("albums_at", None)
+    _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
+    _refresh(store, "good_news", daily.good_news, 3, now_utc, errors)
     if env("CALENDAR_ICS"):
         _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
     return "; ".join(errors) or None
@@ -709,6 +717,54 @@ def fetch_civics(state, now_utc):
     if env("GOOGLE_CIVIC_KEY") and address:
         _refresh(store, "ballot", lambda: civics.civic_elections(address, env("GOOGLE_CIVIC_KEY"), today), 24, now_utc, errors)
     return "; ".join(errors) or None
+
+
+def sunset_scores(hourly, days):
+    """How colorful each sunset should be. Mid and high clouds catch the light; low cloud and rain block it."""
+    times = hourly.get("time") or []
+    out = []
+    for d in days:
+        if not d.get("sunset") or d["sunset"] == "":
+            continue
+        hour = f"{d['date']}T{d['sunset'][:2]}:00"
+        if hour not in times:
+            continue
+        i = times.index(hour)
+        val = lambda k: (hourly.get(k) or [None] * len(times))[i] or 0
+        low, mid, high, rain = val("cloud_cover_low"), val("cloud_cover_mid"), val("cloud_cover_high"), val("precipitation_probability")
+        canvas = max(mid, high)  # the clouds that light up
+        score = 100 - abs(canvas - 50) * 1.2 if canvas >= 10 else 35 + canvas  # some color even when clear
+        score -= low * 0.7 + max(0, rain - 20) * 0.6
+        score = max(0, min(100, round(score)))
+        label = ("Spectacular" if score >= 80 else "Pretty" if score >= 60 else "Decent" if score >= 40
+                 else "Meh" if score >= 20 else "Gray")
+        out.append({"date": d["date"], "sunset": d["sunset"], "score": score, "label": label,
+                    "low": low, "mid": mid, "high": high, "rain_pct": rain})
+    return out
+
+
+def loads_view(state, ratio, now_utc):
+    """Best three-hour stretch today and tomorrow to run big loads on sunshine, from the hourly forecast."""
+    hourly = ((state.get("outside") or {}).get("forecast") or {}).get("hourly") or {}
+    times, wm2 = hourly.get("time") or [], hourly.get("shortwave_radiation") or []
+    if not (ratio and times):
+        return None
+    now = now_utc.astimezone(zone("America/Los_Angeles"))
+    days = []
+    for offset in (0, 1):
+        day = (now + dt.timedelta(days=offset)).strftime("%Y-%m-%d")
+        # Radiation is the average over the hour ending at t, so each entry covers t-1h to t.
+        hours = [(t, (w or 0) / 1000 * ratio) for t, w in zip(times, wm2)
+                 if t[:10] == day and (offset or t[11:13] > now.strftime("%H"))]
+        if len(hours) < 3:
+            continue
+        kw, i = max((sum(k for _, k in hours[j:j + 3]) / 3, j) for j in range(len(hours) - 2))
+        if offset == 0 and kw < 1:
+            continue  # nothing worth planning around for the rest of today
+        start = dt.datetime.fromisoformat(hours[i][0]) - dt.timedelta(hours=1)
+        days.append({"date": day, "from": start.strftime("%H:%M"), "to": hours[i + 2][0][11:16],
+                     "kw": round(kw, 1), "day_kwh": round(sum(k for _, k in hours))})
+    return days or None
 
 
 def civics_view(state, today):
@@ -1038,6 +1094,7 @@ def build(state, status, now_utc):
         "low_days": [{"date": x["date"], "cloudy": x.get("cloudy")} for x in low_days],
         "sun_source": "station" if use_station else ("model" if out else None),
         "performance": performance,
+        "loads": loads_view(state, (performance or {}).get("kwh_per_sun"), now_utc),
         "outside": {k: v for k, v in out.items() if k != "sun_by_day"} if out else None,
         "sports": {**{k: v for k, v in (state.get("sports") or {}).items() if not k.endswith("_at") and k not in ("v", "reddit", "watch")},
                    "reddit": {k: v for k, v in ((state.get("sports") or {}).get("reddit") or {}).items()
@@ -1071,6 +1128,10 @@ def build(state, status, now_utc):
                     "facts": almanac.date_facts(dt.date.fromisoformat(today)),
                     "nearby": al.get("nearby"), "trails": al.get("trails")},
         "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
+        "apod": al.get("apod"),
+        "picks": daily.picks(dt.date.fromisoformat(today)),
+        "album_birthdays": (al.get("albums") or {}).get("albums") if (al.get("albums") or {}).get("date") == today else None,
+        "good_news": al.get("good_news"),
         "civics": civics_view(state, today),
         "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
                 if (state.get("gear") or {}).get("scan") else None,

@@ -301,3 +301,19 @@ def stargazing(hours, moon_lit_pct, now_local):
     else:
         verdict = "Clear skies tonight" if moon_lit_pct < 50 else "Clear tonight, but a bright moon"
     return {"cloud": cloud, "verdict": verdict, "good": cloud < 40 and moon_lit_pct < 50}
+
+
+def apod(key="DEMO_KEY"):
+    """NASA's Astronomy Picture of the Day. DEMO_KEY allows about 50 calls a day per IP, plenty at a few a day."""
+    url = "https://api.nasa.gov/planetary/apod?" + urllib.parse.urlencode({"api_key": key, "thumbs": "true"})
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
+        a = json.load(r)
+    video = a.get("media_type") == "video"
+    image = a.get("thumbnail_url") if video else a.get("url")
+    if not image:
+        return None
+    return {"date": a.get("date"), "title": (a.get("title") or "").strip(), "image": image,
+            "explanation": (a.get("explanation") or "").strip(), "credit": (a.get("copyright") or "").strip() or None,
+            "video": a.get("url") if video else None,
+            "page": f"https://apod.nasa.gov/apod/ap{a['date'][2:4]}{a['date'][5:7]}{a['date'][8:10]}.html" if a.get("date") else
+                    "https://apod.nasa.gov/apod/astropix.html"}

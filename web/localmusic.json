@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-25",
   "releases": [
     {
       "artist": "Isabeau Waia'u Walker",
@@ -29,15 +29,11 @@
       "genre": "Cosmic country / folk",
       "label": "Full Time Hobby",
       "date": "2026-10-23",
-      "why": "Third full-length, recorded in Portland with Rose City Band's Rick Pedrosa and guests Devendra Banhart and Merle Law; The Line of Best Fit gave it 8/10 and it led the Mercury's Oct. 23 Spin Cycle.",
+      "why": "Third full-length, recorded in Portland with Rose City Band's Rick Pedrosa and guests Devendra Banhart and Merle Law; The Line of Best Fit gave it 8/10 and the Mercury's Spin Cycle covered it.",
       "links": [
         {
           "name": "Review",
           "url": "https://www.thelineofbestfit.com/albums/jeffrey-silverstein-portlands-leading-cosmic-cowboy-hits-a-rich-seam-on-doggone"
-        },
-        {
-          "name": "Portland Mercury",
-          "url": "https://www.portlandmercury.com/music/spin-cycle-go-with-the-flow/"
         }
       ]
     },
@@ -130,22 +126,6 @@
         {
           "name": "Flood",
           "url": "https://floodmagazine.com/228854/listen-helen-lindas-head-dead-shark-ii/"
-        }
-      ]
-    },
-    {
-      "artist": "Dustbunny",
-      "title": "Offerings for Weary Dogs",
-      "type": "Album",
-      "local": true,
-      "genre": "Indie rock",
-      "label": "",
-      "date": "",
-      "why": "The Portland quartet's second album, reviewed by the Portland Mercury, which says the band swaps \"or\" for \"and\" and dissolves binaries.",
-      "links": [
-        {
-          "name": "Portland Mercury",
-          "url": "https://www.portlandmercury.com/?p=229872"
         }
       ]
     },

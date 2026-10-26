@@ -1,24 +1,6 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "events": [
-    {
-      "title": "Timbers2 host the MLS NEXT Pro Western Conference Semifinal",
-      "date": "2026-10-25",
-      "ends": null,
-      "venue": "Providence Park, Goose Hollow",
-      "kind": "Soccer playoff",
-      "why": "Timbers2, the No. 2 seed, host Ventura County FC at 7 p.m. with free tickets through SeatGeek, after a club-record crowd for their quarterfinal win.",
-      "sources": [
-        {
-          "name": "Portland Timbers",
-          "url": "https://www.timbers.com/t2/news/timbers2-set-to-host-ventura-county-fc-in-western-conference-semifinals-at-providence-park-on-sunday-oct-25-at-7pm-pt"
-        },
-        {
-          "name": "Portland Timbers",
-          "url": "https://www.timbers.com/t2/news/timbers2-to-host-conference-semifinal-sunday-oct-25"
-        }
-      ]
-    },
     {
       "title": "Gorillaz with Little Simz and Deltron 3030",
       "date": "2026-10-30",
@@ -198,6 +180,10 @@
         {
           "name": "Loudwire",
           "url": "https://loudwire.com/trans-siberian-orchestra-30th-anniversary-tour-2026/"
+        },
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_8RKn5r8/trans-siberian-orchestra-the-ghosts-of-christmas-eve"
         }
       ]
     },
@@ -216,6 +202,42 @@
         {
           "name": "Christmas Ships",
           "url": "https://www.christmasships.org/parade-schedule"
+        }
+      ]
+    },
+    {
+      "title": "Triumph with April Wine: The Rock & Roll Machine Reloaded Tour",
+      "date": "2026-12-05",
+      "ends": null,
+      "venue": "Moda Center, Rose Quarter",
+      "kind": "Concert",
+      "why": "Saturday 8 p.m. arena show on the Canadian rockers' 50th anniversary tour, so expect evening Rose Quarter traffic and busy MAX trains.",
+      "sources": [
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/fr-ca/event/vvG1HZ_o62sD6v/triumph-the-rock-roll-machine-reloaded-tour"
+        },
+        {
+          "name": "Ultimate Classic Rock",
+          "url": "https://ultimateclassicrock.com/triumph-new-fall-2026-tour-dates/"
+        }
+      ]
+    },
+    {
+      "title": "The Wolf's Nice Christmas Show",
+      "date": "2026-12-06",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum, Rose Quarter",
+      "kind": "Concert",
+      "why": "Sunday 7 p.m. country radio holiday show with Max McNown, Ian Munsick, Graham Barham and Blake Whiten, the night after the Triumph show next door, so the Rose Quarter is busy two nights running.",
+      "sources": [
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/fr-ca/event/vvG1HZ_2B6GkFr/the-wolf-s-nice-christmas-show"
+        },
+        {
+          "name": "Discotech",
+          "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
         }
       ]
     }

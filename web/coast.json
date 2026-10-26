@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-25",
   "events": [
     {
       "name": "Halloween Spooktacular concert",
@@ -58,28 +58,12 @@
       "url": "https://libertyastoria.org/event/"
     },
     {
-      "name": "The Wizard of Oz",
-      "date": "2026-11-20",
-      "end": "2026-12-20",
-      "town": "Cannon Beach",
-      "summary": "The Coaster Theatre's holiday-season production runs weekends, opening Nov. 20 at 7:30 pm.",
-      "url": "https://coastertheatre.com/shows/the-wizard-of-oz/"
-    },
-    {
       "name": "Battle to the Pacific trail runs",
       "date": "2026-11-21",
       "end": null,
       "town": "Hammond (Fort Stevens State Park)",
       "summary": "Bivouac Racing's 20K, 15K and 5K trail races plus a 12-mile ruck challenge, starting around 9 am at Coffenbury Lake.",
       "url": "https://ultrasignup.com/register.aspx?did=143051"
-    },
-    {
-      "name": "The Amazing Bubble Man",
-      "date": "2026-11-22",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Sunday 2 pm family bubble show at the Liberty Theatre.",
-      "url": "https://libertyastoria.org/event/"
     },
     {
       "name": "King tides",
@@ -104,14 +88,6 @@
       "town": "Astoria",
       "summary": "The Oregon folk band plays two nights at the Liberty Theatre (Nov. 27 and 28); check the ticket page for start times.",
       "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "Mimosa Madness Weekend",
-      "date": "2026-11-27",
-      "end": "2026-11-29",
-      "town": "Cannon Beach",
-      "summary": "Downtown shops kick off Haystack Holidays with extended hours, sales and festive drinks.",
-      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
     },
     {
       "name": "Cannon Beach in Lights",

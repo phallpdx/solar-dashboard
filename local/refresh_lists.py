@@ -237,7 +237,9 @@ def items_schema(props, required=None):
 
 S = {"type": "string"}
 NS = {"type": ["string", "null"]}
-DATE = {"type": ["string", "null"], "description": "YYYY-MM-DD or null"}
+DATE = {"anyOf": [{"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}, {"type": "null"}],
+        "description": "YYYY-MM-DD or null"}
+DATE_FIELDS = ("date", "ends", "starts", "by")
 
 
 # ---------------------------------------------------------------- checks
@@ -247,6 +249,34 @@ def as_date(s):
         return dt.date.fromisoformat(str(s)[:10]) if s else None
     except ValueError:
         return None
+
+
+MONTHS = {m: i for i, m in enumerate(["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
+
+
+def loose_date(s):
+    """Reads the dates a model writes despite being asked for YYYY-MM-DD:
+    "October 26", "Tue, Oct 27, 2026", "10/26". Without a year, the next one to come."""
+    if not s or as_date(s):
+        return s
+    text = str(s).lower()
+    m = re.search(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?", text)
+    if m:
+        month, day, year = MONTHS[m.group(1)], int(m.group(2)), m.group(3)
+    else:
+        m = re.search(r"\b(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?\b", text)
+        if not m:
+            return s
+        month, day, year = int(m.group(1)), int(m.group(2)), m.group(3)
+        if year and len(year) == 2:
+            year = "20" + year
+    try:
+        if year:
+            return dt.date(int(year), month, day).isoformat()
+        d = dt.date(TODAY.year, month, day)
+        return (d if d >= TODAY - dt.timedelta(days=60) else d.replace(year=d.year + 1)).isoformat()
+    except ValueError:
+        return s
 
 
 def clean(s, limit=400):
@@ -345,6 +375,9 @@ def extract(sources, task, props, build, max_age_days=None):
         raw = (result or {}).get("items") or []
         kept = 0
         for r in raw:
+            for f in DATE_FIELDS:
+                if f in r:
+                    r[f] = loose_date(r[f])
             item = build(r, src, links)
             if item:
                 found.append(item)

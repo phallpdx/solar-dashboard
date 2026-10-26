@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, news, outside, pge, places, pollen, releases, roads, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outside, pge, places, poems, pollen, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -675,7 +675,7 @@ def fetch_almanac(state, now_utc):
     if (store.get("albums") or {}).get("date") != today.isoformat():
         store.pop("albums_at", None)
     _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
-    _refresh(store, "good_news", daily.good_news, 3, now_utc, errors)
+    _refresh(store, "good_news", daily.good_news, 2, now_utc, errors)
     if env("CALENDAR_ICS"):
         _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
     return "; ".join(errors) or None
@@ -685,11 +685,11 @@ def fetch_culture(state, now_utc):
     """What's trending, book picks from Goodreads and long reads."""
     store, errors = state.setdefault("culture", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
-    _refresh(store, "trends", culture.google_trends, 1.5, now_utc, errors)
+    _refresh(store, "trends", culture.google_trends, 1, now_utc, errors)
     if (store.get("wiki") or {}).get("date") != today.isoformat():
         store.pop("wiki_at", None)
     _refresh(store, "wiki", lambda: {"date": today.isoformat(), "articles": culture.wiki_most_read(today)}, 24, now_utc, errors)
-    _refresh(store, "reddit", culture.reddit_popular, 3, now_utc, errors)
+    _refresh(store, "reddit", culture.reddit_popular, 2, now_utc, errors)
     _refresh(store, "longreads", culture.fresh_longreads, 12, now_utc, errors)
     user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
     if user and not user.isdigit():
@@ -700,10 +700,17 @@ def fetch_culture(state, now_utc):
                 errors.append(f"goodreads: {e}")
         user = store.get("goodreads_id") if store.get("goodreads_name") == user else None
     if user:
-        if store.get("books_user") != user:
+        if store.get("books_user") != user or store.get("books_v") != 2:  # v2 skips reprints and classic authors
             store.pop("books_at", None)
-            store["books_user"] = user
+            store["books_user"], store["books_v"] = user, 2
         _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def fetch_science(state, now_utc):
+    """Fresh science findings and what they mean."""
+    store, errors = state.setdefault("science", {}), []
+    _refresh(store, "items", science.breakthroughs, 2, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -958,7 +965,7 @@ def fetch_gear(state, now_utc):
 
 def fetch_news(state, now_utc):
     store, errors = state.setdefault("news", {}), []
-    _refresh(store, "stories", news.top_stories, 1.5, now_utc, errors)
+    _refresh(store, "stories", news.top_stories, 1, now_utc, errors)
     if (store.get("reviews") or {}).get("v") != 2:  # pick up filter changes now
         store.pop("reviews_at", None)
     _refresh(store, "reviews", news.reviews, 3, now_utc, errors)
@@ -1039,7 +1046,7 @@ def fetch_live(state, now_utc):
         return "Needs the home location first."
     store, errors, lat, lon = state.setdefault("live", {}), [], out["lat"], out["lon"]
     _refresh(store, "quakes", lambda: live.earthquakes(lat, lon), 1, now_utc, errors)
-    _refresh(store, "fires", lambda: live.wildfires(lat, lon), 3, now_utc, errors)
+    _refresh(store, "fires", lambda: live.wildfires(lat, lon), 1, now_utc, errors)
     _refresh(store, "planes", lambda: live.planes(lat, lon), 0, now_utc, errors)
     try:
         live.add_details(store.get("planes"), state.setdefault("flight_lookups", {}), now_utc)
@@ -1085,8 +1092,11 @@ def garden_view(state, out, now_utc):
              if t[:10] == today.isoformat() and v is not None]
     if temps:
         soil = round(sum(temps) / len(temps))  # forecast is requested in °F
+    station = (state.get("weather") or {}).get("days") or {}
+    recent_rain = sum((station.get((today - dt.timedelta(days=i)).isoformat()) or {}).get("rain_in") or 0 for i in range(3))
     return {"plant": garden.plant_now(today), "tips": garden.tips((out or {}).get("days") or [], soil),
             "forest": garden.forest_tasks(today),
+            "look": nature.look_for(today, (out or {}).get("days") or [], recent_rain),
             "burn": garden.burn_check(today, (out or {}).get("days") or [],
                                       alerts.active((state.get("outside") or {}).get("nws_alerts") or [], now_utc),
                                       ((out or {}).get("air") or {}).get("aqi"))}
@@ -1280,6 +1290,8 @@ def build(state, status, now_utc):
                      if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
         "books": cu.get("books") if cu.get("books_user") else None,
         "long_read": culture.long_read(dt.date.fromisoformat(today)),
+        "poem": poems.poem_of_the_day(dt.date.fromisoformat(today), ((out or {}).get("days") or [None])[0]),
+        "science": (state.get("science") or {}).get("items"),
         "longreads": cu.get("longreads"),
         "civics": civics_view(state, today),
         "gear": {**((state.get("gear") or {}).get("scan") or {}), "at": (state.get("gear") or {}).get("scan_at")}
@@ -1300,7 +1312,7 @@ def main():
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
-                     ("culture", fetch_culture)):
+                     ("culture", fetch_culture), ("science", fetch_science)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

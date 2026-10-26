@@ -1,6 +1,5 @@
 """Is it safe to dig clams or catch crab at the coast? Oregon Department of Agriculture biotoxin
 closures, plus ODFW's yearly ocean crabbing closure."""
-import datetime as dt
 import html
 import re
 import urllib.request
@@ -34,7 +33,6 @@ def parse(page):
         status = "Closed" if " CLOSED " in f" {chunk} " else "Open" if " OPEN " in f" {chunk} " else None
         if not status:
             continue
-        sentence = re.search(r"(The sport harvest[^.]*\.|Sport crab harvesting[^.]*\.)", chunk)
         why = None
         if status == "Closed":
             reason = re.search(r"for ([^.]*?(domoic acid|paralytic shellfish toxin|PSP|DSP|biotoxin)[^.]*)", chunk, re.I)

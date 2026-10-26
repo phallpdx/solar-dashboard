@@ -158,6 +158,66 @@ DINNER_QUESTIONS = [
 def _pick(items, day, salt=0):
     return items[(day.toordinal() * 7 + salt) % len(items)]
 
+# (name, kind, why they matter, a good place to start). Portland and Oregon artists across music, art, books and film.
+LOCAL_ARTISTS = [
+    ("Esperanza Spalding", "music", "Jazz bassist and singer who grew up in NE Portland and beat Justin Bieber for Best New Artist at the 2011 Grammys.", "Chamber Music Society"),
+    ("Pink Martini", "music", "Thomas Lauderdale's \"little orchestra\", started in Portland in 1994 to play political fundraisers. They now sing in over 20 languages.", "Sympathique"),
+    ("Elliott Smith", "music", "Hushed, double-tracked songs written in Portland in the '90s. \"Miss Misery\" got him an Oscar nomination.", "Either/Or"),
+    ("Sleater-Kinney", "music", "Corin Tucker and Carrie Brownstein's ferocious guitar band, a Portland institution since the '90s.", "Dig Me Out"),
+    ("The Decemberists", "music", "Colin Meloy's bookish, sea-shanty-loving folk rock, with album art by Portland illustrator Carson Ellis.", "The Crane Wife"),
+    ("Dead Moon", "music", "Fred and Toody Cole's raw, homemade garage punk, a Portland legend since 1987.", "Dead Moon Night"),
+    ("Wipers", "music", "Greg Sage's dark, driving Portland punk from 1977. Kurt Cobain called them a huge influence.", "Youth of America"),
+    ("The Kingsmen", "music", "Portland teenagers whose mumbled 1963 \"Louie Louie\" got the FBI to investigate the lyrics.", "Louie Louie"),
+    ("Aminé", "music", "Playful NE Portland rapper who wears his city on his sleeve.", "Caroline"),
+    ("Black Belt Eagle Scout", "music", "Katherine Paul's slow-burning indie rock, rooted in her Swinomish and Iñupiaq family.", "At the Party with My Brown Friends"),
+    ("Haley Heynderickx", "music", "Portland songwriter with intricate fingerpicking and a lot of heart.", "Oom Sha La La"),
+    ("Y La Bamba", "music", "Luz Elena Mendoza's dreamy blend of Mexican folk and indie rock.", "Entre Los Dos"),
+    ("Unknown Mortal Orchestra", "music", "Ruban Nielson's woozy psych-funk, recorded in his Portland basement.", "Multi-Love"),
+    ("Laura Veirs", "music", "Portland folk songwriter, also one third of case/lang/veirs.", "July Flame"),
+    ("M. Ward", "music", "Warm, vintage-sounding guitarist and songwriter, also half of She & Him.", "Post-War"),
+    ("Typhoon", "music", "Kyle Morton's Portland orchestra-sized band making huge, horn-filled songs about being alive.", "White Lighter"),
+    ("Blind Pilot", "music", "Portland folk band that toured the West Coast by bicycle in its early days.", "3 Rounds and a Sound"),
+    ("Thara Memory", "music", "Portland trumpeter and teacher who mentored a young Esperanza Spalding and won a Grammy arranging her \"City of Roses\".", "City of Roses"),
+    ("Mel Brown", "music", "Portland jazz drummer who played Motown sessions, then held down a weekly residency at Jimmy Mak's for decades.", "Mel Brown Septet"),
+    ("The Dandy Warhols", "music", "Portland's swaggering '90s psych-rockers. \"Bohemian Like You\" was everywhere in 2001.", "Bohemian Like You"),
+    ("Quasi", "music", "Sam Coomes and Janet Weiss's two-person noise-pop band.", "Featuring \"Birds\""),
+    ("Portugal. The Man", "music", "Alaskan transplants who made Portland home and won a Grammy with \"Feel It Still\".", "Feel It Still"),
+    ("Storm Large", "music", "Powerhouse cabaret-rock singer and sometime Pink Martini vocalist.", "Le Bonheur"),
+    ("Mark Rothko", "art", "Grew up in Portland after arriving from Russia at 10, graduated from Lincoln High, then went on to paint the glowing color fields.", "Rothko at the Portland Art Museum"),
+    ("Carrie Mae Weems", "photography", "Born in Portland in 1953. Her Kitchen Table Series is one of the great works of American photography.", "Kitchen Table Series"),
+    ("Marie Watt", "art", "Seneca artist in Portland who builds towers and quilts out of donated wool blankets and the stories that come with them.", "Marie Watt blanket towers"),
+    ("Wendy Red Star", "photography", "Apsáalooke (Crow) artist in Portland who restages and annotates 19th-century portraits with sharp wit.", "1880 Crow Peace Delegation"),
+    ("Lillian Pitt", "art", "Warm Springs, Wasco and Yakama artist whose masks and bronzes honor Columbia River ancestors.", "Lillian Pitt Columbia River art"),
+    ("Rick Bartow", "art", "Wiyot artist from Newport, Oregon, known for gestural animals and the giant carved poles \"We Were Always Here\" at the Smithsonian.", "We Were Always Here"),
+    ("Arvie Smith", "art", "Portland painter whose bright, satirical canvases take on racist imagery and American history.", "Arvie Smith paintings"),
+    ("Isaka Shamsud-Din", "art", "Painter and muralist who has documented Black Portland and the Albina neighborhood since the 1960s.", "Isaka Shamsud-Din murals"),
+    ("Hilda Morris", "art", "Mid-century Portland sculptor. You've probably walked past her bronze \"Ring of Time\" downtown.", "Ring of Time"),
+    ("Carson Ellis", "illustration", "Illustrator behind the Decemberists' covers and the Caldecott Honor book \"Du Iz Tak?\", a great one to read with your kid.", "Du Iz Tak?"),
+    ("Craig Thompson", "comics", "Portland cartoonist behind \"Blankets\", a huge, tender graphic memoir about first love.", "Blankets"),
+    ("Will Vinton", "animation", "Coined the word \"Claymation\" and brought the California Raisins to life from his Portland studio.", "Closed Mondays"),
+    ("Gus Van Sant", "film", "Filmed Portland's underbelly in \"Drugstore Cowboy\" and \"My Own Private Idaho\".", "My Own Private Idaho"),
+    ("Matt Groening", "comics", "Grew up in Portland. Flanders, Lovejoy, Kearney and Quimby are all Portland street names.", "Life in Hell"),
+    ("Ursula K. Le Guin", "books", "Portland's great writer of science fiction and fantasy, and a fierce essayist.", "The Left Hand of Darkness"),
+    ("Beverly Cleary", "books", "Grew up in Portland. Ramona lives on the real Klickitat Street, and her statue stands in Grant Park.", "Ramona the Pest"),
+    ("Mitchell S. Jackson", "books", "Grew up in NE Portland and won the 2021 Pulitzer Prize for feature writing.", "Survival Math"),
+    ("Cheryl Strayed", "books", "Portland writer whose Pacific Crest Trail memoir ends at the Bridge of the Gods.", "Wild"),
+    ("Brian Doyle", "books", "Portland essayist with joyful, run-on sentences, and editor of the University of Portland's magazine.", "Mink River"),
+    ("Chuck Palahniuk", "books", "Portland-area novelist who wrote \"Fight Club\" while working as a diesel mechanic.", "Fight Club"),
+]
+
+ARTIST_VERB = {"music": ("▶ Listen", "🎸"), "film": ("▶ Watch", "🎬"), "animation": ("▶ Watch", "🎞️"),
+               "books": ("Read about it", "📚"), "comics": ("Read about it", "💬"), "illustration": ("See the work", "🖍️"),
+               "photography": ("See the work", "📷"), "art": ("See the work", "🎨")}
+
+
+def local_artist(day):
+    name, kind, note, start = _pick(LOCAL_ARTISTS, day, 4)
+    verb, icon = ARTIST_VERB.get(kind, ("Look", "✨"))
+    q = f"{name} {start}" if start.lower() not in name.lower() and name.lower() not in start.lower() else start
+    url = ("https://www.youtube.com/results?" + urllib.parse.urlencode({"search_query": q}) if kind in ("music", "film", "animation")
+           else "https://duckduckgo.com/?" + urllib.parse.urlencode({"q": q}))
+    return {"name": name, "kind": kind, "note": note, "start": start, "url": url, "verb": verb, "icon": icon}
+
 
 def picks(day):
     """Today's drum break, Thai phrase and dinner question."""
@@ -168,6 +228,7 @@ def picks(day):
                  "listen": "https://www.youtube.com/results?" + urllib.parse.urlencode({"search_query": f"{artist} {song}"})},
         "thai": {"thai": thai, "roman": roman, "meaning": meaning, "tip": tip},
         "question": _pick(DINNER_QUESTIONS, day, 3),
+        "artist": local_artist(day),
     }
 
 
@@ -195,7 +256,7 @@ def album_birthdays(day, n=8):
     for b in rows:
         title, artist = b["albumLabel"]["value"], b["artistLabel"]["value"]
         year = int(b["date"]["value"][:4])
-        if title in seen or re.fullmatch(r"Q\d+", title) or year >= day.year:
+        if title in seen or re.fullmatch(r"Q\d+", title) or re.fullmatch(r"Q\d+", artist) or year >= day.year:
             continue
         seen.add(title)
         out.append({"title": title, "artist": artist, "year": year, "age": day.year - year,

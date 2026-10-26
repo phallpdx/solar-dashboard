@@ -2,7 +2,7 @@ name: Update dashboard
 
 on:
   schedule:
-    - cron: "*/20 * * * *" # every 20 min; the updater limits APsystems calls to about one an hour
+    - cron: "*/15 * * * *" # every 15 min; each source has its own pace, and APsystems is held to about one call an hour
   workflow_dispatch:
   push:
     branches: [main]

@@ -1,48 +1,6 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "items": [
-    {
-      "name": "Hotel Reynard",
-      "maker": "The team behind Suttle Lodge and Pals",
-      "kind": "New brand",
-      "what": "Hotel and tavern offering seasonal cooking",
-      "where_to_buy": [],
-      "date": "2026-10-22",
-      "sources": [
-        {
-          "name": "New Troutdale tavern pairs seasonal cooking with eight-room hotel",
-          "url": "https://www.oregonlive.com/dining/2026/10/the-team-behind-suttle-lodge-and-pals-is-opening-a-hotel-and-tavern-in-troutdale.html"
-        }
-      ]
-    },
-    {
-      "name": "LoRell's",
-      "maker": "Darell Preston",
-      "kind": "New brand",
-      "what": "Chicago-style fried chicken business",
-      "where_to_buy": [],
-      "date": "2026-10-21",
-      "sources": [
-        {
-          "name": "After the Lloyd Center, LoRell's opens on N. Russell Street — here's how to find it",
-          "url": "https://www.oregonlive.com/food/2026/10/after-lloyd-center-closes-lorells-chicken-shack-lands-in-north-portland.html"
-        }
-      ]
-    },
-    {
-      "name": "Grand Fir Brewing",
-      "maker": "Grand Fir Brewing",
-      "kind": "New brand",
-      "what": "Riverside beer garden",
-      "where_to_buy": [],
-      "date": "2026-10-21",
-      "sources": [
-        {
-          "name": "Grand Fir Brewing is opening a riverside beer garden",
-          "url": "https://www.oregonlive.com/retail/2026/10/celebrated-portland-chef-brewmaster-to-open-rural-riverside-taproom-and-beer-garden.html"
-        }
-      ]
-    },
     {
       "name": "Pastime Coffee",
       "maker": "Pastime Coffee",
@@ -117,10 +75,10 @@
       ]
     },
     {
-      "name": "Breakside IPA",
+      "name": "Breakside IPA and Brewery of the Year",
       "maker": "Breakside Brewery",
       "kind": "Award",
-      "what": "Breakside's flagship IPA took gold in American India Pale Ale at the 2026 Great American Beer Festival, part of a 35-medal haul for Oregon breweries and cideries, third most of any state.",
+      "what": "Milwaukie's Breakside was named Brewery of the Year in its size category at the 2026 Great American Beer Festival, leaving with six medals including three golds. Its flagship Breakside IPA won gold in American IPA against 164 other entries, and Summer Classic and Hello My Alien also took golds.",
       "where_to_buy": [
         {
           "store": "Breakside Brewery taprooms",
@@ -129,6 +87,10 @@
       ],
       "date": "2026-10-11",
       "sources": [
+        {
+          "name": "Great American Beer Festival: 2026 winners",
+          "url": "https://www.greatamericanbeerfestival.com/2026-winners/"
+        },
         {
           "name": "My Neighborhood News: Austin breweries win three medals at 2026 GABF (lists Breakside IPA as gold)",
           "url": "https://myneighborhoodnews.com/austin/austin-breweries-win-three-medals-at-2026-great-american-beer-festival-with-meanwhile-brewing-taking-home-two-silvers"
@@ -140,6 +102,10 @@
         {
           "name": "Oregon Beverage Alliance release: Oregon takes home 35 medals at GABF",
           "url": "https://www.nombase.com/newswire/2026/10/14/oregon-breweries-cideries-take-home-35-medals-at-great-american-beer-festival-third-most-in-the-country"
+        },
+        {
+          "name": "Quartz: 2026 Great American Beer Festival breweries to visit",
+          "url": "https://qz.com/great-american-beer-festival-breweries-2026"
         }
       ]
     },
@@ -167,6 +133,28 @@
       ]
     },
     {
+      "name": "UPP Liquids, Brewery of the Year",
+      "maker": "UPP Liquids (Bend)",
+      "kind": "Award",
+      "what": "The young Bend brewery was one of two Oregon breweries named Brewery of the Year at the 2026 Great American Beer Festival, winning the 251 to 500 barrel category.",
+      "where_to_buy": [],
+      "date": "2026-10-11",
+      "sources": [
+        {
+          "name": "Great American Beer Festival: 2026 winners",
+          "url": "https://www.greatamericanbeerfestival.com/2026-winners/"
+        },
+        {
+          "name": "New School Beer + Cider: Oregon wins 34 medals and 2 Brewery of the Year awards at 2026 GABF",
+          "url": "https://newschoolbeer.com/home/2026/10/oregon-wins-at-2026-great-american-beer-festival-gabf"
+        },
+        {
+          "name": "Brewpublic: 2026 GABF winners, Oregon wins 35 medals",
+          "url": "https://brewpublic.com/beer-awards/2026-great-american-beer-festival-winners-oregon-wins-35-medals-as-washington-wins-17-medals/"
+        }
+      ]
+    },
+    {
       "name": "Cheers to the Land 2026",
       "maker": "Oregon Agricultural Trust with 16 Oregon breweries and cideries",
       "kind": "Seasonal",
@@ -174,6 +162,10 @@
       "where_to_buy": [],
       "date": "2026-10-10",
       "sources": [
+        {
+          "name": "New School Beer + Cider: Cheers to the Land '26 introduces 16 new beers & ciders",
+          "url": "https://newschoolbeer.com/home/2026/9/cheers-to-the-land-26-16-new-beers-amp-ciders-to-protect-oregon-farm-land"
+        },
         {
           "name": "Travel Portland: Cheers to the Land launch party",
           "url": "https://www.travelportland.com/event/6aa32195e6309d93181feec0/"
@@ -230,6 +222,20 @@
         {
           "name": "Food & Beverage Magazine: Portland Craft Chocolate Festival 2026",
           "url": "https://www.fb101.com/portland-craft-chocolate-festival-2026-c4-cookie-competition-302883566"
+        }
+      ]
+    },
+    {
+      "name": "Fresh Coast Hospitality fresh hop IPA",
+      "maker": "Sunriver Brewing Company",
+      "kind": "Award",
+      "what": "Took gold in Fresh Hop Pale Ales and IPAs, the biggest category at the Oregon Beer Awards fresh hop competition on October 3, with Sunriver's Fresh Whammies taking silver. The competition drew 134 entries from 44 Oregon breweries, so look for these while fresh hop season lasts.",
+      "where_to_buy": [],
+      "date": "2026-10-03",
+      "sources": [
+        {
+          "name": "New School Beer + Cider: Oregon Beer Awards 2026 fresh hop competition medal winners",
+          "url": "https://newschoolbeer.com/home/2026/10/oregon-beer-awards-2026-fresh-hop-competition-medal-winners"
         }
       ]
     },
@@ -346,6 +352,29 @@
         {
           "name": "Baking Business: Bob's Red Mill reformulates signature gluten-free flour",
           "url": "https://www.bakingbusiness.com/articles/66781-bobs-red-mill-reformulates-signature-gluten-free-flour"
+        }
+      ]
+    },
+    {
+      "name": "Island Towns tropical West Coast IPA",
+      "maker": "Fort George Brewery (Astoria)",
+      "kind": "New product",
+      "what": "A new year-round 6.5% tropical West Coast IPA hopped with Superdelic, Citra and Chinook, announced in August 2026 in 6-packs of 12oz cans and on draft. It reuses the name of a 2025 one-off but is a new recipe.",
+      "where_to_buy": [
+        {
+          "store": "Fort George Brewery",
+          "url": "https://fortgeorgebrewery.com/beer/island-towns/"
+        }
+      ],
+      "date": "2026-08-01",
+      "sources": [
+        {
+          "name": "New School Beer + Cider: Fort George introduces new year-round beer Island Towns tropical IPA",
+          "url": "https://newschoolbeer.com/home/2026/8/fort-george-brewing-introduces-new-year-round-beer-island-towns-tropical-ipa"
+        },
+        {
+          "name": "Fort George Brewery: Island Towns",
+          "url": "https://fortgeorgebrewery.com/beer/island-towns/"
         }
       ]
     }

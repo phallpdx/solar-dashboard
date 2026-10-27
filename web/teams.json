@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-27",
-  "updated_at": "2026-10-27T07:12:19Z",
+  "updated_at": "2026-10-27T09:09:55Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
@@ -36,11 +36,11 @@
     },
     "timbers": {
       "mood": "bittersweet and nostalgic",
-      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for the upcoming sprint season despite the news.",
+      "pulse": "Fans are processing Diego Chara's retirement announcement for after next season. There is excitement around homegrown talent like Eric Izoita.",
       "storylines": [
-        "Diego Chara to retire after next season",
+        "Diego Chara to retire after the Sprint Season",
         "Eric Izoita signed first-team contract",
-        "Upcoming match against St. Louis",
+        "Upcoming midweek match against St. Louis",
         "Native American Heritage Night on Nov 1"
       ],
       "sources": [
@@ -63,8 +63,8 @@
       ]
     },
     "f1": {
-      "mood": "tense and celebratory",
-      "pulse": "Fans are celebrating Antonelli's dominant win and title proximity. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
+      "mood": "Anticipation and frustration",
+      "pulse": "Fans are celebrating Antonelli's dominance and Mercedes' pace. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
       "storylines": [
         "Antonelli nears first world title after Austin win",
         "Mercedes W17 operating window issues for Russell",

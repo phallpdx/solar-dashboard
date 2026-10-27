@@ -13,7 +13,8 @@ Claude.
 
 ## What a run does
 
-1. Starts LM Studio's server and loads the model, unless they are already running.
+1. Pulls the latest script from GitHub, then starts LM Studio's server and loads
+   the model, unless they are already running.
 2. For each list, fetches the pages and feeds in `sources.json`, asks the model
    to pull out items as JSON, and checks them: dates must be real and upcoming,
    links must appear on the page and still load, and duplicates are dropped.

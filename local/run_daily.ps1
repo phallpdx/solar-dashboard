@@ -1,12 +1,22 @@
 # Nightly job: starts LM Studio's server with the model, refreshes the lists,
 # then puts LM Studio back the way it found it. Registered by setup.ps1.
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$cfg = Get-Content (Join-Path $here 'sources.json') -Raw | ConvertFrom-Json
-$model = $cfg.lmstudio.model
 $logDir = Join-Path $here 'logs'
 New-Item -ItemType Directory -Force $logDir | Out-Null
 Get-ChildItem $logDir -Filter *.log | Where-Object LastWriteTime -lt (Get-Date).AddDays(-30) | Remove-Item
 Start-Transcript -Path (Join-Path $logDir ('{0:yyyy-MM-dd}.log' -f (Get-Date))) -Append | Out-Null
+
+# Pick up script and source fixes from GitHub. A run that can't update still
+# runs with the code it has.
+$repo = Split-Path -Parent $here
+$env:GIT_TERMINAL_PROMPT = '0'  # never sit waiting for a sign-in nobody will see
+try {
+    $pull = Start-Process git -ArgumentList @('-C', "`"$repo`"", 'pull', '--ff-only', '--quiet') -Wait -PassThru -WindowStyle Hidden
+    "git pull exit code: $($pull.ExitCode)"
+} catch { "git pull failed: $_" }
+
+$cfg = Get-Content (Join-Path $here 'sources.json') -Raw | ConvertFrom-Json
+$model = $cfg.lmstudio.model
 
 $env:PYTHONUNBUFFERED = '1'
 $env:PYTHONIOENCODING = 'utf-8'

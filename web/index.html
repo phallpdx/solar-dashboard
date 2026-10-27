@@ -1527,6 +1527,37 @@ body{background-color:#8F5A32;
         <p class="note" id="therm-note"></p>
       </section>
     </div>
+    <div class="row">
+      <section class="card half dd" aria-labelledby="set-h" id="set-card" hidden>
+        <div class="head"><h2 id="set-h">Where the sun goes down</h2><span class="meta" id="set-meta"></span></div>
+        <p class="summary" id="set-sum"></p>
+        <div id="set-chart"></div>
+      </section>
+      <section class="card half dd" aria-labelledby="jar-h" id="jar-card" hidden>
+        <div class="head"><h2 id="jar-h">The rain jar</h2><span class="meta" id="jar-meta"></span></div>
+        <p class="summary" id="jar-sum"></p>
+        <div id="jar"></div>
+        <p class="note" id="jar-note"></p>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card half dd" aria-labelledby="stake-h" id="stake-card" hidden>
+        <div class="head"><h2 id="stake-h">The snow stake</h2><span class="meta" id="stake-meta"></span></div>
+        <p class="summary" id="stake-sum"></p>
+        <div id="stake"></div>
+      </section>
+      <section class="card half dd" aria-labelledby="over-h" id="over-card" hidden>
+        <div class="head"><h2 id="over-h">Over the house</h2><span class="meta" id="over-meta"></span></div>
+        <p class="summary" id="over-sum"></p>
+        <div id="over"></div>
+      </section>
+    </div>
+    <section class="card dd" aria-labelledby="title-h" id="title-card" hidden>
+      <div class="head"><h2 id="title-h">The title fight</h2><span class="meta" id="title-meta"></span></div>
+      <p class="summary" id="title-sum"></p>
+      <div id="title-race"></div>
+      <p class="note" id="title-note"></p>
+    </section>
     <section class="card dd" aria-labelledby="shelf-h" id="shelf-card" hidden>
       <div class="head"><h2 id="shelf-h">Your bookshelf</h2><span class="meta" id="shelf-meta"></span></div>
       <div id="shelf"></div>
@@ -2273,6 +2304,166 @@ function renderShelf() {
   $('shelf-note').textContent = b.top_authors && b.top_authors.length ? `Most-loved authors: ${b.top_authors.slice(0, 5).join(', ')}.` : '';
 }
 
+// Flat catalog colors for the doodles, straight from the page's palette.
+const dot = d => `<path class="dots" d="${d}"/>`;  // no pathLength, so the dots keep their spacing
+const fl = (c, o) => `style="fill:var(--${c})${o != null ? `;opacity:${o}` : ''}"`;
+const dayOfYear = d => Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(d.getFullYear(), 0, 0)) / 864e5);
+
+// Where the sun goes down: its spot on the western hills slides between the solstices.
+const setAz = (lat, doy) => {
+  const dec = 23.44 * Math.sin(2 * Math.PI * (284 + doy) / 365) * Math.PI / 180;
+  return 360 - Math.acos(Math.max(-1, Math.min(1, Math.sin(dec) / Math.cos(lat * Math.PI / 180)))) * 180 / Math.PI;
+};
+function renderSetting() {
+  const o = D.outside;
+  $('set-card').hidden = !o || o.lat == null;
+  if ($('set-card').hidden) return;
+  const now = new Date(), doy = dayOfYear(now), az = setAz(o.lat, doy), azS = setAz(o.lat, 355), azN = setAz(o.lat, 172);
+  const week = setAz(o.lat, doy + 7) - az, south = week < 0, off = Math.round(Math.abs(az - 270));
+  const X = a => 24 + (a - azS + 5) / (azN - azS + 10) * 312, sx = X(az), P = pen(61), HZ = 132;
+  const t = (o.days || []).find(d => d.date === todayIso()) || {};
+  $('set-meta').textContent = `Looking west from ${o.label}`;
+  $('set-sum').innerHTML = `Tonight the sun drops behind the hills${t.sunset ? ` at <b>${clock(t.sunset)}</b>` : ''}, ` +
+    (off < 1 ? 'almost exactly due west. ' : `${off}° ${az < 270 ? 'south' : 'north'} of due west. `) +
+    `It's sliding about ${Math.max(0.1, Math.abs(week)).toFixed(1)}° ${south ? 'south' : 'north'} a week until the ${south ? 'winter solstice on Dec 21' : 'summer solstice on Jun 21'}.`;
+  // The sun, in the catalog's striped style, sitting on the hills.
+  const bands = [0, 1, 2, 3, 4].map(i => `<rect x="0" y="${HZ - 44 + i * 9}" width="360" height="${i < 2 ? 9 : 6.5}"/>`).join('');
+  const hills = [[0, 120], [40, 112], [80, 118], [120, 106], [170, 114], [210, 104], [260, 113], [300, 108], [360, 116]].map(([x, y]) => [x, y + 10]);
+  const hillLine = P.curve(hills, .6);
+  const months = Array.from({length: 12}, (_, m) => X(setAz(o.lat, dayOfYear(new Date(now.getFullYear(), m, 1)))));
+  const arrow = south ? `M${rd(sx - 10)} 52l-16 0m6 -5l-6 5 6 5` : `M${rd(sx + 10)} 52l16 0m-6 -5l6 5-6 5`;
+  $('set-chart').innerHTML = `<svg viewBox="0 0 360 176" role="img" aria-label="Sunset on the horizon: today ${off}° ${az < 270 ? 'south' : 'north'} of west, between the winter and summer solstice points">
+    <defs><clipPath id="set-clip">${bands}</clipPath></defs>
+    <g clip-path="url(#set-clip)"><circle cx="${rd(sx)}" cy="${HZ - 6}" r="40" ${fl('orange')}/><circle cx="${rd(sx)}" cy="${HZ - 6}" r="26" ${fl('mustard')}/></g>
+    <path d="${hillLine} L360 ${HZ} L0 ${HZ} Z" ${fl('olive')}/>${ink(hillLine)}
+    <rect x="0" y="${HZ}" width="360" height="30" ${fl('teal')}/>${ink(P.line(0, HZ, 360, HZ, .5))}
+    ${ink(P.line(30, HZ + 12, 120, HZ + 12, .5) + ' ' + P.line(200, HZ + 20, 330, HZ + 20, .5), 'ink thin')}
+    ${ink(P.line(X(azS), 52, X(azN), 52, .5), 'ink thin')}
+    ${months.map(x => `<circle cx="${rd(x)}" cy="52" r="2.2" style="fill:var(--ink)"/>`).join('')}
+    ${[[azS, 'Dec 21'], [270, 'due west'], [azN, 'Jun 21']].map(([a, l]) => `${ink(P.line(X(a), 44, X(a), 60, .3))}<text class="sm" x="${rd(X(a))}" y="34" text-anchor="middle">${l}</text>`).join('')}
+    ${ink(arrow)}<circle cx="${rd(sx)}" cy="52" r="7" ${fl('orange')}/>${ink(P.circle(sx, 52, 7, .3))}
+    ${dot(`M${rd(sx)} 62V${HZ - 46}`)}<text class="sm" x="${rd(Math.min(316, Math.max(44, sx)))}" y="78" text-anchor="middle">tonight</text></svg>`;
+}
+
+// Rain in the jar this month, against what Portland usually gets (NOAA 1991-2020 normals at PDX).
+const PDX_RAIN_IN = [4.88, 3.66, 3.68, 2.73, 2.47, 1.70, 0.45, 0.56, 1.47, 2.99, 5.63, 5.37];
+function renderRainJar() {
+  const r = D.weather && D.weather.rain;
+  $('jar-card').hidden = !r || r.month_in == null;
+  if ($('jar-card').hidden) return;
+  const now = new Date(), m = now.getMonth(), dim = new Date(now.getFullYear(), m + 1, 0).getDate();
+  const full = PDX_RAIN_IN[m], byNow = full * now.getDate() / dim, got = r.month_in, top = Math.max(full, got) * 1.12;
+  const Y = v => 182 - v / top * 136, P = pen(67), wy = Y(got);
+  const jar = P.curve([[56, 40], [44, 52], [40, 110], [42, 172], [58, 184], [130, 184], [146, 172], [148, 110], [144, 52], [132, 40]], .5);
+  // Labels on the right, nudged apart when they'd overlap.
+  const labs = [[wy, `${got.toFixed(2)} in`, 'big'], [Y(byNow), `usual by now ${byNow.toFixed(1)}`, 'sm'], [Y(full), `usual for ${MON[m]} ${full.toFixed(1)}`, 'sm']].sort((a, b) => a[0] - b[0]);
+  for (let i = 1; i < labs.length; i++) labs[i].push(Math.max(labs[i][0], (labs[i - 1][3] ?? labs[i - 1][0]) + 24));
+  labs[0].push(labs[0][0]);
+  const vs = got >= byNow * 1.1 ? `ahead of the ${byNow.toFixed(1)} in Portland usually has by now` : got <= byNow * 0.9 ? `behind the ${byNow.toFixed(1)} in Portland usually has by now` : 'right about what Portland usually has by now';
+  $('jar-meta').textContent = 'Your rain gauge';
+  $('jar-sum').innerHTML = `<b>${got.toFixed(2)} in</b> in the jar so far this ${MON[m]}, ${vs}.`;
+  $('jar').innerHTML = `<svg viewBox="0 0 360 196" role="img" aria-label="${got.toFixed(2)} inches of rain this month; usual by now ${byNow.toFixed(1)}, usual for the month ${full.toFixed(1)}">
+    <defs><clipPath id="jar-clip"><path d="${jar} Z"/></clipPath></defs>
+    <g clip-path="url(#jar-clip)"><path d="M30 ${rd(wy)} q14 -6 28 0 t28 0 t28 0 t28 0 t28 0 V200 H30Z" ${fl('teal', .85)}/>
+      ${ink(`M30 ${rd(wy + 14)} q14 -5 28 0 t28 0 t28 0 t28 0`, 'ink thin')}</g>
+    ${ink(jar + ' Z')}<rect x="50" y="22" width="88" height="18" rx="4" ${fl('mustard')}/><rect x="50" y="28" width="88" height="5" ${fl('orange')}/>${ink(P.rect(50, 22, 88, 18, .5))}
+    ${dot(P.line(36, Y(byNow), 154, Y(byNow), .4))}${ink(P.line(36, Y(full), 154, Y(full), .4), 'ink thin')}
+    ${labs.map(([y0, l, c, y]) => `${Math.abs(y - y0) > 2 ? ink(P.line(156, y0, 166, y - 4, .2), 'ink thin') : ''}<text class="${c}" x="170" y="${rd(y + (c === 'big' ? 8 : 4))}">${l}</text>`).join('')}</svg>`;
+  const days = (r.recent || []).filter(d => d.in > 0).map(d => `${DOW[new Date(d.date + 'T12:00').getDay()]} ${d.in.toFixed(2)}`);
+  $('jar-note').textContent = (days.length ? `Recent rainy days: ${days.join(', ')} in.` : '') + (r.today_in > 0 ? ` Today so far: ${r.today_in.toFixed(2)} in.` : '');
+}
+
+// Mt. Hood's snow depth on a painted stake, with the last week and a bit as little drifts.
+function renderStake() {
+  const sn = D.ski && D.ski.snow, ser = (sn && sn.series) || [];
+  $('stake-card').hidden = !sn || sn.depth_in == null || ser.length < 2;
+  if ($('stake-card').hidden) return;
+  const mx = Math.max(sn.depth_in, ...ser.map(d => d.depth_in || 0)), scale = [12, 24, 48, 72, 96, 144, 192].find(v => v >= mx * 1.15) || Math.ceil(mx / 48) * 48;
+  const G = 160, Y = v => G - v / scale * 128, P = pen(71), step = scale / 6;
+  const bands = Array.from({length: 6}, (_, i) => `<rect x="54" y="${rd(Y((i + 1) * step))}" width="14" height="${rd(128 / 6)}" ${fl(i % 2 ? 'mustard' : 'orange')}/>`).join('');
+  const ticks = Array.from({length: 3}, (_, i) => (i + 1) * scale / 3).map(v => `${ink(P.line(46, Y(v), 54, Y(v), .2), 'ink thin')}<text class="sm" x="42" y="${rd(Y(v) + 5)}" text-anchor="end">${v}"</text>`).join('');
+  const d = sn.depth_in, dy = Y(d);
+  const drift = d > 0 ? `<path d="M10 ${G} C30 ${rd(dy + 6)} 44 ${rd(dy)} 61 ${rd(dy)} S100 ${rd(dy + 8)} 124 ${G} Z" style="fill:#FFF8EA"/>${ink(`M10 ${G} C30 ${rd(dy + 6)} 44 ${rd(dy)} 61 ${rd(dy)} S100 ${rd(dy + 8)} 124 ${G}`)}` : '';
+  const bw = 180 / ser.length, bars = ser.map((s, i) => {
+    const h = Math.max(1.5, (s.depth_in || 0) / scale * 128), x = 160 + i * bw;
+    return `<rect x="${rd(x + 2)}" y="${rd(G - h)}" width="${rd(bw - 5)}" height="${rd(h)}" rx="3" style="fill:#FFF8EA"/>${ink(P.rect(x + 2, G - h, bw - 5, h, .3), 'ink thin')}`;
+  }).join('');
+  const peak = 'M150 160 L232 52 L246 38 L258 50 L344 160 Z', cap = 'M218 70 L246 38 L272 66 L262 62 L254 72 L244 62 L232 74 Z';
+  $('stake-meta').textContent = `Measured ${fmtDate(sn.date)}`;
+  $('stake-sum').innerHTML = (d > 0 ? `<b>${d} in</b> of snow on the ground at ${esc(sn.station)}` + (sn.new_7d_in ? `, ${sn.new_7d_in} in new this week.` : '.') : `Still bare at ${esc(sn.station)}.`) +
+    (sn.temp_f != null ? ` It's ${Math.round(sn.temp_f)}° up there.` : '');
+  $('stake').innerHTML = `<svg viewBox="0 0 360 192" role="img" aria-label="Snow depth ${d} inches; daily depths ${ser.map(s => s.depth_in).join(', ')}">
+    <path d="${peak}" ${fl('sky', .55)}/><path d="${cap}" style="fill:#FFF8EA"/>${ink(peak.replace(' Z', ''), 'ink thin')}
+    ${bars}${bands}${ink(P.rect(54, G - 128, 14, 128, .4))}${ticks}${drift}
+    ${ink(P.line(4, G, 356, G, .6))}<text class="sm" x="160" y="182">${fmtDate(ser[0].date)}</text><text class="sm" x="340" y="182" text-anchor="end">${fmtDate(ser[ser.length - 1].date)}</text></svg>`;
+}
+
+// Planes near the house when the page last updated, by how far out and how high (a square-root scale so jets and puddle-jumpers both fit).
+function renderOverhead() {
+  const pl = D.live && D.live.planes, list = ((pl && pl.closest) || []).filter(x => x.feet != null && x.miles != null).slice(0, 6);
+  $('over-card').hidden = list.length < 2;
+  if ($('over-card').hidden) return;
+  const maxMi = Math.max(...list.map(x => x.miles)) * 1.08, maxFt = Math.max(...list.map(x => x.feet)) * 1.1, P = pen(73), G = 168;
+  const X = mi => 64 + mi / maxMi * 270, Y = ft => G - Math.sqrt(ft / maxFt) * 136;
+  const name = x => x.from ? `from ${x.from.city}` : x.airline || '', placed = [];
+  const ticks = [1000, 5000, 10000, 20000, 35000].filter(f => f < maxFt).map(f => `${dot(P.line(54, Y(f), 344, Y(f), .3))}<text class="sm" x="50" y="${rd(Y(f) + 5)}" text-anchor="end">${f >= 1000 ? f / 1000 + 'k' : f}</text>`).join('');
+  const colors = ['orange', 'mustard', 'teal', 'brick', 'sky', 'olive'];
+  const planes = list.map((x, i) => {
+    const px = X(x.miles), py = Y(x.feet), east = Math.sin(x.heading * Math.PI / 180) >= 0, lab = name(x);
+    const glyph = `<g transform="translate(${rd(px)} ${rd(py)}) scale(${east ? 1 : -1} 1)"><path d="M-13 0 C-8 -3 8 -3 13 0 C8 3 -8 3 -13 0Z M2 -1 L-5 -10 L-1 -10 L7 -1Z M2 1 L-5 10 L-1 10 L7 1Z M-10 -1 L-14 -6 L-11 -6 L-7 -1Z" ${fl(colors[i % colors.length])} stroke="var(--ink)" stroke-width="1.2" stroke-linejoin="round"/></g>`;
+    // Try the label under the plane, then over it, skipping spots that would sit on another plane or label.
+    const lx = Math.min(352, Math.max(70, px)), clear = y => !placed.some(([a, b]) => Math.abs(a - lx) < 150 && Math.abs(b - y) < 22) &&
+      !list.some((o, k) => k !== i && Math.abs(X(o.miles) - lx) < 70 && Math.abs(Y(o.feet) - (y - 5)) < 16);
+    const ly = lab ? [py + 26, py - 16].map(y => Math.min(G - 4, Math.max(14, y))).find(clear) : null, fits = ly != null;
+    if (fits) placed.push([lx, ly]);
+    return glyph + (fits ? `<text class="sm" x="${rd(lx)}" y="${rd(ly)}" text-anchor="${px > 300 ? 'end' : px < 90 ? 'start' : 'middle'}">${esc(lab)}</text>` : '');
+  }).join('');
+  const house = `<path d="M8 ${G} V${G - 18} L24 ${G - 30} L40 ${G - 18} V${G}Z" ${fl('orange')}/><rect x="18" y="${G - 14}" width="9" height="14" ${fl('mustard')}/>${ink(`M4 ${G - 16} L24 ${G - 32} L44 ${G - 16}M8 ${G - 18}V${G}M40 ${G - 18}V${G}`)}`;
+  const c = list[0], gen = new Date(D.generated_at);
+  $('over-meta').textContent = `At ${gen.toLocaleTimeString(undefined, {hour: 'numeric', minute: '2-digit'})}`;
+  $('over-sum').innerHTML = `${pl.count ? `<b>${pl.count} planes</b> within about 25 miles. ` : ''}The closest, ${esc(c.airline || c.aircraft || 'a small plane')}${c.from ? ` from ${esc(c.from.city)}` : ''}, was ${c.miles} miles out at ${c.feet.toLocaleString()} ft${c.to ? `, headed for ${esc(c.to.city)}` : ''}.`;
+  $('over').innerHTML = `<svg viewBox="0 0 360 196" role="img" aria-label="${list.map(x => `${name(x) || x.callsign} ${x.miles} miles, ${x.feet} feet`).join('; ')}">
+    ${ticks}${ink(P.line(4, G, 352, G, .6))}${house}${planes}
+    <text class="sm" x="352" y="190" text-anchor="end">miles from home →</text><text class="sm" x="4" y="190">feet up</text></svg>`;
+}
+
+// The F1 championship as a drag strip: each car sits at its points, and the dotted reach is the most it could still score.
+const F1_TEAM = [[/mercedes/i, 'teal'], [/ferrari/i, 'brick'], [/red bull/i, 'sky'], [/mclaren/i, 'orange'], [/aston/i, 'olive'], [/williams/i, 'sky'], [/alpine/i, 'plum']];
+function renderTitleFight() {
+  const f = D.sports && D.sports.f1, st = ((f && f.standings) || []).slice(0, 5);
+  $('title-card').hidden = st.length < 2 || !f.rounds;
+  if ($('title-card').hidden) return;
+  const next = f.next || [], left = next.length ? f.rounds - next[0].round + 1 : 0, sprints = next.filter(r => r.sprint).length;
+  const avail = left * 25 + sprints * 8, lead = st[0].points;
+  const lo = Math.min(...st.map(d => d.points)) - 30, hi = Math.max(lead, ...st.map(d => d.points + avail)) + 8;
+  const W = $('title-race').clientWidth && $('title-race').clientWidth < 520 ? 400 : 720, NW = W < 720 ? 104 : 150;  // a narrower strip on phones
+  const X = p => NW + (p - lo) / (hi - lo) * (W - NW - 30), LH = 34, top = 40, P = pen(79);
+  const last = d => d.name.split(' ').slice(-1)[0], alive = st.slice(1).filter(d => d.points + avail >= lead);
+  const lanes = st.map((d, i) => {
+    const y = top + i * LH, c = (F1_TEAM.find(([re]) => re.test(d.team)) || [, 'mustard'])[1], x = X(d.points), out = i > 0 && d.points + avail < lead;
+    const car = `<g transform="translate(${rd(x)} ${y + LH / 2})"><rect x="-36" y="-5" width="34" height="10" rx="5" ${fl(c)} stroke="var(--ink)" stroke-width="1.3"/>
+      <rect x="-30" y="-11" width="7" height="5" rx="1.5" style="fill:var(--ink)"/><rect x="-30" y="6" width="7" height="5" rx="1.5" style="fill:var(--ink)"/>
+      <rect x="-12" y="-10" width="6" height="4" rx="1.5" style="fill:var(--ink)"/><rect x="-12" y="6" width="6" height="4" rx="1.5" style="fill:var(--ink)"/>
+      <rect x="-2" y="-8" width="4" height="16" rx="1" ${fl(c)} stroke="var(--ink)" stroke-width="1"/><circle cx="-20" cy="0" r="2.6" style="fill:var(--ink)"/></g>`;
+    return `<g style="opacity:${out ? .45 : 1}"><rect x="0" y="${y + 3}" width="${W}" height="${LH - 6}" rx="${(LH - 6) / 2}" ${fl(c, .2)}/>
+      <text x="12" y="${y + LH / 2 + 6}">${esc(last(d))}</text>
+      ${i && avail ? dot(P.line(x + 4, y + LH / 2, X(d.points + avail), y + LH / 2, .3)) + `<circle cx="${rd(X(d.points + avail))}" cy="${y + LH / 2}" r="3" style="fill:var(--ink)"/>` : ''}
+      ${car}<text class="sm" x="${rd(x + 8)}" y="${y + LH / 2 - 7}">${Math.round(d.points)}</text></g>`;
+  }).join('');
+  const fx = X(lead), bottom = top + st.length * LH;
+  const flag = Array.from({length: 8}, (_, k) => `<rect x="${rd(fx + 1 + (k % 4) * 6)}" y="${8 + Math.floor(k / 4) * 6 + (k % 2 ? 0 : 0)}" width="6" height="6" style="fill:${(k + Math.floor(k / 4)) % 2 ? 'var(--ink)' : '#FFF8EA'}"/>`).join('');
+  $('title-meta').textContent = `${f.season} · ${left ? `${left} race${left > 1 ? 's' : ''} left` : 'season over'}`;
+  const gap = lead - st[1].points;
+  $('title-sum').innerHTML = !left || gap > avail ? `<b>${esc(st[0].name)} has the title</b>, ${Math.round(gap)} points clear with ${avail ? `only ${avail}` : 'nothing'} left to win.` :
+    `<b>${esc(last(st[0]))} leads by ${Math.round(gap)}</b> with up to ${avail} points left. ` +
+    (alive.length ? `Only ${alive.map(last).join(alive.length > 2 ? ', ' : ' and ')} can still catch the leader${gap > avail * 0.8 ? ', and only by winning almost everything' : ''}.` : '');
+  $('title-race').innerHTML = `<svg viewBox="0 0 ${W} ${bottom + 26}" role="img" aria-label="${st.map(d => `${d.name} ${d.points}`).join(', ')}; up to ${avail} points left">
+    ${lanes}${ink(P.line(fx, 22, fx, bottom, .3))}${flag}${ink(P.rect(fx + 1, 8, 24, 12, .2), 'ink thin')}
+    <text class="sm" x="${rd(fx - 6)}" y="20" text-anchor="end">to beat: ${Math.round(lead)}</text>
+    ${next[0] ? `<text class="sm" x="12" y="${bottom + 20}">Next: ${esc(next[0].name)}, ${new Date(next[0].utc).toLocaleDateString(undefined, {weekday: 'short', month: 'short', day: 'numeric'})}</text>` : ''}</svg>`;
+  $('title-note').textContent = avail ? `Dotted lines show the most each driver could still reach: 25 points for every race win${sprints ? ', plus 8 for each sprint we know about' : ''}.` : '';
+}
+
 // Tonight's moon, shaded to its phase.
 function moonDoodle(m) {
   if (!m || m.lit_pct == null) return '';
@@ -2401,6 +2592,11 @@ const DAILY_TITLES = {
   'road-ahead-h': ['Counting down', 'Coming up the lane', 'Milestones ahead'],
   'therm-h': ['Three places, one moment', 'Warm here, warm there', 'Temperature check'],
   'shelf-h': ['Everything you have read', 'The library so far', 'Spines on the shelf'],
+  'set-h': ['Where the sun goes down', 'Sunset, on the move', 'The sun walks the hills'],
+  'jar-h': ['The rain jar', 'Rain so far this month', 'Filling the jar'],
+  'stake-h': ['The snow stake', 'Snow on Hood', 'How deep up there'],
+  'over-h': ['Over the house', 'Who just flew by', 'Up in the sky'],
+  'title-h': ['The title fight', 'Who can still win it', 'Race for the crown'],
   'play-h': ['Things to do together', 'Little adventures', 'This week, for fun'],
   'out-h': ['Kid outings nearby', 'Places to go together', 'Family trips'],
   'bug-h': ['Bugs making the rounds', 'Germ report', 'Sniffles watch'],
@@ -2881,7 +3077,7 @@ function bookDoodle(x) {
 
 function renderJoy() {
   const shelves = () => document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
-  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, scene, dailyTitles, shelves].forEach(tryRender);
+  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, renderSetting, renderRainJar, renderStake, renderOverhead, renderTitleFight, scene, dailyTitles, shelves].forEach(tryRender);
 }
 
 // Long cards start trimmed with a "Show all" button so the page stays skimmable.
@@ -4126,6 +4322,10 @@ const SOURCES = {
   'tv-h': [['TVmaze schedule', 'https://www.tvmaze.com/']],
   'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums']],
   'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
+  'jar-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],
+  'stake-h': [['NRCS SNOTEL', 'https://www.nrcs.usda.gov/wps/portal/wcc/home/']],
+  'over-h': [['OpenSky Network', 'https://opensky-network.org/'], ['adsbdb routes and aircraft', 'https://www.adsbdb.com/']],
+  'title-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1']],
   'f1-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1'], ['r/formula1', 'https://www.reddit.com/r/formula1/']],
   'stories-h': [['Each story links its publisher', '']], 'reviews-h': [['Each review links its publisher', '']],
   'bkk-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api']],

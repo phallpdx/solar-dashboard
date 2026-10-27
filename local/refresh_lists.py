@@ -149,6 +149,7 @@ def fetch(url, timeout=30):
             # Reddit answers 429 when feeds are read back to back; wait and try again.
             if e.code != 429 or wait is None:
                 raise
+            log(f"  {urllib.parse.urlsplit(url).hostname} said too many requests (429), retrying in {wait} s")
             time.sleep(wait)
 
 

@@ -1,55 +1,157 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {"artist": "Julia Jacklin", "album": "The Gem", "score": 81, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/the-gem/julia-jacklin/critic-reviews",
-     "date": "2026-10-26", "venue": "McMenamins Crystal Ballroom", "tickets": "https://www.mcmenamins.com/events/277068-julia-jacklin"},
-    {"artist": "The Tubs", "album": "Hard Life", "score": 86, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/hard-life/the-tubs",
-     "date": "2026-10-27", "venue": "Mississippi Studios", "tickets": "https://mississippistudios.com/"},
-    {"artist": "Protomartyr", "album": "Hotel Usona", "score": 86, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/hotel-usona/protomartyr/",
-     "date": "2026-10-29", "venue": "Aladdin Theater", "tickets": "https://www.aladdin-theater.com/"},
-    {"artist": "Gilla Band", "album": "Pugnello", "score": 85, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/pugnello/gilla-band",
-     "date": "2026-10-30", "venue": "Mississippi Studios (sold out)", "tickets": "https://mississippistudios.com/"},
-    {"artist": "The Tallest Man on Earth", "album": "Just Beyond Endless Mountain", "score": 82, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/just-beyond-endless-mountain/the-tallest-man-on-earth/",
-     "date": "2026-11-08", "venue": "Revolution Hall", "tickets": "https://www.ticketmaster.com/event/Z7r9jZ1A70zog"},
-    {"artist": "Bonobo", "album": "Distance in Static", "score": 74, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/distance-in-static/bonobo/",
-     "date": "2026-11-15", "venue": "Roseland Theater", "tickets": "https://roselandpdx.com/event/bonobo/roseland-theater/portland-oregon/"},
-    {"artist": "Thundercat", "album": "Distracted", "score": 80, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/distracted/thundercat",
-     "date": "2026-11-19", "venue": "McMenamins Crystal Ballroom", "tickets": "https://www.mcmenamins.com/events/277813-thundercat"},
-    {"artist": "Neurosis", "album": "An Undying Love for a Burning World", "score": 88, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/an-undying-love-for-a-burning-world/neurosis",
-     "date": "2026-11-27", "venue": "Revolution Hall (also Nov 28)", "tickets": "https://www.neurosis.com/news/2026/9/8/neurosis-announces-new-tour-dates"},
-    {"artist": "feeble little horse", "album": "bitknot", "score": 79, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/bitknot/feeble-little-horse",
-     "date": "2026-12-05", "venue": "Wonder Ballroom", "tickets": "https://wonderballroom.com/event/feeble-little-horse-bitknot-tour/wonder-ballroom/portland-oregon/"},
-    {"artist": "Anna von Hausswolff", "album": "ICONOCLASTS", "score": 88, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/iconoclasts/anna-von-hausswolff",
-     "date": "2027-01-11", "venue": "Wonder Ballroom", "tickets": "https://wonderballroom.com/event/anna-von-hausswolff-iconoclasts-tour/wonder-ballroom/portland-oregon/"},
-    {"artist": "Iceage", "album": "For Love of Grace & the Hereafter", "score": 87, "score_source": "Metacritic",
-     "score_url": "https://www.metacritic.com/music/for-love-of-grace-the-hereafter/iceage",
-     "date": "2027-04-03", "venue": "Aladdin Theater", "tickets": "https://www.aladdin-theater.com/"}
+    {
+      "artist": "The Tubs",
+      "album": "Hard Life",
+      "score": 86,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/hard-life/the-tubs",
+      "date": "2026-10-27",
+      "venue": "Mississippi Studios",
+      "tickets": "https://mississippistudios.com/"
+    },
+    {
+      "artist": "Protomartyr",
+      "album": "Hotel Usona",
+      "score": 86,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/hotel-usona/protomartyr/",
+      "date": "2026-10-29",
+      "venue": "Aladdin Theater",
+      "tickets": "https://www.aladdin-theater.com/"
+    },
+    {
+      "artist": "Gilla Band",
+      "album": "Pugnello",
+      "score": 85,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/pugnello/gilla-band",
+      "date": "2026-10-30",
+      "venue": "Mississippi Studios (sold out)",
+      "tickets": "https://mississippistudios.com/"
+    },
+    {
+      "artist": "The Tallest Man on Earth",
+      "album": "Just Beyond Endless Mountain",
+      "score": 82,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/just-beyond-endless-mountain/the-tallest-man-on-earth/",
+      "date": "2026-11-08",
+      "venue": "Revolution Hall",
+      "tickets": "https://www.ticketmaster.com/event/Z7r9jZ1A70zog"
+    },
+    {
+      "artist": "Bonobo",
+      "album": "Distance in Static",
+      "score": 74,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/distance-in-static/bonobo/",
+      "date": "2026-11-15",
+      "venue": "Roseland Theater",
+      "tickets": "https://roselandpdx.com/event/bonobo/roseland-theater/portland-oregon/"
+    },
+    {
+      "artist": "Thundercat",
+      "album": "Distracted",
+      "score": 80,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/distracted/thundercat",
+      "date": "2026-11-19",
+      "venue": "McMenamins Crystal Ballroom",
+      "tickets": "https://www.mcmenamins.com/events/277813-thundercat"
+    },
+    {
+      "artist": "Neurosis",
+      "album": "An Undying Love for a Burning World",
+      "score": 88,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/an-undying-love-for-a-burning-world/neurosis",
+      "date": "2026-11-27",
+      "venue": "Revolution Hall (also Nov 28)",
+      "tickets": "https://www.neurosis.com/news/2026/9/8/neurosis-announces-new-tour-dates"
+    },
+    {
+      "artist": "feeble little horse",
+      "album": "bitknot",
+      "score": 79,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/bitknot/feeble-little-horse",
+      "date": "2026-12-05",
+      "venue": "Wonder Ballroom",
+      "tickets": "https://wonderballroom.com/event/feeble-little-horse-bitknot-tour/wonder-ballroom/portland-oregon/"
+    },
+    {
+      "artist": "Anna von Hausswolff",
+      "album": "ICONOCLASTS",
+      "score": 88,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/iconoclasts/anna-von-hausswolff",
+      "date": "2027-01-11",
+      "venue": "Wonder Ballroom",
+      "tickets": "https://wonderballroom.com/event/anna-von-hausswolff-iconoclasts-tour/wonder-ballroom/portland-oregon/"
+    },
+    {
+      "artist": "Iceage",
+      "album": "For Love of Grace & the Hereafter",
+      "score": 87,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/for-love-of-grace-the-hereafter/iceage",
+      "date": "2027-04-03",
+      "venue": "Aladdin Theater",
+      "tickets": "https://www.aladdin-theater.com/"
+    }
   ],
   "missing": [
-    {"artist": "Richard Thompson", "album": "Hippies, Thugs And Heroes", "score": 95,
-     "score_url": "https://www.metacritic.com/music/hippies-thugs-and-heroes/richard-thompson", "why": "No confirmed Portland date on the 2027 run yet"},
-    {"artist": "Charlie Parr", "album": "Rooming House", "score": 92,
-     "score_url": "https://www.metacritic.com/music/rooming-house/charlie-parr/", "why": "Fall tour is Midwest and East Coast only"},
-    {"artist": "Phoebe Bridgers", "album": "Lost Weekend", "score": 91,
-     "score_url": "https://www.metacritic.com/music/lost-weekend/phoebe-bridgers", "why": "Tour skipped Portland and ends Nov 1"},
-    {"artist": "Tinashe", "album": "Popstar", "score": 91,
-     "score_url": "https://www.metacritic.com/music/popstar/tinashe/", "why": "Portland is on the spring 2027 tour (May 8) but the venue isn't announced yet"},
-    {"artist": "Billy Strings", "album": "So Much For Goodbyes", "score": 90,
-     "score_url": "https://www.metacritic.com/music/so-much-for-goodbyes/billy-strings", "why": "No Portland date on the 2027 run yet"},
-    {"artist": "Vince Staples", "album": "Cry Baby", "score": 88,
-     "score_url": "https://www.metacritic.com/music/cry-baby/vince-staples", "why": "Played Pioneer Courthouse Square Aug 20; tour skips Portland"},
-    {"artist": "Mitski", "album": "Nothing's About to Happen to Me", "score": 87,
-     "score_url": "https://www.metacritic.com/music/nothings-about-to-happen-to-me/mitski", "why": "No Portland date announced"}
+    {
+      "artist": "Richard Thompson",
+      "album": "Hippies, Thugs And Heroes",
+      "score": 95,
+      "score_url": "https://www.metacritic.com/music/hippies-thugs-and-heroes/richard-thompson",
+      "why": "No confirmed Portland date on the 2027 run yet"
+    },
+    {
+      "artist": "Charlie Parr",
+      "album": "Rooming House",
+      "score": 92,
+      "score_url": "https://www.metacritic.com/music/rooming-house/charlie-parr/",
+      "why": "Fall tour is Midwest and East Coast only"
+    },
+    {
+      "artist": "Phoebe Bridgers",
+      "album": "Lost Weekend",
+      "score": 91,
+      "score_url": "https://www.metacritic.com/music/lost-weekend/phoebe-bridgers",
+      "why": "Tour skipped Portland and ends Nov 1"
+    },
+    {
+      "artist": "Tinashe",
+      "album": "Popstar",
+      "score": 91,
+      "score_url": "https://www.metacritic.com/music/popstar/tinashe/",
+      "why": "Portland is on the spring 2027 tour (May 8) but the venue isn't announced yet"
+    },
+    {
+      "artist": "Billy Strings",
+      "album": "So Much For Goodbyes",
+      "score": 90,
+      "score_url": "https://www.metacritic.com/music/so-much-for-goodbyes/billy-strings",
+      "why": "No Portland date on the 2027 run yet"
+    },
+    {
+      "artist": "Vince Staples",
+      "album": "Cry Baby",
+      "score": 88,
+      "score_url": "https://www.metacritic.com/music/cry-baby/vince-staples",
+      "why": "Played Pioneer Courthouse Square Aug 20; tour skips Portland"
+    },
+    {
+      "artist": "Mitski",
+      "album": "Nothing's About to Happen to Me",
+      "score": 87,
+      "score_url": "https://www.metacritic.com/music/nothings-about-to-happen-to-me/mitski",
+      "why": "No Portland date announced"
+    }
   ]
 }

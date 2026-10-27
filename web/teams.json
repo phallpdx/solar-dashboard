@@ -1,56 +1,93 @@
 {
-  "updated": "2026-10-26",
-  "updated_at": "2026-10-27T06:14:50Z",
+  "updated": "2026-10-27",
+  "updated_at": "2026-10-27T07:12:19Z",
   "teams": {
     "blazers": {
-      "mood": "Fired up",
-      "pulse": "Portland is 2-0 after a blowout of the Suns and a shaky 128-120 win in Sacramento, so the vibe is good. The worry is health: Scoot is questionable with a sore ankle for tonight's game at the 3-0 Lakers.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Scoot Henderson and Branden Carlson cause anxiety.",
       "storylines": [
-        "Avdija led the Kings win with 26; Lillard and Camara added 19 each",
-        "Nori admitted the team lost its composure late in Sacramento, himself included",
-        "Scoot Henderson questionable vs. Lakers (left ankle soreness)",
-        "Branden Carlson questionable, in concussion protocol; Shaedon Sharpe out (meniscus)",
-        "Next up: at the Lakers, Tuesday 8 p.m. PT"
+        "Undefeated 2-0 start to the season",
+        "Scoot Henderson questionable with ankle soreness",
+        "Lakers game is the first major defensive test",
+        "Ranked #15 in NBA power rankings"
       ],
       "sources": [
-        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"},
-        {"name": "SI Blazers", "url": "https://www.si.com/nba/trailblazers/onsi/blazers-survive-scare-stay-unbeaten-with-win-over-kings"},
-        {"name": "ESPN", "url": "https://www.espn.com/nba/recap?gameId=401909852"},
-        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-injury-report/117542/portland-trail-blazers-los-angeles-lakers-nba-injury-report-scoot-henderson-branden-carlson-news"},
-        {"name": "Rip City Radio", "url": "https://ripcityradio.iheart.com/content/2026-10-27-trail-blazers-vs-lakers-injury-report-oct-27/"}
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"
+        },
+        {
+          "name": "SI Blazers",
+          "url": "https://www.si.com/nba/trailblazers/onsi/blazers-survive-scare-stay-unbeaten-with-win-over-kings"
+        },
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/nba/recap?gameId=401909852"
+        },
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-injury-report/117542/portland-trail-blazers-los-angeles-lakers-nba-injury-report-scoot-henderson-branden-carlson-news"
+        },
+        {
+          "name": "Rip City Radio",
+          "url": "https://ripcityradio.iheart.com/content/2026-10-27-trail-blazers-vs-lakers-injury-report-oct-27/"
+        }
       ]
     },
     "timbers": {
-      "mood": "Relieved",
-      "pulse": "Aravena's 96th-minute header beat Charlotte 3-2 and snapped a seven-game winless run. It keeps Portland alive, but they're still chasing the last West playoff spot and need help from other results.",
+      "mood": "bittersweet and nostalgic",
+      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for the upcoming sprint season despite the news.",
       "storylines": [
-        "Lassiter brace, two Izoita assists, Aravena winner at 90+6",
-        "Win ended a 0-4-3 winless streak",
-        "Still three points back of the final West playoff spot, needing other results to go their way",
-        "Diego Chara to retire after the 2027 Sprint Season",
-        "Next: home vs. Houston, Nov. 1"
+        "Diego Chara to retire after next season",
+        "Eric Izoita signed first-team contract",
+        "Upcoming match against St. Louis",
+        "Native American Heritage Night on Nov 1"
       ],
       "sources": [
-        {"name": "Timbers.com", "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"},
-        {"name": "OPB", "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"},
-        {"name": "Prost Amerika", "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"},
-        {"name": "Timbers.com", "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"}
+        {
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"
+        },
+        {
+          "name": "OPB",
+          "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"
+        },
+        {
+          "name": "Prost Amerika",
+          "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"
+        },
+        {
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"
+        }
       ]
     },
     "f1": {
-      "mood": "Title watch",
-      "pulse": "Antonelli won Austin for his ninth win of the year and now leads by 123 with five races left. Ninth or better in Mexico this Sunday makes him champion, so everyone's waiting on the coronation.",
+      "mood": "tense and celebratory",
+      "pulse": "Fans are celebrating Antonelli's dominant win and title proximity. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
       "storylines": [
-        "Antonelli on 365 points, 123 clear of Russell and 124 of Hamilton",
-        "Mexico City GP Nov. 1: top nine clinches it, or he clinches if neither Russell nor Hamilton wins",
-        "Russell called his Austin track-limits penalty 'a bit ridiculous' after dropping to eighth",
-        "Qatar and Abu Dhabi rounds could still be cancelled over the US-Iran war (per ESPN)"
+        "Antonelli nears first world title after Austin win",
+        "Mercedes W17 operating window issues for Russell",
+        "Red Bull overtakes McLaren in Constructors' Championship",
+        "Five drivers fighting for second place in standings"
       ],
       "sources": [
-        {"name": "ESPN", "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"},
-        {"name": "RaceFans", "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"},
-        {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"},
-        {"name": "ABC News", "url": "https://www.abc.net.au/news/2026-10-26/how-kimi-antonelli-can-win-f1-drivers-championship/107308200"}
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"
+        },
+        {
+          "name": "RaceFans",
+          "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"
+        },
+        {
+          "name": "Sky Sports",
+          "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"
+        },
+        {
+          "name": "ABC News",
+          "url": "https://www.abc.net.au/news/2026-10-26/how-kimi-antonelli-can-win-f1-drivers-championship/107308200"
+        }
       ]
     }
   }

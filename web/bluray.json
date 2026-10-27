@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "deals": [
     {
       "title": "Kino Lorber Fall Haul",
@@ -7,6 +7,13 @@
       "detail": "Over 900 titles from $4.99, with 4Ks like 3 Days of the Condor at $17.99 (list $39.95). Blu-ray Forum reports the sale was extended to Oct 27 at noon ET.",
       "ends": "2026-10-27",
       "url": "https://kinolorber.com/collection/fall-haul-sale-2026"
+    },
+    {
+      "title": "Cinderella",
+      "store": "amazon.com",
+      "detail": "4K UHD + Blu-ray + Digital, $16",
+      "ends": "2026-10-27",
+      "url": "https://slickdeals.net/f/20211978-cinderella-4k-uhd-blu-ray-digital-16-amazon-com"
     },
     {
       "title": "31 Days of Syntober",
@@ -77,13 +84,6 @@
       "detail": "$20 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20197881-the-mummy-trilogy-4k-ultra-hd-blu-ray-digital-4k-uhd-19-99-amazon-com"
-    },
-    {
-      "title": "Chernobyl",
-      "store": "Amazon",
-      "detail": "$14.99 (4K Ultra HD + Blu-ray)",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20196669-14-99-chernobyl-4k-ultra-hd-blu-ray-at-amazon"
     }
   ],
   "upcoming": [

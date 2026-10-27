@@ -1,23 +1,7 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
-    {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Libraries across Washington County",
-      "detail": "There's a storytime pretty much every day of the week at Washington County Libraries! These range from: Preschool Storytimes, Family Storytimes, Toddler Times, Book Babies, storytimes in various languages, and",
-      "url": "https://pdxparent.com/event-single/storytime-at-washington-county-libraries/2026-10-26/"
-    },
-    {
-      "title": "Make Memories With Llamas, a Corn Maze and Pumpkins at Frog Pond Farm",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Frog Pond Farm, 2995 SW Advance Rd, Wilsonville, OR, United States",
-      "detail": "Llamas in the Pumpkin Patch? Only at Frog Pond Farm. Open daily starting September 18, Frog Pond Farm is a place where animals take center stage, memories are made, and",
-      "url": "https://pdxparent.com/event-single/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/2026-10-26/"
-    },
     {
       "title": "Corn Maze & Fall Fun at Bella Organic Farm",
       "date": "2026-10-26",
@@ -25,38 +9,6 @@
       "where": "Bella Organic Farm, 16205 NW Gillihan Rd., Portland, OR, United States",
       "detail": "Get lost in their family-friendly corn maze, featuring a \"Five Kind Acts\" theme, open daily August 22-October 31! Starting September 26, enjoy extended fall hours with even more pumpkin patch",
       "url": "https://pdxparent.com/event-single/corn-maze-fall-fun-at-bella-organic-farm/2026-10-26/"
-    },
-    {
-      "title": "Lee Farms Fall Festival & Pumpkin Patch",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Lee Farms",
-      "detail": "Corn maze, hayrides, and farm animals. 9:00 am - 6:00 pm.",
-      "url": "https://pdxparent.com/series/lee-farms-fall-festival-pumpkin-patch/"
-    },
-    {
-      "title": "Mike Bennett Spooktacular Scavenger Hunt at Bridgeport Village",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Bridgeport Village",
-      "detail": "Search for nine hidden Halloween ghosts on shop windows. Free.",
-      "url": "https://pdxparent.com/series/mike-bennett-spooktacular-scavenger-hunt-at-bridgeport-village/"
-    },
-    {
-      "title": "Weaving Time: NUNO – Textiles of Tradition and Transformation at Portland Japanese Garden",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Experience an exhibition of Japanese textile design and installations. 10:00 am - 5:30 pm. Included with admission.",
-      "url": "https://pdxparent.com/series/weaving-time-nuno-textiles-of-tradition-and-transformation-at-portland-japanese-garden/"
-    },
-    {
-      "title": "Hallo-Week at Vancouver Mall",
-      "date": "2026-10-26",
-      "ends": null,
-      "where": "Vancouver Mall",
-      "detail": "Family-friendly Halloween festivities including crafts and indoor trick-or-treating. 5:00 pm - 7:00 pm. Free.",
-      "url": "https://pdxparent.com/series/hallo-week-at-vancouver-mall/"
     },
     {
       "title": "Storytime at Washington County Libraries",
@@ -89,6 +41,14 @@
       "where": "Bridgeport Village",
       "detail": "Find nine hidden Halloween ghosts around the village for free.",
       "url": "https://pdxparent.com/series/mike-bennett-spooktacular-scavenger-hunt-at-bridgeport-village/"
+    },
+    {
+      "title": "Make Memories With Llamas, a Corn Maze and Pumpkins at Frog Pond Farm",
+      "date": "2026-10-27",
+      "ends": "2026-10-27",
+      "where": "Wilsonville",
+      "detail": "Enjoy llamas, a corn maze, and pumpkins from 9:00 am to 5:00 pm. Price $16.",
+      "url": "https://pdxparent.com/series/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/"
     },
     {
       "title": "Seaside Halloween Happenin's",
@@ -201,6 +161,14 @@
       "where": "Oregon Zoo",
       "detail": "Guests with different sensory processing needs and their families can enjoy the wonder of ZooLights from 4:30 to 8:30 p.m.",
       "url": "https://www.oregonzoo.org/sensory-night"
+    },
+    {
+      "title": "ZooLights",
+      "date": "2026-11-20",
+      "ends": "2027-01-03",
+      "where": "Oregon Zoo",
+      "detail": "Enjoy dazzling wildlife-inspired light displays and familiar favorites.",
+      "url": "https://www.oregonzoo.org/lights"
     }
   ]
 }

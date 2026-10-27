@@ -75,6 +75,22 @@
       "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
     },
     {
+      "title": "Seaside Halloween Happenin's",
+      "date": "2026-10-30",
+      "ends": "2026-11-01",
+      "where": "Downtown Seaside",
+      "detail": "Family festival with a kids' activity zone and downtown trick-or-treating, plus a giant pumpkin drop at 3 pm on Sunday, Nov 1.",
+      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
+    },
+    {
+      "title": "Halloween weekend at Astoria KOA",
+      "date": "2026-10-30",
+      "ends": "2026-11-01",
+      "where": "Hammond (Warrenton)",
+      "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.",
+      "url": "https://koa.com/campgrounds/astoria/events/"
+    },
+    {
       "title": "Sauvie Island Pumpkin Patch and corn maze",
       "date": null,
       "ends": "2026-10-31",
@@ -121,6 +137,14 @@
       "where": "OMSI, Portland",
       "detail": "Museum admission is $5 per person, with planetarium and theater shows also $5. OMSI expects crowds and suggests buying tickets online ahead.",
       "url": "https://omsi.edu/events/5-day/"
+    },
+    {
+      "title": "Sensory Sunday at Columbia River Maritime Museum",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "Astoria",
+      "detail": "Calm family morning from 9:30 to 11 with lowered sound, a quiet station and a craft, held the first Sunday of the month. The Nov 1 date follows that pattern but isn't confirmed; regular admission applies.",
+      "url": "https://autismsocietyoregon.org/events/tag/museum/"
     },
     {
       "title": "Fall Discount Days at the Oregon Zoo",

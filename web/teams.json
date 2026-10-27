@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-27T03:38:23Z",
+  "updated_at": "2026-10-27T04:21:49Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
@@ -29,12 +29,12 @@
     },
     "timbers": {
       "mood": "bittersweet and reflective",
-      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for his final season and appreciation for his legacy.",
+      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for his final season and appreciation for his professionalism.",
       "storylines": [
         "Diego Chara to retire after the Sprint Season",
         "Timbers host midweek match against St. Louis",
         "Eric Izoita signed to first-team contract",
-        "Native American Heritage Night on Nov 1"
+        "Native American Heritage Night on Nov. 1"
       ],
       "sources": [
         {
@@ -57,9 +57,9 @@
     },
     "f1": {
       "mood": "tense and celebratory",
-      "pulse": "Fans are celebrating Antonelli's dominance and title prospects. There is also frustration regarding Russell's performance and Ferrari's missed opportunities.",
+      "pulse": "Fans are celebrating Antonelli's dominant win and title proximity. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
       "storylines": [
-        "Antonelli nears first world title after Austin win",
+        "Kimi Antonelli nears his first world title",
         "Mercedes W17 operating window issues for Russell",
         "Red Bull overtakes McLaren in Constructors' Championship",
         "Five drivers fighting for second place in standings"

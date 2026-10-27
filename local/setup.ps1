@@ -1,7 +1,7 @@
 # One-time setup for the nightly local-model list refresh. Run from the repo folder:
 #   powershell -ExecutionPolicy Bypass -File local\setup.ps1
-# Options: -At 00:05 (start time), -RunNow (run once right away), -Uninstall
-param([string]$At = '00:05', [switch]$RunNow, [switch]$Uninstall)
+# Options: -At 00:05,02:05,04:05 (start times), -RunNow (run once right away), -Uninstall
+param([string[]]$At = @('00:05', '02:05', '04:05'), [switch]$RunNow, [switch]$Uninstall)
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repo = Split-Path -Parent $here
@@ -53,13 +53,14 @@ try {
 
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' `
     -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$here\run_daily.ps1`""
-$trigger = New-ScheduledTaskTrigger -Daily -At $At
+# Later runs mostly reuse cached answers, so they take minutes and fill in anything an earlier run missed.
+$trigger = @($At | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ })
 $settings = New-ScheduledTaskSettingsSet -WakeToRun -StartWhenAvailable -AllowStartIfOnBatteries `
     -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 4)
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings `
     -Principal $principal -Force | Out-Null
-Write-Host "OK  '$taskName' runs every night at $At. Logs go to $here\logs."
+Write-Host "OK  '$taskName' runs every night at $($At -join ', '). Logs go to $here\logs."
 
 if ($RunNow) {
     Start-ScheduledTask -TaskName $taskName

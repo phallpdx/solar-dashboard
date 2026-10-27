@@ -2,7 +2,9 @@
 
 `refresh_lists.py` updates the dashboard's researched lists using the model in
 LM Studio on Parker's laptop instead of Claude routines. It runs every night at
-12:05 am, just after the site's own midnight rollover.
+12:05 am, just after the site's own midnight rollover, and again at 2:05 and
+4:05 am. The later runs reuse answers for unchanged pages, so they take a few
+minutes and retry anything that failed earlier.
 
 Lists it handles: jazz, concerts, events (big events), kids (family outings),
 bluray, foodfinds, skioutlook and teams (fan pulse). For planahead it only drops
@@ -64,7 +66,7 @@ Finding newly acclaimed albums is still a job for Claude.
 ```powershell
 py local\refresh_lists.py --check-sources       # which sources still load and have text
 py local\refresh_lists.py --only jazz --dry-run # try one list, write to local\out\
-powershell -ExecutionPolicy Bypass -File local\setup.ps1 -At 01:00   # change the time
+powershell -ExecutionPolicy Bypass -File local\setup.ps1 -At 01:00,03:00   # change the times
 powershell -ExecutionPolicy Bypass -File local\setup.ps1 -Uninstall  # remove the task
 ```
 

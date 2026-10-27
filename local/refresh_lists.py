@@ -586,8 +586,11 @@ def refresh_jazz(data, sources):
                            "what is one plain sentence about the act. url is the event or ticket link number.",
                   {"artist": S, "kind": {"type": "string", "enum": kinds}, "date": DATE, "time": NS, "venue": S,
                    "price": NS, "what": S, "url": S}, build)
+    def tidy(x):
+        return dict(x, time=clean(x.get("time"), 20) or None, price=clean(x.get("price"), 40) or None)
+
     data["shows"] = merge(data.get("shows", []), new, "artist", "date", lambda x: still_current(x, ["date"]),
-                          by_date("date"), 30)
+                          by_date("date"), 30, tidy=tidy)
     return data
 
 

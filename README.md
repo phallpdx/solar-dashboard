@@ -22,6 +22,8 @@ Elections and representatives work without keys. Optional free keys add more:
 `CONGRESS_KEY` (api.data.gov, bills your members of Congress sponsor), `OPENSTATES_KEY`
 (openstates.org, your state legislators and their bills) and `GOOGLE_CIVIC_KEY` (a Google Cloud key
 with the Civic Information API turned on, for what's on your ballot).
+With an `AISSTREAM_KEY`, the river section shows ships heading your way and, in its own box, the ship
+parked across from `river_view` in `config.json` (big ships within `parked_km`, default 5 km).
 Optional repository variable `PGE_CYCLE_START_DAY` (the day of the month your
 PGE bill cycle starts).
 

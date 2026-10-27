@@ -7,7 +7,7 @@
       "ends": null,
       "venue": "Theater of the Clouds",
       "kind": "Concert",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -19,9 +19,9 @@
       "title": "Functional Fabric Fair powered by Performance Days",
       "date": "2026-10-27",
       "ends": "2026-10-28",
-      "venue": "Halls B-C-D-E",
+      "venue": "Halls B-C-D-E, Oregon Convention Center",
       "kind": "Convention",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -33,9 +33,9 @@
       "title": "ZERO TO THREE LEARN Conference 2026",
       "date": "2026-10-28",
       "ends": "2026-10-29",
-      "venue": "Hall A",
+      "venue": "Hall A, Oregon Convention Center",
       "kind": "Convention",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -49,7 +49,7 @@
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
       "kind": "Concert",
-      "why": "Multiple dates",
+      "why": "",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -75,9 +75,9 @@
       "title": "CANVAS 2026",
       "date": "2026-10-30",
       "ends": "2026-11-04",
-      "venue": "Halls A1-B-C",
+      "venue": "Halls A1-B-C, Oregon Convention Center",
       "kind": "Convention",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -221,9 +221,9 @@
       "title": "Major League Table Tennis",
       "date": "2026-11-20",
       "ends": "2026-11-22",
-      "venue": "Hall A",
+      "venue": "Hall A, Oregon Convention Center",
       "kind": "Sports",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -273,7 +273,7 @@
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
       "kind": "Concert",
-      "why": "Multiple dates",
+      "why": "",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -303,9 +303,9 @@
       "title": "USA Track and Field Annual Meeting",
       "date": "2026-11-29",
       "ends": "2026-12-07",
-      "venue": "Oregon Ballroom",
+      "venue": "Oregon Ballroom, Oregon Convention Center",
       "kind": "Convention",
-      "why": "null",
+      "why": "",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -373,7 +373,7 @@
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
       "kind": "Concert",
-      "why": "No info provided.",
+      "why": "",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -387,7 +387,7 @@
       "ends": "2027-01-23",
       "venue": "Moda Center",
       "kind": "Sports",
-      "why": "No info provided.",
+      "why": "",
       "sources": [
         {
           "name": "Rose Quarter",

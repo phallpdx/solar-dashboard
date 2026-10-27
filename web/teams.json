@@ -1,15 +1,15 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-26T23:59:58Z",
+  "updated_at": "2026-10-27T00:41:07Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by the undefeated 2-0 start and rising power rankings. However, league-wide injuries cause concern.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Scoot Henderson and Branden Carlson cause worry.",
       "storylines": [
         "Undefeated 2-0 start to the season",
-        "Ranked #15 in NBA power rankings",
-        "Upcoming game against Los Angeles Lakers",
-        "Focus on mobile defense and rebounding"
+        "Scoot Henderson questionable with ankle soreness",
+        "Branden Carlson questionable due to concussion protocol",
+        "Next game against the Los Angeles Lakers"
       ],
       "sources": [
         {
@@ -27,12 +27,12 @@
       ]
     },
     "timbers": {
-      "mood": "bittersweet and hopeful",
-      "pulse": "Fans are processing Diego Chara's retirement announcement after his long career. There is also excitement regarding homegrown talent Eric Izoita.",
+      "mood": "bittersweet and reflective",
+      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for his final season and Izoita's emergence.",
       "storylines": [
         "Diego Chara to retire after the Sprint Season",
-        "Eric Izoita signs first-team contract",
-        "Midweek match against St. Louis",
+        "Eric Izoita signed to first-team contract",
+        "Upcoming midweek match against St. Louis",
         "Native American Heritage Night on Nov 1"
       ],
       "sources": [
@@ -55,13 +55,13 @@
       ]
     },
     "f1": {
-      "mood": "Excitement and tension",
-      "pulse": "Fans are buzzing about Antonelli's championship dominance and Mercedes' performance. There is also debate regarding Russell's recent struggles.",
+      "mood": "tense and competitive",
+      "pulse": "Fans are buzzing about Antonelli's dominant title charge and Mercedes' superior pace. However, frustration exists regarding Russell's poor form and Ferrari's missed opportunities.",
       "storylines": [
-        "Antonelli nears first world title after Austin win",
-        "Five drivers fighting for second place in standings",
-        "Red Bull overtakes McLaren in Constructors' Championship",
-        "Russell struggling with Mercedes W17 operating window"
+        "Kimi Antonelli nears his first world title after winning the US GP.",
+        "Mercedes W17 operating window causes George Russell to struggle.",
+        "Red Bull overtakes McLaren in the Constructors' Championship.",
+        "Five drivers are fighting for second place in the standings."
       ],
       "sources": [
         {

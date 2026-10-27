@@ -30,6 +30,20 @@
       ]
     },
     {
+      "name": "Grand Fir Brewing",
+      "maker": "Grand Fir Brewing",
+      "kind": "New brand",
+      "what": "Riverside beer garden",
+      "where_to_buy": [],
+      "date": "2026-10-21",
+      "sources": [
+        {
+          "name": "Grand Fir Brewing is opening a riverside beer garden",
+          "url": "https://www.oregonlive.com/retail/2026/10/celebrated-portland-chef-brewmaster-to-open-rural-riverside-taproom-and-beer-garden.html"
+        }
+      ]
+    },
+    {
       "name": "Pastime Coffee",
       "maker": "Pastime Coffee",
       "kind": "New brand",

@@ -7,7 +7,7 @@
       "date": "2026-10-26",
       "ends": null,
       "where": "Libraries across Washington County",
-      "detail": "There's a storytime pretty much every day of the week at Washington County Libraries! These range from: Preschool Storytimes, Family Storytimes, Toddler Times, Book Babies, storytimes in various languages, and […]",
+      "detail": "There's a storytime pretty much every day of the week at Washington County Libraries! These range from: Preschool Storytimes, Family Storytimes, Toddler Times, Book Babies, storytimes in various languages, and",
       "url": "https://pdxparent.com/event-single/storytime-at-washington-county-libraries/2026-10-26/"
     },
     {
@@ -15,7 +15,7 @@
       "date": "2026-10-26",
       "ends": null,
       "where": "Frog Pond Farm, 2995 SW Advance Rd, Wilsonville, OR, United States",
-      "detail": "Llamas in the Pumpkin Patch? Only at Frog Pond Farm. Open daily starting September 18, Frog Pond Farm is a place where animals take center stage, memories are made, and […]",
+      "detail": "Llamas in the Pumpkin Patch? Only at Frog Pond Farm. Open daily starting September 18, Frog Pond Farm is a place where animals take center stage, memories are made, and",
       "url": "https://pdxparent.com/event-single/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/2026-10-26/"
     },
     {
@@ -23,7 +23,7 @@
       "date": "2026-10-26",
       "ends": "2026-10-31",
       "where": "Bella Organic Farm, 16205 NW Gillihan Rd., Portland, OR, United States",
-      "detail": "Get lost in their family-friendly corn maze, featuring a \"Five Kind Acts\" theme, open daily August 22-October 31! Starting September 26, enjoy extended fall hours with even more pumpkin patch […]",
+      "detail": "Get lost in their family-friendly corn maze, featuring a \"Five Kind Acts\" theme, open daily August 22-October 31! Starting September 26, enjoy extended fall hours with even more pumpkin patch",
       "url": "https://pdxparent.com/event-single/corn-maze-fall-fun-at-bella-organic-farm/2026-10-26/"
     },
     {
@@ -35,28 +35,36 @@
       "url": "https://pdxparent.com/series/lee-farms-fall-festival-pumpkin-patch/"
     },
     {
-      "title": "Boo Bash",
+      "title": "Mike Bennett Spooktacular Scavenger Hunt at Bridgeport Village",
       "date": "2026-10-26",
-      "ends": "2026-10-31",
-      "where": "Olympia, WA",
-      "detail": "Family-friendly thrills and spooky treats. 10:00 am - 4:00 pm.",
-      "url": "https://pdxparent.com/series/boo-bash-2/"
+      "ends": null,
+      "where": "Bridgeport Village",
+      "detail": "Search for nine hidden Halloween ghosts on shop windows. Free.",
+      "url": "https://pdxparent.com/series/mike-bennett-spooktacular-scavenger-hunt-at-bridgeport-village/"
     },
     {
-      "title": "Seaside Halloween Happenin's",
-      "date": "2026-10-30",
-      "ends": "2026-11-01",
-      "where": "Downtown Seaside",
-      "detail": "Family festival with a kids' activity zone and downtown trick-or-treating, plus a giant pumpkin drop at 3 pm on Sunday, Nov 1.",
-      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
+      "title": "Weaving Time: NUNO – Textiles of Tradition and Transformation at Portland Japanese Garden",
+      "date": "2026-10-26",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Experience an exhibition of Japanese textile design and installations. 10:00 am - 5:30 pm. Included with admission.",
+      "url": "https://pdxparent.com/series/weaving-time-nuno-textiles-of-tradition-and-transformation-at-portland-japanese-garden/"
     },
     {
-      "title": "Halloween weekend at Astoria KOA",
-      "date": "2026-10-30",
-      "ends": "2026-11-01",
-      "where": "Hammond (Warrenton)",
-      "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.",
-      "url": "https://koa.com/campgrounds/astoria/events/"
+      "title": "Hallo-Week at Vancouver Mall",
+      "date": "2026-10-26",
+      "ends": null,
+      "where": "Vancouver Mall",
+      "detail": "Family-friendly Halloween festivities including crafts and indoor trick-or-treating. 5:00 pm - 7:00 pm. Free.",
+      "url": "https://pdxparent.com/series/hallo-week-at-vancouver-mall/"
+    },
+    {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-10-27",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Various storytime sessions including Toddler Times are available. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
     },
     {
       "title": "Sauvie Island Pumpkin Patch and corn maze",
@@ -99,14 +107,6 @@
       "url": "https://multcolib.libnet.info/event/16628559"
     },
     {
-      "title": "Sensory Sunday at Columbia River Maritime Museum",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "Astoria",
-      "detail": "Calm family morning from 9:30 to 11 with lowered sound, a quiet station and a craft, held the first Sunday of the month. The Nov 1 date follows that pattern but isn't confirmed; regular admission applies.",
-      "url": "https://autismsocietyoregon.org/events/tag/museum/"
-    },
-    {
       "title": "OMSI $5 Day",
       "date": "2026-11-01",
       "ends": null,
@@ -145,14 +145,6 @@
       "where": "Oregon Zoo",
       "detail": "The Oregon Zoo is proud to offer free admission on Veterans Day for military members, veterans and their families from 9:30 a.m. to 3:30 p.m.",
       "url": "https://www.oregonzoo.org/events/veterans-day"
-    },
-    {
-      "title": "Curiosity Kids: Sasquatch Science Team",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Portland, Oregon",
-      "detail": "Event held from 9 am - 10 am in the Discovery Lab.",
-      "url": "https://omsi.edu/events/curiosity-kids-sasquatch-science-team/"
     },
     {
       "title": "ZooLights Sensory-Friendly",
@@ -201,6 +193,14 @@
       "where": "Esther Short Park, Vancouver WA",
       "detail": "Free Rotary celebration where Santa arrives escorted by the Christmas Ships. The Christmas Ships calendar lists it for Nov 27, though the Rotary hasn't posted 2026 details yet.",
       "url": "https://www.christmasships.org/parade-schedule"
+    },
+    {
+      "title": "Curiosity Kids: Design and Discover",
+      "date": "2026-11-28",
+      "ends": "2026-12-05",
+      "where": "Portland",
+      "detail": "A hands-on activity for kids from 9 am to 10 am.",
+      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
     }
   ]
 }

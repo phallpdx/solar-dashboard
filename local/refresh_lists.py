@@ -135,7 +135,32 @@ def _strip_tags(s):
     return _squeeze(html.unescape(re.sub(r"<[^>]+>", " ", s or "")))
 
 
-def fetch(url, timeout=30):
+_prefetched = {}
+
+
+def prefetch_reddit(urls, gap=65):
+    """Reddit answers 429 to a second request within about a minute, so its feeds are read
+    in the background at the start of the run, a minute apart, while the other lists work."""
+    def worker():
+        for i, url in enumerate(urls):
+            if i:
+                time.sleep(gap)
+            try:
+                _prefetched[url] = fetch(url, prefetched=False)
+            except Exception as e:  # noqa: BLE001 - the list falls back to a normal fetch
+                _prefetched[url] = e
+    for url in urls:
+        _prefetched[url] = None
+    threading.Thread(target=worker, daemon=True).start()
+
+
+def fetch(url, timeout=30, prefetched=True):
+    if prefetched and url in _prefetched:
+        while _prefetched[url] is None:
+            time.sleep(1)
+        got = _prefetched.pop(url)
+        if not isinstance(got, Exception):
+            return got
     # Reddit throttles browser-like user agents hardest and asks scripts to name themselves.
     ua = "solar-dashboard-lists/1.0 (personal dashboard feed reader)" if "reddit.com" in url else UA
     req = urllib.request.Request(url, headers={"User-Agent": ua, "Accept-Language": "en-US"})
@@ -952,6 +977,8 @@ def main():
         sys.exit(f"{LLM['model']} is still thinking before it answers. Turn thinking off for it in LM Studio "
                  "(My Models, the gear next to the model), then run again.")
 
+    if "teams" in names:
+        prefetch_reddit([s["url"] for team in CONFIG["lists"]["teams"].values() for s in team if "reddit.com" in s["url"]])
     base, lists = current_lists(names)
     changed, failed = {}, []
     for name in names:

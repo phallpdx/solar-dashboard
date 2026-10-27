@@ -72,20 +72,6 @@
       ]
     },
     {
-      "title": "Gorillaz The Mountain Tour",
-      "date": "2026-10-30",
-      "ends": null,
-      "venue": "Moda Center",
-      "kind": "Concert",
-      "why": "Multiple dates",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/gorillaz-oct-30-2026"
-        }
-      ]
-    },
-    {
       "title": "CANVAS 2026",
       "date": "2026-10-30",
       "ends": "2026-11-04",
@@ -214,20 +200,6 @@
         {
           "name": "Oregon State Beavers",
           "url": "https://osubeavers.com/news/2026/10/16/mens-basketball-beavers-to-face-ducks-at-moda-center"
-        }
-      ]
-    },
-    {
-      "title": "Oregon vs Oregon State Northwest Elite Sports West Coast Classic",
-      "date": "2026-11-19",
-      "ends": null,
-      "venue": "Moda Center",
-      "kind": "Sports",
-      "why": "Multiple dates",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/oregon-vs-oregon-state-nov-19-2026"
         }
       ]
     },
@@ -392,6 +364,34 @@
         {
           "name": "Discotech",
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
+        }
+      ]
+    },
+    {
+      "title": "Max McNown",
+      "date": "2026-12-06",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Concert",
+      "why": "No info provided.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/max-mcnown-dec-6-2026"
+        }
+      ]
+    },
+    {
+      "title": "Ram PBR Portland",
+      "date": "2027-01-22",
+      "ends": "2027-01-23",
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "No info provided.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
         }
       ]
     }

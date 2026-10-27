@@ -27,49 +27,63 @@
       "store": "Amazon",
       "detail": "$7.50",
       "ends": null,
-      "url": "https://slickdeals.net/f/20204922-7-50-john-wick-chapter-4-blu-ray-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2"
+      "url": "https://slickdeals.net/f/20204922-7-50-john-wick-chapter-4-blu-ray-at-amazon"
     },
     {
-      "title": "Predator 4-Movie Collection (4K Ultra HD + Blu-ray + Digital)",
+      "title": "Predator 4-Movie Collection",
       "store": "Amazon",
-      "detail": "$28.48",
+      "detail": "$28.48 (4K Ultra HD + Blu-Ray + Digital)",
       "ends": null,
-      "url": "https://slickdeals.net/f/20204589-28-48-predator-4-movie-collection-4k-ultra-hd-blu-ray-digital-at-amazon?utm_source=rss&utm_content=fp&utm_medium=RSS2"
+      "url": "https://slickdeals.net/f/20204589-28-48-predator-4-movie-collection-4k-ultra-hd-blu-ray-digital-at-amazon"
     },
     {
-      "title": "Day of the Dead (Collector's Edition 4K Ultra HD + Blu-ray)",
+      "title": "Hellboy",
       "store": "Amazon",
-      "detail": "$32.50",
+      "detail": "$15.40 (4K UHD + Blu-ray + Digital)",
       "ends": null,
-      "url": "https://slickdeals.net/f/20201037-day-of-the-dead-collector-s-edition-4k-ultra-hd-blu-ray-32-49-amazon-com?utm_source=rss&utm_content=fp&utm_medium=RSS2"
+      "url": "https://slickdeals.net/f/20204214-hellboy-4k-uhd-blu-ray-digital-15-40-free-s-h"
+    },
+    {
+      "title": "Black Sheep",
+      "store": "Amazon",
+      "detail": "$15.99 (4K Ultra HD + Blu-ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20201058-15-99-black-sheep-4k-ultra-hd-blu-ray-at-amazon"
+    },
+    {
+      "title": "Day of the Dead (Collector's Edition)",
+      "store": "Amazon",
+      "detail": "$32.49 (4K Ultra HD + Blu-ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20201037-day-of-the-dead-collector-s-edition-4k-ultra-hd-blu-ray-32-49-amazon-com"
+    },
+    {
+      "title": "Alien 6-Film Collection",
+      "store": "Amazon",
+      "detail": "$24.96 (Blu-ray + Digital HD)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20198391-alien-6-film-collection-blu-ray-digital-24-96-amazon-com"
     },
     {
       "title": "The Thing (1982, Blu-ray)",
       "store": "Amazon",
-      "detail": "$6.99",
+      "detail": "$7",
       "ends": null,
-      "url": "https://slickdeals.net/f/20198385-the-thing-1982-blu-ray-6-99-amazon-com?utm_source=rss&utm_content=fp&utm_medium=RSS2"
+      "url": "https://slickdeals.net/f/20198385-the-thing-1982-blu-ray-6-99-amazon-com"
     },
     {
-      "title": "Legend (2-Disc Special Edition, Blu-ray)",
+      "title": "The Mummy Trilogy",
       "store": "Amazon",
-      "detail": "$17",
+      "detail": "$20 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
-      "url": "https://slickdeals.net/f/20196573-legend-2-disc-standard-special-edition-theatrical-cut-director-s-cut-blu-ray-17-amazon-com?utm_source=rss&utm_content=fp&utm_medium=RSS2"
+      "url": "https://slickdeals.net/f/20197881-the-mummy-trilogy-4k-ultra-hd-blu-ray-digital-4k-uhd-19-99-amazon-com"
     },
     {
-      "title": "Us / Get Out Double Feature (4K UHD + Blu-ray + Digital)",
+      "title": "Chernobyl",
       "store": "Amazon",
-      "detail": "$15",
+      "detail": "$14.99 (4K Ultra HD + Blu-ray)",
       "ends": null,
-      "url": "https://slickdeals.net/f/20196561-us-get-out-double-feature-4k-uhd-blu-ray-digital-15?utm_source=rss&utm_content=fp&utm_medium=RSS2"
-    },
-    {
-      "title": "Rocky Horror Picture Show (Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$13",
-      "ends": null,
-      "url": "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1&q=blu-ray"
+      "url": "https://slickdeals.net/f/20196669-14-99-chernobyl-4k-ultra-hd-blu-ray-at-amazon"
     }
   ],
   "upcoming": [

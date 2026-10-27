@@ -1,14 +1,14 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-26T23:16:46Z",
+  "updated_at": "2026-10-26T23:59:58Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and excited",
-      "pulse": "Fans are celebrating an undefeated 2-0 start and rising power rankings. There is excitement for the upcoming game against the Lakers.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are excited by the undefeated 2-0 start and rising power rankings. However, league-wide injuries cause concern.",
       "storylines": [
         "Undefeated 2-0 start to the season",
-        "Ranked #15 in NBA.com power rankings",
-        "Next game against Los Angeles Lakers",
+        "Ranked #15 in NBA power rankings",
+        "Upcoming game against Los Angeles Lakers",
         "Focus on mobile defense and rebounding"
       ],
       "sources": [
@@ -27,13 +27,13 @@
       ]
     },
     "timbers": {
-      "mood": "reflective and supportive",
-      "pulse": "Fans are processing Diego Chara's retirement announcement for after the 2027 season. There is also strong community solidarity regarding local groups.",
+      "mood": "bittersweet and hopeful",
+      "pulse": "Fans are processing Diego Chara's retirement announcement after his long career. There is also excitement regarding homegrown talent Eric Izoita.",
       "storylines": [
-        "Diego Chara to retire after 2027 Sprint Season",
-        "Eric Izoita signed to first-team contract",
-        "Ian Miller named to U.S. U-16 domestic camp",
-        "Kellen Tamblyn named to MLS NEXT All-Star Game"
+        "Diego Chara to retire after the Sprint Season",
+        "Eric Izoita signs first-team contract",
+        "Midweek match against St. Louis",
+        "Native American Heritage Night on Nov 1"
       ],
       "sources": [
         {
@@ -55,13 +55,13 @@
       ]
     },
     "f1": {
-      "mood": "Excitement and frustration",
-      "pulse": "Fans are celebrating Antonelli's dominance and title charge. Others are frustrated by Russell's performance and Verstappen's radio issues.",
+      "mood": "Excitement and tension",
+      "pulse": "Fans are buzzing about Antonelli's championship dominance and Mercedes' performance. There is also debate regarding Russell's recent struggles.",
       "storylines": [
         "Antonelli nears first world title after Austin win",
-        "Mercedes W17 operating window issues for Russell",
-        "Verstappen facing recurring radio problems",
-        "Five drivers fighting for second place in standings"
+        "Five drivers fighting for second place in standings",
+        "Red Bull overtakes McLaren in Constructors' Championship",
+        "Russell struggling with Mercedes W17 operating window"
       ],
       "sources": [
         {

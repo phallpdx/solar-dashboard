@@ -1,15 +1,15 @@
 {
   "updated": "2026-10-27",
-  "updated_at": "2026-10-27T09:09:55Z",
+  "updated_at": "2026-10-27T11:10:32Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Scoot Henderson and Branden Carlson cause anxiety.",
+      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Henderson and Carlson cause anxiety.",
       "storylines": [
         "Undefeated 2-0 start to the season",
         "Scoot Henderson questionable with ankle soreness",
-        "Lakers game is the first major defensive test",
-        "Ranked #15 in NBA power rankings"
+        "Next game against Lakers in LA",
+        "Lakers favored by 2.5 points"
       ],
       "sources": [
         {
@@ -35,12 +35,12 @@
       ]
     },
     "timbers": {
-      "mood": "bittersweet and nostalgic",
-      "pulse": "Fans are processing Diego Chara's retirement announcement for after next season. There is excitement around homegrown talent like Eric Izoita.",
+      "mood": "bittersweet and reflective",
+      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for the upcoming sprint season despite the news.",
       "storylines": [
-        "Diego Chara to retire after the Sprint Season",
+        "Diego Chara to retire after next season",
         "Eric Izoita signed first-team contract",
-        "Upcoming midweek match against St. Louis",
+        "Upcoming match against St. Louis",
         "Native American Heritage Night on Nov 1"
       ],
       "sources": [
@@ -63,13 +63,13 @@
       ]
     },
     "f1": {
-      "mood": "Anticipation and frustration",
-      "pulse": "Fans are celebrating Antonelli's dominance and Mercedes' pace. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
+      "mood": "tense and anticipatory",
+      "pulse": "Fans are focused on Antonelli's title clinching opportunity and the intense battle for second place. There is also significant discussion regarding Audi's consistent P11 finishes and Russell's performance struggles.",
       "storylines": [
-        "Antonelli nears first world title after Austin win",
-        "Mercedes W17 operating window issues for Russell",
-        "Red Bull overtakes McLaren in Constructors' Championship",
-        "Five drivers fighting for second place in standings"
+        "Kimi Antonelli needs two points to clinch the title",
+        "Five drivers are fighting for second in the standings",
+        "Red Bull overtook McLaren in the Constructors' Championship",
+        "Nico Hulkenberg has finished P11 in three of last four races"
       ],
       "sources": [
         {

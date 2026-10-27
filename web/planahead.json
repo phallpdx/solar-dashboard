@@ -1,12 +1,12 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-27",
   "items": [
     {
       "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
       "kind": "Tickets",
-      "action": "Register for the artist presale today, Sun Oct 25 (11:59 p.m. ET); presale Wed Oct 28, public sale Thu Oct 29 at 10 a.m.",
+      "action": "Artist presale Wed Oct 28 at 10 a.m. (registration closed Oct 25); otherwise buy at the public sale Thu Oct 29 at 10 a.m.",
       "starts": "2026-10-28",
-      "by": "2026-10-25",
+      "by": "2026-10-29",
       "why": "A 16-date arena run for new album Perfecth with Pixies opening every night, and the presale needs advance registration.",
       "sources": [
         {
@@ -20,15 +20,19 @@
         {
           "name": "Consequence",
           "url": "https://consequence.net/2026/10/queens-of-the-stone-age-spring-2027-us-arena-tour-pixies/"
+        },
+        {
+          "name": "Spin",
+          "url": "https://www.spinmagazine.com/2026/10/queens-of-the-stone-age-tour/"
         }
       ]
     },
     {
       "title": "2hollis, Roseland Theater (Mar 10 and 11, 2027)",
       "kind": "Tickets",
-      "action": "Sign up on Laylo for the artist presale Tue Oct 27 at 10 a.m. (venue presale 11 a.m.); general sale Wed Oct 28 at 10 a.m.",
+      "action": "Artist presale (Laylo sign-up) today, Tue Oct 27 at 10 a.m., venue presale 11 a.m.; general sale Wed Oct 28 at 10 a.m.",
       "starts": "2026-10-27",
-      "by": null,
+      "by": "2026-10-28",
       "why": "Two Portland nights on the newly announced Pirouette tour, with presale access through Laylo sign-up.",
       "sources": [
         {
@@ -164,6 +168,20 @@
         {
           "name": "Yahoo Sports",
           "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
+        }
+      ]
+    },
+    {
+      "title": "Blazers vs. Warriors on Black Friday, Moda Center (Nov 27)",
+      "kind": "Tickets",
+      "action": "Get seats early for the 6:30 p.m. tip-off.",
+      "starts": null,
+      "by": "2026-11-27",
+      "why": "KATU picks the Black Friday Warriors visit as one of the marquee home games on the 2026-27 schedule.",
+      "sources": [
+        {
+          "name": "KATU 2026-27 Blazers schedule",
+          "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
         }
       ]
     },

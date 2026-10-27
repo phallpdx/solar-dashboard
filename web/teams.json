@@ -1,10 +1,10 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-27T01:26:36Z",
+  "updated_at": "2026-10-27T02:09:23Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Scoot Henderson and Branden Carlson cause anxiety.",
+      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injuries to Scoot Henderson and Branden Carlson cause concern.",
       "storylines": [
         "Undefeated 2-0 start to the season",
         "Ranked #15 in NBA power rankings",
@@ -56,12 +56,12 @@
     },
     "f1": {
       "mood": "tense and competitive",
-      "pulse": "Fans are buzzing about Antonelli's dominant title charge and Mercedes' superior pace. There is also frustration regarding Russell's poor form and Ferrari's missed opportunities.",
+      "pulse": "Fans are buzzing about Antonelli's dominant title charge and Mercedes' pace. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
       "storylines": [
-        "Kimi Antonelli nears his first world title after winning the US GP.",
-        "Mercedes shows superior pace and minimal tyre degradation.",
-        "George Russell struggles with the W17 operating window.",
-        "Red Bull overtakes McLaren in the Constructors' Championship."
+        "Kimi Antonelli nears his first world title after winning US GP.",
+        "Five drivers are fighting for second place in the standings.",
+        "George Russell struggles with the Mercedes W17 operating window.",
+        "Red Bull has overtaken McLaren in the Constructors' Championship."
       ],
       "sources": [
         {

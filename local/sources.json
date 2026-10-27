@@ -85,32 +85,19 @@
     ],
     "foodfinds": [
       {
-        "name": "Daily Coffee News",
-        "url": "https://dailycoffeenews.com/feed/"
-      },
-      {
         "name": "Brewbound",
         "url": "https://www.brewbound.com/feed"
       },
       {
         "name": "The Oregonian food",
         "url": "https://www.oregonlive.com/arc/outboundfeeds/rss/category/food/?outputType=xml"
-      }
-    ],
-    "planahead": [
-      {
-        "name": "TicketNews",
-        "url": "https://www.ticketnews.com/feed/"
       },
       {
-        "name": "Portland Monthly",
-        "url": "https://www.pdxmonthly.com/arts-and-culture"
-      },
-      {
-        "name": "Travel Portland",
-        "url": "https://www.travelportland.com/events/"
+        "name": "The Oregonian business",
+        "url": "https://www.oregonlive.com/arc/outboundfeeds/rss/category/business/?outputType=xml"
       }
     ],
+    "planahead": [],
     "skioutlook": [
       {
         "name": "NOAA CPC ENSO discussion",

@@ -330,7 +330,7 @@ JUNK = {"null", "none", "n/a", "na", "tbd", "tba", "unknown", "multiple dates", 
 def clean(s, limit=400):
     """Plain one-line text; the model's stand-ins for "nothing" ("null", "N/A") become empty."""
     s = " ".join(str(s or "").replace("[…]", "").replace("[...]", "").split())
-    if s.lower().rstrip(".") in JUNK:
+    if s.lower().rstrip(".") in JUNK or re.match(r"(no|not) (info|information|details|provided|specified|stated|given)\b", s, re.I):
         return ""
     return s[:limit].rstrip() if s else ""
 
@@ -386,7 +386,8 @@ def same_thing(a_title, a_date, b_title, b_date):
         return False
     if a_date and a_date == b_date and _first_word(a_title) == _first_word(b_title):
         return True  # "Gorillaz The Mountain Tour" and "Gorillaz with Little Simz" on the same night
-    return len(a & b) / min(len(a), len(b)) >= 0.6
+    # Without a date to go on, ask for more overlap: "Mt Hood Meadows season pass" isn't "Mt Hood Skibowl season pass".
+    return len(a & b) / min(len(a), len(b)) >= (0.6 if a_date else 0.85)
 
 
 def _first_word(title):
@@ -405,10 +406,14 @@ def still_current(item, fields):
     return d is None or d >= TODAY
 
 
-def merge(old, new, title_key, date_key, keep, sort_key, limit, reverse=False):
+def merge(old, new, title_key, date_key, keep, sort_key, limit, reverse=False, tidy=None):
+    """Old items go through the same checks as new ones (`tidy` can fix an item or drop it
+    by returning None), so problems left by earlier runs get cleaned up too."""
     out = []
-    # Old items go through the same duplicate check, so pairs left by earlier runs get cleaned up too.
-    for item in [x for x in old if keep(x)] + list(new):
+    items = [x for x in old if keep(x)] + list(new)
+    if tidy:
+        items = [t for t in map(tidy, items) if t]
+    for item in items:
         if not any(same_thing(item[title_key], item.get(date_key), o[title_key], o.get(date_key)) for o in out):
             out.append(item)
     out.sort(key=sort_key, reverse=reverse)
@@ -607,12 +612,8 @@ def refresh_events(data, sources):
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
             return None
-        venue = clean(r.get("venue"), 100)
-        place = src.get("place")
-        if place and place.lower() not in venue.lower():
-            venue = f"{venue}, {place}" if venue else place  # "Hall A" alone means nothing on the dashboard
         return {"title": clean(r["title"], 140), "date": r.get("date"), "ends": r.get("ends"),
-                "venue": venue, "kind": r["kind"] if r.get("kind") in kinds else "Other",
+                "venue": clean(r.get("venue"), 100), "kind": r["kind"] if r.get("kind") in kinds else "Other",
                 "why": clean(r.get("why"), 240),
                 "sources": [{"name": src["name"], "url": pick_url(r.get("url"), links, src["url"])}]}
 
@@ -621,9 +622,43 @@ def refresh_events(data, sources):
                            "why is one short sentence on the crowds or traffic to expect.",
                   {"title": S, "date": DATE, "ends": DATE, "venue": S, "kind": {"type": "string", "enum": kinds}, "why": S, "url": S},
                   build)
-    data["events"] = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
-                           by_date("date", "ends"), 25)
+    places = {s["name"]: s["place"] for s in sources if s.get("place")}
+
+    def tidy(x):
+        x = dict(x, why=clean(x.get("why"), 240), venue=clean(x.get("venue"), 100))
+        place = places.get(((x.get("sources") or [{}])[0]).get("name"))
+        if place and place.lower() not in x["venue"].lower():
+            x["venue"] = f"{x['venue']}, {place}" if x["venue"] else place  # "Hall A" alone means nothing on the dashboard
+        return x
+
+    events = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
+                   by_date("date", "ends"), 40, tidy=tidy)
+    data["events"] = drop_opening_acts(events)[:25]
     return data
+
+
+def drop_opening_acts(events):
+    """Drops "Max McNown" when the same night at the same venue is "The Wolf's Nice Christmas Show" featuring him."""
+    def text(x):
+        return f"{x.get('title', '')} {x.get('why', '')}".lower()
+    return [x for x in events
+            if not any(o is not x and o.get("date") == x.get("date") and o.get("venue") == x.get("venue")
+                       and x["title"].lower() in text(o) and len(o["title"]) != len(x["title"])
+                       for o in events)]
+
+
+def _lead(title, n=2):
+    found = re.findall(r"[a-z0-9]+", (title or "").lower())
+    return tuple(w for w in found if w not in ("the", "a", "an"))[:n]
+
+
+def drop_sessions_of_runs(events):
+    """Drops a one-day "Curiosity Kids: Sasquatch Science Team" inside the "Curiosity Kids" run that covers it."""
+    def covers(run, x):
+        start, end, day = as_date(run.get("date")), as_date(run.get("ends")), as_date(x.get("date"))
+        return run is not x and start and end and day and not x.get("ends") and start <= day <= end \
+            and _lead(run["title"]) == _lead(x["title"])
+    return [x for x in events if not any(covers(o, x) for o in events)]
 
 
 FAR_TOWNS = ("olympia", "seattle", "tacoma", "eugene", "bend", "corvallis", "albany", "astoria", "seaside",
@@ -633,12 +668,15 @@ FAR_TOWNS = ("olympia", "seattle", "tacoma", "eugene", "bend", "corvallis", "alb
 def refresh_kids(data, sources):
     ok = future_ok("date", "ends", days=60)
 
+    def tidy(x):
+        place = f"{x.get('where', '')} {x.get('title', '')}".lower()
+        if any(t in place for t in FAR_TOWNS):
+            return None  # more than about an hour from Portland
+        return dict(x, detail=clean(x.get("detail"), 300))
+
     def build(r, src, links):
         if not ok(r) or not clean(r.get("title")):
             return None
-        place = (clean(r.get("where")) + " " + clean(r.get("title"))).lower()
-        if any(t in place for t in FAR_TOWNS):
-            return None  # more than about an hour from Portland
         return {"title": clean(r["title"], 140), "date": r.get("date"), "ends": r.get("ends"),
                 "where": clean(r.get("where"), 80), "detail": clean(r.get("detail"), 300),
                 "url": pick_url(r.get("url"), links, src["url"])}
@@ -649,8 +687,9 @@ def refresh_kids(data, sources):
                            "ends is the last day for multi-day events, else null. where is the neighborhood or town. "
                            "detail is one plain sentence in your own words, with hours and price if given.",
                   {"title": S, "date": DATE, "ends": DATE, "where": S, "detail": S, "url": S}, build)
-    data["events"] = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
-                           by_date("date", "ends"), 25)
+    events = merge(data.get("events", []), new, "title", "date", lambda x: still_current(x, ["date", "ends"]),
+                   by_date("date", "ends"), 40, tidy=tidy)
+    data["events"] = drop_sessions_of_runs(events)[:25]
     return data
 
 

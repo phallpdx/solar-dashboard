@@ -5,7 +5,9 @@ LM Studio on Parker's laptop instead of Claude routines. It runs every night at
 12:05 am, just after the site's own midnight rollover.
 
 Lists it handles: jazz, concerts, events (big events), kids (family outings),
-bluray, foodfinds, planahead, skioutlook and teams (fan pulse).
+bluray, foodfinds, skioutlook and teams (fan pulse). For planahead it only drops
+past items: venue pages don't show on-sale dates, so finding new ones stays with
+Claude.
 
 ## What a run does
 

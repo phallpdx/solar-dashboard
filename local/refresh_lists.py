@@ -136,8 +136,10 @@ def _strip_tags(s):
 
 
 def fetch(url, timeout=30):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "en-US"})
-    for wait in (20, 60, None):
+    # Reddit throttles browser-like user agents hardest and asks scripts to name themselves.
+    ua = "solar-dashboard-lists/1.0 (personal dashboard feed reader)" if "reddit.com" in url else UA
+    req = urllib.request.Request(url, headers={"User-Agent": ua, "Accept-Language": "en-US"})
+    for wait in (30, None):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 raw = resp.read(3_000_000)
@@ -642,7 +644,7 @@ def drop_opening_acts(events):
     def text(x):
         return f"{x.get('title', '')} {x.get('why', '')}".lower()
     return [x for x in events
-            if not any(o is not x and o.get("date") == x.get("date") and o.get("venue") == x.get("venue")
+            if not any(o is not x and o.get("date") == x.get("date") and _lead(o.get("venue"), 1) == _lead(x.get("venue"), 1)
                        and x["title"].lower() in text(o) and len(o["title"]) != len(x["title"])
                        for o in events)]
 
@@ -656,21 +658,21 @@ def drop_sessions_of_runs(events):
     """Drops a one-day "Curiosity Kids: Sasquatch Science Team" inside the "Curiosity Kids" run that covers it."""
     def covers(run, x):
         start, end, day = as_date(run.get("date")), as_date(run.get("ends")), as_date(x.get("date"))
-        return run is not x and start and end and day and not x.get("ends") and start <= day <= end \
-            and _lead(run["title"]) == _lead(x["title"])
+        return run is not x and start and end and day and start <= day <= end \
+            and _lead(run["title"]) == _lead(x["title"]) and (as_date(x.get("ends")) or day) - day < end - start
     return [x for x in events if not any(covers(o, x) for o in events)]
 
 
-FAR_TOWNS = ("olympia", "seattle", "tacoma", "eugene", "bend", "corvallis", "albany", "astoria", "seaside",
-             "cannon beach", "hood river", "longview", "kelso", "centralia", "lincoln city", "newport", "medford")
+# The north coast (Astoria, Seaside, Cannon Beach) is a usual day trip; these aren't.
+FAR_TOWNS = ("olympia", "seattle", "tacoma", "eugene", "bend", "corvallis", "albany", "longview", "kelso",
+             "centralia", "newport", "medford", "spokane", "yakima")
 
 
 def refresh_kids(data, sources):
     ok = future_ok("date", "ends", days=60)
 
     def tidy(x):
-        place = f"{x.get('where', '')} {x.get('title', '')}".lower()
-        if any(t in place for t in FAR_TOWNS):
+        if re.search(r"\b(" + "|".join(FAR_TOWNS) + r")\b", f"{x.get('where', '')} {x.get('title', '')}", re.I):
             return None  # more than about an hour from Portland
         return dict(x, detail=clean(x.get("detail"), 300))
 
@@ -683,7 +685,7 @@ def refresh_kids(data, sources):
 
     new = extract(sources, "List upcoming events on this page that suit a TODDLER (ages 1 to 4) and family in or near Portland, Oregon. "
                            "Only real events at a place; skip holidays and closures on their own. "
-                           "Skip anything more than about 30 miles from Portland. "
+                           "Skip places farther than the Portland area, Vancouver WA, Mt. Hood or the north Oregon coast. "
                            "ends is the last day for multi-day events, else null. where is the neighborhood or town. "
                            "detail is one plain sentence in your own words, with hours and price if given.",
                   {"title": S, "date": DATE, "ends": DATE, "where": S, "detail": S, "url": S}, build)

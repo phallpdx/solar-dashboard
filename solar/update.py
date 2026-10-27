@@ -1184,6 +1184,15 @@ def fetch_ships(state, now_utc):
     heard = ships.listen(env("AISSTREAM_KEY"))
     ships.merge(store.setdefault("cache", {}), heard, now_utc)
     store["last_listen"] = {"at": now_utc.isoformat(), "heard": len(heard)}
+    # Remember the last ship that left the spot across from home, so an empty box can say who it was.
+    loc = load_json("config.json", {}).get("river_view") or {}
+    if loc:
+        now_parked, _ = ships.parked(store["cache"], loc["lat"], loc["lon"], now_utc, loc.get("parked_km", 5))
+        before = store.get("parked")
+        if before and (not now_parked or now_parked["url"] != before["url"]):
+            store["last_parked"] = {"name": before["name"], "type": before["type"], "since": before["since"],
+                                    "since_known": before["since_known"], "left": now_utc.isoformat()}
+        store["parked"] = now_parked and {k: now_parked[k] for k in ("name", "type", "since", "since_known", "url")}
     return None
 
 
@@ -1192,8 +1201,13 @@ def ships_view(state, now_utc):
     loc = (load_json("config.json", {}).get("river_view") or {})
     if not store.get("cache") or not loc:
         return None
+    parked, nearby = ships.parked(store["cache"], loc["lat"], loc["lon"], now_utc, loc.get("parked_km", 5))
     return {
         "approaching": ships.approaching(store["cache"], loc["lat"], loc["lon"], now_utc)[:8],
+        "parked": parked,
+        "parked_nearby": nearby,
+        "last_parked": store.get("last_parked"),
+        "parked_km": loc.get("parked_km", 5),
         "in_area": len(store["cache"]),
         "listened": store.get("last_listen"),
     }

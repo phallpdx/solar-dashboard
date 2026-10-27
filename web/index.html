@@ -53,6 +53,8 @@ h2{margin:0;font-size:17px;font-weight:700}
 .banner{background:#FFF7E6;border:1px solid #F3D9A4;border-radius:16px;padding:12px 16px;font-size:14px;line-height:1.5;color:#5A4210}
 .chart{position:relative}
 #ships iframe{border:0;width:100%;height:360px;display:block}
+#moored .mini{border-radius:14px;align-items:flex-start;text-align:left;padding:10px 14px;cursor:default}
+@media (max-width:600px){#moored .minis{grid-template-columns:1fr}}
 .chart svg{width:100%;height:262px;display:block}
 @media (max-width:600px){.wrap{padding:24px 16px 40px}h1{font-size:28px}.big{font-size:34px}.seg button{padding:0 14px}}
 .sec-h{margin:12px 0 0;font-size:24px;font-weight:800;letter-spacing:-.02em}
@@ -1465,6 +1467,10 @@ body{background-color:#8F5A32;
 <section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
   <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, tides, radar and fishing</p></div></div>
   <div class="sec-body">
+    <section class="card" aria-labelledby="moor-h" id="moor-card">
+      <div class="head"><h2 id="moor-h">Across from the house</h2><span class="meta" id="moor-meta"></span></div>
+      <div id="moored"><p class="note">Waiting for the first listen to ship radio on the river.</p></div>
+    </section>
     <div class="row">
       <section class="card wide" aria-labelledby="radar-h">
         <div class="head"><h2 id="radar-h">Rain radar</h2><span class="meta" id="radar-meta"></span></div>
@@ -2415,6 +2421,7 @@ const DAILY_TITLES = {
   'food-h': ['Fresh this month', 'Eating with the season', 'What is ripe'],
   'radar-h': ['Rain on the way?', 'Radar loop', 'Watch the showers'],
   'ship-h': ['Ships passing by', 'Out on the channel', 'River traffic'],
+  'moor-h': ['Parked across the river', 'Ship across the way', 'At anchor out front'],
   'fish-h': ['Fishing report', 'Will they bite?', 'On the Columbia'],
   'surf-h': ['Waves this week', 'Should you paddle out?', 'Surf check'],
   'minus-h': ['Low tides for tide pools', 'Tidepool days', 'Extra-low tides'],
@@ -2549,6 +2556,7 @@ function render() {
   renderPanels();
   renderOutside();
   renderShips();
+  renderParked();
   renderNews();
   renderComing();
   const waits = [renderLocal(), renderBluray(), renderKids(), renderBigEvents(), renderPlan(), renderSkiOutlook(), renderFinds(), renderJazz()];
@@ -3269,6 +3277,55 @@ function renderShips() {
     return `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(s.name)}</a><br><small>${what}</small></span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('') + `</div><p class="note">${heard.trim()}</p>`
     : `<p class="note">No ships heading your way right now (${sh.in_area} seen on the river in the last few hours).${heard}</p>`;
+}
+
+// The ship anchored or moored across from home: who it is, how long it has been there,
+// roughly when it will go, and where it came from and is headed.
+function renderParked() {
+  const sh = D.ships, el = $('moored');
+  if (!sh) { $('moor-meta').textContent = ''; el.innerHTML = '<p class="note">Waiting for the first listen to ship radio on the river.</p>'; return; }
+  const span = ms => { const h = ms / 3.6e6; return h < 1 ? 'under an hour' : h < 36 ? `${Math.round(h)} hour${Math.round(h) === 1 ? '' : 's'}` : `${Math.round(h / 24)} days`; };
+  const at = iso => `${localDay(iso)}, ${new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
+  const mini = (k, v, small) => `<div class="mini"><span class="k">${k}</span><span class="v" style="font-size:16px">${v}${small ? `<br><small>${small}</small>` : ''}</span></div>`;
+  $('moor-meta').textContent = sh.listened ? `Listened ${ago(sh.listened.at)}` : '';
+  const p = sh.parked;
+  if (!p) {
+    const l = sh.last_parked;
+    el.innerHTML = `<p class="summary">No ship parked across from you right now.</p>` +
+      (l ? `<p class="note">The last one was ${esc(l.name)} (${esc(l.type.toLowerCase())}), which left ${ago(l.left)} after ${l.since_known ? '' : 'at least '}${span(new Date(l.left) - new Date(l.since))}.</p>` : '') +
+      `<p class="note">Watching for any big ship stopped within ${sh.parked_km} km of home.</p>`;
+    return;
+  }
+  const here = Date.now() - new Date(p.since);
+  // How long: the ship's own ETA when it is due at a berth upriver, otherwise the usual stay for its kind.
+  const [lo, hi, why] = !p.big ? [2, 8, 'Small boats usually stay a few hours.']
+    : p.status === 'Moored' ? [24, 72, 'Ships usually spend 1 to 3 days at a dock.']
+    : [48, 168, 'Ships usually wait 2 to 7 days at anchor for a berth or orders.'];
+  let leave, leaveNote;
+  if (p.eta_utc && p.dest_upriver) {
+    leave = `Around ${at(new Date(new Date(p.eta_utc) - 2 * 3.6e6).toISOString())}`;
+    leaveNote = `It is due at ${esc(p.destination)} ${at(p.eta_utc)}, about 2 hours up the river.`;
+  } else {
+    const from = new Date(p.since).getTime(), a = from + lo * 3.6e6, b = from + hi * 3.6e6;
+    leave = b < Date.now() ? 'Any time now' : a < Date.now() ? `By ${localDay(new Date(b).toISOString())}` : `${localDay(new Date(a).toISOString())} to ${localDay(new Date(b).toISOString())}`;
+    leaveNote = why + (p.since_known ? '' : ' It was already here when we started watching, so this could be early.');
+  }
+  const origin = !p.origin ? ['Not broadcast', `Ships don't send their last port over radio. <a href="${esc(p.url)}" target="_blank" rel="noopener">Check VesselFinder</a>`]
+    : p.origin_how === 'ais' ? [esc(p.origin), 'From its radio route']
+    : p.origin_how === 'previous destination' ? [esc(p.origin), 'Its last destination']
+    : [`Likely ${esc(p.origin)}`, p.origin_how === 'direction' ? 'From the way it came in' : 'Guessed from where it is going'];
+  const dest = p.destination ? [esc(p.destination), p.eta_utc ? `Due ${at(p.eta_utc)}` : 'No arrival time sent'] : ['Not broadcast', 'The crew has not set one'];
+  const also = (sh.parked_nearby || []).length ? `<p class="note">Also parked nearby: ${sh.parked_nearby.map(o => `${esc(o.name)} (${o.km} km)`).join(', ')}.</p>` : '';
+  el.innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
+    <div><a href="${esc(p.url)}" target="_blank" rel="noopener" class="big" style="text-decoration:none;color:inherit">${esc(p.name)}</a>
+      <p class="note" style="margin:4px 0 0">${[p.type, p.length_m ? `${p.length_m} m long` : null].filter(Boolean).map(esc).join(' · ')} · ${esc(p.status.toLowerCase())} ${p.km} km ${esc(p.side)} of home</p></div>
+    <div class="minis">
+      ${mini('Here for', `${p.since_known ? '' : 'At least '}${span(here)}`, `Since ${at(p.since)}`)}
+      ${mini('Likely leaves', leave, leaveNote)}
+      ${mini('Came from', origin[0], origin[1])}
+      ${mini('Headed to', dest[0], dest[1])}
+    </div>${also}
+    <p class="note">Last position heard ${ago(p.last_heard)}.</p></div>`;
 }
 
 function renderWorld() {

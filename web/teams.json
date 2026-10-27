@@ -1,94 +1,56 @@
 {
   "updated": "2026-10-26",
-  "updated_at": "2026-10-27T04:21:49Z",
+  "updated_at": "2026-10-27T06:14:50Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Henderson and Carlson cause anxiety.",
+      "mood": "Fired up",
+      "pulse": "Portland is 2-0 after a blowout of the Suns and a shaky 128-120 win in Sacramento, so the vibe is good. The worry is health: Scoot is questionable with a sore ankle for tonight's game at the 3-0 Lakers.",
       "storylines": [
-        "Undefeated 2-0 start to the season",
-        "Ranked #15 in NBA power rankings",
-        "Scoot Henderson questionable with ankle soreness",
-        "Branden Carlson in concussion protocol",
-        "Next game against Lakers"
+        "Avdija led the Kings win with 26; Lillard and Camara added 19 each",
+        "Nori admitted the team lost its composure late in Sacramento, himself included",
+        "Scoot Henderson questionable vs. Lakers (left ankle soreness)",
+        "Branden Carlson questionable, in concussion protocol; Shaedon Sharpe out (meniscus)",
+        "Next up: at the Lakers, Tuesday 8 p.m. PT"
       ],
       "sources": [
-        {
-          "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/117527/portland-trail-blazers-stats-three-poinnters-assists-damian-lillard-avdija-camara"
-        },
-        {
-          "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/117514/portland-trail-blazers-nba-power-rankings-los-angeles-lakers-luka-doncic-damian-lillard-ja-morant"
-        },
-        {
-          "name": "r/ripcity",
-          "url": "https://www.reddit.com/r/ripcity/comments/1xg3l81/blazers_ranked_15_in_nbacoms_new_power_rankings/"
-        }
+        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"},
+        {"name": "SI Blazers", "url": "https://www.si.com/nba/trailblazers/onsi/blazers-survive-scare-stay-unbeaten-with-win-over-kings"},
+        {"name": "ESPN", "url": "https://www.espn.com/nba/recap?gameId=401909852"},
+        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-injury-report/117542/portland-trail-blazers-los-angeles-lakers-nba-injury-report-scoot-henderson-branden-carlson-news"},
+        {"name": "Rip City Radio", "url": "https://ripcityradio.iheart.com/content/2026-10-27-trail-blazers-vs-lakers-injury-report-oct-27/"}
       ]
     },
     "timbers": {
-      "mood": "bittersweet and reflective",
-      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for his final season and appreciation for his professionalism.",
+      "mood": "Relieved",
+      "pulse": "Aravena's 96th-minute header beat Charlotte 3-2 and snapped a seven-game winless run. It keeps Portland alive, but they're still chasing the last West playoff spot and need help from other results.",
       "storylines": [
-        "Diego Chara to retire after the Sprint Season",
-        "Timbers host midweek match against St. Louis",
-        "Eric Izoita signed to first-team contract",
-        "Native American Heritage Night on Nov. 1"
+        "Lassiter brace, two Izoita assists, Aravena winner at 90+6",
+        "Win ended a 0-4-3 winless streak",
+        "Still three points back of the final West playoff spot, needing other results to go their way",
+        "Diego Chara to retire after the 2027 Sprint Season",
+        "Next: home vs. Houston, Nov. 1"
       ],
       "sources": [
-        {
-          "name": "Timbers.com",
-          "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"
-        },
-        {
-          "name": "r/timbers",
-          "url": "https://www.reddit.com/r/timbers/comments/1xg60vk/official_news_the_upcoming_sprint_season_will_be/"
-        },
-        {
-          "name": "r/timbers",
-          "url": "https://www.reddit.com/r/timbers/comments/1xfj66u/rtimbers_stands_with_the_rose_city_riveters/"
-        },
-        {
-          "name": "Timbers.com",
-          "url": "https://www.timbers.com/news/timbers-sign-homegrown-player-eric-izoita-to-first-team-contract"
-        }
+        {"name": "Timbers.com", "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"},
+        {"name": "OPB", "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"},
+        {"name": "Prost Amerika", "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"},
+        {"name": "Timbers.com", "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"}
       ]
     },
     "f1": {
-      "mood": "tense and celebratory",
-      "pulse": "Fans are celebrating Antonelli's dominant win and title proximity. However, frustration exists regarding Russell's performance and Ferrari's missed opportunities.",
+      "mood": "Title watch",
+      "pulse": "Antonelli won Austin for his ninth win of the year and now leads by 123 with five races left. Ninth or better in Mexico this Sunday makes him champion, so everyone's waiting on the coronation.",
       "storylines": [
-        "Kimi Antonelli nears his first world title",
-        "Mercedes W17 operating window issues for Russell",
-        "Red Bull overtakes McLaren in Constructors' Championship",
-        "Five drivers fighting for second place in standings"
+        "Antonelli on 365 points, 123 clear of Russell and 124 of Hamilton",
+        "Mexico City GP Nov. 1: top nine clinches it, or he clinches if neither Russell nor Hamilton wins",
+        "Russell called his Austin track-limits penalty 'a bit ridiculous' after dropping to eighth",
+        "Qatar and Abu Dhabi rounds could still be cancelled over the US-Iran war (per ESPN)"
       ],
       "sources": [
-        {
-          "name": "Formula 1",
-          "url": "https://www.formula1.com/en/latest/article/5-key-betting-lessons-learnt-after-kimi-antonelli-wins-the-united-states-grand-prix.4KrTb1yIoxsJJP5cD25hwN"
-        },
-        {
-          "name": "Formula 1",
-          "url": "https://www.formula1.com/en/latest/article/we-just-have-to-work-it-out-with-him-wolff-admits-russell-struggling-to-find-operating-window-for-mercedes-w17.6pbdYv34V9nrlo6P0EoJQQ"
-        },
-        {
-          "name": "Formula 1",
-          "url": "https://www.formula1.com/en/latest/article/5-winners-and-5-losers-from-austin.17w6sgHeulLQ51qh9e1b6I"
-        },
-        {
-          "name": "Formula 1",
-          "url": "https://www.formula1.com/en/latest/article/dont-think-we-can-use-any-excuse-red-bulls-mekies-admits-antonelli-and-mercedes-faster-than-us-in-us-gp.2q77epiHSatdl0aexWkf3M"
-        },
-        {
-          "name": "Formula 1",
-          "url": "https://www.formula1.com/en/latest/article/vasseur-admits-to-ferrari-frustration-as-pace-was-there-to-fight-for-victory.2dt48UPXlFVMj5yaSrWC3V"
-        },
-        {
-          "name": "r/formula1",
-          "url": "https://www.reddit.com/r/formula1/comments/1xfhib0/the_race_radio_issues_have_become_a_recurring/"
-        }
+        {"name": "ESPN", "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"},
+        {"name": "RaceFans", "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"},
+        {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"},
+        {"name": "ABC News", "url": "https://www.abc.net.au/news/2026-10-26/how-kimi-antonelli-can-win-f1-drivers-championship/107308200"}
       ]
     }
   }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-27",
   "releases": [
     {
       "artist": "Isabeau Waia'u Walker",
@@ -226,6 +226,58 @@
       ]
     },
     {
+      "artist": "Saynave",
+      "title": "Did You See the Flowers?",
+      "type": "Album",
+      "local": true,
+      "genre": "Indie",
+      "label": "Fogwood Records",
+      "date": "2026-10-09",
+      "why": "Featured in the Portland Mercury's Oct. 23 Spin Cycle column of new local releases.",
+      "links": [
+        {
+          "name": "Portland Mercury",
+          "url": "https://www.portlandmercury.com/music/spin-cycle-go-with-the-flow/"
+        }
+      ]
+    },
+    {
+      "artist": "Caroline Rose",
+      "title": "Gentling the Horse at the Walt Whitman Mall",
+      "type": "Album",
+      "local": false,
+      "genre": "Indie pop / rock",
+      "label": "SUCK Records",
+      "date": "2026-10-23",
+      "why": "Reviewed for airplay in KEXP's Oct. 26 New Music Reviews; the first release on Rose's own SUCK Records imprint.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/26/new-music-reviews-1026/"
+        },
+        {
+          "name": "Pollstar",
+          "url": "https://news.pollstar.com/2026/08/12/caroline-rose-announces-new-album-adds-fall-appearances/"
+        }
+      ]
+    },
+    {
+      "artist": "Dazy",
+      "title": "MAXIMUMBLASTSUPERLOUD Vol. 2",
+      "type": "Album",
+      "local": false,
+      "genre": "Power pop",
+      "label": "Lame-O Records",
+      "date": "",
+      "why": "A 24-track power-pop collection covering 2023 to 2026, reviewed for airplay in KEXP's Oct. 26 New Music Reviews.",
+      "links": [
+        {
+          "name": "KEXP review",
+          "url": "https://www.kexp.org/read/2026/10/26/new-music-reviews-1026/"
+        }
+      ]
+    },
+    {
       "artist": "Dummy",
       "title": "do you love the color of the sky?",
       "type": "Album",
@@ -289,15 +341,11 @@
       "genre": "Indie rock",
       "label": "Dirty Hit",
       "date": "2026-09-18",
-      "why": "No. 1 on the NACC college radio chart for the week of Oct. 14, her second album to top it for more than a week; The Crimson gave it 4 stars.",
+      "why": "The Crimson gave her latest album 4 stars.",
       "links": [
         {
           "name": "Review",
           "url": "https://www.thecrimson.com/article/2026/10/1/pylon-album-review/"
-        },
-        {
-          "name": "NACC",
-          "url": "https://naccchart.com/"
         }
       ]
     },

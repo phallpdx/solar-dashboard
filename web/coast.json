@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-25",
+  "updated": "2026-10-27",
   "events": [
     {
       "name": "Halloween Spooktacular concert",
@@ -42,6 +42,14 @@
       "url": "https://cbchamber.simpletix.com/f/2383"
     },
     {
+      "name": "Trail's End Art Gallery Holiday Gift Faire",
+      "date": "2026-11-07",
+      "end": null,
+      "town": "Gearhart",
+      "summary": "The gallery's annual holiday gift faire, 11 am to 5 pm.",
+      "url": "https://www.thecraftmap.com/fair/trails-end-art-gallery-annual-holiday-gift-faire-gearhart-or"
+    },
+    {
       "name": "North Coast Symphonic Band: The Art of Dance",
       "date": "2026-11-08",
       "end": null,
@@ -64,6 +72,22 @@
       "town": "Hammond (Fort Stevens State Park)",
       "summary": "Bivouac Racing's 20K, 15K and 5K trail races plus a 12-mile ruck challenge, starting around 9 am at Coffenbury Lake.",
       "url": "https://ultrasignup.com/register.aspx?did=143051"
+    },
+    {
+      "name": "Comedy night: Marc Yaffee and Jordan Casner",
+      "date": "2026-11-21",
+      "end": null,
+      "town": "Astoria",
+      "summary": "An 18+ comedy show at the Liberty Theatre at 8 pm, $10.",
+      "url": "https://libertyastoria.org/event/"
+    },
+    {
+      "name": "The Amazing Bubble Man",
+      "date": "2026-11-22",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Louis Pearl's bubble show at the Liberty Theatre at 2 pm; $15 adults, $10 ages 17 and under.",
+      "url": "https://libertyastoria.org/event/"
     },
     {
       "name": "King tides",
@@ -112,6 +136,14 @@
       "town": "Ilwaco (Long Beach Peninsula)",
       "summary": "The port lights its tree built from crab pots, with Santa, at 4 pm; dates are subject to change.",
       "url": "https://poiwa.specialdistrict.org/calendar-of-events"
+    },
+    {
+      "name": "Fort George Beer Tree Festival",
+      "date": "2026-12-05",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Fort George Brewery's free holiday Beer Tree Festival; 2026 details are still to come.",
+      "url": "https://fortgeorgebrewery.com/blog/event/beer-tree-festival/"
     }
   ]
 }

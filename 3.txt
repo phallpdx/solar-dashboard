@@ -1,0 +1,638 @@
+URL: https://www.pdxmonthly.com/feed
+STATUS: 200 application/rss+xml; charset=UTF-8
+BYTES: 95983
+
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Portland Monthly</title>
+	<atom:link href="https://www.pdxmonthly.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://www.pdxmonthly.com/</link>
+	<description></description>
+	<lastBuildDate>Wed, 28 Oct 2026 10:07:45 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=7.0.4</generator>
+	<item>
+		<title>A More Refined Standard of Living at The Ritz-Carlton Residences, Portland</title>
+		<link>https://www.pdxmonthly.com/sponsored/a-more-refined-standard-of-living-at-the-ritz-carlton-residences-portland/</link>
+		
+		<dc:creator><![CDATA[Faith Paris]]></dc:creator>
+		<pubDate>Wed, 28 Oct 2026 10:07:45 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<category><![CDATA[Real Estate News]]></category>
+		<category><![CDATA[Property Watch]]></category>
+		<category><![CDATA[Hotels]]></category>
+		<guid isPermaLink="false">https://www.pdxmonthly.com/?p=70119</guid>
+
+					<description><![CDATA[<p>With an exceptional collection of amenities and personalized services, The Ritz-Carlton Residences, Portland elevates everyday living into something genuinely unique. And Owners at The Residences recognize the value in a lifestyle where every detail has been carefully considered to make each day feel effortlessly elevated. For many Owners, the distinction is most apparent in the [&#8230;]</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/a-more-refined-standard-of-living-at-the-ritz-carlton-residences-portland/">A More Refined Standard of Living at The Ritz-Carlton Residences, Portland</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure id="attachment_70122" aria-describedby="caption-attachment-70122" style="width: 1000px" class="wp-caption aligncenter"><img fetchpriority="high" decoding="async" class="wp-image-70122 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1.jpg" alt="Ritz-Carlton Residences" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_1-600x400.jpg 600w" sizes="(max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70122" class="wp-caption-text">Discover a refined retreat in the heart of the city pairing modern luxury with sweeping views of the downtown skyline and majestic Mt. Hood. // Photo by Iris and Light</figcaption></figure>
+<p>With an exceptional collection of amenities and personalized services, <a href="https://www.rcrportland.com/?utm_source=26_0852_PDX_MONTHLY&amp;utm_medium=DIGITAL&amp;utm_campaign=SPONSORED_ARTICLE&amp;utm_id=26_0852">The Ritz-Carlton Residences, Portland</a> elevates everyday living into something genuinely unique. And Owners at The Residences recognize the value in a lifestyle where every detail has been carefully considered to make each day feel effortlessly elevated.</p>
+<p>For many Owners, the distinction is most apparent in the service. The Ritz-Carlton philosophy centers on anticipating needs before they are expressed, creating an experience that feels both personal and intuitive. Staff members become familiar faces who know Owners by name, helping arrange transportation, secure concert tickets, coordinate gatherings, or simply make a day run more smoothly. With access to hotel dining, spa services, and other conveniences, home becomes a place where many of life’s details are quietly taken care of.</p>
+<figure id="attachment_70125" aria-describedby="caption-attachment-70125" style="width: 1000px" class="wp-caption aligncenter"><img decoding="async" class="wp-image-70125 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2.jpg" alt="Ritz-Carlton Residences" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_2-600x400.jpg 600w" sizes="(max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70125" class="wp-caption-text">Let the Ritz-Carlton, Portland chefs bring culinary excellence to you with in-Residence dining, an exclusive Owner amenity. // Photo by Ruum Media</figcaption></figure>
+<p>This integrated lifestyle is reflected in the building’s monthly homeowners association (HOA) dues. While among Portland’s highest, the fee supports a more comprehensive level of service, security, amenities, and common-area maintenance than a conventional condominium typically provides.</p>
+<p>“The Ritz-Carlton offers amenities such as a fitness center, private conference room, and golf simulator,” said Patrick Clark of Christie’s International Real Estate Evergreen, The Residences’ exclusive brokerage firm. “Those amenities require additional staffing, utilities, insurance, cleaning, maintenance, and long-term reserve funding. HOA fees need to be evaluated in the context of what each building provides.”</p>
+<figure id="attachment_70131" aria-describedby="caption-attachment-70131" style="width: 1000px" class="wp-caption aligncenter"><img decoding="async" class="wp-image-70131 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4.jpg" alt="Ritz-Carlton Residences" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_4-600x400.jpg 600w" sizes="(max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70131" class="wp-caption-text">The incomparable Hidden Mountain Lake infinity pool makes day feel like a vacation at The Ritz-Carlton Residences, Portland. // Photo by League Creative Co</figcaption></figure>
+<p>For Owners, the value extends beyond convenience. An indoor pool, for example, brings the pleasure of a private swimming facility without the responsibility of maintaining one independently. Concierge and security services offer reassurance, while shared spaces create opportunities to entertain and connect without leaving home. The result is an experience that would be difficult, and often costly, to recreate separately.</p>
+<p>Prospective Owners should still take the time to understand what monthly dues cover, how reserves are funded, and whether the association is adequately prepared for future maintenance and repairs. As Clark says, “A well-managed association may charge more each month because it is realistically funding future repairs instead of postponing them and presenting owners with a large special assessment later.”</p>
+<figure id="attachment_70128" aria-describedby="caption-attachment-70128" style="width: 1000px" class="wp-caption aligncenter"><img loading="lazy" decoding="async" class="wp-image-70128 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3.jpg" alt="Ritz-Carlton Residences" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_Ritz_Nov_Thumbnail_3-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70128" class="wp-caption-text">Workouts are truly elevated at the Fitness Facility boasting stunning views through floor-to-ceiling window walls. // Photo by League Creative Co</figcaption></figure>
+<p>At The Residences, the broader consideration is what those dues make possible: a distinctive combination of private ownership, hotel-inspired hospitality, and amenities integrated into daily life.</p>
+<p>Pádraic Mulcahy, Director of Residences, describes the commitment as creating “unique, memorable, and personal experiences for each Owner.”</p>
+<p>Ultimately, <a href="https://www.rcrportland.com/?utm_source=26_0852_PDX_MONTHLY&amp;utm_medium=DIGITAL&amp;utm_campaign=SPONSORED_ARTICLE&amp;utm_id=26_0852">The Ritz-Carlton Residences, Portland</a> offer something beyond square footage and finishes. They offer time, ease, connection, and the reassurance of thoughtful service. For those who value these privileges, the investment is measured not simply in monthly expenses, but in the quality of the life they make possible.</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/a-more-refined-standard-of-living-at-the-ritz-carlton-residences-portland/">A More Refined Standard of Living at The Ritz-Carlton Residences, Portland</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Columbia River Maritime Museum’s New Warnock Building Expands Educational Opportunities</title>
+		<link>https://www.pdxmonthly.com/sponsored/columbia-river-maritime-museums-new-warnock-building-expands-educational-opportunities/</link>
+		
+		<dc:creator><![CDATA[Faith Paris]]></dc:creator>
+		<pubDate>Wed, 28 Oct 2026 00:47:34 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<category><![CDATA[Travel and Outdoors]]></category>
+		<category><![CDATA[Columbia River Maritime Museum]]></category>
+		<guid isPermaLink="false">https://www.pdxmonthly.com/?p=70077</guid>
+
+					<description><![CDATA[<p>For decades, Columbia River Maritime Museum (CRMM) has connected students and communities throughout Oregon and Southwest Washington to the maritime world through engaging, hands-on educational experiences. With the opening of the Warnock Building, home of Mariners Hall, the Museum is expanding those opportunities with dedicated learning spaces, interactive exhibits, and new ways for students to [&#8230;]</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/columbia-river-maritime-museums-new-warnock-building-expands-educational-opportunities/">Columbia River Maritime Museum’s New Warnock Building Expands Educational Opportunities</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70083 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1.jpg" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_1-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" />For decades, Columbia River Maritime Museum (CRMM) has connected students and communities throughout Oregon and Southwest Washington to the maritime world through engaging, hands-on educational experiences. With the opening of the Warnock Building, home of Mariners Hall, the Museum is expanding those opportunities with dedicated learning spaces, interactive exhibits, and new ways for students to explore Science, Technology, Engineering, Arts, and Math (STEAM) through the lens of maritime heritage.<br />
+Last year, the Museum’s Education Department’s educational interactions exceeded 40,000, and the new space aims to build on that established foundation, inviting people of all ages to discover how STEAM can connect to future careers.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70095 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5.jpg" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_5-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<p>“In education, we are keenly aware that people learn through experience,” shared Katy Menne, education director at the Museum. “Allowing visitors to climb aboard vessels, imagine themselves in these moments, seeing the waves firsthand – it puts people in a scenario they may never experience.”</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70086 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2.jpg" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_2-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<h4><strong>Students Learning Through Discovery</strong></h4>
+<p>Tailored to different grade levels, students visiting Mariners Hall can participate in learning labs. There is also a new purpose-built classroom and approximately 3,700 square feet dedicated to educational programming. Throughout the STEAM area, interactive exhibits invite visitors to investigate questions such as: How does a lighthouse lens bend light? How can a pulley make lifting heavy objects easier? Why can a massive steel ship float? Other activities explore gears and the transfer of power, flywheels, bridge construction, and the science behind hydrofoils. By connecting these concepts to familiar maritime objects and technologies, the exhibits make complex principles fun and engaging.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70098 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6.png" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6.png 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-300x200.png 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-768x512.png 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-630x420.png 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-150x100.png 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-696x464.png 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_6-600x400.png 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<p>One of the biggest additions to the area is a permanent tank dedicated to remotely operated vehicle (ROV) programming, which introduces students to underwater exploration while building skills in electronics, propulsion, structural engineering, and teamwork. Working in small teams, students receive a collection of components and collaborate to construct an ROV. Once their vehicles are assembled, teams put their designs to the test in the tank, maneuvering them to the bottom to retrieve objects and return them to the surface. CRMM is the only organization in the region offering a submersible ROV program for youth in grades four through seven.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70101 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1.png" alt="Columbia River Maritime Museum" width="1000" height="1400" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1.png 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-214x300.png 214w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-731x1024.png 731w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-768x1075.png 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-300x420.png 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-150x210.png 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-696x974.png 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_1-600x840.png 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<p>The Museum’s emphasis on maritime careers also helps students see how the concepts they encounter in school translate into real-world opportunities. From engineering and electronics to vessel design, underwater exploration and environmental science, maritime industries offer a wide range of STEAM pathways.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70089 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3.jpg" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_3-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<h4><strong>Education for Other Ages and Stages</strong></h4>
+<p>For younger children, Block Harbor is an indoor maritime-themed play space that welcomes kids and their parents to explore the sights and activities of a working harbor through imaginative play. Large blue foam blocks provide the building materials for young visitors to create, stack and experiment. At the heart of the space is a boat children can climb on and explore.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70104 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2.png" alt="Columbia River Maritime Museum" width="1000" height="1400" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2.png 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-214x300.png 214w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-731x1024.png 731w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-768x1075.png 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-300x420.png 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-150x210.png 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-696x974.png 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_Horizontal_2-600x840.png 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<p>Menne said, “Block Harbor not only helps provide an indoor space for families to enjoy, but it also sparks curiosity from the youngest visitors. Many people who now work in the maritime industry often talk about an early memory that informed their future career choice. Who knows, this could be that memory for the next generation.”</p>
+<p>Programs also take place throughout the community, including via senior engagement programs delivered at residential senior facilities for people unable to visit the campus. Additionally, Mariners Hall offers new opportunities for families, school groups and other visitors to learn together. Its interactive exhibits encourage visitors of different ages and backgrounds to engage with maritime technology, explore scientific concepts and discover the people and innovations behind the area’s rich history.</p>
+<p><img loading="lazy" decoding="async" class="aligncenter wp-image-70092 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4.jpg" alt="Columbia River Maritime Museum" width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/PDX_CRMM_Nov_Thumbnail_4-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></p>
+<h4><strong>Plan Your Trip</strong></h4>
+<p>The new Warnock Building opens at 1 PM, November 20, and it’s truly a new way of telling maritime history. So, come and explore the Columbia River Maritime Museum this autumn and learn about the people’s lives that were shaped by the water. A quick drive from Portland, Astoria invites guests to take in the breathtaking water views and learn about some of the Columbia River’s amazing history. Learn more and plan your visit today at <a href="https://www.crmm.org">www.crmm.org</a>.</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/columbia-river-maritime-museums-new-warnock-building-expands-educational-opportunities/">Columbia River Maritime Museum’s New Warnock Building Expands Educational Opportunities</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>A Meal Is Just the Start of Something Wholesome</title>
+		<link>https://www.pdxmonthly.com/sponsored/a-meal-is-just-the-start-of-something-wholesome/</link>
+		
+		<dc:creator><![CDATA[Faith Paris]]></dc:creator>
+		<pubDate>Tue, 27 Oct 2026 23:44:16 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<category><![CDATA[Real Estate News]]></category>
+		<category><![CDATA[Nonprofits]]></category>
+		<guid isPermaLink="false">https://www.pdxmonthly.com/?p=70047</guid>
+
+					<description><![CDATA[<p>For older adults, the COVID-19 pandemic was particularly challenging. As the world unsnared supply chains and planned for a new normal, health risks kept us much more than 6 feet apart, further isolating those already living on their own. The need for the nutrition and socialization provided by Meals on Wheels People had never been [&#8230;]</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/a-meal-is-just-the-start-of-something-wholesome/">A Meal Is Just the Start of Something Wholesome</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure id="attachment_70050" aria-describedby="caption-attachment-70050" style="width: 1000px" class="wp-caption aligncenter"><img loading="lazy" decoding="async" class="wp-image-70050 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1.jpg" alt="Meals on Wheels People staff and volunteers invite shoppers to join the Donate Dinner tradition at New Seasons Market, helping raise funds for nutritious meals and human connection for older adults in our community. Photo courtesy Meals on Wheels People." width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_1-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70050" class="wp-caption-text">Meals on Wheels People staff and volunteers invite shoppers to join the Donate Dinner tradition at New Seasons Market, helping raise funds for nutritious meals and human connection for older adults in our community. Photo courtesy Meals on Wheels People.</figcaption></figure>
+<p>For older adults, the COVID-19 pandemic was particularly challenging. As the world unsnared supply chains and planned for a new normal, health risks kept us much more than 6 feet apart, further isolating those already living on their own. The need for the nutrition and socialization provided by Meals on Wheels People had never been higher — until now.</p>
+<p>That’s right. In the past year, the <a href="https://www.mowp.org/2026/09/need-for-meals/">nonprofit home delivered 1,131,938 meals</a>, eclipsing what was sent out in 2021 by more than 15,000 meals. When you factor in the rising cost of living — food, housing, utilities, transportation, and health care — everyone is feeling the squeeze on their budgets.</p>
+<p>But in a world where many things can feel out of your control, supporting Meals on Wheels People’s mission can be a way to have a direct, positive impact on your community — and <a href="https://www.mowp.org/donate-dinner/">Donate Dinner</a> makes it easy.</p>
+<p>From Nov. 18-25, shoppers at New Seasons Market, Market of Choice, and Jim’s Thriftway can donate the cost of a meal (or more) at checkout. You can also <a href="https://www.mowp.org/donate-dinner/?utm_source=pm&amp;utm_medium=website&amp;utm_campaign=donate_dinner">make an online contribution anytime</a>, or spread the word about the campaign, now in its 23rd year, on <a href="https://static.mowp.org/uploads/DD-Social-Media-Toolkit-2026_v1.pdf">social media</a>.</p>
+<p><a href="https://mowp.volunteerhub.com/vv2/lp/donatedinner">Volunteering your time</a> at a grocery store during the week leading up to Thanksgiving is another great way to chip in. Stores with volunteers tend to raise three times more than locations without on-site support.</p>
+<figure id="attachment_70053" aria-describedby="caption-attachment-70053" style="width: 1000px" class="wp-caption aligncenter"><img loading="lazy" decoding="async" class="wp-image-70053 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2.jpg" alt="Volunteer Sally Galligan delivers meals to Sheena, 79, helping her stretch her limited grocery budget while bringing a familiar, friendly face to her door. Photo by Nicole Ceron." width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_2-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70053" class="wp-caption-text">Volunteer Sally Galligan delivers meals to Sheena, 79, helping her stretch her limited grocery budget while bringing a familiar, friendly face to her door. Photo by Nicole Ceron.</figcaption></figure>
+<p>When you pay it forward, the meal is just the start for people like Sheena. As her bills went up, the 79-year-old widow had to sell her car to keep her pantry stocked. Meals on Wheels People’s deliveries enable her to stretch her $30 monthly SNAP benefits a bit further, providing vital nutrition. Visits from her volunteer drivers, Sally and Chris Galligan, not only bring a bite to eat and a couple of bright smiles but also companionship and a willingness to go the extra mile.</p>
+<p>“Things are so much more expensive. There’s a lot of stuff I do without. So the meals from Meals on Wheels People really help,” Sheena says. “They [Sally and Chris] really help. They’re just outgoing people. They’re like family. They’re so friendly, so thoughtful, and just caring. They gave me a Christmas card. They are so good.”</p>
+<p>With the holidays approaching, everyone deserves to feel safe in their home, and the overlapping services provided by Meals on Wheels People, such as weekly phone calls and even access to free or discounted vet checkups through the <a href="https://www.mowp.org/pet-program/">Pet Program</a>, are important boosts to the mental and emotional well-being of thousands, some of whom may be your neighbors.</p>
+<p>“A lot of folks don’t realize it, but it’s a double-check system,” says Larry Smith, a volunteer delivery driver for nearly 20 years. “Not only are you providing meals, but you’re checking in on the status of individuals. When you go to the door, you deliver the meal, and you ask them if everything is OK. We’re a set of eyes. It’s important.”</p>
+<figure id="attachment_70056" aria-describedby="caption-attachment-70056" style="width: 1000px" class="wp-caption aligncenter"><img loading="lazy" decoding="async" class="wp-image-70056 size-full" src="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3.jpg" alt="Meals on Wheels People volunteers Sally and Chris Galligan have delivered meals to Sheena since 2023. Their visits bring more than food — they’ve built a friendship Sheena describes as “like family.” Photo by Nicole Ceron." width="1000" height="667" srcset="https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3.jpg 1000w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-300x200.jpg 300w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-768x512.jpg 768w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-630x420.jpg 630w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-150x100.jpg 150w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-696x464.jpg 696w, https://www.pdxmonthly.com/wp-content/uploads/sites/195/2026/10/MOW_Nov_Thumbnail_3-600x400.jpg 600w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /><figcaption id="caption-attachment-70056" class="wp-caption-text">Meals on Wheels People volunteers Sally and Chris Galligan have delivered meals to Sheena since 2023. Their visits bring more than food — they’ve built a friendship Sheena describes as “like family.” Photo by Nicole Ceron.</figcaption></figure>
+<p>In the face of unprecedented need, Donate Dinner’s fundraising goal — $480,000 — is even bigger, to ensure that no one has to go on a waiting list for meals this holiday season and into 2027.</p>
+<p>Between the news and day-to-day responsibilities, there is a lot competing for our attention right now, but by taking a moment to give to Meals on Wheels People, you can be confident that you’ve helped make someone’s life a little bit better.</p>
+<p>Visit <a href="https://www.mowp.org/donate-dinner/?utm_source=pm&amp;utm_medium=website&amp;utm_campaign=donate_dinner">donatedinner.org</a> to donate, volunteer, or spread the word.</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/a-meal-is-just-the-start-of-something-wholesome/">A Meal Is Just the Start of Something Wholesome</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>The Joys and Trials of Portland’s Urban Canopy</title>
+		<link>https://www.pdxmonthly.com/news-and-city-life/politics/tree-code-urban-canopy-climate-change/</link>
+		
+		<dc:creator><![CDATA[Christen McCurdy]]></dc:creator>
+		<pubDate>Mon, 26 Oct 2026 15:00:00 +0000</pubDate>
+				<category><![CDATA[Politics]]></category>
+		<category><![CDATA[Nature]]></category>
+		<category><![CDATA[Environment]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/?p=63589</guid>
+
+					<description><![CDATA[<p>Caring for the city’s trees is a complex puzzle, especially amid a changing climate.</p>
+<p>The post <a href="https://www.pdxmonthly.com/news-and-city-life/politics/tree-code-urban-canopy-climate-change/">The Joys and Trials of Portland’s Urban Canopy</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/portland-trees_c9xeve.jpg" /><figcaption class="wp-caption-text">
+<div>
+<p>Image: <a href="/producers/chris-koelling">Chris Koelling</a></p>
+</div>
+</figcaption></figure>
+<p>Bruce Nelson has lived in Northeast Portland’s <a href="/articles/neighborhood-guide-cully" target="_self">Cully neighborhood</a> since the 1970s. On a recent Tuesday afternoon, standing on NE Going Street, he points out a section of sidewalk that curves to accommodate an enormous old deodar cedar. “The developer, I believe, had to get a special permit,” says Nelson, a longtime arborist and a member of Portland’s Urban Forestry Commission. Noelle Studer-Spevak, an environmental advocate who’s lived in Cully since 2013, chimes in to confirm: “Not just that—we had to go all the way to the mayor’s office to fight to save [it].”</p>
+<p>Studer-Spevak and her partner, Eli Spevak, helped develop Cully Grove, the 16-unit cohousing community where they now live. The deodar cedar stands at a corner of the property. Studer-Spevak indicates where they were able to preserve other old trees in the development—a white oak here, a line of Douglas firs at the center of the community space. “Everybody thinks <a href="/articles/portland-tree-canopy-friends-of-trees" target="_self">tree planting</a> is really sexy,” she says, “but tree preservation is just critical.”</p>
+<p>Once upon a time, preserving trees was of least concern in Portland. One of the city’s first nicknames was “Stumptown,” earned in the middle of the nineteenth century after the area’s first white settlers cleared so many trees so quickly that there was little left but, well, stumps. (According to local lore, residents sometimes hopped from stump to stump to get around rather than splashing through the mud.) But David-Paul Hedberg, a historian who studies the relationship between people and trees, says those early Portlanders almost immediately planted as many new trees as possible. They started regulating them nearly as quickly, adopting rules relating to the planting and care of street trees as early as the 1850s. By the 1970s, locals took steps to preserve historic trees. In 2015, the city passed a formal tree code, officially designated as Title 11, to govern all trees within city limits, on both public and private property.</p>
+<aside>One of the city’s first nicknames was “Stumptown,” earned in the middle of the nineteenth century after the area’s first white settlers cleared so many trees so quickly that there was little left but, well, stumps.</p>
+</aside>
+<p>The code, in the decade since, has met largely negative reviews. While no one disputes the value of trees, some would argue the city has been overzealous in its protection of individual specimens. Homeowners seeking removal have met an onerous process, costly permit fees, or worse. Last summer, the city paid $272,400 in damages to Sarah and Joel Bond, whose Southwest Portland home was crushed by a falling tree; they had been denied a permit by the city two years before to cut the tree down. Since eliminating most tree removal permit fees in 2025, the city launched a revision of the tree code. Draft amendments should be released for public comment this spring.</p>
+<p>According to Brian Landoe, a strategy and planning manager for the city’s Urban Forestry program, current conversations revolve around the same tension they always have. “People really identify trees with what it means to live here, and at the same time, there is this question of…the way that we balance the public benefits [of] trees versus private property rights,” he says.</p>
+<p>Geoffrey Donovan, who worked as a research forester for the US Forest Service until 2025 and is now a consultant, echoes that idea. “There’s always going to be a tension between the private benefits versus the community benefits,” says Donovan, whose work has linked access to trees with public health outcomes, including birthweights (which are higher among babies born to those in ZIP codes with more trees) and cardiovascular health (also better in heavily treed communities). He’s happy to see some city pilot programs that feel more like carrots than sticks, like one that funds the care and maintenance of street trees and another that assists low-income property owners with tree care<br />
+maintenance.</p>
+<p>Both Studer-Spevak and Nelson are members of the <a href="https://350pdx.org/shade-equity/" target="_blank" rel="noopener">Shade Equity Coalition</a>, a group that formed after the June 2021 heat dome to advocate for improved tree canopy coverage in Portland. That event exposed <a href="https://www.newyorker.com/magazine/2021/10/18/seventy-two-hours-under-the-heat-dome" target="_blank" rel="noopener">severe heat disparities</a> across the city: In Lents, where trees cast a shadow over just 23 percent of the area, temperatures hit 124 degrees Fahrenheit. Across the city near Forest Park, in a pocket of a neighborhood with 64 percent canopy, it topped out at 99. While a typical year sees no heat deaths in Multnomah County, 2021 saw 72, all but three of which were attributed to June’s heat dome. “We used to think about climate change as, like, off in the distance, and we’re here,” Studer-Spevak says. “It’s on, full force.” The heat dome, she says, “was a deadly stress test.”</p>
+<p>The <a href="https://www.portland.gov/trees/urban-forest-management-plan" target="_blank" rel="noopener">Urban Forest Plan</a>, adopted last year by city council, sets new targets for the canopy, which currently covers 32 percent of Portland’s land area. The Urban Forest Plan aims to increase this to 35 percent by 2045 and 45 percent by 2065, and to more equitably spread tree canopy across the city. For her part, Studer-Spevak says she’d like to see the city adopt a principle like the 3-30-300 rule developed by Canadian urban forestry expert Cecil Konijnendijk: the idea that everyone should be able to see three trees from their home, every neighborhood should have 30 percent canopy cover, and everyone should live 300 meters from a park.</p>
+<p>Hedberg, who’s also a former member of the Urban Forestry Commission, notes how unusually hospitable Portland is to such a wide range of trees. “We have the ability to grow stuff from all over the world here,” he says. “We can grow tropical trees, we can grow Arctic-Alpine trees.” But he emphasizes that as the climate changes, so too must tree management. “The way we [assessed a] tree three or four years ago is not the same way we risk-assess it today,” Hedberg says. “It’s a discovery science…. This stuff gets a little more nuanced than just [preserving] big old trees for future generations.”</p>
+<p>The post <a href="https://www.pdxmonthly.com/news-and-city-life/politics/tree-code-urban-canopy-climate-change/">The Joys and Trials of Portland’s Urban Canopy</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Your Alaska Winter Escape is Calling in Anchorage</title>
+		<link>https://www.pdxmonthly.com/sponsored/your-alaska-winter-escape-is-calling-in-anchorage/</link>
+		
+		<dc:creator><![CDATA[mwh]]></dc:creator>
+		<pubDate>Fri, 23 Oct 2026 19:59:39 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/your-alaska-winter-escape-is-calling-in-anchorage/</guid>
+
+					<description><![CDATA[<p>&#160; Wintertime is when Anchorage shines. Trails and parks invite runners and fat tire bikers, while nearby snowy mountains offer skiing and snowboarding. Lively events and a dynamic dining scene fill the city with festive cheer and cozy vibes. Just beyond downtown, tall glaciers make it easy to experience more unforgettable sights. And as night [&#8230;]</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/your-alaska-winter-escape-is-calling-in-anchorage/">Your Alaska Winter Escape is Calling in Anchorage</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<p>&nbsp;</p>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/6fad976f2e98d47f336f84a89b0854631ab870bffb9895a99256c333601a2dfb.jpg" /><figcaption class="wp-caption-text"></figcaption></figure>
+<p>Wintertime is when Anchorage shines. Trails and parks invite runners and fat tire bikers, while nearby snowy mountains offer skiing and snowboarding. Lively events and a dynamic dining scene fill the city with festive cheer and cozy vibes. Just beyond downtown, tall glaciers make it easy to experience more unforgettable sights. And as night falls, look up for the iconic aurora, painting the sky in shades of green and purple.</p>
+<p><strong>Snow-Covered Peaks and Epic Trails </strong><br />
+Carve powder on mountains, glide across snow-covered trails, rev up on a snowmobile speeding across the flats, or listen to snow falling in the forest. Whether it’s an adrenaline-fueled adventure or quiet moments in the snow, Anchorage is the ultimate winter playground for it all.</p>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/21a95c905d3c7b5f1a3c7b0847451c6de80910c65949442ec09b9a13464698d1.jpg" /><figcaption class="wp-caption-text"></figcaption></figure>
+<p><strong>Discover Anchorage’s Local Delights </strong><br />
+After a day of snowy exploration, refuel with Anchorage’s savory eats: halibut tacos, Alaska salmon chowder, reindeer dogs, and more. Then, tap into the city’s seasonal spirit, where locals bring Alaska-sized energy to celebrations like Heyi Days, Winter Solstice, Fur Rendezvous, and the Iditarod.</p>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/c3639b24a2d558eddb202810be7b485bb667f5a602e006b27a0f5bc922db324f.jpg" /><figcaption class="wp-caption-text"></figcaption></figure>
+<p><strong>Get Front-Row Seats to Alaska’s Natural Wonders </strong><br />
+More breathtaking scenery awaits beyond city lights. Drive along the scenic Turnagain Arm for cerulean-blue glaciers. At night, capture one of Alaska’s most mind-blowing shows,  the northern lights. Watch as they dance above snowy peaks with vibrant shades of green, purple, and pink that paint a quintessential image.</p>
+<p>Indoors and out, Anchorage offers many ways to embrace the season. With nonstop flights from Portland, experiencing Alaska’s seasonal glow is easier than ever.<br />
+<strong>Start planning today at <a href="https://www.anchorage.net/winter/?utm_source=pdx-monthly&amp;utm_medium=link&amp;utm_content=winter_escapes&amp;utm_campaign=national-consumer" target="_blank" rel="noopener">Anchorage.net</a></strong></p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/your-alaska-winter-escape-is-calling-in-anchorage/">Your Alaska Winter Escape is Calling in Anchorage</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>The Holidays Feel Special Here</title>
+		<link>https://www.pdxmonthly.com/sponsored/the-holidays-feel-special-here-winter-escapes-2026/</link>
+		
+		<dc:creator><![CDATA[mwh]]></dc:creator>
+		<pubDate>Fri, 23 Oct 2026 19:53:25 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/the-holidays-feel-special-here-winter-escapes-2026/</guid>
+
+					<description><![CDATA[<p>With the historic main street glowing in soft lights and a trolley winding through town, it&#8217;s easy to see why Jacksonville was recently named by HGTV as &#8220;The Most Charming Town in Oregon,&#8221; and voted the perfect place for a Hallmark Movie. This town is absolutely tipsy on festive charm.&#160; What makes Jacksonville trip-worthy any [&#8230;]</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/the-holidays-feel-special-here-winter-escapes-2026/">The Holidays Feel Special Here</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/the-holidays-feel-special-here-2_rhyytt.jpg"><figcaption class="wp-caption-text"></figcaption></figure>
+<p>With the historic main street glowing in soft lights and a trolley winding through town, it&rsquo;s easy to see why Jacksonville was recently named by HGTV as &ldquo;The Most Charming Town in Oregon,&rdquo; and voted the perfect place for a Hallmark Movie. This town is absolutely tipsy on festive charm.&nbsp;</p>
+<p>What makes Jacksonville trip-worthy any time of year is that it&rsquo;s been preserved since the 1800s gold-rush era, when miners dotted the snow-dusted hills hoping to strike rich. Now with its patinaed brick buildings and timeworn stoops, the draw hasn&rsquo;t faded, especially when it&rsquo;s all dressed up in green garlands and red bows.&nbsp;&nbsp;</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/the-holidays-feel-special-here_ufaujl.jpg"><figcaption class="wp-caption-text"></figcaption></figure>
+<p>At the top of the list for any winter visit to Jacksonville is the Holiday Trolley Lights Tour. Grab your hot cocoa as the trolley takes you on a tour of Victorian homes and storefronts sparkling in lights. Tickets go on sale Nov. 1st&ndash;book early as they sell out fast.&nbsp;</p>
+<p>Jacksonville&rsquo;s jewel of the season is the Victorian Holiday Parade, complete with marching bands, horse drawn carriages, and Santa arriving in his vintage red pick-up truck. The Annual Christmas Tree Lighting Ceremony in front of historic City Hall is also a favorite amongst visitors and locals.&nbsp;</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/the-holidays-feel-special-here-1_zpzsfu.jpg"><figcaption class="wp-caption-text"></figcaption></figure>
+<p>Only four hours from Portland and minutes to the Medford International Airport, a trip to Jacksonville offers the child-like excitement of the season and a chance to make new&nbsp;holiday traditions.&nbsp;</p>
+<p><strong>Holiday Trolley Lights Tour </strong></p>
+<p>Tickets on Sale Nov. 1&nbsp;</p>
+<p><strong>Tree Lighting Ceremony </strong></p>
+<p>Nov. 28, 5:00 p.m.&nbsp;</p>
+<p><strong>Victorian Holiday Parade </strong></p>
+<p>Dec. 5, 10:00 a.m.&nbsp;<br />&nbsp;<br /><a href="https://christmasinjacksonville.com/" target="_blank" rel="noopener">ChristmasInJacksonville.com&nbsp;</a></p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/the-holidays-feel-special-here-winter-escapes-2026/">The Holidays Feel Special Here</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Property Watch: Is This the Coolest Midcentury in Concordia?</title>
+		<link>https://www.pdxmonthly.com/home-and-real-estate/architecture-and-design/property-watch-concordia-portland-oregon-midcentury/</link>
+		
+		<dc:creator><![CDATA[Melissa Dalton]]></dc:creator>
+		<pubDate>Fri, 23 Oct 2026 16:30:00 +0000</pubDate>
+				<category><![CDATA[Property Watch]]></category>
+		<category><![CDATA[Architecture & Design]]></category>
+		<category><![CDATA[Home Design]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/property-watch-concordia-portland-oregon-midcentury/</guid>
+
+					<description><![CDATA[<p>Come for the original details—Roman brick, three fireplaces, and wood built-ins—and stay for the basement bar and mural.</p>
+<p>The post <a href="https://www.pdxmonthly.com/home-and-real-estate/architecture-and-design/property-watch-concordia-portland-oregon-midcentury/">Property Watch: Is This the Coolest Midcentury in Concordia?</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/f9f7ffa89e84a3a648d22acfe82113e8dba50b356a2815273bc943f373b38736.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<p><span >Did you know</span> that there&#8217;s a <a href="/articles/concordia-portland-midcentury-home-for-sale" target="_self"    >neighborhood pocket in Concordia</a> known for its pristine midcentury houses? Specifically, it&#8217;s in the side-by-side Van Laeken and Leitritz additions, the latter apparently named for a builder, Lester E. Leitritz, who worked with residential designer Perry Weber in the 1950s on many homes in the area.</p>
+<p>At that time, sprawling farmland and orchards were being developed into a modern suburb anchored by <a href="/articles/best-parks-portland" target="_self"    >Fernhill Park</a>, which was a hilly acreage bought by the city because nothing could be grown there and it had become an <a href="https://alamedahistory.org/2017/04/22/fernhill-park-from-wild-thicket-to-popular-neighborhood-park/" target="_blank" rel="noopener">informal dump</a>. Nowadays, many of the surviving homes are loved for their strong midcentury character and preserved features, from Roman brick facades to basement cocktail bars.</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/6f12aa1ad4914b7d4dc4141a130f5ac3a326cb88e63dfa527fafc4320edfb9f8.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<p>This house on NE Rosa Parks Way was built in 1957 (see an <a href="https://alamedahistory.org/wp-content/uploads/2017/04/fernhill-detail-1956.jpg" target="_blank" rel="noopener">aerial photo</a> of the area in 1956) and has many beloved midcentury features still intact, as well as additional delights to discover, in part because it&#8217;s a whopping 5,106 square feet across its two floors. In the living room, it&#8217;s all about the statement fireplace, flanked by built-ins and wood paneling, set across from a large bay window. A wide doorway leads to the dining room, with its handsome exposed beams at the ceiling, corner fireplace, and skylight overhead. The wall paneling even sports a vintage champagne-gold Talk-a-Phone Deluxe wall-mounted intercom.</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/438deea06970002ef83c770d4eb6b354e468296a4ed86a93b0db49dcc6cb70dc.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<p>Next up is a remodeled kitchen, separated from the dining room by a peninsula. It&#8217;s modern, sure, but a lot of effort has been made to make sure it blends in, from the custom cabinets that match the wood paneling to the black granite counters that echo the living room hearth. An accordion window over the sink opens to the backyard&#8217;s covered patio, as do two sets of glass doors, one here and one in the dining room, to make for easy entertaining. There&#8217;s even an equally modern outdoor kitchen there, while inside the kitchen corner, a cozy banquette provides another spot to linger.</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/StacksPhotoCo--48_hug9wy.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<p>This floor has three bedrooms and two bathrooms, with several handsome wood closets peppered throughout, and the primary bathroom remodeled with a walk-in shower, skylight, chic tile, and smart closet. The hall bathroom has our heart, though, not only because it retains its pink and green tile scheme, but thanks to a built-in planter box by the window. (Never seen that before.)</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/StacksPhotoCo--34_jn8mqr.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<p>Downstairs, the vintage vibes are even stronger, with a third fireplace, very period-specific floor coverings in a gold and orange harvest palette, space for a pool table, and more wood paneling, as well as another bedroom suite. The wet bar is still present and comes complete with a red tufted frontispiece, as well as a wall-to-wall mural featuring a sea serpent of some kind, <a href="/articles/portland-great-blue-heron-city-bird" target="_self"    >great blue herons</a>, and large pink flowers. The listing calls the whole floor a &#8220;stumble into a David Lynch fever dream,&#8221; and really, are they wrong? Prospective buyers are certainly fans, as the house has already gone pending after a few days.</p>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/StacksPhotoCo--68_tztern.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/courtesy-stacks-photography">Courtesy Stacks Photography</a></p>
+</div>
+</figcaption></figure>
+<h2><strong><a href="https://workwithneighbors.idxbroker.com/idx/details/listing/b001/340442751" target="_blank" rel="noopener">Listing</a> Fast Facts </strong></h2>
+<ul>
+<li><strong>Address:</strong> 3906 NE Rosa Parks Way, Portland, OR 97211</li>
+<li><strong>Size: </strong>5,106 square feet/4 bedroom/3 bath</li>
+<li><strong>List Date: </strong>10/15/2026</li>
+<li><strong>List Price: </strong>$1,098,000</li>
+<li><strong>Listing Agent: </strong>Jimi Hendrix, Neighbors Realty</li>
+</ul>
+<p><em >Melissa Dalton is a freelance writer who has focused on Pacific Northwest design and lifestyle since 2008. Contact Dalton&nbsp;</em><em ><a  href="https://www.melissadalton.net/" target="_blank" rel="noopener noreferrer"  >here</a></em><em >.</em>&nbsp;</p>
+<hr>
+<p><em><strong ><em >Editor&rsquo;s Note:</em></strong><em >&nbsp;</em></em>Portland Monthly<em><em >&rsquo;s &ldquo;Property Watch&rdquo; column takes a weekly look at an interesting home in&nbsp;<a href="/articles/portland-real-estate-homebuying-adventure" target="_self"    >Portland&rsquo;s real estate market</a> (with periodic ventures to the burbs and points beyond, for good measure). </em><em >Got a home you think would work for this column? Get in touch at&nbsp;</em><em ><a  href="mailto:editor@pdxmonthly.com" target="_blank" rel="noopener noreferrer"  >editor@pdxmonthly.com</a></em><em >.</em></em></p>
+<p>The post <a href="https://www.pdxmonthly.com/home-and-real-estate/architecture-and-design/property-watch-concordia-portland-oregon-midcentury/">Property Watch: Is This the Coolest Midcentury in Concordia?</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Winter Isn’t a Slump. It’s a Health Reset.</title>
+		<link>https://www.pdxmonthly.com/sponsored/winter-isnt-a-slump-its-a-health-reset/</link>
+		
+		<dc:creator><![CDATA[mwh]]></dc:creator>
+		<pubDate>Fri, 23 Oct 2026 01:33:01 +0000</pubDate>
+				<category><![CDATA[Sponsored]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/winter-isnt-a-slump-its-a-health-reset/</guid>
+
+					<description><![CDATA[<p>Portland naturopathic doctor Ericha Clare explains how seasonal care can support lasting well-being.</p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/winter-isnt-a-slump-its-a-health-reset/">Winter Isn’t a Slump. It’s a Health Reset.</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/ModaWellness-PortalndMonthly_Cobrandedpost_Image-01_vr8k2l.jpg" /><figcaption class="wp-caption-text">
+<div>A provider performs an intense pulsed light (IPL) treatment at Moda Wellness Clinic.</div>
+<div>
+<p>Image: <a href="/producers/moda-wellness-clinic">Moda Wellness Clinic</a></p>
+</div>
+</figcaption></figure>
+<p>By November, Portland knows the drill. The rain settles in, daylight disappears before dinner, and a familiar thought creeps in: just make it to spring.</p>
+<p>Dr. Ericha Clare, a naturopathic doctor at Moda Wellness Clinic in Johns Landing, sees it differently. To her, winter isn’t something to wait out. It’s an opportunity.</p>
+<blockquote><p>“Winter feels like an ending, but it’s really a beginning,” Dr. Clare said. “The small changes we make now set the tone for the year ahead.”</p></blockquote>
+<p>Her approach rests on one core belief: good care supports the body’s capacity to renew itself. Health, to her, comes down to vitality, resilience, and independence.</p>
+<p>Vitality: Listen to what your body is saying</p>
+<p>Vitality starts with paying attention. Low energy, brain fog, or a stubborn breakout can be signals worth hearing.</p>
+<p>Annual labs use wide ranges, so results can come back normal while a patient still feels off. Dr. Clare casts a wider net, with more markers and narrower, optimal ranges.</p>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/ModaWellness-PortalndMonthly_Cobrandedpost_Image-03_uavca7.jpg" /><figcaption class="wp-caption-text">
+<div>A patient settles in under a warm blanket for IV therapy at Moda Wellness Clinic.</div>
+<div>
+<p>Image: <a href="/producers/moda-wellness-clinic">Moda Wellness Clinic</a></p>
+</div>
+</figcaption></figure>
+<blockquote><p>“Being told you’re fine isn’t the same as feeling well,” she said. “I want to know what we can do to make you better than fine.”</p></blockquote>
+<p>Skin offers clues too. Moda Wellness providers look past acne or redness to what may be driving it, such as nutrition, gut health, or hormones.</p>
+<p>Recognizing those signals is one step. Building resilience is another.</p>
+<p>Resilience: Nourish, challenge, recover</p>
+<p>Resilience isn’t powering through. Dr. Clare defines it as the body’s ability to adapt to stress. Three habits support it.</p>
+<p>The first is nourishment. Constant hustle draws down the body’s reserves. Winter is a chance to refill them with consistent sleep, a slower pace, and slow-cooked meals that nourish as much as they comfort.</p>
+<p>The second is challenge. Small stressors like a brisk walk in the cold help the body adapt and grow stronger.</p>
+<p>Skin responds to small challenges too. In aesthetic care, microneedling creates controlled microinjuries that prompt repair, while injectable biostimulators gradually rebuild structure for a firmer, naturally refreshed look.</p>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/ModaWellness-PortalndMonthly_Cobrandedpost_Image-05_j36ljq.jpg" /><figcaption class="wp-caption-text">
+<div>The Moda Wellness Clinic team gathered in the lobby. From left: Becky Buck, Ericha Clare, Wendy Tran, Dairy Peñaloza, Desiree Cruz, and Rachel Anthony.</div>
+<div>
+<p>Image: <a href="/producers/moda-wellness-clinic">Moda Wellness Clinic</a></p>
+</div>
+</figcaption></figure>
+<blockquote><p>“We’re not putting collagen in,” Dr. Clare said. “We’re helping the skin make more of its own.”</p></blockquote>
+<p>The third is recovery. The body gets stronger in the rest that follows. Even slowing down during everyday tasks helps. Dr. Clare also suggests rotating treatments like acupuncture and IV therapy through the winter. Moda Wellness’ warmed tables and quiet relaxation room offer space for that pause.</p>
+<blockquote><p>“There’s something restorative about letting the treatment happen,” Dr. Clare said. “Your nervous system finally gets a breather.”</p></blockquote>
+<p>Independence: Invest in your future self</p>
+<p>Vitality and resilience build toward what Dr. Clare calls healthspan.</p>
+<blockquote><p>“Lifespan is how long you live. Healthspan is how healthy you are in those years,” she said. “A longer healthspan means more independence, the freedom to keep doing what you love for as long as you can.”</p></blockquote>
+<figure class="wp-caption aligncenter"><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/ModaWellness-PortalndMonthly_Cobrandedpost_Image-04_qezi4m.jpg" /><figcaption class="wp-caption-text">
+<div>A moss wall anchors the lobby at Moda Wellness Clinic in Johns Landing.</div>
+<div>
+<p>Image: <a href="/producers/moda-wellness-clinic">Moda Wellness Clinic</a></p>
+</div>
+</figcaption></figure>
+<p>For many, skin is an approachable place to begin. After summer, that’s often sun spots or uneven tone. Intense pulsed light (IPL) can help fade them, and with less sun exposure, winter is a practical time for treatment.</p>
+<p>Wherever someone starts, Dr. Clare keeps the whole person in view.</p>
+<blockquote><p>“I don’t fix people. I don’t heal people,” she said. “Your body knows how to do that. My job is to clear the way.”</p></blockquote>
+<p>Portland may be counting down to spring. The reset doesn’t have to wait.</p>
+<p>A winter offer for Portland residents</p>
+<p>New clients can take 20% off their first aesthetic treatment at <a href="https://modawellnessclinic.com?utm_source=PDXarticle&amp;utm_medium=PDXarticle&amp;utm_campaign=PDXarticle&amp;utm_id=PDXarticle&amp;utm_term=PDXarticle&amp;utm_content=PDXarticle" target="_blank" rel="noopener">Moda Wellness</a> through Dec. 31, 2026. Book your consultation at modawellnessclinic.com and mention code PDX20. Cannot be combined with other offers.</p>
+<p>Visit: Water Tower Building, 5331 S. Macadam Ave., Suite 255, Portland · 503-206-6200 · Open weekdays, 8 a.m. to 5 p.m.</p>
+<hr />
+<p>About <a href="https://modawellnessclinic.com?utm_source=PDXarticle&amp;utm_medium=PDXarticle&amp;utm_campaign=PDXarticle&amp;utm_id=PDXarticle&amp;utm_term=PDXarticle&amp;utm_content=PDXarticle" target="_blank" rel="noopener">Moda Wellness Clinic </a></p>
+<p>Moda Wellness Clinic brings functional wellness, nutrition, and aesthetic care together in Portland’s Johns Landing neighborhood. Opened in December 2025, the clinic treats the whole person rather than isolated symptoms, creating personalized care plans around each patient’s biology, lifestyle, and goals. Its team pairs attentive medicine with restorative treatments to help people feel, live, and look their best.</p>
+<p>Learn more at <a href="https://modawellnessclinic.com?utm_source=PDXarticle&amp;utm_medium=PDXarticle&amp;utm_campaign=PDXarticle&amp;utm_id=PDXarticle&amp;utm_term=PDXarticle&amp;utm_content=PDXarticle" target="_blank" rel="noopener">modawellnessclinic.com</a></p>
+<p>The post <a href="https://www.pdxmonthly.com/sponsored/winter-isnt-a-slump-its-a-health-reset/">Winter Isn’t a Slump. It’s a Health Reset.</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Take a Hike or Hit a Museum (and Shop While You’re There)</title>
+		<link>https://www.pdxmonthly.com/arts-and-culture/gift-guide-museum-stores/</link>
+		
+		<dc:creator><![CDATA[Margaret Seiler]]></dc:creator>
+		<pubDate>Thu, 22 Oct 2026 14:30:00 +0000</pubDate>
+				<category><![CDATA[Gift Guides]]></category>
+		<category><![CDATA[Arts & Culture]]></category>
+		<category><![CDATA[Portland Art Museum]]></category>
+		<category><![CDATA[Old Town]]></category>
+		<category><![CDATA[Museums]]></category>
+		<category><![CDATA[Hiking]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/gift-guide-museum-stores/</guid>
+
+					<description><![CDATA[<p>Exit through the gift shop.</p>
+<p>The post <a href="https://www.pdxmonthly.com/arts-and-culture/gift-guide-museum-stores/">Take a Hike or Hit a Museum (and Shop While You’re There)</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"      ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide_vtjhrq.jpg"><figcaption class="wp-caption-text">
+<div >Grab a fancy vase and a little friend at the Portland Art Museum gift shop.</div>
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<p><span >Jammed parking lots, Amazon guilt, shipping holdups</span>&mdash;you can avoid such shopping unpleasantries by simply visiting smaller stores in person. In Portland, you can also wander a wildlife sanctuary, soak up some culture, stroll through a peaceful garden, or meet a friend in a novel place for an after-work drink and then load up in a gift shop on your way out, and often support local makers and nonprofits while you&rsquo;re at it.</p>
+<hr>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h2><a href="https://portlandartmuseum.org/shop/" target="_blank" rel="noopener">Portland Art Museum</a></h2>
+</header>
+<p><main></p>
+<p>There&#8217;s so much to explore in the <a href="/articles/portland-art-museum-rothko-pavilion" target="_self"    >renovated PAM</a> that you might need to take some breaks. Tired? Kick off your shoes and lie down to gaze up at Pipilotti Rist&#8217;s video installation&nbsp;<em>4th Floor to Mildness</em>, which runs through January. Hungry? Enjoy a Providore sandwich or seasonal specials at museum caf&eacute; <a href="https://portlandartmuseum.org/coquelico-cafe/" target="_blank" rel="noopener">Coquelico</a>, and linger for a slice of color-paneled Rothko cake and French press caf&eacute; au lait. The restaurant opens right into the shop, where you can find plenty of items to brighten a desk or table&mdash;like this ripple vase (above, $360) from British Nigerian artist Yinka Ilori or bouncy Hoptimist toy ($28)&mdash;as well as hand-painted hair clips, Monet socks, sketchbooks and art supplies, &ldquo;You are on Native land&rdquo; baseball caps, Carrie Mae Weems photography tomes, and &ldquo;random cut&rdquo; mystery puzzles.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"     ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-2_wwsjtj.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<h2><a href="https://japanesegarden.org/gift-shop/" target="_blank" rel="noopener">Portland Japanese Garden</a></h2>
+</header>
+<p><main></p>
+<p>It&#8217;s hard to beat&nbsp;a misty, mossy winter day at the Portland Japanese Garden, which celebrates its 60th anniversary in 2027. Take one of the four daily tours; catch a concert, sake tasting, gallery show, or tea ceremony workshop; have a sandwich on fluffy shokupan bread in the <a href="https://japanesegarden.org/garden-spaces/umami-cafe/" target="_blank" rel="noopener">Umami Caf&eacute;</a>. Or just wander the steep hillside and take in the views. Then, for the gardener in your life, pick up a pair of hand-forged carbon steel Tobisho pruning shears ($150) from Yamagata, a region known for both samurai sword production and an abundance of fruit trees. Also find cute soup mugs ($15), ginkgo-print dish towels, history and art books, tea, and incense. (While the other gift shops mentioned here can be visited without buying a ticket, this one requires garden admission.)</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-3_fftnms.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<h2><a href="https://lansugarden.org/shop-dine/garden-shop/" target="_blank" rel="noopener">Lan Su Chinese Garden</a></h2>
+</header>
+<p><main></p>
+<p>Taking&nbsp;up a full block of <a href="/articles/old-town-history-nihonmachi-portland" target="_self"    >Old Town</a>, this transportive urban oasis is a riot of color even in winter,&nbsp;from the cold-weather blooms to the koi darting through the pond. Enjoy the tranquility,&nbsp;plus traditional tea service, cakes and cookies, egg tarts, congee, Chinese beers, BBQ&nbsp;pork buns, doughnuts, and snack plates from <br />the garden&#8217;s Yun Shui Teahouse. Swing into&nbsp;the gift shop for leaf-window dangly earrings&nbsp;from Lil&#8217; Bug Studios, watercolor sets for&nbsp;the budding artists in your life, perfumes&nbsp;with the essence of some of the garden&#8217;s plants, an array of candles (such as this little moon, $12.50), and tableware like this chopstick rest ($6.50.)</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-5_vwsubt.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<h3>Old Town Cultural Museums</h3>
+</header>
+<p><main></p>
+<p>Lan Su isn&#8217;t the only game in&nbsp;Old Town. The <a href="https://www.portlandchinatownmuseum.org" target="_blank" rel="noopener">Portland Chinatown Museum</a>, <a href="https://jamo.org" target="_blank" rel="noopener">Japanese American Museum of Oregon</a>, and <a href="https://www.ojmche.org" target="_blank" rel="noopener">Oregon Jewish Museum and Center for Holocaust Education</a> are all within a few blocks, and are small enough that their often history-focused exhibits can all be toured in the same afternoon. In the shops at JAMO and OJMCHE, find fun fake food like a sushi tack set ($10) or <br />banana menorah ($150) alongside locally made jewelry, art cards, and <br />kitchen items. Still can&#8217;t decide what to get someone? These museums sell memberships that grant free admission for a year, and <a href="https://jamo.org/join/" target="_blank" rel="noopener">some come with </a><br /><a href="https://jamo.org/join/" target="_blank" rel="noopener">reciprocal benefits</a> at dozens of other places, varying by month.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-6_qwxmwn.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<h3><a href="https://www.flypdx.com" target="_blank" rel="noopener">Portland International Airport</a></h3>
+</header>
+<p><main></p>
+<p>Visitors get to ooh and aah upon arrival, but when actual Portlanders go to the airport we&#8217;re usually&nbsp;stressed and rushed. An unhurried trip to PDX can be a delight, especially if it falls during the limited&nbsp;hours of Aurora, the not-so-secret art deco speakeasy&nbsp;serving &ldquo;seasonal elixirs&rdquo;&mdash;from a Jimothy-themed summer cocktail menu to fall&#8217;s banana bread old-fashioned. Add a stop at <a href="https://www.flypdx.com/Shops-Dining/ecovibe" target="_blank" rel="noopener">Ecovibe</a> and <a href="https://www.flypdx.com/Shops-Dining/hello-from-portland" target="_blank" rel="noopener">Hello From Portland</a>&nbsp;(also pre-security) to see what they&#8217;re putting the&nbsp;airport carpet print on now (like this $10 tray at HFP), and load up on graphic novels and school supplies for any age (such as a rainbow of LePens, $3.99 each) at <a href="https://www.flypdx.com/Shops-Dining/paper-epiphanies" target="_blank" rel="noopener">Piph</a>, the airport outpost of Paper Epiphanies.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-1_i6opqj.jpg"><figcaption class="wp-caption-text"></figcaption></figure>
+<h2><a href="https://birdallianceoregon.org" target="_blank" rel="noopener">Bird Alliance of Oregon</a></h2>
+</header>
+<p><main></p>
+<p>Do a loop on the Jay Trail before you&nbsp;pop into the ornithological society&#8217;s <a href="https://shop.birdallianceoregon.org" target="_blank" rel="noopener">Nature Store</a>. Try on mushroom zip hoodies, ponder a poster of Northwest lakes at comparative scale (you really that small, Waldo?), browse books both serious and silly (we snagged this roundup of insult names, $12), get expert advice on binoculars for a new birder (like these Nocs Standard Issue, $111, with an Upcycled Adventure strap made from old climbing ropes, $36), hope the Banana Slug Fan Club hat from Canada&#8217;s Owl &amp; Bear Studio hasn&#8217;t fallen victim to the trade war, and try to decide if your friend needs the &ldquo;I poop on fascists&rdquo; birdie enamel pin, iron-on patch, or both.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<figure class="wp-caption aligncenter"    ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary/holiday-gift-guide-4_kqnglz.jpg"><figcaption class="wp-caption-text">
+<div >
+<p>Image: <a href="/producers/michael-novak">Michael Novak</a></p>
+</div>
+</figcaption></figure>
+<h2><a href="https://www.ohs.org" target="_blank" rel="noopener">Oregon Historical Society</a></h2>
+</header>
+<p><main></p>
+<p>At OHS&#8217;s museum, right across the Park Blocks from PAM, wander new exhibits on immigration and displacement, the University of Oregon&#8217;s sesquicentennial, and artists&#8217; views of Crater Lake. Or just visit the research library upstairs (check the hours and rules first) and look up your address in old city directories to see who used to live there. Then take a pass through the lobby gift shop, which stocks history books for all ages, Sasquatch Christmas ornaments, Oregon Trail&ndash;themed mugs showing a covered wagon&nbsp;and a pixelated request to &ldquo;please be patient with me, I&#8217;m from the 1900s,&rdquo; and artful pillows showing historical maps or a slightly rearranged Portland skyline (above, $150).&nbsp;</p>
+<p></main></section>
+<p>The post <a href="https://www.pdxmonthly.com/arts-and-culture/gift-guide-museum-stores/">Take a Hike or Hit a Museum (and Shop While You’re There)</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+		<item>
+		<title>Things to Do in Portland This Week</title>
+		<link>https://www.pdxmonthly.com/thingstodo/things-to-do-in-portland-this-week/</link>
+		
+		<dc:creator><![CDATA[Rebecca Jacobson]]></dc:creator>
+		<pubDate>Wed, 21 Oct 2026 13:45:00 +0000</pubDate>
+				<category><![CDATA[Things to Do]]></category>
+		<category><![CDATA[Theater]]></category>
+		<category><![CDATA[Stand-Up Comedy]]></category>
+		<category><![CDATA[PoMo Picks]]></category>
+		<category><![CDATA[Music]]></category>
+		<category><![CDATA[Film]]></category>
+		<category><![CDATA[Concerts]]></category>
+		<category><![CDATA[Books]]></category>
+		<guid isPermaLink="false">http://pdm.new.hmwp.dev.clients.innoscale.com/uncategorized/things-to-do-in-portland-this-week/</guid>
+
+					<description><![CDATA[<p><em>Pride &#038; Prejudice</em> ends, <em>Wildwood</em> begins, Fonograf Editions celebrates 10 years, and the Fermentation Fest stinks things up.</p>
+<p>The post <a href="https://www.pdxmonthly.com/thingstodo/things-to-do-in-portland-this-week/">Things to Do in Portland This Week</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></description>
+										<content:encoded><![CDATA[<figure class="wp-caption aligncenter"      ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/cbcc3078a3d7616d505b22ec45edeab744cc91cfcc211e4a23276dbe457cadf6.jpg"><figcaption class="wp-caption-text">
+<div >Laika&rsquo;s <em>Wildwood</em>, based on the book by Carson Ellis and Colin Meloy, includes miniature versions of a lot of familiar Portland sights, including Ankeny Plaza.</div>
+<div >
+<p>Image: <a href="/producers/courtesy-laika-studio">Courtesy Laika Studio</a></p>
+</div>
+</figcaption></figure>
+<p><em>You&rsquo;re reading Seeing Things, our regular column about the concerts, art shows, comedy sets, movies, readings, plays, and other events we&rsquo;re attending. Sign up to <a href="https://about.pdxmonthly.com/newsletters">receive it</a> in your inbox each week.</em></p>
+<hr>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >theater</span>&nbsp;<a href="https://www.pcs.org/pride-prejudice" target="_blank" rel="noopener">Pride &amp; Prejudice</a></h4>
+<p ><strong>7:30PM WED, 2 &amp; 7:30PM THU, 7:30PM FRI, 2&amp; 7:30PM SAT, 7:30PM SUN, OCT 21&ndash;25 |</strong> PORTLAND CENTER STAGE, From $25</p>
+</header>
+<p><main></p>
+<p>Playwright Kate Hamill is known for screwball stage adaptations of classics, including&nbsp;<em>Sense &amp; Sensibility </em>and <em>Vanity Fair</em>. In this madcap riff on Jane Austen&#8217;s most famous novel, the playwright zeroes in on the question of how anyone can know if they&#8217;ve met &#8220;the one.&#8221; Marissa Wolf, artistic director of Portland Center Stage, helms the production.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Visual Art</span>&nbsp;<a href="https://www.blueskygallery.org" target="_blank" rel="noopener">Bootsy Holler &amp; Lucy Bohnsack</a></h4>
+<p ><strong>Thru Oct 31 |</strong> Blue Sky Gallery, free</p>
+</header>
+<p><main></p>
+<p>Blue Sky Gallery&rsquo;s main exhibitions consider what photography can be. Bootsy Holler&rsquo;s <em>Contaminated </em>reexamines the Hanford Nuclear Site and the communities of people poisoned by radioactive fallout, including generations of Holler&rsquo;s family. Lucy Bohnsack&rsquo;s <em>This Work They Call Love </em>celebrates the resilience of mothers who have to make do by printing her images onto household materials like bandages, plastic bags, and scrap material.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >FOOD</span>&nbsp;<a href="https://www.portlandfermentationfestival.com" target="_blank" rel="noopener">Portland Fermentation Festival</a></h4>
+<p ><strong>6&ndash;9PM THU, OCT 22 |</strong> Ecotrust center, $15 advance, $20 CASH ONLY AT DOOR (IF NOT SOLD OUT), ages 12 and under free</p>
+</header>
+<p><main></p>
+<p>Affectionately nicknamed Stinkfest, this annual celebration of all things pickled offers demonstrations, samples, a bacterial petting zoo, pickle pizza at neighboring Hot Lips, a starter adoption opportunity, and a BYO ferment station.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >theater</span>&nbsp;<a href="https://milagro.org/event/marigolds-y-memorias/" target="_blank" rel="noopener">Marigolds y Memorias</a></h4>
+<p ><strong>7:30PM THU&ndash;SAT, 2PM SUN, THRU NOV 8 |</strong> MILAGRO THEATER, $28&ndash;32</p>
+</header>
+<p><main></p>
+<p>Milagro Theater commemorates El D&iacute;a de Muertos with this family-friendly walkthrough of different Day of the Dead symbols and customs.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >THEATER</span>&nbsp;<a href="https://www.fusetheatreensemble.com/event-details/trans-femme-2026-10-17-19-30" target="_blank" rel="noopener">Trans Femme</a></h4>
+<p ><strong>7:30PM THU&ndash;SAT, 3PM SUN, OCT 22&ndash;25 |</strong> FUSE THEATEr, $25 SUGGESTED DONATION (nO ONE TURNED AWAY FOR LACK OF FUNDS)</p>
+</header>
+<p><main></p>
+<p>The latest production by local playwright Mikki Gillette takes its audiences back to a trans women&rsquo;s support group set in the bygone days of 2011. Yes, that was 15 years ago, so either prepare for a massive throwback or (if you are too young to remember 2011) a timely, heart-filled history lesson.&nbsp;</p>
+<p></main></section>
+<figure class="wp-caption aligncenter"      ><img decoding="async" src="https://www.pdxmonthly.com/wp-content/uploads/ink-cloudinary-derived/generated/458a0c138ae8517ff56b520d8344ae337727ce2f9254890a0666cbfa88525861.jpg"><figcaption class="wp-caption-text">
+<div >The movie version of the Pittock Mansion in <em>Wildwood</em> is a little more castle-like than the real thing.</div>
+<div >
+<p>Image: <a href="/producers/courtesy-laika-studio">Courtesy Laika Studio</a></p>
+</div>
+</figcaption></figure>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >FILM</span>&nbsp;<a href="https://www.laika.com/our-films/wildwood/" target="_blank" rel="noopener">Wildwood</a></h4>
+<p ><strong>VARIOUS TIMES STARTING THU, OCT 22 |</strong> MULTIPLE THEATERS</p>
+</header>
+<p><main></p>
+<p>There will be plenty of ways to support independent theaters as Laika Studios&rsquo; <a href="/articles/laika-film-wildwood" target="_self"    >stop-motion adaptation of Colin Meloy and Carson Ellis&rsquo;s fantasy novel <em>Wildwood</em></a> as the Portland made-and-set gem opens this week. There&rsquo;s hardly a local theater that won&rsquo;t have it. At the century-old Hollywood, it&#8217;s even screening&nbsp;on both digital and 35 mm film formats, to the delight of local cinephiles.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Circus</span>&nbsp;<a href="https://nightflightaerial.com/frightnight/" target="_blank" rel="noopener">Night Flight&rsquo;s Night Fright</a></h4>
+<p ><strong>7:30PM THU&ndash;SAT, 6:30PM SUN, OCT 22&ndash;25 |</strong> ALBERTA ROSE THEATRE, $32.25&ndash;64.75, RECOMMENDED FOR AGES 13 &amp; UP</p>
+</header>
+<p><main></p>
+<p>The local aerial troupe dazzles year-round with its costumes and sky dancing, but things go from majestic into more macabre territory every spooky season. Night Fright, Night Flight&rsquo;s annual Halloween show, sets its sights this year on giving <em>The Phantom of the Opera </em>the circusy treatment. Jack StockLynn, a Night Flight coach and ring master of Sir Cupcake&rsquo;s Queer Circus, makes a guest appearance.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Theater</span>&nbsp;<a href="https://www.albertaabbey.org/eventcalendar" target="_blank" rel="noopener">Saw: the Musical</a></h4>
+<p ><strong>VARIOUS TIMES, THRU NOV 8 |</strong> ALBERTA ABBEY, $34&ndash;176</p>
+</header>
+<p><main></p>
+<p>The <em>Saw </em>horror movie franchise got ridiculous with a quickness, and <em>Saw: The Musical </em>embraces the farce of the Jigsaw Killer&rsquo;s ludicrously elaborate, selectively moralistic murders. While there are 10 movies to riff on, this unauthorized parody mostly focuses on the iconic bathroom trap from the first movie.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Dance</span>&nbsp;<a href="https://app.arts-people.com/?show=337424" target="_blank" rel="noopener">NW Dance Project</a></h4>
+<p ><strong>7:30PM FRI &amp; SAT, OCT 23 &amp; 24 |</strong> Newmark Theatre, From $39</p>
+</header>
+<p><main></p>
+<p>The local powerhouse of contemporary dance opens the season with a trio of works. Expect world premieres by Ihsan Rustem, who spent a decade as the company&rsquo;s resident choreographer, and Akira Uchida, a New York&ndash;based choreographer with a love for high-energy dance music whose resume includes work with Florence and the Machine and fashion brands. Rounding out the program is artistic director Sarah Slipper&rsquo;s &ldquo;The Other Half of We,&rdquo; a duet inspired by Edward Albee&rsquo;s&nbsp;<em>Marriage Play</em>.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Words &amp; Music</span>&nbsp;<a href="https://www.eventbrite.com/e/fonograf-editions-10th-anniversary-fundraiser-tickets-1998505334253" target="_blank" rel="noopener">Fonograf Editions 10th Anniversary</a></h4>
+<p ><strong>8PM FRI &amp; SAT, OCT 23 &amp; 24 |</strong> Atrium Movement &amp; Events, from $21.05</p>
+</header>
+<p><main></p>
+<p>The nothing-quite-like-it<a href="/articles/portland-record-labels" target="_self"    > small press and record label</a> celebrates its first decade with a two-night fundraiser featuring some of the voices who populate <a href="https://fonografeditions.com" target="_blank" rel="noopener">Fonograf Editions</a>&#8216; 50 releases and counting, including Dao Strom and Mark Leidner&nbsp;on Friday and Rae Armantrout and&nbsp;Eileen Myles on Saturday. Can&#8217;t make it but still want to support the project? You can buy a ticket for the live stream, too.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >THEATER</span>&nbsp;<a href="https://100livesrep.org" target="_blank" rel="noopener">Anthropology</a></h4>
+<p ><strong>Various Times, OCT 23&ndash;NOV 15 |</strong> 100 LIVES THEATRE, $26&ndash;50</p>
+</header>
+<p><main></p>
+<p>100 Lives Rep&rsquo;s season opener, this Lauren Gunderson play follows a coder who develops an artificial intelligence simulation of her recently deceased sister. Featuring an all-woman cast, <em>Anthropology </em>explores emerging technology pulling out onto the road of grief and wonders if those driving AI really looked both ways before crossing.</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Concert</span>&nbsp;<a href="https://www.mcmenamins.com/events/277068-julia-jacklin" target="_blank" rel="noopener">Julia Jacklin</a></h4>
+<p ><strong>8PM MON, OCT 26 | </strong>CRYSTAL BALLROOM, $41</p>
+</header>
+<p><main></p>
+<p>The singer-songwriter, confessional and emotionally raw in her lyrics and voice, returns to Portland in support of her new album, <em>The Gem</em>. She sold out her last local shows four years ago at Revolution Hall, so there&rsquo;s no guarantee it won&rsquo;t happen again. Jordan Patterson opens.&nbsp;</p>
+<p></main></section>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >Books</span>&nbsp;<a href="https://literary-arts.org/about/programs/portland-book-festival/" target="_blank" rel="noopener">Portland Book Festival</a></h4>
+<p ><strong>MON&ndash;SUN, Nov 2&ndash;8 |</strong> MULTIPLE VENUES, GENERAL ADMISSION $20&ndash;27</p>
+</header>
+<p><main></p>
+<p>After shrinking to one day, Portland&rsquo;s annual book festival is occupying more of the calendar this year, with events spanning a week and more than 100 authors and artists (and chefs and media figures and even a Goonie). Guests include Willy Vlautin, Carson Ellis, Ke Huy Quan, Liz Prato, Hieu Minh Nguyen, Kimberly King Parsons, Paul Susi, and Alexis Nicole Nelson. Expect author talks, writing workshops, pop-up readings, a <em>Live Wire</em> recording, a concert from the Philip Glass Ensemble, and more, with the main events on Saturday centered around the South Park Blocks. <a href="https://pdxbookfest.org/passes-and-tickets/" target="_blank" rel="noopener">General admission passes</a> are $20&ndash;27, with some events ticketed separately.</p>
+<p></main></section>
+<hr>
+<h2>Ongoing</h2>
+<header></header>
+<p><main></main></p>
+<section class="wp-block-group ink-listicle-item" >
+<header>
+<h4><span >visual art</span>&nbsp;<a href="https://portlandartmuseum.org/event/the-stars-we-do-not-see-australian-indigenous-art/" target="_blank" rel="noopener">The Stars We Do Not See: Australian Indigenous Art</a></h4>
+<p ><strong>THRU JAN 3, 2027 | </strong>PORTLAND ART MUSEUM, $27.50</p>
+</header>
+<p><main></p>
+<p>Melbourne&#8217;s National Gallery of Victoria provided nearly 150 works for this special exhibition at PAM, which features pieces by Indigenous artists from across Australia, spanning from the late nineteenth century to the present. The work spans genres, too&mdash;ochre bark paintings, sound installations, photography, weavings, and more.</p>
+<p></main></section>
+<p>The post <a href="https://www.pdxmonthly.com/thingstodo/things-to-do-in-portland-this-week/">Things to Do in Portland This Week</a> appeared first on <a href="https://www.pdxmonthly.com">Portland Monthly</a>.</p>
+]]></content:encoded>
+					
+		
+		
+			</item>
+	</channel>
+</rss>

@@ -1122,7 +1122,10 @@ def refresh_liquor(data, sources):
     if nxt.keys() == current.keys():
         log("  next month's list has no new item codes yet")
         return data
-    new = [r for code, r in nxt.items() if code not in current and _price(r.get("unit price"))]
+    # A new code for a new size of something OLCC already sells ("DI SARONNO AMARETTO" in 700 ml) isn't a new bottle.
+    sold = {" ".join(r.get("description", "").split()) for r in current.values()}
+    new = [r for code, r in nxt.items() if code not in current and _price(r.get("unit price"))
+           and " ".join(r.get("description", "").split()) not in sold]
     log(f"  {len(new)} new item codes in next month's price list")
     items = data.get("items", [])
     have = {x.get("olcc_code") for x in items}

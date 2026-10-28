@@ -1,27 +1,13 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-28",
   "events": [
-    {
-      "title": "Dermot Kennedy",
-      "date": "2026-10-27",
-      "ends": null,
-      "venue": "Theater of the Clouds",
-      "kind": "Concert",
-      "why": "",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/dermot-kennedy-oct-27-2026"
-        }
-      ]
-    },
     {
       "title": "Functional Fabric Fair powered by Performance Days",
       "date": "2026-10-27",
       "ends": "2026-10-28",
       "venue": "Halls B-C-D-E, Oregon Convention Center",
       "kind": "Convention",
-      "why": "",
+      "why": "Last day of a two-day textile trade show filling four convention center halls, overlapping another conference in Hall A.",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -35,21 +21,7 @@
       "ends": "2026-10-29",
       "venue": "Hall A, Oregon Convention Center",
       "kind": "Convention",
-      "why": "",
-      "sources": [
-        {
-          "name": "Oregon Convention Center",
-          "url": "https://www.oregoncc.org/attend/events/2026/10/zero-three-learn-conference-2026"
-        }
-      ]
-    },
-    {
-      "title": "ZERO TO THREE LEARN Conference 2026",
-      "date": "2026-10-28",
-      "ends": "2026-10-29",
-      "venue": "Hall A, Oregon Convention Center",
-      "kind": "Convention",
-      "why": "",
+      "why": "Multi-day early childhood conference in Hall A, overlapping other shows at the convention center through Oct. 29.",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -63,7 +35,7 @@
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
       "kind": "Concert",
-      "why": "",
+      "why": "Thursday night arena concert at the Coliseum, so expect Rose Quarter traffic and busy MAX trains.",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -91,7 +63,7 @@
       "ends": "2026-11-04",
       "venue": "Halls A1-B-C, Oregon Convention Center",
       "kind": "Convention",
-      "why": "",
+      "why": "Six-day conference filling three convention center halls, keeping the Lloyd District busy into early November.",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -119,15 +91,23 @@
     },
     {
       "title": "Portland Book Festival",
-      "date": "2026-11-01",
+      "date": "2026-11-07",
       "ends": null,
-      "venue": "Portland",
+      "venue": "South Park Blocks and Portland Art Museum, Downtown",
       "kind": "Festival",
-      "why": "returns every November with an impressive (and extensive) lineup of local and national authors.",
+      "why": "The festival's big day packs the South Park Blocks with author talks and book sellers, capping a week of citywide Portland Book Week events from Nov. 2 to 8.",
       "sources": [
         {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-book-festival/"
+          "name": "Willamette Week",
+          "url": "https://wweek.com/arts/books/2026/06/11/portland-book-festival-expands-to-a-week-of-events-for-2026/"
+        },
+        {
+          "name": "OPB",
+          "url": "https://www.opb.org/article/2026/09/17/portland-book-festival-2026-guest-lineup/"
+        },
+        {
+          "name": "Literary Arts",
+          "url": "https://literary-arts.org/event/portland-book-week-2026/"
         }
       ]
     },
@@ -237,7 +217,7 @@
       "ends": "2026-11-22",
       "venue": "Hall A, Oregon Convention Center",
       "kind": "Sports",
-      "why": "",
+      "why": "Pro table tennis matches in Hall A of the convention center the weekend before Thanksgiving.",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -287,7 +267,7 @@
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
       "kind": "Concert",
-      "why": "",
+      "why": "Coliseum concert by the norteño star the day after Thanksgiving, the same evening as the Pioneer Courthouse Square tree lighting.",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -319,7 +299,7 @@
       "ends": "2026-12-07",
       "venue": "Oregon Ballroom, Oregon Convention Center",
       "kind": "Convention",
-      "why": "",
+      "why": "Week-long USATF annual meeting in the convention center's Oregon Ballroom, bringing national track and field delegates to the Lloyd District.",
       "sources": [
         {
           "name": "Oregon Convention Center",
@@ -387,7 +367,7 @@
       "ends": "2027-01-23",
       "venue": "Moda Center",
       "kind": "Sports",
-      "why": "",
+      "why": "Two nights of Professional Bull Riders at the Moda Center in late January.",
       "sources": [
         {
           "name": "Rose Quarter",

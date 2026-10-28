@@ -650,6 +650,10 @@ def review_byline(url):
     title = re.sub(r"\s*\|\s*Pitchfork\s*$", "", title)
     title = re.sub(r"\s+(Album|EP) Review$", "", title)
     artist, sep, album = title.partition(": ")
+    if sep and album and not re.search(r"\w", artist):
+        # A name that is only symbols ("@") is spelled out in the link: /reviews/albums/at-sign-autosmile/
+        slug, tail = url.rstrip("/").rsplit("/", 1)[-1], re.sub(r"[^a-z0-9]+", "-", album.lower()).strip("-")
+        artist = slug[:-len(tail) - 1].replace("-", " ").title() if tail and slug.endswith("-" + tail) else ""
     return (clean(artist, 120), clean(album, 160)) if sep and artist and album else (None, None)
 
 

@@ -1,93 +1,58 @@
 {
-  "updated": "2026-10-27",
-  "updated_at": "2026-10-27T11:10:32Z",
+  "updated": "2026-10-28",
+  "updated_at": "2026-10-28T14:04:24Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited by an undefeated 2-0 start and rising power rankings. However, injury concerns for Henderson and Carlson cause anxiety.",
+      "mood": "Fired up",
+      "pulse": "Portland won the battle of unbeatens in LA, 136-129, and is 3-0. Avdija and Morant had 23 each and Lillard iced it with a 3 in the final minute, even as Luka dropped 41. Scoot played after being questionable but had a rough night (2 points, 5 turnovers in 17 minutes).",
       "storylines": [
-        "Undefeated 2-0 start to the season",
-        "Scoot Henderson questionable with ankle soreness",
-        "Next game against Lakers in LA",
-        "Lakers favored by 2.5 points"
+        "Beat the Lakers 136-129 to start 3-0",
+        "Lillard's 3 with 43 seconds left sealed it",
+        "Avdija: 23 points and 9 assists; Morant also had 23",
+        "Henderson played through ankle soreness but struggled off the bench",
+        "Next: Memphis at home Thursday 7 pm, then at Utah Saturday"
       ],
       "sources": [
-        {
-          "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/117439/portland-trail-blazers-sacramento-kings-final-score-boxscore-stats-lillard-morant-avdija"
-        },
-        {
-          "name": "SI Blazers",
-          "url": "https://www.si.com/nba/trailblazers/onsi/blazers-survive-scare-stay-unbeaten-with-win-over-kings"
-        },
-        {
-          "name": "ESPN",
-          "url": "https://www.espn.com/nba/recap?gameId=401909852"
-        },
-        {
-          "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-injury-report/117542/portland-trail-blazers-los-angeles-lakers-nba-injury-report-scoot-henderson-branden-carlson-news"
-        },
-        {
-          "name": "Rip City Radio",
-          "url": "https://ripcityradio.iheart.com/content/2026-10-27-trail-blazers-vs-lakers-injury-report-oct-27/"
-        }
+        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-analysis/117593/portland-trail-blazers-los-angeles-lakers-final-score-boxscore-luka-doncic-ja-morant-deni-avdija"},
+        {"name": "ESPN", "url": "https://www.espn.com/nba/recap?gameId=401909880"},
+        {"name": "Yahoo Sports box score", "url": "https://sports.yahoo.com/nba/portland-trail-blazers-los-angeles-lakers-2026102713/"},
+        {"name": "Al Jazeera", "url": "https://www.aljazeera.com/sports/2026/10/28/nba-portland-blazers-prevail-in-battle-of-unbeatens-against-la-lakers-celtics-spurs-knicks-pistons"},
+        {"name": "KATU schedule", "url": "https://katu.com/resources/pdf/1d121093-8a38-46bb-a273-41e09f1e0929-202627TrailBlazersSchedulebyList.pdf"}
       ]
     },
     "timbers": {
-      "mood": "bittersweet and reflective",
-      "pulse": "Fans are processing Diego Chara's retirement announcement. There is excitement for the upcoming sprint season despite the news.",
+      "mood": "Nervous hope",
+      "pulse": "The Charlotte comeback kept the season alive, and Diego Chara has confirmed he'll retire after the 2027 sprint season. Tonight's trip to St. Louis is a must-win with three games left, and the odds aren't kind: St. Louis sits third in the West and Opta gives Portland about a 25% chance.",
       "storylines": [
-        "Diego Chara to retire after next season",
-        "Eric Izoita signed first-team contract",
-        "Upcoming match against St. Louis",
-        "Native American Heritage Night on Nov 1"
+        "At St. Louis tonight (Wednesday), three regular-season games left",
+        "Still chasing the last West playoff spot after the 3-2 win over Charlotte",
+        "Diego Chara confirms retirement after the 2027 sprint season",
+        "Road form is the worry: two wins in their last 23 away matches"
       ],
       "sources": [
-        {
-          "name": "Timbers.com",
-          "url": "https://www.timbers.com/news/recap-portland-timbers-with-dramatic-3-2-victory-over-charlotte-fc"
-        },
-        {
-          "name": "OPB",
-          "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"
-        },
-        {
-          "name": "Prost Amerika",
-          "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"
-        },
-        {
-          "name": "Timbers.com",
-          "url": "https://www.timbers.com/news/timbers-legend-diego-chara-to-retire-following-the-2027-mls-sprint-season"
-        }
+        {"name": "beIN Sports", "url": "https://beinsports.com/en-us/soccer/mls/articles/portland-great-chara-confirms-impending-retirement-2026-10-27"},
+        {"name": "Field Level Media", "url": "https://www.yardbarker.com/soccer/articles/st_louis_city_out_to_shake_mini_league_slump_vs_visiting_timbers/s1_17064_44482570"},
+        {"name": "Sports Mole", "url": "https://www.sportsmole.co.uk/football/saint-louis-city/preview/st-louis-city-vs-portland-prediction-team-news-lineups_577154.html"},
+        {"name": "Prost Amerika", "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"},
+        {"name": "OPB", "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"}
       ]
     },
     "f1": {
-      "mood": "tense and anticipatory",
-      "pulse": "Fans are focused on Antonelli's title clinching opportunity and the intense battle for second place. There is also significant discussion regarding Audi's consistent P11 finishes and Russell's performance struggles.",
+      "mood": "Title watch",
+      "pulse": "Mexico City this Sunday (Nov 1) could crown Antonelli as F1's youngest-ever champion. Ninth place is enough, and Russell or Hamilton has to win just to keep it alive. Russell's form is the other talking point after a penalty dropped him to eighth in Austin and he said he lacked pace.",
       "storylines": [
-        "Kimi Antonelli needs two points to clinch the title",
-        "Five drivers are fighting for second in the standings",
-        "Red Bull overtook McLaren in the Constructors' Championship",
-        "Nico Hulkenberg has finished P11 in three of last four races"
+        "Antonelli clinches in Mexico with a ninth-place finish or better",
+        "Russell or Hamilton must win to push it to the next race",
+        "He'd be the youngest champion in F1 history",
+        "Four-way scrap for second behind him, with Verstappen and Leclerc close",
+        "Russell eighth in Austin after a five-second penalty"
       ],
       "sources": [
-        {
-          "name": "ESPN",
-          "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"
-        },
-        {
-          "name": "RaceFans",
-          "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"
-        },
-        {
-          "name": "Sky Sports",
-          "url": "https://www.skysports.com/f1/news/13603603/united-states-gp-kimi-antonelli-wins-austin-race-to-move-to-brink-of-f1-world-title-after-dominant-drive"
-        },
-        {
-          "name": "ABC News",
-          "url": "https://www.abc.net.au/news/2026-10-26/how-kimi-antonelli-can-win-f1-drivers-championship/107308200"
-        }
+        {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13603683/kimi-antonelli-f1-title-permutations-how-mercedes-driver-can-win-2026-formula-1-drivers-championship-at-mexico-city-gp-on-sunday"},
+        {"name": "Autosport", "url": "https://www.autosport.com/f1/news/the-maths-behind-antonelli-becoming-f1-world-champion-at-mexico-gp/10868378/"},
+        {"name": "Grande Prêmio", "url": "https://grandepremio.com/en/f1/antonelli-moves-within-2-points-of-f1-title-as-russell-and-hamilton-survive-austin-showdown/"},
+        {"name": "ESPN", "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"},
+        {"name": "RaceFans", "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"}
       ]
     }
   }

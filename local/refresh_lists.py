@@ -1156,7 +1156,7 @@ def refresh_liquor(data, sources):
         added.append({"name": clean(m["name"], 100), "category": m["category"] if m.get("category") in cats else "Other",
                       "size": re.sub(r"(\d)\s*(ML|L)$", lambda g: f"{g[1]} {g[2].lower() if g[2] == 'ML' else 'L'}", clean(r.get("size"), 20)), "price": _price(r.get("unit price")), "rating": None,
                       "rating_source": None, "why": (f"{what[:1].upper()}{what[1:]}. " if what else "") +
-                      f"New on OLCC's {month} price list (some are returning bottles).", "url": None, "olcc_url": None,
+                      f"New on OLCC's {month} price list.", "url": None, "olcc_url": None,
                       "olcc_code": r["item code"], "added": TODAY.isoformat()})
     log(f"  added {len(added)} bottles")
     if added:

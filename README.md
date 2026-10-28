@@ -24,6 +24,9 @@ Elections and representatives work without keys. Optional free keys add more:
 with the Civic Information API turned on, for what's on your ballot).
 With an `AISSTREAM_KEY`, the river section shows ships heading your way and, in its own box, the ship
 parked across from `river_view` in `config.json` (big ships within `parked_km`, default 5 km).
+Optional `TMDB_API_KEY` (free for non-commercial use from themoviedb.org/settings/api; either the API key or the
+API Read Access Token works) adds the best-rated new movies on your streaming services and a daily kids' movie pick
+that fits the season and never repeats. New shows and their TVmaze ratings work without a key.
 Optional repository variable `PGE_CYCLE_START_DAY` (the day of the month your
 PGE bill cycle starts).
 

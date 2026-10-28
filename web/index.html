@@ -1969,9 +1969,13 @@ body{background-color:#8F5A32;
     <div class="sec-body">
       <div class="row" id="watch-row">
         <section class="card half" aria-labelledby="tv-h">
-          <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">New series and new seasons, next 30 days</span></div>
+          <div class="head"><h2 id="tv-h">New on streaming</h2><span class="meta">Best of what just came out, then what's next</span></div>
           <div class="chips" id="tv-filter" role="group" aria-label="Filter by service"></div>
-          <div class="scroll" id="tv" tabindex="0" aria-label="Upcoming shows, scrollable"></div>
+          <div class="scroll" id="tv" tabindex="0" aria-label="New and upcoming shows and movies, scrollable"></div>
+        </section>
+        <section class="card half" aria-labelledby="kidmov-h" id="kidmov-card" hidden>
+          <div class="head"><h2 id="kidmov-h">Kids' movie of the day</h2><span class="meta" id="kidmov-meta"></span></div>
+          <div id="kidmov"></div>
         </section>
       </div>
       <section class="card" aria-labelledby="br-h" id="br-card" hidden>
@@ -3752,18 +3756,35 @@ const dayLabel = iso => { const [y, m, d] = iso.split('-').map(Number); return n
 let tvPick = 'All';
 function renderComing() {
   const tv = D.streaming || [], al = D.albums || [];
-  $('watch-row').hidden = !tv.length && !al.length;
+  const shows = (D.top_shows || []).map(x => ({...x, services: [x.service], score: `${x.rating.toFixed(1)} on TVmaze`}));
+  const movies = (D.top_movies || []).map(x => ({...x, kind: 'Movie', score: `${x.rating.toFixed(1)} on TMDB · ${x.votes.toLocaleString()} votes`}));
+  const top = [...shows, ...movies].sort((a, b) => b.rating - a.rating);
+  $('watch-row').hidden = !tv.length && !al.length && !top.length;
   const services = ['Netflix', 'Apple TV', 'Disney+', 'HBO Max', 'Hulu', 'Prime Video'];
-  chipFilter($('tv-filter'), [['All', tv.length], ...services.map(s => [s, tv.filter(x => x.service === s).length])],
+  const on = s => x => (x.services || [x.service]).includes(s);
+  chipFilter($('tv-filter'), [['All', tv.length + top.length], ...services.map(s => [s, tv.filter(on(s)).length + top.filter(on(s)).length])],
     tvPick, n => { tvPick = n; renderComing(); });
-  const list = tv.filter(x => tvPick === 'All' || x.service === tvPick);
-  $('tv').innerHTML = list.map(x => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
+  const pick = x => tvPick === 'All' || on(tvPick)(x);
+  const item = (x, when) => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
       ${x.image ? `<img class="poster" src="${esc(x.image)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
-      <span><b>${esc(x.title)}</b><small>${[esc(x.service), esc(x.kind), dayLabel(x.date)].join(' · ')}</small>
+      <span><b>${esc(x.title)}</b><small>${[x.services.join(', '), x.kind, when].filter(Boolean).map(esc).join(' · ')}
+      ${x.score ? ` <span class="pill">★ ${esc(x.score)}</span>` : ''}</small>
       ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
-      <small>${[x.genres.slice(0, 3).join(', '), x.runtime ? x.runtime + ' min episodes' : null,
-        x.language && x.language !== 'English' ? esc(x.language) : null].filter(Boolean).map(esc).join(' · ')}</small></span></a>`).join('')
-    || '<p class="note" style="padding:12px 0">Nothing announced yet.</p>';
+      ${x.genres ? `<small>${[x.genres.slice(0, 3).join(', '), x.runtime ? x.runtime + ' min episodes' : null,
+        x.language && x.language !== 'English' ? x.language : null].filter(Boolean).map(esc).join(' · ')}</small>` : ''}</span></a>`;
+  const topList = top.filter(pick), list = tv.filter(pick).map(x => ({...x, services: [x.service], score: null}));
+  $('tv').innerHTML =
+    (topList.length ? `<div class="day-h">Recently released and highly rated</div>` +
+      topList.map(x => item(x, x.date ? 'out ' + dayLabel(x.date) : null)).join('') : '') +
+    `<div class="day-h">Coming up, next 30 days</div>` +
+    (list.map(x => item(x, dayLabel(x.date))).join('') || '<p class="note" style="padding:12px 0">Nothing announced yet.</p>');
+  const k = D.kids_movie;
+  $('kidmov-card').hidden = !k;
+  if (k) {
+    $('kidmov-meta').textContent = `Because ${k.why}`;
+    $('kidmov').innerHTML = item({...k, kind: k.date ? k.date.slice(0, 4) : null,
+      score: `${k.rating.toFixed(1)} on TMDB · ${k.votes.toLocaleString()} votes`}, null);
+  }
   let last = '';
   $('albums').innerHTML = al.map(x => {
     const head = x.date !== last ? `<div class="day-h">${dayLabel(x.date)}</div>` : '';
@@ -4566,7 +4587,8 @@ const SOURCES = {
   'finds-h': [DAILY],
   'big-h': [['Daily web check of venue, league and city event pages; each event links its source', ''], ['Home games: ESPN schedule', 'https://www.espn.com/']],
   'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY], 'jazz-h': [DAILY],
-  'tv-h': [['TVmaze schedule', 'https://www.tvmaze.com/']],
+  'tv-h': [['TVmaze schedule and viewer ratings', 'https://www.tvmaze.com/'], ['Movie ratings: TMDB users', 'https://www.themoviedb.org/'], ['Where movies stream: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
+  'kidmov-h': [['TMDB family movies rated G or PG', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums']],
   'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
   'jar-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],

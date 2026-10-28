@@ -1030,6 +1030,21 @@ def fetch_news(state, now_utc):
 def fetch_releases(state, now_utc):
     store, errors = state.setdefault("releases", {}), []
     _refresh(store, "streaming", releases.streaming, 6, now_utc, errors)
+    _refresh(store, "top_shows", releases.top_shows, 24, now_utc, errors)
+    if env("TMDB_API_KEY"):
+        _refresh(store, "top_movies", lambda: releases.top_movies(env("TMDB_API_KEY")), 24, now_utc, errors)
+        today = now_utc.astimezone(LOCAL).date()
+        failed = store.get("kids_failed_at")  # after a failure, wait a few hours before asking TMDB again
+        if ((store.get("kids_movie") or {}).get("date_picked") != today.isoformat()
+                and not (failed and (now_utc - dt.datetime.fromisoformat(failed)).total_seconds() < 3 * 3600)):
+            history = store.setdefault("kids_history", [])  # every movie ever picked, so none comes back
+            try:
+                store["kids_movie"] = releases.kids_movie(env("TMDB_API_KEY"), history, today)
+                history.append(store["kids_movie"]["id"])
+                store.pop("kids_failed_at", None)
+            except Exception as e:
+                store["kids_failed_at"] = now_utc.isoformat()
+                errors.append(f"kids_movie: {e}")
     _refresh(store, "albums", releases.albums, 6, now_utc, errors)
     return "; ".join(errors) or None
 
@@ -1334,6 +1349,9 @@ def build(state, status, now_utc):
         "thai_buddhist": world.thai_buddhist(dt.date.fromisoformat(today)),
         "alerts": alerts_view(state, out, now_utc),
         "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
+        "top_shows": (state.get("releases") or {}).get("top_shows"),
+        "top_movies": (state.get("releases") or {}).get("top_movies") if env("TMDB_API_KEY") else None,
+        "kids_movie": (state.get("releases") or {}).get("kids_movie") if env("TMDB_API_KEY") else None,
         "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},
                 "resorts": ski.resorts()} if state.get("ski") else None,

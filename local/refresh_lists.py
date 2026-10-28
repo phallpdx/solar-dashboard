@@ -641,25 +641,43 @@ def refresh_concerts(data, sources):
     return data
 
 
+def review_byline(url):
+    """(artist, album) from a review page's title, e.g. "Djrum: DJ-Kicks Album Review | Pitchfork".
+    The feed itself only carries the album title, and the model guesses artists ("UK selector")."""
+    body, _ = fetch(url)
+    m = re.search(r"<title[^>]*>(.*?)</title>", body, re.S | re.I)
+    title = " ".join(html.unescape(m.group(1)).split()) if m else ""
+    title = re.sub(r"\s*\|\s*Pitchfork\s*$", "", title)
+    title = re.sub(r"\s+(Album|EP) Review$", "", title)
+    artist, sep, album = title.partition(": ")
+    return (clean(artist, 120), clean(album, 160)) if sep and artist and album else (None, None)
+
+
 def add_acclaimed(data, sources):
     """Adds albums from a "best new music" feed to 'missing', so the venue check looks for their tours.
-    The feed gives no number, so the score stays empty and score_source names the feed."""
+    No model here: the artist and album come from each review's page title. The feed gives no number,
+    so the score stays empty and score_source names the feed."""
     shows, missing = data.get("shows", []), data.setdefault("missing", [])
-
-    def build(r, src, links):
-        url = pick_url(r.get("url"), links, None)
-        if not clean(r.get("artist")) or not clean(r.get("album")) or not url:
-            return None
-        return {"artist": clean(r["artist"], 120), "album": clean(r["album"], 160), "score": None,
-                "score_source": src.get("label") or src["name"], "score_url": url, "why": "No Portland date found yet"}
-
-    new = extract(sources, "List each album reviewed in these items: the artist and the album title exactly as written, "
-                           "and url, the review link number.",
-                  {"artist": S, "album": S, "url": S}, build, max_age_days=21)
-    known = [x["artist"] for x in shows + missing]
-    fresh = [n for n in new if not any(same_thing(n["artist"], None, k, None) for k in known)]
-    for n in fresh:
-        log(f"  newly acclaimed: {n['artist']}, {n['album']}")
+    seen = {x.get("score_url") for x in shows + missing}
+    fresh = []
+    for src in sources:
+        try:
+            text, _ = page_text(src, max_age_days=21)
+        except Exception as e:  # noqa: BLE001
+            log(f"  {src['name']}: fetch failed ({e})")
+            continue
+        links = re.findall(r"^- .+? \((?:\d{4}-\d{2}-\d{2}|date unknown)\) \[(\S+)\]", text, re.M)
+        for url in [u for u in links if u not in seen][:10]:
+            try:
+                artist, album = review_byline(url)
+            except Exception as e:  # noqa: BLE001
+                log(f"  {url}: fetch failed ({e})")
+                continue
+            if not artist or any(same_thing(artist, None, x["artist"], None) for x in shows + missing + fresh):
+                continue
+            log(f"  newly acclaimed: {artist}, {album}")
+            fresh.append({"artist": artist, "album": album, "score": None, "score_source": src.get("label") or src["name"],
+                          "score_url": url, "why": "No Portland date found yet"})
     # Newest first; the cloud run's scored picks keep their place ahead of feed picks it hasn't checked.
     scored = [m for m in missing if m.get("score") is not None]
     unscored = fresh + [m for m in missing if m.get("score") is None]
@@ -940,15 +958,15 @@ def refresh_marketbrief(data, sources):
                     ". Write a short market analysis. headline: one sentence on what markets did and why. summary: three or "
                     "four plain sentences on why stocks, bonds, oil, gold and Bitcoin moved and the bigger trend, using only "
                     "these headlines and numbers. drivers: 2 to 4 short lines naming the news that moved things. watch: up to "
-                    "4 scheduled events coming up that the headlines mention (or none). source_urls: up to 6 links that back it up.",
+                    "4 scheduled events coming up that the headlines mention (or none). source_urls: up to 6 link numbers that back it up.",
         "helium": "These are recent news items about North American Helium, a private helium producer in Saskatchewan, "
                   "and the helium market. headline: one sentence on how the company is doing. summary: two to four sentences "
                   "on production, plants, financing and the market, from these items only. drivers and watch: leave empty "
-                  "unless the items name something. source_urls: up to 6 links that back it up.",
+                  "unless the items name something. source_urls: up to 6 link numbers that back it up.",
         "realestate": "These are recent news items about the Portland, Oregon housing market. headline: one sentence on "
                       "how the market is doing. summary: two to four sentences on prices, sales, inventory, rents and mortgage "
                       "rates, from these items only. drivers and watch: leave empty unless the items name something. "
-                      "source_urls: up to 6 links that back it up.",
+                      "source_urls: up to 6 link numbers that back it up.",
     }
     done = 0
     for key, feeds in sources.items():
@@ -968,11 +986,13 @@ def refresh_marketbrief(data, sources):
         if not texts:
             continue
         log(f"  {key}: asking the model")
-        r = ask_model(tasks[key], "\n\n".join(texts), schema)
+        # Google News links are 200-character redirects the model can't copy exactly, so it gets numbers.
+        text, table = number_links("\n\n".join(texts))
+        r = ask_model(tasks[key], text, schema)
         if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
             log(f"  {key}: model reply did not pass checks, keeping the last one")
             continue
-        urls = [u for u in r.get("source_urls", []) if u in links][:6]
+        urls = list(dict.fromkeys(u for u in (unnumber(x, table) for x in r.get("source_urls", [])) if u in links))[:6]
         if not urls:
             log(f"  {key}: no real links in the reply, keeping the last one")
             continue
@@ -1138,8 +1158,8 @@ def refresh_liquor(data, sources):
     lines = "\n".join(f"{r['item code']}: {r.get('description')} {r.get('size')}" + (f" {r['age']}" if r.get("age") else "")
                       + (f" {r['proof']} proof" if r.get("proof") else "") for r in new[:40])
     result = ask_model("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
-                       "For each, give code (exactly as written), name (the description in normal capitalization, spelled "
-                       f"out, without the size), category (one of {cats}) and what: a short plain phrase on what it is, using "
+                       "For each, give code (exactly as written), name (the description in normal capitalization with abbreviations "
+                       f"spelled out, e.g. YO or YR as Year, without the size), category (one of {cats}) and what: a short plain phrase on what it is, using "
                        "only what the description says. Don't add ratings, awards or tasting notes.",
                        lines, items_schema({"code": S, "name": S, "category": {"type": "string", "enum": cats}, "what": S}))
     by_code = {r["item code"]: r for r in new}
@@ -1163,6 +1183,8 @@ def refresh_liquor(data, sources):
         # Bottles OLCC has dropped from the price list are gone from the shelves too.
         kept = [x for x in items if not x.get("olcc_code") or x["olcc_code"] in nxt]
         data["items"] = (added + kept)[:20]
+        data["note"] = (f"New on OLCC's {month} price list, found by comparing it with this month's. Critic ratings are "
+                        "added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.")
     return data
 
 

@@ -42,7 +42,11 @@ $before = Loaded-Models
 $serverWasRunning = $null -ne $before
 if (-not $serverWasRunning) { Lms @('server', 'start'); Start-Sleep 5 }
 $modelWasLoaded = @(Loaded-Models) -match [regex]::Escape($model.Split('/')[-1])
-if (-not $modelWasLoaded) { Lms @('load', $model, '--context-length', "$($cfg.lmstudio.context_length)", '-y') }
+# The model doesn't quite fit on the 16 GB card at this context, and forcing it all on can freeze the PC,
+# so part of it stays in system memory (gpu_offload is the share that goes on the GPU).
+$loadArgs = @('load', $model, '--context-length', "$($cfg.lmstudio.context_length)", '-y')
+if ($cfg.lmstudio.gpu_offload) { $loadArgs += @('--gpu', "$($cfg.lmstudio.gpu_offload)") }
+if (-not $modelWasLoaded) { Lms $loadArgs }
 "LM Studio server was running: $serverWasRunning; model was loaded: $([bool]$modelWasLoaded)"
 
 # Python also gets its own console, and writes its progress straight to

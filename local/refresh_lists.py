@@ -1,6 +1,6 @@
 r"""Refresh the dashboard's researched lists with a local model in LM Studio.
 
-Runs on Parker's laptop every night (see local\setup.ps1). For each list it
+Runs on Parker's desktop PC every night (see local\setup.ps1). For each list it
 fetches the pages in local\sources.json, asks the LM Studio model to pull out
 items as JSON, checks them (real future dates, links that exist on the page
 and still load, no duplicates), merges them into the current list from main,
@@ -1172,7 +1172,7 @@ def main():
         else:
             log(f"  no change")
 
-    # Tell the cloud runs what was done tonight, so they only step in when this laptop didn't.
+    # Tell the cloud runs what was done tonight, so they only step in when this PC didn't.
     status = {"date": TODAY.isoformat(), "ran_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
               "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names}}
     if args.only:  # a partial run keeps tonight's earlier results for the other lists

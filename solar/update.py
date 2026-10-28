@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, releases, roads, science, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, records, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -655,6 +655,8 @@ def fetch_sports(state, now_utc):
 def fetch_markets(state, now_utc):
     store, errors = state.setdefault("markets", {}), []
     _refresh(store, "quotes", markets.snapshot, 0.5, now_utc, errors)
+    _refresh(store, "helium", lambda: markets.headlines("helium"), 3, now_utc, errors)
+    _refresh(store, "realestate", lambda: markets.headlines("realestate"), 3, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -678,7 +680,9 @@ def fetch_almanac(state, now_utc):
     if out.get("lat"):
         _refresh(store, "nearby", lambda: almanac.nearby(out["lat"], out["lon"], today), 24, now_utc, errors)
     _refresh(store, "trails", lambda: almanac.trip_reports(today), 6, now_utc, errors)
-    _refresh(store, "apod", lambda: sky.apod(env("NASA_KEY") or "DEMO_KEY"), 3, now_utc, errors)
+    if store.get("apod") and not sky._apod_ok(store["apod"]):  # a placeholder slipped through before: fetch again now
+        store.pop("apod_at", None)
+    _refresh(store, "apod", lambda: sky.apod(env("NASA_KEY") or "DEMO_KEY", today), 3, now_utc, errors)
     if (store.get("albums") or {}).get("date") != today.isoformat():
         store.pop("albums_at", None)
     _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
@@ -686,6 +690,18 @@ def fetch_almanac(state, now_utc):
     if env("CALENDAR_ICS"):
         _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
     return "; ".join(errors) or None
+
+
+def fetch_records(state, now_utc):
+    """Two records for the morning, never one recommended in the past year."""
+    store = state.setdefault("records", {})
+    today = now_utc.astimezone(LOCAL).date()
+    out = outside_view(state, now_utc) or {}
+    day = next((d for d in out.get("days") or [] if d.get("date") == today.isoformat()), None)
+    gigs = load_json(os.path.join("web", "concerts.json"), {})
+    records.daily_picks(store, today, day, (out.get("moon") or {}).get("lit_pct"),
+                        civics.oregon_elections(today), world.thai_buddhist(today), gigs.get("shows") or [])
+    return None
 
 
 def fetch_outings(state, now_utc):
@@ -703,8 +719,8 @@ def fetch_outings(state, now_utc):
             w = outings.weather(out["lat"], out["lon"])
             return {"mountains": outings.mountains(w, out["lat"], out["lon"], now), "mushrooms": outings.mushrooms(w, today)}
         _refresh(store, "skies", skies, 1, now_utc, errors)
-    _refresh(store, "whales", lambda: outings.whales(today), 12, now_utc, errors)
-    _refresh(store, "openings", lambda: outings.openings(today), 6, now_utc, errors)
+    _refresh(store, "whales", lambda: outings.whales(today), 6, now_utc, errors)
+    _refresh(store, "openings", lambda: outings.openings(today), 3, now_utc, errors)
     if (store.get("picture") or {}).get("date") != today.isoformat():
         store.pop("picture_at", None)
     _refresh(store, "picture", lambda: outings.wiki_picture(today), 24, now_utc, errors)
@@ -720,7 +736,7 @@ def fetch_culture(state, now_utc):
         store.pop("wiki_at", None)
     _refresh(store, "wiki", lambda: {"date": today.isoformat(), "articles": culture.wiki_most_read(today)}, 24, now_utc, errors)
     _refresh(store, "reddit", culture.reddit_popular, 2, now_utc, errors)
-    _refresh(store, "longreads", culture.fresh_longreads, 12, now_utc, errors)
+    _refresh(store, "longreads", culture.fresh_longreads, 4, now_utc, errors)
     user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
     if user and not user.isdigit():
         if store.get("goodreads_name") != user:
@@ -976,7 +992,7 @@ def civics_view(state, today):
 
 
 def fetch_gear(state, now_utc):
-    """Underpriced music gear on Portland Craigslist, checked twice a day."""
+    """Underpriced music gear on Portland Craigslist, checked every few hours."""
     store, errors = state.setdefault("gear", {}), []
     if store.get("v") != 3:  # better matching: score the listings again now
         store.pop("scan_at", None)
@@ -992,7 +1008,7 @@ def fetch_gear(state, now_utc):
         for url in list(first)[:-500]:
             first.pop(url)
         return {"deals": picks, "checked": len(found)}
-    _refresh(store, "scan", scan, 12, now_utc, errors)
+    _refresh(store, "scan", scan, 4, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -1013,8 +1029,8 @@ def fetch_news(state, now_utc):
 
 def fetch_releases(state, now_utc):
     store, errors = state.setdefault("releases", {}), []
-    _refresh(store, "streaming", releases.streaming, 12, now_utc, errors)
-    _refresh(store, "albums", releases.albums, 12, now_utc, errors)
+    _refresh(store, "streaming", releases.streaming, 6, now_utc, errors)
+    _refresh(store, "albums", releases.albums, 6, now_utc, errors)
     return "; ".join(errors) or None
 
 
@@ -1163,7 +1179,7 @@ def fetch_deals(state, now_utc):
     if store.get("v") != 4:  # new ordering and price format
         store.clear()
         store["v"] = 4
-    _refresh(store, "weekly", lambda: deals.weekly(zip_code), 12, now_utc, errors)
+    _refresh(store, "weekly", lambda: deals.weekly(zip_code), 6, now_utc, errors)
     w = store.get("weekly") or {}
     if w.get("missing"):
         errors.append("no weekly ad found for " + ", ".join(w["missing"]) + "; ads nearby: " + ", ".join(w.get("merchants") or []))
@@ -1311,6 +1327,7 @@ def build(state, status, now_utc):
                    "reddit": {k: v for k, v in ((state.get("sports") or {}).get("reddit") or {}).items()
                               if not k.endswith("_at")}} if state.get("sports") else None,
         "markets": (state.get("markets") or {}).get("quotes"),
+        "market_news": {k: (state.get("markets") or {}).get(k) for k in ("helium", "realestate")},
         "ships": ships_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
@@ -1339,8 +1356,9 @@ def build(state, status, now_utc):
                     "facts": almanac.date_facts(dt.date.fromisoformat(today)),
                     "nearby": al.get("nearby"), "trails": al.get("trails")},
         "calendar": al.get("calendar") if env("CALENDAR_ICS") else None,
-        "apod": al.get("apod"),
+        "apod": al.get("apod") if al.get("apod") and sky._apod_ok(al["apod"]) else None,
         "picks": daily.picks(dt.date.fromisoformat(today)),
+        "records": (state.get("records") or {}).get("today") if ((state.get("records") or {}).get("today") or {}).get("date") == today else None,
         "album_birthdays": (al.get("albums") or {}).get("albums") if (al.get("albums") or {}).get("date") == today else None,
         "good_news": al.get("good_news"),
         "outings": outings_view(state, today),
@@ -1370,7 +1388,8 @@ def main():
                      ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
-                     ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings)):
+                     ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings),
+                     ("records", fetch_records)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

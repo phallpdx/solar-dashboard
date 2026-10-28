@@ -1,0 +1,513 @@
+# year | artist | album | tags   (records over 15 years old; tags pick the right day, see records.py)
+1956 | Elvis Presley | Elvis Presley | summer sun
+1957 | Thelonious Monk | Brilliant Corners | jazz night
+1958 | Miles Davis | Milestones | jazz
+1959 | Miles Davis | Kind of Blue | jazz night quiet rain
+1959 | Dave Brubeck Quartet | Time Out | jazz sunday
+1959 | Charles Mingus | Mingus Ah Um | jazz
+1959 | Ornette Coleman | The Shape of Jazz to Come | jazz
+1960 | John Coltrane | Giant Steps | jazz
+1960 | Miles Davis | Sketches of Spain | jazz summer
+1961 | Bill Evans Trio | Sunday at the Village Vanguard | jazz sunday quiet
+1962 | Bill Evans Trio | Waltz for Debby | jazz quiet rain
+1962 | Ray Charles | Modern Sounds in Country and Western Music | sunday
+1963 | Charles Mingus | The Black Saint and the Sinner Lady | jazz night
+1963 | Phil Spector | A Christmas Gift for You from Phil Spector | xmas
+1963 | Sam Cooke | Night Beat | night quiet
+1964 | John Coltrane | A Love Supreme | jazz sunday quiet
+1964 | Stan Getz and João Gilberto | Getz/Gilberto | jazz summer sun
+1964 | Eric Dolphy | Out to Lunch! | jazz
+1964 | Lee Morgan | The Sidewinder | jazz
+1966 | Wayne Shorter | Speak No Evil | jazz night
+1965 | Vince Guaraldi Trio | A Charlie Brown Christmas | xmas snow winter
+1965 | Herbie Hancock | Maiden Voyage | jazz summer
+1965 | Bob Dylan | Highway 61 Revisited | election
+1965 | Bob Dylan | Bringing It All Back Home | spring
+1965 | The Beatles | Rubber Soul | fall
+1965 | Otis Redding | Otis Blue | summer
+1965 | The Byrds | Mr. Tambourine Man | spring sun
+1966 | The Beach Boys | Pet Sounds | summer sun
+1966 | Bob Dylan | Blonde on Blonde | spring
+1966 | The Beatles | Revolver | spring
+1966 | Simon & Garfunkel | Parsley, Sage, Rosemary and Thyme | fall
+1967 | The Velvet Underground | The Velvet Underground & Nico | night
+1967 | The Beatles | Sgt. Pepper's Lonely Hearts Club Band | summer
+1967 | Jimi Hendrix Experience | Are You Experienced | summer
+1967 | Love | Forever Changes | fall
+1967 | Aretha Franklin | I Never Loved a Man the Way I Love You | valentine
+1967 | Leonard Cohen | Songs of Leonard Cohen | winter quiet
+1967 | The Doors | The Doors | night halloween
+1967 | Nina Simone | Nina Simone Sings the Blues | jazz night
+1968 | The Kinks | The Kinks Are the Village Green Preservation Society | spring sunday
+1968 | The Beatles | The Beatles | winter
+1968 | The Band | Music from Big Pink | fall
+1969 | Dusty Springfield | Dusty in Memphis | summer
+1968 | The Zombies | Odessey and Oracle | spring
+1968 | Johnny Cash | At Folsom Prison | winter
+1969 | The Beatles | Abbey Road | fall
+1969 | The Velvet Underground | The Velvet Underground | quiet night
+1969 | Miles Davis | In a Silent Way | jazz quiet morning
+1969 | Nick Drake | Five Leaves Left | fall quiet rain
+1969 | Led Zeppelin | Led Zeppelin II | fall
+1969 | Crosby, Stills & Nash | Crosby, Stills & Nash | spring sun
+1969 | Neil Young with Crazy Horse | Everybody Knows This Is Nowhere | fall
+1969 | The Stooges | The Stooges | summer
+1969 | The Rolling Stones | Let It Bleed | winter
+1969 | King Crimson | In the Court of the Crimson King | halloween night
+1970 | Simon & Garfunkel | Bridge over Troubled Water | winter
+1970 | George Harrison | All Things Must Pass | winter newyear
+1970 | Van Morrison | Moondance | full night fall
+1970 | Neil Young | After the Gold Rush | fall
+1970 | Miles Davis | Bitches Brew | jazz night
+1970 | Grateful Dead | American Beauty | summer sun
+1970 | Grateful Dead | Workingman's Dead | spring
+1970 | Black Sabbath | Paranoid | halloween
+1970 | Black Sabbath | Black Sabbath | halloween night rain
+1970 | The Stooges | Fun House | summer
+1970 | Creedence Clearwater Revival | Cosmo's Factory | summer sun
+1970 | James Taylor | Sweet Baby James | winter quiet
+1970 | Derek and the Dominos | Layla and Other Assorted Love Songs | valentine
+1971 | Marvin Gaye | What's Going On | election spring
+1971 | Joni Mitchell | Blue | winter quiet xmas
+1971 | Carole King | Tapestry | spring sunday
+1971 | Led Zeppelin | Led Zeppelin IV | fall
+1971 | The Rolling Stones | Sticky Fingers | summer
+1971 | The Who | Who's Next | summer
+1971 | Sly and the Family Stone | There's a Riot Goin' On | summer night
+1971 | David Bowie | Hunky Dory | spring
+1971 | Alice Coltrane | Journey in Satchidananda | jazz quiet morning
+1971 | Leonard Cohen | Songs of Love and Hate | winter rain
+1971 | Funkadelic | Maggot Brain | night
+1970 | Cat Stevens | Tea for the Tillerman | morning sunday
+1972 | David Bowie | The Rise and Fall of Ziggy Stardust and the Spiders from Mars | night
+1972 | The Rolling Stones | Exile on Main St. | summer
+1972 | Stevie Wonder | Talking Book | spring
+1972 | Curtis Mayfield | Super Fly | summer night
+1972 | Big Star | No. 1 Record | summer
+1972 | Al Green | I'm Still in Love with You | valentine
+1972 | Lou Reed | Transformer | night
+1972 | Steely Dan | Can't Buy a Thrill | summer
+1972 | Can | Ege Bamyasi | summer
+1972 | Townes Van Zandt | The Late Great Townes Van Zandt | winter quiet
+1973 | Pink Floyd | The Dark Side of the Moon | full night
+1973 | Stevie Wonder | Innervisions | summer
+1973 | Marvin Gaye | Let's Get It On | valentine night
+1973 | Herbie Hancock | Head Hunters | jazz
+1973 | Elton John | Goodbye Yellow Brick Road | fall
+1973 | Paul Simon | There Goes Rhymin' Simon | spring
+1973 | Gram Parsons | GP | spring
+1973 | Mike Oldfield | Tubular Bells | halloween
+1973 | Bruce Springsteen | The Wild, the Innocent & the E Street Shuffle | summer
+1974 | Joni Mitchell | Court and Spark | spring sun
+1974 | Big Star | Radio City | summer
+1974 | Neil Young | On the Beach | summer
+1974 | Stevie Wonder | Fulfillingness' First Finale | fall
+1974 | Richard and Linda Thompson | I Want to See the Bright Lights Tonight | night
+1974 | Robert Wyatt | Rock Bottom | quiet
+1974 | Kraftwerk | Autobahn | sun
+1974 | Gram Parsons | Grievous Angel | winter
+1975 | Bob Dylan | Blood on the Tracks | winter rain
+1975 | Bruce Springsteen | Born to Run | summer night
+1975 | Patti Smith | Horses | night
+1975 | Keith Jarrett | The Köln Concert | jazz quiet snow winter
+1975 | Brian Eno | Another Green World | spring
+1975 | Pink Floyd | Wish You Were Here | fall
+1975 | Neil Young | Tonight's the Night | night
+1975 | Queen | A Night at the Opera | night
+1975 | Earth, Wind & Fire | That's the Way of the World | summer
+1975 | Emmylou Harris | Pieces of the Sky | spring
+1976 | Stevie Wonder | Songs in the Key of Life | summer
+1976 | Ramones | Ramones | summer
+1976 | Joni Mitchell | Hejira | winter
+1976 | Fleetwood Mac | Rumours | spring
+1976 | Eagles | Hotel California | summer
+1976 | The Modern Lovers | The Modern Lovers | spring
+1976 | Jackson Browne | The Pretender | fall
+1977 | Television | Marquee Moon | night full
+1977 | David Bowie | Low | winter
+1977 | David Bowie | "Heroes" | winter
+1977 | Talking Heads | Talking Heads: 77 | spring
+1977 | Steely Dan | Aja | summer sunday
+1977 | Kraftwerk | Trans-Europe Express | winter
+1977 | Sex Pistols | Never Mind the Bollocks, Here's the Sex Pistols | election
+1977 | The Clash | The Clash | summer
+1977 | Iggy Pop | Lust for Life | summer
+1977 | Elvis Costello | My Aim Is True | spring
+1977 | Bob Marley and the Wailers | Exodus | summer sun
+1978 | Kate Bush | The Kick Inside | spring
+1978 | Talking Heads | More Songs About Buildings and Food | summer
+1978 | Wire | Chairs Missing | winter
+1978 | Elvis Costello and the Attractions | This Year's Model | spring
+1978 | Brian Eno | Ambient 1: Music for Airports | quiet morning rain
+1978 | Blondie | Parallel Lines | summer
+1978 | Bruce Springsteen | Darkness on the Edge of Town | summer night
+1978 | Big Star | Third/Sister Lovers | winter night quiet
+1979 | The Clash | London Calling | winter
+1979 | Joy Division | Unknown Pleasures | winter night
+1979 | Talking Heads | Fear of Music | halloween
+1979 | Michael Jackson | Off the Wall | summer
+1979 | Gang of Four | Entertainment! | election
+1979 | The Specials | The Specials | summer
+1979 | Fleetwood Mac | Tusk | fall
+1979 | Pink Floyd | The Wall | winter
+1979 | Wire | 154 | winter
+1979 | Neil Young & Crazy Horse | Rust Never Sleeps | fall
+1980 | Talking Heads | Remain in Light | summer
+1980 | Joy Division | Closer | winter rain
+1980 | Bruce Springsteen | The River | fall
+1980 | Dead Kennedys | Fresh Fruit for Rotting Vegetables | election
+1980 | X | Los Angeles | summer
+1980 | The Cure | Seventeen Seconds | winter
+1980 | Prince | Dirty Mind | night
+1981 | Brian Eno and David Byrne | My Life in the Bush of Ghosts | night
+1981 | The Cure | Faith | winter rain
+1981 | Rush | Moving Pictures | fall
+1981 | Black Flag | Damaged | summer
+1981 | Tom Tom Club | Tom Tom Club | summer sun
+1982 | Michael Jackson | Thriller | halloween
+1982 | Bruce Springsteen | Nebraska | winter quiet
+1982 | Kate Bush | The Dreaming | halloween
+1982 | Prince | 1999 | newyear
+1982 | Roxy Music | Avalon | summer night
+1982 | Marvin Gaye | Midnight Love | valentine night
+1982 | Donald Fagen | The Nightfly | night
+1982 | The Cure | Pornography | halloween night
+1983 | R.E.M. | Murmur | spring rain
+1983 | Talking Heads | Speaking in Tongues | summer
+1983 | Violent Femmes | Violent Femmes | spring
+1983 | New Order | Power, Corruption & Lies | spring
+1983 | Tom Waits | Swordfishtrombones | fall
+1983 | Cocteau Twins | Head over Heels | winter
+1983 | U2 | War | newyear
+1984 | Prince and the Revolution | Purple Rain | rain
+1984 | The Replacements | Let It Be | spring
+1984 | Hüsker Dü | Zen Arcade | winter
+1984 | The Smiths | The Smiths | rain
+1984 | Minutemen | Double Nickels on the Dime | summer
+1984 | Cocteau Twins | Treasure | winter
+1984 | Bruce Springsteen | Born in the U.S.A. | summer
+1984 | Run-DMC | Run-D.M.C. | summer
+1984 | Talking Heads | Stop Making Sense | summer
+1985 | Kate Bush | Hounds of Love | fall rain
+1985 | The Jesus and Mary Chain | Psychocandy | winter
+1985 | The Smiths | Meat Is Murder | rain
+1985 | Tom Waits | Rain Dogs | rain night
+1985 | Sade | Promise | valentine night
+1985 | R.E.M. | Fables of the Reconstruction | fall
+1985 | Prefab Sprout | Steve McQueen | spring
+1985 | The Replacements | Tim | fall
+1986 | Paul Simon | Graceland | summer sun
+1986 | The Smiths | The Queen Is Dead | fall rain
+1986 | Peter Gabriel | So | summer
+1986 | Beastie Boys | Licensed to Ill | summer
+1986 | Run-DMC | Raising Hell | summer
+1986 | R.E.M. | Lifes Rich Pageant | summer
+1986 | Talk Talk | The Colour of Spring | spring equinox
+1987 | Prince | Sign o' the Times | spring
+1987 | U2 | The Joshua Tree | sun
+1987 | The Cure | Kiss Me, Kiss Me, Kiss Me | valentine
+1987 | Dinosaur Jr. | You're Living All Over Me | summer
+1987 | Eric B. & Rakim | Paid in Full | summer
+1987 | Hüsker Dü | Warehouse: Songs and Stories | fall
+1987 | R.E.M. | Document | election fall
+1988 | Sonic Youth | Daydream Nation | fall
+1988 | Public Enemy | It Takes a Nation of Millions to Hold Us Back | election
+1988 | Pixies | Surfer Rosa | summer
+1988 | My Bloody Valentine | Isn't Anything | valentine
+1988 | Talk Talk | Spirit of Eden | quiet rain sunday
+1988 | Tracy Chapman | Tracy Chapman | election
+1988 | Cowboy Junkies | The Trinity Session | winter quiet
+1988 | Galaxie 500 | Today | night
+1989 | De La Soul | 3 Feet High and Rising | spring sun
+1989 | Pixies | Doolittle | summer
+1989 | The Cure | Disintegration | rain winter night
+1989 | The Stone Roses | The Stone Roses | summer
+1989 | Beastie Boys | Paul's Boutique | summer
+1989 | Galaxie 500 | On Fire | winter
+1989 | Neil Young | Freedom | election
+1990 | Sinéad O'Connor | I Do Not Want What I Haven't Got | winter
+1990 | Public Enemy | Fear of a Black Planet | election
+1990 | A Tribe Called Quest | People's Instinctive Travels and the Paths of Rhythm | summer
+1990 | Cocteau Twins | Heaven or Las Vegas | night
+1990 | Depeche Mode | Violator | night
+1990 | Ride | Nowhere | summer
+1990 | The La's | The La's | spring
+1990 | Pixies | Bossanova | summer night
+1991 | My Bloody Valentine | Loveless | valentine winter
+1991 | Nirvana | Nevermind | fall local
+1991 | A Tribe Called Quest | The Low End Theory | jazz fall
+1991 | Massive Attack | Blue Lines | night rain
+1991 | Talk Talk | Laughing Stock | quiet rain
+1991 | Slint | Spiderland | night halloween
+1991 | R.E.M. | Out of Time | spring
+1991 | Pearl Jam | Ten | fall local
+1991 | U2 | Achtung Baby | winter
+1991 | Teenage Fanclub | Bandwagonesque | summer
+1991 | Primal Scream | Screamadelica | summer
+1991 | Mudhoney | Every Good Boy Deserves Fudge | rain local
+1992 | R.E.M. | Automatic for the People | fall rain quiet
+1992 | Pavement | Slanted and Enchanted | summer
+1992 | Aphex Twin | Selected Ambient Works 85–92 | night quiet
+1992 | Dr. Dre | The Chronic | summer sun
+1992 | Sugar | Copper Blue | summer
+1992 | Alice in Chains | Dirt | rain local
+1992 | Rage Against the Machine | Rage Against the Machine | election
+1992 | Arrested Development | 3 Years, 5 Months and 2 Days in the Life Of... | summer
+1993 | Liz Phair | Exile in Guyville | summer
+1993 | Wu-Tang Clan | Enter the Wu-Tang (36 Chambers) | winter
+1993 | Nirvana | In Utero | fall local
+1993 | Björk | Debut | spring
+1993 | The Breeders | Last Splash | summer
+1993 | Smashing Pumpkins | Siamese Dream | summer
+1993 | A Tribe Called Quest | Midnight Marauders | night
+1993 | Red House Painters | Red House Painters | rain quiet
+1993 | Yo La Tengo | Painful | fall
+1993 | Mazzy Star | So Tonight That I Might See | night quiet
+1993 | Heatmiser | Dead Air | rain local
+1994 | Jeff Buckley | Grace | winter
+1994 | Pavement | Crooked Rain, Crooked Rain | rain
+1994 | Nas | Illmatic | winter
+1994 | Portishead | Dummy | rain night
+1994 | Nirvana | MTV Unplugged in New York | winter quiet local
+1994 | Weezer | Weezer | summer
+1994 | Hole | Live Through This | fall
+1994 | Oasis | Definitely Maybe | summer
+1994 | Blur | Parklife | summer
+1994 | Soundgarden | Superunknown | rain local
+1994 | Sunny Day Real Estate | Diary | rain local
+1994 | The Notorious B.I.G. | Ready to Die | winter
+1994 | Massive Attack | Protection | night
+1996 | Neutral Milk Hotel | On Avery Island | fall
+1995 | Radiohead | The Bends | winter
+1995 | PJ Harvey | To Bring You My Love | night
+1995 | Smashing Pumpkins | Mellon Collie and the Infinite Sadness | halloween fall
+1995 | Pulp | Different Class | summer
+1995 | Oasis | (What's the Story) Morning Glory? | morning
+1995 | Elliott Smith | Elliott Smith | fall rain local
+1995 | Björk | Post | spring
+1995 | Tricky | Maxinquaye | night
+1994 | Built to Spill | There's Nothing Wrong with Love | spring local
+1995 | Sleater-Kinney | Sleater-Kinney | local
+1995 | Alanis Morissette | Jagged Little Pill | spring
+1995 | D'Angelo | Brown Sugar | valentine night
+1996 | DJ Shadow | Endtroducing..... | night
+1996 | Belle and Sebastian | If You're Feeling Sinister | fall rain
+1996 | Beck | Odelay | summer sun
+1996 | Fugees | The Score | summer
+1996 | Jay-Z | Reasonable Doubt | night
+1996 | Tortoise | Millions Now Living Will Never Die | quiet
+1996 | Built to Spill | Perfect from Now On | fall local
+1996 | Palace Music | Arise Therefore | winter quiet
+1996 | Sebadoh | Harmacy | fall
+1996 | Stereolab | Emperor Tomato Ketchup | summer
+1996 | Underworld | Second Toughest in the Infants | night
+1997 | Radiohead | OK Computer | night
+1997 | Elliott Smith | Either/Or | fall rain local
+1997 | Spiritualized | Ladies and Gentlemen We Are Floating in Space | night
+1997 | Yo La Tengo | I Can Hear the Heart Beating as One | fall
+1997 | Björk | Homogenic | winter snow
+1997 | Daft Punk | Homework | summer
+1997 | Erykah Badu | Baduizm | sunday
+1997 | Sleater-Kinney | Dig Me Out | spring local
+1997 | Modest Mouse | The Lonesome Crowded West | local rain
+1997 | Mogwai | Young Team | winter
+1997 | Bob Dylan | Time Out of Mind | winter
+1997 | The Verve | Urban Hymns | fall
+1997 | Godspeed You! Black Emperor | F♯ A♯ ∞ | winter snow
+1998 | Neutral Milk Hotel | In the Aeroplane Over the Sea | fall
+1998 | Lauryn Hill | The Miseducation of Lauryn Hill | spring
+1998 | Massive Attack | Mezzanine | night rain
+1998 | Air | Moon Safari | summer full
+1998 | Boards of Canada | Music Has the Right to Children | fall
+1998 | Elliott Smith | XO | fall rain local
+1998 | Outkast | Aquemini | summer
+1998 | Lucinda Williams | Car Wheels on a Gravel Road | summer
+1998 | Mercury Rev | Deserter's Songs | winter
+1998 | Belle and Sebastian | The Boy with the Arab Strap | spring
+1998 | Lambchop | What Another Man Spills | sunday
+1998 | Cat Power | Moon Pix | night full quiet
+1999 | The Flaming Lips | The Soft Bulletin | spring
+1999 | Magnetic Fields | 69 Love Songs | valentine
+1999 | Built to Spill | Keep It Like a Secret | summer local
+1999 | Sigur Rós | Ágætis byrjun | winter snow
+1999 | Mos Def | Black on Both Sides | fall
+1999 | Moby | Play | morning
+1999 | The Roots | Things Fall Apart | fall
+1999 | Low | Secret Name | winter quiet
+1999 | Beth Orton | Central Reservation | spring
+1999 | Wilco | Summerteeth | summer
+2000 | Radiohead | Kid A | winter snow
+2000 | D'Angelo | Voodoo | night valentine
+2000 | Outkast | Stankonia | summer
+2000 | Modest Mouse | The Moon & Antarctica | winter local
+2000 | Elliott Smith | Figure 8 | spring local
+2000 | Godspeed You! Black Emperor | Lift Your Skinny Fists Like Antennas to Heaven | winter
+2000 | Yo La Tengo | And Then Nothing Turned Itself Inside-Out | night quiet
+2000 | Sleater-Kinney | All Hands on the Bad One | summer local
+2000 | Grandaddy | The Sophtware Slump | fall
+2000 | Badly Drawn Boy | The Hour of Bewilderbeast | spring
+2000 | PJ Harvey | Stories from the City, Stories from the Sea | night
+1974 | Shuggie Otis | Inspiration Information | summer sun
+2000 | Isolée | Rest | night
+2001 | The Strokes | Is This It | summer
+2001 | Daft Punk | Discovery | summer newyear
+2001 | Björk | Vespertine | winter snow quiet
+2001 | The White Stripes | White Blood Cells | summer
+2001 | Jay-Z | The Blueprint | fall
+2001 | Gillian Welch | Time (The Revelator) | quiet sunday
+2001 | Bob Dylan | "Love and Theft" | fall
+2001 | Stereolab | Sound-Dust | summer
+2001 | Spoon | Girls Can Tell | spring
+2001 | The Shins | Oh, Inverted World | spring local
+2001 | Ryan Adams | Gold | fall
+2001 | Mercury Rev | All Is Dream | winter
+2002 | Wilco | Yankee Hotel Foxtrot | fall
+2002 | Interpol | Turn On the Bright Lights | night winter
+2002 | The Flaming Lips | Yoshimi Battles the Pink Robots | spring
+2002 | Spoon | Kill the Moonlight | full
+2002 | Boards of Canada | Geogaddi | halloween
+2002 | Beck | Sea Change | rain quiet fall
+2002 | Queens of the Stone Age | Songs for the Deaf | summer
+2002 | Sigur Rós | ( ) | snow winter quiet
+2002 | Bright Eyes | Lifted or The Story Is in the Soil, Keep Your Ear to the Ground | spring
+2002 | Johnny Cash | American IV: The Man Comes Around | winter
+2002 | Coldplay | A Rush of Blood to the Head | rain
+2002 | The Streets | Original Pirate Material | night
+2003 | The White Stripes | Elephant | summer
+2003 | Outkast | Speakerboxxx/The Love Below | valentine
+2003 | Sufjan Stevens | Michigan | winter snow
+2003 | The Postal Service | Give Up | rain local
+2003 | Death Cab for Cutie | Transatlanticism | rain local fall
+2003 | The Shins | Chutes Too Narrow | spring local
+2003 | My Morning Jacket | It Still Moves | summer
+2001 | The Microphones | The Glow Pt. 2 | fall rain local
+2002 | Broken Social Scene | You Forgot It in People | summer
+2003 | Yeah Yeah Yeahs | Fever to Tell | night
+2003 | M83 | Dead Cities, Red Seas & Lost Ghosts | night
+2004 | Kings of Convenience | Riot on an Empty Street | quiet morning
+2004 | Arcade Fire | Funeral | winter snow
+2004 | Kanye West | The College Dropout | fall
+2004 | Madvillain | Madvillainy | night
+2004 | Wilco | A Ghost Is Born | fall
+2004 | Joanna Newsom | The Milk-Eyed Mender | spring
+2004 | Modest Mouse | Good News for People Who Love Bad News | spring local
+2004 | Franz Ferdinand | Franz Ferdinand | summer
+2004 | Sufjan Stevens | Seven Swans | quiet sunday
+2004 | Animal Collective | Sung Tongs | summer
+2004 | Iron & Wine | Our Endless Numbered Days | fall quiet
+2004 | The Killers | Hot Fuss | summer
+2004 | Elliott Smith | From a Basement on the Hill | fall local rain
+2004 | Brian Wilson | Smile | summer
+2005 | Sufjan Stevens | Illinois | fall thanks
+2005 | Kanye West | Late Registration | fall
+2005 | Sleater-Kinney | The Woods | fall local
+2005 | The Decemberists | Picaresque | rain local
+2005 | LCD Soundsystem | LCD Soundsystem | night
+2005 | Antony and the Johnsons | I Am a Bird Now | quiet
+2005 | Bright Eyes | I'm Wide Awake, It's Morning | morning
+2005 | Wolf Parade | Apologies to the Queen Mary | summer
+2005 | The National | Alligator | fall
+2005 | Spoon | Gimme Fiction | summer
+2005 | Animal Collective | Feels | fall
+2005 | Clap Your Hands Say Yeah | Clap Your Hands Say Yeah | spring
+2005 | M.I.A. | Arular | summer
+2005 | Kate Bush | Aerial | summer sun
+2006 | TV on the Radio | Return to Cookie Mountain | night
+2006 | Joanna Newsom | Ys | winter
+2006 | Burial | Burial | rain night
+2006 | Neko Case | Fox Confessor Brings the Flood | rain local
+2006 | Ghostface Killah | Fishscale | winter
+2006 | The Knife | Silent Shout | winter night halloween
+2006 | Arctic Monkeys | Whatever People Say I Am, That's What I'm Not | night
+2006 | Bob Dylan | Modern Times | fall
+2006 | Clipse | Hell Hath No Fury | winter
+2006 | The Hold Steady | Boys and Girls in America | summer
+2006 | Camera Obscura | Let's Get Out of This Country | spring
+2006 | The Decemberists | The Crane Wife | winter local
+2006 | Amy Winehouse | Back to Black | night
+2007 | Radiohead | In Rainbows | fall rain
+2007 | LCD Soundsystem | Sound of Silver | night newyear
+2007 | Burial | Untrue | rain night winter
+2007 | Panda Bear | Person Pitch | summer sun
+2007 | Bon Iver | For Emma, Forever Ago | winter snow
+2007 | Spoon | Ga Ga Ga Ga Ga | summer
+2007 | Arcade Fire | Neon Bible | winter
+2007 | The National | Boxer | fall rain
+2007 | Feist | The Reminder | spring
+2007 | Battles | Mirrored | summer
+2007 | Beirut | The Flying Club Cup | fall
+2007 | Kanye West | Graduation | fall
+2007 | Band of Horses | Cease to Begin | fall local
+2007 | Iron & Wine | The Shepherd's Dog | fall
+2007 | M.I.A. | Kala | summer
+2008 | Fleet Foxes | Fleet Foxes | fall spring local
+2008 | TV on the Radio | Dear Science | fall
+2008 | Portishead | Third | night rain
+2008 | Vampire Weekend | Vampire Weekend | summer sun spring
+2008 | Hot Chip | Made in the Dark | night
+2008 | The Walkmen | You & Me | fall
+2008 | Deerhunter | Microcastle | fall
+2008 | Kanye West | 808s & Heartbreak | winter
+2008 | Elbow | The Seldom Seen Kid | spring
+2008 | Okkervil River | The Stand Ins | summer
+2009 | Animal Collective | Merriweather Post Pavilion | winter summer
+2009 | Grizzly Bear | Veckatimest | summer
+2009 | Phoenix | Wolfgang Amadeus Phoenix | summer sun
+2009 | The xx | xx | night
+2009 | Dirty Projectors | Bitte Orca | summer
+2009 | Neko Case | Middle Cyclone | rain local
+2009 | Wild Beasts | Two Dancers | night
+2009 | Atlas Sound | Logos | fall
+2009 | Real Estate | Real Estate | summer sun
+2009 | Bill Callahan | Sometimes I Wish We Were an Eagle | quiet
+2009 | The Antlers | Hospice | winter quiet
+2010 | Kanye West | My Beautiful Dark Twisted Fantasy | winter
+2010 | Arcade Fire | The Suburbs | summer
+2010 | LCD Soundsystem | This Is Happening | summer night
+2010 | Beach House | Teen Dream | night summer
+2010 | Janelle Monáe | The ArchAndroid | spring
+2010 | Joanna Newsom | Have One on Me | winter
+2010 | The National | High Violet | fall
+2010 | Deerhunter | Halcyon Digest | fall
+2010 | Vampire Weekend | Contra | winter
+2010 | Big Boi | Sir Lucious Left Foot: The Son of Chico Dusty | summer
+2010 | Sufjan Stevens | The Age of Adz | winter
+2010 | Robyn | Body Talk | night newyear
+2010 | Spoon | Transference | fall
+2010 | Caribou | Swim | summer
+2010 | Sleigh Bells | Treats | summer
+2010 | Four Tet | There Is Love in You | quiet morning
+2010 | The Walkmen | Lisbon | summer
+2010 | Wild Nothing | Gemini | summer
+2010 | Titus Andronicus | The Monitor | election
+2010 | Gorillaz | Plastic Beach | summer
+2010 | Sade | Soldier of Love | valentine
+2010 | Laura Marling | I Speak Because I Can | winter
+2010 | Grinderman | Grinderman 2 | halloween
+2010 | Shearwater | The Golden Archipelago | rain
+2010 | Swans | My Father Will Guide Me Up a Rope to the Sky | halloween night
+2010 | Bonobo | Black Sands | night
+2010 | Flying Lotus | Cosmogramma | jazz night
+2010 | Ariel Pink's Haunted Graffiti | Before Today | summer
+2010 | Owen Pallett | Heartland | spring
+2010 | Gil Scott-Heron | I'm New Here | winter
+2010 | Mavis Staples | You Are Not Alone | sunday
+2010 | Esperanza Spalding | Chamber Music Society | jazz quiet
+1972 | Nick Drake | Pink Moon | fall winter rain quiet full
+1971 | Nick Drake | Bryter Layter | fall
+1968 | Van Morrison | Astral Weeks | fall
+1992 | Neil Young | Harvest Moon | fall full thanks
+1972 | Neil Young | Harvest | fall thanks
+2001 | Low | Things We Lost in the Fire | winter snow quiet
+1999 | Low | Christmas | xmas
+1963 | John Coltrane | Ballads | rain winter jazz
+1981 | Siouxsie and the Banshees | Juju | halloween
+1977 | Goblin | Suspiria | halloween
+1968 | Simon & Garfunkel | Bookends | fall
+1964 | Bob Dylan | The Times They Are a-Changin' | election
+1972 | Al Green | Let's Stay Together | valentine
+2008 | Grouper | Dragging a Dead Deer Up a Hill | fall rain local quiet
+1971 | Bill Withers | Just as I Am | morning sunday
+1979 | John Carpenter | Halloween | halloween
+2002 | William Basinski | The Disintegration Loops | winter quiet
+1986 | Hiroshi Yoshimura | Green | spring sunday quiet

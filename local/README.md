@@ -7,16 +7,23 @@ LM Studio on Parker's desktop PC instead of Claude routines. It runs every night
 minutes and retry anything that failed earlier.
 
 Lists it handles: jazz, concerts, events (big events), kids (family outings),
-bluray, foodfinds, skioutlook, teams (fan pulse), coast, restaurants, localmusic and marketbrief (the morning
+bluray, foodfinds, planahead, skioutlook, teams (fan pulse), coast, restaurants, localmusic, liquor and marketbrief (the morning
 market analysis, North American Helium and Portland real estate, written from
 news feeds and closing prices).
 
 Every run also writes `web/localstatus.json`, saying which lists it changed
 tonight. The Claude runs in the cloud read it each morning and skip whatever
 this PC already refreshed, so they only do the full job when the PC was
-off or a list failed. For planahead it only drops
-past items: venue pages don't show on-sale dates, so finding new ones stays with
-Claude.
+off or a list failed. Planahead reads on-sale news (the Portland Mercury's weekly
+Ticket Alert and on-sale headlines), but the cloud run still researches it every
+morning, since venue pages don't show on-sale dates.
+
+Liquor works without reading pages: OLCC posts this month's and next month's
+price lists as CSV files, and any item code in next month's list that isn't in
+this month's is new in Oregon. The model only names the category and writes a
+plain description. It never rates bottles, so rating stays empty; the cloud
+roundup can add critic scores. OLCC doesn't publish per-store stock, so these are
+new in Oregon, not confirmed on the St. Johns shelf.
 
 ## What a run does
 
@@ -36,7 +43,9 @@ Logs are in `local\logs\` (kept 30 days).
 
 Concerts work a little differently: the model reads venue calendars and, when
 an artist on the "missing" list gets a Portland date, moves them to "shows".
-Finding newly acclaimed albums is still a job for Claude.
+It also reads Pitchfork's Best New Albums feed and adds those artists to
+"missing" with no score (the feed has none) and score_source "Pitchfork Best New Music".
+The cloud run still adds Metacritic-scored albums twice a week.
 
 ## One-time setup (Windows)
 

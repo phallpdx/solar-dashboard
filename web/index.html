@@ -3734,7 +3734,10 @@ async function renderGigs() {
     return `<div><span><b style="font-weight:700">${esc(x.artist)}</b> · <i>${esc(x.album)}</i> ${score}<br><small>${esc(x.venue)}</small></span>
       <span style="white-space:nowrap;padding-left:12px;text-align:right">${when}<br><a class="link" href="${esc(x.tickets)}" target="_blank" rel="noopener">Tickets</a></span></div>`;
   }).join('');
-  const miss = (g.missing || []).map(x => x.score_url ? `<a href="${esc(x.score_url)}" target="_blank" rel="noopener">${esc(x.artist)} (${esc(x.score)})</a>` : `${esc(x.artist)} (${esc(x.score)})`).join(', ');
+  const miss = (g.missing || []).map(x => {
+    const label = `${esc(x.artist)} (${esc(x.score != null ? x.score : x.score_source || 'critics')})`;
+    return x.score_url ? `<a href="${esc(x.score_url)}" target="_blank" rel="noopener">${label}</a>` : label;
+  }).join(', ');
   $('gig-missing').innerHTML = miss ? `Top-rated albums with no Portland show yet: ${miss}.` : '';
   $('more').hidden = false;
 }

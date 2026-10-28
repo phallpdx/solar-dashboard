@@ -15,9 +15,11 @@ Only the standard library is used, so a plain Python install is enough.
     python local\refresh_lists.py --check-sources  # fetch each source and report, no model needed
 """
 import argparse
+import csv
 import datetime as dt
 import hashlib
 import html
+import io
 import json
 import os
 import re
@@ -595,8 +597,11 @@ def refresh_jazz(data, sources):
 
 
 def refresh_concerts(data, sources):
-    """Moves an artist from 'missing' to 'shows' once a venue lists a Portland date."""
+    """Adds newly acclaimed albums to 'missing' from review feeds, then moves an artist
+    from 'missing' to 'shows' once a venue lists a Portland date."""
     ok = future_ok("date", days=400)
+    add_acclaimed(data, [s for s in sources if s.get("use") == "albums"])
+    sources = [s for s in sources if s.get("use") != "albums"]
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("artist")):
@@ -628,12 +633,59 @@ def refresh_concerts(data, sources):
             still_missing.append(m)
             continue
         log(f"  found a date for {m['artist']}: {hit['date']} at {hit['venue']}")
-        shows.append({"artist": m["artist"], "album": m["album"], "score": m["score"],
-                      "score_source": "Metacritic" if "metacritic" in (m.get("score_url") or "") else "Critics",
+        shows.append({"artist": m["artist"], "album": m["album"], "score": m.get("score"),
+                      "score_source": m.get("score_source") or ("Metacritic" if "metacritic" in (m.get("score_url") or "") else "Critics"),
                       "score_url": m.get("score_url"), "date": hit["date"], "venue": hit["venue"], "tickets": hit["tickets"]})
     data["shows"] = sorted(shows, key=by_date("date"))
     data["missing"] = still_missing
     return data
+
+
+def review_byline(url):
+    """(artist, album) from a review page's title, e.g. "Djrum: DJ-Kicks Album Review | Pitchfork".
+    The feed itself only carries the album title, and the model guesses artists ("UK selector")."""
+    body, _ = fetch(url)
+    m = re.search(r"<title[^>]*>(.*?)</title>", body, re.S | re.I)
+    title = " ".join(html.unescape(m.group(1)).split()) if m else ""
+    title = re.sub(r"\s*\|\s*Pitchfork\s*$", "", title)
+    title = re.sub(r"\s+(Album|EP) Review$", "", title)
+    artist, sep, album = title.partition(": ")
+    if sep and album and not re.search(r"\w", artist):
+        # A name that is only symbols ("@") is spelled out in the link: /reviews/albums/at-sign-autosmile/
+        slug, tail = url.rstrip("/").rsplit("/", 1)[-1], re.sub(r"[^a-z0-9]+", "-", album.lower()).strip("-")
+        artist = slug[:-len(tail) - 1].replace("-", " ").title() if tail and slug.endswith("-" + tail) else ""
+    return (clean(artist, 120), clean(album, 160)) if sep and artist and album else (None, None)
+
+
+def add_acclaimed(data, sources):
+    """Adds albums from a "best new music" feed to 'missing', so the venue check looks for their tours.
+    No model here: the artist and album come from each review's page title. The feed gives no number,
+    so the score stays empty and score_source names the feed."""
+    shows, missing = data.get("shows", []), data.setdefault("missing", [])
+    seen = {x.get("score_url") for x in shows + missing}
+    fresh = []
+    for src in sources:
+        try:
+            text, _ = page_text(src, max_age_days=21)
+        except Exception as e:  # noqa: BLE001
+            log(f"  {src['name']}: fetch failed ({e})")
+            continue
+        links = re.findall(r"^- .+? \((?:\d{4}-\d{2}-\d{2}|date unknown)\) \[(\S+)\]", text, re.M)
+        for url in [u for u in links if u not in seen][:10]:
+            try:
+                artist, album = review_byline(url)
+            except Exception as e:  # noqa: BLE001
+                log(f"  {url}: fetch failed ({e})")
+                continue
+            if not artist or any(same_thing(artist, None, x["artist"], None) for x in shows + missing + fresh):
+                continue
+            log(f"  newly acclaimed: {artist}, {album}")
+            fresh.append({"artist": artist, "album": album, "score": None, "score_source": src.get("label") or src["name"],
+                          "score_url": url, "why": "No Portland date found yet"})
+    # Newest first; the cloud run's scored picks keep their place ahead of feed picks it hasn't checked.
+    scored = [m for m in missing if m.get("score") is not None]
+    unscored = fresh + [m for m in missing if m.get("score") is None]
+    data["missing"] = scored + unscored[:8]
 
 
 def refresh_events(data, sources):
@@ -790,7 +842,8 @@ def refresh_planahead(data, sources):
     new = extract(sources, "List things a Portland, Oregon family must ACT ON AHEAD of time: ticket presales or on-sale dates for "
                            "Portland shows, reservations that open, registration or permit deadlines. Skip anything not in Oregon "
                            "or SW Washington. action says what to do and when. starts is when sales or booking open, by is the "
-                           f"deadline (YYYY-MM-DD or null). kind is one of {kinds}.",
+                           f"deadline (YYYY-MM-DD or null), and both must be dates the item itself states: the date in parentheses "
+                           f"after a headline is when the news ran, not a sale date. kind is one of {kinds}.",
                   {"title": S, "kind": {"type": "string", "enum": kinds}, "action": S, "starts": DATE, "by": DATE, "why": S, "url": S},
                   build, max_age_days=7)
     data["items"] = merge(data.get("items", []), new, "title", "starts", lambda x: still_current(x, ["by", "starts"]),
@@ -909,22 +962,23 @@ def refresh_marketbrief(data, sources):
                     ". Write a short market analysis. headline: one sentence on what markets did and why. summary: three or "
                     "four plain sentences on why stocks, bonds, oil, gold and Bitcoin moved and the bigger trend, using only "
                     "these headlines and numbers. drivers: 2 to 4 short lines naming the news that moved things. watch: up to "
-                    "4 scheduled events coming up that the headlines mention (or none). source_urls: up to 6 links that back it up.",
+                    "4 scheduled events coming up that the headlines mention (or none). source_urls: up to 6 link numbers that back it up.",
         "helium": "These are recent news items about North American Helium, a private helium producer in Saskatchewan, "
                   "and the helium market. headline: one sentence on how the company is doing. summary: two to four sentences "
                   "on production, plants, financing and the market, from these items only. drivers and watch: leave empty "
-                  "unless the items name something. source_urls: up to 6 links that back it up.",
+                  "unless the items name something. source_urls: up to 6 link numbers that back it up.",
         "realestate": "These are recent news items about the Portland, Oregon housing market. headline: one sentence on "
                       "how the market is doing. summary: two to four sentences on prices, sales, inventory, rents and mortgage "
                       "rates, from these items only. drivers and watch: leave empty unless the items name something. "
-                      "source_urls: up to 6 links that back it up.",
+                      "source_urls: up to 6 link numbers that back it up.",
     }
     done = 0
     for key, feeds in sources.items():
         texts, links, entries = [], set(), []
         for src in feeds:
             try:
-                text, l = page_text(src, max_age_days=2 if key == "analysis" else 30)
+                # North American Helium is private and in the news every month or two.
+                text, l = page_text(src, max_age_days={"analysis": 2, "helium": 90}.get(key, 30))
             except Exception as e:  # noqa: BLE001
                 log(f"  {src['name']}: fetch failed ({e})")
                 continue
@@ -936,11 +990,13 @@ def refresh_marketbrief(data, sources):
         if not texts:
             continue
         log(f"  {key}: asking the model")
-        r = ask_model(tasks[key], "\n\n".join(texts), schema)
+        # Google News links are 200-character redirects the model can't copy exactly, so it gets numbers.
+        text, table = number_links("\n\n".join(texts))
+        r = ask_model(tasks[key], text, schema)
         if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
             log(f"  {key}: model reply did not pass checks, keeping the last one")
             continue
-        urls = [u for u in r.get("source_urls", []) if u in links][:6]
+        urls = list(dict.fromkeys(u for u in (unnumber(x, table) for x in r.get("source_urls", [])) if u in links))[:6]
         if not urls:
             log(f"  {key}: no real links in the reply, keeping the last one")
             continue
@@ -1050,11 +1106,98 @@ def refresh_localmusic(data, sources):
     return data
 
 
+def olcc_price_list(url):
+    """OLCC's statewide price list CSV as {item code: row}. It is latin-1, and the header
+    "Bottles Per Case" has a line break in it, quoted or not."""
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        rows = csv.reader(io.StringIO(resp.read().decode("latin-1")))
+    header = next(rows)
+    while "unit price" not in " ".join(header).lower():
+        more = next(rows)
+        header = header[:-1] + [header[-1] + " " + more[0]] + more[1:]
+    header = [re.sub(r"\s+", " ", h).strip().lower() for h in header]
+    out = {}
+    for row in rows:
+        r = dict(zip(header, (c.strip() for c in row)))
+        if r.get("item code"):
+            out[r["item code"]] = r
+    return out
+
+
+def _price(s):
+    try:
+        return round(float(re.sub(r"[$,\s]", "", s or "")), 2)
+    except ValueError:
+        return None
+
+
+def refresh_liquor(data, sources):
+    """New bottles in Oregon: item codes in next month's OLCC price list that aren't in this month's.
+    Python finds them and reads size and price; the model only names the category and writes a
+    plain description from the item name. Critic ratings are left empty for the cloud run to find."""
+    url = {s.get("use"): s["url"] for s in sources}
+    current = olcc_price_list(url["current"])
+    try:
+        nxt = olcc_price_list(url["next"])
+    except urllib.error.HTTPError as e:
+        log(f"  next month's price list isn't up ({e.code}); OLCC posts it late in the month")
+        return data
+    if nxt.keys() == current.keys():
+        log("  next month's list has no new item codes yet")
+        return data
+    # A new code for a new size of something OLCC already sells ("DI SARONNO AMARETTO" in 700 ml) isn't a new bottle.
+    sold = {" ".join(r.get("description", "").split()) for r in current.values()}
+    new = [r for code, r in nxt.items() if code not in current and _price(r.get("unit price"))
+           and " ".join(r.get("description", "").split()) not in sold]
+    log(f"  {len(new)} new item codes in next month's price list")
+    items = data.get("items", [])
+    have = {x.get("olcc_code") for x in items}
+    new = [r for r in new if r["item code"] not in have
+           and not any(same_thing(r.get("description"), None, x["name"], None) for x in items)]
+    if not new:
+        return data
+    cats = sorted({x["category"] for x in items if x.get("category")} |
+                  {"Bourbon", "Whiskey", "Scotch", "Tequila", "Mezcal", "Rum", "Gin", "Vodka", "Brandy", "Liqueur", "Cordial", "Other"})
+    lines = "\n".join(f"{r['item code']}: {r.get('description')} {r.get('size')}" + (f" {r['age']}" if r.get("age") else "")
+                      + (f" {r['proof']} proof" if r.get("proof") else "") for r in new[:40])
+    result = ask_model("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
+                       "For each, give code (exactly as written), name (the description in normal capitalization with abbreviations "
+                       f"spelled out, e.g. YO or YR as Year, without the size), category (one of {cats}) and what: a short plain phrase on what it is, using "
+                       "only what the description says. Don't add ratings, awards or tasting notes.",
+                       lines, items_schema({"code": S, "name": S, "category": {"type": "string", "enum": cats}, "what": S}))
+    by_code = {r["item code"]: r for r in new}
+    try:
+        month = dt.datetime.strptime(new[0].get("effective date", ""), "%m/%d/%Y").strftime("%B %Y")
+    except ValueError:
+        month = "upcoming"
+    added = []
+    for m in (result or {}).get("items") or []:
+        r = by_code.pop(clean(m.get("code")), None)
+        if not r or not clean(m.get("name")):
+            continue
+        what = clean(m.get("what"), 160).rstrip(".")
+        added.append({"name": clean(m["name"], 100), "category": m["category"] if m.get("category") in cats else "Other",
+                      "size": re.sub(r"(\d)\s*(ML|L)$", lambda g: f"{g[1]} {g[2].lower() if g[2] == 'ML' else 'L'}", clean(r.get("size"), 20)), "price": _price(r.get("unit price")), "rating": None,
+                      "rating_source": None, "why": (f"{what[:1].upper()}{what[1:]}. " if what else "") +
+                      f"New on OLCC's {month} price list.", "url": None, "olcc_url": None,
+                      "olcc_code": r["item code"], "added": TODAY.isoformat()})
+    log(f"  added {len(added)} bottles")
+    if added:
+        # Bottles OLCC has dropped from the price list are gone from the shelves too.
+        kept = [x for x in items if not x.get("olcc_code") or x["olcc_code"] in nxt]
+        data["items"] = (added + kept)[:20]
+        data["note"] = (f"New on OLCC's {month} price list, found by comparing it with this month's. Critic ratings are "
+                        "added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.")
+    return data
+
+
 REFRESHERS = {
     "jazz": refresh_jazz, "concerts": refresh_concerts, "events": refresh_events, "kids": refresh_kids,
     "bluray": refresh_bluray, "foodfinds": refresh_foodfinds, "planahead": refresh_planahead,
     "skioutlook": refresh_skioutlook, "teams": refresh_teams, "marketbrief": refresh_marketbrief,
     "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
+    "liquor": refresh_liquor,
 }
 
 

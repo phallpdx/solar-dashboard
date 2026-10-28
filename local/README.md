@@ -81,3 +81,15 @@ powershell -ExecutionPolicy Bypass -File local\setup.ps1 -Uninstall  # remove th
 To change where a list looks, edit `sources.json`. Pages that build their
 calendar with JavaScript show up as "almost no text" in `--check-sources`;
 swap those for an RSS feed or a plainer page.
+
+## Review passes
+
+Every page answer is checked a second time: the model gets its own draft and the
+page again, and drops or corrects anything the page doesn't say (it can't add
+items). The fan pulse and market brief get the same treatment against their
+sources. After all lists are done, the rest of the run's time
+(`budget_minutes` in sources.json, 100 by default) goes to polishing notes into
+one clear sentence each, which is checked so no new numbers or names appear, and
+to re-checking links so events and deals whose pages are gone drop off. What a
+run doesn't finish, the next run picks up (`local/cache/review.json`). If a cloud
+task updated a list on main while the run was going, the cloud's version is kept.

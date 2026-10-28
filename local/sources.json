@@ -5,7 +5,8 @@
     "context_length": 16384,
     "gpu_offload": 0.85,
     "max_chars_per_page": 6000,
-    "timeout_seconds": 900
+    "timeout_seconds": 900,
+    "budget_minutes": 100
   },
   "push_branch": "claude/local-lists",
   "lists": {

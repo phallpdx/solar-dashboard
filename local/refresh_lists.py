@@ -2,8 +2,9 @@ r"""Refresh the dashboard's researched lists with a local model in LM Studio.
 
 Runs on Parker's desktop PC every night (see local\setup.ps1). For each list it
 fetches the pages in local\sources.json, asks the LM Studio model to pull out
-items as JSON, checks them (real future dates, links that exist on the page
-and still load, no duplicates), merges them into the current list from main,
+items as JSON, has the model check its own draft against the page a second
+time, checks them (real future dates, links that exist on the page and still
+load, no duplicates), merges them into the current list from main,
 and pushes the changed files to the claude/local-lists branch. The "Publish
 researched lists" workflow then copies them onto main.
 
@@ -13,6 +14,11 @@ Only the standard library is used, so a plain Python install is enough.
     python local\refresh_lists.py --only jazz,kids # just some lists
     python local\refresh_lists.py --dry-run        # write to local\out\ instead of pushing
     python local\refresh_lists.py --check-sources  # fetch each source and report, no model needed
+
+After the lists, the time left in the run goes to review passes: the model
+rewrites any note it hasn't polished yet, and every item's link is re-checked so
+dead events and deals drop off. The fan pulse and market brief are drafted, then
+checked claim by claim against their sources and rewritten.
 """
 import argparse
 import datetime as dt
@@ -39,6 +45,12 @@ CONFIG = json.load(open(os.path.join(HERE, "sources.json"), encoding="utf-8"))
 LLM = CONFIG["lmstudio"]
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) solar-dashboard-local/1.0"
 TODAY = dt.date.today()
+STARTED = time.time()
+
+
+def minutes_left():
+    """The run has `budget_minutes` (the nightly runs are two hours apart); review passes use what's left."""
+    return LLM.get("budget_minutes", 100) - (time.time() - STARTED) / 60
 
 
 LOG_FILE = os.environ.get("SOLAR_LISTS_LOG")
@@ -230,10 +242,10 @@ def feed_text(body, max_age_days=None):
 
 # ---------------------------------------------------------------- model
 
-def ask_model(task, text, schema):
+def ask_model(task, text, schema, system=None):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
     messages = [
-        {"role": "system", "content": "You extract facts from web pages into JSON. Use only what the page says. "
+        {"role": "system", "content": system or "You extract facts from web pages into JSON. Use only what the page says. "
                                       "Never invent dates, prices or links. Links on the page are numbered like (#12); for a link "
                                       "field give that number, e.g. \"#12\". Keep every text field short, under 20 words. "
                                       "Write dates as YYYY-MM-DD. Write compact JSON with no indentation or line breaks. "
@@ -502,6 +514,41 @@ def remember_items(key, digest, items):
         json.dump(_cache, f)
 
 
+def double_check(task, text, draft, props):
+    """Second pass over the same page: the model checks its first answer item by item against the page.
+    It may drop or correct items but not add any, so a bad second pass can only make the list shorter."""
+    title = next(iter(props))
+    r = ask_model("Below is a DRAFT answer to this task, taken from the page: " + task +
+                  "\nCheck every draft item against the page, field by field. Remove an item if the page doesn't say it, "
+                  "if it doesn't fit the task, or if it repeats another item. Correct any date, time, place, price or link "
+                  "number the page gives differently. Don't add items. Return the checked list.\n--- DRAFT ---\n" +
+                  json.dumps({"items": draft}, ensure_ascii=False, separators=(",", ":")), text, items_schema(props))
+    if r is None:
+        return draft  # the check itself failed: keep the first answer
+    checked = [c for c in r.get("items") or []
+               if any(same_thing(str(c.get(title) or ""), None, str(d.get(title) or ""), None) for d in draft)]
+    fixed = sum(1 for c in checked if c not in draft)
+    log(f"    checked against the page: kept {len(checked)} of {len(draft)}, corrected {fixed}")
+    return checked
+
+
+def review_draft(what, draft, sources_text, schema, ok):
+    """Second pass for written pieces (fan pulse, market brief): every claim is checked against the
+    sources, unsupported ones go, and the text is tightened. `ok` decides whether the rewrite is usable."""
+    if minutes_left() < 15:
+        return draft
+    r = ask_model(f"Below is a DRAFT {what}, written from the sources that follow. Check every claim, name and number "
+                  "against the sources. Remove or correct anything they don't support. Then make it sharper: specific "
+                  "facts over general words, no filler, no hype. Keep source_urls to links in the sources that back the "
+                  "final text. Return the same fields.\n--- DRAFT ---\n" +
+                  json.dumps(draft, ensure_ascii=False, separators=(",", ":")), sources_text, schema)
+    if r and ok(r):
+        log(f"    {what}: checked against the sources and rewritten")
+        return r
+    log(f"    {what}: second pass not usable, keeping the first draft")
+    return draft
+
+
 def extract(sources, task, props, build, max_age_days=None, focus=None):
     """Runs one extraction task over each source and returns the built items.
 
@@ -536,6 +583,8 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
             log(f"  {src['name']}: asking the model ({len(text)} chars)")
             result = ask_model(task, text, items_schema(props))
             raw = (result or {}).get("items") or []
+            if raw and minutes_left() > 20:
+                raw = double_check(task, text, raw, props)
             if result is not None:
                 remember_items(key, digest, raw)
             how = f"{time.time() - t0:.0f}s"
@@ -872,9 +921,12 @@ def refresh_teams(data, team_sources):
                       "mood: two to four words. pulse: two sentences on how fans feel right now and why. storylines: 3 to 5 "
                       "short factual lines (results, injuries, debates, next game). source_urls: up to 6 links from the list "
                       "that back this up.", "\n\n".join(texts), schema)
-        if not r or len(clean(r.get("pulse"))) < 60 or len(r.get("storylines") or []) < 2:
+        good = lambda x: len(clean(x.get("pulse"))) >= 60 and len(x.get("storylines") or []) >= 2 \
+            and any(u in links for u in x.get("source_urls", []))
+        if not r or not good(r):
             log(f"  {team}: model reply did not pass checks, keeping yesterday's")
             continue
+        r = review_draft(f"{names.get(team, team)} fan mood", r, "\n\n".join(texts), schema, good)
         urls = [u for u in r.get("source_urls", []) if u in links][:6]
         data["teams"][team] = {"mood": clean(r["mood"], 40), "pulse": clean(r["pulse"], 500),
                                "storylines": [clean(s, 220) for s in r["storylines"][:5] if clean(s)],
@@ -937,9 +989,12 @@ def refresh_marketbrief(data, sources):
             continue
         log(f"  {key}: asking the model")
         r = ask_model(tasks[key], "\n\n".join(texts), schema)
-        if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
+        good = lambda x: len(clean(x.get("summary"), 900)) >= 80 and len(clean(x.get("headline"))) >= 20 \
+            and any(u in links for u in x.get("source_urls", []))
+        if not r or not good(r):
             log(f"  {key}: model reply did not pass checks, keeping the last one")
             continue
+        r = review_draft(f"{key} market brief", r, "\n\n".join(texts), schema, good)
         urls = [u for u in r.get("source_urls", []) if u in links][:6]
         if not urls:
             log(f"  {key}: no real links in the reply, keeping the last one")
@@ -1048,6 +1103,114 @@ def refresh_localmusic(data, sources):
         data["releases"] = (fresh + old)[:24]
         data["updated"] = TODAY.isoformat()
     return data
+
+
+# ---------------------------------------------------------------- review passes
+
+# Which note on each list gets polished: (list of items, the item's name field, the note field).
+NOTES = {"jazz": ("shows", "artist", "what"), "events": ("events", "title", "why"), "kids": ("events", "title", "detail"),
+         "bluray": ("deals", "title", "detail"), "foodfinds": ("items", "name", "what"), "planahead": ("items", "title", "why"),
+         "coast": ("events", "name", "summary"), "restaurants": ("restaurants", "name", "summary"),
+         "localmusic": ("releases", "artist", "why"), "concerts": ("missing", "artist", "why")}
+REVIEW_PATH = os.path.join(HERE, "cache", "review.json")
+
+
+def _review_cache():
+    try:
+        c = json.load(open(REVIEW_PATH, encoding="utf-8"))
+    except (OSError, ValueError):
+        c = {}
+    c.setdefault("polished", {})
+    c.setdefault("links", {})
+    return c
+
+
+def _save_review_cache(c):
+    old = (TODAY - dt.timedelta(days=60)).isoformat()
+    c["polished"] = {k: v for k, v in c["polished"].items() if v >= old}
+    os.makedirs(os.path.dirname(REVIEW_PATH), exist_ok=True)
+    with open(REVIEW_PATH, "w", encoding="utf-8") as f:
+        json.dump(c, f)
+
+
+def _digest(text):
+    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:16]
+
+
+def rewrite_ok(old, new, name):
+    """A rewrite may reword but not change facts: every number must come from the old note, and every
+    capitalised word (names, places, venues) from the old note or the item's name."""
+    if len(new) < 25 or len(new) > max(320, len(old) + 40):
+        return False
+    if set(re.findall(r"\d+", new)) - set(re.findall(r"\d+", old)):
+        return False
+    known = {w.lower() for w in re.findall(r"[\w'’]+", f"{old} {name}")}
+    caps = re.findall(r"(?<![.!?]\s)(?<!^)\b[A-Z][\w'’]+", new)
+    return all(w.lower() in known for w in caps)
+
+
+def polish(name, data, cache):
+    """Rewrites notes the model hasn't polished before into one clear sentence each, ten to a call."""
+    if name not in NOTES:
+        return 0
+    key, title, field = NOTES[name]
+    todo = [x for x in data.get(key, []) if clean(x.get(field)) and _digest(x[field]) not in cache["polished"]]
+    done = 0
+    schema = {"type": "object", "properties": {"notes": {"type": "array", "items": {
+        "type": "object", "properties": {"n": {"type": "integer"}, "text": S}, "required": ["n", "text"],
+        "additionalProperties": False}}}, "required": ["notes"], "additionalProperties": False}
+    for i in range(0, len(todo), 10):
+        if minutes_left() < 10:
+            log(f"  {name}: out of time, {len(todo) - i} note(s) left for the next run")
+            break
+        batch = todo[i:i + 10]
+        listing = "\n".join(f"{n}. [{x.get(title)}] {x[field]}" for n, x in enumerate(batch, 1))
+        r = ask_model("Rewrite each numbered note for a personal morning briefing: one clear, specific sentence, under 30 "
+                      "words, that says what it is and why it's worth knowing. Keep every fact exactly (names, dates, times, "
+                      "prices, places). Add nothing that isn't in the note. No hype ('don't miss', 'amazing'), no 'this event'. "
+                      "If a note is already good, return it as it is. Reply with n and text for every note.",
+                      listing, schema, system="You are a careful copy editor. Reply with compact JSON only.")
+        new = {o.get("n"): clean(o.get("text"), 320) for o in (r or {}).get("notes", [])}
+        for n, x in enumerate(batch, 1):
+            text = new.get(n)
+            if text and text != x[field] and rewrite_ok(x[field], text, str(x.get(title) or "")):
+                x[field] = text
+                done += 1
+            cache["polished"][_digest(x[field])] = TODAY.isoformat()
+    if todo:
+        log(f"  {name}: polished {done} of {len(todo)} new note(s)")
+    return done
+
+
+def item_links(x):
+    urls = [x.get(k) for k in ("url", "tickets")] + [s.get("url") for s in x.get("sources") or []]
+    return [u for u in urls if u and u.startswith("http")]
+
+
+def sweep_links(name, data, cache):
+    """Drops events and deals whose every link now answers 404 or 410. A link is re-checked every three days."""
+    if name not in NOTES or name in ("restaurants", "localmusic", "concerts"):
+        return 0  # reviews and articles stay even if the page moves
+    key = NOTES[name][0]
+    fresh = (TODAY - dt.timedelta(days=3)).isoformat()
+    kept, dropped = [], []
+    for x in data.get(key, []):
+        urls = item_links(x)
+        alive = False
+        for u in urls:
+            seen = cache["links"].get(u)
+            if not seen or seen["on"] < fresh:
+                seen = cache["links"][u] = {"ok": url_ok(u), "on": TODAY.isoformat()}
+            if seen["ok"]:
+                alive = True
+                break
+        (kept if alive or not urls else dropped).append(x)
+    for x in dropped:
+        log(f"  {name}: dropped '{x.get(NOTES[name][1])}', its link is gone")
+    data[key] = kept
+    old = (TODAY - dt.timedelta(days=30)).isoformat()
+    cache["links"] = {u: v for u, v in cache["links"].items() if v["on"] >= old}
+    return len(dropped)
 
 
 REFRESHERS = {
@@ -1165,12 +1328,48 @@ def main():
             log(f"  failed: {e!r}")
             failed.append(name)
             continue
+        lists[name] = data
         if dump(data) != before:
             data["updated"] = TODAY.isoformat()
             changed[f"web/{name}.json"] = dump(data)
             log(f"  changed")
         else:
             log(f"  no change")
+
+    # Review passes with the time that's left: lists changed tonight first, then the rest.
+    review = _review_cache()
+    for name in sorted((n for n in names if n not in failed), key=lambda n: f"web/{n}.json" not in changed):
+        if minutes_left() < 10:
+            log("Out of time for review passes; the next run picks up where this one stopped.")
+            break
+        data = lists[name]
+        before = dump(data)
+        log(f"{name}: review")
+        try:
+            polish(name, data, review)
+            sweep_links(name, data, review)
+        except Exception as e:  # noqa: BLE001 - a review problem never costs the night's lists
+            log(f"  review failed: {e!r}")
+            data = json.loads(before)
+        finally:
+            _save_review_cache(review)
+        if dump(data) != before:
+            data["updated"] = TODAY.isoformat()
+            changed[f"web/{name}.json"] = dump(data)
+
+    # A long run can overlap a cloud task that updates the same list on main; its version wins.
+    if not args.dry_run:
+        git("fetch", "--quiet", "origin", "main")
+        head = git("rev-parse", "origin/main")
+        for path in [p for p in changed if head != base]:
+            try:
+                moved = git("show", f"{head}:{path}") != git("show", f"{base}:{path}")
+            except subprocess.CalledProcessError:
+                continue
+            if moved:
+                log(f"{path} changed on main during this run; keeping that version")
+                del changed[path]
+        base = head
 
     # Tell the cloud runs what was done tonight, so they only step in when this PC didn't.
     status = {"date": TODAY.isoformat(), "ran_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

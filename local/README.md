@@ -1,7 +1,7 @@
 # Nightly list refresh with the local model
 
 `refresh_lists.py` updates the dashboard's researched lists using the model in
-LM Studio on Parker's laptop instead of Claude routines. It runs every night at
+LM Studio on Parker's desktop PC instead of Claude routines. It runs every night at
 12:05 am, just after the site's own midnight rollover, and again at 2:05 and
 4:05 am. The later runs reuse answers for unchanged pages, so they take a few
 minutes and retry anything that failed earlier.
@@ -13,7 +13,7 @@ news feeds and closing prices).
 
 Every run also writes `web/localstatus.json`, saying which lists it changed
 tonight. The Claude runs in the cloud read it each morning and skip whatever
-this laptop already refreshed, so they only do the full job when the laptop was
+this PC already refreshed, so they only do the full job when the PC was
 off or a list failed. For planahead it only drops
 past items: venue pages don't show on-sale dates, so finding new ones stays with
 Claude.
@@ -66,7 +66,7 @@ Finding newly acclaimed albums is still a job for Claude.
    ```
 
    `-RunNow` also starts a first run so you can check `local\logs\` right away.
-4. Keep the laptop plugged in and signed in (locking it is fine). The task can
+4. Keep the PC on and signed in (locking it is fine). The task can
    wake the PC from sleep if wake timers are allowed in your power plan.
 
 ## Handy commands

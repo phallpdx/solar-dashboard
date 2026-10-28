@@ -885,10 +885,176 @@ def refresh_teams(data, team_sources):
     return data
 
 
+def refresh_marketbrief(data, sources):
+    """The morning market brief from news feeds and last night's closing prices. The cloud run only fills
+    gaps (real estate figures) when this one succeeded."""
+    sys.path.insert(0, REPO)
+    from solar import markets  # standard library only, shared with the dashboard's own update
+    try:
+        quotes = markets.snapshot()
+        closes = "; ".join(f"{q['name']} {q['price']:,} ({q['day_pct']:+.2f}% on the day, {q['ytd_pct']:+.1f}% this year)"
+                           for q in quotes if q.get("day_pct") is not None and q.get("ytd_pct") is not None)
+    except Exception as e:  # noqa: BLE001
+        log(f"  quotes failed ({e}); writing from the news alone")
+        closes = ""
+    schema = {"type": "object", "properties": {
+        "headline": {"type": "string", "description": "one sentence"},
+        "summary": {"type": "string", "description": "three or four sentences"},
+        "drivers": {"type": "array", "items": S},
+        "watch": {"type": "array", "items": S},
+        "source_urls": {"type": "array", "items": S}},
+        "required": ["headline", "summary", "drivers", "watch", "source_urls"], "additionalProperties": False}
+    tasks = {
+        "analysis": "These are today's market news headlines" + (f" and last close moves: {closes}" if closes else "") +
+                    ". Write a short market analysis. headline: one sentence on what markets did and why. summary: three or "
+                    "four plain sentences on why stocks, bonds, oil, gold and Bitcoin moved and the bigger trend, using only "
+                    "these headlines and numbers. drivers: 2 to 4 short lines naming the news that moved things. watch: up to "
+                    "4 scheduled events coming up that the headlines mention (or none). source_urls: up to 6 links that back it up.",
+        "helium": "These are recent news items about North American Helium, a private helium producer in Saskatchewan, "
+                  "and the helium market. headline: one sentence on how the company is doing. summary: two to four sentences "
+                  "on production, plants, financing and the market, from these items only. drivers and watch: leave empty "
+                  "unless the items name something. source_urls: up to 6 links that back it up.",
+        "realestate": "These are recent news items about the Portland, Oregon housing market. headline: one sentence on "
+                      "how the market is doing. summary: two to four sentences on prices, sales, inventory, rents and mortgage "
+                      "rates, from these items only. drivers and watch: leave empty unless the items name something. "
+                      "source_urls: up to 6 links that back it up.",
+    }
+    done = 0
+    for key, feeds in sources.items():
+        texts, links, entries = [], set(), []
+        for src in feeds:
+            try:
+                text, l = page_text(src, max_age_days=2 if key == "analysis" else 30)
+            except Exception as e:  # noqa: BLE001
+                log(f"  {src['name']}: fetch failed ({e})")
+                continue
+            texts.append(f"### {src['name']}\n{text[:LLM.get('max_chars_per_page', 9000) // max(1, len(feeds))]}")
+            links |= l
+            for m in re.finditer(r"^- (.+?) \((\d{4}-\d{2}-\d{2}|date unknown)\) \[(\S+)\]", text, re.M):
+                entries.append({"title": clean(re.sub(r" - [^-]{2,40}$", "", m.group(1)), 200), "date": m.group(2) if m.group(2)[0].isdigit() else None,
+                                "url": m.group(3), "source": src["name"]})
+        if not texts:
+            continue
+        log(f"  {key}: asking the model")
+        r = ask_model(tasks[key], "\n\n".join(texts), schema)
+        if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
+            log(f"  {key}: model reply did not pass checks, keeping the last one")
+            continue
+        urls = [u for u in r.get("source_urls", []) if u in links][:6]
+        if not urls:
+            log(f"  {key}: no real links in the reply, keeping the last one")
+            continue
+        by_url = {e["url"]: e for e in entries}
+        section = {"headline": clean(r["headline"], 240), "summary": clean(r["summary"], 900),
+                   "sources": [{"name": by_url.get(u, {}).get("source") or urllib.parse.urlsplit(u).hostname, "url": u} for u in urls],
+                   "by": "local model"}
+        if key == "analysis":
+            section["drivers"] = [clean(x, 200) for x in r.get("drivers", [])[:4] if clean(x)]
+            section["watch"] = [clean(x, 200) for x in r.get("watch", [])[:4] if clean(x)]
+        else:
+            section["items"] = sorted(entries, key=lambda e: e["date"] or "", reverse=True)[:5]
+            old = (data.get(key) or {}).get("stats")
+            if old:
+                section["stats"] = old  # figures the cloud run found; they change monthly
+        data[key] = section
+        done += 1
+    if done:
+        data["updated_at"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return data
+
+
+def refresh_coast(data, sources):
+    """North coast events (Astoria, Seaside, Cannon Beach and towns between) for the next two months."""
+    ok = future_ok("date", "end", days=60)
+
+    def build(r, src, links):
+        if not ok(r) or not clean(r.get("name")):
+            return None
+        return {"name": clean(r["name"], 140), "date": r["date"], "end": r.get("end"), "town": clean(r.get("town"), 40) or src.get("place"),
+                "summary": clean(r.get("summary"), 300), "url": pick_url(r.get("url"), links, src["url"])}
+
+    new = extract(sources, "List upcoming public events on the NORTH OREGON COAST (Astoria, Warrenton, Gearhart, Seaside, "
+                           "Cannon Beach, Manzanita, Tillamook, Long Beach WA) on this page: festivals, concerts, markets, talks, "
+                           "races, holiday events. Skip anything elsewhere. end is the last day or null. town is the town. "
+                           "summary is one plain sentence with the time and price if given. url is the event link number.",
+                  {"name": S, "date": DATE, "end": DATE, "town": S, "summary": S, "url": S}, build, max_age_days=21)
+    before = len(data.get("events", []))
+    data["events"] = merge(data.get("events", []), new, "name", "date", lambda x: still_current(x, ["date", "end"]),
+                           by_date("date", "end"), 20)
+    if new or len(data["events"]) != before:
+        data["updated"] = TODAY.isoformat()
+    return data
+
+
+def refresh_restaurants(data, sources):
+    """New Portland restaurants and fresh reviews. A review of a place already listed is added to its reviews."""
+    def build(r, src, links):
+        d = as_date(r.get("date"))
+        url = pick_url(r.get("url"), links, None)
+        if not clean(r.get("name")) or not url or (d and (TODAY - d).days > 30):
+            return None
+        return {"name": clean(r["name"], 80), "neighborhood": clean(r.get("neighborhood"), 60), "cuisine": clean(r.get("cuisine"), 60),
+                "price": "", "opened": clean(r.get("opened"), 30), "summary": clean(r.get("summary"), 320),
+                "reviews": [{"outlet": clean(r.get("outlet"), 60) or src["name"], "critic": clean(r.get("critic"), 60),
+                             "verdict": clean(r.get("verdict"), 160), "date": r.get("date") or "", "url": url}]}
+
+    new = extract(sources, "From these items, list RESTAURANTS, cafes or bars in Portland, Oregon that just opened, are about to "
+                           "open, or got a new critic review. Skip closures, chains, recipes and places outside the Portland area. "
+                           "opened like 'Oct 2026' or empty. summary is one plain sentence on the food and the room. outlet is "
+                           "the publication, critic the writer if named, verdict a short phrase from the item. date is the item's "
+                           "date. url is the article link number.",
+                  {"name": S, "neighborhood": S, "cuisine": S, "opened": S, "summary": S, "outlet": S, "critic": S,
+                   "verdict": S, "date": DATE, "url": S}, build, max_age_days=14)
+    places = list(data.get("restaurants", []))
+    added = 0
+    for n in new:
+        old = next((o for o in places if same_thing(o["name"], None, n["name"], None)), None)
+        if old:
+            if n["reviews"][0]["url"] not in [v.get("url") for v in old.get("reviews", [])]:
+                old.setdefault("reviews", []).insert(0, n["reviews"][0])
+                added += 1
+        else:
+            places.insert(0, n)
+            added += 1
+    if added:
+        data["restaurants"] = places[:24]
+        data["updated"] = TODAY.isoformat()
+    return data
+
+
+def refresh_localmusic(data, sources):
+    """New records by Portland and Oregon artists, with the review or story that mentions them."""
+    kinds = ["Album", "EP", "Single"]
+
+    def build(r, src, links):
+        d = as_date(r.get("date"))
+        url = pick_url(r.get("url"), links, None)
+        if not clean(r.get("artist")) or not clean(r.get("title")) or not url or (d and (TODAY - d).days > 45):
+            return None
+        return {"artist": clean(r["artist"], 100), "title": clean(r["title"], 120),
+                "type": r["type"] if r.get("type") in kinds else "Album", "local": True, "genre": clean(r.get("genre"), 40),
+                "label": clean(r.get("label"), 60), "date": r.get("date") or "", "why": clean(r.get("why"), 320),
+                "links": [{"name": src["name"], "url": url}]}
+
+    new = extract(sources, "From these items, list NEW releases (albums, EPs, singles) by musicians from PORTLAND or elsewhere in "
+                           "OREGON. Skip artists from other places, tours without a new record, and reissues. "
+                           f"type is one of {kinds}. date is the release date if given, else null. why is one plain sentence "
+                           "on what the item says about the record. url is the article link number.",
+                  {"artist": S, "title": S, "type": {"type": "string", "enum": kinds}, "genre": S, "label": S,
+                   "date": DATE, "why": S, "url": S}, build, max_age_days=21)
+    old = data.get("releases", [])
+    fresh = [n for n in new if not any(same_thing(f"{o['artist']} {o['title']}", None, f"{n['artist']} {n['title']}", None) for o in old)]
+    if fresh:
+        data["releases"] = (fresh + old)[:24]
+        data["updated"] = TODAY.isoformat()
+    return data
+
+
 REFRESHERS = {
     "jazz": refresh_jazz, "concerts": refresh_concerts, "events": refresh_events, "kids": refresh_kids,
     "bluray": refresh_bluray, "foodfinds": refresh_foodfinds, "planahead": refresh_planahead,
-    "skioutlook": refresh_skioutlook, "teams": refresh_teams,
+    "skioutlook": refresh_skioutlook, "teams": refresh_teams, "marketbrief": refresh_marketbrief,
+    "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
 }
 
 
@@ -905,7 +1071,13 @@ def current_lists(names):
     """Reads each list from origin/main, so local edits in this folder never get pushed."""
     git("fetch", "--quiet", "origin", "main")
     base = git("rev-parse", "origin/main")
-    return base, {n: json.loads(git("show", f"{base}:web/{n}.json")) for n in names}
+    lists = {}
+    for n in names:
+        try:
+            lists[n] = json.loads(git("show", f"{base}:web/{n}.json"))
+        except subprocess.CalledProcessError:  # a list this script starts before the cloud ever wrote it
+            lists[n] = {}
+    return base, lists
 
 
 def push(base, files, branch):
@@ -1000,9 +1172,20 @@ def main():
         else:
             log(f"  no change")
 
+    # Tell the cloud runs what was done tonight, so they only step in when this laptop didn't.
+    status = {"date": TODAY.isoformat(), "ran_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names}}
+    if args.only:  # a partial run keeps tonight's earlier results for the other lists
+        try:
+            before = json.loads(git("show", f"{base}:web/localstatus.json"))
+            if before.get("date") == TODAY.isoformat():
+                status["lists"] = {**before.get("lists", {}), **status["lists"]}
+        except subprocess.CalledProcessError:
+            pass
     if not changed:
         log("Nothing changed.")
-    elif args.dry_run:
+    changed["web/localstatus.json"] = dump(status)
+    if args.dry_run:
         out = os.path.join(HERE, "out")
         os.makedirs(out, exist_ok=True)
         for path, text in changed.items():
@@ -1011,7 +1194,7 @@ def main():
         log(f"Dry run: wrote {len(changed)} file(s) to {out}")
     else:
         commit = push(base, changed, CONFIG.get("push_branch", "claude/local-lists"))
-        log(f"Pushed {commit[:8]} with {len(changed)} list(s); the publish workflow copies them to main.")
+        log(f"Pushed {commit[:8]} with {len(changed) - 1} list(s) and the run report; the publish workflow copies them to main.")
     if failed:
         log(f"Failed: {', '.join(failed)}")
     return 1 if failed else 0

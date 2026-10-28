@@ -146,6 +146,91 @@
           "url": "https://www.reddit.com/r/formula1/top/.rss?t=day"
         }
       ]
-    }
+    },
+    "marketbrief": {
+      "analysis": [
+        {
+          "name": "Google News: Business",
+          "url": "https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en"
+        },
+        {
+          "name": "Google News: stock market",
+          "url": "https://news.google.com/rss/search?q=stock+market+today+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "CNBC Markets",
+          "url": "https://www.cnbc.com/id/20910258/device/rss/rss.html"
+        }
+      ],
+      "helium": [
+        {
+          "name": "Google News: North American Helium",
+          "url": "https://news.google.com/rss/search?q=%22North+American+Helium%22+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Google News: helium market",
+          "url": "https://news.google.com/rss/search?q=helium+market+OR+helium+production+Saskatchewan+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+        }
+      ],
+      "realestate": [
+        {
+          "name": "Google News: Portland housing",
+          "url": "https://news.google.com/rss/search?q=Portland+Oregon+%28housing+market+OR+home+prices+OR+home+sales+OR+rents%29+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Google News: mortgage rates",
+          "url": "https://news.google.com/rss/search?q=mortgage+rates+this+week+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+        }
+      ]
+    },
+    "coast": [
+      {
+        "name": "Seaside events",
+        "url": "https://www.seasideor.com/events/",
+        "place": "Seaside"
+      },
+      {
+        "name": "Liberty Theatre",
+        "url": "https://libertyastoria.org/events/",
+        "place": "Astoria"
+      },
+      {
+        "name": "Cannon Beach events",
+        "url": "https://www.cannonbeach.org/events/",
+        "place": "Cannon Beach"
+      },
+      {
+        "name": "Coast news",
+        "url": "https://news.google.com/rss/search?q=(Astoria+OR+Seaside+OR+%22Cannon+Beach%22+OR+Manzanita)+event+when:14d&hl=en-US&gl=US&ceid=US:en"
+      }
+    ],
+    "restaurants": [
+      {
+        "name": "Portland Monthly",
+        "url": "https://www.pdxmonthly.com/feed"
+      },
+      {
+        "name": "Willamette Week",
+        "url": "https://www.wweek.com/arc/outboundfeeds/rss/category/restaurants/?outputType=xml"
+      },
+      {
+        "name": "The Oregonian food",
+        "url": "https://www.oregonlive.com/arc/outboundfeeds/rss/category/food/?outputType=xml"
+      },
+      {
+        "name": "Restaurant news",
+        "url": "https://news.google.com/rss/search?q=Portland+Oregon+restaurant+(opening+OR+review)+when:14d&hl=en-US&gl=US&ceid=US:en"
+      }
+    ],
+    "localmusic": [
+      {
+        "name": "Willamette Week music",
+        "url": "https://www.wweek.com/arc/outboundfeeds/rss/category/music/?outputType=xml"
+      },
+      {
+        "name": "Music news",
+        "url": "https://news.google.com/rss/search?q=Portland+Oregon+band+(album+OR+EP+OR+single)+when:21d&hl=en-US&gl=US&ceid=US:en"
+      }
+    ]
   }
 }

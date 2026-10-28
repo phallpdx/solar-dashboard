@@ -35,7 +35,7 @@ jobs:
           touched=$(git diff --name-only "$BEFORE" "origin/$BRANCH" -- web/)
           echo "Lists touched by this push: $touched"
           changed=""
-          for f in concerts restaurants liquor localmusic coast teams bluray kids events planahead skioutlook foodfinds jazz marketbrief; do
+          for f in concerts restaurants liquor localmusic coast teams bluray kids events planahead skioutlook foodfinds jazz marketbrief localstatus; do
             path="web/$f.json"
             if echo "$touched" | grep -qx "$path" && git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
               git show "origin/$BRANCH:$path" > "/tmp/$f.json"

@@ -306,6 +306,7 @@ def stargazing(hours, moon_lit_pct, now_local):
 
 
 APOD_BASE = "https://apod.nasa.gov/apod/"
+APOD_SCIENCE = "https://science.nasa.gov/apod/"
 
 
 def _apod_ok(a):
@@ -320,6 +321,8 @@ def _apod_page(day):
     page = f"{APOD_BASE}ap{day:%y%m%d}.html"
     with urllib.request.urlopen(urllib.request.Request(page, headers=UA), timeout=30) as r:
         raw = r.read().decode("utf-8", "replace")
+    if "media-detail-hero" in raw:  # apod.nasa.gov now forwards to today's NASA Science page
+        return _apod_science(raw)
     img = re.search(r'<img[^>]+src="([^"]+)"', raw, re.I)
     frame = re.search(r'<iframe[^>]+src="([^"]+)"', raw, re.I)
     clip = re.search(r'<source[^>]+src="([^"]+\.(?:mp4|webm|mov))"', raw, re.I) or \
@@ -327,17 +330,47 @@ def _apod_page(day):
     if not (img or frame or clip):
         return None
     big = re.search(r'<a href="(image/[^"]+\.(?:jpe?g|png|gif))"', raw, re.I)
-    strip = lambda h: html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h))).strip()
     title = re.search(r"<center>\s*<b>(.*?)</b>", raw, re.I | re.S)
     credit = re.search(r"Credit[^<]*</b>(.*?)</center>", raw, re.I | re.S)
     expl = re.search(r"Explanation:\s*</b>(.*?)<p>\s*<center>", raw, re.I | re.S)
     full = lambda u: urllib.parse.urljoin(APOD_BASE, u)
     video = full(clip.group(1)) if clip else full(frame.group(1)) if frame else None
-    return {"date": day.isoformat(), "title": strip(title.group(1)) if title else "",
+    return {"date": day.isoformat(), "title": _strip(title.group(1)) if title else "",
             "image": full(img.group(1)) if img else _video_thumb(video),
             "full": full(big.group(1)) if big else None,
-            "explanation": strip(expl.group(1)) if expl else "", "credit": strip(credit.group(1)) or None if credit else None,
+            "explanation": _strip(expl.group(1)) if expl else "", "credit": _strip(credit.group(1)) or None if credit else None,
             "video": video, "page": page}
+
+
+def _strip(h):
+    return html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h))).strip()
+
+
+def _apod_science(raw):
+    """Today's APOD from science.nasa.gov/apod/, where NASA moved it: the media block above the title holds
+    the picture, a video file or an embed; the meta table holds the date and credit."""
+    hero = re.search(r'media-detail-hero__media[^"]*">(.*?)<h2[^>]*>(.*?)</h2>', raw, re.S)
+    if not hero:
+        return None
+    media, title = hero.group(1), _strip(hero.group(2))
+    clip = re.search(r'<source[^>]+src="([^"]+\.(?:mp4|webm|mov)[^"]*)"', media, re.I)
+    frame = re.search(r'<iframe[^>]+src="([^"]+)"', media, re.I)
+    img = re.search(r'<img[^>]+src="([^"]+)"', media, re.I)
+    big = re.search(r'<a[^>]+href="([^"]+\.(?:jpe?g|png|gif|tiff?))"', media, re.I)
+    video = clip.group(1) if clip else frame.group(1) if frame else None
+    if not (video or img):
+        return None
+    expl = re.search(r"Explanation:</strong>(.*?)(?:<strong>Tomorrow|</p>)", raw, re.S)
+    when = re.search(r"Date:</th>\s*<td[^>]*>\s*([A-Z][a-z]+ \d{1,2}, \d{4})", raw)
+    credit = re.search(r"Credit[^<]*</th>\s*<td[^>]*>(.*?)</td>", raw, re.S)
+    try:
+        date = dt.datetime.strptime(when.group(1), "%B %d, %Y").date().isoformat() if when else None
+    except ValueError:
+        date = None
+    image = html.unescape(img.group(1)) if img else _video_thumb(video)
+    return {"date": date, "title": title, "image": image, "full": big.group(1) if big else None,
+            "explanation": _strip(expl.group(1)) if expl else "", "credit": _strip(credit.group(1)) or None if credit else None,
+            "video": html.unescape(video) if video else None, "page": APOD_SCIENCE}
 
 
 def _video_thumb(url):
@@ -373,6 +406,15 @@ def apod(key="DEMO_KEY", today=None):
     if a and _apod_ok(a):
         a["video_kind"] = video_kind(a.get("video"))
         return a
+    try:
+        with urllib.request.urlopen(urllib.request.Request(APOD_SCIENCE, headers=UA), timeout=30) as r:
+            p = _apod_science(r.read().decode("utf-8", "replace"))
+        if p and _apod_ok(p):
+            p["video_kind"] = video_kind(p.get("video"))
+            return p
+        errors.append("science.nasa.gov: no picture found")
+    except Exception as e:
+        errors.append(f"science.nasa.gov: {e}")
     day = today or dt.datetime.now(dt.timezone.utc).date()
     for back in range(7):
         try:

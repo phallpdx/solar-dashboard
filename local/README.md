@@ -7,7 +7,14 @@ LM Studio on Parker's laptop instead of Claude routines. It runs every night at
 minutes and retry anything that failed earlier.
 
 Lists it handles: jazz, concerts, events (big events), kids (family outings),
-bluray, foodfinds, skioutlook and teams (fan pulse). For planahead it only drops
+bluray, foodfinds, skioutlook, teams (fan pulse), coast, restaurants, localmusic and marketbrief (the morning
+market analysis, North American Helium and Portland real estate, written from
+news feeds and closing prices).
+
+Every run also writes `web/localstatus.json`, saying which lists it changed
+tonight. The Claude runs in the cloud read it each morning and skip whatever
+this laptop already refreshed, so they only do the full job when the laptop was
+off or a list failed. For planahead it only drops
 past items: venue pages don't show on-sale dates, so finding new ones stays with
 Claude.
 

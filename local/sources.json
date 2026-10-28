@@ -4,7 +4,7 @@
     "model": "gemma-4-26b-a4b-it-qat",
     "context_length": 16384,
     "gpu_offload": 0.85,
-    "max_chars_per_page": 6000,
+    "max_chars_per_page": 12000,
     "timeout_seconds": 900
   },
   "push_branch": "claude/local-lists",

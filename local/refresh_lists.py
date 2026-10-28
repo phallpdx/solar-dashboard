@@ -505,7 +505,7 @@ def remember_items(key, digest, items):
 def extract(sources, task, props, build, max_age_days=None, focus=None):
     """Runs one extraction task over each source and returns the built items.
 
-    The model is the slow part (about 10 tokens a second on the laptop), so a page
+    The model is the slow part (about 30 tokens a second on the PC), so a page
     whose text hasn't changed since an earlier run reuses that run's answer, and
     `focus` can cut a page down to the lines worth reading, or to nothing."""
     found = []

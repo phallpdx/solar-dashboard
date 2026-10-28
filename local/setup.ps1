@@ -46,7 +46,8 @@ try {
     if (-not (git config user.email)) { git config user.email 'phallpdx@users.noreply.github.com' }
     git fetch --quiet origin main
     # Signs in to GitHub now (a browser window may open) so the nightly push never waits on a prompt.
-    git push --dry-run origin "origin/main:refs/heads/$($cfg.push_branch)"
+    # --force like the nightly push: the branch is rewritten every run, so a plain push is refused.
+    git push --dry-run --force origin "origin/main:refs/heads/$($cfg.push_branch)"
     if ($LASTEXITCODE -ne 0) { throw 'Git could not push to GitHub. Sign in when asked, then run this again.' }
     Write-Host 'OK  GitHub push access works'
 } finally { Pop-Location }

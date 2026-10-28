@@ -24,12 +24,20 @@ jobs:
       - name: Copy list files from the pushed branch
         env:
           BRANCH: ${{ github.ref_name }}
+          BEFORE: ${{ github.event.before }}
         run: |
           git fetch origin "$BRANCH"
+          # Only copy lists this push actually changed. A branch that merely carries an older copy of a
+          # list (a code branch, say) must never roll main back to it.
+          if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            BEFORE=$(git merge-base origin/main "origin/$BRANCH")
+          fi
+          touched=$(git diff --name-only "$BEFORE" "origin/$BRANCH" -- web/)
+          echo "Lists touched by this push: $touched"
           changed=""
-          for f in concerts restaurants liquor localmusic coast teams bluray kids events planahead skioutlook foodfinds jazz; do
+          for f in concerts restaurants liquor localmusic coast teams bluray kids events planahead skioutlook foodfinds jazz marketbrief; do
             path="web/$f.json"
-            if git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
+            if echo "$touched" | grep -qx "$path" && git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
               git show "origin/$BRANCH:$path" > "/tmp/$f.json"
               if python3 -m json.tool "/tmp/$f.json" > /dev/null && ! cmp -s "/tmp/$f.json" "$path"; then
                 cp "/tmp/$f.json" "$path"

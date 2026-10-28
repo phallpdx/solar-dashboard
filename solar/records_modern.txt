@@ -1,0 +1,394 @@
+# year | artist | album | tags   (records from the last 15 years; tags pick the right day, see records.py)
+2011 | Bon Iver | Bon Iver, Bon Iver | winter snow
+2011 | PJ Harvey | Let England Shake | election
+2011 | Fleet Foxes | Helplessness Blues | spring local
+2011 | Destroyer | Kaputt | night
+2011 | James Blake | James Blake | winter night
+2011 | Kate Bush | 50 Words for Snow | snow winter xmas
+2011 | Kurt Vile | Smoke Ring for My Halo | fall
+2011 | Real Estate | Days | summer sun
+2011 | St. Vincent | Strange Mercy | fall
+2011 | M83 | Hurry Up, We're Dreaming | night
+2011 | Adele | 21 | winter
+2011 | Wild Flag | Wild Flag | summer local
+2011 | Radiohead | The King of Limbs | spring
+2011 | The War on Drugs | Slave Ambient | summer
+2011 | Tune-Yards | Whokill | summer
+2011 | Shabazz Palaces | Black Up | night local
+2011 | Feist | Metals | fall rain
+2011 | Jay-Z and Kanye West | Watch the Throne | summer
+2011 | The Weeknd | House of Balloons | night
+2011 | Drake | Take Care | winter night
+2011 | Girls | Father, Son, Holy Ghost | fall
+2011 | Gillian Welch | The Harrow & the Harvest | fall thanks
+2011 | Wilco | The Whole Love | fall
+2011 | Panda Bear | Tomboy | summer
+2011 | Iceage | New Brigade | winter
+2012 | Frank Ocean | Channel Orange | summer sun
+2012 | Kendrick Lamar | Good Kid, M.A.A.D City | summer
+2012 | Fiona Apple | The Idler Wheel... | spring
+2012 | Tame Impala | Lonerism | summer
+2012 | Grimes | Visions | night
+2012 | Swans | The Seer | night halloween
+2012 | Japandroids | Celebration Rock | summer
+2012 | Grizzly Bear | Shields | fall
+2012 | Cloud Nothings | Attack on Memory | winter
+2012 | Dirty Projectors | Swing Lo Magellan | summer
+2012 | Godspeed You! Black Emperor | 'Allelujah! Don't Bend! Ascend! | winter
+2012 | Beach House | Bloom | summer night
+2012 | Jessie Ware | Devotion | night
+2012 | Killer Mike | R.A.P. Music | election
+2012 | Chromatics | Kill for Love | night
+2012 | Andy Stott | Luxury Problems | rain night
+2012 | Bill Fay | Life Is People | quiet sunday
+2012 | Father John Misty | Fear Fun | spring local
+2012 | Sharon Van Etten | Tramp | fall
+2012 | Robert Glasper Experiment | Black Radio | jazz night
+2012 | Alabama Shakes | Boys & Girls | summer
+2012 | Lower Dens | Nootropics | night
+2012 | Julia Holter | Ekstasis | spring
+2012 | Sufjan Stevens | Silver & Gold | xmas
+2013 | Kanye West | Yeezus | summer
+2013 | Vampire Weekend | Modern Vampires of the City | spring
+2013 | Daft Punk | Random Access Memories | summer newyear
+2013 | My Bloody Valentine | m b v | valentine winter
+2013 | Arcade Fire | Reflektor | fall
+2013 | Run the Jewels | Run the Jewels | summer
+2013 | Chance the Rapper | Acid Rap | summer
+2013 | Disclosure | Settle | summer
+2013 | The National | Trouble Will Find Me | fall rain
+2013 | Kurt Vile | Wakin on a Pretty Daze | summer sun
+2013 | Jon Hopkins | Immunity | night
+2013 | Savages | Silence Yourself | night
+2013 | Danny Brown | Old | fall
+2013 | Arctic Monkeys | AM | night
+2013 | Laura Marling | Once I Was an Eagle | spring
+2013 | Kacey Musgraves | Same Trailer Different Park | spring
+2013 | Haim | Days Are Gone | summer sun
+2013 | Boards of Canada | Tomorrow's Harvest | fall
+2013 | Julia Holter | Loud City Song | night
+2013 | Janelle Monáe | The Electric Lady | summer
+2013 | Neko Case | The Worse Things Get, the Harder I Fight, the Harder I Fight, the More I Love You | rain local
+2013 | Jason Isbell | Southeastern | fall
+2013 | Mutual Benefit | Love's Crushing Diamond | winter quiet
+2013 | Earl Sweatshirt | Doris | rain
+2013 | Phosphorescent | Muchacho | spring
+2013 | Deerhunter | Monomania | summer
+2013 | Bill Callahan | Dream River | quiet morning
+2013 | Pusha T | My Name Is My Name | night
+2014 | The War on Drugs | Lost in the Dream | fall winter
+2014 | Run the Jewels | Run the Jewels 2 | election
+2014 | St. Vincent | St. Vincent | spring
+2014 | Sun Kil Moon | Benji | winter quiet
+2014 | FKA Twigs | LP1 | night
+2014 | Swans | To Be Kind | halloween
+2014 | Sharon Van Etten | Are We There | fall rain
+2014 | Angel Olsen | Burn Your Fire for No Witness | winter
+2014 | D'Angelo and the Vanguard | Black Messiah | winter election
+2014 | Aphex Twin | Syro | night
+2014 | Parquet Courts | Sunbathing Animal | summer sun
+2014 | Mac DeMarco | Salad Days | summer sun
+2014 | Spoon | They Want My Soul | summer
+2014 | Flying Lotus | You're Dead! | halloween jazz
+2014 | Caribou | Our Love | winter
+2014 | Ty Segall | Manipulator | summer
+2014 | Sturgill Simpson | Metamodern Sounds in Country Music | summer
+2014 | Grouper | Ruins | rain quiet local
+2014 | Freddie Gibbs and Madlib | Piñata | summer
+2014 | Perfume Genius | Too Bright | night local
+2014 | Sylvan Esso | Sylvan Esso | summer
+2014 | Taylor Swift | 1989 | newyear
+2014 | Hiss Golden Messenger | Lateness of Dancers | sunday
+2014 | Real Estate | Atlas | spring
+2015 | Kendrick Lamar | To Pimp a Butterfly | election jazz
+2015 | Sufjan Stevens | Carrie & Lowell | fall quiet local
+2015 | Courtney Barnett | Sometimes I Sit and Think, and Sometimes I Just Sit | summer
+2015 | Father John Misty | I Love You, Honeybear | valentine
+2015 | Jamie xx | In Colour | summer
+2015 | Tame Impala | Currents | summer
+2015 | Kamasi Washington | The Epic | jazz
+2015 | Sleater-Kinney | No Cities to Love | winter local
+2015 | Grimes | Art Angels | fall
+2015 | Joanna Newsom | Divers | fall
+2015 | Julia Holter | Have You in My Wilderness | fall
+2015 | Jason Isbell | Something More Than Free | summer
+2015 | Vince Staples | Summertime '06 | summer
+2015 | Carly Rae Jepsen | Emotion | summer valentine
+2015 | Natalie Prass | Natalie Prass | spring
+2015 | Unknown Mortal Orchestra | Multi-Love | valentine local
+2015 | Beach House | Depression Cherry | fall night
+2015 | Jessica Pratt | On Your Own Love Again | night quiet
+2015 | Chelsea Wolfe | Abyss | halloween night
+2015 | Deerhunter | Fading Frontier | fall
+2015 | Laura Marling | Short Movie | spring
+2015 | Alabama Shakes | Sound & Color | summer
+2015 | Oneohtrix Point Never | Garden of Delete | halloween
+2015 | Holly Herndon | Platform | night
+2015 | Floating Points | Elaenia | night quiet
+2015 | Björk | Vulnicura | winter
+2015 | Waxahatchee | Ivy Tripp | spring
+2015 | Tobias Jesso Jr. | Goon | rain
+2015 | Destroyer | Poison Season | summer night
+2016 | Beyoncé | Lemonade | summer
+2016 | David Bowie | Blackstar | winter jazz
+2016 | Frank Ocean | Blonde | summer night
+2016 | Solange | A Seat at the Table | fall
+2016 | Radiohead | A Moon Shaped Pool | spring rain full
+2016 | Bon Iver | 22, A Million | winter snow
+2016 | Angel Olsen | My Woman | fall
+2016 | Car Seat Headrest | Teens of Denial | summer local
+2016 | Nick Cave and the Bad Seeds | Skeleton Tree | winter quiet
+2016 | A Tribe Called Quest | We Got It from Here... Thank You 4 Your Service | election
+2016 | Anderson .Paak | Malibu | summer sun
+2016 | Chance the Rapper | Coloring Book | sunday spring
+2016 | Mitski | Puberty 2 | summer
+2016 | Leonard Cohen | You Want It Darker | winter
+2016 | Kanye West | The Life of Pablo | winter
+2016 | Danny Brown | Atrocity Exhibition | halloween
+2016 | Whitney | Light Upon the Lake | summer morning
+2016 | Weyes Blood | Front Row Seat to Earth | fall
+2016 | Japanese Breakfast | Psychopomp | spring local
+2016 | Jenny Hval | Blood Bitch | halloween
+2016 | Kevin Morby | Singing Saw | fall
+2016 | Hamilton Leithauser + Rostam | I Had a Dream That You Were Mine | summer
+2016 | Parquet Courts | Human Performance | spring
+2016 | Pinegrove | Cardinal | spring
+2016 | Sturgill Simpson | A Sailor's Guide to Earth | summer
+2016 | Kaytranada | 99.9% | summer
+2016 | The Avalanches | Wildflower | summer sun
+2016 | Esperanza Spalding | Emily's D+Evolution | jazz
+2017 | Kendrick Lamar | DAMN. | spring
+2017 | SZA | Ctrl | summer
+2017 | Lorde | Melodrama | summer night
+2017 | Mount Eerie | A Crow Looked at Me | winter quiet local
+2017 | Fleet Foxes | Crack-Up | summer local
+2017 | LCD Soundsystem | American Dream | fall
+2017 | Sampha | Process | winter
+2017 | Slowdive | Slowdive | summer
+2017 | The War on Drugs | A Deeper Understanding | fall
+2017 | Julien Baker | Turn Out the Lights | winter quiet
+2017 | Big Thief | Capacity | fall
+2017 | Kelela | Take Me Apart | night
+2017 | Tyler, the Creator | Flower Boy | summer sun
+2017 | Perfume Genius | No Shape | spring local
+2017 | Vince Staples | Big Fish Theory | summer
+2017 | St. Vincent | Masseduction | night
+2017 | (Sandy) Alex G | Rocket | summer
+2017 | Phoebe Bridgers | Stranger in the Alps | fall rain
+2017 | Kelly Lee Owens | Kelly Lee Owens | night
+2017 | Waxahatchee | Out in the Storm | rain
+2017 | Jlin | Black Origami | night
+2017 | Moses Sumney | Aromanticism | valentine night
+2017 | Father John Misty | Pure Comedy | election
+2017 | Thundercat | Drunk | summer
+2017 | Kamasi Washington | Harmony of Difference | jazz
+2017 | Jason Isbell and the 400 Unit | The Nashville Sound | summer
+2017 | Kevin Morby | City Music | night
+2018 | Mitski | Be the Cowboy | fall
+2018 | Kacey Musgraves | Golden Hour | spring morning sun
+2018 | Janelle Monáe | Dirty Computer | summer
+2018 | Snail Mail | Lush | summer
+2018 | Low | Double Negative | winter
+2018 | Robyn | Honey | summer night
+2018 | Pusha T | Daytona | summer
+2018 | Earl Sweatshirt | Some Rap Songs | winter
+2018 | Soccer Mommy | Clean | spring
+2018 | Lucy Dacus | Historian | fall
+2018 | Courtney Barnett | Tell Me How You Really Feel | spring
+2018 | Idles | Joy as an Act of Resistance | election
+2018 | Mount Eerie | Now Only | winter quiet local
+2018 | Rosalía | El mal querer | night
+2018 | Noname | Room 25 | sunday jazz
+2018 | Car Seat Headrest | Twin Fantasy | winter local
+2018 | Khruangbin | Con Todo El Mundo | summer sun thai
+2018 | Beach House | 7 | night
+2018 | Parquet Courts | Wide Awake! | summer
+2018 | Natalie Prass | The Future and the Past | election
+2018 | Adrianne Lenker | abysskiss | fall quiet
+2018 | Kali Uchis | Isolation | summer
+2018 | Jon Hopkins | Singularity | night
+2018 | Hop Along | Bark Your Head Off, Dog | spring
+2018 | Daughters | You Won't Get What You Want | halloween
+2018 | Tirzah | Devotion | valentine quiet
+2018 | Sons of Kemet | Your Queen Is a Reptile | jazz
+2018 | Hookworms | Microshift | summer
+2019 | Weyes Blood | Titanic Rising | rain
+2019 | Big Thief | U.F.O.F. | fall quiet
+2019 | Big Thief | Two Hands | fall
+2019 | Lana Del Rey | Norman Fucking Rockwell! | summer sun
+2019 | Billie Eilish | When We All Fall Asleep, Where Do We Go? | halloween night
+2019 | Tyler, the Creator | Igor | summer
+2019 | Vampire Weekend | Father of the Bride | spring sun
+2019 | FKA Twigs | Magdalene | winter
+2019 | Sharon Van Etten | Remind Me Tomorrow | winter
+2019 | Fontaines D.C. | Dogrel | spring
+2019 | Purple Mountains | Purple Mountains | fall quiet
+2019 | Angel Olsen | All Mirrors | winter night
+2019 | Freddie Gibbs and Madlib | Bandana | summer
+2019 | Little Simz | Grey Area | spring
+2019 | Julia Jacklin | Crushing | fall
+2019 | (Sandy) Alex G | House of Sugar | fall
+2019 | Brittany Howard | Jaime | sunday
+2019 | Nick Cave and the Bad Seeds | Ghosteen | winter quiet
+2019 | Bill Callahan | Shepherd in a Sheepskin Vest | quiet morning
+2019 | Kim Gordon | No Home Record | night
+2019 | Black Midi | Schlagenheim | summer
+2019 | Jamila Woods | Legacy! Legacy! | spring
+2019 | Lizzo | Cuz I Love You | valentine
+2019 | Caroline Polachek | Pang | spring
+2019 | Charli XCX | Charli | summer night
+2019 | Cate Le Bon | Reward | fall
+2019 | Clairo | Immunity | summer
+2019 | Solange | When I Get Home | summer
+2019 | Hand Habits | Placeholder | rain
+2020 | Fiona Apple | Fetch the Bolt Cutters | spring
+2020 | Phoebe Bridgers | Punisher | fall halloween
+2020 | Taylor Swift | Folklore | fall rain
+2020 | Taylor Swift | Evermore | winter snow
+2020 | Run the Jewels | RTJ4 | election
+2020 | Waxahatchee | Saint Cloud | spring
+2020 | Adrianne Lenker | Songs | fall rain quiet
+2020 | Haim | Women in Music Pt. III | summer sun
+2020 | Perfume Genius | Set My Heart on Fire Immediately | summer local
+2020 | Dua Lipa | Future Nostalgia | summer newyear
+2020 | Fleet Foxes | Shore | fall spring equinox local
+2020 | The Microphones | Microphones in 2020 | fall local
+2020 | Moses Sumney | Græ | winter
+2020 | Yves Tumor | Heaven to a Tortured Mind | night
+2020 | Jessie Ware | What's Your Pleasure? | night
+2020 | Sufjan Stevens | The Ascension | election
+2020 | Soccer Mommy | Color Theory | spring
+2020 | Rina Sawayama | Sawayama | summer
+2020 | Bob Dylan | Rough and Rowdy Ways | summer
+2020 | Jason Isbell and the 400 Unit | Reunions | spring
+2020 | Bartees Strange | Live Forever | summer
+2020 | Sault | Untitled (Black Is) | election
+2020 | Yaeji | What We Drew | spring
+2020 | Mac Miller | Circles | winter
+2020 | Mary Lattimore | Silver Ladders | quiet morning
+2020 | Charli XCX | How I'm Feeling Now | spring
+2020 | Rolling Blackouts Coastal Fever | Sideways to New Italy | summer
+2020 | Laura Marling | Song for Our Daughter | spring quiet
+2021 | Japanese Breakfast | Jubilee | summer local
+2021 | Little Simz | Sometimes I Might Be Introvert | fall
+2021 | Floating Points, Pharoah Sanders and the London Symphony Orchestra | Promises | rain quiet sunday jazz
+2021 | Olivia Rodrigo | Sour | summer
+2021 | Wolf Alice | Blue Weekend | summer
+2021 | Turnstile | Glow On | summer
+2021 | Jazmine Sullivan | Heaux Tales | valentine night
+2021 | Tyler, the Creator | Call Me If You Get Lost | summer
+2021 | Black Country, New Road | For the First Time | winter
+2021 | Lucy Dacus | Home Video | summer
+2021 | The War on Drugs | I Don't Live Here Anymore | fall
+2021 | Low | Hey What | winter
+2021 | Arlo Parks | Collapsed in Sunbeams | spring sun
+2021 | Mdou Moctar | Afrique Victime | summer sun
+2021 | Spirit of the Beehive | Entertainment, Death | halloween
+2021 | Mach-Hommy | Pray for Haiti | winter
+2021 | Squid | Bright Green Field | spring
+2021 | Dry Cleaning | New Long Leg | rain
+2021 | Snail Mail | Valentine | valentine winter
+2021 | Sault | Nine | summer
+2021 | Cassandra Jenkins | An Overview on Phenomenal Nature | quiet morning
+2021 | Halsey | If I Can't Have Love, I Want Power | night halloween
+2021 | Jane Weaver | Flock | spring
+2021 | Silk Sonic | An Evening with Silk Sonic | valentine night
+2021 | Adele | 30 | winter
+2021 | Sufjan Stevens and Angelo De Augustine | A Beginner's Mind | fall
+2021 | Hiss Golden Messenger | Quietly Blowing It | winter quiet
+2022 | Big Thief | Dragon New Mountain I Believe in You | fall winter
+2022 | Beyoncé | Renaissance | summer night newyear
+2022 | Kendrick Lamar | Mr. Morale & the Big Steppers | spring
+2022 | Rosalía | Motomami | summer
+2022 | Black Country, New Road | Ants from Up There | winter
+2022 | Alvvays | Blue Rev | summer fall
+2022 | Weyes Blood | And in the Darkness, Hearts Aglow | winter xmas
+2022 | Wet Leg | Wet Leg | summer
+2022 | Florence and the Machine | Dance Fever | spring
+2022 | Angel Olsen | Big Time | fall
+2022 | SZA | SOS | winter
+2022 | Fontaines D.C. | Skinty Fia | rain
+2022 | Bad Bunny | Un Verano Sin Ti | summer sun
+2022 | Danger Mouse and Black Thought | Cheat Codes | summer
+2022 | Hurray for the Riff Raff | Life on Earth | spring
+2022 | Sharon Van Etten | We've Been Going About This All Wrong | spring
+2022 | Cate Le Bon | Pompeii | winter
+2022 | Jockstrap | I Love You Jennifer B | fall
+2022 | Phoenix | Alpha Zulu | fall
+2022 | Taylor Swift | Midnights | night
+2022 | The Smile | A Light for Attracting Attention | spring
+2022 | Fred Again.. | Actual Life 3 (January 1 – September 9 2022) | newyear night
+2022 | Billy Woods | Aethiopes | winter
+2022 | Mitski | Laurel Hell | winter
+2022 | Horsegirl | Versions of Modern Performance | fall
+2022 | Steve Lacy | Gemini Rights | summer
+2022 | Wilco | Cruel Country | summer
+2022 | Beth Orton | Weather Alive | rain fall
+2022 | Sudan Archives | Natural Brown Prom Queen | summer
+2023 | boygenius | The Record | spring
+2023 | Caroline Polachek | Desire, I Want to Turn Into You | spring
+2023 | Wednesday | Rat Saw God | summer
+2023 | Mitski | The Land Is Inhospitable and So Are We | fall
+2023 | Sufjan Stevens | Javelin | fall quiet
+2023 | Olivia Rodrigo | Guts | fall
+2023 | Lana Del Rey | Did You Know That There's a Tunnel Under Ocean Blvd | summer
+2023 | Yaeji | With a Hammer | spring
+2023 | Sampha | Lahai | fall
+2023 | Jessie Ware | That! Feels Good! | summer night
+2023 | Feist | Multitudes | spring quiet
+2023 | ANOHNI and the Johnsons | My Back Was a Bridge for You to Cross | election
+2023 | Yo La Tengo | This Stupid World | winter
+2023 | Lankum | False Lankum | halloween winter
+2023 | Jason Isbell and the 400 Unit | Weathervanes | summer
+2023 | Kelela | Raven | night
+2023 | Killer Mike | Michael | sunday
+2023 | Blur | The Ballad of Darren | summer
+2023 | Slowdive | Everything Is Alive | fall
+2023 | Mandy, Indiana | I've Seen a Way | night
+2023 | Indigo De Souza | All of This Will End | spring
+2023 | Youth Lagoon | Heaven Is a Junkyard | rain
+2023 | Wilco | Cousin | fall
+2023 | Model/Actriz | Dogsbody | night
+2024 | Jlin | Akoma | night
+2023 | Andre 3000 | New Blue Sun | quiet morning
+2023 | Tirzah | trip9love...??? | winter
+2023 | Water From Your Eyes | Everyone's Crushed | summer
+2023 | billy woods and Kenny Segal | Maps | summer
+2024 | Charli XCX | Brat | summer
+2024 | Adrianne Lenker | Bright Future | winter quiet
+2024 | Vampire Weekend | Only God Was Above Us | spring
+2024 | Mount Eerie | Night Palace | night quiet local
+2024 | Fontaines D.C. | Romance | fall
+2024 | Beth Gibbons | Lives Outgrown | fall rain
+2024 | Kendrick Lamar | GNX | winter
+2024 | Billie Eilish | Hit Me Hard and Soft | summer
+2024 | Cindy Lee | Diamond Jubilee | night
+2024 | Waxahatchee | Tigers Blood | spring
+2024 | Mk.gee | Two Star & the Dream Police | night
+2024 | MJ Lenderman | Manning Fireworks | fall
+2024 | The Cure | Songs of a Lost World | fall rain
+2024 | Nilüfer Yanya | My Method Actor | fall
+2024 | Magdalena Bay | Imaginal Disk | summer
+2024 | Chappell Roan | The Rise and Fall of a Midwest Princess | summer
+2024 | Jessica Pratt | Here in the Pitch | night quiet
+2024 | Cassandra Jenkins | My Light, My Destroyer | fall
+2024 | Geordie Greep | The New Sound | summer
+2024 | Kim Gordon | The Collective | night
+2024 | Jamie xx | In Waves | summer
+2024 | Floating Points | Cascade | night
+2024 | Nala Sinephro | Endlessness | jazz quiet morning
+2024 | Tyler, the Creator | Chromakopia | fall
+2024 | Clairo | Charm | summer
+2024 | Sabrina Carpenter | Short n' Sweet | summer
+2024 | Sierra Ferrell | Trail of Flowers | spring
+2024 | Jack White | No Name | summer
+2024 | Hurray for the Riff Raff | The Past Is Still Alive | spring
+2024 | Kali Malone | All Life Long | quiet winter
+2024 | Fabiana Palladino | Fabiana Palladino | night
+2024 | The Smile | Wall of Eyes | winter
+2022 | Bladee and Ecco2k | Crest | night
+2024 | Doechii | Alligator Bites Never Heal | summer
+2024 | Laura Marling | Patterns in Repeat | fall quiet
+2024 | Kacey Musgraves | Deeper Well | spring sun
+2024 | Julia Holter | Something in the Room She Moves | spring
+2024 | Arooj Aftab | Night Reign | night jazz

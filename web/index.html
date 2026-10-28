@@ -334,6 +334,7 @@ header h1{font-size:40px}
 .sun-clouds span{background:rgba(255,255,255,.6);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:600;color:var(--body)}
 .apod-img{position:relative;display:block;border-radius:16px;overflow:hidden;background:#1B2238}
 .apod-img img{display:block;width:100%;max-height:420px;object-fit:cover}
+.apod-video{aspect-ratio:16/9}.apod-video iframe,.apod-video video{display:block;width:100%;height:100%;border:0;background:#000}
 .apod-img .play{position:absolute;inset:0;display:grid;place-items:center;font-size:44px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .apod-title{display:block;font-size:19px;font-weight:800;color:#fff;line-height:1.3}
 .j-apod .muted{display:block;margin-top:-8px;color:#9AA3BD;font-size:12.5px;font-weight:600}
@@ -1883,7 +1884,7 @@ body{background-color:#8F5A32;
     <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to put on, shows and jazz around town, new albums and gear</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
-        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season, the weather and the week</span></div>
+        <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season and the weather; never repeated within a year</span></div>
         <div class="recs" id="records"></div>
       </section>
       <section class="card" aria-labelledby="gig-h" id="gigs-card" hidden>
@@ -1934,19 +1935,30 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, F1 and the S&amp;P</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, F1, the markets, helium and Portland real estate</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
       <div class="row">
         <section class="card wide" aria-labelledby="mkt-h">
           <div class="head"><h2 id="mkt-h">Markets</h2><span class="meta" id="mkt-meta"></span></div>
           <p class="summary" id="mkt-summary"></p>
+          <div id="mkt-brief"></div>
           <div id="mkt-spark"></div>
           <div class="lines" id="mkt"></div>
         </section>
         <section class="card side" aria-labelledby="f1-h">
           <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
           <div id="f1"></div>
+        </section>
+      </div>
+      <div class="row">
+        <section class="card half" aria-labelledby="he-h" id="he-card" hidden>
+          <div class="head"><h2 id="he-h">North American Helium</h2><span class="meta" id="he-meta"></span></div>
+          <div id="he"></div>
+        </section>
+        <section class="card half" aria-labelledby="re-h" id="re-card" hidden>
+          <div class="head"><h2 id="re-h">Portland real estate</h2><span class="meta" id="re-meta"></span></div>
+          <div id="re"></div>
         </section>
       </div>
     </div>
@@ -2045,8 +2057,6 @@ body{background-color:#8F5A32;
         <div class="head"><h2 id="hol-h">Upcoming holidays</h2>
           <div class="legend"><span><i class="sw" style="background:var(--use)"></i>USA</span><span><i class="sw" style="background:var(--solar)"></i>Thailand</span></div></div>
         <div class="lines" id="holidays"></div>
-        <h3 class="sub" id="thai-h" hidden>Thai Buddhist calendar</h3>
-        <div class="lines" id="thai"></div>
       </section>
     </div>
   </div>
@@ -3003,12 +3013,19 @@ function renderOutings() {
 
 function renderApod() {
   const a = D.apod;
-  $('apod-card').hidden = !(a && a.image);
-  if (!a || !a.image) return;
-  $('apod').innerHTML = `<a href="${esc(a.video || a.page)}" target="_blank" rel="noopener" class="apod-img">
-      <img src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy">${a.video ? '<span class="play">▶</span>' : ''}</a>
+  const ok = a && (a.image || a.video) && !/nasa-logo/.test(a.image || '') && a.title !== 'NASA Science';
+  $('apod-card').hidden = !ok;
+  if (!ok) return;
+  const hide = `onerror="document.getElementById('apod-card').hidden=true"`;
+  const kind = a.video_kind || (a.video ? (/\.(mp4|webm|mov)(\?|$)/i.test(a.video) ? 'file' : 'embed') : null);
+  const media = kind === 'file'
+    ? `<div class="apod-img apod-video"><video src="${esc(a.video)}" controls playsinline muted loop preload="metadata"${a.image ? ` poster="${esc(a.image)}"` : ''}></video></div>`
+    : kind === 'embed'
+    ? `<div class="apod-img apod-video"><iframe src="${esc(a.video)}" title="${esc(a.title)}" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
+    : `<a href="${esc(a.page)}" target="_blank" rel="noopener" class="apod-img"><img src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy" ${hide}></a>`;
+  $('apod').innerHTML = media + `
     <b class="apod-title">${esc(a.title)}</b>${a.credit ? `<small class="muted">${esc(a.credit)}</small>` : ''}
-    <details class="apod-more"><summary>${esc(a.explanation.slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(a.explanation)}</p></details>`;
+    <details class="apod-more"><summary>${esc(a.explanation.slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(a.explanation)} <a class="link" href="${esc(a.page)}" target="_blank" rel="noopener">On NASA's site</a></p></details>`;
 }
 
 function renderPicks() {
@@ -3665,7 +3682,7 @@ function renderParked() {
 
 function renderWorld() {
   const b = D.bangkok, hol = D.holidays || [];
-  $('world').hidden = !b && !hol.length;
+  $('world').hidden = !b && !hol.length && !(D.thai_buddhist || []).length;
   if (b) {
     const tick = () => { $('bkk-time').textContent = new Date().toLocaleString(undefined, { timeZone: 'Asia/Bangkok', weekday: 'short', hour: 'numeric', minute: '2-digit' }); };
     tick(); clearInterval(renderWorld.t); renderWorld.t = setInterval(tick, 30000);
@@ -3680,16 +3697,22 @@ function renderWorld() {
       </div>
       <div class="lines">${b.days.map((d, i) => `<div><span>${i === 0 ? 'Today' : localDay(d.date + 'T12:00:00+07:00')}</span><span>${d.hi}° / ${d.lo}° · ${d.rain_pct ?? 0}% rain</span></div>`).join('')}</div></div>`;
   }
-  $('holidays').innerHTML = hol.slice(0, 14).map(h => {
+  // One list, by date: US and Thai public holidays plus the Thai Buddhist calendar.
+  const norm = x => x.toLowerCase().replace(/[^a-z]/g, '').slice(0, 8);
+  const all = hol.map(h => ({...h, thai: h.country !== 'USA'}));
+  for (const t of D.thai_buddhist || []) {
+    const same = all.find(h => h.thai && h.date === t.date && (norm(h.name) === norm(t.name) || norm(h.local || '') === norm(t.name)));
+    if (same) { same.about = same.about || t.about; continue; }
+    all.push({date: t.date, ends: t.ends, name: t.name, about: t.about, approx: t.approx, thai: true});
+  }
+  all.sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
+  $('holidays').innerHTML = all.slice(0, 18).map(h => {
     const [y, m, d] = h.date.split('-').map(Number);
-    const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-    const local = h.local && h.local !== h.name ? `<br><small>${esc(h.local)}</small>` : '';
-    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.country === 'USA' ? 'var(--use)' : 'var(--solar)'}"></i>${esc(h.name)}${local}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+    const when = (h.approx ? 'Around ' : '') + new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined }) +
+      (h.ends ? '–' + fmtDate(h.ends).replace(/^\w+ /, '') : '');
+    const sub = [h.local && h.local !== h.name ? h.local : '', h.about || ''].filter(Boolean).map(x => esc(x)).join(' · ');
+    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.thai ? 'var(--solar)' : 'var(--use)'}"></i>${esc(h.name)}${sub ? `<br><small>${sub}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('');
-  const thai = D.thai_buddhist || [];
-  $('thai-h').hidden = !thai.length;
-  $('thai').innerHTML = thai.map(t => `<div><span><b style="font-weight:700">${esc(t.name)}</b><br><small>${esc(t.about)}</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${t.approx ? 'Around ' : ''}${fmtDate(t.date)}${t.ends ? '–' + fmtDate(t.ends).replace(/^\w+ /, '') : ''}${t.date.slice(0, 4) !== todayIso().slice(0, 4) ? ' ' + t.date.slice(0, 4) : ''}</span></div>`).join('');
 }
 
 async function renderGigs() {
@@ -4121,6 +4144,34 @@ function renderMore() {
     }
     $('mkt').innerHTML = mk.map(q => `<div><span>${esc(q.name)}</span><span>${fmt(q)} &nbsp;${chg(q.day_pct)}</span></div>`).join('');
   }
+  renderBrief();
+}
+
+// Morning market brief (written each morning by a research run into marketbrief.json), with headline
+// fallbacks from Google News so helium and real estate never sit empty when the brief is late.
+async function renderBrief() {
+  const br = await getJson('marketbrief.json'), news = D.market_news || {};
+  const ageDays = br && br.updated ? Math.round((new Date(todayIso() + 'T12:00') - new Date(br.updated + 'T12:00')) / 864e5) : 99;
+  const asOf = br ? (br.updated_at ? localWhen(br.updated_at) : fmtDate(br.updated)) : '';
+  const items = list => (list || []).slice(0, 5).map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.what ? `<br><small>${esc(x.what)}</small>` : ''}${!x.what && x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`).join('');
+  const stale = ageDays > 1 ? `<p class="meta">This analysis is from ${fmtDate(br.updated)}; today’s hasn’t landed yet.</p>` : '';
+  const a = br && br.analysis;
+  $('mkt-brief').innerHTML = a && ageDays <= 3 ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
+      ${(a.drivers || []).length ? `<h3 class="sub">What moved things</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.drivers.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+      ${(a.watch || []).length ? `<h3 class="sub">Worth watching</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.watch.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+      <p class="meta" style="margin:4px 0 0">Analysis as of ${asOf}</p>${cite(a.sources)}${stale}</div>` : '';
+  const section = (key, id, fallback) => {
+    const b = br && br[key], fresh = b && ageDays <= 3;
+    const body = fresh ? `<p class="summary">${b.headline ? `<b>${esc(b.headline)}</b> ` : ''}${esc(b.summary || '')}</p>
+        ${(b.stats || []).length ? `<div class="lines">${b.stats.map(x => `<div><span>${esc(x.label)}${x.source ? `<br><small>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.source)}</a>` : esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${esc(x.value)}${x.change ? ` <small>${esc(x.change)}</small>` : ''}</span></div>`).join('')}</div>` : ''}
+        ${(b.items || []).length ? `<h3 class="sub">Latest news</h3><div class="lines">${items(b.items)}</div>` : ''}${cite(b.sources)}${stale}`
+      : (fallback || []).length ? `<p class="note">Latest headlines:</p><div class="lines">${items(fallback)}</div>` : '';
+    $(id).innerHTML = body;
+    $(id + '-meta').textContent = fresh ? 'As of ' + asOf : (fallback || []).length ? 'Google News' : '';
+    $(id + '-card').hidden = !body;
+  };
+  section('helium', 'he', news.helium);
+  section('realestate', 're', news.realestate);
 }
 
 // ------------------------------------------------------------------ what's going around, shellfish, grid
@@ -4645,8 +4696,13 @@ async function renderBriefing() {
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
   const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
-  const [events, plan, kids, jazz, gigs, blu] = await Promise.all(
-    ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json'].map(getJson));
+  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief] = await Promise.all(
+    ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json', 'restaurants.json',
+     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json'].map(getJson));
+  // Something different every morning: lists are walked one item a day, so the same note never sits there for weeks.
+  const dayNo = Math.floor(new Date(today + 'T12:00').getTime() / 864e5);
+  const rot = (list, salt = 0) => list && list.length ? list[(dayNo + salt) % list.length] : null;
+  const oneOf = (salt, ...lines) => lines[(dayNo + salt) % lines.length];
 
   // Weather and alerts
   const o = D.outside || {};
@@ -4806,7 +4862,7 @@ async function renderBriefing() {
   const rp = renderRecords.picks;
   if (rp) {
     const morning = now.getHours() < 12;
-    add(morning ? 66 : 24, 'rec-card', `For the gramophone this ${morning ? 'morning' : 'day'}: <b>${esc(rp.classic[1])}</b> by ${esc(rp.classic[0])} (${rp.classic[2]}). ${esc(rp.classic[4])} And for something newer, <b>${esc(rp.modern[1])}</b> by ${esc(rp.modern[0])}${rp.live ? `, playing ${esc(rp.live.venue)} ${calDay(rp.live.date).toLowerCase()}` : ''}.`);
+    add(morning ? 66 : 24, 'rec-card', `For the gramophone this ${morning ? 'morning' : 'day'}: <b>${esc(rp.classic.album)}</b> by ${esc(rp.classic.artist)} (${rp.classic.year}).${rp.classic.why ? ' ' + esc(rp.classic.why.replace(/^(.*?[.!?])\s.*$/s, '$1')) : ''} And for something newer, <b>${esc(rp.modern.album)}</b> by ${esc(rp.modern.artist)}${rp.live ? `, playing ${esc(rp.live.venue)} ${calDay(rp.live.date).toLowerCase()}` : ''}.`);
   }
 
   // Craigslist
@@ -4840,19 +4896,75 @@ async function renderBriefing() {
   if (yday && solarDays.length > 7 && solarDays.every(d => d.produced <= yday.produced))
     add(40, 'delights', `Yesterday the panels made ${Math.round(yday.produced)} kWh, the best in ${solarDays.length} days. Splendid.`);
 
+  // Fresh reading for the morning: the newest things the feeds and lists turned up overnight.
+  const sci = rot((D.science || []).slice(0, 4));
+  if (sci) add(39, 'science', `${oneOf(1, 'From the laboratories', 'Science, sir', 'A finding worth your coffee')}: <b>${esc(sci.title)}</b>${sci.means ? '. ' + esc(sci.means.replace(/^(.*?[.!?])\s.*$/s, '$1')) : '.'}`);
+  const story = rot(((D.news && D.news.stories) || []).filter(x => (x.coverage || 0) >= 2).slice(0, 5), 2);
+  if (story) add(41, 'news', `${oneOf(2, 'The papers are full of it', 'In the news this morning', 'The talk of the morning')}: <b>${esc(story.title)}</b> (${esc(story.source)}).`);
+  const gn = rot((D.good_news || []).slice(0, 3), 1);
+  if (gn) add(33, 'good-card', `Some good news${gn.local ? ' from close to home' : ''}: ${esc(gn.title)}.`);
+  const lr = rot((D.longreads || []).slice(0, 4), 3);
+  if (lr) add(29, 'read-card', `For a long sit with your tea: <b>${esc(lr.title)}</b>${lr.author ? ' by ' + esc(lr.author) : ''}.`);
+  const tr = rot(((D.trending && D.trending.google) || []).filter(t => t.story).slice(0, 4), 1);
+  if (tr) add(27, 'trend-card', `Everyone is searching for “${esc(tr.title)}”: ${esc(tr.story)}.`);
+  if (D.apod && D.apod.title && D.apod.title !== 'NASA Science') add(31, 'apod-card', `NASA’s ${D.apod.video ? 'film' : 'picture'} of the day is <b>${esc(D.apod.title)}</b>. ${D.apod.video ? 'It plays right on the page.' : 'Worth a look on a big screen.'}`);
+  const freshList = (j, field, days) => ((j && j[field]) || []).filter(x => x.date && daysTo(x.date) >= -days);
+  const rv = (rests && rests.restaurants || []).flatMap(r => (r.reviews || []).map(v => [r, v])).filter(([, v]) => v.date && daysTo(v.date) >= -4)[0];
+  const rr = rv ? rv[0] : rot((rests && rests.restaurants || []).slice(0, 8), 4);
+  if (rr) add(rv ? 47 : 30, 'rest-card', rv ? `A fresh review: ${esc(rv[1].outlet)} on <b>${esc(rr.name)}</b> ${rr.neighborhood ? ' in ' + esc(rr.neighborhood) : ''}${rv[1].verdict ? `: “${esc(rv[1].verdict)}”` : ''}.`
+    : `Should you dine out, <b>${esc(rr.name)}</b> (${[rr.cuisine && rr.cuisine.toLowerCase(), rr.neighborhood].filter(Boolean).map(x => esc(x)).join(', ')}) is among the newer places worth the trip.`);
+  const ff = freshList(finds, 'items', 10)[0] || rot((finds && finds.items || []).slice(0, 8), 5);
+  if (ff) add(28, 'finds-card', `For the larder: <b>${esc(ff.name)}</b>${ff.maker && ff.maker !== ff.name ? ' from ' + esc(ff.maker) : ''}. ${esc((ff.what || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`);
+  const lm = rot((pdxm && pdxm.releases || []).filter(x => x.local).slice(0, 10), 6);
+  if (lm) add(26, 'pdxm-card', `New from Portland: ${esc(lm.artist)}, “${esc(lm.title)}” ${lm.type ? ` (${esc(lm.type.toLowerCase())})` : ''}.`);
+  const ce = ((coastEv && coastEv.events) || []).find(e => soon(e.date, 2) || (e.end && e.date <= today && e.end >= today));
+  if (ce) add(37, 'coast-events-card', `At the coast ${daysTo(ce.date) <= 0 ? 'today' : whenWord(ce.date)}: ${esc(ce.name)} in ${esc(ce.town)}.`);
+  const pulseFresh = fans && fans.updated_at && (now - new Date(fans.updated_at)) < 30 * 3600e3;
+  if (pulseFresh) { const k = ['blazers', 'timbers', 'f1'][dayNo % 3], f = fans.teams && fans.teams[k];
+    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
+  if (brief && brief.updated === today && brief.analysis && brief.analysis.headline)
+    add(53, 'more', `On the markets: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
+  if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)
+    add(36, 'more', `Property, sir: ${esc(brief.realestate.headline.replace(/\.$/, ''))}.`);
+  if (D.poem && D.poem.title) add(14, 'poem-card', `Today’s poem is “${esc(D.poem.title)}” by ${esc(D.poem.poet)}.`);
+
+  // Alfred remembers what he told you on earlier mornings (in this browser) and moves on to fresher news.
+  let seen = {};
+  try { seen = JSON.parse(localStorage.getItem('alfred-seen') || '{}') || {}; } catch (e) { seen = {}; }
+  const noteId = n => n[1] + ':' + n[2].replace(/<[^>]+>/g, '').replace(/[\d.,:%°–-]+/g, '#').slice(0, 90);
+  for (const n of notes) {
+    const before = (seen[noteId(n)] || []).filter(d => d !== today && daysTo(d) >= -7);
+    if (n[0] < 80) n[0] += before.length ? -Math.min(36, 12 * before.length) : 6;
+  }
   notes.sort((a, b) => b[0] - a[0]);
   const top = notes.filter(n => n[0] >= 50).slice(0, 4);
   const lead = top.length ? top : notes.slice(0, 2);
-  const rest = notes.filter(n => !lead.includes(n)).slice(0, 10);
+  const FRESH = ['science', 'news', 'good-card', 'read-card', 'trend-card', 'apod-card', 'rest-card', 'finds-card', 'pdxm-card', 'poem-card'];
+  const reading = notes.filter(n => !lead.includes(n) && FRESH.includes(n[1])).slice(0, 4);
+  const rest = notes.filter(n => !lead.includes(n) && !reading.includes(n)).slice(0, 12);
+  try {
+    const keep = {};
+    for (const [id, days] of Object.entries(seen)) { const d = days.filter(x => daysTo(x) >= -10); if (d.length) keep[id] = d; }
+    for (const n of [...lead, ...reading, ...rest.slice(0, 6)]) { const id = noteId(n); keep[id] = [...new Set([...(keep[id] || []), today])]; }
+    localStorage.setItem('alfred-seen', JSON.stringify(keep));
+  } catch (e) { /* private browsing: Alfred simply forgets */ }
   const hr = now.getHours();
-  const hello = hr < 5 ? 'You’re up late, Master Parker.' : hr < 12 ? 'Good morning, Master Parker.' : hr < 17 ? 'Good afternoon, Master Parker.' : 'Good evening, Master Parker.';
-  const intro = lead.some(n => n[0] >= 80) ? 'A few matters require your attention.' : lead[0] && lead[0][0] >= 50 ? 'A quiet day, mostly. A few things worth knowing.' : 'Nothing pressing today, sir. A rare luxury.';
+  const hello = hr < 5 ? oneOf(0, 'You’re up late, Master Parker.', 'Burning the midnight oil, sir?', 'Still awake, Master Parker?')
+    : hr < 12 ? oneOf(0, 'Good morning, Master Parker.', 'Good morning, sir. The coffee is on.', 'Morning, Master Parker. Sleep well?', 'Rise and shine, sir.', 'Good morning. The papers have arrived.')
+    : hr < 17 ? oneOf(0, 'Good afternoon, Master Parker.', 'Good afternoon, sir.', 'Afternoon, Master Parker.')
+    : oneOf(0, 'Good evening, Master Parker.', 'Good evening, sir.', 'Evening, Master Parker. A quiet one, I hope.');
+  const newCount = lead.filter(n => !(seen[noteId(n)] || []).some(d => d !== today)).length;
+  const intro = lead.some(n => n[0] >= 80) ? oneOf(1, 'A few matters require your attention.', 'Some things need seeing to today.', 'I’ve put the urgent matters first.')
+    : lead[0] && lead[0][0] >= 50 ? oneOf(1, 'A quiet day, mostly. A few things worth knowing.', `${newCount > 1 ? `${newCount} new things` : 'Something new'} since yesterday.`, 'Here is what has changed overnight.', 'The overnight post, sir.')
+    : oneOf(1, 'Nothing pressing today, sir. A rare luxury.', 'A calm one. Some reading, if you like.', 'All quiet at the manor. A few diversions below.');
+  const sign = oneOf(2, 'Your servant, Alfred', 'Ever at your service, Alfred', 'I’ll have the car ready. Alfred', 'Do try to eat something. Alfred', 'Yours faithfully, Alfred', 'Mind the weather, sir. Alfred');
   const item = ([, sec, text]) => `<li><a href="#${sec}">${text}</a></li>`;
   box.innerHTML = `<div class="brief-head"><span class="brief-icon" aria-hidden="true">🎩</span><div><h2 id="brief-h">${hello}</h2><p class="brief-intro">${intro}</p></div></div>
     <ol class="brief-top">${lead.map(item).join('')}</ol>
+    ${reading.length ? `<h3 class="sub">${oneOf(3, 'Fresh this morning', 'New overnight', 'Hot off the press')}</h3><ul class="brief-rest">${reading.map(item).join('')}</ul>` : ''}
     ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.slice(0, 6).map(item).join('')}</ul>` : ''}
     ${rest.length > 6 ? `<details class="brief-more"><summary>${rest.length - 6} more from Alfred</summary><ul class="brief-rest">${rest.slice(6).map(item).join('')}</ul></details>` : ''}
-    <p class="brief-sign">Your servant, Alfred</p>`;
+    <p class="brief-sign">${sign}</p>`;
   box.hidden = false;
 }
 
@@ -4958,149 +5070,16 @@ function renderGear() {
 }
 
 // ------------------------------------------------------------------ morning records
-// Two picks a day: a classic (over 15 years old, critically adored) and a modern cult classic, chosen by
-// how well their tags fit today's season, weather and holidays. [artist, album, year, tags, why]
-const CLASSICS = [
-  ['Nick Drake', 'Pink Moon', 1972, 'fall winter rain quiet full', 'Twenty-eight minutes of voice and guitar, made for grey mornings.'],
-  ['Nick Drake', 'Bryter Layter', 1971, 'fall', 'Strings, brass and that hushed voice; autumn in record form.'],
-  ['Van Morrison', 'Astral Weeks', 1968, 'fall', 'A one-take reverie that critics still put near the top of every list.'],
-  ['Neil Young', 'Harvest Moon', 1992, 'fall full thanks', 'Warm, unhurried, and named for exactly this time of year.'],
-  ['Neil Young', 'Harvest', 1972, 'fall thanks', 'Country-rock comfort food from the man himself.'],
-  ['Elliott Smith', 'Either/Or', 1997, 'fall rain local', 'Portland’s own, recorded in town; perfect for wet streets.'],
-  ['Elliott Smith', 'XO', 1998, 'fall rain local', 'Smith’s lushest set, all Beatles chords and Portland drizzle.'],
-  ['Sufjan Stevens', 'Illinois', 2005, 'fall thanks', 'Banjo, brass and the Midwest in autumn colours.'],
-  ['Fleet Foxes', 'Fleet Foxes', 2008, 'fall spring local', 'Seattle harmonies that sound like Northwest forests.'],
-  ['Bon Iver', 'For Emma, Forever Ago', 2007, 'winter snow', 'Written in a Wisconsin cabin over a snowed-in winter.'],
-  ['Low', 'Things We Lost in the Fire', 2001, 'winter snow quiet', 'Slow, beautiful, and best with frost on the windows.'],
-  ['Low', 'Christmas', 1999, 'xmas', 'The cult holiday record for people who dislike holiday records.'],
-  ['Talk Talk', 'Spirit of Eden', 1988, 'rain quiet', 'Six long pieces that invented post-rock on a rainy afternoon.'],
-  ['Radiohead', 'In Rainbows', 2007, 'fall', 'The warmest Radiohead record, and the one most people keep returning to.'],
-  ['Portishead', 'Dummy', 1994, 'rain night', 'Trip-hop’s grey-sky masterpiece.'],
-  ['Massive Attack', 'Mezzanine', 1998, 'rain night halloween', 'Dark, heavy and gorgeous; made for long wet nights.'],
-  ['Bill Evans Trio', 'Sunday at the Village Vanguard', 1961, 'sunday rain jazz', 'The best way to start a Sunday, recorded on one.'],
-  ['Miles Davis', 'Kind of Blue', 1959, 'any jazz night', 'The best-selling jazz album ever, and it earns it every listen.'],
-  ['John Coltrane', 'Ballads', 1962, 'rain winter jazz', 'Coltrane at his most tender, ideal for rainy mornings.'],
-  ['John Coltrane', 'A Love Supreme', 1965, 'winter newyear jazz', 'A four-part prayer; good for fresh starts.'],
-  ['Vince Guaraldi Trio', 'A Charlie Brown Christmas', 1965, 'xmas', 'Still the coziest record of December.'],
-  ['Stan Getz and João Gilberto', 'Getz/Gilberto', 1964, 'summer sun', 'Bossa nova at its breeziest.'],
-  ['The Beach Boys', 'Pet Sounds', 1966, 'spring summer sun', 'Brian Wilson’s pocket symphony to youth.'],
-  ['The Zombies', 'Odessey and Oracle', 1968, 'spring', 'Baroque pop that opens with “Care of Cell 44” and never lets up.'],
-  ['Kate Bush', 'Hounds of Love', 1985, 'fall halloween', 'Side two is a gothic fever dream; ideal for late October.'],
-  ['Siouxsie and the Banshees', 'Juju', 1981, 'halloween', 'Goth’s spookiest classic, from “Spellbound” on.'],
-  ['The Cure', 'Disintegration', 1989, 'fall rain halloween', 'Grand, gloomy and gorgeous.'],
-  ['Goblin', 'Suspiria', 1977, 'halloween', 'The witchiest film score ever pressed to vinyl.'],
-  ['Tom Waits', 'Rain Dogs', 1985, 'rain fall', 'Junkyard blues for a downpour.'],
-  ['Simon & Garfunkel', 'Bookends', 1968, 'fall', 'Includes “Old Friends” and a whole side about getting older; very October.'],
-  ['Fleetwood Mac', 'Rumours', 1977, 'spring summer', 'Breakup songs that somehow sound like sunshine.'],
-  ['Stevie Wonder', 'Songs in the Key of Life', 1976, 'summer sun', 'Stevie’s sprawling, joyful peak.'],
-  ['Marvin Gaye', "What's Going On", 1971, 'election', 'Soul’s great protest album, timely in any election week.'],
-  ['Bob Dylan', "The Times They Are a-Changin'", 1964, 'election', 'Dylan at his most topical; good listening before you vote.'],
-  ['Bob Dylan', 'Blood on the Tracks', 1975, 'winter', 'Dylan’s heartbreak masterpiece.'],
-  ['Joni Mitchell', 'Blue', 1971, 'xmas winter', 'Home of “River”, the saddest December song there is.'],
-  ['Joni Mitchell', 'Hejira', 1976, 'winter', 'Restless road songs with Jaco Pastorius on bass.'],
-  ['Cocteau Twins', 'Heaven or Las Vegas', 1990, 'spring', 'Dream pop at its most luminous.'],
-  ['Mazzy Star', 'So Tonight That I Might See', 1993, 'night fall', 'Hazy, slow and made for dusk.'],
-  ['Sigur Rós', 'Ágætis byrjun', 1999, 'winter snow', 'Icelandic glacier music.'],
-  ['Brian Eno', 'Music for Airports', 1978, 'rain quiet sunday', 'The original ambient album; perfect with coffee.'],
-  ['Brian Eno', 'Another Green World', 1975, 'spring', 'Eno’s greenest, most playful album.'],
-  ['The Velvet Underground & Nico', 'The Velvet Underground & Nico', 1967, 'sunday', 'Opens with “Sunday Morning”. Need we say more?'],
-  ['Bill Withers', 'Just As I Am', 1971, 'sun summer', 'Home of “Ain’t No Sunshine” and “Grandma’s Hands”.'],
-  ['Al Green', "Let's Stay Together", 1972, 'valentine', 'Sweet soul for sweethearts.'],
-  ['Love', 'Forever Changes', 1967, 'spring summer', 'Psychedelic orchestral folk, sunny with a dark edge.'],
-  ['Neutral Milk Hotel', 'In the Aeroplane Over the Sea', 1998, 'fall', 'The ultimate cult classic, fuzz and singing saw included.'],
-  ['The Microphones', 'The Glow Pt. 2', 2001, 'fall rain local', 'Phil Elverum’s Anacortes masterpiece; it sounds like PNW weather.'],
-  ['Grouper', 'Dragging a Dead Deer Up a Hill', 2008, 'fall rain local quiet', 'Liz Harris of Portland and Astoria, at her most haunting.'],
-  ['Modest Mouse', 'The Moon & Antarctica', 2000, 'winter local', 'Issaquah’s finest, at their most cosmic.'],
-  ['Sleater-Kinney', 'Dig Me Out', 1997, 'local', 'Olympia and Portland punk at full throttle.'],
-  ['Built to Spill', 'Keep It Like a Secret', 1999, 'local summer', 'Boise guitar heroics, big with Northwest indie kids.'],
-  ['Death Cab for Cutie', 'Transatlanticism', 2003, 'rain local fall', 'Bellingham rain, set to music.'],
-  ['Nirvana', 'MTV Unplugged in New York', 1994, 'fall local', 'Lilies, candles and Leadbelly.'],
-  ['Bob Marley and the Wailers', 'Exodus', 1977, 'summer sun', 'Sunshine in a sleeve.'],
-  ['The Kinks', 'The Village Green Preservation Society', 1968, 'spring', 'Ray Davies’ love letter to English village life.'],
-  ['Boards of Canada', 'Music Has the Right to Children', 1998, 'fall', 'Faded-film nostalgia, perfect for fall leaves.'],
-  ['Aphex Twin', 'Selected Ambient Works 85–92', 1992, 'summer night', 'Warm electronic dreams.'],
-  ['D’Angelo', 'Voodoo', 2000, 'winter night', 'Neo-soul’s deepest groove.'],
-  ['Phil Spector', 'A Christmas Gift for You', 1963, 'xmas', 'Wall-of-sound Christmas, still unbeatable.'],
-  ['John Carpenter', 'Halloween (soundtrack)', 1978, 'halloween', 'Five-four piano dread. You know the one.'],
-  ['William Basinski', 'The Disintegration Loops', 2002, 'winter quiet', 'Tape loops decaying in real time; meditative and moving.'],
-  ['Hiroshi Yoshimura', 'Green', 1986, 'spring sunday quiet', 'Japanese ambient that found a cult on YouTube decades later.'],
-];
-const MODERN = [
-  ['Big Thief', 'Dragon New Mountain I Believe in You', 2022, 'fall winter', 'A sprawling, homespun double album with a devoted following.'],
-  ['Phoebe Bridgers', 'Punisher', 2020, 'fall halloween', 'Sad songs from the woman in the skeleton suit; very late October.'],
-  ['Adrianne Lenker', 'Songs', 2020, 'fall rain quiet', 'Recorded alone in a cabin; you can hear the rain on the roof.'],
-  ['Weyes Blood', 'Titanic Rising', 2019, 'rain', 'Seventies-sized ballads about rising water.'],
-  ['Mitski', 'Be the Cowboy', 2018, 'fall', 'Short, sharp, and beloved to the point of obsession.'],
-  ['Sufjan Stevens', 'Carrie & Lowell', 2015, 'fall quiet local', 'Sufjan’s spare masterpiece, with stops in Oregon.'],
-  ['Sufjan Stevens', 'Silver & Gold', 2012, 'xmas', 'Five discs of Christmas songs, some sincere and some very strange.'],
-  ['Kendrick Lamar', 'To Pimp a Butterfly', 2015, 'election', 'A jazz-rap epic about America; timely before an election.'],
-  ['Frank Ocean', 'Blonde', 2016, 'summer night', 'Fans have been waiting on the follow-up ever since.'],
-  ['Japanese Breakfast', 'Jubilee', 2021, 'summer local', 'Michelle Zauner of Eugene, going full technicolor.'],
-  ['Alvvays', 'Blue Rev', 2022, 'summer fall', 'Jangly, fuzzed-out and adored.'],
-  ['Grouper', 'Ruins', 2014, 'rain quiet local', 'Piano and a tin roof, from Portland’s patron saint of drizzle.'],
-  ['The Microphones', 'Microphones in 2020', 2020, 'fall local', 'One 44-minute song about memory, from Anacortes.'],
-  ['Mount Eerie', 'A Crow Looked at Me', 2017, 'winter quiet local', 'Devastating and plainspoken; a cult touchstone.'],
-  ['Jessica Pratt', 'On Your Own Love Again', 2015, 'night quiet', 'Hushed home-recorded folk with a devoted following.'],
-  ['Floating Points, Pharoah Sanders and the LSO', 'Promises', 2021, 'rain quiet sunday jazz', 'A slow-building ambient jazz suite.'],
-  ['Kamasi Washington', 'The Epic', 2015, 'jazz', 'Three hours of cosmic jazz that turned new ears toward the genre.'],
-  ['Beach House', 'Depression Cherry', 2015, 'fall night', 'Dream pop as slow fall dusk.'],
-  ['Beach House', 'Bloom', 2012, 'summer night', 'Warm, swirling and very replayable.'],
-  ['Angel Olsen', 'My Woman', 2016, 'fall', 'Torch songs and guitar burners.'],
-  ['Bon Iver', '22, A Million', 2016, 'winter snow', 'Glitchy, strange and moving.'],
-  ['Fleet Foxes', 'Shore', 2020, 'fall spring equinox local', 'Released on the September equinox, and it sounds like one.'],
-  ['Caroline Polachek', 'Desire, I Want to Turn Into You', 2023, 'spring', 'Art-pop with a fanatical following.'],
-  ['boygenius', 'the record', 2023, 'spring', 'A supergroup with a fan base to match.'],
-  ['Wednesday', 'Rat Saw God', 2023, 'summer', 'Country-tinged noise rock from Asheville.'],
-  ['Black Country, New Road', 'Ants From Up There', 2022, 'winter', 'Chamber rock that fans treat like scripture.'],
-  ['Waxahatchee', 'Saint Cloud', 2020, 'spring', 'Clear-eyed Americana and a fan favorite.'],
-  ['Khruangbin', 'Con Todo El Mundo', 2018, 'summer sun thai', 'Thai-funk-inspired grooves from Texas; a nod to Bangkok.'],
-  ['Tame Impala', 'Currents', 2015, 'summer', 'Psych pop that launched a thousand bedroom producers.'],
-  ['Chelsea Wolfe', 'Abyss', 2015, 'halloween night', 'Heavy, eerie and made for October nights.'],
-  ['Julia Jacklin', 'Crushing', 2019, 'fall', 'Plain-spoken heartbreak with a devoted fan base.'],
-  ['Cate Le Bon', 'Pompeii', 2022, 'winter', 'Odd, elegant and quietly influential.'],
-];
-function recordPicks() {
-  const now = new Date(), m = now.getMonth() + 1, d = now.getDate(), today = todayIso();
-  const tags = {any: 0.1};
-  const season = m === 12 || m <= 2 ? 'winter' : m <= 5 ? 'spring' : m <= 8 ? 'summer' : 'fall';
-  tags[season] = 1;
-  const o = D.outside || {}, t0 = (o.days || []).find(x => x.date === today);
-  if (t0 && t0.rain_pct >= 60) tags.rain = 2;
-  if (t0 && t0.snow_in > 0.2) tags.snow = 3;
-  if (t0 && t0.rain_pct < 20 && t0.hi >= 70) tags.sun = 2;
-  if (o.moon && o.moon.lit_pct >= 97) tags.full = 2;
-  if (now.getDay() === 0) tags.sunday = 2;
-  if (m === 10 && d >= 18) tags.halloween = 4;
-  if (m === 12 && d <= 26) tags.xmas = 4;
-  if (m === 11 && d >= 18 && d <= 28) tags.thanks = 3;
-  if ((m === 12 && d >= 28) || (m === 1 && d <= 3)) tags.newyear = 3;
-  if (m === 2 && d >= 10 && d <= 14) tags.valentine = 4;
-  if ([3, 9].includes(m) && d >= 19 && d <= 23) tags.equinox = 3;
-  const el = D.civics && (D.civics.elections || [])[0];
-  if (el && Math.round((new Date(el.date + 'T12:00') - new Date(today + 'T12:00')) / 864e5) <= 9) tags.election = 3;
-  tags.local = 0.5; tags.thai = (D.thai_buddhist || []).some(x => x.date === today) ? 3 : 0;
-  const day = Math.floor(Date.now() / 864e5);
-  const pick = (list, salt) => {
-    const scored = list.map(r => [r[3].split(' ').reduce((s, k) => s + (tags[k] || 0), 0), r]).sort((a, b) => b[0] - a[0]);
-    const pool = scored.filter(x => x[0] >= scored[0][0] - 1).map(x => x[1]);
-    return pool[(day + salt) % pool.length];
-  };
-  const classic = pick(CLASSICS.filter(r => now.getFullYear() - r[2] > 15), 0);
-  let modern = pick(MODERN, 3), live = null;
-  return {classic, modern, live, why: Object.entries(tags).filter(([k, v]) => v >= 2).map(([k]) => k)};
-}
+// Two picks a day, chosen by the nightly run (solar/records.py) from about 900 acclaimed albums to fit the
+// season, weather and holidays. An album only comes back once it was last recommended over a year ago.
 const listen = (artist, album) => `https://open.spotify.com/search/${encodeURIComponent(artist + ' ' + album)}`;
 async function renderRecords() {
-  const p = recordPicks();
-  // Topical twist: a modern pick that is playing Portland this week beats the calendar.
-  const gigs = await getJson('concerts.json');
-  const soonShow = ((gigs && gigs.shows) || []).find(s => s.date >= todayIso() && (new Date(s.date + 'T12:00') - new Date()) < 7 * 864e5 &&
-    MODERN.some(r => r[0].toLowerCase() === s.artist.toLowerCase()));
-  if (soonShow) { p.modern = MODERN.find(r => r[0].toLowerCase() === soonShow.artist.toLowerCase()); p.live = soonShow; }
-  renderRecords.picks = p;
+  const p = D.records;
+  renderRecords.picks = p && p.classic && p.modern ? p : null;
+  if (!renderRecords.picks) { $('rec-card').hidden = true; return; }
   const card = (label, r, extra) => `<div class="rec"><span class="rec-k">${label}</span>
-    <b>${esc(r[1])}</b><span>${esc(r[0])} · ${r[2]}</span><p class="note">${esc(r[4])}${extra || ''}</p>
-    <a class="link" href="${listen(r[0], r[1])}" target="_blank" rel="noopener">Listen on Spotify</a></div>`;
+    <b>${esc(r.album)}</b><span>${esc(r.artist)} · ${r.year}</span><p class="note">${esc(r.why || '')}${extra || ''}</p>
+    <span><a class="link" href="${listen(r.artist, r.album)}" target="_blank" rel="noopener">Listen on Spotify</a>${r.url ? ` · <a class="link" href="${esc(r.url)}" target="_blank" rel="noopener">About the album</a>` : ''}</span></div>`;
   $('records').innerHTML = card('The classic', p.classic) +
     card('The modern classic', p.modern, p.live ? ` Playing ${esc(p.live.venue)} ${calDay(p.live.date).toLowerCase()}.` : '');
   $('rec-card').hidden = false;

@@ -6,8 +6,10 @@ curated list (NASA eclipse catalog); whether each one is visible from home is
 worked out here from where the sun is at that moment.
 """
 import datetime as dt
+import html
 import json
 import math
+import re
 import urllib.parse
 import urllib.request
 
@@ -303,17 +305,82 @@ def stargazing(hours, moon_lit_pct, now_local):
     return {"cloud": cloud, "verdict": verdict, "good": cloud < 40 and moon_lit_pct < 50}
 
 
-def apod(key="DEMO_KEY"):
-    """NASA's Astronomy Picture of the Day. DEMO_KEY allows about 50 calls a day per IP, plenty at a few a day."""
-    url = "https://api.nasa.gov/planetary/apod?" + urllib.parse.urlencode({"api_key": key, "thumbs": "true"})
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
-        a = json.load(r)
-    video = a.get("media_type") == "video"
-    image = a.get("thumbnail_url") if video else a.get("url")
-    if not image:
+APOD_BASE = "https://apod.nasa.gov/apod/"
+
+
+def _apod_ok(a):
+    """The API sometimes hands back a NASA Science placeholder (their logo and "enable JavaScript") instead of the picture."""
+    text = " ".join(str(a.get(k) or "") for k in ("title", "explanation", "image"))
+    return bool(a.get("image") or a.get("video")) and not re.search(r"nasa-logo|enable JavaScript|HTML5 vide|^NASA Science$", text) \
+        and (a.get("title") or "").strip() not in ("", "NASA Science")
+
+
+def _apod_page(day):
+    """Read one day's classic APOD page: its picture, or its video (an embed or NASA's own video file)."""
+    page = f"{APOD_BASE}ap{day:%y%m%d}.html"
+    with urllib.request.urlopen(urllib.request.Request(page, headers=UA), timeout=30) as r:
+        raw = r.read().decode("utf-8", "replace")
+    img = re.search(r'<img[^>]+src="([^"]+)"', raw, re.I)
+    frame = re.search(r'<iframe[^>]+src="([^"]+)"', raw, re.I)
+    clip = re.search(r'<source[^>]+src="([^"]+\.(?:mp4|webm|mov))"', raw, re.I) or \
+        re.search(r'<video[^>]+src="([^"]+)"', raw, re.I)
+    if not (img or frame or clip):
         return None
-    return {"date": a.get("date"), "title": (a.get("title") or "").strip(), "image": image,
-            "explanation": (a.get("explanation") or "").strip(), "credit": (a.get("copyright") or "").strip() or None,
-            "video": a.get("url") if video else None,
-            "page": f"https://apod.nasa.gov/apod/ap{a['date'][2:4]}{a['date'][5:7]}{a['date'][8:10]}.html" if a.get("date") else
-                    "https://apod.nasa.gov/apod/astropix.html"}
+    big = re.search(r'<a href="(image/[^"]+\.(?:jpe?g|png|gif))"', raw, re.I)
+    strip = lambda h: html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h))).strip()
+    title = re.search(r"<center>\s*<b>(.*?)</b>", raw, re.I | re.S)
+    credit = re.search(r"Credit[^<]*</b>(.*?)</center>", raw, re.I | re.S)
+    expl = re.search(r"Explanation:\s*</b>(.*?)<p>\s*<center>", raw, re.I | re.S)
+    full = lambda u: urllib.parse.urljoin(APOD_BASE, u)
+    video = full(clip.group(1)) if clip else full(frame.group(1)) if frame else None
+    return {"date": day.isoformat(), "title": strip(title.group(1)) if title else "",
+            "image": full(img.group(1)) if img else _video_thumb(video),
+            "full": full(big.group(1)) if big else None,
+            "explanation": strip(expl.group(1)) if expl else "", "credit": strip(credit.group(1)) or None if credit else None,
+            "video": video, "page": page}
+
+
+def _video_thumb(url):
+    m = re.search(r"youtube(?:-nocookie)?\.com/embed/([\w-]{6,})", url or "")
+    return f"https://img.youtube.com/vi/{m.group(1)}/hqdefault.jpg" if m else None
+
+
+def video_kind(url):
+    """How the page should play a video: an embed (YouTube, Vimeo and the like) or a plain video file."""
+    if not url:
+        return None
+    return "file" if re.search(r"\.(mp4|webm|mov)(\?|$)", url, re.I) else "embed"
+
+
+def apod(key="DEMO_KEY", today=None):
+    """NASA's Astronomy Picture of the Day. DEMO_KEY allows about 50 calls a day per IP, plenty at a few a day.
+
+    Falls back to reading apod.nasa.gov directly when the API is down or answers with a placeholder."""
+    a, errors = None, []
+    try:
+        url = "https://api.nasa.gov/planetary/apod?" + urllib.parse.urlencode({"api_key": key, "thumbs": "true"})
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
+            j = json.load(r)
+        video = j.get("media_type") == "video"
+        a = {"date": j.get("date"), "title": (j.get("title") or "").strip(),
+             "image": (j.get("thumbnail_url") or _video_thumb(j.get("url"))) if video else j.get("url"),
+             "explanation": (j.get("explanation") or "").strip(), "credit": (j.get("copyright") or "").strip() or None,
+             "video": j.get("url") if video else None,
+             "page": f"{APOD_BASE}ap{j['date'][2:4]}{j['date'][5:7]}{j['date'][8:10]}.html" if j.get("date") else
+                     APOD_BASE + "astropix.html"}
+    except Exception as e:
+        errors.append(f"API: {e}")
+    if a and _apod_ok(a):
+        a["video_kind"] = video_kind(a.get("video"))
+        return a
+    day = today or dt.datetime.now(dt.timezone.utc).date()
+    for back in range(7):
+        try:
+            p = _apod_page(day - dt.timedelta(days=back))
+        except Exception as e:
+            errors.append(f"{day - dt.timedelta(days=back)}: {e}")
+            continue
+        if p and _apod_ok(p):
+            p["video_kind"] = video_kind(p.get("video"))
+            return p
+    raise RuntimeError("no usable picture (" + "; ".join(errors[-3:]) + ")")

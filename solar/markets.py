@@ -58,3 +58,33 @@ def snapshot():
     if not out:
         raise RuntimeError("no market data returned")
     return out
+
+
+NEWS_QUERIES = {
+    "helium": '"North American Helium" OR "NAH helium" OR (helium Saskatchewan OR Montana OR Alberta) production',
+    "realestate": '(Portland Oregon) (home prices OR housing market OR home sales OR rents OR mortgage rates OR RMLS)',
+}
+
+
+def headlines(topic, n=6, days=21):
+    """Recent headlines from Google News for a topic, newest first, as a fallback when the morning brief is late."""
+    import xml.etree.ElementTree as ET
+    q = urllib.parse.urlencode({"q": f"{NEWS_QUERIES[topic]} when:{days}d", "hl": "en-US", "gl": "US", "ceid": "US:en"})
+    with urllib.request.urlopen(urllib.request.Request("https://news.google.com/rss/search?" + q, headers=UA), timeout=30) as r:
+        root = ET.fromstring(r.read())
+    out, seen = [], set()
+    for item in root.iter("item"):
+        title, src = item.findtext("title") or "", item.findtext("source")
+        if src and title.endswith(" - " + src):
+            title = title[: -len(src) - 3]
+        if title.lower()[:60] in seen:
+            continue
+        seen.add(title.lower()[:60])
+        try:
+            when = dt.datetime.strptime(item.findtext("pubDate") or "", "%a, %d %b %Y %H:%M:%S %Z")
+        except ValueError:
+            when = None
+        out.append({"title": title, "url": item.findtext("link"), "source": src,
+                    "date": when.date().isoformat() if when else None})
+    out.sort(key=lambda x: x["date"] or "", reverse=True)
+    return out[:n]

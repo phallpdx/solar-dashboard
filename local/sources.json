@@ -11,8 +11,8 @@
   "lists": {
     "jazz": [
       {
-        "name": "PDX Jazz",
-        "url": "https://www.pdxjazz.org/events/"
+        "name": "Jack London Revue",
+        "url": "https://www.jacklondonrevue.com/"
       },
       {
         "name": "The 1905 (Turntable Tickets)",
@@ -43,6 +43,12 @@
       {
         "name": "Roseland Theater",
         "url": "https://roselandpdx.com/"
+      },
+      {
+        "name": "Pitchfork Best New Albums",
+        "url": "https://pitchfork.com/feed/reviews/best/albums/rss",
+        "use": "albums",
+        "label": "Pitchfork Best New Music"
       }
     ],
     "events": [
@@ -98,7 +104,16 @@
         "url": "https://www.oregonlive.com/arc/outboundfeeds/rss/category/business/?outputType=xml"
       }
     ],
-    "planahead": [],
+    "planahead": [
+      {
+        "name": "Portland Mercury Ticket Alert",
+        "url": "https://news.google.com/rss/search?q=%22Ticket+Alert%22+Portland+Mercury+when%3A14d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+      {
+        "name": "Portland on-sale news",
+        "url": "https://news.google.com/rss/search?q=Portland+concert+%22on+sale%22+OR+presale+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+      }
+    ],
     "skioutlook": [
       {
         "name": "NOAA CPC ENSO discussion",
@@ -108,11 +123,6 @@
       {
         "name": "OnTheSnow Oregon projected openings",
         "url": "https://www.onthesnow.com/oregon/projected-openings",
-        "use": "openings"
-      },
-      {
-        "name": "Mt. Hood Meadows schedule",
-        "url": "https://www.skihood.com/explore/Schedule",
         "use": "openings"
       }
     ],
@@ -165,8 +175,12 @@
       ],
       "helium": [
         {
+          "name": "North American Helium news",
+          "url": "https://nahelium.com/news/"
+        },
+        {
           "name": "Google News: North American Helium",
-          "url": "https://news.google.com/rss/search?q=%22North+American+Helium%22+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+          "url": "https://news.google.com/rss/search?q=%22North+American+Helium%22+when%3A90d&hl=en-US&gl=US&ceid=US%3Aen"
         },
         {
           "name": "Google News: helium market",
@@ -212,7 +226,7 @@
       },
       {
         "name": "Willamette Week",
-        "url": "https://www.wweek.com/arc/outboundfeeds/rss/category/restaurants/?outputType=xml"
+        "url": "https://www.wweek.com/food/"
       },
       {
         "name": "The Oregonian food",
@@ -226,11 +240,23 @@
     "localmusic": [
       {
         "name": "Willamette Week music",
-        "url": "https://www.wweek.com/arc/outboundfeeds/rss/category/music/?outputType=xml"
+        "url": "https://www.wweek.com/music/"
       },
       {
         "name": "Music news",
         "url": "https://news.google.com/rss/search?q=Portland+Oregon+band+(album+OR+EP+OR+single)+when:21d&hl=en-US&gl=US&ceid=US:en"
+      }
+    ],
+    "liquor": [
+      {
+        "name": "OLCC price list, this month",
+        "url": "https://www.olcc.state.or.us/pdfs/NumericPriceListCurrentMonth.csv",
+        "use": "current"
+      },
+      {
+        "name": "OLCC price list, next month",
+        "url": "https://www.olcc.state.or.us/pdfs/NumericPriceListNextMonth.csv",
+        "use": "next"
       }
     ]
   }

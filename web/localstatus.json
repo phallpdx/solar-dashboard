@@ -1,9 +1,9 @@
 {
   "date": "2026-10-29",
-  "ran_at": "2026-10-29T09:31:28Z",
+  "ran_at": "2026-10-29T11:27:41Z",
   "lists": {
     "jazz": "unchanged",
-    "concerts": "changed",
+    "concerts": "unchanged",
     "events": "unchanged",
     "kids": "unchanged",
     "bluray": "unchanged",
@@ -13,7 +13,7 @@
     "teams": "unchanged",
     "marketbrief": "unchanged",
     "coast": "unchanged",
-    "restaurants": "changed",
+    "restaurants": "unchanged",
     "localmusic": "unchanged",
     "liquor": "changed"
   }

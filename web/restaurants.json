@@ -1,6 +1,23 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-29",
   "restaurants": [
+    {
+      "name": "A vegan Mexican bakery",
+      "neighborhood": "Eliot",
+      "cuisine": "Vegan Mexican",
+      "price": "",
+      "opened": "2026-10-28",
+      "summary": "Family-run business serving conchas and pan de muerto in a community gathering space.",
+      "reviews": [
+        {
+          "outlet": "The Oregonian food",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-28",
+          "url": "https://www.oregonlive.com/dining/2026/10/this-was-always-supposed-to-happen-vegan-mexican-bakery-is-opening-a-storefront-that-finally-feels-like-home.html"
+        }
+      ]
+    },
     {
       "name": "Patufet",
       "neighborhood": "Southeast Portland",

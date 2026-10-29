@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-29",
   "items": [
     {
       "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
@@ -24,38 +24,6 @@
         {
           "name": "Spin",
           "url": "https://www.spinmagazine.com/2026/10/queens-of-the-stone-age-tour/"
-        }
-      ]
-    },
-    {
-      "title": "2hollis, Roseland Theater (Mar 10 and 11, 2027)",
-      "kind": "Tickets",
-      "action": "Artist presale (Laylo sign-up) today, Tue Oct 27 at 10 a.m., venue presale 11 a.m.; general sale Wed Oct 28 at 10 a.m.",
-      "starts": "2026-10-27",
-      "by": "2026-10-28",
-      "why": "Two Portland nights on the newly announced Pirouette tour, with presale access through Laylo sign-up.",
-      "sources": [
-        {
-          "name": "The Fader",
-          "url": "https://www.thefader.com/2026/10/22/2hollis-2027-tour-dates-tickets-opener"
-        },
-        {
-          "name": "BroadwayWorld",
-          "url": "https://www.broadwayworld.com/bwwmusic/article/2hollis-to-Launch-North-American-UKEuropean-Tour-February-2027-20261022"
-        }
-      ]
-    },
-    {
-      "title": "Portland Nursery Last Call fall sale",
-      "kind": "Buy",
-      "action": "Get spring bulbs and garlic at 30% off at either SE Portland store by Wed Oct 28.",
-      "starts": null,
-      "by": "2026-10-28",
-      "why": "The fall sale was extended through Oct 28, with pumpkins and gourds at 50% off.",
-      "sources": [
-        {
-          "name": "Portland Nursery sales",
-          "url": "https://portlandnursery.com/sales/"
         }
       ]
     },
@@ -172,20 +140,6 @@
       ]
     },
     {
-      "title": "Blazers vs. Warriors on Black Friday, Moda Center (Nov 27)",
-      "kind": "Tickets",
-      "action": "Get seats early for the 6:30 p.m. tip-off.",
-      "starts": null,
-      "by": "2026-11-27",
-      "why": "KATU picks the Black Friday Warriors visit as one of the marquee home games on the 2026-27 schedule.",
-      "sources": [
-        {
-          "name": "KATU 2026-27 Blazers schedule",
-          "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
-        }
-      ]
-    },
-    {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
       "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
@@ -196,6 +150,20 @@
         {
           "name": "Oregon Zoo",
           "url": "https://www.oregonzoo.org/lights"
+        }
+      ]
+    },
+    {
+      "title": "Blazers vs. Warriors on Black Friday, Moda Center (Nov 27)",
+      "kind": "Tickets",
+      "action": "Get seats early for the 6:30 p.m. tip-off.",
+      "starts": null,
+      "by": "2026-11-27",
+      "why": "KATU picks the Black Friday Warriors visit as one of the marquee home games on the 2026-27 schedule.",
+      "sources": [
+        {
+          "name": "KATU 2026-27 Blazers schedule",
+          "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
         }
       ]
     },

@@ -1,17 +1,7 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-29",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {
-      "artist": "The Tubs",
-      "album": "Hard Life",
-      "score": 86,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/hard-life/the-tubs",
-      "date": "2026-10-27",
-      "venue": "Mississippi Studios",
-      "tickets": "https://mississippistudios.com/"
-    },
     {
       "artist": "Protomartyr",
       "album": "Hotel Usona",
@@ -93,6 +83,16 @@
       "tickets": "https://wonderballroom.com/event/anna-von-hausswolff-iconoclasts-tour/wonder-ballroom/portland-oregon/"
     },
     {
+      "artist": "Jess Williamson",
+      "album": "A Mile South of Heaven",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/jess-williamson-a-mile-south-of-heaven/",
+      "date": "2027-02-10",
+      "venue": "Aladdin Theater",
+      "tickets": "https://www.etix.com/ticket/p/96546512/jess-williamson-portland-aladdin-theater"
+    },
+    {
       "artist": "Iceage",
       "album": "For Love of Grace & the Hereafter",
       "score": 87,
@@ -152,6 +152,62 @@
       "score": 87,
       "score_url": "https://www.metacritic.com/music/nothings-about-to-happen-to-me/mitski",
       "why": "No Portland date announced"
+    },
+    {
+      "artist": "heavensouls",
+      "album": "cantu of the sower EP",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/heavensouls-cantu-of-the-sower-ep/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Fine",
+      "album": "Jazz dreams",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/fine-jazz-dreams/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Alchemical Sisters",
+      "album": "Alchemical Sisters",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/alchemical-sisters-alchemical-sisters/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Worldpeace DMT",
+      "album": "Stick Around for Tea",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/worldpeace-dmt-stick-around-for-tea/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Djrum",
+      "album": "DJ-Kicks",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/djrum-dj-kicks/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "At Sign",
+      "album": "Autosmile",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/at-sign-autosmile/",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Marina Herlop",
+      "album": "Dja Dja",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/marina-herlop-dja-dja/",
+      "why": "No Portland date found yet"
     }
   ]
 }

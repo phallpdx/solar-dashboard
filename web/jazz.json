@@ -1,22 +1,6 @@
 {
-  "updated": "2026-10-26",
+  "updated": "2026-10-29",
   "shows": [
-    {
-      "artist": "Akila Fields Trio with special guest Noah Bernstein",
-      "kind": "Local",
-      "date": "2026-10-28",
-      "time": null,
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Creative Music Guild presents Portland multi-genre musician Akila Fields with Matthew Holmes and Machado Mijiga, playing from their new album of jazz originals, A Secret Third Thing, with saxophonist Noah Bernstein.",
-      "tickets": "https://the1905.turntabletickets.com/p/45914",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/p/45914"
-        }
-      ]
-    },
     {
       "artist": "Cory Limuaco Tribute to Herbie Hancock",
       "kind": "Local",
@@ -53,7 +37,7 @@
       "artist": "Luther S. Allison Trio",
       "kind": "Touring",
       "date": "2026-10-30",
-      "time": "null",
+      "time": null,
       "venue": "The 1905",
       "price": "$30",
       "what": "Accomplished multi-instrumentalist Luther S. Allison has set himself apart as one of the most in-demand artists in jazz today.",

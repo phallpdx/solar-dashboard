@@ -1,6 +1,108 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "restaurants": [
+    {
+      "name": "Love Crumble",
+      "neighborhood": "Northwest Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "2026-10-28",
+      "summary": "New location opening in Northwest Portland.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-28",
+          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQd2JsUjA4dW5qNzBHNjZ5MzVnZGNwY3E2WWF6WnBSbXd2a3R0ZHlyRTJqeXZFLXA0Y29RdWdXZ2U0WV9LMkk0ZkVVTHRyd1VuZFNSaGtFUnNReG1Ma3J2LWhFUERjdmtWUWVieG9YaDNicnFOSTd0Q011N0toVjJTTEpCWUxTX0w2c3liaHVmSTNfZUlPZWc?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Bar Sprezzatura Portland",
+      "neighborhood": "The Heathman Hotel",
+      "cuisine": "",
+      "price": "",
+      "opened": "2026-10-19",
+      "summary": "First taste of Bar Sprezzatura at The Heathman Hotel.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-19",
+          "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWENmSGcxenhVVnVCZWFCaUtPbEFENWNWSTJfS295ZUZXSHFGSmQzR3ZBUmZCUzN0Sk1hNXh2MFpvNks1OFdmNHdxWDlyeGdxTWtaa1lvamVlVWpRbFJKU2JxY2hwcHFNMGhIaUxDOHRZVnNQc25Jelg1ZDJHOWFYcW5Ta3JtT1NlM0cxazBZT2tqWUVpZXZCMmJ2emx3WGlkWHhLTG5KY1Y?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Unnamed SE Belmont Bar",
+      "neighborhood": "SE Belmont",
+      "cuisine": "Vermouth and almond tart",
+      "price": "",
+      "opened": "2026-10-20",
+      "summary": "New bar serving vermouth and almond tart.",
+      "reviews": [
+        {
+          "outlet": "Eater Portland",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-20",
+          "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOdHFZTGxza1p1YlNlWlkwVEtjLTBxM1NqYTdONlN6MGF4elQ2WnN0NUk5QTU4V3RpZU1mZ0c0Wjg1NXJiVnBkeDdMUTE1UXQtRG9TeFBtYXJrY1UwVkg5WkQyS3FVWmI1S2g1aU52eXI2Y09XQ0VPeGZsaFhLYkFwblBXWDM3Q3UxUTZR?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "AYA Cafe",
+      "neighborhood": "NE Alberta",
+      "cuisine": "",
+      "price": "",
+      "opened": "2026-10-20",
+      "summary": "Cafe bringing love to NE Alberta.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-20",
+          "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOUDBIX1djb3VrRDFqczlIcDhabHhnMW42VFVQaXJUNXlzSld6R3NQYk9vT0FEamhJRHN0V3ZrOW5wZTdqc0Vqdmd3RVdJd3Rsc1R5SVNWdHRxc2htRndkVzN0cUpoZVZFbHVZNmZMZFpxemZ0anJUQlppQzFxYjJHU3lxNDluMkdRUnEzbzlXdS1sSXk4YmF1Yg?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Una panadería familiar",
+      "neighborhood": "Eliot",
+      "cuisine": "Vegan Mexican bakery",
+      "price": "",
+      "opened": "2026-10-28",
+      "summary": "Family business serving conchas and pan de muerto in a community gathering space.",
+      "reviews": [
+        {
+          "outlet": "The Oregonian food",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-29",
+          "url": "https://www.oregonlive.com/dining/2026/10/esto-siempre-debia-suceder-una-panaderia-mexicana-vegana-abre-un-local-que-finalmente-se-siente-como-en-casa.html"
+        }
+      ]
+    },
+    {
+      "name": "Cobra Dogs",
+      "neighborhood": "Northeast Sandy Boulevard",
+      "cuisine": "Hot dogs",
+      "price": "",
+      "opened": "about to open",
+      "summary": "An action sports destination housing a brick-and-mortar location.",
+      "reviews": [
+        {
+          "outlet": "Willamette Week",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-07",
+          "url": "https://www.wweek.com/food/2026/10/07/mount-hood-food-truck-cobra-dogs-to-open-portland-brick-and-mortar/"
+        }
+      ]
+    },
     {
       "name": "A vegan Mexican bakery",
       "neighborhood": "Eliot",
@@ -332,47 +434,6 @@
           "verdict": "Beet ends are a surprisingly legit vegan option",
           "date": "",
           "url": "https://www.theinfatuation.com/portland/reviews/lil-barbecue"
-        }
-      ]
-    },
-    {
-      "name": "Bar Nouveau",
-      "neighborhood": "St. Johns",
-      "cuisine": "French",
-      "price": "",
-      "opened": "",
-      "summary": "Althea Grey Potter's former pop-up turned St. Johns bistro serves chicken liver mousse, gribiche deviled eggs and steak au poivre; WW calls it shockingly unpretentious for how chic it is. Reservations required.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "Jordan Michelman",
-          "verdict": "A scrappy send-up to French cookbook cuisine",
-          "date": "",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/2026/01/bar-nouveau-restaurant-review"
-        },
-        {
-          "outlet": "Willamette Week",
-          "critic": "",
-          "verdict": "Shockingly unpretentious for how chic it is",
-          "date": "2026-02-11",
-          "url": "https://www.wweek.com/culture/2026/02/11/a-french-restaurant-sends-you-home-with-a-free-trashy-romance-novel/"
-        }
-      ]
-    },
-    {
-      "name": "Fantino",
-      "neighborhood": "SE Division",
-      "cuisine": "Italian-Mediterranean",
-      "price": "",
-      "opened": "",
-      "summary": "A pocket-sized, warmly lit Italian-ish neighborhood spot from Garrett McAleese (later of Marée), with gildas, pan con tomate, baked conchiglie alla vodka and grilled branzino.",
-      "reviews": [
-        {
-          "outlet": "Resy Hit List",
-          "critic": "",
-          "verdict": "No. 1 on the Portland Hit List (Feb. 2026)",
-          "date": "",
-          "url": "https://blog.resy.com/the-hit-list/portland-restaurants-feb-2026/"
         }
       ]
     }

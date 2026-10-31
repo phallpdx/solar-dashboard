@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
     {
@@ -49,6 +49,54 @@
       "where": "OMSI, Portland",
       "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Oct 31, Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
       "url": "https://omsi.edu/curiosity-kids/"
+    },
+    {
+      "title": "Storytime at Multnomah County Libraries",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Multnomah County",
+      "detail": "Various toddler and family storytime sessions available. Free.",
+      "url": "https://pdxparent.com/event-single/storytime-at-multnomah-county-libraries/2026-10-31/"
+    },
+    {
+      "title": "Pumpkin Patch at Kirchem Farm",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Oregon City",
+      "detail": "Farm activities including hayrides, corn maze, and a kids zone. $5 per person.",
+      "url": "https://pdxparent.com/event-single/pumpkin-patch-at-kirchem-farm/2026-10-31/"
+    },
+    {
+      "title": "Trick-or-Treat Montavilla",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Montavilla",
+      "detail": "Shops pass out candy from 11am until closing. Free.",
+      "url": "https://pdxparent.com/event-single/trick-or-treat-montavilla/"
+    },
+    {
+      "title": "Creative Movement Dance Class for 2 Year Olds",
+      "date": "2026-10-31",
+      "ends": "2026-10-31",
+      "where": "Beaverton",
+      "detail": "Scribbles class for two-year-olds to explore movement. Free.",
+      "url": "https://pdxparent.com/event-single/creative-movement-dance-class-for-2-year-olds-2/2026-10-31/"
+    },
+    {
+      "title": "Spooky Tots Tumble Tots",
+      "date": "2026-10-31",
+      "ends": "2026-10-31",
+      "where": "Garden Home",
+      "detail": "Costume-themed morning of giggles and spooky activities for ages five and under. Youth drop-in fees apply.",
+      "url": "https://pdxparent.com/event-single/spooky-tots-tumble-tots/"
+    },
+    {
+      "title": "Open Play at Laurelhurst Studio!",
+      "date": "2026-10-31",
+      "ends": "2026-10-31",
+      "where": "Portland",
+      "detail": "Morning open play session for children. Free.",
+      "url": "https://pdxparent.com/event-single/open-play-at-laurelhurst-studio/2026-10-31/"
     },
     {
       "title": "Native Games and Storytelling",

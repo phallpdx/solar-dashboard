@@ -1,27 +1,7 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {
-      "artist": "Protomartyr",
-      "album": "Hotel Usona",
-      "score": 86,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/hotel-usona/protomartyr/",
-      "date": "2026-10-29",
-      "venue": "Aladdin Theater",
-      "tickets": "https://www.aladdin-theater.com/"
-    },
-    {
-      "artist": "Gilla Band",
-      "album": "Pugnello",
-      "score": 85,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/pugnello/gilla-band",
-      "date": "2026-10-30",
-      "venue": "Mississippi Studios (sold out)",
-      "tickets": "https://mississippistudios.com/"
-    },
     {
       "artist": "The Tallest Man on Earth",
       "album": "Just Beyond Endless Mountain",

@@ -1,8 +1,47 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "store": "St. Johns Liquor (OLCC store #1142), 8915 N Lombard St, Portland, OR 97203",
   "note": "New on OLCC's November 2026 price list, found by comparing it with this month's. Critic ratings are added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.",
   "items": [
+    {
+      "name": "Tin Cup Fourteener",
+      "category": "Whiskey",
+      "size": "750 ml",
+      "price": 69.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "14 Year 84 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "12431B",
+      "added": "2026-10-31"
+    },
+    {
+      "name": "Fosforo Ensamble",
+      "category": "Other",
+      "size": "750 ml",
+      "price": 49.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "750 ML 86 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "12862B",
+      "added": "2026-10-31"
+    },
+    {
+      "name": "Kayak Gin",
+      "category": "Gin",
+      "size": "750 ml",
+      "price": 34.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "90 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "13014B",
+      "added": "2026-10-31"
+    },
     {
       "name": "Igneous Whiskey",
       "category": "Whiskey",
@@ -222,45 +261,6 @@
       "url": null,
       "olcc_url": null,
       "olcc_code": "7584A",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "G4 Blanco Tequila",
-      "category": "Tequila",
-      "size": "750 ml",
-      "price": 49.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "Blanco tequila. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "9123B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "G4 Reposado Tequila",
-      "category": "Tequila",
-      "size": "750 ml",
-      "price": 59.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "Reposado tequila. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "9124B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Bladnoch Vinaya Lowland Single Malt Scotch Whisky",
-      "category": "Scotch",
-      "size": "700 ml",
-      "price": 49.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "Single malt scotch whisky. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "11051I",
       "added": "2026-10-29"
     }
   ]

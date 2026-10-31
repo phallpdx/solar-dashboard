@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "events": [
     {
       "name": "Seaside Halloween Happenin's",
@@ -10,12 +10,60 @@
       "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
     },
     {
+      "name": "Halloween Happenin’s",
+      "date": "2026-10-31",
+      "end": "2026-11-01",
+      "town": "Seaside",
+      "summary": "Annual family event with paddle, games, and pumpkin drop. Free.",
+      "url": "https://www.seasideor.com/event/halloween-happenins-3/"
+    },
+    {
+      "name": "Island of Dr. Moreau Halloween Prefunk",
+      "date": "2026-10-31",
+      "end": "2026-10-31",
+      "town": "Seaside",
+      "summary": "Live music by The Flowtenders from 6:00 pm - 8:00 pm. Free.",
+      "url": "https://www.seasideor.com/event/island-of-dr-moreau-halloween-prefunk-w-the-flowtenders-live-at-the-lyons-den/"
+    },
+    {
+      "name": "BOOS & BREWS",
+      "date": "2026-10-31",
+      "end": "2026-10-31",
+      "town": "Seaside",
+      "summary": "DJ Foley spinning music videos from 8:00 pm - 11:30 pm. Price not given.",
+      "url": "https://www.seasideor.com/event/boos-brews/"
+    },
+    {
+      "name": "Haystack Holidays",
+      "date": "2026-11-01",
+      "end": "2026-12-31",
+      "town": "Cannon Beach",
+      "summary": "Holiday events in Cannon Beach.",
+      "url": "https://www.cannonbeach.org/haystackholidays/"
+    },
+    {
+      "name": "Astoria celebrates Día de los Muertos",
+      "date": "2026-11-01",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Celebration of Day of the Dead.",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbjR2LUE2Ym5hS0hoQzRWVkxyWFJBNENkbFJQdy1MS21ISkkzYjNwa2hXdVNacmZXNGF4VEM5bkNxN1pMal9UamxPNjlZZWo0SEVkOV93V0ZGNzMxbEhfOUY3cVIteEd0bDdyWk4yLUZsRHpKcWYtMkppRDJpbmctS2NKbEtZbFFV?oc=5"
+    },
+    {
       "name": "Singing in the Rain",
       "date": "2026-11-03",
       "end": null,
       "town": "Astoria",
       "summary": "Singing in the Rain on the Liberty Theatre's November calendar (Tuesday, Nov. 3); see the listing for showtime.",
       "url": "https://libertyastoria.org/event/"
+    },
+    {
+      "name": "Beach Towel Tuesdays",
+      "date": "2026-11-03",
+      "end": "2026-11-03",
+      "town": "Seaside",
+      "summary": "First five groups to post social media photos receive a free towel. Free.",
+      "url": "https://www.seasideor.com/event/beach-towel-tuesdays-2/2026-11-03/"
     },
     {
       "name": "Seaside Fall Whiskey & Wine Walk",
@@ -42,6 +90,30 @@
       "url": "https://www.thecraftmap.com/fair/trails-end-art-gallery-annual-holiday-gift-faire-gearhart-or"
     },
     {
+      "name": "Treasure the Beach: Community Beach Cleanup",
+      "date": "2026-11-07",
+      "end": "2026-11-07",
+      "town": "Seaside",
+      "summary": "Monthly volunteer cleanup effort from 9:00 am - 11:00 am. Price not given.",
+      "url": "https://www.seasideor.com/event/treasure-the-beach-community-beach-cleanup/2026-11-07/"
+    },
+    {
+      "name": "UkeFest",
+      "date": "2026-11-07",
+      "end": "2026-11-07",
+      "town": "Seaside",
+      "summary": "Workshops and evening open mic event from 9:00 am - 8:00 pm. $45.00.",
+      "url": "https://www.seasideor.com/event/ukefest/"
+    },
+    {
+      "name": "Fall Wine Walk",
+      "date": "2026-11-07",
+      "end": "2026-11-07",
+      "town": "Seaside",
+      "summary": "Wine tastings while exploring downtown businesses from 3:00 pm - 6:30 pm. $20.",
+      "url": "https://www.seasideor.com/event/fall-wine-walk-2/"
+    },
+    {
       "name": "North Coast Symphonic Band: The Art of Dance",
       "date": "2026-11-08",
       "end": null,
@@ -50,92 +122,44 @@
       "url": "https://libertyastoria.org/event/"
     },
     {
+      "name": "Beach Towel Tuesdays",
+      "date": "2026-11-10",
+      "end": "2026-11-10",
+      "town": "Seaside",
+      "summary": "First five groups to post social media photos receive a free towel. Free.",
+      "url": "https://www.seasideor.com/event/beach-towel-tuesdays-2/2026-11-10/"
+    },
+    {
+      "name": "Let’s Go Birding! Coffenbury Lake Bird Walk",
+      "date": "2026-11-13",
+      "end": "2026-11-13",
+      "town": "Seaside",
+      "summary": "Bird walk around Coffenbury Lake from 9:30 am - 10:30 am. Free.",
+      "url": "https://www.seasideor.com/event/lets-go-birding-coffenbury-lake-bird-walk-6/"
+    },
+    {
+      "name": "Holiday Bazaar",
+      "date": "2026-11-13",
+      "end": "2026-11-14",
+      "town": "Seaside",
+      "summary": "Gourmet food and holiday fun at Calvary Episcopal Church. Price not given.",
+      "url": "https://www.seasideor.com/event/holiday-bazaar-3/"
+    },
+    {
+      "name": "Film Screening – The Taking of Pelham One Two Three",
+      "date": "2026-11-14",
+      "end": "2026-11-14",
+      "town": "Seaside",
+      "summary": "Film series lecture at the public library from 2:00 pm - 4:30 pm. Free.",
+      "url": "https://www.seasideor.com/event/film-screening-the-taking-of-pelham-one-two-three/"
+    },
+    {
       "name": "DREAMPUNK",
       "date": "2026-11-20",
       "end": null,
       "town": "Astoria",
       "summary": "Themed evening performance show at the Liberty Theatre, 7 pm.",
       "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "Battle to the Pacific trail runs",
-      "date": "2026-11-21",
-      "end": null,
-      "town": "Hammond (Fort Stevens State Park)",
-      "summary": "Bivouac Racing's 20K, 15K and 5K trail races plus a 12-mile ruck challenge, starting around 9 am at Coffenbury Lake.",
-      "url": "https://ultrasignup.com/register.aspx?did=143051"
-    },
-    {
-      "name": "Comedy night: Marc Yaffee and Jordan Casner",
-      "date": "2026-11-21",
-      "end": null,
-      "town": "Astoria",
-      "summary": "An 18+ comedy show at the Liberty Theatre at 8 pm, $10.",
-      "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "The Amazing Bubble Man",
-      "date": "2026-11-22",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Louis Pearl's bubble show at the Liberty Theatre at 2 pm; $15 adults, $10 ages 17 and under.",
-      "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "King tides",
-      "date": "2026-11-23",
-      "end": "2026-11-27",
-      "town": "Astoria to Manzanita",
-      "summary": "The first king tide window of the season; NOAA predictions put the biggest tides around Nov. 24 to 26, and the King Tides Project asks for photos.",
-      "url": "https://oregonshores.org/king-tides-cosci/"
-    },
-    {
-      "name": "Seaside Turkey Trot",
-      "date": "2026-11-26",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Thanksgiving morning 5K run/walk on Broadway; check-in at 8 am, start at 9 am.",
-      "url": "https://www.findtherun.com/race/92964/seaside-turkey-trot-5k-fun-run-walk"
-    },
-    {
-      "name": "Blind Pilot",
-      "date": "2026-11-27",
-      "end": "2026-11-28",
-      "town": "Astoria",
-      "summary": "The Oregon folk band plays two nights at the Liberty Theatre (Nov. 27 and 28); check the ticket page for start times.",
-      "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "Cannon Beach in Lights",
-      "date": "2026-12-01",
-      "end": "2026-12-31",
-      "town": "Cannon Beach",
-      "summary": "A month of holiday lights around town as part of Haystack Holidays.",
-      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
-    },
-    {
-      "name": "Cannon Beach Lamp Lighting Ceremony",
-      "date": "2026-12-05",
-      "end": null,
-      "town": "Cannon Beach",
-      "summary": "Free 4 pm lamp lighting in Sandpiper Square to kick off Haystack Holidays.",
-      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
-    },
-    {
-      "name": "Ilwaco Crab Pot Christmas",
-      "date": "2026-12-05",
-      "end": null,
-      "town": "Ilwaco (Long Beach Peninsula)",
-      "summary": "The port lights its tree built from crab pots, with Santa, at 4 pm; dates are subject to change.",
-      "url": "https://poiwa.specialdistrict.org/calendar-of-events"
-    },
-    {
-      "name": "Fort George Beer Tree Festival",
-      "date": "2026-12-05",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Fort George Brewery's free holiday Beer Tree Festival; 2026 details are still to come.",
-      "url": "https://fortgeorgebrewery.com/blog/event/beer-tree-festival/"
     }
   ]
 }

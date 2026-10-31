@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "deals": [
     {
       "title": "31 Days of Syntober",
@@ -70,6 +70,13 @@
       "detail": "Blu-ray, $6.99",
       "ends": null,
       "url": "https://slickdeals.net/f/20198385-the-thing-1982-blu-ray-6-99-amazon-com"
+    },
+    {
+      "title": "In The Mouth Of Madness (4K Ultra HD Blu-ray)",
+      "store": "#1",
+      "detail": "$25",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20231970-in-the-mouth-of-madness-4k-ultra-hd-arrow-edition-25-amazon-com"
     }
   ],
   "upcoming": [

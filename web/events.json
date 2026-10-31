@@ -1,48 +1,6 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "events": [
-    {
-      "title": "ZERO TO THREE LEARN Conference 2026",
-      "date": "2026-10-27",
-      "ends": "2026-10-29",
-      "venue": "Hall A, Oregon Convention Center",
-      "kind": "Convention",
-      "why": "Multi-day early childhood conference in Hall A, overlapping other shows at the convention center through Oct. 29.",
-      "sources": [
-        {
-          "name": "Oregon Convention Center",
-          "url": "https://www.oregoncc.org/attend/events/2026/10/zero-three-learn-conference-2026"
-        }
-      ]
-    },
-    {
-      "title": "Bryson Tiller The Neo Trapsoul Tour",
-      "date": "2026-10-29",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Concert",
-      "why": "Thursday night arena concert at the Coliseum, so expect Rose Quarter traffic and busy MAX trains.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/bryson-tiller-oct-29-2026"
-        }
-      ]
-    },
-    {
-      "title": "Gorillaz with Little Simz and Deltron 3030",
-      "date": "2026-10-30",
-      "ends": null,
-      "venue": "Moda Center, Rose Quarter",
-      "kind": "Concert",
-      "why": "Arena show on The Mountain Tour on a Friday night, so expect Rose Quarter traffic and busy MAX trains.",
-      "sources": [
-        {
-          "name": "KOIN",
-          "url": "https://digital-release.koin.com/entertainment-news/gorillaz-announce-fall-portland-seattle-dates-on-the-mountain-tour/"
-        }
-      ]
-    },
     {
       "title": "CANVAS 2026",
       "date": "2026-10-30",
@@ -72,6 +30,20 @@
         {
           "name": "Relix",
           "url": "https://relix.com/?p=159931"
+        }
+      ]
+    },
+    {
+      "title": "Portland Book Festival",
+      "date": "2026-11-01",
+      "ends": null,
+      "venue": "#12",
+      "kind": "Convention",
+      "why": "Extensive lineup of local and national authors.",
+      "sources": [
+        {
+          "name": "Travel Portland",
+          "url": "https://www.travelportland.com/events/portland-book-festival/"
         }
       ]
     },
@@ -162,6 +134,20 @@
         {
           "name": "OSAA 2026-27 calendar",
           "url": "https://www.osaa.org/docs/calendar/26-27ActivityCalendar.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Rose Quarter Guitar Show",
+      "date": "2026-11-15",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Festival",
+      "why": "Exhibitions often increase local foot traffic.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/guitar-show-nov-15-2026"
         }
       ]
     },

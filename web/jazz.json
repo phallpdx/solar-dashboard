@@ -1,46 +1,14 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-31",
   "shows": [
     {
-      "artist": "Cory Limuaco Tribute to Herbie Hancock",
+      "artist": "Nick Rolfe and Co Halloween Party",
       "kind": "Local",
-      "date": "2026-10-29",
+      "date": "2026-10-31",
       "time": "06:30 PM",
       "venue": "The 1905",
       "price": "$30",
-      "what": "Cory Limuaco returns to The 1905 for A Tribute to Herbie Hancock, Pt. 2 — a celebration of one of music’s most innovative visionaries and his boundary-pushing blend of jazz, funk, soul, and fusion.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
-    {
-      "artist": "Kerry Politzer's Bossa PDX",
-      "kind": "Latin",
-      "date": "2026-10-30",
-      "time": "12:15 pm",
-      "venue": "Lincoln Recital Hall, Portland State University",
-      "price": "Free",
-      "what": "Portland's bossa nova and Brazilian jazz ensemble, led by PSU jazz piano instructor Kerry Politzer with George Colligan on drums, in PSU's free Friday Music @ Midday series.",
-      "tickets": null,
-      "sources": [
-        {
-          "name": "Portland State School of Music & Theater",
-          "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"
-        }
-      ]
-    },
-    {
-      "artist": "Luther S. Allison Trio",
-      "kind": "Touring",
-      "date": "2026-10-30",
-      "time": null,
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Accomplished multi-instrumentalist Luther S. Allison has set himself apart as one of the most in-demand artists in jazz today.",
+      "what": "A Halloween party featuring Nick Rolfe on keys and Saeeda Wright on vocals.",
       "tickets": "https://the1905.turntabletickets.com/",
       "sources": [
         {
@@ -66,6 +34,38 @@
       ]
     },
     {
+      "artist": "Behind The Scene with The Christopher Brown Quartet",
+      "kind": "Local",
+      "date": "2026-11-01",
+      "time": "01:00 PM",
+      "venue": "The 1905",
+      "price": null,
+      "what": "An educational jazz workshop combining a jam session, concert, and clinic.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
+      "artist": "The Rivkah Ross Quintet",
+      "kind": "Local",
+      "date": "2026-11-01",
+      "time": "05:30 PM",
+      "venue": "The 1905",
+      "price": "$25",
+      "what": "Portland-based drummer and composer Rivkah Ross performs her modern jazz compositions.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "John Scofield & Oteil Burbridge",
       "kind": "Touring",
       "date": "2026-11-03",
@@ -82,6 +82,54 @@
         {
           "name": "TickPick event listing",
           "url": "https://www.tickpick.com/buy-john-scofield-oteil-burbridge-tickets-revolution-hall-portland-11-3-26-8pm/7830653/"
+        }
+      ]
+    },
+    {
+      "artist": "The Christopher Brown Quartet",
+      "kind": "Local",
+      "date": "2026-11-04",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Acclaimed musician and educator Christopher Brown performs with his quartet.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
+      "artist": "CHUCK ISRAELS JAZZ ORCH",
+      "kind": "Big band",
+      "date": "2026-11-05",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "A jazz orchestra performance.",
+      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "kind": "Local",
+      "date": "2026-11-12",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "An organ group performance.",
+      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862453?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862453?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },
@@ -126,6 +174,22 @@
       ]
     },
     {
+      "artist": "OZ NOY TRIO w/ Brian Charette & Dave Weckl",
+      "kind": "Local",
+      "date": "2026-11-17",
+      "time": "7:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "A jazz trio performance.",
+      "tickets": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
       "artist": "Thundercat",
       "kind": "Touring",
       "date": "2026-11-19",
@@ -138,6 +202,22 @@
         {
           "name": "McMenamins",
           "url": "https://www.mcmenamins.com/events/277813-thundercat"
+        }
+      ]
+    },
+    {
+      "artist": "CHUCK ISRAELS JAZZ ORCH",
+      "kind": "Big band",
+      "date": "2026-11-19",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "A jazz orchestra performance.",
+      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },
@@ -290,6 +370,22 @@
       ]
     },
     {
+      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "kind": "Local",
+      "date": "2026-12-10",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "An organ group performance.",
+      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
       "artist": "Mark Guiliana",
       "kind": "Touring",
       "date": "2026-12-11",
@@ -322,6 +418,22 @@
         {
           "name": "Portland Center Stage",
           "url": "https://www.pcs.org/events/the-brown-branch-big-band"
+        }
+      ]
+    },
+    {
+      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "kind": "Local",
+      "date": "2026-12-17",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "An organ group performance.",
+      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },

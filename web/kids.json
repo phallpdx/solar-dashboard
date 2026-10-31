@@ -131,6 +131,54 @@
       "url": "https://pdxparent.com/series/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/"
     },
     {
+      "title": "Enjoy Fall Festivities at a Local Pumpkin Patch",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Oregon/Washington",
+      "detail": "Visit pumpkin patches for corn mazes, hayrides, animals, and treats. Varies by location.",
+      "url": "https://pdxparent.com/series/enjoy-fall-festivities-at-a-local-pumpkin-patch/"
+    },
+    {
+      "title": "Wildwood at OMSI’s Empirical Theater",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A handcrafted fantasy adventure through a spectacular world. $7 – $9.",
+      "url": "https://pdxparent.com/series/wildwood-at-omsis-empirical-theater/"
+    },
+    {
+      "title": "Altares y Muertos Public Art Exhibition",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Portland",
+      "detail": "View public altar installations as part of a community celebration. Free.",
+      "url": "https://pdxparent.com/series/altares-y-muertos-public-art-exhibition/"
+    },
+    {
+      "title": "Mike Bennett Spooktacular Scavenger Hunt at Bridgeport Village",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Bridgeport Village",
+      "detail": "Search for hidden Halloween ghosts on shop and restaurant windows. Free.",
+      "url": "https://pdxparent.com/series/mike-bennett-spooktacular-scavenger-hunt-at-bridgeport-village/"
+    },
+    {
+      "title": "Kernside Halloween",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Kernside District",
+      "detail": "A neighborhood trick-or-treat route with a passport for kids to collect. Price not listed.",
+      "url": "https://pdxparent.com/event-single/kernside-halloween/"
+    },
+    {
+      "title": "Pre-Game-O-Ween",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Enjoy gluten free candy and happy hour prices before trick-or-treating. Free.",
+      "url": "https://pdxparent.com/event-single/pre-game-o-ween/"
+    },
+    {
       "title": "Native Games and Storytelling",
       "date": "2026-11-01",
       "ends": null,
@@ -153,54 +201,6 @@
       "where": "OMSI, Portland",
       "detail": "Museum admission is $5 per person, with planetarium and theater shows also $5. OMSI expects crowds and suggests buying tickets online ahead.",
       "url": "https://omsi.edu/events/5-day/"
-    },
-    {
-      "title": "Sensory Sunday at Columbia River Maritime Museum",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "Astoria",
-      "detail": "Calm family morning from 9:30 to 11 with lowered sound, a quiet station and a craft, held the first Sunday of the month. The Nov 1 date follows that pattern but isn't confirmed; regular admission applies.",
-      "url": "https://autismsocietyoregon.org/events/tag/museum/"
-    },
-    {
-      "title": "Fall Discount Days at the Oregon Zoo",
-      "date": "2026-11-02",
-      "ends": "2026-11-08",
-      "where": "Oregon Zoo",
-      "detail": "$13 admission from 9:30 to 3:30. The zoo's events calendar lists Nov 2 to 8, but the event page still shows last year's dates, so confirm before going.",
-      "url": "https://www.oregonzoo.org/events"
-    },
-    {
-      "title": "Portland Holiday Market",
-      "date": "2026-11-06",
-      "ends": "2026-11-08",
-      "where": "Portland Expo Center, North Portland",
-      "detail": "Big holiday craft, food and gift show, Fri and Sat 10 to 7 and Sun 10 to 6 (one page on the site says 5 on Sunday).",
-      "url": "https://www.portlandholidaymarket.com/attendee-info/show-info"
-    },
-    {
-      "title": "Christmas tree arrival at Pioneer Courthouse Square",
-      "date": "2026-11-10",
-      "ends": null,
-      "where": "Downtown Portland",
-      "detail": "Free late-morning welcome for the Square's big tree, 11 to 12:30, with Santa and free hot chocolate.",
-      "url": "https://www.pdxpipeline.com/portland-shopping-information-christmas-holidays-local-goods-events/"
-    },
-    {
-      "title": "Veterans Day",
-      "date": "2026-11-11",
-      "ends": null,
-      "where": "Oregon Zoo",
-      "detail": "The Oregon Zoo is proud to offer free admission on Veterans Day for military members, veterans and their families from 9:30 a.m. to 3:30 p.m.",
-      "url": "https://www.oregonzoo.org/events/veterans-day"
-    },
-    {
-      "title": "ZooLights Sensory-Friendly",
-      "date": "2026-11-16",
-      "ends": null,
-      "where": "Oregon Zoo",
-      "detail": "Guests with different sensory processing needs and their families can enjoy the wonder of ZooLights from 4:30 to 8:30 p.m.",
-      "url": "https://www.oregonzoo.org/sensory-night"
     }
   ]
 }

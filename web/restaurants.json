@@ -2,6 +2,57 @@
   "updated": "2026-10-31",
   "restaurants": [
     {
+      "name": "Ethiopian Coffee Shop",
+      "neighborhood": "Central Eastside",
+      "cuisine": "Coffee/Cocktails",
+      "price": "",
+      "opened": "2026-10-28",
+      "summary": "An Ethiopian coffee shop with evening cocktails.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-28",
+          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPM280dW9vTGpKVnYtY0h1NkpENGI2dmpvUVAwSkJMT2hlYlVuckV5S1hFVEY4M01ZRDN6SjNyX1ZiaHk3NUpzM09rNDkxZW4tUnFmcW9UQjA2czJNaU84dzBCZTlUVDhaUXg3ZUZlYWxoSy1td0UxLXZrdXhzbGdHckhYMC0tYkFaZUhfS3JhbThtay0tMXB6b25FS3dwV1F3bzR3ekxsbm10SmxsR1JUemFFbw?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "La Casa de Mamá",
+      "neighborhood": "North Portland",
+      "cuisine": "Vegan Mexican bakery",
+      "price": "",
+      "opened": "2026-10-30",
+      "summary": "A vegan Mexican bakery opening its first storefront.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-30",
+          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZk1WYVZDd3Q2VGJRN0g0dHlfa1Rtdi0wbnNaV3Vpc2VLZGY4aTlKYlZQc2oxQUhJRkFBN1pyYzE2V29NMnljN2o2dklVcGVHZmg3UkJuQnBGakliQnBJMnFrc3R3NTRvZ2g0TzNqcWNkTTNQRlZvQ3VXczRDeG1RWGpuUmdZTDBxS0g0clZ2UlNrSHJXcTZoZ1Z4M21BNTQ2T0s5S3ptVUxERXI2UHVNakZWWFEtVUdqTzRwclR5dTE?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "pFriem Family Brewers",
+      "neighborhood": "Portland",
+      "cuisine": "Brewery",
+      "price": "",
+      "opened": "2026-10-24",
+      "summary": "First official Portland location for the brewery.",
+      "reviews": [
+        {
+          "outlet": "newschoolbeer.com",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-24",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQd1FFbEx1UjNoMUE1OGJRSk5SbFo5NEJNZEFQOXJsN0JJTE5ESFNmeFBxUms2QUdSd3N0OXpadDlFYTl1UlA3YWp4V3JvbzJ6YkJjNC1BVnI3bURsOGw4QVQ3bzcwc0VpUWtFV0lVcS05MnhxeDM5YzRmNE1WR1NkMjJNX0lxanBRMG5QUHJyWHNwWmRHYnkyRThnanc4U2g3d25XVVprcw?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Love Crumble",
       "neighborhood": "Northwest Portland",
       "cuisine": "",
@@ -162,6 +213,13 @@
       "opened": "Oct 2026",
       "summary": "The acclaimed patisserie reopened in a new North Williams home (soft opening Oct. 21); Karen Brooks predicts its salt breads are destined for Portland cult status.",
       "reviews": [
+        {
+          "outlet": "Portland Monthly",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-19",
+          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOMzA3SzFzeUtxUlM3eURYcVF1QUdvamZQYnZWZFpZcnBuNVZ5OG1uOVRtTzdNYlBRaWlmTHN0NW4tM2xMbDFCaDctRGt0VXZUOG1LX2NpYWlYVFV3Y0U4MmwwZTh6WExtTFBNRXYxVXlXZ3djSWRuS29CME1lS2RBQ09NeVg1YW5JLVZmZThn?oc=5"
+        },
         {
           "outlet": "Portland Monthly",
           "critic": "Karen Brooks",
@@ -369,71 +427,6 @@
           "verdict": "One of three must-try new AAPI-owned eateries",
           "date": "",
           "url": "https://www.portlandmercury.com/food-and-drink/new-aapi-owned-restaurants-dear-lola-after-ours-and-bangkok-belly/"
-        }
-      ]
-    },
-    {
-      "name": "Yui",
-      "neighborhood": "SE Belmont",
-      "cuisine": "Thai",
-      "price": "",
-      "opened": "Jan 2026",
-      "summary": "Chef Chalunthorn \"Yui\" Schaeffer's Thai restaurant settled into a permanent SE Belmont home after years of pop-ups, and earned praise in Portland Monthly's roundup of new Thai spots.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "Jordan Michelman",
-          "verdict": "Praised in a review of three new Thai restaurants",
-          "date": "2026-05-14",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"
-        }
-      ]
-    },
-    {
-      "name": "Bangkok Belly",
-      "neighborhood": "",
-      "cuisine": "Thai street skewers",
-      "price": "",
-      "opened": "",
-      "summary": "A small-menu Thai newcomer whose satay skewers Portland Monthly called the star of the show; the Mercury also named it a must-try.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "Jordan Michelman",
-          "verdict": "Satay skewers are the star",
-          "date": "2026-05-14",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"
-        },
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "One of three must-try new AAPI-owned eateries",
-          "date": "",
-          "url": "https://www.portlandmercury.com/food-and-drink/new-aapi-owned-restaurants-dear-lola-after-ours-and-bangkok-belly/"
-        }
-      ]
-    },
-    {
-      "name": "Lil' Barbecue",
-      "neighborhood": "NE Dekum (inside Tough Luck)",
-      "cuisine": "Texas barbecue",
-      "price": "",
-      "opened": "",
-      "summary": "Portland outpost of a Michelin-starred Texas barbecue operation; Michael Russell's review (as reported by Hoodline) ranks the smoked beet ends with the chicken and pork ribs as the best things to eat. Go early, since meats sell out.",
-      "reviews": [
-        {
-          "outlet": "The Oregonian (via Hoodline)",
-          "critic": "Michael Russell",
-          "verdict": "The beets upstage the brisket",
-          "date": "2026-04-30",
-          "url": "https://hoodline.com/2026/04/dekum-s-new-texas-bbq-star-lets-beets-upstage-the-brisket/"
-        },
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Beet ends are a surprisingly legit vegan option",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/reviews/lil-barbecue"
         }
       ]
     }

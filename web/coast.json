@@ -2,6 +2,14 @@
   "updated": "2026-10-31",
   "events": [
     {
+      "name": "Día de los Muertos",
+      "date": "2026-10-23",
+      "end": "2026-11-01",
+      "town": "Astoria",
+      "summary": "Astoria celebrates Día de los Muertos.",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbjR2LUE2Ym5hS0hoQzRWVkxyWFJBNENkbFJQdy1MS21ISkkzYjNwa2hXdVNacmZXNGF4VEM5bkNxN1pMal9UamxPNjlZZWo0SEVkOV93V0ZGNzMxbEhfOUY3cVIteEd0bDdyWk4yLUZsRHpKcWYtMkppRDJpbmctS2NKbEtZbFFV?oc=5"
+    },
+    {
       "name": "Seaside Halloween Happenin's",
       "date": "2026-10-30",
       "end": "2026-11-01",
@@ -152,14 +160,6 @@
       "town": "Seaside",
       "summary": "Film series lecture at the public library from 2:00 pm - 4:30 pm. Free.",
       "url": "https://www.seasideor.com/event/film-screening-the-taking-of-pelham-one-two-three/"
-    },
-    {
-      "name": "DREAMPUNK",
-      "date": "2026-11-20",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Themed evening performance show at the Liberty Theatre, 7 pm.",
-      "url": "https://libertyastoria.org/event/"
     }
   ]
 }

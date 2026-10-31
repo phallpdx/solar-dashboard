@@ -99,6 +99,38 @@
       "url": "https://pdxparent.com/event-single/open-play-at-laurelhurst-studio/2026-10-31/"
     },
     {
+      "title": "CHAP Art Club",
+      "date": "2026-10-31",
+      "ends": "2026-10-31",
+      "where": "Hillsboro, Oregon",
+      "detail": "Art workshops designed for children with medical challenges from 10am to 12pm.",
+      "url": "https://pdxparent.com/series/chap-art-club/"
+    },
+    {
+      "title": "Halloween at the Oregon City Farmers Market",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Oregon City",
+      "detail": "A fun schedule of activities while you shop for groceries from 9:00am to 1:00pm. Free.",
+      "url": "https://pdxparent.com/event-single/halloween-at-the-oregon-city-farmers-market/"
+    },
+    {
+      "title": "St. Johns Farmers Market",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "A market with over 80 vendors and a hidden pink squishmallow for kids from 9:00am to 2:00pm. Free.",
+      "url": "https://pdxparent.com/series/st-johns-farmers-market-3/"
+    },
+    {
+      "title": "Make Memories With Llamas at Frog Pond Farm",
+      "date": "2026-10-31",
+      "ends": null,
+      "where": "Wilsonville, OR",
+      "detail": "A farm with llamas, a corn maze, and pumpkins from 9:00am to 5:00pm for $16.",
+      "url": "https://pdxparent.com/series/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/"
+    },
+    {
       "title": "Native Games and Storytelling",
       "date": "2026-11-01",
       "ends": null,
@@ -169,14 +201,6 @@
       "where": "Oregon Zoo",
       "detail": "Guests with different sensory processing needs and their families can enjoy the wonder of ZooLights from 4:30 to 8:30 p.m.",
       "url": "https://www.oregonzoo.org/sensory-night"
-    },
-    {
-      "title": "ZooLights",
-      "date": "2026-11-20",
-      "ends": "2027-01-03",
-      "where": "Oregon Zoo",
-      "detail": "Enjoy dazzling wildlife-inspired light displays and familiar favorites.",
-      "url": "https://www.oregonzoo.org/lights"
     }
   ]
 }

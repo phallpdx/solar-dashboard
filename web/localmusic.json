@@ -1,6 +1,22 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-31",
   "releases": [
+    {
+      "artist": "How Strange It Is",
+      "title": "Everyday Evil and Infrastructural Decay",
+      "type": "Album",
+      "local": true,
+      "genre": "",
+      "label": "",
+      "date": "2026-10-20",
+      "why": "Portland band takes on decay in new work.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQWURWakJXZy00dWRYZ1IyejMwMWVhUktTWjgxejh6ZlBxbm5DUmx2anFEbEE3MUlWUURoaHRBaHdoWnJzMjdPc0V1S1ExRFBadHBFSVFVcUg3UEk1NE4yZk1PUXBkWU1tX1FTNTBDc1h6dEZmbXl0czA5R1JpUUFtYzlPdHo3MHpkVjRfMnFZM05kb1NidU9BMVZ6WjVONWxRN2tvUjZDRjQ0bkpaaExVOE5PSk1HVW1FWERLQQ?oc=5"
+        }
+      ]
+    },
     {
       "artist": "Isabeau Waia'u Walker",
       "title": "Cloudhunter",

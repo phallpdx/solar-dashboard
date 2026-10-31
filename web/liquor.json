@@ -4,6 +4,45 @@
   "note": "New on OLCC's November 2026 price list, found by comparing it with this month's. Critic ratings are added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.",
   "items": [
     {
+      "name": "G4 Blanco Tequila",
+      "category": "Tequila",
+      "size": "750 ml",
+      "price": 49.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "80 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "9123B",
+      "added": "2026-10-31"
+    },
+    {
+      "name": "G4 Reposado Tequila",
+      "category": "Tequila",
+      "size": "750 ml",
+      "price": 59.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "80 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "9124B",
+      "added": "2026-10-31"
+    },
+    {
+      "name": "Bladnoch Vinaya Lowland Single Malt Scotch Whisky",
+      "category": "Scotch",
+      "size": "700 ml",
+      "price": 49.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "93 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "11051I",
+      "added": "2026-10-31"
+    },
+    {
       "name": "Tin Cup Fourteener",
       "category": "Whiskey",
       "size": "750 ml",
@@ -222,45 +261,6 @@
       "url": null,
       "olcc_url": null,
       "olcc_code": "3849B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "New Deal Cascara Liqueur",
-      "category": "Liqueur",
-      "size": "750 ml",
-      "price": 29.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "Cascara liqueur. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "4523B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Wyoming Whiskey Small Batch Bourbon",
-      "category": "Bourbon",
-      "size": "750 ml",
-      "price": 40.05,
-      "rating": null,
-      "rating_source": null,
-      "why": "Small batch bourbon. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "6582B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Jules Perchard Triple Sec",
-      "category": "Liqueur",
-      "size": "LITER",
-      "price": 8.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "Triple sec. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "7584A",
       "added": "2026-10-29"
     }
   ]

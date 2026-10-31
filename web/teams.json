@@ -1,16 +1,15 @@
 {
   "updated": "2026-10-31",
-  "updated_at": "2026-10-31T07:28:40Z",
+  "updated_at": "2026-10-31T09:15:58Z",
   "teams": {
     "blazers": {
       "mood": "frustrated and anxious",
-      "pulse": "Fans are reeling from a first loss to Memphis caused by injuries. There is pressure on Scoot Henderson to perform during Ja Morant's absence.",
+      "pulse": "Fans are reeling from a loss to the Grizzlies and multiple injuries. There is pressure on Scoot Henderson to perform during Ja Morant's absence.",
       "storylines": [
-        "Ja Morant out at least 4 weeks (hamstring)",
-        "#15",
-        "Robert Williams III questionable for next game (#2)",
-        "Scoot Henderson faces scrutiny over performance (#3)",
-        "Next game: Blazers @ Jazz on 2026-10-31"
+        "Ja Morant out at least four weeks with hamstring strain",
+        "Robert Williams III questionable for next game",
+        "Senator Wyden advocating against team relocation",
+        "Scoot Henderson facing scrutiny over performance"
       ],
       "sources": [
         {
@@ -37,10 +36,10 @@
     },
     "timbers": {
       "mood": "mixed anticipation",
-      "pulse": "Fans are focused on the upcoming home match against Houston. There is also significant community engagement regarding Diego Chara.",
+      "pulse": "Fans are focused on the upcoming big match against Houston. There is also excitement regarding academy talent and community events.",
       "storylines": [
         "Timbers2 lost 1-0 to Ventura County in playoffs",
-        "Upcoming big match against Houston for Native American Heritage Night",
+        "Upcoming home match against Houston for Native American Heritage Night",
         "Diego Chara appreciation podcast being recorded",
         "Academy player Eric Izoita signed first-team contract"
       ],
@@ -68,11 +67,11 @@
       ]
     },
     "f1": {
-      "mood": "tense and unpredictable",
-      "pulse": "Fans are reacting to on-track collisions and grid penalties in Mexico City. Uncertainty surrounds the competitive order as practice sessions conclude.",
+      "mood": "tense and chaotic",
+      "pulse": "Fans are reacting to on-track collisions and steward penalties. Tension is rising due to driver incidents and technical debates.",
       "storylines": [
-        "Verstappen and Lawson receive grid penalties after FP2 collision.",
-        "Leclerc leads Friday practice at Mexico City GP.",
+        "Verstappen and Lawson receive grid penalties after FP2 clash.",
+        "Leclerc leads practice sessions in Mexico City.",
         "Colton Herta remains one point short of a Super License.",
         "Alonso and Albon continue their ongoing feud."
       ],

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "events": [
     {
       "name": "Día de los Muertos",
@@ -24,22 +24,6 @@
       "town": "Seaside",
       "summary": "Annual family event with paddle, games, and pumpkin drop. Free.",
       "url": "https://www.seasideor.com/event/halloween-happenins-3/"
-    },
-    {
-      "name": "Island of Dr. Moreau Halloween Prefunk",
-      "date": "2026-10-31",
-      "end": "2026-10-31",
-      "town": "Seaside",
-      "summary": "Live music by The Flowtenders from 6:00 pm - 8:00 pm. Free.",
-      "url": "https://www.seasideor.com/event/island-of-dr-moreau-halloween-prefunk-w-the-flowtenders-live-at-the-lyons-den/"
-    },
-    {
-      "name": "BOOS & BREWS",
-      "date": "2026-10-31",
-      "end": "2026-10-31",
-      "town": "Seaside",
-      "summary": "DJ Foley spinning music videos from 8:00 pm - 11:30 pm. Price not given.",
-      "url": "https://www.seasideor.com/event/boos-brews/"
     },
     {
       "name": "Haystack Holidays",
@@ -160,6 +144,22 @@
       "town": "Seaside",
       "summary": "Film series lecture at the public library from 2:00 pm - 4:30 pm. Free.",
       "url": "https://www.seasideor.com/event/film-screening-the-taking-of-pelham-one-two-three/"
+    },
+    {
+      "name": "Beach Towel Tuesdays",
+      "date": "2026-11-17",
+      "end": null,
+      "town": "Seaside",
+      "summary": "First five groups to post social media photos get a free towel. Free.",
+      "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
+    },
+    {
+      "name": "Iron Chef Goes Coastal",
+      "date": "2026-11-17",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Local chefs battle it out for the Iron Chef title. Price not given.",
+      "url": "https://www.seasideor.com/event/iron-chef-goes-coastal-3/"
     }
   ]
 }

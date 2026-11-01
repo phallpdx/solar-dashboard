@@ -1,6 +1,23 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "restaurants": [
+    {
+      "name": "Mossback",
+      "neighborhood": "Gladstone",
+      "cuisine": "Pizza and Drinks",
+      "price": "",
+      "opened": "2026-10-29",
+      "summary": "New pizza and drinks spot opening on Gladstone.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-29",
+          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "Ethiopian Coffee Shop",
       "neighborhood": "Central Eastside",
@@ -410,23 +427,6 @@
           "verdict": "Pretend you're in Paris",
           "date": "2026-05-19",
           "url": "https://www.wweek.com/food/2026/05/19/pretend-youre-in-paris-in-the-parking-lot-of-oscar-food-wine/"
-        }
-      ]
-    },
-    {
-      "name": "Dear Lola",
-      "neighborhood": "NE 28th Ave (inside Too Soon)",
-      "cuisine": "Filipino",
-      "price": "",
-      "opened": "Dec 2025",
-      "summary": "Former Magna Kusina chef de cuisine Danté Fernandez cooks diaspora Filipino food, from regional specialties to dishes of his own, inside the cocktail bar Too Soon.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "One of three must-try new AAPI-owned eateries",
-          "date": "",
-          "url": "https://www.portlandmercury.com/food-and-drink/new-aapi-owned-restaurants-dear-lola-after-ours-and-bangkok-belly/"
         }
       ]
     }

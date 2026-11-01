@@ -1,6 +1,20 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-11-01",
   "items": [
+    {
+      "name": "Joe Brown's Carmel Corn",
+      "maker": "Joe Brown's",
+      "kind": "New product",
+      "what": "Carmel Corn returned in a new location",
+      "where_to_buy": [],
+      "date": "2026-10-31",
+      "sources": [
+        {
+          "name": "After months of popcorn purgatory, Joe Brown's Carmel Corn has returned — in a new location",
+          "url": "https://www.oregonlive.com/washingtoncounty/2026/10/the-beloved-portland-popcorn-shop-that-survived-a-mall-closing-just-reopened-with-a-bigger-menu.html"
+        }
+      ]
+    },
     {
       "name": "Pastime Coffee",
       "maker": "Pastime Coffee",
@@ -352,29 +366,6 @@
         {
           "name": "Baking Business: Bob's Red Mill reformulates signature gluten-free flour",
           "url": "https://www.bakingbusiness.com/articles/66781-bobs-red-mill-reformulates-signature-gluten-free-flour"
-        }
-      ]
-    },
-    {
-      "name": "Island Towns tropical West Coast IPA",
-      "maker": "Fort George Brewery (Astoria)",
-      "kind": "New product",
-      "what": "A new year-round 6.5% tropical West Coast IPA hopped with Superdelic, Citra and Chinook, announced in August 2026 in 6-packs of 12oz cans and on draft. It reuses the name of a 2025 one-off but is a new recipe.",
-      "where_to_buy": [
-        {
-          "store": "Fort George Brewery",
-          "url": "https://fortgeorgebrewery.com/beer/island-towns/"
-        }
-      ],
-      "date": "",
-      "sources": [
-        {
-          "name": "New School Beer + Cider: Fort George introduces new year-round beer Island Towns tropical IPA",
-          "url": "https://newschoolbeer.com/home/2026/8/fort-george-brewing-introduces-new-year-round-beer-island-towns-tropical-ipa"
-        },
-        {
-          "name": "Fort George Brewery: Island Towns",
-          "url": "https://fortgeorgebrewery.com/beer/island-towns/"
         }
       ]
     }

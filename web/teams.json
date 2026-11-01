@@ -1,15 +1,16 @@
 {
-  "updated": "2026-10-31",
-  "updated_at": "2026-10-31T11:15:34Z",
+  "updated": "2026-11-01",
+  "updated_at": "2026-11-01T07:10:03Z",
   "teams": {
     "blazers": {
-      "mood": "frustrated and anxious",
-      "pulse": "Fans are reeling from a loss to Memphis and significant injuries. There is pressure on Scoot Henderson to perform during Ja Morant's absence.",
+      "mood": "optimistic and excited",
+      "pulse": "Fans are energized after a dominant blowout win against Utah. There is growing excitement around young players like Scoot Henderson and Yang Hansen.",
       "storylines": [
-        "Ja Morant out at least four weeks with hamstring strain",
-        "Robert Williams III questionable due to knee injury management",
-        "Scoot Henderson faces scrutiny over recent performance",
-        "Blazers face Utah Jazz today"
+        "Blazers beat Jazz 112-90 to reach 4-1 record",
+        "#1",
+        "Deni Avdija led scoring with 24 points",
+        "#3",
+        "Ja Morant sidelined for at least one month due to hamstring injury"
       ],
       "sources": [
         {
@@ -35,13 +36,13 @@
       ]
     },
     "timbers": {
-      "mood": "mixed anticipation",
-      "pulse": "Fans are focused on the upcoming big match against Houston. There is also excitement regarding academy player development and community events.",
+      "mood": "Mixed and expectant",
+      "pulse": "Fans are focused on the upcoming big match against Houston. There is also pride in academy players receiving national recognition.",
       "storylines": [
-        "Timbers2 lost 1-0 to Ventura County in playoffs",
-        "Upcoming home match against Houston for Native American Heritage Night",
-        "Diego Chara appreciation podcast being recorded",
-        "Academy players Eric Izoita and Kellen Tamblyn receiving honors"
+        "Timbers face Houston Dynamo this Saturday",
+        "Timbers2 lost 1-0 to Ventura County FC",
+        "Eric Izoita signed first-team contract",
+        "Ian Miller named to U.S. U-16 camp"
       ],
       "sources": [
         {
@@ -67,13 +68,13 @@
       ]
     },
     "f1": {
-      "mood": "tense and unpredictable",
-      "pulse": "Fans are reacting to grid penalties for Verstappen and Lawson following their Mexico practice clash. There is also significant discussion regarding Colton Herta's Super License status.",
+      "mood": "Chaotic and intense",
+      "pulse": "Fans are reacting to Lewis Hamilton's emotional pole position for Ferrari. There is also shock regarding Esteban Ocon's sudden replacement at Haas.",
       "storylines": [
-        "Verstappen and Lawson receive grid drops after a clumsy incident.",
-        "Leclerc leads FP2 in Mexico City.",
-        "Colton Herta needs one more point for his Super License.",
-        "Alonso and Albon are involved in an ongoing feud."
+        "Lewis Hamilton takes maiden Ferrari pole",
+        "Ryō Hirakawa replaces Esteban Ocon at Haas",
+        "Ocon reportedly had a physical exchange with Komatsu",
+        "Lawson disqualified from Mexico Qualifying"
       ],
       "sources": [
         {

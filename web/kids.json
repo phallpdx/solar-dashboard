@@ -1,15 +1,7 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
-    {
-      "title": "Corn Maze & Fall Fun at Bella Organic Farm",
-      "date": "2026-10-26",
-      "ends": "2026-10-31",
-      "where": "Bella Organic Farm, 16205 NW Gillihan Rd., Portland, OR, United States",
-      "detail": "Get lost in their family-friendly corn maze, featuring a \"Five Kind Acts\" theme, open daily August 22-October 31! Starting September 26, enjoy extended fall hours with even more pumpkin patch",
-      "url": "https://pdxparent.com/event-single/corn-maze-fall-fun-at-bella-organic-farm/2026-10-26/"
-    },
     {
       "title": "Seaside Halloween Happenin's",
       "date": "2026-10-30",
@@ -27,156 +19,12 @@
       "url": "https://koa.com/campgrounds/astoria/events/"
     },
     {
-      "title": "Sauvie Island Pumpkin Patch and corn maze",
-      "date": null,
-      "ends": "2026-10-31",
-      "where": "Sauvie Island",
-      "detail": "Pumpkins and an 8-acre corn maze, listed daily 10 to 6 through Oct 31 with prices starting at $12. Last season's FAQ said kids under 6 were free; confirm this year.",
-      "url": "https://www.travelportland.com/events/corn-maize-sauvie-island"
-    },
-    {
-      "title": "Bella Organic pumpkin patch",
-      "date": null,
-      "ends": "2026-10-31",
-      "where": "Sauvie Island",
-      "detail": "Free hayrides out to a corn maze and pumpkin field. Go in daytime, since the maze is haunted on weekend evenings.",
-      "url": "https://www.travelportland.com/region/pumpkin-patches/"
-    },
-    {
       "title": "Curiosity Kids at OMSI",
       "date": "2026-10-31",
       "ends": "2026-11-28",
       "where": "OMSI, Portland",
       "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Oct 31, Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
       "url": "https://omsi.edu/curiosity-kids/"
-    },
-    {
-      "title": "Storytime at Multnomah County Libraries",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Multnomah County",
-      "detail": "Various toddler and family storytime sessions available. Free.",
-      "url": "https://pdxparent.com/event-single/storytime-at-multnomah-county-libraries/2026-10-31/"
-    },
-    {
-      "title": "Pumpkin Patch at Kirchem Farm",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Oregon City",
-      "detail": "Farm activities including hayrides, corn maze, and a kids zone. $5 per person.",
-      "url": "https://pdxparent.com/event-single/pumpkin-patch-at-kirchem-farm/2026-10-31/"
-    },
-    {
-      "title": "Trick-or-Treat Montavilla",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Montavilla",
-      "detail": "Shops pass out candy from 11am until closing. Free.",
-      "url": "https://pdxparent.com/event-single/trick-or-treat-montavilla/"
-    },
-    {
-      "title": "Creative Movement Dance Class for 2 Year Olds",
-      "date": "2026-10-31",
-      "ends": "2026-10-31",
-      "where": "Beaverton",
-      "detail": "Scribbles class for two-year-olds to explore movement. Free.",
-      "url": "https://pdxparent.com/event-single/creative-movement-dance-class-for-2-year-olds-2/2026-10-31/"
-    },
-    {
-      "title": "Spooky Tots Tumble Tots",
-      "date": "2026-10-31",
-      "ends": "2026-10-31",
-      "where": "Garden Home",
-      "detail": "Costume-themed morning of giggles and spooky activities for ages five and under. Youth drop-in fees apply.",
-      "url": "https://pdxparent.com/event-single/spooky-tots-tumble-tots/"
-    },
-    {
-      "title": "Open Play at Laurelhurst Studio!",
-      "date": "2026-10-31",
-      "ends": "2026-10-31",
-      "where": "Portland",
-      "detail": "Morning open play session for children. Free.",
-      "url": "https://pdxparent.com/event-single/open-play-at-laurelhurst-studio/2026-10-31/"
-    },
-    {
-      "title": "CHAP Art Club",
-      "date": "2026-10-31",
-      "ends": "2026-10-31",
-      "where": "Hillsboro, Oregon",
-      "detail": "Art workshops designed for children with medical challenges from 10am to 12pm.",
-      "url": "https://pdxparent.com/series/chap-art-club/"
-    },
-    {
-      "title": "Halloween at the Oregon City Farmers Market",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Oregon City",
-      "detail": "A fun schedule of activities while you shop for groceries from 9:00am to 1:00pm. Free.",
-      "url": "https://pdxparent.com/event-single/halloween-at-the-oregon-city-farmers-market/"
-    },
-    {
-      "title": "St. Johns Farmers Market",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "A market with over 80 vendors and a hidden pink squishmallow for kids from 9:00am to 2:00pm. Free.",
-      "url": "https://pdxparent.com/series/st-johns-farmers-market-3/"
-    },
-    {
-      "title": "Make Memories With Llamas at Frog Pond Farm",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Wilsonville, OR",
-      "detail": "A farm with llamas, a corn maze, and pumpkins from 9:00am to 5:00pm for $16.",
-      "url": "https://pdxparent.com/series/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/"
-    },
-    {
-      "title": "Enjoy Fall Festivities at a Local Pumpkin Patch",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Oregon/Washington",
-      "detail": "Visit pumpkin patches for corn mazes, hayrides, animals, and treats. Varies by location.",
-      "url": "https://pdxparent.com/series/enjoy-fall-festivities-at-a-local-pumpkin-patch/"
-    },
-    {
-      "title": "Wildwood at OMSI’s Empirical Theater",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A handcrafted fantasy adventure through a spectacular world. $7 – $9.",
-      "url": "https://pdxparent.com/series/wildwood-at-omsis-empirical-theater/"
-    },
-    {
-      "title": "Altares y Muertos Public Art Exhibition",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Portland",
-      "detail": "View public altar installations as part of a community celebration. Free.",
-      "url": "https://pdxparent.com/series/altares-y-muertos-public-art-exhibition/"
-    },
-    {
-      "title": "Mike Bennett Spooktacular Scavenger Hunt at Bridgeport Village",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Bridgeport Village",
-      "detail": "Search for hidden Halloween ghosts on shop and restaurant windows. Free.",
-      "url": "https://pdxparent.com/series/mike-bennett-spooktacular-scavenger-hunt-at-bridgeport-village/"
-    },
-    {
-      "title": "Kernside Halloween",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Kernside District",
-      "detail": "A neighborhood trick-or-treat route with a passport for kids to collect. Price not listed.",
-      "url": "https://pdxparent.com/event-single/kernside-halloween/"
-    },
-    {
-      "title": "Pre-Game-O-Ween",
-      "date": "2026-10-31",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Enjoy gluten free candy and happy hour prices before trick-or-treating. Free.",
-      "url": "https://pdxparent.com/event-single/pre-game-o-ween/"
     },
     {
       "title": "Native Games and Storytelling",
@@ -201,6 +49,70 @@
       "where": "OMSI, Portland",
       "detail": "Museum admission is $5 per person, with planetarium and theater shows also $5. OMSI expects crowds and suggests buying tickets online ahead.",
       "url": "https://omsi.edu/events/5-day/"
+    },
+    {
+      "title": "Storytime at Multnomah County Libraries",
+      "date": "2026-11-01",
+      "ends": null,
+      "where": "Multnomah County",
+      "detail": "Various storytimes including Toddler Time and Book Babies are available. Free.",
+      "url": "https://pdxparent.com/event-single/storytime-at-multnomah-county-libraries/2026-11-01/"
+    },
+    {
+      "title": "Centennial Farmers Market",
+      "date": "2026-11-01",
+      "ends": "2026-11-01",
+      "where": "Portland",
+      "detail": "Support local farmers at the new market located at Chop Chop Food Pod from 9:00 am to 2:00 pm. Free.",
+      "url": "https://pdxparent.com/event-single/centennial-farmers-market/2026-11-01/"
+    },
+    {
+      "title": "Make Memories With Llamas, a Corn Maze and Pumpkins at Frog Pond Farm",
+      "date": "2026-11-01",
+      "ends": "2026-11-01",
+      "where": "Wilsonville",
+      "detail": "Enjoy llamas, a corn maze, and pumpkins from 9:00 am to 5:00 pm. $16.",
+      "url": "https://pdxparent.com/event-single/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/2026-11-01/"
+    },
+    {
+      "title": "Día de los Muertos with the Center for the Arts Foundation",
+      "date": "2026-11-01",
+      "ends": "2026-11-01",
+      "where": "Gresham",
+      "detail": "Celebrate culture and community with live music and open court play from 9:00 am to 5:00 pm. Free.",
+      "url": "https://pdxparent.com/event-single/dia-de-los-muertos-with-the-center-for-the-arts-foundation/"
+    },
+    {
+      "title": "Fall Discount Days",
+      "date": "2026-11-02",
+      "ends": "2026-11-08",
+      "where": "Portland, OR",
+      "detail": "Connect with nature for $13 admission from 9:30 a.m. to 3:30 p.m.",
+      "url": "https://www.oregonzoo.org/events/fall-discount-days"
+    },
+    {
+      "title": "Veterans Day",
+      "date": "2026-11-11",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "Free admission for military members, veterans and their families from 9:30 a.m. to 3:30 p.m.",
+      "url": "https://www.oregonzoo.org/events/veterans-day"
+    },
+    {
+      "title": "ZooLights Sensory-Friendly",
+      "date": "2026-11-16",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "A sensory-friendly experience for families with different processing needs from 4:30 to 8:30 p.m.",
+      "url": "https://www.oregonzoo.org/sensory-night"
+    },
+    {
+      "title": "ZooLights",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "Enjoy dazzling wildlife-inspired light displays and familiar favorites.",
+      "url": "https://www.oregonzoo.org/lights"
     }
   ]
 }

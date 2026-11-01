@@ -1,8 +1,47 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "store": "St. Johns Liquor (OLCC store #1142), 8915 N Lombard St, Portland, OR 97203",
   "note": "New on OLCC's November 2026 price list, found by comparing it with this month's. Critic ratings are added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.",
   "items": [
+    {
+      "name": "Monte Alban Reposado",
+      "category": "Tequila",
+      "size": "750 ml",
+      "price": 13.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "80 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "0229B",
+      "added": "2026-11-01"
+    },
+    {
+      "name": "Ole Smoky Shine Nog Moonshine",
+      "category": "Other",
+      "size": "750 ml",
+      "price": 24.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "35 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "3183B",
+      "added": "2026-11-01"
+    },
+    {
+      "name": "Loch Lomond 12 Year Single Malt",
+      "category": "Scotch",
+      "size": "750 ml",
+      "price": 49.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "12 years 92 proof. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "3849B",
+      "added": "2026-11-01"
+    },
     {
       "name": "New Deal Cascara Liqueur",
       "category": "Liqueur",
@@ -222,45 +261,6 @@
       "url": null,
       "olcc_url": null,
       "olcc_code": "14570B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Harder Day Aquavit Barrel Finished Gin",
-      "category": "Gin",
-      "size": "375 ml",
-      "price": 27.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "100 proof, 375 ML. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "14573E",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Jefferson's Reserve 8 Year",
-      "category": "Whiskey",
-      "size": "750 ml",
-      "price": 49.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "8 years, 95 proof. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "14574B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Oregon Spirit Bourbon 10 Year Heritage",
-      "category": "Bourbon",
-      "size": "750 ml",
-      "price": 100.0,
-      "rating": null,
-      "rating_source": null,
-      "why": "10 years, 116 proof. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "14600B",
       "added": "2026-10-29"
     }
   ]

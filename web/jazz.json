@@ -1,22 +1,6 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "shows": [
-    {
-      "artist": "Nick Rolfe and Co Halloween Party",
-      "kind": "Local",
-      "date": "2026-10-31",
-      "time": "06:30 PM",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "A Halloween party featuring Nick Rolfe on keys and Saeeda Wright on vocals.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Artichoke Jazz Jam",
       "kind": "Local",
@@ -114,6 +98,22 @@
         {
           "name": "Jack London Revue",
           "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "The Ben Wolfe Trio with Nicole Glover and Ron Steen",
+      "kind": "Local",
+      "date": "2026-11-05",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$50",
+      "what": "Homecoming show featuring acclaimed jazz musicians.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

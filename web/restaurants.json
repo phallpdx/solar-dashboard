@@ -2,6 +2,40 @@
   "updated": "2026-11-01",
   "restaurants": [
     {
+      "name": "The Mindaro, JdV by Hyatt",
+      "neighborhood": "Portland",
+      "cuisine": "Hotel/Dining",
+      "price": "",
+      "opened": "2026-10-30",
+      "summary": "A new hotel opening in Portland.",
+      "reviews": [
+        {
+          "outlet": "LODGING Magazine",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-30",
+          "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOWWU3dWlTTUpaTUlzeEk3THpyd1NDektCXzVkQkwtdW9FN1AxaVNkOVk4M2xjR3JiZDRia19XbVl3U2tiRFRsckxDTkFPeElpckJJdzBJOUFyY1VQSDM0OEJLRVFEYTJFalF5UFBTVkRkWm9xaWdsSWppQi1ERm1mVjFLUks?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Wildwood",
+      "neighborhood": "Portland",
+      "cuisine": "Restaurant",
+      "price": "",
+      "opened": "2026-10-27",
+      "summary": "A review of the restaurant Wildwood.",
+      "reviews": [
+        {
+          "outlet": "Willamette Week",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-27",
+          "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQVGpmNHUyWXp5b3ZvRDl4dnVhQktjd0YyaHIzX3E2OVlwWjJqemZnbERZWjNoendDWVJ0LU0yc2NDb1FUTDVTWjFxYTRfOHF0VzhNSWxrTUU1Wm5SaUNiQXRyb1d3b1hIRzlUa3ZWcVJ4c18wMTZ4Uk1qWnNUMzdaVDdwWEJ2MDlfTlpfcQ?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Mossback",
       "neighborhood": "Gladstone",
       "cuisine": "Pizza and Drinks",
@@ -393,40 +427,6 @@
           "verdict": "Easily the buzziest local opening of the year",
           "date": "2026-05-14",
           "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"
-        }
-      ]
-    },
-    {
-      "name": "Bar Siete",
-      "neighborhood": "Laurelhurst (NE Sandy Blvd)",
-      "cuisine": "Mexican",
-      "price": "",
-      "opened": "",
-      "summary": "Oswaldo Bibiano's seventh restaurant and first full bar, in the former Shaku Bar space; WW singled out the $7 small bites, the borrego tatemado and a fiery huevo en diablado.",
-      "reviews": [
-        {
-          "outlet": "Willamette Week",
-          "critic": "",
-          "verdict": "First look: one of Portland's foundational Mexican chefs",
-          "date": "2026-07-23",
-          "url": "https://www.wweek.com/food/2026/07/23/bar-siete-is-the-latest-from-one-of-portlands-foundational-mexican-chefs/"
-        }
-      ]
-    },
-    {
-      "name": "Oscar Food & Wine",
-      "neighborhood": "SE 26th Ave (Hosford-Abernethy)",
-      "cuisine": "French-leaning, natural wine",
-      "price": "",
-      "opened": "Spring 2026",
-      "summary": "A tiny natural-wine spot in the former Kashiwagi sushi space with a fish-heavy menu that WW found transportive despite sitting next to a Plaid Pantry.",
-      "reviews": [
-        {
-          "outlet": "Willamette Week",
-          "critic": "Caitlin Pangares",
-          "verdict": "Pretend you're in Paris",
-          "date": "2026-05-19",
-          "url": "https://www.wweek.com/food/2026/05/19/pretend-youre-in-paris-in-the-parking-lot-of-oscar-food-wine/"
         }
       ]
     }

@@ -1,16 +1,15 @@
 {
   "updated": "2026-11-01",
-  "updated_at": "2026-11-01T07:10:03Z",
+  "updated_at": "2026-11-01T09:08:53Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and excited",
-      "pulse": "Fans are energized after a dominant blowout win against Utah. There is growing excitement around young players like Scoot Henderson and Yang Hansen.",
+      "pulse": "Fans are energized after a dominant 112-90 win over the Jazz. The team's recent performance is making games fun to watch again.",
       "storylines": [
-        "Blazers beat Jazz 112-90 to reach 4-1 record",
-        "#1",
-        "Deni Avdija led scoring with 24 points",
-        "#3",
-        "Ja Morant sidelined for at least one month due to hamstring injury"
+        "Blazers beat Utah 112-90, moving to 4-1",
+        "Deni Avdija led with 24 points",
+        "Ja Morant sidelined for at least a month",
+        "Scoot Henderson starting due to injuries"
       ],
       "sources": [
         {
@@ -68,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "Chaotic and intense",
-      "pulse": "Fans are reacting to Lewis Hamilton's emotional pole position for Ferrari. There is also shock regarding Esteban Ocon's sudden replacement at Haas.",
+      "mood": "chaotic and intense",
+      "pulse": "Fans are reeling from sudden driver changes and technical drama. High tension surrounds Haas's abrupt decision regarding Esteban Ocon.",
       "storylines": [
-        "Lewis Hamilton takes maiden Ferrari pole",
+        "Lewis Hamilton takes maiden Ferrari pole position",
         "Ryō Hirakawa replaces Esteban Ocon at Haas",
-        "Ocon reportedly had a physical exchange with Komatsu",
-        "Lawson disqualified from Mexico Qualifying"
+        "Liam Lawson disqualified from Mexico City qualifying",
+        "Max Verstappen starts P5 for Red Bull"
       ],
       "sources": [
         {

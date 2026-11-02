@@ -1383,6 +1383,15 @@ ALFRED_LINES = {
 }
 
 
+# Car and truck dealers post in every category; a used car is not a flip Parker wants, and its prices depend on
+# year and miles that the searches can't match.
+VEHICLE = re.compile(r"\b(19[5-9]\d|20[0-3]\d)\b.*\b(sedan|suv|truck|coupe|wagon|hatchback|van|4dr|2dr|awd|4wd|4x4|fwd|"
+                     r"miles|mileage|vin|carfax|cudl|financ\w*|dealer|trades? welcome)\b|\b(tesla|toyota|honda|ford|"
+                     r"chevy|chevrolet|nissan|subaru|volvo|bmw|audi|mercedes|lexus|jeep|dodge|ram|gmc|kia|hyundai|mazda|"
+                     r"volkswagen|vw|acura|infiniti|cadillac|buick|lincoln|chrysler|mini cooper|porsche)\b.*\b(model|sedan|suv|"
+                     r"truck|awd|4wd|4dr|miles)\b", re.I)
+
+
 def refresh_flips(data, sources):
     """Things on Portland Craigslist that Parker could buy and resell for $150+ that pays $50+ an hour.
 
@@ -1404,6 +1413,7 @@ def refresh_flips(data, sources):
     live = {x["url"] for x in found}
     cutoff = (TODAY - dt.timedelta(days=10)).isoformat()
     screened = {u: d for u, d in (data.get("screened") or {}).items() if d >= cutoff}
+    found = [x for x in found if not VEHICLE.search(x["title"])]
     fresh = [x for x in found if x["url"] not in screened and not gear.SKIP.search(x["title"])]
     log(f"  {len(found)} listings, {len(fresh)} not screened before")
 
@@ -1431,7 +1441,7 @@ def refresh_flips(data, sources):
     hours = lambda x: gear.trip_hours(x.get("where")) + gear.SELL_HOURS  # noqa: E731
     candidates.sort(key=lambda x: -(x["guess"] * gear.RESALE - x["price"]) / hours(x))
     price_schema = items_schema({"price": {"type": "integer"}, "quote": S, "url": S})
-    flips = [f for f in data.get("flips") or [] if f["url"] in live]  # still listed
+    flips = [f for f in data.get("flips") or [] if f["url"] in live and not VEHICLE.search(f["title"])]  # still listed
     for x in candidates[:cfg.get("verify_per_run", 5)]:
         if any(f["url"] == x["url"] for f in flips):
             continue
@@ -1450,7 +1460,8 @@ def refresh_flips(data, sources):
             break  # out of searches for today; the rest wait for tomorrow
         text, table = number_links(search_text(results)[0])
         r = ask_checked(f"From these search results, list the prices they state for a USED {x['item']}: sold listings, "
-                        "used listings or used price guides. Skip prices for new ones, parts, bundles and other models. "
+                        "used listings or used price guides. Skip prices for new ones, parts, bundles, other models, and "
+                        f"other years or generations than this listing: {x['title']}. "
                         "price: the dollar figure. quote: the exact words around it from the result. url: the result's "
                         "link number.", text, price_schema) or {}
         snippets = {res["url"]: f"{res['title']} {res['snippet']}" for res in results}
@@ -1504,6 +1515,8 @@ def refresh_alfred(data, sources):
             good = []
             for line in (r or {}).get(k) or []:
                 line = clean(line, 120).replace("’", "'").strip('"')
+                if kind == "lead":
+                    line = line.rstrip(".:!?;, ")  # the page adds the colon
                 if (not line or len(line.split()) > 16 or re.search(r"[\d<>{}\[\]]", line) or line in recent or line in good
                         or (kind == "lead" and re.search(r"[.:!?]$", line))
                         or (kind == "sentence" and not re.search(r"[.!?]$", line))

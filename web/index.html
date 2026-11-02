@@ -1329,9 +1329,9 @@ body{background-color:#8F5A32;
 .group[data-sec=music] .lines a.link:hover{background-color:var(--orange);color:#FFF4DC}
 
 /* Used gear wears a record-shop price sticker */
-#gear>div>span:last-child{flex:none;align-self:center;width:74px;height:74px;margin-left:12px;padding:0 !important;border-radius:50%;display:grid;place-content:center;text-align:center;
+#gear>div>span:last-child,#flips>div>span:last-child{flex:none;align-self:center;width:74px;height:74px;margin-left:12px;padding:0 !important;border-radius:50%;display:grid;place-content:center;text-align:center;
   background:var(--orange);color:#FFF4DC;font:400 17px/1 var(--funk);box-shadow:0 0 0 2px var(--ink),2px 2px 0 2px rgba(31,26,20,.5);transform:rotate(-8deg)}
-#gear>div>span:last-child small{color:#FFF4DC;font:700 9.5px/1.3 var(--type);letter-spacing:.04em;text-transform:uppercase}
+#gear>div>span:last-child small,#flips>div>span:last-child small{color:#FFF4DC;font:700 9.5px/1.3 var(--type);letter-spacing:.04em;text-transform:uppercase}
 
 /* Album birthdays and new albums get a little record instead of a cake */
 .bday .cake{flex:none;width:30px;height:30px;font-size:0;--lbl:var(--orange)}
@@ -1929,6 +1929,11 @@ body{background-color:#8F5A32;
           <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
           <div class="lines" id="gear"></div>
           <p class="note">Asking price against the low end of what the same model sells for used. Drums and percussion come first; 💰 marks ones that could resell for $150+ after about 15% in fees and pay $50+ an hour, counting the drive and selling time. Check it in person before handing over cash.</p>
+        </section>
+        <section class="card half" aria-labelledby="flips-h" id="flips-card" hidden>
+          <div class="head"><h2 id="flips-h">Flips around town</h2><span class="meta" id="flips-meta"></span></div>
+          <div class="lines" id="flips"></div>
+          <p class="note">Anything on Portland Craigslist that could resell for $150+ after about 15% in fees and pay $50+ an hour, counting the drive and selling time. The PC's model picks candidates overnight; resale prices come from used and sold prices it found online, linked below each one. Check condition and the going rate before you buy.</p>
         </section>
       </div>
     </div>
@@ -4721,9 +4726,9 @@ async function renderBriefing() {
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
   const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
-  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf] = await Promise.all(
+  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf, flipList] = await Promise.all(
     ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json', 'restaurants.json',
-     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json'].map(getJson));
+     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json', 'flips.json'].map(getJson));
   // Something different every morning: lists are walked one item a day, so the same note never sits there for weeks.
   const dayNo = Math.floor(new Date(today + 'T12:00').getTime() / 864e5);
   const rot = (list, salt = 0) => list && list.length ? list[(dayNo + salt) % list.length] : null;
@@ -4910,6 +4915,8 @@ async function renderBriefing() {
   const gearNew = ((D.gear && D.gear.deals) || []).filter(d => d.first_seen && daysTo(d.first_seen) >= -1);
   const wish = gearNew.find(d => d.watch);
   if (wish) add(88, 'gear-card', `<b>On your wish list:</b> ${esc(wish.title)} is on Craigslist for $${wish.price.toLocaleString()}${wish.pct_off > 0 ? `, about ${wish.pct_off}% under the usual` : ''}. ${say('gear', 1, 'One might move quickly, sir.')}`);
+  const flip = ((flipList && flipList.flips) || []).find(x => x.first_seen && daysTo(x.first_seen) >= -1);
+  if (flip) add(flip.hourly >= 100 ? 79 : 70, 'flips-card', `A flip worth the drive: <b>${esc(flip.title)}</b> for $${flip.price.toLocaleString()}${flip.where ? ' in ' + esc(flip.where) : ''}. It resells for about $${flip.value.toLocaleString()}, so roughly $${flip.profit.toLocaleString()} after fees, near $${flip.hourly} an hour. ${say('gear', 2, 'One might move quickly, sir.')}`);
   const steal = gearNew.find(d => d.flip_profit && d !== wish) || gearNew.find(d => d.drums && !d.watch) || gearNew.find(d => d.pct_off >= 45 && !d.watch);
   if (steal) add(steal.flip_profit ? 74 : steal.drums ? 60 : steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual${steal.flip_profit ? `. Resold, it could clear roughly $${steal.flip_profit.toLocaleString()} after fees${steal.flip_hourly ? `, about $${steal.flip_hourly} an hour with the drive and the selling` : ''}` : ''}. ${say('gear', 0, 'One might move quickly, sir.')}`);
 
@@ -5102,7 +5109,20 @@ function renderCivics() {
 }
 
 // ------------------------------------------------------------------ craigslist gear
+async function renderFlips() {
+  const f = await getJson('flips.json');
+  const list = (f && f.flips) || [];
+  $('flips-card').hidden = !f;
+  if (!f) return;
+  $('flips-meta').textContent = `${(f.checked || 0).toLocaleString()} listings checked${f.updated ? ' · ' + dayLabel(f.updated) : ''}`;
+  $('flips').innerHTML = list.length ? list.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.first_seen === todayIso() ? ' <small class="up">New</small>' : ''} <small class="up">${esc(x.category)}</small>
+      <br><small>Resells for about $${x.value.toLocaleString()} used (${srcLinks(x.sources)})${x.where ? ' · ' + esc(x.where) : ''}</small></span>
+      <span style="white-space:nowrap;padding-left:12px">$${x.price.toLocaleString()}<br><small>+$${x.profit.toLocaleString()} · $${x.hourly}/hr</small></span></div>`).join('')
+    : '<p class="note">No flips worth the trip right now.</p>';
+}
+
 function renderGear() {
+  renderFlips();
   const g = D.gear;
   $('gear-card').hidden = !g;
   if (!g) return;

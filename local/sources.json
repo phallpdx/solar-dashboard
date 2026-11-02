@@ -7,6 +7,11 @@
     "max_chars_per_page": 12000,
     "timeout_seconds": 900
   },
+  "openwebui": {
+    "url": "http://localhost:3000",
+    "max_searches_per_day": 12,
+    "timeout_seconds": 300
+  },
   "push_branch": "claude/local-lists",
   "lists": {
     "jazz": [
@@ -17,6 +22,13 @@
       {
         "name": "The 1905 (Turntable Tickets)",
         "url": "https://the1905.turntabletickets.com/"
+      },
+      {
+        "name": "Web search: touring jazz in Portland",
+        "search": "jazz concerts Portland Oregon touring artists coming soon",
+        "days": [
+          "Mon"
+        ]
       }
     ],
     "concerts": [
@@ -49,6 +61,15 @@
         "url": "https://pitchfork.com/feed/reviews/best/albums/rss",
         "use": "albums",
         "label": "Pitchfork Best New Music"
+      },
+      {
+        "name": "Web search: Metacritic new albums",
+        "search": "best reviewed new albums this week Metacritic metascore",
+        "days": [
+          "Mon",
+          "Thu"
+        ],
+        "use": "scores"
       }
     ],
     "events": [
@@ -64,6 +85,10 @@
         "name": "Oregon Convention Center",
         "url": "https://www.oregoncc.org/events",
         "place": "Oregon Convention Center"
+      },
+      {
+        "name": "Web search: big Portland events",
+        "search": "major events coming to Portland Oregon next two months announced"
       }
     ],
     "kids": [
@@ -78,6 +103,13 @@
       {
         "name": "OMSI",
         "url": "https://omsi.edu/events/"
+      },
+      {
+        "name": "Web search: Portland family events",
+        "search": "Portland Oregon family kids events this weekend and next",
+        "days": [
+          "Thu"
+        ]
       }
     ],
     "bluray": [
@@ -88,6 +120,13 @@
       {
         "name": "Blu-ray.com deals",
         "url": "https://www.blu-ray.com/deals/"
+      },
+      {
+        "name": "Web search: 4K Blu-ray deals",
+        "search": "4K UHD Blu-ray deals sale this week",
+        "days": [
+          "Thu"
+        ]
       }
     ],
     "foodfinds": [
@@ -102,6 +141,20 @@
       {
         "name": "The Oregonian business",
         "url": "https://www.oregonlive.com/arc/outboundfeeds/rss/category/business/?outputType=xml"
+      },
+      {
+        "name": "Web search: Oregon food launches",
+        "search": "Oregon food or drink maker launches new product",
+        "days": [
+          "Tue"
+        ]
+      },
+      {
+        "name": "Web search: Oregon food awards",
+        "search": "Oregon food beverage maker wins award",
+        "days": [
+          "Tue"
+        ]
       }
     ],
     "planahead": [
@@ -112,6 +165,10 @@
       {
         "name": "Portland on-sale news",
         "url": "https://news.google.com/rss/search?q=Portland+concert+%22on+sale%22+OR+presale+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+      {
+        "name": "Web search: Portland presales",
+        "search": "Portland Oregon concert presale and on-sale dates announced this week"
       }
     ],
     "skioutlook": [
@@ -185,6 +242,13 @@
         {
           "name": "Google News: helium market",
           "url": "https://news.google.com/rss/search?q=helium+market+OR+helium+production+Saskatchewan+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Web search: North American Helium",
+          "search": "North American Helium Saskatchewan latest news",
+          "days": [
+            "Mon"
+          ]
         }
       ],
       "realestate": [
@@ -195,6 +259,14 @@
         {
           "name": "Google News: mortgage rates",
           "url": "https://news.google.com/rss/search?q=mortgage+rates+this+week+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Web search: Portland housing data",
+          "search": "Portland Oregon RMLS Market Action latest month median sale price inventory",
+          "days": [
+            "Mon",
+            "Thu"
+          ]
         }
       ]
     },
@@ -217,6 +289,13 @@
       {
         "name": "Coast news",
         "url": "https://news.google.com/rss/search?q=(Astoria+OR+Seaside+OR+%22Cannon+Beach%22+OR+Manzanita)+event+when:14d&hl=en-US&gl=US&ceid=US:en"
+      },
+      {
+        "name": "Web search: north Oregon coast events",
+        "search": "Astoria Seaside Cannon Beach events this month",
+        "days": [
+          "Sat"
+        ]
       }
     ],
     "restaurants": [
@@ -235,6 +314,13 @@
       {
         "name": "Restaurant news",
         "url": "https://news.google.com/rss/search?q=Portland+Oregon+restaurant+(opening+OR+review)+when:14d&hl=en-US&gl=US&ceid=US:en"
+      },
+      {
+        "name": "Web search: new Portland restaurants",
+        "search": "new Portland Oregon restaurant openings this month",
+        "days": [
+          "Sat"
+        ]
       }
     ],
     "localmusic": [
@@ -245,6 +331,13 @@
       {
         "name": "Music news",
         "url": "https://news.google.com/rss/search?q=Portland+Oregon+band+(album+OR+EP+OR+single)+when:21d&hl=en-US&gl=US&ceid=US:en"
+      },
+      {
+        "name": "Web search: Portland album releases",
+        "search": "Portland Oregon band album release show",
+        "days": [
+          "Sat"
+        ]
       }
     ],
     "liquor": [
@@ -258,6 +351,7 @@
         "url": "https://www.olcc.state.or.us/pdfs/NumericPriceListNextMonth.csv",
         "use": "next"
       }
-    ]
+    ],
+    "alfred": []
   }
 }

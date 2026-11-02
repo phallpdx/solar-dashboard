@@ -4721,39 +4721,48 @@ async function renderBriefing() {
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
   const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
-  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief] = await Promise.all(
+  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf] = await Promise.all(
     ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json', 'restaurants.json',
-     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json'].map(getJson));
+     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json'].map(getJson));
   // Something different every morning: lists are walked one item a day, so the same note never sits there for weeks.
   const dayNo = Math.floor(new Date(today + 'T12:00').getTime() / 864e5);
   const rot = (list, salt = 0) => list && list.length ? list[(dayNo + salt) % list.length] : null;
   const oneOf = (salt, ...lines) => lines[(dayNo + salt) % lines.length];
+  // Alfred's asides: fresh ones the PC's model writes each night (alfred.json), else his old standbys.
+  // They sit in a span so his memory of what he told you goes by the facts, not the phrasing.
+  const said = {};  // a key used twice in one brief moves on to its next line
+  const say = (key, salt, ...fallback) => {
+    const fresh = alf && alf.lines && alf.lines[key];
+    const pool = fresh && fresh.length ? fresh : fallback;
+    said[key] = (said[key] ?? -1) + 1;
+    return `<span class="aside">${esc(pool[(dayNo + salt + said[key]) % pool.length]).replace(/'/g, '’')}</span>`;
+  };
 
   // Weather and alerts
   const o = D.outside || {};
   for (const a of (D.alerts && D.alerts.official) || [])
-    add(100, 'today', `The National Weather Service has issued a <b>${esc(a.event)}</b>. I would take it seriously, sir.`);
+    add(100, 'today', `The National Weather Service has issued a <b>${esc(a.event)}</b>. ${say('nws_alert', 0, 'I would take it seriously, sir.')}`);
   for (const a of (D.alerts && D.alerts.forecast) || [])
-    add(85, 'today', `The forecast suggests ${esc(a.title.toLowerCase())} ${whenWord(a.date)}. Batten down accordingly.`);
+    add(85, 'today', `The forecast suggests ${esc(a.title.toLowerCase())} ${whenWord(a.date)}. ${say('forecast_alert', 0, 'Batten down accordingly.')}`);
   const t0 = (o.days || []).find(d => d.date === today), t1 = (o.days || []).find(d => d.date === tomorrow);
   if (t0) {
     const wet = t0.rain_pct >= 60;
     const gauge = D.weather && D.weather.rain;
     if (gauge && gauge.rate_in_hr > 0) add(62, 'today', `It’s raining at the house right now: ${gauge.today_in.toFixed(2)} inches in the gauge so far today.`);
     else if (gauge && gauge.today_in >= 0.1) add(36, 'today', `Your rain gauge caught ${gauge.today_in.toFixed(2)} inches today${gauge.event_in > gauge.today_in ? `, ${gauge.event_in.toFixed(2)} for this storm` : ''}.`);
-    add(wet ? 50 : 40, 'today', `${wet ? 'Rain, I’m afraid' : wxName(t0.code)}: a high of ${t0.hi}° and a low of ${t0.lo}°${wet ? `, with ${n1(t0.rain_in)} inches expected. The umbrella is by the door` : ''}${t0.gust >= 35 ? `, and gusts to ${t0.gust} mph` : ''}. Sunset is at ${hhmm(t0.sunset)}.`);
+    add(wet ? 50 : 40, 'today', `${wet ? 'Rain, I’m afraid' : wxName(t0.code)}: a high of ${t0.hi}° and a low of ${t0.lo}°${wet ? `, with ${n1(t0.rain_in)} inches expected` : ''}${t0.gust >= 35 ? `, and gusts to ${t0.gust} mph` : ''}. Sunset is at ${hhmm(t0.sunset)}.${wet ? ' ' + say('rain', 0, 'The umbrella is by the door.') : ''}`);
   }
   if (t1 && t0 && t0.rain_pct >= 60 && t1.rain_pct < 40) add(35, 'today', `Tomorrow looks drier, should you wish to postpone anything outdoors.`);
-  if (o.air && o.air.aqi > 100) add(88, 'today', `The air is <b>${esc(o.air.label.toLowerCase())}</b> (AQI ${o.air.aqi}). I would keep the windows shut and the exertion indoors.`);
-  else if (o.air && o.air.aqi > 50) add(15, 'today', `Air quality is ${esc(o.air.label.toLowerCase())} at AQI ${o.air.aqi}. Nothing to trouble yourself over.`);
+  if (o.air && o.air.aqi > 100) add(88, 'today', `The air is <b>${esc(o.air.label.toLowerCase())}</b> (AQI ${o.air.aqi}). ${say('air_bad', 0, 'I would keep the windows shut and the exertion indoors.')}`);
+  else if (o.air && o.air.aqi > 50) add(15, 'today', `Air quality is ${esc(o.air.label.toLowerCase())} at AQI ${o.air.aqi}. ${say('air_ok', 0, 'Nothing to trouble yourself over.')}`);
 
   // Getting around
   const slow = (D.commute || []).filter(c => c.delay >= 10).sort((a, b) => b.delay - a.delay)[0];
-  if (slow) add(65, 'today', `The drive to ${esc(placeName(slow.label).replace('The beach', 'the beach'))} is running ${slow.delay} minutes slow, ${slow.minutes} in all. Allow for it.`);
+  if (slow) add(65, 'today', `The drive to ${esc(placeName(slow.label).replace('The beach', 'the beach'))} is running ${slow.delay} minutes slow, ${slow.minutes} in all. ${say('commute', 0, 'Allow for it.')}`);
   const inc = ((D.roads && D.roads.incidents) || []).filter(i => !i.roadwork)[0];
   if (inc) add(55, 'today', `There is trouble on ${esc(inc.road)}: ${esc(inc.what.toLowerCase())} near ${esc(inc.where)}.`);
   const pdx = D.live && D.live.pdx && D.live.pdx.delays;
-  if (pdx && pdx.length) add(60, 'plane-card', `PDX is reporting delays. Should you be collecting anyone, check before you leave.`);
+  if (pdx && pdx.length) add(60, 'plane-card', `PDX is reporting delays. ${say('pdx', 0, 'Should you be collecting anyone, check before you leave.')}`);
 
   // Danger nearby
   const fire = ((D.live && D.live.fires) || []).filter(f => f.miles <= 60 && f.contained < 100).sort((a, b) => a.miles - b.miles)[0];
@@ -4761,7 +4770,7 @@ async function renderBriefing() {
   const quake = ((D.live && D.live.quakes && D.live.quakes.biggest) || []).filter(q => q.miles <= 60 && q.mag >= 2.5 && (now - new Date(q.utc)) < 3 * 864e5)[0];
   if (quake) add(quake.mag >= 4 ? 85 : 45, 'live-row', `The earth moved: a magnitude ${quake.mag} ${quake.felt ? `felt by ${quake.felt} people ` : ''}${esc(quake.place)}, ${whenWord(isoLocal(new Date(quake.utc)))}.`);
   const sick = ((D.health && D.health.items) || []).filter(h => ['High', 'Very High'].includes(h.level));
-  if (sick.length) add(62, 'today', `${sick.map(h => esc(h.name)).join(' and ')} ${sick.length > 1 ? 'are' : 'is'} running high in the wastewater. Wash your hands, sir.`);
+  if (sick.length) add(62, 'today', `${sick.map(h => esc(h.name)).join(' and ')} ${sick.length > 1 ? 'are' : 'is'} running high in the wastewater. ${say('sick', 0, 'Wash your hands, sir.')}`);
 
   // Deadlines and plans
   for (const p of (plan && plan.items) || []) {
@@ -4770,14 +4779,20 @@ async function renderBriefing() {
   for (const e of (events && events.events) || []) {
     if (e.date && soon(e.date, 1)) add(daysTo(e.date) === 0 ? 75 : 58, 'big-card', `${daysTo(e.date) === 0 ? 'Today' : 'Tomorrow'} in town: <b>${esc(e.title)}</b>${e.venue && !e.title.includes(e.venue.split(',')[0]) ? ' at ' + esc(e.venue) : ''}.`);
   }
-  for (const k of (kids && kids.events) || []) {
-    if (k.ends === today) add(72, 'family', `Today is the last day of <b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}. Your little one may never forgive you otherwise.`);
-    else if (k.date && soon(k.date, 1)) add(56, 'family', `For the little one ${whenWord(k.date)}: ${esc(k.title)}.`);
+  // One note each for last days and coming days, so a busy weekend doesn't fill the brief with the same line.
+  const kidEvents = (kids && kids.events) || [];
+  const listOf = (xs, show) => xs.length <= 3 ? xs.slice(0, -1).map(show).join(', ') + (xs.length > 1 ? ' and ' : '') + show(xs[xs.length - 1])
+    : xs.slice(0, 3).map(show).join(', ') + ` and ${xs.length - 3} more`;
+  const lastDays = kidEvents.filter(k => k.ends === today);
+  if (lastDays.length) add(72, 'family', `Today is the last day of ${listOf(lastDays, k => `<b>${esc(k.title)}</b>${k.title.includes(k.where) ? '' : ' at ' + esc(k.where)}`)}. ${say('kids_last_day', 0, 'Your little one may never forgive you otherwise.')}`);
+  for (const day of [today, tomorrow]) {
+    const coming = kidEvents.filter(k => k.date === day && k.ends !== today);
+    if (coming.length) add(56, 'family', `For the little one ${whenWord(day)}: ${listOf(coming, k => esc(k.title))}.`);
   }
   const gig = ((gigs && gigs.shows) || []).filter(g => soon(g.date, 2))[0];
   if (gig) add(daysTo(gig.date) === 0 ? 70 : 52, 'gigs-card', `${esc(gig.artist)} plays ${esc(gig.venue)} ${whenWord(gig.date)}${gig.score ? `, on the strength of an album the critics gave ${gig.score}` : ''}.`);
   const jz = ((jazz && jazz.shows) || []).filter(j => soon(j.date, 2))[0];
-  if (jz) add(daysTo(jz.date) === 0 ? 66 : 48, 'jazz-card', `For something civilized, ${esc(jz.artist)} at ${esc(jz.venue)} ${whenWord(jz.date)}${jz.time ? ' at ' + esc(jz.time) : ''}.`);
+  if (jz) add(daysTo(jz.date) === 0 ? 66 : 48, 'jazz-card', `${say('jazz_lead', 0, 'For something civilized')}: ${esc(jz.artist)} at ${esc(jz.venue)} ${whenWord(jz.date)}${jz.time ? ' at ' + esc(jz.time) : ''}.`);
   const thaiDay = (D.thai_buddhist || []).find(t => soon(t.date, 3) || (t.ends && t.date <= today && t.ends >= today));
   if (thaiDay) add(daysTo(thaiDay.date) <= 0 ? 58 : 41, 'world', `${daysTo(thaiDay.date) <= 0 ? 'Today is' : `${whenWord(thaiDay.date)[0].toUpperCase() + whenWord(thaiDay.date).slice(1)} is`} <b>${esc(thaiDay.name)}</b> in Thailand. ${esc(thaiDay.about.split('.')[0])}.`);
   const hol = (D.holidays || []).filter(h => h.country === 'USA' && soon(h.date, 7))[0];
@@ -4791,7 +4806,7 @@ async function renderBriefing() {
     if (t.next && t.next.utc && soon(isoLocal(new Date(t.next.utc)), 1))
       add(daysTo(isoLocal(new Date(t.next.utc))) === 0 ? 64 : 46, 'more', `${label[0].toUpperCase() + label.slice(1)} play ${t.next.home ? 'host to ' : 'at '}${esc(t.next.opponent)} ${whenWord(isoLocal(new Date(t.next.utc)))} at ${timeOf(t.next.utc)}${t.next.tv ? ' on ' + esc(t.next.tv.split(',')[0]) : ''}.`);
     if (t.last && t.last.completed && (now - new Date(t.last.utc)) < 2 * 864e5)
-      add(42, 'more', `${t.last.won ? 'Good news' : 'I regret to report'}: ${label} ${t.last.won ? 'beat' : 'lost to'} ${esc(t.last.opponent)} ${t.last.us}–${t.last.them}.${t.recap && t.recap.headline ? ' ' + esc(t.recap.headline) + '.' : ''}`);
+      add(42, 'more', `${t.last.won ? say('win_lead', 0, 'Good news') : say('loss_lead', 0, 'I regret to report')}: ${label} ${t.last.won ? 'beat' : 'lost to'} ${esc(t.last.opponent)} ${t.last.us}–${t.last.them}.${t.recap && t.recap.headline ? ' ' + esc(t.recap.headline) + '.' : ''}`);
   }
   const race = sp.f1 && sp.f1.next && sp.f1.next[0];
   if (race && soon(isoLocal(new Date(race.utc)), 2))
@@ -4801,16 +4816,16 @@ async function renderBriefing() {
   if (o.aurora && o.aurora.kp >= 6) add(90, 'nearby', `<b>The northern lights may be visible tonight</b> (Kp ${o.aurora.kp}). Look north, away from the city glow.`);
   else if (o.aurora && o.aurora.kp >= 5) add(60, 'nearby', `A geomagnetic storm (Kp ${o.aurora.kp}) gives an outside chance of aurora low on the northern horizon.`);
   const iss = (o.iss || []).find(p => p.bright && new Date(p.utc) > now && (new Date(p.utc) - now) < 864e5);
-  if (iss) add(54, 'nearby', `The space station passes overhead at ${timeOf(iss.utc)}, rising in the ${esc(iss.from)}. Bright enough to wave at.`);
+  if (iss) add(54, 'nearby', `The space station passes overhead at ${timeOf(iss.utc)}, rising in the ${esc(iss.from)}. ${say('iss', 0, 'Bright enough to wave at.')}`);
   const sky = (o.sky_events || []).filter(e => e.kind !== 'launch' && soon(isoLocal(new Date(e.utc)), 2))[0];
   if (sky) add(52, 'nearby', `In the sky ${whenWord(isoLocal(new Date(sky.utc)))}: ${esc(sky.title)}.`);
-  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full${o.moon.moonrise ? `, rising at ${hhmm(o.moon.moonrise)}` : ''}. Gotham’s criminals are fond of it.`);
+  if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full${o.moon.moonrise ? `, rising at ${hhmm(o.moon.moonrise)}` : ''}. ${say('full_moon', 0, 'Gotham’s criminals are fond of it.')}`);
   const launch = (o.sky_events || []).filter(e => e.kind === 'launch' && e.visible && soon(isoLocal(new Date(e.utc)), 1))[0];
   if (launch) add(58, 'nearby', `A rocket launch may be visible from here: ${esc(launch.title)} at ${timeOf(launch.utc)}.`);
 
   // Wildlife and the river
   const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];
-  if (rare) add(rare.confirmed ? 50 : 34, 'rare-card', `A ${esc(rare.name)} has been reported at ${esc(rare.where)}. Binoculars are in the hall closet.`);
+  if (rare) add(rare.confirmed ? 50 : 34, 'rare-card', `A ${esc(rare.name)} has been reported at ${esc(rare.where)}. ${say('rare_bird', 0, 'Binoculars are in the hall closet.')}`);
   const big = ((D.ships && D.ships.approaching) || []).find(s => s.big);
   if (big) add(38, 'outside', `A large ship, the ${esc(big.name)}, is ${esc(big.direction.toLowerCase())}${big.eta_utc ? `, passing about ${timeOf(big.eta_utc)}` : ''}.`);
   const dam = D.fishing && D.fishing.dam;
@@ -4822,10 +4837,10 @@ async function renderBriefing() {
   // Mountain and coast
   const sk = D.ski || {};
   const fresh = (sk.forecast || []).filter(d => soon(d.date, 3)).reduce((n, d) => n + (d.snow_in || 0), 0);
-  if (fresh >= 6) add(62, 'ski-card', `Mt. Hood expects about ${Math.round(fresh)} inches of snow over the next few days. Shall I wax the skis?`);
+  if (fresh >= 6) add(62, 'ski-card', `Mt. Hood expects about ${Math.round(fresh)} inches of snow over the next few days. ${say('ski', 0, 'Shall I wax the skis?')}`);
   else if (sk.snow && sk.snow.new_7d_in >= 6) add(50, 'ski-card', `${sk.snow.new_7d_in} inches of new snow on Mt. Hood this week.`);
   const c = D.coast || {}, c0 = (c.days || [])[0];
-  if (c0 && c0.waves_ft >= 14) add(55, 'coast', `The coast is wild today: ${c0.waves_ft}-foot waves and gusts to ${c0.gust} mph. Admire it from the window.`);
+  if (c0 && c0.waves_ft >= 14) add(55, 'coast', `The coast is wild today: ${c0.waves_ft}-foot waves and gusts to ${c0.gust} mph. ${say('coast_wild', 0, 'Admire it from the window.')}`);
   const minus = (c.minus_tides || []).find(t => soon(t.t.slice(0, 10), 1) && new Date(t.t.replace(' ', 'T')) > now);
   if (minus) add(40, 'coast', `A minus tide of ${minus.ft} ft at the coast ${whenWord(minus.t)} at ${hhmm(minus.t.slice(11))}, for tidepooling.`);
 
@@ -4838,7 +4853,7 @@ async function renderBriefing() {
 
   // Shopping and screens
   const ending = ((blu && blu.deals) || []).filter(d => d.ends && soon(d.ends, 2))[0];
-  if (ending) add(48, 'br-card', `The <b>${esc(ending.title)}</b> ends ${whenWord(ending.ends)}, should the collection need reinforcement.`);
+  if (ending) add(48, 'br-card', `The <b>${esc(ending.title)}</b> ends ${whenWord(ending.ends)}. ${say('bluray', 0, 'Should the collection need reinforcement, now would be the time.')}`);
   const show = (D.streaming || []).filter(s => soon(s.date, 1) && s.kind === 'New series')[0];
   if (show) add(24, 'coming', `New ${whenWord(show.date)} on ${esc(show.service)}: ${esc(show.name || show.show || show.title || '')}.`);
   const alb = (D.albums || []).filter(a => soon(a.date, 1))[0];
@@ -4865,7 +4880,7 @@ async function renderBriefing() {
   if (outNow.length) add(58, 'mtn-card', `${outNow.map(p => esc(p.name)).join(' and ')} ${outNow.length > 1 ? 'are' : 'is'} out right now, sir. Look ${esc(outNow[0].look)}.`);
   else if (clearLater.length) add(30, 'mtn-card', `${esc(clearLater[0].name)} should show itself later today, ${spans(clearLater[0].days.find(d => d.date === today).windows.filter(([, b]) => b > now.getHours()))}.`);
   const goodMush = ((og.mushrooms || {}).species || []).filter(x => x.status === 'Good');
-  if (goodMush.length) add(34, 'mush-card', `Conditions favor ${goodMush.slice(0, 2).map(x => esc(x.name.toLowerCase())).join(' and ')} in the forests. A basket in the boot would not go amiss.`);
+  if (goodMush.length) add(34, 'mush-card', `Conditions favor ${goodMush.slice(0, 2).map(x => esc(x.name.toLowerCase())).join(' and ')} in the forests. ${say('mushrooms', 0, 'A basket in the boot would not go amiss.')}`);
   if (ogd.whale_season && ogd.whale_season.level === 'peak') add(40, 'whale-card', `The gray whales are passing the coast in numbers. ${esc(ogd.whale_spot.name)} would serve nicely.`);
   const ws = (og.whales || {}).sightings || [];
   if (ws.length && daysTo(ws[0].date || '2000-01-01') >= -3) add(26, 'whale-card', `A ${esc(ws[0].what.toLowerCase())} was logged off the coast ${whenWord(ws[0].date)}.`);
@@ -4892,7 +4907,7 @@ async function renderBriefing() {
 
   // Craigslist
   const steal = ((D.gear && D.gear.deals) || []).find(d => d.pct_off >= 45 && d.first_seen && daysTo(d.first_seen) >= -1);
-  if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. One might move quickly, sir.`);
+  if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. ${say('gear', 0, 'One might move quickly, sir.')}`);
 
   // Elections
   const cv = D.civics;
@@ -4915,31 +4930,31 @@ async function renderBriefing() {
 
   const sunset = ((o.sunsets) || []).find(x => x.date === today);
   if (sunset && sunset.score >= 70 && now < new Date(`${today}T${sunset.sunset}`))
-    add(48, 'delights', `The sunset at ${hhmm(sunset.sunset)} should be rather ${sunset.label.toLowerCase()}. I’d step outside, sir.`);
+    add(48, 'delights', `The sunset at ${hhmm(sunset.sunset)} should be rather ${sunset.label.toLowerCase()}. ${say('sunset', 0, 'I’d step outside, sir.')}`);
   const solarDays = (D.days || []).filter(d => d.produced != null).slice(0, -1);
   const yday = solarDays[solarDays.length - 1];
   if (yday && solarDays.length > 7 && solarDays.every(d => d.produced <= yday.produced))
-    add(40, 'delights', `Yesterday the panels made ${Math.round(yday.produced)} kWh, the best in ${solarDays.length} days. Splendid.`);
+    add(40, 'delights', `Yesterday the panels made ${Math.round(yday.produced)} kWh, the best in ${solarDays.length} days. ${say('solar_best', 0, 'Splendid.')}`);
 
   // Fresh reading for the morning: the newest things the feeds and lists turned up overnight.
   const sci = rot((D.science || []).slice(0, 4));
-  if (sci) add(39, 'science', `${oneOf(1, 'From the laboratories', 'Science, sir', 'A finding worth your coffee')}: <b>${esc(sci.title)}</b>${sci.means ? '. ' + esc(sci.means.replace(/^(.*?[.!?])\s.*$/s, '$1')) : '.'}`);
+  if (sci) add(39, 'science', `${say('science_lead', 1, 'From the laboratories', 'Science, sir', 'A finding worth your coffee')}: <b>${esc(sci.title)}</b>${sci.means ? '. ' + esc(sci.means.replace(/^(.*?[.!?])\s.*$/s, '$1')) : '.'}`);
   const story = rot(((D.news && D.news.stories) || []).filter(x => (x.coverage || 0) >= 2).slice(0, 5), 2);
-  if (story) add(41, 'news', `${oneOf(2, 'The papers are full of it', 'In the news this morning', 'The talk of the morning')}: <b>${esc(story.title)}</b> (${esc(story.source)}).`);
+  if (story) add(41, 'news', `${say('news_lead', 2, 'The papers are full of it', 'In the news this morning', 'The talk of the morning')}: <b>${esc(story.title)}</b> (${esc(story.source)}).`);
   const gn = rot((D.good_news || []).slice(0, 3), 1);
   if (gn) add(33, 'good-card', `Some good news${gn.local ? ' from close to home' : ''}: ${esc(gn.title)}.`);
   const lr = rot((D.longreads || []).slice(0, 4), 3);
-  if (lr) add(29, 'read-card', `For a long sit with your tea: <b>${esc(lr.title)}</b>${lr.author ? ' by ' + esc(lr.author) : ''}.`);
+  if (lr) add(29, 'read-card', `${say('read_lead', 0, 'For a long sit with your tea')}: <b>${esc(lr.title)}</b>${lr.author ? ' by ' + esc(lr.author) : ''}.`);
   const tr = rot(((D.trending && D.trending.google) || []).filter(t => t.story).slice(0, 4), 1);
   if (tr) add(27, 'trend-card', `Everyone is searching for “${esc(tr.title)}”: ${esc(tr.story)}.`);
-  if (D.apod && D.apod.title && D.apod.title !== 'NASA Science') add(31, 'apod-card', `NASA’s ${D.apod.video ? 'film' : 'picture'} of the day is <b>${esc(D.apod.title)}</b>. ${D.apod.video ? 'It plays right on the page.' : 'Worth a look on a big screen.'}`);
+  if (D.apod && D.apod.title && D.apod.title !== 'NASA Science') add(31, 'apod-card', `NASA’s ${D.apod.video ? 'film' : 'picture'} of the day is <b>${esc(D.apod.title)}</b>. ${D.apod.video ? 'It plays right on the page.' : say('apod', 0, 'Worth a look on a big screen.')}`);
   const freshList = (j, field, days) => ((j && j[field]) || []).filter(x => x.date && daysTo(x.date) >= -days);
   const rv = (rests && rests.restaurants || []).flatMap(r => (r.reviews || []).map(v => [r, v])).filter(([, v]) => v.date && daysTo(v.date) >= -4)[0];
   const rr = rv ? rv[0] : rot((rests && rests.restaurants || []).slice(0, 8), 4);
   if (rr) add(rv ? 47 : 30, 'rest-card', rv ? `A fresh review: ${esc(rv[1].outlet)} on <b>${esc(rr.name)}</b> ${rr.neighborhood ? ' in ' + esc(rr.neighborhood) : ''}${rv[1].verdict ? `: “${esc(rv[1].verdict)}”` : ''}.`
     : `Should you dine out, <b>${esc(rr.name)}</b> (${[rr.cuisine && rr.cuisine.toLowerCase(), rr.neighborhood].filter(Boolean).map(x => esc(x)).join(', ')}) is among the newer places worth the trip.`);
   const ff = freshList(finds, 'items', 10)[0] || rot((finds && finds.items || []).slice(0, 8), 5);
-  if (ff) add(28, 'finds-card', `For the larder: <b>${esc(ff.name)}</b>${ff.maker && ff.maker !== ff.name ? ' from ' + esc(ff.maker) : ''}. ${esc((ff.what || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`);
+  if (ff) add(28, 'finds-card', `${say('larder_lead', 0, 'For the larder')}: <b>${esc(ff.name)}</b>${ff.maker && ff.maker !== ff.name ? ' from ' + esc(ff.maker) : ''}. ${esc((ff.what || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`);
   const lm = rot((pdxm && pdxm.releases || []).filter(x => x.local).slice(0, 10), 6);
   if (lm) add(26, 'pdxm-card', `New from Portland: ${esc(lm.artist)}, “${esc(lm.title)}” ${lm.type ? ` (${esc(lm.type.toLowerCase())})` : ''}.`);
   const ce = ((coastEv && coastEv.events) || []).find(e => soon(e.date, 2) || (e.end && e.date <= today && e.end >= today));
@@ -4948,15 +4963,15 @@ async function renderBriefing() {
   if (pulseFresh) { const k = ['blazers', 'timbers', 'f1'][dayNo % 3], f = fans.teams && fans.teams[k];
     if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
   if (brief && brief.updated === today && brief.analysis && brief.analysis.headline)
-    add(53, 'more', `On the markets: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
+    add(53, 'more', `${say('markets_lead', 0, 'On the markets')}: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
   if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)
-    add(36, 'more', `Property, sir: ${esc(brief.realestate.headline.replace(/\.$/, ''))}.`);
+    add(36, 'more', `${say('property_lead', 0, 'Property, sir')}: ${esc(brief.realestate.headline.replace(/\.$/, ''))}.`);
   if (D.poem && D.poem.title) add(14, 'poem-card', `Today’s poem is “${esc(D.poem.title)}” by ${esc(D.poem.poet)}.`);
 
   // Alfred remembers what he told you on earlier mornings (in this browser) and moves on to fresher news.
   let seen = {};
   try { seen = JSON.parse(localStorage.getItem('alfred-seen') || '{}') || {}; } catch (e) { seen = {}; }
-  const noteId = n => n[1] + ':' + n[2].replace(/<[^>]+>/g, '').replace(/[\d.,:%°–-]+/g, '#').slice(0, 90);
+  const noteId = n => n[1] + ':' + n[2].replace(/<span class="aside">.*?<\/span>/g, '').replace(/<[^>]+>/g, '').replace(/[\d.,:%°–-]+/g, '#').slice(0, 90);
   for (const n of notes) {
     const before = (seen[noteId(n)] || []).filter(d => d !== today && daysTo(d) >= -7);
     if (n[0] < 80) n[0] += before.length ? -Math.min(36, 12 * before.length) : 6;
@@ -4974,19 +4989,19 @@ async function renderBriefing() {
     localStorage.setItem('alfred-seen', JSON.stringify(keep));
   } catch (e) { /* private browsing: Alfred simply forgets */ }
   const hr = now.getHours();
-  const hello = hr < 5 ? oneOf(0, 'You’re up late, Master Parker.', 'Burning the midnight oil, sir?', 'Still awake, Master Parker?')
-    : hr < 12 ? oneOf(0, 'Good morning, Master Parker.', 'Good morning, sir. The coffee is on.', 'Morning, Master Parker. Sleep well?', 'Rise and shine, sir.', 'Good morning. The papers have arrived.')
-    : hr < 17 ? oneOf(0, 'Good afternoon, Master Parker.', 'Good afternoon, sir.', 'Afternoon, Master Parker.')
-    : oneOf(0, 'Good evening, Master Parker.', 'Good evening, sir.', 'Evening, Master Parker. A quiet one, I hope.');
+  const hello = hr < 5 ? say('hello_late', 0, 'You’re up late, Master Parker.', 'Burning the midnight oil, sir?', 'Still awake, Master Parker?')
+    : hr < 12 ? say('hello_morning', 0, 'Good morning, Master Parker.', 'Good morning, sir. The coffee is on.', 'Morning, Master Parker. Sleep well?', 'Rise and shine, sir.', 'Good morning. The papers have arrived.')
+    : hr < 17 ? say('hello_afternoon', 0, 'Good afternoon, Master Parker.', 'Good afternoon, sir.', 'Afternoon, Master Parker.')
+    : say('hello_evening', 0, 'Good evening, Master Parker.', 'Good evening, sir.', 'Evening, Master Parker. A quiet one, I hope.');
   const newCount = lead.filter(n => !(seen[noteId(n)] || []).some(d => d !== today)).length;
-  const intro = lead.some(n => n[0] >= 80) ? oneOf(1, 'A few matters require your attention.', 'Some things need seeing to today.', 'I’ve put the urgent matters first.')
-    : lead[0] && lead[0][0] >= 50 ? oneOf(1, 'A quiet day, mostly. A few things worth knowing.', `${newCount > 1 ? `${newCount} new things` : 'Something new'} since yesterday.`, 'Here is what has changed overnight.', 'The overnight post, sir.')
-    : oneOf(1, 'Nothing pressing today, sir. A rare luxury.', 'A calm one. Some reading, if you like.', 'All quiet at the manor. A few diversions below.');
-  const sign = oneOf(2, 'Your servant, Alfred', 'Ever at your service, Alfred', 'I’ll have the car ready. Alfred', 'Do try to eat something. Alfred', 'Yours faithfully, Alfred', 'Mind the weather, sir. Alfred');
+  const intro = lead.some(n => n[0] >= 80) ? say('intro_urgent', 1, 'A few matters require your attention.', 'Some things need seeing to today.', 'I’ve put the urgent matters first.')
+    : lead[0] && lead[0][0] >= 50 ? oneOf(1, say('intro_some', 1, 'A quiet day, mostly. A few things worth knowing.', 'Here is what has changed overnight.', 'The overnight post, sir.'), `${newCount > 1 ? `${newCount} new things` : 'Something new'} since yesterday.`)
+    : say('intro_calm', 1, 'Nothing pressing today, sir. A rare luxury.', 'A calm one. Some reading, if you like.', 'All quiet at the manor. A few diversions below.');
+  const sign = say('sign', 2, 'Your servant, Alfred', 'Ever at your service, Alfred', 'I’ll have the car ready. Alfred', 'Do try to eat something. Alfred', 'Yours faithfully, Alfred', 'Mind the weather, sir. Alfred');
   const item = ([, sec, text]) => `<li><a href="#${sec}">${text}</a></li>`;
   box.innerHTML = `<div class="brief-head"><span class="brief-icon" aria-hidden="true">🎩</span><div><h2 id="brief-h">${hello}</h2><p class="brief-intro">${intro}</p></div></div>
     <ol class="brief-top">${lead.map(item).join('')}</ol>
-    ${reading.length ? `<h3 class="sub">${oneOf(3, 'Fresh this morning', 'New overnight', 'Hot off the press')}</h3><ul class="brief-rest">${reading.map(item).join('')}</ul>` : ''}
+    ${reading.length ? `<h3 class="sub">${say('fresh_heading', 3, 'Fresh this morning', 'New overnight', 'Hot off the press')}</h3><ul class="brief-rest">${reading.map(item).join('')}</ul>` : ''}
     ${rest.length ? `<h3 class="sub">Otherwise, around the manor</h3><ul class="brief-rest">${rest.slice(0, 6).map(item).join('')}</ul>` : ''}
     ${rest.length > 6 ? `<details class="brief-more"><summary>${rest.length - 6} more from Alfred</summary><ul class="brief-rest">${rest.slice(6).map(item).join('')}</ul></details>` : ''}
     <p class="brief-sign">${sign}</p>`;

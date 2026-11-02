@@ -13,6 +13,7 @@ Only the standard library is used, so a plain Python install is enough.
     python local\refresh_lists.py --only jazz,kids # just some lists
     python local\refresh_lists.py --dry-run        # write to local\out\ instead of pushing
     python local\refresh_lists.py --check-sources  # fetch each source and report, no model needed
+    python local\refresh_lists.py --search "query" # one web search through Open WebUI, no model needed
 """
 import argparse
 import csv
@@ -181,7 +182,9 @@ def fetch(url, timeout=30, prefetched=True):
 
 
 def page_text(source, max_age_days=None):
-    """Returns (text, links) for a source: an RSS/Atom feed or an HTML page."""
+    """Returns (text, links) for a source: an RSS/Atom feed, an HTML page or a web search."""
+    if "search" in source:
+        return search_text(web_search(source["search"]))
     body, ctype = fetch(source["url"])
     head = body.lstrip()[:300].lower()
     if "xml" in ctype or head.startswith("<?xml") or "<rss" in head or "<feed" in head:
@@ -230,9 +233,71 @@ def feed_text(body, max_age_days=None):
     return "\n".join(out), links
 
 
+# ---------------------------------------------------------------- web search
+
+OWUI = CONFIG.get("openwebui", {})
+SEARCH_CACHE_PATH = os.path.join(HERE, "cache", "searches.json")
+SEARCHES = {"ok": 0, "failed": 0}  # reported in localstatus.json so the cloud runs know the deep passes happened
+
+
+def web_search(query):
+    """Searches the web through Open WebUI on this PC, which passes the query to its search
+    engine (Tavily) and keeps that engine's key to itself. Returns [{title, url, snippet}].
+
+    Each search spends paid search credits, so the 2:05 and 4:05 runs reuse the 12:05 run's
+    results for the same query, and a day stops at openwebui.max_searches_per_day."""
+    try:
+        cache = json.load(open(SEARCH_CACHE_PATH, encoding="utf-8"))
+    except (OSError, ValueError):
+        cache = {}
+    if cache.get("date") != TODAY.isoformat():
+        cache = {"date": TODAY.isoformat(), "count": 0, "results": {}}
+    if query in cache["results"]:
+        SEARCHES["ok"] += 1
+        return cache["results"][query]
+    SEARCHES["failed"] += 1  # until it succeeds below
+    key = os.environ.get("OPENWEBUI_API_KEY")
+    if not key:
+        raise RuntimeError("no Open WebUI API key (run local\\set_openwebui_key.ps1 once)")
+    if cache["count"] >= OWUI.get("max_searches_per_day", 12):
+        raise RuntimeError("today's web search limit is used up")
+    req = urllib.request.Request(OWUI.get("url", "http://localhost:3000") + "/api/v1/retrieval/process/web/search",
+                                 data=json.dumps({"queries": [query]}).encode(),
+                                 headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
+    cache["count"] += 1  # counted even when it fails, since the engine may have charged for it
+    try:
+        with urllib.request.urlopen(req, timeout=OWUI.get("timeout_seconds", 300)) as resp:
+            items = json.load(resp).get("items") or []
+        cache["results"][query] = [{"title": clean(i.get("title"), 200), "url": i["link"],
+                                    "snippet": clean(i.get("snippet"), 900)} for i in items if i.get("link")]
+    except urllib.error.HTTPError as e:
+        if e.code != 404:  # 404 is Open WebUI's answer for "no results"
+            raise RuntimeError(f"Open WebUI search failed: HTTP {e.code} {e.read()[:200].decode('utf-8', 'replace')}")
+        cache["results"][query] = []
+    finally:
+        os.makedirs(os.path.dirname(SEARCH_CACHE_PATH), exist_ok=True)
+        with open(SEARCH_CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    SEARCHES["failed"] -= 1
+    SEARCHES["ok"] += 1
+    return cache["results"][query]
+
+
+def due(src):
+    """False for a source limited to some weekdays ("days": ["Mon", "Thu"]) on other days, so the
+    weekly deep searches spread over the week instead of spending credits every night."""
+    return not src.get("days") or TODAY.strftime("%a") in src["days"]
+
+
+def search_text(results):
+    """Search results laid out like a feed, so extraction and the link checks treat them the same way."""
+    out = [f"- {r['title']} (date unknown) [{r['url']}]\n  {r['snippet']}" for r in results]
+    return "\n".join(out), {r["url"] for r in results}
+
+
 # ---------------------------------------------------------------- model
 
-def ask_model(task, text, schema):
+def ask_model(task, text, schema, temperature=0.1):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
     messages = [
         {"role": "system", "content": "You extract facts from web pages into JSON. Use only what the page says. "
@@ -245,7 +310,7 @@ def ask_model(task, text, schema):
     payload = {
         "model": LLM["model"],
         "messages": messages,
-        "temperature": 0.1,
+        "temperature": temperature,
         "max_tokens": 3000,
         # Gemma's thinking step is slow on this laptop and not needed for extraction.
         # LM Studio honours reasoning_effort for Gemma 4; enable_thinking is for other models.
@@ -276,6 +341,26 @@ def ask_model(task, text, schema):
             return None
         log("  model reply was not JSON, retrying")
     return None
+
+
+def ask_checked(task, text, schema):
+    """ask_model, then a second look: the model checks its own draft against the same text and fixes
+    or drops anything the text doesn't support. If the review fails, the draft stands."""
+    draft = ask_model(task, text, schema)
+    if draft is None or not LLM.get("review", True):
+        return draft
+    review = ask_model(f"Below is a draft answer you wrote for this task:\n{task}\n\nDRAFT:\n{json.dumps(draft, ensure_ascii=False)}\n\n"
+                       "Check the draft line by line against the page. Drop anything the page doesn't support or that doesn't "
+                       "fit the task, and correct any name, date, time, number, price or link number the page contradicts. "
+                       "Tighten wording that is vague or repetitive. Don't add anything new. Return the corrected answer in "
+                       "the same JSON shape.", text, schema)
+    if not isinstance(review, dict):
+        return draft
+    if isinstance(draft.get("items"), list):
+        review["items"] = (review.get("items") or [])[:len(draft["items"])]  # a review only removes or fixes
+        if len(review["items"]) != len(draft["items"]):
+            log(f"  review dropped {len(draft['items']) - len(review['items'])} of {len(draft['items'])}")
+    return review
 
 
 def _post(path, payload):
@@ -360,6 +445,8 @@ JUNK = {"null", "none", "n/a", "na", "tbd", "tba", "unknown", "multiple dates", 
 def clean(s, limit=400):
     """Plain one-line text; the model's stand-ins for "nothing" ("null", "N/A") become empty."""
     s = " ".join(str(s or "").replace("[…]", "").replace("[...]", "").split())
+    if re.fullmatch(r"[#\d,;\s]*#[#\d,;\s]*", s):  # a stray link number ("#12") where text belongs
+        return ""
     if s.lower().rstrip(".") in JUNK or re.match(r"(no|not) (info|information|details|provided|specified|stated|given)\b", s, re.I):
         return ""
     return s[:limit].rstrip() if s else ""
@@ -512,6 +599,11 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
     `focus` can cut a page down to the lines worth reading, or to nothing."""
     found = []
     for src in sources:
+        if not due(src):
+            continue
+        if "search" in src:
+            # A search has no page of its own to fall back on, so items must link one of its results.
+            src = dict(src, url="search:" + src["search"])
         try:
             text, links = page_text(src, max_age_days)
         except Exception as e:  # noqa: BLE001 - one broken source must not stop the rest
@@ -536,7 +628,7 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
             how = "page unchanged, reused the last answer"
         else:
             log(f"  {src['name']}: asking the model ({len(text)} chars)")
-            result = ask_model(task, text, items_schema(props))
+            result = ask_checked(task, text, items_schema(props))
             raw = (result or {}).get("items") or []
             if result is not None:
                 remember_items(key, digest, raw)
@@ -551,6 +643,8 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
                 if f in r:
                     r[f] = unnumber(r[f], table)
             item = build(r, src, links)
+            if item and "search" in src and src["url"] in json.dumps(item):
+                item = None
             if item:
                 found.append(item)
                 kept += 1
@@ -601,7 +695,8 @@ def refresh_concerts(data, sources):
     from 'missing' to 'shows' once a venue lists a Portland date."""
     ok = future_ok("date", days=400)
     add_acclaimed(data, [s for s in sources if s.get("use") == "albums"])
-    sources = [s for s in sources if s.get("use") != "albums"]
+    add_scored(data, [s for s in sources if s.get("use") == "scores" and due(s)])
+    sources = [s for s in sources if s.get("use") not in ("albums", "scores")]
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("artist")):
@@ -686,6 +781,37 @@ def add_acclaimed(data, sources):
     scored = [m for m in missing if m.get("score") is not None]
     unscored = fresh + [m for m in missing if m.get("score") is None]
     data["missing"] = scored + unscored[:8]
+
+
+def add_scored(data, sources):
+    """Adds well-reviewed new albums with their critic score (Metacritic where there is one) from web
+    searches to 'missing'. The score and album must both appear in the search result the item links."""
+    shows, missing = data.get("shows", []), data.setdefault("missing", [])
+    schema = items_schema({"artist": S, "album": S, "score": {"type": ["integer", "null"]}, "url": S})
+    for src in sources:
+        try:
+            results = web_search(src["search"])
+        except Exception as e:  # noqa: BLE001
+            log(f"  {src['name']}: search failed ({e})")
+            continue
+        text, table = number_links(search_text(results)[0])
+        r = ask_checked("List albums released in the last two months with a critic score (Metacritic metascore where given) "
+                      "of 75 or more. score is the number the result states, or null. url is the result's link number.",
+                      text, schema) or {}
+        snippets = {x["url"]: f"{x['title']} {x['snippet']}".lower() for x in results}
+        for x in r.get("items") or []:
+            url, artist, album = unnumber(x.get("url"), table), clean(x.get("artist"), 120), clean(x.get("album"), 160)
+            seen = snippets.get(url, "")
+            if (not artist or not album or not isinstance(x.get("score"), int) or not 75 <= x["score"] <= 100
+                    or str(x["score"]) not in seen or album.lower() not in seen
+                    or any(same_thing(artist, None, m["artist"], None) for m in shows + missing)):
+                continue
+            log(f"  scored album: {artist}, {album} ({x['score']})")
+            missing.insert(0, {"artist": artist, "album": album, "score": x["score"],
+                               "score_source": "Metacritic" if "metacritic.com" in url else urllib.parse.urlsplit(url).hostname,
+                               "score_url": url, "why": "No Portland date found yet"})
+    scored = [m for m in missing if m.get("score") is not None]
+    data["missing"] = scored[:20] + [m for m in missing if m.get("score") is None]
 
 
 def refresh_events(data, sources):
@@ -860,7 +986,7 @@ def refresh_skioutlook(data, sources):
             log(f"  {src['name']}: fetch failed ({e})")
             continue
         log(f"  {src['name']}: asking the model")
-        r = ask_model("Summarize this ENSO discussion for a skier in Oregon in 3 or 4 plain sentences: the current El Niño or "
+        r = ask_checked("Summarize this ENSO discussion for a skier in Oregon in 3 or 4 plain sentences: the current El Niño or "
                       "La Niña status and strength, the odds for this winter, the date of the next update, and what it usually "
                       "means for Pacific Northwest snowpack.",
                       text[:LLM.get("max_chars_per_page", 9000)],
@@ -921,7 +1047,7 @@ def refresh_teams(data, team_sources):
         if not texts:
             continue
         log(f"  {team}: asking the model")
-        r = ask_model(f"These are the last few days of news and fan posts about the {names.get(team, team)}. Describe the fan mood. "
+        r = ask_checked(f"These are the last few days of news and fan posts about the {names.get(team, team)}. Describe the fan mood. "
                       "mood: two to four words. pulse: two sentences on how fans feel right now and why. storylines: 3 to 5 "
                       "short factual lines (results, injuries, debates, next game). source_urls: up to 6 links from the list "
                       "that back this up.", "\n\n".join(texts), schema)
@@ -975,7 +1101,7 @@ def refresh_marketbrief(data, sources):
     done = 0
     for key, feeds in sources.items():
         texts, links, entries = [], set(), []
-        for src in feeds:
+        for src in [f for f in feeds if due(f)]:
             try:
                 # North American Helium is private and in the news every month or two.
                 text, l = page_text(src, max_age_days={"analysis": 2, "helium": 90}.get(key, 30))
@@ -992,7 +1118,7 @@ def refresh_marketbrief(data, sources):
         log(f"  {key}: asking the model")
         # Google News links are 200-character redirects the model can't copy exactly, so it gets numbers.
         text, table = number_links("\n\n".join(texts))
-        r = ask_model(tasks[key], text, schema)
+        r = ask_checked(tasks[key], text, schema)
         if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
             log(f"  {key}: model reply did not pass checks, keeping the last one")
             continue
@@ -1010,13 +1136,34 @@ def refresh_marketbrief(data, sources):
         else:
             section["items"] = sorted(entries, key=lambda e: e["date"] or "", reverse=True)[:5]
             old = (data.get(key) or {}).get("stats")
-            if old:
-                section["stats"] = old  # figures the cloud run found; they change monthly
+            stats = housing_stats(text, table, links) if key == "realestate" else None
+            if stats:
+                section["stats"] = stats
+            elif old:
+                section["stats"] = old  # last figures found; they change monthly
         data[key] = section
         done += 1
     if done:
         data["updated_at"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return data
+
+
+def housing_stats(text, table, links):
+    """Portland housing figures (median price, inventory, days on market, rents) from the real estate
+    sources, each with the link it came from. A figure is kept only if its value appears in the text."""
+    schema = items_schema({"label": S, "value": S, "change": NS, "source": S, "url": S})
+    r = ask_checked("List up to 5 headline figures for the Portland, Oregon housing market from these items: median sale "
+                  "price, homes for sale, days on market, closed sales, rent, mortgage rate. label names the figure, the area "
+                  "and the month, e.g. 'Median sale price (Portland metro, September)'. value is the figure as written, "
+                  "change is the stated change (e.g. '-1.2% vs a year ago') or null. url is the item's link number.",
+                  text, schema) or {}
+    stats = []
+    for x in r.get("items") or []:
+        url, value = unnumber(x.get("url"), table), clean(x.get("value"), 40)
+        if url in links and re.search(r"\d", value) and value in text and clean(x.get("label")):
+            stats.append({"label": clean(x["label"], 120), "value": value, "change": clean(x.get("change"), 60) or None,
+                          "source": clean(x.get("source"), 80) or urllib.parse.urlsplit(url).hostname, "url": url})
+    return stats[:5]
 
 
 def refresh_coast(data, sources):
@@ -1161,7 +1308,7 @@ def refresh_liquor(data, sources):
                   {"Bourbon", "Whiskey", "Scotch", "Tequila", "Mezcal", "Rum", "Gin", "Vodka", "Brandy", "Liqueur", "Cordial", "Other"})
     lines = "\n".join(f"{r['item code']}: {r.get('description')} {r.get('size')}" + (f" {r['age']}" if r.get("age") else "")
                       + (f" {r['proof']} proof" if r.get("proof") else "") for r in new[:40])
-    result = ask_model("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
+    result = ask_checked("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
                        "For each, give code (exactly as written), name (the description in normal capitalization with abbreviations "
                        f"spelled out, e.g. YO or YR as Year, without the size), category (one of {cats}) and what: a short plain phrase on what it is, using "
                        "only what the description says. Don't add ratings, awards or tasting notes.",
@@ -1192,12 +1339,100 @@ def refresh_liquor(data, sources):
     return data
 
 
+# Alfred's lines for the morning brief: the page fills in the facts, these are his asides around them.
+# key: (kind, when it's used, an example of the old fixed line). "lead" lines go before a colon.
+ALFRED_LINES = {
+    "hello_late": ("sentence", "greeting when Parker is up between midnight and 5 am", "Burning the midnight oil, sir?"),
+    "hello_morning": ("sentence", "morning greeting", "Good morning, sir. The coffee is on."),
+    "hello_afternoon": ("sentence", "afternoon greeting", "Good afternoon, Master Parker."),
+    "hello_evening": ("sentence", "evening greeting", "Evening, Master Parker. A quiet one, I hope."),
+    "intro_urgent": ("sentence", "opening line when something urgent leads the list", "I've put the urgent matters first."),
+    "intro_some": ("sentence", "opening line on an ordinary day with a few things worth knowing", "The overnight post, sir."),
+    "intro_calm": ("sentence", "opening line when nothing is pressing", "All quiet at the manor. A few diversions below."),
+    "sign": ("signoff", "sign-off at the bottom; must end with the name Alfred", "Do try to eat something. Alfred"),
+    "fresh_heading": ("lead", "heading over the new reading for the morning", "Hot off the press"),
+    "nws_alert": ("sentence", "after an official weather warning", "I would take it seriously, sir."),
+    "forecast_alert": ("sentence", "after a rough-weather forecast", "Batten down accordingly."),
+    "rain": ("sentence", "after a rainy day's forecast", "The umbrella is by the door."),
+    "air_bad": ("sentence", "after unhealthy air quality", "I would keep the windows shut and the exertion indoors."),
+    "air_ok": ("sentence", "after moderate, harmless air quality", "Nothing to trouble yourself over."),
+    "commute": ("sentence", "after a slow drive warning", "Allow for it."),
+    "pdx": ("sentence", "after airport delays", "Should you be collecting anyone, check before you leave."),
+    "sick": ("sentence", "after flu or RSV running high", "Wash your hands, sir."),
+    "kids_last_day": ("sentence", "after a family event's last day is today", "Your little one may never forgive you otherwise."),
+    "jazz_lead": ("lead", "introduces a jazz show", "For something civilized"),
+    "iss": ("sentence", "after a space station pass tonight", "Bright enough to wave at."),
+    "full_moon": ("sentence", "after the full moon", "Gotham's criminals are fond of it."),
+    "rare_bird": ("sentence", "after a rare bird sighting nearby", "Binoculars are in the hall closet."),
+    "ski": ("sentence", "after fresh snow on Mt. Hood", "Shall I wax the skis?"),
+    "coast_wild": ("sentence", "after huge waves at the coast", "Admire it from the window."),
+    "bluray": ("sentence", "after a 4K Blu-ray sale ending soon", "The collection could use reinforcement."),
+    "mushrooms": ("sentence", "after good mushroom foraging conditions", "A basket in the boot would not go amiss."),
+    "gear": ("sentence", "after a studio gear bargain on Craigslist", "One might move quickly, sir."),
+    "sunset": ("sentence", "after a promising sunset", "I'd step outside, sir."),
+    "solar_best": ("sentence", "after the solar panels' best day in a while", "Splendid."),
+    "apod": ("sentence", "after NASA's picture of the day", "Worth a look on a big screen."),
+    "science_lead": ("lead", "introduces a science finding", "A finding worth your coffee"),
+    "news_lead": ("lead", "introduces the big news story", "The talk of the morning"),
+    "read_lead": ("lead", "introduces a long read", "For a long sit with your tea"),
+    "larder_lead": ("lead", "introduces a new local food product", "For the larder"),
+    "markets_lead": ("lead", "introduces the market summary", "On the markets"),
+    "property_lead": ("lead", "introduces the Portland housing summary", "Property, sir"),
+    "win_lead": ("lead", "introduces a Blazers or Timbers win", "Good news"),
+    "loss_lead": ("lead", "introduces a Blazers or Timbers loss", "I regret to report"),
+}
+
+
+def refresh_alfred(data, sources):
+    """Fresh asides for Alfred, the butler who writes the brief at the top of the page, so he doesn't
+    say the same thing every morning. The page falls back to its own fixed lines for any key missing here."""
+    recent = {k: v for k, v in (data.get("recent") or {}).items() if v >= (TODAY - dt.timedelta(days=21)).isoformat()}
+    lines = {}
+    keys = list(ALFRED_LINES)
+    for start in range(0, len(keys), 10):
+        batch = keys[start:start + 10]
+        spec = "\n".join(f'- {k} ({ALFRED_LINES[k][0]}): {ALFRED_LINES[k][1]}. Old line: "{ALFRED_LINES[k][2]}"' for k in batch)
+        used = list(recent)[-60:]
+        schema = {"type": "object", "properties": {k: {"type": "array", "items": S, "minItems": 3, "maxItems": 5} for k in batch},
+                  "required": batch, "additionalProperties": False}
+        r = ask_model("You write lines for Alfred, a dry, warm, very British butler (in the manner of Batman's Alfred) who "
+                      "writes Parker a short morning note about his day in Portland, Oregon. For each key below, write 4 "
+                      "fresh, different lines in his voice. Keep each under 14 words. Never state facts, numbers, names, "
+                      "places or dates: the page adds those around your line. A sentence ends with . ? or !. A lead is a "
+                      "short phrase with no ending punctuation, since a colon follows it. A signoff ends with ', Alfred' or "
+                      "'. Alfred'. Address him as sir or Master Parker now and then, not every line. Be witty but kind, and "
+                      "vary the jokes. Don't reuse any of these recent lines: " + json.dumps(used, ensure_ascii=False),
+                      spec, schema, temperature=0.9)  # a little invention is the point here
+        for k in batch:
+            kind = ALFRED_LINES[k][0]
+            good = []
+            for line in (r or {}).get(k) or []:
+                line = clean(line, 120).replace("’", "'").strip('"')
+                if (not line or len(line.split()) > 16 or re.search(r"[\d<>{}\[\]]", line) or line in recent or line in good
+                        or (kind == "lead" and re.search(r"[.:!?]$", line))
+                        or (kind == "sentence" and not re.search(r"[.!?]$", line))
+                        or (kind == "signoff" and not re.search(r"[,.]\s*Alfred$", line))):
+                    continue
+                good.append(line)
+            if len(good) >= 2:
+                lines[k] = good
+        log(f"  lines {start + 1}-{start + len(batch)}: {sum(len(lines.get(k, [])) for k in batch)} kept")
+    if not lines:
+        return data  # keep yesterday's
+    for v in lines.values():
+        for line in v:
+            recent[line] = TODAY.isoformat()
+    return {"note": "Alfred's asides for the morning brief, written nightly by the local model.", "date": TODAY.isoformat(),
+            "lines": lines, "recent": recent}
+
+
 REFRESHERS = {
     "jazz": refresh_jazz, "concerts": refresh_concerts, "events": refresh_events, "kids": refresh_kids,
     "bluray": refresh_bluray, "foodfinds": refresh_foodfinds, "planahead": refresh_planahead,
     "skioutlook": refresh_skioutlook, "teams": refresh_teams, "marketbrief": refresh_marketbrief,
     "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
     "liquor": refresh_liquor,
+    "alfred": refresh_alfred,
 }
 
 
@@ -1261,8 +1496,15 @@ def main():
     ap.add_argument("--only", help="comma-separated list names, e.g. jazz,kids")
     ap.add_argument("--dry-run", action="store_true", help="write results to local/out/ instead of pushing")
     ap.add_argument("--check-sources", action="store_true", help="fetch every source and report, then stop")
+    ap.add_argument("--search", metavar="QUERY", help="run one web search through Open WebUI, print the results, then stop")
     args = ap.parse_args()
     watch_parent()
+    if args.search:
+        try:
+            print(json.dumps(web_search(args.search), indent=2, ensure_ascii=False))
+        except RuntimeError as e:
+            sys.exit(str(e))
+        return 0
     if args.check_sources:
         check_sources()
         return 0
@@ -1317,7 +1559,9 @@ def main():
 
     # Tell the cloud runs what was done tonight, so they only step in when this PC didn't.
     status = {"date": TODAY.isoformat(), "ran_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-              "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names}}
+              "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names},
+              "web_search": "ok" if SEARCHES["ok"] and not SEARCHES["failed"] else "partly failed" if SEARCHES["ok"]
+                            else "failed" if SEARCHES["failed"] else "none due"}
     if args.only:  # a partial run keeps tonight's earlier results for the other lists
         try:
             before = json.loads(git("show", f"{base}:web/localstatus.json"))

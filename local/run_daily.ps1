@@ -38,6 +38,36 @@ function Loaded-Models {
     try { (Invoke-RestMethod "$($cfg.lmstudio.url)/v1/models" -TimeoutSec 10).data.id } catch { $null }
 }
 
+# Web searches go through Open WebUI (Docker container "open-webui"). Without its key or the
+# container, the search sources are skipped and everything else runs as before.
+$keyFile = Join-Path $here 'openwebui_key.dat'
+$owuiStarted = $false; $dockerStarted = $false
+function OpenWebUI-Up {
+    try { Invoke-RestMethod "$($cfg.openwebui.url)/health" -TimeoutSec 10 | Out-Null; $true } catch { $false }
+}
+if (Test-Path $keyFile) {
+    try {
+        $secure = Get-Content $keyFile | ConvertTo-SecureString
+        $env:OPENWEBUI_API_KEY = [Net.NetworkCredential]::new('', $secure).Password
+    } catch { "Couldn't read the Open WebUI key: $_" }
+}
+if ($env:OPENWEBUI_API_KEY -and -not (OpenWebUI-Up)) {
+    docker info *> $null
+    if ($LASTEXITCODE -ne 0) {
+        $dd = Join-Path $env:ProgramFiles 'Docker\Docker\Docker Desktop.exe'
+        if (Test-Path $dd) {
+            Start-Process $dd; $dockerStarted = $true
+            for ($i = 0; $i -lt 36; $i++) { Start-Sleep 5; docker info *> $null; if ($LASTEXITCODE -eq 0) { break } }
+        }
+    }
+    docker start open-webui *> $null
+    if ($LASTEXITCODE -eq 0) {
+        $owuiStarted = $true
+        for ($i = 0; $i -lt 36 -and -not (OpenWebUI-Up); $i++) { Start-Sleep 5 }
+    }
+}
+"Open WebUI search: key $(if ($env:OPENWEBUI_API_KEY) {'found'} else {'missing'}); up: $(OpenWebUI-Up); started by this run: $owuiStarted"
+
 $before = Loaded-Models
 $serverWasRunning = $null -ne $before
 if (-not $serverWasRunning) { Lms @('server', 'start'); Start-Sleep 5 }
@@ -66,6 +96,8 @@ $code = $proc.ExitCode
 
 if (-not $modelWasLoaded) { Lms @('unload', $model) }
 if (-not $serverWasRunning) { Lms @('server', 'stop') }
+if ($owuiStarted) { docker stop open-webui *> $null }
+if ($dockerStarted) { docker desktop stop *> $null }
 "Finished with exit code $code"
 Stop-Transcript | Out-Null
 exit $code

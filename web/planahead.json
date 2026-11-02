@@ -312,6 +312,38 @@
           "url": "https://seatgeek.com/blog/queens-of-the-stone-age-announce-2027-perfecth-world-tour-dates-presales-tickets-openers-and-more"
         }
       ]
+    },
+    {
+      "title": "Oregon Sno-Park permit (required Nov 1 to Apr 30)",
+      "kind": "Permit",
+      "action": "Buy an annual permit online from Oregon DMV or a local vendor before your first Mt. Hood snow trip; they aren't sold at the Sno-Parks.",
+      "starts": null,
+      "by": null,
+      "why": "The Forest Service says permits are required at designated Sno-Parks Nov 1 through Apr 30, and Oregon DMV sells annual permits online Oct 1 through Apr 15 with a printable two-week interim permit.",
+      "sources": [
+        {
+          "name": "Mt. Hood NF Sno-Park alert",
+          "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
+        },
+        {
+          "name": "Oregon DMV rule DMV 17-2026",
+          "url": "https://www.oregon.gov/odot/Get-Involved/OAR%20folders/2025-AONs/DMV_17-2026.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Gracie Abrams, Moda Center (Jan 31 and Feb 1, 2027)",
+      "kind": "Tickets",
+      "action": "Tickets are on sale; buy face value through Ticketmaster or the Moda Center rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "Two Portland nights on The Look at My Life Tour, per KOIN.",
+      "sources": [
+        {
+          "name": "KOIN",
+          "url": "https://www.koin.com/news/portland/gracie-abrams-bringing-the-look-at-my-life-tour-to-moda-center-for-two-nights/amp/"
+        }
+      ]
     }
   ]
 }

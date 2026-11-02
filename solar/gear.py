@@ -10,6 +10,7 @@ quartile stands in for the usual price. Anything at 70% or less of it is a deal.
 import html
 import json
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -184,9 +185,13 @@ NOT_USED = {"brand-new", "b-stock", "mint-inventory"}  # Reverb ignores conditio
 BUNDLE = re.compile(r"\b(bundle|lot|package|pack|kit|studio)\b|\+", re.I)
 PARTS = re.compile(ACCESSORY.pattern + r"|\b(replacement|switch|battery|potentiometer|pot|keys?|contacts?|jack|pcb|board|"
                    r"power supply|adapter|cord|tubes|strings|decal|faceplate|panel|screws?|only)\b", re.I)
+# Words that make a pricier version of a model. A comparable carrying one the Craigslist title doesn't is a
+# different thing: a "Spider 112" is not a "Spider Valve 112".
+VARIANT = re.compile(r"\b(valve|tube|signature|artist|custom|shop|elite|ultra|professional|reissue|limited|anniversary|"
+                     r"relic|masterbuilt|mk ?i+|deluxe|select|usa|american|japan|vintage|original|nos)\b", re.I)
 
 
-def _reverb(query, model):
+def _reverb(query, model, title_query=""):
     """Lower-quartile asking price of used Reverb listings whose titles carry the model words, or None if too few.
     New, B-stock and bundled listings don't count, since they are what made the old medians run high."""
     prices = []
@@ -200,7 +205,8 @@ def _reverb(query, model):
                     and (x.get("condition") or {}).get("slug") not in NOT_USED
                     and not (BUNDLE.search(title) and not BUNDLE.search(query))
                     and not (PARTS.search(title) and not PARTS.search(query))
-                    and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])):
+                    and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])
+                    and not any(v.group(0).lower() not in title_query for v in VARIANT.finditer(title))):
                 prices.append(float(x["price"]["amount"]))
         if len(prices) >= 12 or len(data.get("listings") or []) < 50:
             break
@@ -224,7 +230,7 @@ def deals(found, cache, reverb_budget=25):
         match = None if ACCESSORY.search(title) else next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
         ref = {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
         q = _query(title).lower()
-        model, key = _model_words(q), "v3 " + q  # older cache entries came from looser matches
+        model, key = _model_words(q), "v4 " + q  # older cache entries came from looser matches
         if ref or not (BRANDS.search(q) and model):
             pass  # a title like "hollow body electric guitar" has nothing fair to compare against
         elif key in cache:
@@ -233,25 +239,68 @@ def deals(found, cache, reverb_budget=25):
             reverb_budget -= 1
             try:
                 # Brand and model only: Reverb wants every word, and sellers word the rest differently.
-                got = _reverb(f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model)
+                got = _reverb(f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model, q)
                 cache[key] = ref = {"typical": round(got[0]), "basis": f"low end of {got[1]} matching used listings on Reverb"} if got else None
             except Exception:
                 pass
-        drums = bool(DRUMS.search(title))
-        if not ref or not ref["typical"]:
-            if watch:  # on the wish list: worth a look even with nothing to price it against
-                out.append(item | {"typical": None, "basis": None, "pct_off": None, "drums": drums, "flip_profit": None, "watch": watch})
-            continue
-        ratio = item["price"] / ref["typical"]
-        profit = round(ref["typical"] * RESALE - item["price"])
-        hourly = round(profit / (trip_hours(item.get("where")) + SELL_HOURS))
-        # Any gear at all, if it would resell at a profit worth the trouble and the time.
-        flip = profit >= FLIP_PROFIT and hourly >= FLIP_HOURLY
-        if watch or ((flip or ratio <= (DRUM_DEAL if drums else DEAL)) and ratio >= 0.15):  # far below usually means a part, a typo or a scam
-            out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)),
-                               "drums": drums, "flip_profit": profit if flip else None,
-                               "flip_hourly": hourly if flip else None, "watch": watch})
+        scored = _score(item, ref, watch) if (ref and ref["typical"]) or watch else None
+        if scored:
+            out.append((item, ref, watch, scored))
     for k in list(cache)[:-400]:
         cache.pop(k)
+    # The search page can be wrong about the price ("from $225" when the ride is $400), so the post itself
+    # is read for each one that would show, and its price is the one that counts.
+    out.sort(key=lambda t: _rank(t[3]))
+    picks = []
+    for item, ref, watch, scored in out[:25]:
+        post = read_post(item["url"])
+        if post and post["gone"]:
+            continue
+        if post and post["price"] and post["price"] != item["price"]:
+            item = item | {"price": post["price"], "listed_price": item["price"]}
+            scored = _score(item, ref, watch)
+        if scored:
+            picks.append(scored | {"post_checked": bool(post)})
+        if len(picks) >= 15:
+            break
+    return sorted(picks, key=_rank)
+
+
+def _rank(x):
     # Wish-list items first, then flips by what they pay per hour, then drums, then the rest by discount.
-    return sorted(out, key=lambda x: (not x["watch"], -(x.get("flip_hourly") or 0), not x["drums"], -(x["pct_off"] or 0)))[:15]
+    return (not x["watch"], -(x.get("flip_hourly") or 0), not x["drums"], -(x["pct_off"] or 0))
+
+
+def _score(item, ref, watch):
+    """The deal as shown, or None if it isn't one at this price. resale_* say what reselling it would pay even
+    when that's under the flip bar, so the card can say so."""
+    drums = bool(DRUMS.search(item["title"]))
+    if not ref or not ref["typical"]:  # on the wish list: worth a look even with nothing to price it against
+        return item | {"typical": None, "basis": None, "pct_off": None, "drums": drums, "flip_profit": None,
+                       "flip_hourly": None, "resale_profit": None, "resale_hourly": None, "watch": watch}
+    ratio = item["price"] / ref["typical"]
+    profit = round(ref["typical"] * RESALE - item["price"])
+    hourly = round(profit / (trip_hours(item.get("where")) + SELL_HOURS))
+    # Any gear at all, if it would resell at a profit worth the trouble and the time.
+    flip = profit >= FLIP_PROFIT and hourly >= FLIP_HOURLY
+    if not (watch or ((flip or ratio <= (DRUM_DEAL if drums else DEAL)) and ratio >= 0.15)):  # far below: a part, a typo or a scam
+        return None
+    return item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)), "drums": drums,
+                   "flip_profit": profit if flip else None, "flip_hourly": hourly if flip else None,
+                   "resale_profit": profit, "resale_hourly": hourly, "watch": watch}
+
+
+def read_post(url):
+    """The price on the post itself, and whether it's sold, pending or gone. None if the page can't be read."""
+    try:
+        page = _get(url)
+    except urllib.error.HTTPError as e:
+        return {"price": None, "gone": e.code in (404, 410)}
+    except Exception:
+        return None
+    price = re.search(r'class="price">\s*\$([\d,]+)', page)
+    body = re.search(r'<section id="postingbody">(.*?)</section>', page, re.S)
+    text = _text(body.group(1)) if body else ""
+    gone = bool(re.search(r"this posting has (been deleted|expired)|flagged for removal", page, re.I)
+                or re.search(r"\b(sold|sale pending|pending sale|pending pickup)\b", text[:300], re.I))
+    return {"price": int(price.group(1).replace(",", "")) if price else None, "gone": gone}

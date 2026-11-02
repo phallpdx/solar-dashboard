@@ -278,11 +278,11 @@ def parked(cache, home_lat, home_lon, now_utc, radius_km=5):
             continue
         km = _km(ship["lat"], ship["lon"], home_lat, home_lon)
         if km <= radius_km and (_big(ship) or km <= 1.5):
-            found.append((not _big(ship), km, ship))
+            found.append((not _big(ship), km, ship, pos_at))
     if not found:
         return None, []
     found.sort(key=lambda f: (f[0], f[1]))
-    _, km, ship = found[0]
+    _, km, ship, pos_at = found[0]
     stop, code = ship["stop"], ship.get("type")
     origin, dest = route(ship.get("destination"))
     origin_how = "ais" if origin else None
@@ -300,7 +300,7 @@ def parked(cache, home_lat, home_lon, now_utc, radius_km=5):
     eta = _eta(ship.get("eta"), now_utc)
     nav = ship.get("nav")
     others = [{"name": (s.get("name") or f"MMSI {s['mmsi']}").title(), "km": round(k, 1)}
-              for small, k, s in found[1:] if not small][:3]
+              for small, k, s, _ in found[1:] if not small][:3]
     return {
         "name": (ship.get("name") or f"MMSI {ship['mmsi']}").title(),
         "type": type_name(code) if code else "Vessel",

@@ -124,6 +124,14 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNdktyRXBXcG5Hc01NNGo3bTZRbXlqUjg2T3YxWlNvaDFqbHlkMFBZZXpSS2hSNl8xa2lNV2FEQVBfa05VY2dEY0ZHWUZpZzZBLUFGcjI2Z1kzWTZpamYwMFgyWTBSRS1XRFlhNHd3c0VnVl9mUlk5c3NRbDlYajRVVnk2UWZtRzMwOUxlNjZ2Q3A2Zjc5eEFuMm00c07SAaIBQVVfeXFMUHJfYU9ZeklNTDZyZGZpUC1oWlY5SVhjeDN4TzRCY3dEYXNWMTNyOTZiZndZMHZmalo5ck9nXzhBbXF1Zm95QWlqMjFUVkFSWTlIWEV1aEVtcWIzYXhQa2NmSmFrWFVlNGgweVdJdmhTbWk4UW9kU2FyZHFHM09SUEc3T2dfbEhhV2FlM3JxOTNuNE9EVzhBWFZJSEFGSWlXMUln?oc=5"
+      },
+      {
+        "name": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "name": "Freddie Mac PMMS via GlobeNewswire, Oct 29, 2026",
+        "url": "https://www.globenewswire.com/news-release/2026/10/29/3391637/0/en/mortgage-rates-decline-further-to-7-24.html"
       }
     ],
     "by": "local model",
@@ -161,28 +169,49 @@
     ],
     "stats": [
       {
-        "label": "Median sale price (Portland metro, May)",
-        "value": "$525,000",
-        "change": "+12.9% vs a year ago",
-        "source": "www.seanzbecker.com",
-        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
+        "label": "Closed sales (Portland metro, September)",
+        "value": "1,752",
+        "change": "-4.0% vs a year ago",
+        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Median sale price (Portland metro, March 2026)",
-        "value": "$543,800",
-        "change": "+3.6%",
-        "source": "greenbuckrealestate.com",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "label": "Pending sales (Portland metro, September)",
+        "value": "1,760",
+        "change": "-17.9% vs a year ago",
+        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Total market time (Portland metro, March 2026)",
-        "value": "79 days",
-        "change": "-13%",
-        "source": "greenbuckrealestate.com",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "label": "New listings (Portland metro, September)",
+        "value": "2,487",
+        "change": "about flat vs a year ago",
+        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "label": "Inventory (Portland metro, September)",
+        "value": "4.2 months",
+        "change": "+0.4 months vs August",
+        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "label": "Average market time (Portland metro, September)",
+        "value": "68 days",
+        "change": "",
+        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "label": "30-year fixed mortgage rate (U.S., week of Oct 29)",
+        "value": "7.24%",
+        "change": "down from 7.32% a week earlier; 6.17% a year ago",
+        "source": "Freddie Mac PMMS via GlobeNewswire, Oct 29, 2026",
+        "url": "https://www.globenewswire.com/news-release/2026/10/29/3391637/0/en/mortgage-rates-decline-further-to-7-24.html"
       }
     ]
   },
-  "updated_at": "2026-11-02T11:15:53Z",
+  "updated_at": "2026-11-02T13:39:24Z",
   "updated": "2026-11-02"
 }

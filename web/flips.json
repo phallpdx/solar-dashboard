@@ -2,54 +2,6 @@
   "note": "Craigslist listings that could resell for $150+ after about 15% in fees and pay $50+ an hour counting the drive and selling time. Resale prices come from used and sold prices found online.",
   "flips": [
     {
-      "title": "2013 Tesla Model S Performance Sedan 4D AC Electric Motor - CUDL CERTI",
-      "item": "Tesla Model S Performance",
-      "price": 14995,
-      "value": 29124,
-      "profit": 9760,
-      "hourly": 3253,
-      "where": "Milwuakie Oregon",
-      "category": "Collectibles",
-      "url": "https://www.craigslist.org/view/d/portland-2013-tesla-model-performance/OODNix7W8RG9Q6ZgzAGdiQ",
-      "first_seen": "2026-11-01",
-      "sources": [
-        {
-          "name": "cargurus.com",
-          "url": "https://www.cargurus.com/Cars/t-Used-Tesla-Model-S-Performance-AWD-t85305"
-        },
-        {
-          "name": "autotrader.com",
-          "url": "https://www.autotrader.com/cars-for-sale/tesla/model-s/performance"
-        }
-      ]
-    },
-    {
-      "title": "2004 Volvo XC90 AWD All Wheel Drive XC 90 T6 4dr Turbo SUV",
-      "item": "Volvo XC90 T6",
-      "price": 2995,
-      "value": 13617,
-      "profit": 8579,
-      "hourly": 2860,
-      "where": "TRADES WELCOME!!",
-      "category": "Collectibles",
-      "url": "https://www.craigslist.org/view/d/portland-2004-volvo-xc90-awd-all-wheel/AHjOJFzW8RGhRN23Pjy6uw",
-      "first_seen": "2026-11-01",
-      "sources": [
-        {
-          "name": "cargurus.com",
-          "url": "https://www.cargurus.com/Cars/t-Used-Volvo-XC90-T6-Momentum-AWD-t57531"
-        },
-        {
-          "name": "edmunds.com",
-          "url": "https://www.edmunds.com/used-volvo-xc90"
-        },
-        {
-          "name": "kbb.com",
-          "url": "https://www.kbb.com/cars-for-sale/used/volvo/xc90"
-        }
-      ]
-    },
-    {
       "title": "Vintage SteelCase Ergonomic Office Chair",
       "item": "SteelCase Ergonomic Office Chair",
       "price": 80,

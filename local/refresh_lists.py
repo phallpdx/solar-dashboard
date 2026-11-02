@@ -343,6 +343,26 @@ def ask_model(task, text, schema, temperature=0.1):
     return None
 
 
+def ask_checked(task, text, schema):
+    """ask_model, then a second look: the model checks its own draft against the same text and fixes
+    or drops anything the text doesn't support. If the review fails, the draft stands."""
+    draft = ask_model(task, text, schema)
+    if draft is None or not LLM.get("review", True):
+        return draft
+    review = ask_model(f"Below is a draft answer you wrote for this task:\n{task}\n\nDRAFT:\n{json.dumps(draft, ensure_ascii=False)}\n\n"
+                       "Check the draft line by line against the page. Drop anything the page doesn't support or that doesn't "
+                       "fit the task, and correct any name, date, time, number, price or link number the page contradicts. "
+                       "Tighten wording that is vague or repetitive. Don't add anything new. Return the corrected answer in "
+                       "the same JSON shape.", text, schema)
+    if not isinstance(review, dict):
+        return draft
+    if isinstance(draft.get("items"), list):
+        review["items"] = (review.get("items") or [])[:len(draft["items"])]  # a review only removes or fixes
+        if len(review["items"]) != len(draft["items"]):
+            log(f"  review dropped {len(draft['items']) - len(review['items'])} of {len(draft['items'])}")
+    return review
+
+
 def _post(path, payload):
     req = urllib.request.Request(LLM["url"] + path, data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json"})
@@ -608,7 +628,7 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
             how = "page unchanged, reused the last answer"
         else:
             log(f"  {src['name']}: asking the model ({len(text)} chars)")
-            result = ask_model(task, text, items_schema(props))
+            result = ask_checked(task, text, items_schema(props))
             raw = (result or {}).get("items") or []
             if result is not None:
                 remember_items(key, digest, raw)
@@ -775,7 +795,7 @@ def add_scored(data, sources):
             log(f"  {src['name']}: search failed ({e})")
             continue
         text, table = number_links(search_text(results)[0])
-        r = ask_model("List albums released in the last two months with a critic score (Metacritic metascore where given) "
+        r = ask_checked("List albums released in the last two months with a critic score (Metacritic metascore where given) "
                       "of 75 or more. score is the number the result states, or null. url is the result's link number.",
                       text, schema) or {}
         snippets = {x["url"]: f"{x['title']} {x['snippet']}".lower() for x in results}
@@ -966,7 +986,7 @@ def refresh_skioutlook(data, sources):
             log(f"  {src['name']}: fetch failed ({e})")
             continue
         log(f"  {src['name']}: asking the model")
-        r = ask_model("Summarize this ENSO discussion for a skier in Oregon in 3 or 4 plain sentences: the current El Niño or "
+        r = ask_checked("Summarize this ENSO discussion for a skier in Oregon in 3 or 4 plain sentences: the current El Niño or "
                       "La Niña status and strength, the odds for this winter, the date of the next update, and what it usually "
                       "means for Pacific Northwest snowpack.",
                       text[:LLM.get("max_chars_per_page", 9000)],
@@ -1027,7 +1047,7 @@ def refresh_teams(data, team_sources):
         if not texts:
             continue
         log(f"  {team}: asking the model")
-        r = ask_model(f"These are the last few days of news and fan posts about the {names.get(team, team)}. Describe the fan mood. "
+        r = ask_checked(f"These are the last few days of news and fan posts about the {names.get(team, team)}. Describe the fan mood. "
                       "mood: two to four words. pulse: two sentences on how fans feel right now and why. storylines: 3 to 5 "
                       "short factual lines (results, injuries, debates, next game). source_urls: up to 6 links from the list "
                       "that back this up.", "\n\n".join(texts), schema)
@@ -1098,7 +1118,7 @@ def refresh_marketbrief(data, sources):
         log(f"  {key}: asking the model")
         # Google News links are 200-character redirects the model can't copy exactly, so it gets numbers.
         text, table = number_links("\n\n".join(texts))
-        r = ask_model(tasks[key], text, schema)
+        r = ask_checked(tasks[key], text, schema)
         if not r or len(clean(r.get("summary"), 900)) < 80 or len(clean(r.get("headline"))) < 20:
             log(f"  {key}: model reply did not pass checks, keeping the last one")
             continue
@@ -1132,7 +1152,7 @@ def housing_stats(text, table, links):
     """Portland housing figures (median price, inventory, days on market, rents) from the real estate
     sources, each with the link it came from. A figure is kept only if its value appears in the text."""
     schema = items_schema({"label": S, "value": S, "change": NS, "source": S, "url": S})
-    r = ask_model("List up to 5 headline figures for the Portland, Oregon housing market from these items: median sale "
+    r = ask_checked("List up to 5 headline figures for the Portland, Oregon housing market from these items: median sale "
                   "price, homes for sale, days on market, closed sales, rent, mortgage rate. label names the figure, the area "
                   "and the month, e.g. 'Median sale price (Portland metro, September)'. value is the figure as written, "
                   "change is the stated change (e.g. '-1.2% vs a year ago') or null. url is the item's link number.",
@@ -1288,7 +1308,7 @@ def refresh_liquor(data, sources):
                   {"Bourbon", "Whiskey", "Scotch", "Tequila", "Mezcal", "Rum", "Gin", "Vodka", "Brandy", "Liqueur", "Cordial", "Other"})
     lines = "\n".join(f"{r['item code']}: {r.get('description')} {r.get('size')}" + (f" {r['age']}" if r.get("age") else "")
                       + (f" {r['proof']} proof" if r.get("proof") else "") for r in new[:40])
-    result = ask_model("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
+    result = ask_checked("These are bottles newly listed by the Oregon liquor stores, one per line as code: description size. "
                        "For each, give code (exactly as written), name (the description in normal capitalization with abbreviations "
                        f"spelled out, e.g. YO or YR as Year, without the size), category (one of {cats}) and what: a short plain phrase on what it is, using "
                        "only what the description says. Don't add ratings, awards or tasting notes.",

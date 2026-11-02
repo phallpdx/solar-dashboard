@@ -38,6 +38,11 @@ new in Oregon, not confirmed on the St. Johns shelf.
    is never touched.
 4. Unloads the model and stops the server if it started them.
 
+Every answer gets a second look: the model checks its draft against the same
+page, drops what the page doesn't support and fixes wrong names, dates and
+links (turn it off with `"review": false` under `lmstudio` in `sources.json`).
+Only changed pages are asked, so this roughly doubles model time for those.
+
 If the model or a source fails, that list simply keeps yesterday's items.
 Logs are in `local\logs\` (kept 30 days).
 

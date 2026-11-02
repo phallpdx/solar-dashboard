@@ -1435,6 +1435,14 @@ def refresh_flips(data, sources):
     for x in candidates[:cfg.get("verify_per_run", 5)]:
         if any(f["url"] == x["url"] for f in flips):
             continue
+        post = gear.read_post(x["url"])  # the search page's price can be wrong ("from $225"); the post's counts
+        if post and post["gone"]:
+            continue
+        if post and post["price"] and post["price"] != x["price"]:
+            log(f"  {x['item']}: listed at ${x['price']}, the post asks ${post['price']}")
+            x = dict(x, price=post["price"])
+            if x["guess"] * gear.RESALE - x["price"] < gear.FLIP_PROFIT:
+                continue
         try:
             results = web_search(f"{x['item']} used price sold")
         except Exception as e:  # noqa: BLE001

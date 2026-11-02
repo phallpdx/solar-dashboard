@@ -26,6 +26,14 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQeXA0ZWpQd2xLWUc2THhjN3RJWVF1NnZZV0gwYmJKbFNsTWZHVm5BUWZNTmRRZVF1RjJWbk0zSXpwTDhmbldmdWhXRXRfTjVOVmhiYkk0czN1VjFzdDlUZkVLaFRGR1NFRWdiMmIycmRFY2FRRDJuQ3ZtdlNsZnpBZmZleTFjUGQwZ0RZVWxqX2t4UQ?oc=5"
+      },
+      {
+        "name": "FXEmpire: The Week Ahead: AI Earnings, U.S. Midterms and Jobs Data Test U.S. Stocks",
+        "url": "https://www.fxempire.com/forecasts/article/the-week-ahead-ai-earnings-u-s-midterms-and-jobs-data-test-u-s-stocks-1641771"
+      },
+      {
+        "name": "Business Recorder (Reuters): Wall Street Week Ahead: Midterm elections, earnings, jobs data loom for AI-wary market",
+        "url": "https://www.brecorder.com/news/40446970/wall-street-week-ahead-midterm-elections-earnings-jobs-data-loom-for-ai-wary-market"
       }
     ],
     "by": "local model",
@@ -35,7 +43,11 @@
       "Massive $6.3bn Binance cryptocurrency heist",
       "#1"
     ],
-    "watch": []
+    "watch": [
+      "Tue Nov 3: U.S. midterm elections, which week-ahead previews flag as a market focus (FXEmpire, Reuters via Business Recorder).",
+      "Mon Nov 2 and Tue Nov 3: earnings from Apple and Palantir (Monday after the close) and AMD (Tuesday), per FXEmpire's week-ahead preview.",
+      "Fri Nov 6, 8:30 a.m. ET: October jobs report; FXEmpire says economists expect unemployment around 4.2%."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -156,6 +168,22 @@
         "date": "2026-10-31",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOb2dUSmxfaEJONUdQUURzZTZzNnJTOGR5RXJIZ25kRDhLOUdiQThZQ3BfUUg3QkJMcVNBb0tmSFRrM2pDVllrOHMwM1k5d1lFdWRieE9BNk5PT2VVMHhiMU52dnZ5VXozTDRjTjNVMXBYaDkzZTZVN1dPZWlwMW9TQ3J1VGpyYXp6QXIyRDdR?oc=5",
         "source": "Google News: mortgage rates"
+      }
+    ],
+    "stats": [
+      {
+        "label": "Median sale price (Portland metro, July 2026, RMLS data)",
+        "value": "$555,000",
+        "change": "flat vs a year ago",
+        "source": "Cano Real Estate: Portland Metro Real Estate Market Report",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "label": "Median sale price (Portland, Jan to Jun 2026 average, Redfin data)",
+        "value": "$533,506",
+        "change": "+0.8% vs a year ago",
+        "source": "Stacker: Portland, Oregon mid-year housing market review",
+        "url": "https://stacker.com/stories/oregon/portlandor/portland-oregon-mid-year-housing-market-review"
       }
     ]
   },

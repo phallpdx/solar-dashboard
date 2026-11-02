@@ -2,6 +2,23 @@
   "updated": "2026-11-01",
   "restaurants": [
     {
+      "name": "Jojos",
+      "neighborhood": "Gresham",
+      "cuisine": "Tavern",
+      "price": "",
+      "opened": "2026-10-30",
+      "summary": "A tavern with great fries.",
+      "reviews": [
+        {
+          "outlet": "Fast Food Club",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-30",
+          "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNdWNvaXdXdkI3bUx4WGxsSWhPSmppY2J2OWJCSUVtN0xHRjFVNk9POWVIVVAwdk90YndpMFR4VGtQb19jbFU1UmhKRUo3WEM0SmN6TzRxOE9sQ1AtUnlyWl9mYTJtajlzT1dqSVh3TmNQRURTa0VuOW9rcENvSlROU3dBQnNtUlRtbnNjU0tDNEh1MWpEYUpxX1JOM3JmdHg3QW5sSDhNbC1tcTNzVF9veEcybXlIUQ?oc=5"
+        }
+      ]
+    },
+    {
       "name": "The Mindaro, JdV by Hyatt",
       "neighborhood": "Portland",
       "cuisine": "Hotel/Dining",
@@ -410,23 +427,6 @@
           "verdict": "A tasty lesson in Thai noodle soup",
           "date": "2026-08-14",
           "url": "https://www.wweek.com/restaurants/2026/08/14/guay-tiew-is-a-tasty-lesson-in-thai-noodle-soup/"
-        }
-      ]
-    },
-    {
-      "name": "OK Chicken & Khao Soi",
-      "neighborhood": "SE Division",
-      "cuisine": "Northern Thai",
-      "price": "",
-      "opened": "Jan 2026",
-      "summary": "Earl Ninsom (Eem, Yaowarat) took over the original Pok Pok space; Portland Monthly calls it easily the buzziest local opening of the year, with a flamethrower-hot som tum Lao.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "Jordan Michelman",
-          "verdict": "Easily the buzziest local opening of the year",
-          "date": "2026-05-14",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/2026/05/thai-restaurant-review-ok-chicken-yui-bangkok-belly"
         }
       ]
     }

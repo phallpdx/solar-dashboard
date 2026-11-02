@@ -2,24 +2,6 @@
   "updated": "2026-11-01",
   "items": [
     {
-      "title": "Kann: December reservations",
-      "kind": "Book",
-      "action": "Book on Resy Nov 1 at noon, when the next month's tables are released.",
-      "starts": "2026-11-01",
-      "by": null,
-      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
-      "sources": [
-        {
-          "name": "Kann FAQ",
-          "url": "https://kannrestaurant.com/faqs"
-        },
-        {
-          "name": "Kann on Resy",
-          "url": "https://resy.com/cities/portland-or/venues/kann"
-        }
-      ]
-    },
-    {
       "title": "Oregon Sno-Park permit season starts",
       "kind": "Permit",
       "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual (also sold online at DMV2U), $9 for three days or $4 for one day from vendors or a DMV office.",
@@ -42,6 +24,20 @@
         {
           "name": "Mt. Hood NF Sno-Park alert",
           "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
+        }
+      ]
+    },
+    {
+      "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
+      "kind": "Tickets",
+      "action": "Buy face value from the Oregon Symphony for either night at the Arlene Schnitzer Concert Hall, not resale.",
+      "starts": null,
+      "by": "2026-11-11",
+      "why": "Two concerts with the band backed by its hometown orchestra, per the Oregon Symphony.",
+      "sources": [
+        {
+          "name": "Oregon Symphony",
+          "url": "https://orsymphony.org/productions/2627/portugal-the-man-with-the-oregon-symphony/"
         }
       ]
     },
@@ -92,6 +88,20 @@
       ]
     },
     {
+      "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
+      "kind": "Buy",
+      "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
+      "starts": "2026-11-21",
+      "by": null,
+      "why": "The farm posted that it opens for the 2026 season on Saturday, Nov 21.",
+      "sources": [
+        {
+          "name": "Christmas Mountain on Facebook",
+          "url": "https://www.facebook.com/ChristmasMountain/"
+        }
+      ]
+    },
+    {
       "title": "Blazers vs. Warriors on Black Friday, Moda Center (Nov 27)",
       "kind": "Tickets",
       "action": "Get seats early for the 6:30 p.m. tip-off.",
@@ -102,6 +112,24 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Kann: January reservations",
+      "kind": "Book",
+      "action": "Book on Resy Dec 1 at noon, when the next month's tables are released.",
+      "starts": "2026-12-01",
+      "by": null,
+      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
+      "sources": [
+        {
+          "name": "Kann FAQ",
+          "url": "https://kannrestaurant.com/faqs"
+        },
+        {
+          "name": "Kann on Resy",
+          "url": "https://resy.com/cities/portland-or/venues/kann"
         }
       ]
     },
@@ -246,6 +274,68 @@
         {
           "name": "Slickdeals (Nov 2025 sale)",
           "url": "https://slickdeals.net/f/18763741-semi-annual-criterion-collection-sale-at-barnes-noble-starts-friday-november-7th"
+        }
+      ]
+    },
+    {
+      "title": "Sylvan Esso, Crystal Ballroom (Feb 22 and 23, 2027)",
+      "kind": "Tickets",
+      "action": "Tickets are on sale now; buy face value through the venue's ticketing for either night before the ballroom shows sell through.",
+      "starts": null,
+      "by": null,
+      "why": "Two Portland nights on the band's 2026-27 tour; the Portland on-sale date wasn't confirmed in the sources found.",
+      "sources": [
+        {
+          "name": "Stereoboard (Feb 22)",
+          "url": "https://www.stereoboard.com/sylvan-esso-tickets/portland/2027-02-22"
+        },
+        {
+          "name": "Stereoboard (Feb 23)",
+          "url": "https://www.stereoboard.com/sylvan-esso-tickets/portland/2027-02-23"
+        },
+        {
+          "name": "BrooklynVegan tour announcement",
+          "url": "https://www.brooklynvegan.com/sylvan-esso-share-hot-slob-announce-2026-2027-tour/"
+        }
+      ]
+    },
+    {
+      "title": "CHVRCHES, Revolution Hall (Mar 8, 2027)",
+      "kind": "Tickets",
+      "action": "Artist presale began Oct 27; check Revolution Hall for remaining tickets before the small room sells through.",
+      "starts": null,
+      "by": null,
+      "why": "New album All the King's Men and a 2027 North American tour; the North American general on-sale date wasn't confirmed in the sources found.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/10/chvrches-announce-2027-north-american-tour-and-new-album/"
+        },
+        {
+          "name": "JamBase listing",
+          "url": "https://www.jambase.com/show/chvrches-revolution-hall-20270308"
+        }
+      ]
+    },
+    {
+      "title": "Queens of the Stone Age with Pixies, Moda Center (May 9, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Thu Oct 29 at 10 a.m.; buy face value through Live Nation rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "Perfecth World Tour with Pixies and Portland's Wheelchair Sports Camp opening; artist presales ran Oct 27 and 28.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/10/queens-of-the-stone-age-2027-tour-pixies/"
+        },
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_42ZzIK2/queens-of-the-stone-age-perfecth-world-tour"
+        },
+        {
+          "name": "SeatGeek presale guide",
+          "url": "https://seatgeek.com/blog/queens-of-the-stone-age-announce-2027-perfecth-world-tour-dates-presales-tickets-openers-and-more"
         }
       ]
     }

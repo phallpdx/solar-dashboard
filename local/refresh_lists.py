@@ -1383,6 +1383,94 @@ ALFRED_LINES = {
 }
 
 
+def refresh_flips(data, sources):
+    """Things on Portland Craigslist that Parker could buy and resell for $150+ that pays $50+ an hour.
+
+    Gemma screens every new listing in the categories in sources.json for a known brand and model priced
+    well under what it resells for. Its guesses only pick what to check: the few best are then priced from
+    a web search of used and sold prices, and a figure only counts if the result it cites says it."""
+    sys.path.insert(0, REPO)
+    from solar import gear  # the music-gear scan's Craigslist reader and drive-time estimate
+    cfg = CONFIG.get("flips", {})
+    found = []
+    for src in sources:
+        try:
+            got = gear.listings(gear.SEARCH.rsplit("/", 1)[0] + "/" + src["category"], [], cfg.get("min_price", 50))
+            found += [dict(x, category=src["name"]) for x in got]
+        except Exception as e:  # noqa: BLE001
+            log(f"  {src['name']}: fetch failed ({e})")
+    if not found:
+        return data
+    live = {x["url"] for x in found}
+    cutoff = (TODAY - dt.timedelta(days=10)).isoformat()
+    screened = {u: d for u, d in (data.get("screened") or {}).items() if d >= cutoff}
+    fresh = [x for x in found if x["url"] not in screened and not gear.SKIP.search(x["title"])]
+    log(f"  {len(found)} listings, {len(fresh)} not screened before")
+
+    # 1. Gemma picks likely bargains. Nothing is shown on its word alone.
+    candidates = []
+    schema = items_schema({"n": {"type": "integer"}, "item": S, "value": {"type": "integer"}})
+    for start in range(0, len(fresh), 60):
+        batch = fresh[start:start + 60]
+        lines = "\n".join(f"{i}. ${x['price']} | {x['title']}" for i, x in enumerate(batch))
+        r = ask_model("Each line is a Craigslist for-sale listing: number, asking price, title. Pick only listings that "
+                      "name a specific brand and model you know well (not generic, handmade, broken or parts items) AND "
+                      "whose asking price looks at least 40% below what that exact item reliably resells for used. "
+                      "item: its brand and model as a buyer would search for it. value: its typical used resale price "
+                      "in US dollars. Return an empty list if none qualify; most batches have none.", lines, schema) or {}
+        for c in r.get("items") or []:
+            if isinstance(c.get("n"), int) and 0 <= c["n"] < len(batch) and isinstance(c.get("value"), int):
+                x = batch[c["n"]]
+                if c["value"] * gear.RESALE - x["price"] >= gear.FLIP_PROFIT and clean(c.get("item")):
+                    candidates.append(dict(x, item=clean(c["item"], 80), guess=c["value"]))
+        for x in batch:
+            screened[x["url"]] = TODAY.isoformat()
+    log(f"  {len(candidates)} possible flips to check")
+
+    # 2. The best few are priced from real used and sold prices found by web search.
+    hours = lambda x: gear.trip_hours(x.get("where")) + gear.SELL_HOURS  # noqa: E731
+    candidates.sort(key=lambda x: -(x["guess"] * gear.RESALE - x["price"]) / hours(x))
+    price_schema = items_schema({"price": {"type": "integer"}, "quote": S, "url": S})
+    flips = [f for f in data.get("flips") or [] if f["url"] in live]  # still listed
+    for x in candidates[:cfg.get("verify_per_run", 5)]:
+        if any(f["url"] == x["url"] for f in flips):
+            continue
+        try:
+            results = web_search(f"{x['item']} used price sold")
+        except Exception as e:  # noqa: BLE001
+            log(f"  {x['item']}: search failed ({e})")
+            break  # out of searches for today; the rest wait for tomorrow
+        text, table = number_links(search_text(results)[0])
+        r = ask_checked(f"From these search results, list the prices they state for a USED {x['item']}: sold listings, "
+                        "used listings or used price guides. Skip prices for new ones, parts, bundles and other models. "
+                        "price: the dollar figure. quote: the exact words around it from the result. url: the result's "
+                        "link number.", text, price_schema) or {}
+        snippets = {res["url"]: f"{res['title']} {res['snippet']}" for res in results}
+        prices, cites = [], []
+        for p in r.get("items") or []:
+            url, quote = unnumber(p.get("url"), table), clean(p.get("quote"), 300)
+            if (isinstance(p.get("price"), int) and p["price"] > 0 and quote and quote in snippets.get(url, "")
+                    and re.search(r"\$?\b" + re.escape(f"{p['price']:,}").replace(",", ",?") + r"\b", quote)):
+                prices.append(p["price"])
+                if url not in [c["url"] for c in cites]:
+                    cites.append({"name": urllib.parse.urlsplit(url).hostname.replace("www.", ""), "url": url})
+        if len(prices) < 2:
+            log(f"  {x['item']}: not enough used prices found to judge it")
+            continue
+        value = sorted(prices)[(len(prices) - 1) // 2]  # the lower middle, to stay on the safe side
+        profit = round(value * gear.RESALE - x["price"])
+        hourly = round(profit / hours(x))
+        log(f"  {x['item']}: asking ${x['price']}, resells for about ${value} ({len(prices)} prices), ${profit} profit, ${hourly}/hr")
+        if profit >= gear.FLIP_PROFIT and hourly >= gear.FLIP_HOURLY and x["price"] >= 0.15 * value:
+            flips.append({"title": x["title"], "item": x["item"], "price": x["price"], "value": value, "profit": profit,
+                          "hourly": hourly, "where": x.get("where"), "category": x["category"], "url": x["url"],
+                          "first_seen": TODAY.isoformat(), "sources": cites[:4]})
+    flips.sort(key=lambda f: -f["hourly"])
+    return {"note": "Craigslist listings that could resell for $150+ after about 15% in fees and pay $50+ an hour "
+                    "counting the drive and selling time. Resale prices come from used and sold prices found online.",
+            "flips": flips[:12], "checked": len(found), "screened": screened}
+
+
 def refresh_alfred(data, sources):
     """Fresh asides for Alfred, the butler who writes the brief at the top of the page, so he doesn't
     say the same thing every morning. The page falls back to its own fixed lines for any key missing here."""
@@ -1433,6 +1521,7 @@ REFRESHERS = {
     "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
     "liquor": refresh_liquor,
     "alfred": refresh_alfred,
+    "flips": refresh_flips,
 }
 
 

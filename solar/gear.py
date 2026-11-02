@@ -117,13 +117,13 @@ def _text(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s))).strip()
 
 
-def listings():
-    """Newest instrument listings with a price, from the no-script search results, plus a search for each
-    watched item so an older listing for one isn't missed."""
+def listings(search=SEARCH, queries=WATCH_QUERIES, min_price=40):
+    """Newest listings with a price from a Craigslist category's no-script search results (musical instruments
+    unless told otherwise), plus a search for each watched item so an older listing for one isn't missed."""
     out, seen = [], set()
-    for extra in [{}] + [{"query": q} for q in WATCH_QUERIES]:
+    for extra in [{}] + [{"query": q} for q in queries]:
         try:
-            page = _get(SEARCH + "?" + urllib.parse.urlencode({"sort": "date", "min_price": 40, **extra}))
+            page = _get(search + "?" + urllib.parse.urlencode({"sort": "date", "min_price": min_price, **extra}))
         except Exception:
             if not extra:
                 raise

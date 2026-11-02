@@ -46,6 +46,16 @@ Only changed pages are asked, so this roughly doubles model time for those.
 If the model or a source fails, that list simply keeps yesterday's items.
 Logs are in `local\logs\` (kept 30 days).
 
+## Flips
+
+`flips` looks for anything on Portland Craigslist (the categories under
+`lists.flips` in `sources.json`) that Parker could resell for $150+ after
+about 15% in fees, paying $50+ an hour counting the pickup drive and selling
+time. Gemma screens each new listing once for a known brand and model priced
+well under resale. Its guesses only choose what to check: the best few a run
+(`flips.verify_per_run`, 5) are priced from a web search of used and sold
+prices, and a price only counts if the quoted result really says it.
+
 ## Web search through Open WebUI
 
 A source in `sources.json` can be a web search instead of a page:

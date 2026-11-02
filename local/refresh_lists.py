@@ -425,6 +425,8 @@ JUNK = {"null", "none", "n/a", "na", "tbd", "tba", "unknown", "multiple dates", 
 def clean(s, limit=400):
     """Plain one-line text; the model's stand-ins for "nothing" ("null", "N/A") become empty."""
     s = " ".join(str(s or "").replace("[…]", "").replace("[...]", "").split())
+    if re.fullmatch(r"[#\d,;\s]*#[#\d,;\s]*", s):  # a stray link number ("#12") where text belongs
+        return ""
     if s.lower().rstrip(".") in JUNK or re.match(r"(no|not) (info|information|details|provided|specified|stated|given)\b", s, re.I):
         return ""
     return s[:limit].rstrip() if s else ""

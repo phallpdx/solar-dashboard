@@ -1,12 +1,12 @@
 {
   "updated": "2026-11-02",
-  "updated_at": "2026-11-02T09:19:41Z",
+  "updated_at": "2026-11-02T11:13:46Z",
   "teams": {
     "blazers": {
       "mood": "cautiously optimistic",
       "pulse": "Fans are celebrating a blowout win over Utah but worry about Scoot Henderson's performance. A difficult November schedule looms ahead.",
       "storylines": [
-        "Deni Avdija led the 112-90 win over Jazz",
+        "Deni Avdija led 112-90 win over Jazz",
         "Ja Morant sidelined with hamstring injury",
         "Robert Williams III cleared for Nuggets game",
         "Scoot Henderson facing scrutiny over low BPM"
@@ -36,12 +36,12 @@
     },
     "timbers": {
       "mood": "optimistic and hyped",
-      "pulse": "Fans are celebrating a 3-1 win over Houston that puts them in eighth place. They are motivated by the playoff push.",
+      "pulse": "Fans are energized after three straight wins. They believe playoff spots are within reach.",
       "storylines": [
-        "Timbers beat Houston Dynamo FC 3-1 on Nov 1, 2026",
-        "Team is currently in 8th place fighting for playoffs",
-        "Vincent Janssen scored one goal and two assists",
-        "Seattle's loss keeps Timbers' playoff hopes alive"
+        "Timbers beat Houston 3-1",
+        "Three consecutive wins achieved",
+        "Playoff spot in contention",
+        "Finn Surman named Supporters Player of the Year"
       ],
       "sources": [
         {
@@ -72,8 +72,8 @@
       "storylines": [
         "Kimi Antonelli becomes youngest F1 World Champion",
         "Max Verstappen wins Mexico City GP",
-        "Ferrari teammate battle between Hamilton and Leclerc",
-        "Alpine duo stripped of points after penalties"
+        "Hamilton and Leclerc clash for position",
+        "Alpine duo lose points due to penalties"
       ],
       "sources": [
         {

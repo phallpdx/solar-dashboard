@@ -1,6 +1,40 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "restaurants": [
+    {
+      "name": "Rambler Bar",
+      "neighborhood": "Portland",
+      "cuisine": "Bar",
+      "price": "",
+      "opened": "2026-10-23",
+      "summary": "A bar under new ownership after 11 years.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-23",
+          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQeXdzS1ZPZ2dHbmRpR3Y0NzQwelp0LS1yRmdaV2dZTGdXbEh6SF9qX0dpbTJ0NlpCeUZRR2tNamtpaXJYMWk0enNMOEJuQjJoQ2dUSlQzS3V3bmVNQUtQWnlhRU5hM3BFZkJ1dzducmtOZF9hZ3dmdm5KeUVKZ2hkVUlwTHFoNXE4XzNGSTVlQ2JjZw?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Verdure",
+      "neighborhood": "Chubby Bunny",
+      "cuisine": "Dinner takeover",
+      "price": "",
+      "opened": "2026-10-29",
+      "summary": "Verdure takes over evenings at Chubby Bunny.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-29",
+          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "Jojos",
       "neighborhood": "Gresham",
@@ -231,6 +265,13 @@
       "summary": "Family-run business serving conchas and pan de muerto in a community gathering space.",
       "reviews": [
         {
+          "outlet": "OregonLive.com",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-28",
+          "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPR1hFYVpxQVFHU184LWZGMEsxVm9KMGhjWVpWTnc3UGdia3dnWkRzSW5CTlIxT0xvUVdjTnNtaGhZb05PczF1RVhsMlFLTVdmanIxb2R1bTdOYWNGUy1MNV9hLW5zc0xEUTd4TTl5R25ZampWUDMwZU5Od29sSHN1RlZ6OHh1MkVDX1RmTU83bVhWel9RLVlaQTUtOHFVMDFWSExwOWNlZ0U5LWxjQTJBRjVSaHktWHVPLXZRM1VlenNTdWR0UXN4Y3VNelRKSnJWUGJMeVNvbndFaTI1M3pQU091TncxcU5MdHFJ?oc=5"
+        },
+        {
           "outlet": "The Oregonian food",
           "critic": "",
           "verdict": "",
@@ -393,40 +434,6 @@
           "verdict": "First look",
           "date": "2026-09-18",
           "url": "https://www.axios.com/local/portland/2026/09/18/sushi-fukami-omakase-cody-auger"
-        }
-      ]
-    },
-    {
-      "name": "Marée",
-      "neighborhood": "Concordia (NE Killingsworth)",
-      "cuisine": "French-Spanish seafood",
-      "price": "",
-      "opened": "Jul 2026",
-      "summary": "From Fantino's Garrett McAleese in the former Dame space, a fish-forward bistro inspired by San Sebastián that cooks peak-season Oregon ingredients simply.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "Caitlin Pangares",
-          "verdict": "Brings the Basque coast to NE Killingsworth",
-          "date": "2026-09-09",
-          "url": "https://www.portlandmercury.com/food-and-drink/restaurant-openings/maree-brings-the-basque-coast-to-ne-killingsworth/"
-        }
-      ]
-    },
-    {
-      "name": "Guay Tiew",
-      "neighborhood": "Pearl District",
-      "cuisine": "Thai noodle soup",
-      "price": "",
-      "opened": "Apr 2026",
-      "summary": "Counter-service boat noodle shop from the Thai Peacock and Khao Moo Dang team; WW says any worry about blandness vanishes at the first bite, with the wheat noodles the top pick.",
-      "reviews": [
-        {
-          "outlet": "Willamette Week",
-          "critic": "Matthew Trueherz",
-          "verdict": "A tasty lesson in Thai noodle soup",
-          "date": "2026-08-14",
-          "url": "https://www.wweek.com/restaurants/2026/08/14/guay-tiew-is-a-tasty-lesson-in-thai-noodle-soup/"
         }
       ]
     }

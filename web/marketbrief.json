@@ -1,11 +1,19 @@
 {
   "analysis": {
-    "headline": "Major indices fell as tech sell-offs and AI concerns weighed on markets.",
-    "summary": "Stocks declined following a $5 trillion AI wipeout. Bonds saw the 10-year Treasury yield drop while oil prices plummeted. Gold rose slightly amid volatility, whereas Bitcoin faced outflows after a record crypto hack. The broader trend shows significant uncertainty regarding AI investments.",
+    "headline": "Major indices fell sharply as oil prices retreated and tech stocks faced pressure.",
+    "summary": "Stocks declined with the Nasdaq leading losses amid chip sector weakness. Oil prices dropped nearly 4%. Gold rose slightly while Bitcoin saw a minor decrease. Markets face upcoming earnings, jobs data, and midterm elections.",
     "sources": [
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNY0kwVjNUVm5US2JvNGQ3SXA5eXlvMnVEdjZXNjdwRGZ0b1licWxjQkY2Slpmb0Y2dzhjS1FNc3Q2NlExX3lBSHk0dkRkZjlxNzk0eDBVbmlOMnlMN1RmVXM2VVVmanBnbWtkR3h1ZVhlRDItT1pvckNudG9HQ0NhQUt2Wi1oVmppS0lPYkx5dDBMMExJWkloTEpFejBxRWg4VkVfMzFkRDljenhUdHIwYzBGVVJYNGNhX2I2cA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQWmVOUTJ5cEo0bUU2Unp2V093dXNIN3hEaHB5VXRrZlBYRjc5RkVzM2lraGRpZGNIM0s0Uk15bVdPOHNSNGJsN29Ma3lVTzBleWd2WHRuSGlzOXVtV193RE8wbXgyaGNjdGdJRkUxdkR2ajN0MGh2STQ2T2p3YTVMTnRVME8?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQdndJTkZzZVB3bUs3SWZPMjZXZ3JzbnlHbWJoak5WWlJWTnQwZFpJNWZpd0tQb3RYanMyckQxMmVjWm5nQnk2Tzl6QjVCOVFmN21RNks4Q2tsM2tUODBSMldsdVQ3eDBoX3UyZDZMM3JybmZVRVhxT2lReGVMMEJuMTNvLTNUbmR0TmVqeXRXV1FZSVdUV1ZtcWVhQQ?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBrbkQzMEJlOVN5RDBtcEZuU2VQSkZydW01ejJqY2hObWJXOUl0dUhUMWVoVXRwZWhsU3BIRkVGR0lhc3JmM0w4ak5ybUpCVElXOWxKMm1tQ3ByOE5TNzNJQm5YUDFaa2hRNENZNDJacnlMci1tZmU00gF8QVVfeXFMUHRLQWRCRkw3cUdsOVZINFdPc1VsLVN4UzJKT1BmX2ZaMlBrcDM2WER5cXY1LTdZQjZXMy1FVUU3RFhFcHVxcXA5eEx0a041Vlo2Y3BlVXN2S0hpTG9tVVV3SndoWVRMU2JweGZKUVNpVWxJeXk4Sno4a2hmZQ?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -13,30 +21,26 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOblJlVnh4RWJiczhOcWhGOUNBREhRcmwzUkpDWmt3U0JTMEtkUzhvcFFUVWFyWDNkbUpLUjdSSzFwYlBDVWtobUpGb0FzWVdBRS1qbXlXVHFtRUJRd1RwT1ctVFpSc2Rmczl2RTBobmJ5TWJrV3FldHlCdlRxbDNFdE50ZjBNNVZZdjk2ZA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNOFBJUXdTTkZwUjdOeTJUcDI0OUZsbUpUSkZQNXlha3BpbGxIMUJrTjBGbnFVWjNSRUlsRDVkOThnRHB6MDU3R1NSSXdycmZZN0VRcjU0a2RodDEwMW5VVlZwaTBnN0ZtR1p1YVZkS29yNmhHRTNReUVHVklxcjh1QkdqNllBS29MTUdOZWNPWU1ZOVhlRnhzbWJtZ296a0s2X1lrMWVKVTI1SEg4aElIeTZ0S2plQy0yeDNNQmwyZml6Y0dMOENxU1FkNDF1RDBrNnFUYW9mel9vU1g3b2tZ?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOLXlkUVhJS3B6Y1JETnlNMFNfcnFJR1g2TkI0Q0QtcWJnVlZzVnJUbnY0ZUNzV3B2Qjl1dlhkSkZ4c0YwQzNCM0lueHE5Uk9zeTBnM0k2U2puM25rbmZFdVZXcDAzYTFDcGgydENMQjZOUnhrM1gwaERMYm9rSGU0Rm1hX1otQjVxdzRIbkQ2bjk0V3NaSkw0QmVaOGhqNlB2WWZfRGFDVFAzVnhGTFpjM0FlWlJzNjRsX0FKT0liZDJCVlJORm5uOHF3N2xlTUxNU1FiVnRVTlk3RldvZ1JBNDM2RGd6UQ?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBabVFHSUg2RlNyUVdrekNWMk1UMGhiVmtrOTRiSGNJaDk4N2RUeXhCekNacnFEYjRDR1Z3SkNDeHJVUWJMcFE2V1JMLVRlSThCZmx2TmxNNm5JQjQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPNGVTNnRya2xiS01lZGhBQ0JvRnQ0VWt0b180TXJ5ZmZNcHVGMFFZUFZNaFhlUGIwcjcyUDFPZG1HM1dXcG5rRU9SN2RjbGRHN256N2kzT3FWUnNuTFBJR3V0ZGROYlgtQVM4SjlrakptODdUaFp3bi1kOWlkZXQwWHVDRldzd3ZDT1E3TktTeEtDTjZWb3ptVA?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "$5 trillion AI stock wipeout [#2]",
-      "Tech rout fueling fears [#7]",
-      "$3.6bn Binance outflow following hack [#1]"
+      "Oil price retreat",
+      "Tech/chip sector weakness"
     ],
     "watch": [
-      "US Treasury debt-issuance guidance overhaul on Wednesday [#5]"
+      "Earnings season",
+      "Jobs data"
     ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is onstream producing approximately 73 MMcf/y. Production is sold under long-term contracts to global industrial gas distributors. This supports the potential construction of Canada's first regional helium liquefier.",
+    "summary": "The Stewart Valley plant is onstream producing approximately 73 MMcf/y. This facility supports construction of the first regional helium liquefier in Canada. Production is sold under long-term contracts to major global industrial gas distributors.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -72,34 +76,34 @@
         "source": "Google News: helium market"
       },
       {
+        "title": "Canada-EU pact: New funding coming for critical mineral projects",
+        "date": "2026-10-31",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOQUdtaWE3N200UHBSVG85YnE2SWx1Tkk0RVctSzZWYlI4RmxDMHRkUUxiMHQ4aGd2UjNzUVJrRFdYeUN5SElvaGVXRlRJQTZ1eFNBWm40OE1aOTBTY1gxNEptV04tQTg1SXpNaFZBa2poaC1RTzNuNEdqTHhKcGpWaTd4a3VsUkNCM2pMOGJYSXpERVNrazRnN3loc0U?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
         "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
         "date": "2026-10-28",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
         "source": "Google News: North American Helium"
       },
       {
+        "title": "U.S. Declares Helium a Critical Material",
+        "date": "2026-10-28",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5fV2ZDeFB2b1JvMzNtbW56ZlptMzBUQ0FuQ1N6aEV0d29sN2sxcE1wN09ScHNBbnN4WGNoVHRDNExqNHk3VU5uZjczRlA5cE8yeC1tT0dZdjR5R3FSb21lT0VMUHRycVQ4T0Z1U3RsV1Y2WTFYNnUxWk9Eb2hjZnM?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
         "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
         "date": "2026-10-28",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
         "source": "Google News: helium market"
-      },
-      {
-        "title": "Canada’s largest helium purification facility opens in Saskatchewan",
-        "date": "2026-10-23",
-        "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdjFySlZiaXdGa0dRQmVYcW5MQ1RSWmtpSE01Z3JwNHQyUUkzZGtXdkN1c3h6M3FEVERkdk90RXZsdnNPa2pJTVF1NV9XWGIyLS1hOGIwTFdDMExGWjVtZnVwSVBMdmEzNmdja1huV3JRYlctbGtDa08xT0xaUFNnVWRwR2dfNDQ2WklmYjBELWh0N2gwNFBUVm4yNXNCaWVuSkQ0MW1zSWpmNzBVLXd6cjFrblpmcElMZ2w0WElPdl9URDBEM0E?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
-        "title": "New helium facility boosts Saskatchewan’s production capacity",
-        "date": "2026-10-18",
-        "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPYkZhYjNqaVlFeFhwbTZtSUMxNGd0VGUtUEFYdkNRTzVnV0x0RkxtaFNtdFlxZW5JbktmcUdaMnZMelB4RTZ2bmpuTFZrYmt5S29ZVy0ydFozY2tTb0lHbzhlWWM0dFBkcjQ0T2RWUWwzMVctcFpVQUM3dThNb2hXZmQwNWR1eXlPaHJtN0NOb093b19YRmxFdXNfbkVmRms?oc=5",
-        "source": "Google News: North American Helium"
       }
     ]
   },
   "realestate": {
     "headline": "The Portland housing market is experiencing stagnation and shifting dynamics.",
-    "summary": "Sellers are lowering prices in a stagnant market while homebuyers back out of deals. Inventory levels have decreased. Mortgage rates fell for two straight weeks but remain elevated. Renters face pressure from a punishing housing market.",
+    "summary": "Sellers are lowering prices in a stagnant market while inventory piles up. Home sales show a slight uptick despite mortgage rate threats. Renters face pressure from a punishing housing market.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -107,19 +111,19 @@
       },
       {
         "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNRDdRR201dE1lemNSVE0tc2VDd21HbDdVR0Z4VzV2LV9JRU43Y0lMYWpiLXdiNXoyTVFYZC1IMFFBLXNuM256WXlSOHl2c2QxVU43cnRTcW1jZFB5WC04ZjVOZjNyNzlGZWZhc1VRSVhBOG5yX2RNTmRFSUNKX2VBdlVaM2o?oc=5"
+      },
+      {
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnd1QnhKLU56LXM4S180RkRzTVhzVEFSYWdZX2tEZ2drU1VTVGZqNXJOSnkxQ1l4MlZndE94T1FQYkk2ODVXUGk0RmFLQzhRb18ySFR5aGZlQXloUmxqZWozOU50YTlBZlFiRndTc3kyZ0l5SEtPZXBIclRSazBycEgwNEJjclFJNy00Xzc0UVFUYU53aVVieHFaQ1RBOVhRLUlWQ0Y0bzc5TkQtRWpB?oc=5"
+      },
+      {
+        "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNY25jeU5DZ0pBeUdkaHpoZFBLejRwanFmSW1HbWRmUkQxdXMzMURVREM4X25xUkVNZGdiT2xEd1hNQzRraVJvV1liMkhSSjNqS2d0QmMtNENWMzFsWnM2ck0tN2VxSFFiVklnSHdBUkhLNWZDU2VhLW9BYTFuODFuNGFBTmk0bGxwaklkOHlB0gGTAUFVX3lxTE9iUzR0Q3d5RkxzLThMUGFtNEhpWWtOcXBqdTNJU0hVMlRCUFdUNGRzMGllZU5tSDZMTThMc3lJdng3OUFuZGR0M2diVmIyNzhqN0MzUHZyZ3JILU9MUGdGVkIzbk80TWU3V0JNMFZ1M3ROZ0k1VDNZdnhHSXU0M2toaXlCeWtDTnlySkFpdGtEWTlKdw?oc=5"
-      },
-      {
-        "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
-      },
-      {
-        "name": "Web search: Portland housing data",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNdktyRXBXcG5Hc01NNGo3bTZRbXlqUjg2T3YxWlNvaDFqbHlkMFBZZXpSS2hSNl8xa2lNV2FEQVBfa05VY2dEY0ZHWUZpZzZBLUFGcjI2Z1kzWTZpamYwMFgyWTBSRS1XRFlhNHd3c0VnVl9mUlk5c3NRbDlYajRVVnk2UWZtRzMwOUxlNjZ2Q3A2Zjc5eEFuMm00c07SAaIBQVVfeXFMUHJfYU9ZeklNTDZyZGZpUC1oWlY5SVhjeDN4TzRCY3dEYXNWMTNyOTZiZndZMHZmalo5ck9nXzhBbXF1Zm95QWlqMjFUVkFSWTlIWEV1aEVtcWIzYXhQa2NmSmFrWFVlNGgweVdJdmhTbWk4UW9kU2FyZHFHM09SUEc3T2dfbEhhV2FlM3JxOTNuNE9EVzhBWFZJSEFGSWlXMUln?oc=5"
       }
     ],
     "by": "local model",
@@ -131,27 +135,27 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Current ARM mortgage rates report for Nov. 2, 2026",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9iN05vaDY4SmZyNUozRFRwYlM0U3laWkJDTzl2ZDB4X3loSkFpb2hSRDhDaE9EV3VJN2tGZGFMZnJTc3lCU1FtLXk1b1UxMW54RWtWS1A0Njk2V3BfaHRXOWZ1dktReFVpM1ZuUGpKMWRKb2ZN?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
         "title": "Current refi mortgage rates report for Nov. 2, 2026",
         "date": "2026-11-02",
         "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE55RnNCTzBIWDNVSjFLbzBocEt3dUpSMWZlR3czY0tCaml0dzBxSVh2U2dxNTVXSndFdTZnbHd0SmJ3bUt0ekZWWTlFLUtjNTRaSkxjR21XcF9nT2ZZLUF5eWRaaXNTU2k0Ynk4bF9UZXlmQjFEVlE?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 2, 2026",
+        "title": "Current ARM mortgage rates report for Nov. 2, 2026",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFB6bGVNM2FnS1FVeFd1WEpld0pOMDNieGxUTjRTTEg1NG5aRmkyNG5QMHNXSy1IOGtRV2x6NGZSbUxWZWxIVG9zVzV1UDNKN005YTJYdC1ZczhoTm9uZEVDcjlmLWZSTXZY?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9iN05vaDY4SmZyNUozRFRwYlM0U3laWkJDTzl2ZDB4X3loSkFpb2hSRDhDaE9EV3VJN2tGZGFMZnJTc3lCU1FtLXk1b1UxMW54RWtWS1A0Njk2V3BfaHRXOWZ1dktReFVpM1ZuUGpKMWRKb2ZN?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Will the Bank of England Raise Interest Rates This Week?",
+        "title": "Mortgage Rates Today: November 2, 2026 – Rates Dive",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNMlZUNW9Jak9peGRzQ0htQkpueFgyOXBUOXgtZEliVk5fX1RvYkVNbE1CX0d1YUk0aEtETzk4YTFQa1V0b1FLZ01SaHprNk9NOXB2RENPSDFuNDZLSllxXzkzRjZpUVplQ2hpMHZfRXBtYTJZS21CaFZ5Y21kR0h2Ul9md1I2c3lQek04b0RFVUp2dzAtQ3p5X0wtZw?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBsZy1POE1ncmhwUHNnSjVaNjVkd0djejlUOGx0Qklab01BakpkRjdfZENlZjEtNUI3Tm5YQnFrRldid1A4RHZRcnV2RDlsVm1lNk1HV0VKUVpBMHBJWmxOZzJwN2paUVZ0R2RwbTI4SzNDMGs?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Housing Week Ahead: Monthly Trends Data, Mortgage Rates, and Jobs Report",
+        "date": "2026-11-02",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOcURVZnZqckUzQXpWeEhDbm0tNVNrcjVHUHZTeDhOTlRoNHVfdVdWRkVGX2ZCcmxXVVVuU0JRYjVPVzY2aVgwNlFMX0U0RDF4UUNHdVRaczV5SFM1LUNYVUc5SzRjYmF4eS1WQmFFNnhvMFBXdHdRbHJaSU9FNEhzNm1zSTRPQzRlMXZyanE2dE04eFpteWR2c0cxQQ?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
@@ -164,21 +168,14 @@
         "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
       },
       {
-        "label": "Inventory in Months (Portland metro, May)",
-        "value": "2.3",
-        "change": null,
-        "source": "www.seanzbecker.com",
-        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
-      },
-      {
-        "label": "Median sale price (Portland Metro, March 2026)",
+        "label": "Median sale price (Portland metro, March 2026)",
         "value": "$543,800",
         "change": "+3.6%",
         "source": "greenbuckrealestate.com",
         "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
       },
       {
-        "label": "Total market time (Portland Metro, March 2026)",
+        "label": "Total market time (Portland metro, March 2026)",
         "value": "79 days",
         "change": "-13%",
         "source": "greenbuckrealestate.com",
@@ -186,6 +183,6 @@
       }
     ]
   },
-  "updated_at": "2026-11-02T09:22:01Z",
+  "updated_at": "2026-11-02T11:15:53Z",
   "updated": "2026-11-02"
 }

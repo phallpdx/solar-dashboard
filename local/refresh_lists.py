@@ -237,6 +237,7 @@ def feed_text(body, max_age_days=None):
 
 OWUI = CONFIG.get("openwebui", {})
 SEARCH_CACHE_PATH = os.path.join(HERE, "cache", "searches.json")
+SEARCHES = {"ok": 0, "failed": 0}  # reported in localstatus.json so the cloud runs know the deep passes happened
 
 
 def web_search(query):
@@ -252,7 +253,9 @@ def web_search(query):
     if cache.get("date") != TODAY.isoformat():
         cache = {"date": TODAY.isoformat(), "count": 0, "results": {}}
     if query in cache["results"]:
+        SEARCHES["ok"] += 1
         return cache["results"][query]
+    SEARCHES["failed"] += 1  # until it succeeds below
     key = os.environ.get("OPENWEBUI_API_KEY")
     if not key:
         raise RuntimeError("no Open WebUI API key (run local\\set_openwebui_key.ps1 once)")
@@ -275,7 +278,15 @@ def web_search(query):
         os.makedirs(os.path.dirname(SEARCH_CACHE_PATH), exist_ok=True)
         with open(SEARCH_CACHE_PATH, "w", encoding="utf-8") as f:
             json.dump(cache, f)
+    SEARCHES["failed"] -= 1
+    SEARCHES["ok"] += 1
     return cache["results"][query]
+
+
+def due(src):
+    """False for a source limited to some weekdays ("days": ["Mon", "Thu"]) on other days, so the
+    weekly deep searches spread over the week instead of spending credits every night."""
+    return not src.get("days") or TODAY.strftime("%a") in src["days"]
 
 
 def search_text(results):
@@ -566,6 +577,8 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
     `focus` can cut a page down to the lines worth reading, or to nothing."""
     found = []
     for src in sources:
+        if not due(src):
+            continue
         if "search" in src:
             # A search has no page of its own to fall back on, so items must link one of its results.
             src = dict(src, url="search:" + src["search"])
@@ -660,7 +673,8 @@ def refresh_concerts(data, sources):
     from 'missing' to 'shows' once a venue lists a Portland date."""
     ok = future_ok("date", days=400)
     add_acclaimed(data, [s for s in sources if s.get("use") == "albums"])
-    sources = [s for s in sources if s.get("use") != "albums"]
+    add_scored(data, [s for s in sources if s.get("use") == "scores" and due(s)])
+    sources = [s for s in sources if s.get("use") not in ("albums", "scores")]
 
     def build(r, src, links):
         if not ok(r) or not clean(r.get("artist")):
@@ -745,6 +759,37 @@ def add_acclaimed(data, sources):
     scored = [m for m in missing if m.get("score") is not None]
     unscored = fresh + [m for m in missing if m.get("score") is None]
     data["missing"] = scored + unscored[:8]
+
+
+def add_scored(data, sources):
+    """Adds well-reviewed new albums with their critic score (Metacritic where there is one) from web
+    searches to 'missing'. The score and album must both appear in the search result the item links."""
+    shows, missing = data.get("shows", []), data.setdefault("missing", [])
+    schema = items_schema({"artist": S, "album": S, "score": {"type": ["integer", "null"]}, "url": S})
+    for src in sources:
+        try:
+            results = web_search(src["search"])
+        except Exception as e:  # noqa: BLE001
+            log(f"  {src['name']}: search failed ({e})")
+            continue
+        text, table = number_links(search_text(results)[0])
+        r = ask_model("List albums released in the last two months with a critic score (Metacritic metascore where given) "
+                      "of 75 or more. score is the number the result states, or null. url is the result's link number.",
+                      text, schema) or {}
+        snippets = {x["url"]: f"{x['title']} {x['snippet']}".lower() for x in results}
+        for x in r.get("items") or []:
+            url, artist, album = unnumber(x.get("url"), table), clean(x.get("artist"), 120), clean(x.get("album"), 160)
+            seen = snippets.get(url, "")
+            if (not artist or not album or not isinstance(x.get("score"), int) or not 75 <= x["score"] <= 100
+                    or str(x["score"]) not in seen or album.lower() not in seen
+                    or any(same_thing(artist, None, m["artist"], None) for m in shows + missing)):
+                continue
+            log(f"  scored album: {artist}, {album} ({x['score']})")
+            missing.insert(0, {"artist": artist, "album": album, "score": x["score"],
+                               "score_source": "Metacritic" if "metacritic.com" in url else urllib.parse.urlsplit(url).hostname,
+                               "score_url": url, "why": "No Portland date found yet"})
+    scored = [m for m in missing if m.get("score") is not None]
+    data["missing"] = scored[:20] + [m for m in missing if m.get("score") is None]
 
 
 def refresh_events(data, sources):
@@ -1034,7 +1079,7 @@ def refresh_marketbrief(data, sources):
     done = 0
     for key, feeds in sources.items():
         texts, links, entries = [], set(), []
-        for src in feeds:
+        for src in [f for f in feeds if due(f)]:
             try:
                 # North American Helium is private and in the news every month or two.
                 text, l = page_text(src, max_age_days={"analysis": 2, "helium": 90}.get(key, 30))
@@ -1069,13 +1114,34 @@ def refresh_marketbrief(data, sources):
         else:
             section["items"] = sorted(entries, key=lambda e: e["date"] or "", reverse=True)[:5]
             old = (data.get(key) or {}).get("stats")
-            if old:
-                section["stats"] = old  # figures the cloud run found; they change monthly
+            stats = housing_stats(text, table, links) if key == "realestate" else None
+            if stats:
+                section["stats"] = stats
+            elif old:
+                section["stats"] = old  # last figures found; they change monthly
         data[key] = section
         done += 1
     if done:
         data["updated_at"] = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return data
+
+
+def housing_stats(text, table, links):
+    """Portland housing figures (median price, inventory, days on market, rents) from the real estate
+    sources, each with the link it came from. A figure is kept only if its value appears in the text."""
+    schema = items_schema({"label": S, "value": S, "change": NS, "source": S, "url": S})
+    r = ask_model("List up to 5 headline figures for the Portland, Oregon housing market from these items: median sale "
+                  "price, homes for sale, days on market, closed sales, rent, mortgage rate. label names the figure, the area "
+                  "and the month, e.g. 'Median sale price (Portland metro, September)'. value is the figure as written, "
+                  "change is the stated change (e.g. '-1.2% vs a year ago') or null. url is the item's link number.",
+                  text, schema) or {}
+    stats = []
+    for x in r.get("items") or []:
+        url, value = unnumber(x.get("url"), table), clean(x.get("value"), 40)
+        if url in links and re.search(r"\d", value) and value in text and clean(x.get("label")):
+            stats.append({"label": clean(x["label"], 120), "value": value, "change": clean(x.get("change"), 60) or None,
+                          "source": clean(x.get("source"), 80) or urllib.parse.urlsplit(url).hostname, "url": url})
+    return stats[:5]
 
 
 def refresh_coast(data, sources):
@@ -1383,7 +1449,9 @@ def main():
 
     # Tell the cloud runs what was done tonight, so they only step in when this PC didn't.
     status = {"date": TODAY.isoformat(), "ran_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-              "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names}}
+              "lists": {n: "failed" if n in failed else "changed" if f"web/{n}.json" in changed else "unchanged" for n in names},
+              "web_search": "ok" if SEARCHES["ok"] and not SEARCHES["failed"] else "partly failed" if SEARCHES["ok"]
+                            else "failed" if SEARCHES["failed"] else "none due"}
     if args.only:  # a partial run keeps tonight's earlier results for the other lists
         try:
             before = json.loads(git("show", f"{base}:web/localstatus.json"))

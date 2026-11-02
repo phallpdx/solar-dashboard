@@ -50,6 +50,13 @@ The script sends it to Open WebUI on this PC (`http://localhost:3000`, the
 (Tavily) and returns the top results. The model then reads the result titles
 and snippets like a feed, and items must link one of the results. Plan ahead,
 big events, and the market brief's helium and real estate sections each have one.
+A source with `"days": ["Mon", "Thu"]` only runs on those weekdays; that's how
+the weekly deep passes the cloud runs used to do (jazz Monday, food finds
+Tuesday, family outings and Blu-ray Thursday, the roundup lists Saturday) are
+spread over the week. Concerts searches for Metacritic-scored albums on Monday
+and Thursday (a score is kept only if it appears in the result it links), and
+the real estate section now fills its own "stats" figures the same way.
+`web/localstatus.json` says whether tonight's searches worked (`web_search`).
 
 Searches cost search credits, so each query runs once a day (the 2:05 and
 4:05 runs reuse the 12:05 results from `local\cache\searches.json`) and a day

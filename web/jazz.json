@@ -2,13 +2,13 @@
   "updated": "2026-11-02",
   "shows": [
     {
-      "artist": "John Scofield & Oteil Burbridge",
+      "artist": "John Scofield's Electrospective with Oteil Burbridge",
       "kind": "Touring",
       "date": "2026-11-03",
       "time": "8:00 pm",
       "venue": "Revolution Hall",
       "price": null,
-      "what": "Jazz guitarist John Scofield, billed with bassist Oteil Burbridge, in a 21+ show; found on Ticketmaster and resale listings, not on the venue's own page.",
+      "what": "Guitarist John Scofield's Electrospective band with bassist Oteil Burbridge, Larry Goldings and Adam Deitch; doors 7 pm, 21+ (resale listings show tickets from about $64).",
       "tickets": "https://www.ticketmaster.com/john-scofield-tickets/artist/737786",
       "sources": [
         {
@@ -18,33 +18,21 @@
         {
           "name": "TickPick event listing",
           "url": "https://www.tickpick.com/buy-john-scofield-oteil-burbridge-tickets-revolution-hall-portland-11-3-26-8pm/7830653/"
-        }
-      ]
-    },
-    {
-      "artist": "The Christopher Brown Quartet",
-      "kind": "Local",
-      "date": "2026-11-04",
-      "time": "06:30 PM",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Acclaimed musician and educator Christopher Brown performs with his quartet.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
+        },
         {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
+          "name": "Eventworld ticket listing",
+          "url": "https://www.eventworld.com/john-scofield-and-oteil-burbridge-portland-tickets-11-03-2026/event/473397"
         }
       ]
     },
     {
-      "artist": "CHUCK ISRAELS JAZZ ORCH",
+      "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
       "date": "2026-11-05",
       "time": "7:00 pm",
-      "venue": "Jazz Titan Thursdays",
+      "venue": "Jack London Revue",
       "price": null,
-      "what": "A jazz orchestra performance.",
+      "what": "Bassist Chuck Israels's jazz orchestra in Jack London Revue's Jazz Titan Thursdays series.",
       "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp",
       "sources": [
         {
@@ -66,6 +54,10 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/"
+        },
+        {
+          "name": "Songkick: The 1905",
+          "url": "https://www.songkick.com/venues/3607654-1905"
         }
       ]
     },
@@ -73,7 +65,7 @@
       "artist": "Dmitri Matheny Group",
       "kind": "Touring",
       "date": "2026-11-06",
-      "time": "06:30 PM",
+      "time": "6:30 pm",
       "venue": "The 1905",
       "price": "$30",
       "what": "An acclaimed American flugelhornist known for his warm tone and soaring lyricism.",
@@ -86,13 +78,13 @@
       ]
     },
     {
-      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "artist": "Mel Brown B3 Organ Group",
       "kind": "Local",
       "date": "2026-11-12",
       "time": "7:00 pm",
-      "venue": "Jazz Titan Thursdays",
+      "venue": "Jack London Revue",
       "price": null,
-      "what": "An organ group performance.",
+      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
       "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862453?pl=jacklondon&REFID=clientsitewp",
       "sources": [
         {
@@ -118,29 +110,13 @@
       ]
     },
     {
-      "artist": "The Breaks",
-      "kind": "Local",
-      "date": "2026-11-13",
-      "time": null,
-      "venue": "Web search: touring jazz in Portland",
-      "price": null,
-      "what": "The Breaks concert performance.",
-      "tickets": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz",
-      "sources": [
-        {
-          "name": "Web search: touring jazz in Portland",
-          "url": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz"
-        }
-      ]
-    },
-    {
       "artist": "Oz Noy Trio with Brian Charette & Dave Weckl",
       "kind": "Touring",
       "date": "2026-11-16",
       "time": "7:30 pm",
       "venue": "Jack London Revue",
       "price": null,
-      "what": "Oz Noy's trio with Brian Charette and Dave Weckl; this Monday show is a second night added due to demand, with the original show on Tue Nov 17 at 7:30 pm.",
+      "what": "Guitarist Oz Noy's trio with organist Brian Charette and drummer Dave Weckl; this Monday show is a second night added due to demand, with the original show on Tue Nov 17 at 7:30 pm.",
       "tickets": "https://www.jacklondonrevue.com/tm-event/oz-noy-trio-w-brian-charette-dave-weckl/",
       "sources": [
         {
@@ -158,18 +134,18 @@
       ]
     },
     {
-      "artist": "OZ NOY TRIO w/ Brian Charette & Dave Weckl",
-      "kind": "Local",
-      "date": "2026-11-17",
-      "time": "7:30 pm",
-      "venue": "Soul'd Out Presents",
+      "artist": "Chuck Israels Jazz Orchestra",
+      "kind": "Big band",
+      "date": "2026-11-19",
+      "time": "7:00 pm",
+      "venue": "Jack London Revue",
       "price": null,
-      "what": "A jazz trio performance.",
-      "tickets": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp",
+      "what": "Bassist Chuck Israels's jazz orchestra in Jack London Revue's Jazz Titan Thursdays series.",
+      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp",
       "sources": [
         {
           "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp"
+          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },
@@ -186,22 +162,6 @@
         {
           "name": "McMenamins",
           "url": "https://www.mcmenamins.com/events/277813-thundercat"
-        }
-      ]
-    },
-    {
-      "artist": "CHUCK ISRAELS JAZZ ORCH",
-      "kind": "Big band",
-      "date": "2026-11-19",
-      "time": "7:00 pm",
-      "venue": "Jazz Titan Thursdays",
-      "price": null,
-      "what": "A jazz orchestra performance.",
-      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },
@@ -242,22 +202,6 @@
         {
           "name": "Event Tickets Center listing",
           "url": "https://www.eventticketscenter.com/scott-bradlees-postmodern-jukebox-portland-tickets/1405558/e"
-        }
-      ]
-    },
-    {
-      "artist": "INFINITY",
-      "kind": "Local",
-      "date": "2026-11-25",
-      "time": "8:00 PM",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Infinity performing in Portland.",
-      "tickets": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE",
-      "sources": [
-        {
-          "name": "Web search: touring jazz in Portland",
-          "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
         }
       ]
     },
@@ -370,13 +314,13 @@
       ]
     },
     {
-      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "artist": "Mel Brown B3 Organ Group",
       "kind": "Local",
       "date": "2026-12-10",
       "time": "7:00 pm",
-      "venue": "Jazz Titan Thursdays",
+      "venue": "Jack London Revue",
       "price": null,
-      "what": "An organ group performance.",
+      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
       "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp",
       "sources": [
         {
@@ -422,18 +366,42 @@
       ]
     },
     {
-      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "artist": "Mel Brown B3 Organ Group",
       "kind": "Local",
       "date": "2026-12-17",
       "time": "7:00 pm",
-      "venue": "Jazz Titan Thursdays",
+      "venue": "Jack London Revue",
       "price": null,
-      "what": "An organ group performance.",
+      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
       "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp",
       "sources": [
         {
           "name": "Jack London Revue",
           "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "Polyrhythmics (New Year's Eve)",
+      "kind": "Touring",
+      "date": "2026-12-31",
+      "time": "9:00 pm",
+      "venue": "The Get Down",
+      "price": null,
+      "what": "Polyrhythmics play a New Year's Eve show listed under jazz/blues (also listed Dec 30); found on event listings, not on the venue's own page.",
+      "tickets": "https://concertful.com/event/958584",
+      "sources": [
+        {
+          "name": "Concertful listing",
+          "url": "https://concertful.com/event/958584"
+        },
+        {
+          "name": "Jazz Near You (Dec 31)",
+          "url": "https://www.jazznearyou.com/world/events/polyrhythmics-at-the-get-down-on-december-31"
+        },
+        {
+          "name": "Jazz Near You (Dec 30)",
+          "url": "https://www.jazznearyou.com/world/events/polyrhythmics-at-the-get-down-on-december-30"
         }
       ]
     },
@@ -476,6 +444,12 @@
       "when": "Fridays 12:15 pm during the school term",
       "venue": "Lincoln Recital Hall, Portland State",
       "url": "https://www.pdx.edu/music-theater/events/music-midday-kerry-politzers-bossa-pdx"
+    },
+    {
+      "name": "Jammin' with Steve Christofferson & Friends (jam session)",
+      "when": "Wednesday evenings",
+      "venue": "Restaurant503",
+      "url": "https://www.jazznearyou.com/world/events/jammin-with-steve-christofferson-and-friends-at-restaurant503-on-august-26"
     }
   ]
 }

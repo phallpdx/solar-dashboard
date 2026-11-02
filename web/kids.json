@@ -1,23 +1,7 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
-    {
-      "title": "Seaside Halloween Happenin's",
-      "date": "2026-10-30",
-      "ends": "2026-11-01",
-      "where": "Downtown Seaside",
-      "detail": "Family festival with a kids' activity zone and downtown trick-or-treating, plus a giant pumpkin drop at 3 pm on Sunday, Nov 1.",
-      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
-    },
-    {
-      "title": "Halloween weekend at Astoria KOA",
-      "date": "2026-10-30",
-      "ends": "2026-11-01",
-      "where": "Hammond (Warrenton)",
-      "detail": "Pumpkin Patch Express train, pumpkin decorating, trick-or-treating and a costume parade on Saturday. Skip the evening Haunted Cove with a toddler.",
-      "url": "https://koa.com/campgrounds/astoria/events/"
-    },
     {
       "title": "Curiosity Kids at OMSI",
       "date": "2026-10-31",
@@ -25,102 +9,6 @@
       "where": "OMSI, Portland",
       "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Oct 31, Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
       "url": "https://omsi.edu/curiosity-kids/"
-    },
-    {
-      "title": "Native Games and Storytelling",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "St. Johns Library",
-      "detail": "Native American Heritage Month program with traditional games and stories from a community storyteller, 12 to 1:15. Free.",
-      "url": "https://multcolib.libnet.info/event/16627845"
-    },
-    {
-      "title": "Black Family Storytime",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "St. Johns Library",
-      "detail": "Sunday storytime from 3:30 to 4:15 in the large community room. Free.",
-      "url": "https://multcolib.libnet.info/event/16628559"
-    },
-    {
-      "title": "OMSI $5 Day",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "OMSI, Portland",
-      "detail": "Museum admission is $5 per person, with planetarium and theater shows also $5. OMSI expects crowds and suggests buying tickets online ahead.",
-      "url": "https://omsi.edu/events/5-day/"
-    },
-    {
-      "title": "Storytime at Multnomah County Libraries",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "Multnomah County",
-      "detail": "Various storytimes including Toddler Time and Book Babies are available. Free.",
-      "url": "https://pdxparent.com/event-single/storytime-at-multnomah-county-libraries/2026-11-01/"
-    },
-    {
-      "title": "Centennial Farmers Market",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Portland",
-      "detail": "Support local farmers at the new market located at Chop Chop Food Pod from 9:00 am to 2:00 pm. Free.",
-      "url": "https://pdxparent.com/event-single/centennial-farmers-market/2026-11-01/"
-    },
-    {
-      "title": "Make Memories With Llamas, a Corn Maze and Pumpkins at Frog Pond Farm",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Wilsonville",
-      "detail": "Enjoy llamas, a corn maze, and pumpkins from 9:00 am to 5:00 pm. $16.",
-      "url": "https://pdxparent.com/event-single/make-a-memories-with-llamas-a-corn-maze-and-pumpkins-at-frog-pond-farm/2026-11-01/"
-    },
-    {
-      "title": "Día de los Muertos with the Center for the Arts Foundation",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Gresham",
-      "detail": "Celebrate culture and community with live music and open court play from 9:00 am to 5:00 pm. Free.",
-      "url": "https://pdxparent.com/event-single/dia-de-los-muertos-with-the-center-for-the-arts-foundation/"
-    },
-    {
-      "title": "Wildwood at OMSI’s Empirical Theater",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A handcrafted fantasy adventure through a forbidden forest for all ages. $7 – $9.",
-      "url": "https://pdxparent.com/series/wildwood-at-omsis-empirical-theater/"
-    },
-    {
-      "title": "Mr. Ben at Wonderwood Springs",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Portland",
-      "detail": "An interactive singalong designed for babies, toddlers, and preschoolers. Free.",
-      "url": "https://pdxparent.com/series/music-singalongs-with-mr-ben-at-mike-bennetts-wonderwood-springs/"
-    },
-    {
-      "title": "Visit Leach Botanical Garden",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Portland",
-      "detail": "Explore gardens with an aerial tree walk and meadow for running. Free – $8.",
-      "url": "https://pdxparent.com/series/visit-leach-botanical-garden/"
-    },
-    {
-      "title": "Magic-O Fantastic-O",
-      "date": "2026-11-01",
-      "ends": "2026-11-01",
-      "where": "Milwaukie",
-      "detail": "A magical improv showcase perfect for kids and families. $8.00.",
-      "url": "https://pdxparent.com/series/magic-o-fantastic-o/"
-    },
-    {
-      "title": "Enjoy Fall Festivities at a Local Pumpkin Patch",
-      "date": "2026-11-01",
-      "ends": null,
-      "where": "Sauvie Island/Oregon",
-      "detail": "Visit local farms for corn mazes, hayrides, animals, and treats. Prices vary.",
-      "url": "https://pdxparent.com/series/enjoy-fall-festivities-at-a-local-pumpkin-patch/"
     },
     {
       "title": "Fall Discount Days",
@@ -177,6 +65,22 @@
       "where": "Portland, Oregon",
       "detail": "Toddler-friendly open play with toys and balls from 10:30 am to 12:30 pm. $8.",
       "url": "https://pdxparent.com/series/gym-open-play-at-sellwood-community-house/"
+    },
+    {
+      "title": "Crowns & Cupcakes",
+      "date": "2026-11-02",
+      "ends": "2026-11-02",
+      "where": "Beaverton",
+      "detail": "Crafting crowns and decorating cupcakes for children aged 2 to 9 from 4:30 pm to 6:00 pm. Free.",
+      "url": "https://pdxparent.com/event-single/crowns-cupcakes/"
+    },
+    {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-03",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Various storytimes including Toddler Times are available for free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
     },
     {
       "title": "Veterans Day",

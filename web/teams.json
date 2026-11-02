@@ -1,16 +1,15 @@
 {
-  "updated": "2026-11-01",
-  "updated_at": "2026-11-02T07:18:41Z",
+  "updated": "2026-11-02",
+  "updated_at": "2026-11-02T09:19:41Z",
   "teams": {
     "blazers": {
-      "mood": "Cautiously optimistic",
-      "pulse": "Fans are relieved by the 4-1 start and recent blowout win over Utah. However, concerns persist regarding Scoot Henderson's performance and a difficult November schedule.",
+      "mood": "cautiously optimistic",
+      "pulse": "Fans are celebrating a blowout win over Utah but worry about Scoot Henderson's performance. A difficult November schedule looms ahead.",
       "storylines": [
-        "Blazers lead 4-1 after beating Jazz 112-90.",
-        "Robert Williams III is no longer on the injury report.",
-        "Ja Morant sidelined with hamstring strain.",
-        "Next game against Nuggets on 2026-11-02.",
-        "Debate over Scoot Henderson's franchise potential."
+        "Deni Avdija led the 112-90 win over Jazz",
+        "Ja Morant sidelined with hamstring injury",
+        "Robert Williams III cleared for Nuggets game",
+        "Scoot Henderson facing scrutiny over low BPM"
       ],
       "sources": [
         {
@@ -39,9 +38,10 @@
       "mood": "optimistic and hyped",
       "pulse": "Fans are celebrating a 3-1 win over Houston that puts them in eighth place. They are motivated by the playoff push.",
       "storylines": [
-        "Timbers beat Houston Dynamo FC 3-1",
-        "Team is currently in 8th place",
-        "Vincent Janssen scored one goal and two assists"
+        "Timbers beat Houston Dynamo FC 3-1 on Nov 1, 2026",
+        "Team is currently in 8th place fighting for playoffs",
+        "Vincent Janssen scored one goal and two assists",
+        "Seattle's loss keeps Timbers' playoff hopes alive"
       ],
       "sources": [
         {
@@ -68,12 +68,12 @@
     },
     "f1": {
       "mood": "Awe and tension",
-      "pulse": "Fans are celebrating Kimi Antonelli's historic championship win. However, Ferrari intra-team battles and post-race penalties have caused debate.",
+      "pulse": "Fans are celebrating Kimi Antonelli's historic title win. Ferrari internal drama is causing significant debate.",
       "storylines": [
         "Kimi Antonelli becomes youngest F1 World Champion",
         "Max Verstappen wins Mexico City GP",
-        "Hamilton and Leclerc battle for position",
-        "Alpine duo stripped of points via penalties"
+        "Ferrari teammate battle between Hamilton and Leclerc",
+        "Alpine duo stripped of points after penalties"
       ],
       "sources": [
         {

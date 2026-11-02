@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "events": [
     {
       "title": "CANVAS 2026",
@@ -16,52 +16,6 @@
       ]
     },
     {
-      "title": "The Smashing Pumpkins: Rats in a Cage tour",
-      "date": "2026-11-01",
-      "ends": null,
-      "venue": "Moda Center, Rose Quarter",
-      "kind": "Concert",
-      "why": "Arena show marking 30 years of Mellon Collie and the Infinite Sadness, with the album played as the first set.",
-      "sources": [
-        {
-          "name": "KOIN",
-          "url": "https://www.koin.com/news/portland/smashing-pumpkins-mellon-collie-anniversary-2026-tour/amp/"
-        },
-        {
-          "name": "Relix",
-          "url": "https://relix.com/?p=159931"
-        }
-      ]
-    },
-    {
-      "title": "Portland Book Festival",
-      "date": "2026-11-01",
-      "ends": null,
-      "venue": "",
-      "kind": "Convention",
-      "why": "Extensive lineup of local and national authors.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-book-festival/"
-        }
-      ]
-    },
-    {
-      "title": "Houston Dynamo FC at Portland Timbers",
-      "date": "2026-11-01",
-      "ends": null,
-      "venue": "Providence Park",
-      "kind": "Concert",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://seatgeek.com/cities/portland"
-        }
-      ]
-    },
-    {
       "title": "Portland Book Festival",
       "date": "2026-11-02",
       "ends": "2026-11-08",
@@ -72,6 +26,20 @@
         {
           "name": "Web search: big Portland events",
           "url": "https://www.stayportland.com/guide/portland-events-festivals"
+        }
+      ]
+    },
+    {
+      "title": "Medicine Hat Tigers at Portland Winterhawks",
+      "date": "2026-11-04",
+      "ends": "2026-11-04",
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Concert",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://seatgeek.com/cities/portland"
         }
       ]
     },
@@ -386,6 +354,34 @@
         {
           "name": "Rose Quarter",
           "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
+        }
+      ]
+    },
+    {
+      "title": "Harlem Globetrotters Rivalry Tour",
+      "date": "2027-01-31",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Sports",
+      "why": "No crowd info provided.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Gracie Abrams The Look At My Life Tour",
+      "date": "2027-01-31",
+      "ends": "2027-02-01",
+      "venue": "Moda Center",
+      "kind": "Concert",
+      "why": "No crowd info provided.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
         }
       ]
     }

@@ -1,32 +1,6 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "items": [
-    {
-      "title": "Oregon Sno-Park permit season starts",
-      "kind": "Permit",
-      "action": "Get a permit before parking at a Mt. Hood Sno-Park: $25 annual (also sold online at DMV2U), $9 for three days or $4 for one day from vendors or a DMV office.",
-      "starts": "2026-11-01",
-      "by": null,
-      "why": "A permit is required Nov 1 to Apr 30, permits aren't sold on site and vendors often sell out, and DMV stopped selling daily and three-day permits online in 2026.",
-      "sources": [
-        {
-          "name": "ODOT Sno-Park Program",
-          "url": "https://www.oregon.gov/odot/maintenance/pages/sno-park-program.aspx"
-        },
-        {
-          "name": "TripCheck Sno-Park permits",
-          "url": "https://www.tripcheck.com/Pages/Sno-Parks-Permits"
-        },
-        {
-          "name": "ODOT DMV rule notice (2026)",
-          "url": "https://www.oregon.gov/odot/Get-Involved/OAR%20folders/2025-AONs/DMV_17-2026.pdf"
-        },
-        {
-          "name": "Mt. Hood NF Sno-Park alert",
-          "url": "https://www.fs.usda.gov/r06/mthood/alerts/sno-park-permits-required-nov-1-thru-apr-30"
-        }
-      ]
-    },
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",

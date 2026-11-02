@@ -1,54 +1,6 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "shows": [
-    {
-      "artist": "Artichoke Jazz Jam",
-      "kind": "Local",
-      "date": "2026-11-01",
-      "time": "7:00 pm",
-      "venue": "Artichoke Music",
-      "price": "Free",
-      "what": "A free, all-ages open jazz jam for all levels, led by drummer Max Tucker, with a house band opening the night; found on Travel Portland's calendar, not checked against the venue's own page.",
-      "tickets": null,
-      "sources": [
-        {
-          "name": "Travel Portland event listing",
-          "url": "https://www.travelportland.com/event/6ac140c637f73d3f6c416068/"
-        }
-      ]
-    },
-    {
-      "artist": "Behind The Scene with The Christopher Brown Quartet",
-      "kind": "Local",
-      "date": "2026-11-01",
-      "time": "01:00 PM",
-      "venue": "The 1905",
-      "price": null,
-      "what": "An educational jazz workshop combining a jam session, concert, and clinic.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
-    {
-      "artist": "The Rivkah Ross Quintet",
-      "kind": "Local",
-      "date": "2026-11-01",
-      "time": "05:30 PM",
-      "venue": "The 1905",
-      "price": "$25",
-      "what": "Portland-based drummer and composer Rivkah Ross performs her modern jazz compositions.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "John Scofield & Oteil Burbridge",
       "kind": "Touring",
@@ -166,6 +118,22 @@
       ]
     },
     {
+      "artist": "The Breaks",
+      "kind": "Local",
+      "date": "2026-11-13",
+      "time": null,
+      "venue": "Web search: touring jazz in Portland",
+      "price": null,
+      "what": "The Breaks concert performance.",
+      "tickets": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz"
+        }
+      ]
+    },
+    {
       "artist": "Oz Noy Trio with Brian Charette & Dave Weckl",
       "kind": "Touring",
       "date": "2026-11-16",
@@ -274,6 +242,22 @@
         {
           "name": "Event Tickets Center listing",
           "url": "https://www.eventticketscenter.com/scott-bradlees-postmodern-jukebox-portland-tickets/1405558/e"
+        }
+      ]
+    },
+    {
+      "artist": "INFINITY",
+      "kind": "Local",
+      "date": "2026-11-25",
+      "time": "8:00 PM",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Infinity performing in Portland.",
+      "tickets": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
         }
       ]
     },

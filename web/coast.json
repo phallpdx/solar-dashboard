@@ -1,30 +1,6 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-02",
   "events": [
-    {
-      "name": "Día de los Muertos",
-      "date": "2026-10-23",
-      "end": "2026-11-01",
-      "town": "Astoria",
-      "summary": "Astoria celebrates Día de los Muertos.",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbjR2LUE2Ym5hS0hoQzRWVkxyWFJBNENkbFJQdy1MS21ISkkzYjNwa2hXdVNacmZXNGF4VEM5bkNxN1pMal9UamxPNjlZZWo0SEVkOV93V0ZGNzMxbEhfOUY3cVIteEd0bDdyWk4yLUZsRHpKcWYtMkppRDJpbmctS2NKbEtZbFFV?oc=5"
-    },
-    {
-      "name": "Seaside Halloween Happenin's",
-      "date": "2026-10-30",
-      "end": "2026-11-01",
-      "town": "Seaside",
-      "summary": "Free downtown Halloween weekend with a witches and warlocks paddle, kid carnival, pet parade, trunk-or-treat and a giant pumpkin drop; check final times.",
-      "url": "https://visittheoregoncoast.com/cities/halloween-happenins-2/"
-    },
-    {
-      "name": "Halloween Happenin’s",
-      "date": "2026-10-31",
-      "end": "2026-11-01",
-      "town": "Seaside",
-      "summary": "Annual family event with paddle, games, and pumpkin drop. Free.",
-      "url": "https://www.seasideor.com/event/halloween-happenins-3/"
-    },
     {
       "name": "Haystack Holidays",
       "date": "2026-11-01",
@@ -32,22 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Astoria celebrates Día de los Muertos",
-      "date": "2026-11-01",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Celebration of Day of the Dead.",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbjR2LUE2Ym5hS0hoQzRWVkxyWFJBNENkbFJQdy1MS21ISkkzYjNwa2hXdVNacmZXNGF4VEM5bkNxN1pMal9UamxPNjlZZWo0SEVkOV93V0ZGNzMxbEhfOUY3cVIteEd0bDdyWk4yLUZsRHpKcWYtMkppRDJpbmctS2NKbEtZbFFV?oc=5"
-    },
-    {
-      "name": "Seaside Halloween celebration",
-      "date": "2026-11-01",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Willy Wonka themed Halloween celebration.",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNUF9rSzRob3RXQzJrWkx1S2s4YnY0R1dUQjRlcjJfRGFYREVVenliaGxPbWVJM1htZXJvTXg5d1VXdnIwb0dGdDV0TDRQYkVpVDdpeDJnX21od09NZU5nWlpzLTh0bHpBczhWUFB5bGpvRWdjcXo2S1pmNFAzVjZpT0ZreWpJSGpSbnE0dExkaFhFSmRhVmh3OWFjWFk5cy12X0tuQjd30gGmAUFVX3lxTE1QX2tLNGhvdFdDMmtaTHVLazhidjRHV1RCNGVyMl9EYVhERVV6eWJobE9tZUkzWG1lcm9NeDl3VVd2cjBvR0Z0NXRMNFBiRWlUN2l4MmdfbWh3T01lTmdaWnMtOHRsekFzOFZQUHlsam9FZ2NxejZLWmY0UDNWNmlPRmt5aklIalJucTR0TGRoWEVKZGFWaHc5YWNYWTlzLXZfS25CN3c?oc=5"
     },
     {
       "name": "Singing in the Rain",
@@ -160,6 +120,22 @@
       "town": "Seaside",
       "summary": "First five groups to post social media photos get a free towel. Free.",
       "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
+    },
+    {
+      "name": "Iron Chef Goes Coastal",
+      "date": "2026-11-17",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Local chefs battle for the Iron Chef title.",
+      "url": "https://www.seasideor.com/event/iron-chef-goes-coastal-3/"
+    },
+    {
+      "name": "Let’s Go Birding! Fort to Sea Trail Bird Hike",
+      "date": "2026-11-20",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Guided walk along the Fort to Sea Trail.",
+      "url": "https://www.seasideor.com/event/lets-go-birding-fort-to-sea-trail-bird-hike-8/"
     }
   ]
 }

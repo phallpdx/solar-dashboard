@@ -1928,7 +1928,7 @@ body{background-color:#8F5A32;
         <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
           <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
           <div class="lines" id="gear"></div>
-          <p class="note">Asking price against the low end of what the same model sells for used. Drums and percussion come first; 💰 marks ones that could resell for $150+ after about 15% in fees. Check it in person before handing over cash.</p>
+          <p class="note">Asking price against the low end of what the same model sells for used. Drums and percussion come first; 💰 marks ones that could resell for $150+ after about 15% in fees and pay $50+ an hour, counting the drive and selling time. Check it in person before handing over cash.</p>
         </section>
       </div>
     </div>
@@ -4911,7 +4911,7 @@ async function renderBriefing() {
   const wish = gearNew.find(d => d.watch);
   if (wish) add(88, 'gear-card', `<b>On your wish list:</b> ${esc(wish.title)} is on Craigslist for $${wish.price.toLocaleString()}${wish.pct_off > 0 ? `, about ${wish.pct_off}% under the usual` : ''}. ${say('gear', 1, 'One might move quickly, sir.')}`);
   const steal = gearNew.find(d => d.flip_profit && d !== wish) || gearNew.find(d => d.drums && !d.watch) || gearNew.find(d => d.pct_off >= 45 && !d.watch);
-  if (steal) add(steal.flip_profit ? 74 : steal.drums ? 60 : steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual${steal.flip_profit ? `. Resold, it could clear roughly $${steal.flip_profit.toLocaleString()} after fees` : ''}. ${say('gear', 0, 'One might move quickly, sir.')}`);
+  if (steal) add(steal.flip_profit ? 74 : steal.drums ? 60 : steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual${steal.flip_profit ? `. Resold, it could clear roughly $${steal.flip_profit.toLocaleString()} after fees${steal.flip_hourly ? `, about $${steal.flip_hourly} an hour with the drive and the selling` : ''}` : ''}. ${say('gear', 0, 'One might move quickly, sir.')}`);
 
   // Elections
   const cv = D.civics;
@@ -5107,7 +5107,7 @@ function renderGear() {
   $('gear-card').hidden = !g;
   if (!g) return;
   $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
-  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}${d.watch ? ` <small class="up">⭐ ${esc(d.watch)}</small>` : d.drums ? ' <small class="up">🥁 Drums</small>' : ''}${d.flip_profit ? ` <small class="up">💰 Flip: ~$${d.flip_profit.toLocaleString()} profit</small>` : ''}
+  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}${d.watch ? ` <small class="up">⭐ ${esc(d.watch)}</small>` : d.drums ? ' <small class="up">🥁 Drums</small>' : ''}${d.flip_profit ? ` <small class="up">💰 Flip: ~$${d.flip_profit.toLocaleString()} profit${d.flip_hourly ? `, ~$${d.flip_hourly}/hr` : ''}</small>` : ''}
       <br><small>${d.typical ? `Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})` : 'On your wish list; no comparable sales to price it against'}${d.where ? ' · ' + esc(d.where) : ''}</small></span>
       <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off > 0 ? `${d.pct_off}% under` : d.pct_off != null ? 'at market' : 'wish list'}</small></span></div>`).join('')
     : '<p class="note">Nothing priced well below usual right now.</p>';

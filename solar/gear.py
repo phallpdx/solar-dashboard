@@ -36,6 +36,24 @@ WATCH_QUERIES = ["craviotto", "k zildjian", "zildjian k", "old k zildjian"]
 # Reselling costs about 15% of the price in fees and haggling, so that's taken off before calling it profit.
 RESALE = 0.85
 FLIP_PROFIT = 150
+# A flip also has to pay Parker at least $50 an hour for the trip to pick it up (EV, so driving costs next to
+# nothing) and about 1.5 hours of listing, messages and handing it over.
+FLIP_HOURLY = 50
+SELL_HOURS = 1.5
+# Rough round-trip hours from home on Sauvie Island by the Craigslist location text; unknown places count as 1.5.
+TRIP_HOURS = [
+    (r"scappoose|st\.? helens|sauvie|linnton|st\.? johns|north portland|\bn portland\b|kenton", 0.75),
+    (r"portland|\b(ne|nw|se|sw|n)\b|pdx|beaverton|tigard|milwaukie|lake oswego|vancouver|hazel dell|cedar mill|bethany|"
+     r"aloha|gresham|clackamas|happy valley|tualatin|west linn|hillsboro|camas|troutdale|fairview", 1.5),
+    (r"oregon city|sherwood|wilsonville|forest grove|cornelius|battle ground|washougal|ridgefield|sandy|estacada|"
+     r"canby|newberg|woodland|kelso|longview|vernonia|banks|boring|damascus|gladstone", 2.25),
+    (r"salem|keizer|mcminnville|woodburn|silverton|hood river|the dalles|astoria|seaside|tillamook|centralia|"
+     r"chehalis|dallas|monmouth|albany|corvallis|eugene", 3.5),
+]
+
+
+def trip_hours(where):
+    return next((h for pat, h in TRIP_HOURS if re.search(pat, where or "", re.I)), 1.5) if where else 1.5
 # A part or accessory for a model is not the model: skip the price list for these.
 ACCESSORY = re.compile(r"\b(throne|stand|case|gig ?bag|bag|strap|cover|pickguard|pickups?|neck|body|tuners?|knobs?|"
                        r"hardware|pedal board|footswitch|cable|parts?|manual|box only)\b", re.I)  # a snare or tom is the item itself
@@ -226,11 +244,14 @@ def deals(found, cache, reverb_budget=25):
             continue
         ratio = item["price"] / ref["typical"]
         profit = round(ref["typical"] * RESALE - item["price"])
-        flip = profit >= FLIP_PROFIT  # any gear at all, if it would resell at a profit worth the trouble
+        hourly = round(profit / (trip_hours(item.get("where")) + SELL_HOURS))
+        # Any gear at all, if it would resell at a profit worth the trouble and the time.
+        flip = profit >= FLIP_PROFIT and hourly >= FLIP_HOURLY
         if watch or ((flip or ratio <= (DRUM_DEAL if drums else DEAL)) and ratio >= 0.15):  # far below usually means a part, a typo or a scam
             out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)),
-                               "drums": drums, "flip_profit": profit if flip else None, "watch": watch})
+                               "drums": drums, "flip_profit": profit if flip else None,
+                               "flip_hourly": hourly if flip else None, "watch": watch})
     for k in list(cache)[:-400]:
         cache.pop(k)
-    # Wish-list items first, then flips worth the trouble, then drums, then the rest by discount.
-    return sorted(out, key=lambda x: (not x["watch"], -(x["flip_profit"] or 0), not x["drums"], -(x["pct_off"] or 0)))[:15]
+    # Wish-list items first, then flips by what they pay per hour, then drums, then the rest by discount.
+    return sorted(out, key=lambda x: (not x["watch"], -(x.get("flip_hourly") or 0), not x["drums"], -(x["pct_off"] or 0)))[:15]

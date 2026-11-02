@@ -85,43 +85,11 @@
   ],
   "missing": [
     {
-      "artist": "@ [At]",
-      "album": "Autosmile",
-      "score": 83,
+      "artist": "Shovel Dance Collective",
+      "album": "Everything In Readiness",
+      "score": 100,
       "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "@ [At]",
-      "album": "Autosmile",
-      "score": 83,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "Fontaines D.C.",
-      "album": "Autosmile",
-      "score": 84,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "Dopamine Chamber",
-      "album": "Dopamine Chamber",
-      "score": 83,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "The Avalanches",
-      "album": "No Bad Memories",
-      "score": 92,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music",
+      "score_url": "https://www.metacritic.com/music/everything-in-readiness/shovel-dance-collective/",
       "why": "No Portland date found yet"
     },
     {
@@ -158,6 +126,14 @@
       "score": 90,
       "score_url": "https://www.metacritic.com/music/so-much-for-goodbyes/billy-strings",
       "why": "No Portland date on the 2027 run yet"
+    },
+    {
+      "artist": "The Olivia Tremor Control",
+      "album": "The Same Place",
+      "score": 90,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/the-same-place/the-olivia-tremor-control/",
+      "why": "No Portland date found yet"
     },
     {
       "artist": "Vince Staples",

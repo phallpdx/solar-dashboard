@@ -18,9 +18,19 @@ SEARCH = "https://portland.craigslist.org/search/msa"
 SKIP = re.compile(r"\b(wanted|wtb|iso|looking for|lessons?|teacher|repair|rehearsal|studio time|band|trade only|"
                   r"for parts|broken|case only|stand only|rental)\b", re.I)
 DEAL = 0.7
+DRUM_DEAL = 0.75  # drums and percussion are what Parker is shopping for, so a smaller discount still shows
+# Drums and percussion get looked up first and marked, since that's what Parker is after.
+DRUMS = re.compile(r"\b(drums?|snares?|kick|toms?|floor tom|cymbals?|ride|crash|hi-?hats?|hats|splash|china|congas?|"
+                   r"bongos?|timbales?|djembes?|cajons?|percussion|shakers?|tambourines?|cowbell|marimba|vibraphone|"
+                   r"glockenspiel|xylophone|steel ?pan|tabla|darbuka|doumbek|frame drum|octapad|spd|e-?kit|v-?drums|"
+                   r"ludwig|tama|pearl|\bdw\b|gretsch|sonor|mapex|zildjian|sabian|paiste|meinl|istanbul|bosphorus|"
+                   r"latin percussion|\blp\b|gon bops|toca|remo|evans|rogers|slingerland|craviotto|c&c|canopus|sakae)\b", re.I)
+# Reselling costs about 15% of the price in fees and haggling, so that's taken off before calling it profit.
+RESALE = 0.85
+FLIP_PROFIT = 150
 # A part or accessory for a model is not the model: skip the price list for these.
 ACCESSORY = re.compile(r"\b(throne|stand|case|gig ?bag|bag|strap|cover|pickguard|pickups?|neck|body|tuners?|knobs?|"
-                       r"snare|kick|bass drum|tom|hardware|pedal board|footswitch|cable|parts?|manual|box only)\b", re.I)
+                       r"hardware|pedal board|footswitch|cable|parts?|manual|box only)\b", re.I)  # a snare or tom is the item itself
 
 # (pattern, name, rough used price in dollars). Ballpark used prices; Reverb wins when it has data.
 MODELS = [
@@ -64,8 +74,7 @@ MODELS = [
     (r"scarlett.*(2i2|4i4)", "Focusrite Scarlett", 100),
     (r"apollo twin", "UA Apollo Twin", 650),
     (r"roland.*td-?(17|27)", "Roland TD-17/TD-27 kit", 1100),
-    (r"alesis.*(nitro|surge|strike)", "Alesis e-kit", 250),
-    (r"yamaha.*p-?(45|125|145|225)", "Yamaha P-series piano", 400),
+    (r"alesis.*(nitro|surge|strike)", "Alesis e-kit", 250),    (r"yamaha.*p-?(45|125|145|225)", "Yamaha P-series piano", 400),
     (r"nord (stage|electro|piano)", "Nord keyboard", 1800),
     (r"\bmpc\b", "Akai MPC", 550),
     (r"roland.*juno", "Roland Juno", 700),
@@ -110,14 +119,20 @@ BRANDS = re.compile(r"\b(fender|squier|gibson|epiphone|prs|ibanez|esp|ltd|jackso
                     r"leslie|wurlitzer|rhodes|mackie|jbl|qsc|warwick|spector|lakland|aguilar|darkglass|fishman|deering|"
                     r"gold tone|hohner|washburn|kramer|heritage|cort|reverend|silvertone|harmony|teisco|hagstrom|dean|"
                     r"suhr|collings|eastman|ernie ball|markbass|tech 21|radial|neve|warm audio|dbx|lexicon|"
-                    r"keith mcmillen|kmi)\b", re.I)
+                    r"keith mcmillen|kmi|sonor|mapex|istanbul|agop|bosphorus|latin percussion|lp|gon bops|toca|"
+                    r"rogers|slingerland|premier|craviotto|c&c|canopus|sakae|noble|cooley|q drum|schlagwerk|evans|"
+                    r"aquarian|natal|ufip|dream|zildjian|stagg)\b", re.I)
 # Words that say what kind of thing it is, or its condition or color, not which model it is.
 GENERIC = re.compile(r"(?i)guitars?|bass(es)?|electric|acoustic|amp(lifier)?s?|heads?|cab(inet)?s?|combo|tube|valve|solid|"
                      r"state|hollow|semi|body|vintage|drums?|kit|set|pedals?|effects?|keyboards?|synth(esizer)?|piano|"
                      r"digital|analog|mic(rophone)?s?|interface|mixer|speakers?|monitors?|stereo|mono|with|and|the|for|of|"
                      r"in|w|plus|black|white|red|blue|green|sunburst|natural|finish|color|left|handed|lefty|made|japan|"
                      r"usa|mexico|mij|mim|korea|original|rare|clean|nice|works|working|perfect|like|pro|series|edition|"
-                     r"model|controller|foot|midi|\d{4}s?|\d+(w|watt|watts|in|inch)")
+                     r"model|controller|foot|midi|piece|pc|pcs|shells?|snares?|toms?|cymbals?|percussion|hand|"
+                     r"electronic|double|single|pedals?|chain|pack|chrome|brass|steel|aluminum|wood|maple|birch|"
+                     r"sparkle|gold|silver|wine|stain|by|to|from|each|all|three|two|one|full|offer|price|reduced|shoot|"
+                     r"me|an|a|s|x|inches|included|excellent|logo|case|mount|condition|"
+                     r"\d{4}s?|\d+(\.\d+)?(w|watt|watts|in|inch|pc|piece|g)|\d+(\.\d+)?x\d+(\.\d+)?|\d+\.\d+|\d+-piece")
 
 
 def _query(title):
@@ -134,7 +149,7 @@ def _model_words(query):
 NOT_USED = {"brand-new", "b-stock", "mint-inventory"}  # Reverb ignores condition=used, so this is checked per listing
 BUNDLE = re.compile(r"\b(bundle|lot|package|pack|kit|studio)\b|\+", re.I)
 PARTS = re.compile(ACCESSORY.pattern + r"|\b(replacement|switch|battery|potentiometer|pot|keys?|contacts?|jack|pcb|board|"
-                   r"power supply|adapter|cord|tubes|strings|decal|logo|faceplate|panel|screws?|for)\b", re.I)
+                   r"power supply|adapter|cord|tubes|strings|decal|faceplate|panel|screws?|only)\b", re.I)
 
 
 def _reverb(query, model):
@@ -151,10 +166,13 @@ def _reverb(query, model):
                     and (x.get("condition") or {}).get("slug") not in NOT_USED
                     and not (BUNDLE.search(title) and not BUNDLE.search(query))
                     and not (PARTS.search(title) and not PARTS.search(query))
-                    and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:2])):
+                    and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])):
                 prices.append(float(x["price"]["amount"]))
         if len(prices) >= 12 or len(data.get("listings") or []) < 50:
             break
+    if prices:  # a $5 badge or a single drum out of a "kit" search is not the thing itself
+        mid = sorted(prices)[len(prices) // 2]
+        prices = [p for p in prices if mid / 3 <= p <= mid * 3]
     prices.sort()
     return (prices[len(prices) // 4], len(prices)) if len(prices) >= 5 else None
 
@@ -162,14 +180,15 @@ def _reverb(query, model):
 def deals(found, cache, reverb_budget=25):
     """Score each listing against a typical used price. cache keeps Reverb lookups between runs."""
     out = []
-    for item in found:
+    # Drums and percussion first, so they get the Reverb lookups when there are more listings than budget.
+    for item in sorted(found, key=lambda x: not DRUMS.search(x["title"])):
         title = item["title"]
         if SKIP.search(title):
             continue
         match = None if ACCESSORY.search(title) else next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
         ref = {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
         q = _query(title).lower()
-        model, key = _model_words(q), "v2 " + q  # older cache entries are medians of loose matches
+        model, key = _model_words(q), "v3 " + q  # older cache entries came from looser matches
         if ref or not (BRANDS.search(q) and model):
             pass  # a title like "hollow body electric guitar" has nothing fair to compare against
         elif key in cache:
@@ -177,15 +196,20 @@ def deals(found, cache, reverb_budget=25):
         elif reverb_budget > 0 and item["price"] >= 100:
             reverb_budget -= 1
             try:
-                got = _reverb(q, model)
+                # Brand and model only: Reverb wants every word, and sellers word the rest differently.
+                got = _reverb(f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model)
                 cache[key] = ref = {"typical": round(got[0]), "basis": f"low end of {got[1]} matching used listings on Reverb"} if got else None
             except Exception:
                 pass
         if not ref or not ref["typical"]:
             continue
         ratio = item["price"] / ref["typical"]
-        if ratio <= DEAL and ratio >= 0.15:  # far below usually means a part, a typo or a scam
-            out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio))})
+        drums = bool(DRUMS.search(title))
+        profit = round(ref["typical"] * RESALE - item["price"])
+        if ratio <= (DRUM_DEAL if drums else DEAL) and ratio >= 0.15:  # far below usually means a part, a typo or a scam
+            out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)),
+                               "drums": drums, "flip_profit": profit if profit >= FLIP_PROFIT else None})
     for k in list(cache)[:-400]:
         cache.pop(k)
-    return sorted(out, key=lambda x: -x["pct_off"])[:15]
+    # Flips worth the trouble first, then drums, then the rest by discount.
+    return sorted(out, key=lambda x: (-(x["flip_profit"] or 0), not x["drums"], -x["pct_off"]))[:15]

@@ -1928,7 +1928,7 @@ body{background-color:#8F5A32;
         <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
           <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
           <div class="lines" id="gear"></div>
-          <p class="note">Asking price against what that gear usually sells for used. Check it in person before handing over cash.</p>
+          <p class="note">Asking price against the low end of what the same model sells for used. Drums and percussion come first; 💰 marks ones that could resell for $150+ after about 15% in fees. Check it in person before handing over cash.</p>
         </section>
       </div>
     </div>
@@ -4906,8 +4906,10 @@ async function renderBriefing() {
   }
 
   // Craigslist
-  const steal = ((D.gear && D.gear.deals) || []).find(d => d.pct_off >= 45 && d.first_seen && daysTo(d.first_seen) >= -1);
-  if (steal) add(steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual. ${say('gear', 0, 'One might move quickly, sir.')}`);
+  // A flip worth the trouble or new drum gear first, since that's what Parker is after.
+  const gearNew = ((D.gear && D.gear.deals) || []).filter(d => d.first_seen && daysTo(d.first_seen) >= -1);
+  const steal = gearNew.find(d => d.flip_profit) || gearNew.find(d => d.drums) || gearNew.find(d => d.pct_off >= 45);
+  if (steal) add(steal.flip_profit ? 74 : steal.drums ? 60 : steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual${steal.flip_profit ? `. Resold, it could clear roughly $${steal.flip_profit.toLocaleString()} after fees` : ''}. ${say('gear', 0, 'One might move quickly, sir.')}`);
 
   // Elections
   const cv = D.civics;
@@ -5103,7 +5105,7 @@ function renderGear() {
   $('gear-card').hidden = !g;
   if (!g) return;
   $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
-  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}
+  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}${d.drums ? ' <small class="up">🥁 Drums</small>' : ''}${d.flip_profit ? ` <small class="up">💰 Flip: ~$${d.flip_profit.toLocaleString()} profit</small>` : ''}
       <br><small>Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})${d.where ? ' · ' + esc(d.where) : ''}</small></span>
       <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off}% under</small></span></div>`).join('')
     : '<p class="note">Nothing priced well below usual right now.</p>';

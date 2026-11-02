@@ -994,9 +994,9 @@ def civics_view(state, today):
 def fetch_gear(state, now_utc):
     """Underpriced music gear on Portland Craigslist, checked every few hours."""
     store, errors = state.setdefault("gear", {}), []
-    if store.get("v") != 3:  # better matching: score the listings again now
+    if store.get("v") != 4:  # better matching: score the listings again now
         store.pop("scan_at", None)
-        store["v"] = 3
+        store["v"] = 4
 
     def scan():
         found = gear.listings()

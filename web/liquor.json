@@ -4,6 +4,19 @@
   "note": "New on OLCC's November 2026 price list, found by comparing it with this month's. Critic ratings are added when a source has one. OLCC doesn't publish what each store stocks, so check St. Johns first.",
   "items": [
     {
+      "name": "503 Distilling Long Island Ice Tea",
+      "category": "Liqueur",
+      "size": "375 ml",
+      "price": 14.95,
+      "rating": null,
+      "rating_source": null,
+      "why": "Long Island Ice Tea. New on OLCC's November 2026 price list.",
+      "url": null,
+      "olcc_url": null,
+      "olcc_code": "13040E",
+      "added": "2026-11-01"
+    },
+    {
       "name": "Fosforo Tequila Blanco",
       "category": "Tequila",
       "size": "750 ml",
@@ -248,19 +261,6 @@
       "url": null,
       "olcc_url": null,
       "olcc_code": "13624B",
-      "added": "2026-10-29"
-    },
-    {
-      "name": "Dos Hombres Blanco Tequila",
-      "category": "Tequila",
-      "size": "750 ml",
-      "price": 39.95,
-      "rating": null,
-      "rating_source": null,
-      "why": "80 proof. New on OLCC's November 2026 price list.",
-      "url": null,
-      "olcc_url": null,
-      "olcc_code": "14205B",
       "added": "2026-10-29"
     }
   ]

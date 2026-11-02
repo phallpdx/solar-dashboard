@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "events": [
     {
       "title": "CANVAS 2026",
@@ -37,13 +37,41 @@
       "title": "Portland Book Festival",
       "date": "2026-11-01",
       "ends": null,
-      "venue": "#12",
+      "venue": "",
       "kind": "Convention",
       "why": "Extensive lineup of local and national authors.",
       "sources": [
         {
           "name": "Travel Portland",
           "url": "https://www.travelportland.com/events/portland-book-festival/"
+        }
+      ]
+    },
+    {
+      "title": "Houston Dynamo FC at Portland Timbers",
+      "date": "2026-11-01",
+      "ends": null,
+      "venue": "Providence Park",
+      "kind": "Concert",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://seatgeek.com/cities/portland"
+        }
+      ]
+    },
+    {
+      "title": "Portland Book Festival",
+      "date": "2026-11-02",
+      "ends": "2026-11-08",
+      "venue": "Downtown or the Pearl",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.stayportland.com/guide/portland-events-festivals"
         }
       ]
     },
@@ -244,6 +272,20 @@
         {
           "name": "Rose Quarter",
           "url": "https://www.rosequarter.com/calendar-events/ramon-ayala-nov-27-2026"
+        }
+      ]
+    },
+    {
+      "title": "Grotto Festival of Lights opens",
+      "date": "2026-11-27",
+      "ends": null,
+      "venue": "",
+      "kind": "Holiday lights",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.stayportland.com/guide/portland-events-festivals"
         }
       ]
     },

@@ -1,15 +1,16 @@
 {
   "updated": "2026-11-01",
-  "updated_at": "2026-11-01T11:07:50Z",
+  "updated_at": "2026-11-02T07:18:41Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and excited",
-      "pulse": "Fans are energized by a 4-1 start and dominant win over Utah. There is growing excitement about the team's chemistry and potential.",
+      "mood": "Cautiously optimistic",
+      "pulse": "Fans are relieved by the 4-1 start and recent blowout win over Utah. However, concerns persist regarding Scoot Henderson's performance and a difficult November schedule.",
       "storylines": [
-        "Blazers beat Jazz 112-90 to reach 4-1 record",
-        "Deni Avdija led with 24 points against Utah",
-        "Ja Morant sidelined for at least one month",
-        "Scoot Henderson starting due to injuries"
+        "Blazers lead 4-1 after beating Jazz 112-90.",
+        "Robert Williams III is no longer on the injury report.",
+        "Ja Morant sidelined with hamstring strain.",
+        "Next game against Nuggets on 2026-11-02.",
+        "Debate over Scoot Henderson's franchise potential."
       ],
       "sources": [
         {
@@ -35,13 +36,12 @@
       ]
     },
     "timbers": {
-      "mood": "Mixed and expectant",
-      "pulse": "Fans are focused on the upcoming big match against Houston. There is also pride in academy players receiving national recognition.",
+      "mood": "optimistic and hyped",
+      "pulse": "Fans are celebrating a 3-1 win over Houston that puts them in eighth place. They are motivated by the playoff push.",
       "storylines": [
-        "Timbers face Houston Dynamo this Saturday",
-        "Timbers2 lost 1-0 to Ventura County FC",
-        "Eric Izoita signed first-team contract",
-        "Kellen Tamblyn named to MLS NEXT All-Star Game"
+        "Timbers beat Houston Dynamo FC 3-1",
+        "Team is currently in 8th place",
+        "Vincent Janssen scored one goal and two assists"
       ],
       "sources": [
         {
@@ -67,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "chaotic and surprised",
-      "pulse": "Fans are reeling from Esteban Ocon's sudden replacement by Ryo Hirakawa at Haas. There is also excitement surrounding Lewis Hamilton's return to pole position.",
+      "mood": "Awe and tension",
+      "pulse": "Fans are celebrating Kimi Antonelli's historic championship win. However, Ferrari intra-team battles and post-race penalties have caused debate.",
       "storylines": [
-        "Lewis Hamilton takes pole for Ferrari",
-        "Ryo Hirakawa debuts for Haas replacing Ocon",
-        "Ocon reportedly had a physical exchange with Komatsu",
-        "Liam Lawson disqualified from qualifying"
+        "Kimi Antonelli becomes youngest F1 World Champion",
+        "Max Verstappen wins Mexico City GP",
+        "Hamilton and Leclerc battle for position",
+        "Alpine duo stripped of points via penalties"
       ],
       "sources": [
         {

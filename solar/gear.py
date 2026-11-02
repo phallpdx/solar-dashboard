@@ -226,9 +226,10 @@ def deals(found, cache, reverb_budget=25):
             continue
         ratio = item["price"] / ref["typical"]
         profit = round(ref["typical"] * RESALE - item["price"])
-        if watch or (ratio <= (DRUM_DEAL if drums else DEAL) and ratio >= 0.15):  # far below usually means a part, a typo or a scam
+        flip = profit >= FLIP_PROFIT  # any gear at all, if it would resell at a profit worth the trouble
+        if watch or ((flip or ratio <= (DRUM_DEAL if drums else DEAL)) and ratio >= 0.15):  # far below usually means a part, a typo or a scam
             out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)),
-                               "drums": drums, "flip_profit": profit if profit >= FLIP_PROFIT else None, "watch": watch})
+                               "drums": drums, "flip_profit": profit if flip else None, "watch": watch})
     for k in list(cache)[:-400]:
         cache.pop(k)
     # Wish-list items first, then flips worth the trouble, then drums, then the rest by discount.

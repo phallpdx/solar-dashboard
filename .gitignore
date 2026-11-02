@@ -5,3 +5,4 @@ __pycache__/
 /local/logs/
 /local/out/
 /local/cache/
+/local/openwebui_key.dat

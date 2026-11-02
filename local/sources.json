@@ -7,6 +7,11 @@
     "max_chars_per_page": 12000,
     "timeout_seconds": 900
   },
+  "openwebui": {
+    "url": "http://localhost:3000",
+    "max_searches_per_day": 12,
+    "timeout_seconds": 300
+  },
   "push_branch": "claude/local-lists",
   "lists": {
     "jazz": [
@@ -64,6 +69,10 @@
         "name": "Oregon Convention Center",
         "url": "https://www.oregoncc.org/events",
         "place": "Oregon Convention Center"
+      },
+      {
+        "name": "Web search: big Portland events",
+        "search": "major events coming to Portland Oregon next two months announced"
       }
     ],
     "kids": [
@@ -112,6 +121,10 @@
       {
         "name": "Portland on-sale news",
         "url": "https://news.google.com/rss/search?q=Portland+concert+%22on+sale%22+OR+presale+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+      {
+        "name": "Web search: Portland presales",
+        "search": "Portland Oregon concert presale and on-sale dates announced this week"
       }
     ],
     "skioutlook": [
@@ -185,6 +198,10 @@
         {
           "name": "Google News: helium market",
           "url": "https://news.google.com/rss/search?q=helium+market+OR+helium+production+Saskatchewan+when%3A30d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Web search: North American Helium",
+          "search": "North American Helium Saskatchewan latest news"
         }
       ],
       "realestate": [
@@ -195,6 +212,10 @@
         {
           "name": "Google News: mortgage rates",
           "url": "https://news.google.com/rss/search?q=mortgage+rates+this+week+when%3A7d&hl=en-US&gl=US&ceid=US%3Aen"
+        },
+        {
+          "name": "Web search: Portland housing data",
+          "search": "Portland Oregon RMLS Market Action latest month median sale price inventory"
         }
       ]
     },

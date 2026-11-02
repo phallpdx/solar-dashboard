@@ -13,6 +13,7 @@ Only the standard library is used, so a plain Python install is enough.
     python local\refresh_lists.py --only jazz,kids # just some lists
     python local\refresh_lists.py --dry-run        # write to local\out\ instead of pushing
     python local\refresh_lists.py --check-sources  # fetch each source and report, no model needed
+    python local\refresh_lists.py --search "query" # one web search through Open WebUI, no model needed
 """
 import argparse
 import csv
@@ -181,7 +182,9 @@ def fetch(url, timeout=30, prefetched=True):
 
 
 def page_text(source, max_age_days=None):
-    """Returns (text, links) for a source: an RSS/Atom feed or an HTML page."""
+    """Returns (text, links) for a source: an RSS/Atom feed, an HTML page or a web search."""
+    if "search" in source:
+        return search_text(web_search(source["search"]))
     body, ctype = fetch(source["url"])
     head = body.lstrip()[:300].lower()
     if "xml" in ctype or head.startswith("<?xml") or "<rss" in head or "<feed" in head:
@@ -228,6 +231,57 @@ def feed_text(body, max_age_days=None):
         if link:
             links.add(link)
     return "\n".join(out), links
+
+
+# ---------------------------------------------------------------- web search
+
+OWUI = CONFIG.get("openwebui", {})
+SEARCH_CACHE_PATH = os.path.join(HERE, "cache", "searches.json")
+
+
+def web_search(query):
+    """Searches the web through Open WebUI on this PC, which passes the query to its search
+    engine (Tavily) and keeps that engine's key to itself. Returns [{title, url, snippet}].
+
+    Each search spends paid search credits, so the 2:05 and 4:05 runs reuse the 12:05 run's
+    results for the same query, and a day stops at openwebui.max_searches_per_day."""
+    try:
+        cache = json.load(open(SEARCH_CACHE_PATH, encoding="utf-8"))
+    except (OSError, ValueError):
+        cache = {}
+    if cache.get("date") != TODAY.isoformat():
+        cache = {"date": TODAY.isoformat(), "count": 0, "results": {}}
+    if query in cache["results"]:
+        return cache["results"][query]
+    key = os.environ.get("OPENWEBUI_API_KEY")
+    if not key:
+        raise RuntimeError("no Open WebUI API key (run local\\set_openwebui_key.ps1 once)")
+    if cache["count"] >= OWUI.get("max_searches_per_day", 12):
+        raise RuntimeError("today's web search limit is used up")
+    req = urllib.request.Request(OWUI.get("url", "http://localhost:3000") + "/api/v1/retrieval/process/web/search",
+                                 data=json.dumps({"queries": [query]}).encode(),
+                                 headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
+    cache["count"] += 1  # counted even when it fails, since the engine may have charged for it
+    try:
+        with urllib.request.urlopen(req, timeout=OWUI.get("timeout_seconds", 300)) as resp:
+            items = json.load(resp).get("items") or []
+        cache["results"][query] = [{"title": clean(i.get("title"), 200), "url": i["link"],
+                                    "snippet": clean(i.get("snippet"), 900)} for i in items if i.get("link")]
+    except urllib.error.HTTPError as e:
+        if e.code != 404:  # 404 is Open WebUI's answer for "no results"
+            raise RuntimeError(f"Open WebUI search failed: HTTP {e.code} {e.read()[:200].decode('utf-8', 'replace')}")
+        cache["results"][query] = []
+    finally:
+        os.makedirs(os.path.dirname(SEARCH_CACHE_PATH), exist_ok=True)
+        with open(SEARCH_CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    return cache["results"][query]
+
+
+def search_text(results):
+    """Search results laid out like a feed, so extraction and the link checks treat them the same way."""
+    out = [f"- {r['title']} (date unknown) [{r['url']}]\n  {r['snippet']}" for r in results]
+    return "\n".join(out), {r["url"] for r in results}
 
 
 # ---------------------------------------------------------------- model
@@ -512,6 +566,9 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
     `focus` can cut a page down to the lines worth reading, or to nothing."""
     found = []
     for src in sources:
+        if "search" in src:
+            # A search has no page of its own to fall back on, so items must link one of its results.
+            src = dict(src, url="search:" + src["search"])
         try:
             text, links = page_text(src, max_age_days)
         except Exception as e:  # noqa: BLE001 - one broken source must not stop the rest
@@ -551,6 +608,8 @@ def extract(sources, task, props, build, max_age_days=None, focus=None):
                 if f in r:
                     r[f] = unnumber(r[f], table)
             item = build(r, src, links)
+            if item and "search" in src and src["url"] in json.dumps(item):
+                item = None
             if item:
                 found.append(item)
                 kept += 1
@@ -1261,8 +1320,15 @@ def main():
     ap.add_argument("--only", help="comma-separated list names, e.g. jazz,kids")
     ap.add_argument("--dry-run", action="store_true", help="write results to local/out/ instead of pushing")
     ap.add_argument("--check-sources", action="store_true", help="fetch every source and report, then stop")
+    ap.add_argument("--search", metavar="QUERY", help="run one web search through Open WebUI, print the results, then stop")
     args = ap.parse_args()
     watch_parent()
+    if args.search:
+        try:
+            print(json.dumps(web_search(args.search), indent=2, ensure_ascii=False))
+        except RuntimeError as e:
+            sys.exit(str(e))
+        return 0
     if args.check_sources:
         check_sources()
         return 0

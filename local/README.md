@@ -41,6 +41,27 @@ new in Oregon, not confirmed on the St. Johns shelf.
 If the model or a source fails, that list simply keeps yesterday's items.
 Logs are in `local\logs\` (kept 30 days).
 
+## Web search through Open WebUI
+
+A source in `sources.json` can be a web search instead of a page:
+`{"name": "Web search: Portland presales", "search": "Portland Oregon concert presale ..."}`.
+The script sends it to Open WebUI on this PC (`http://localhost:3000`, the
+`open-webui` Docker container), which runs it on its configured search engine
+(Tavily) and returns the top results. The model then reads the result titles
+and snippets like a feed, and items must link one of the results. Plan ahead,
+big events, and the market brief's helium and real estate sections each have one.
+
+Searches cost search credits, so each query runs once a day (the 2:05 and
+4:05 runs reuse the 12:05 results from `local\cache\searches.json`) and a day
+stops at `openwebui.max_searches_per_day` (12). The nightly job starts Docker
+and the container if they aren't running and stops them again afterwards.
+
+It needs an Open WebUI API key, saved once with
+`powershell -ExecutionPolicy Bypass -File local\set_openwebui_key.ps1`
+(encrypted for your Windows account in `local\openwebui_key.dat`, never
+committed). Without it, search sources are skipped and everything else runs
+as before. To try a query by hand: `py local\refresh_lists.py --search "query"`.
+
 Concerts work a little differently: the model reads venue calendars and, when
 an artist on the "missing" list gets a Portland date, moves them to "shows".
 It also reads Pitchfork's Best New Albums feed and adds those artists to

@@ -25,6 +25,14 @@ DRUMS = re.compile(r"\b(drums?|snares?|kick|toms?|floor tom|cymbals?|ride|crash|
                    r"glockenspiel|xylophone|steel ?pan|tabla|darbuka|doumbek|frame drum|octapad|spd|e-?kit|v-?drums|"
                    r"ludwig|tama|pearl|\bdw\b|gretsch|sonor|mapex|zildjian|sabian|paiste|meinl|istanbul|bosphorus|"
                    r"latin percussion|\blp\b|gon bops|toca|remo|evans|rogers|slingerland|craviotto|c&c|canopus|sakae)\b", re.I)
+# Parker's wish list: any listing for these shows up flagged at the top, priced or not.
+WATCH = [
+    (re.compile(r"craviotto", re.I), "Craviotto"),
+    # Old K Zildjians: the Istanbul-made Ks (to the late 1970s) and Canadian Ks, not the modern K line.
+    (re.compile(r"(?=.*\b(k\.? ?zildjian|zildjian k\b|\bk\b.*zildjian|zildjian.*\bk\b|old k|istanbul k))"
+                r"(?=.*\b(vintage|old|istanbul|turkish|canadian|early|stamp|(19)?[3-8]0'?s|19[3-8]\d))", re.I), "Vintage K Zildjian"),
+]
+WATCH_QUERIES = ["craviotto", "k zildjian", "zildjian k", "old k zildjian"]
 # Reselling costs about 15% of the price in fees and haggling, so that's taken off before calling it profit.
 RESALE = 0.85
 FLIP_PROFIT = 150
@@ -92,18 +100,26 @@ def _text(s):
 
 
 def listings():
-    """Newest instrument listings with a price, from the no-script search results."""
-    page = _get(SEARCH + "?" + urllib.parse.urlencode({"sort": "date", "min_price": 40}))
-    out = []
-    for block in re.findall(r'<li class="cl-static-search-result"(.*?)</li>', page, re.S):
-        link = re.search(r'href="([^"]+)"', block)
-        title = re.search(r'class="title">(.*?)</div>', block, re.S)
-        price = re.search(r'class="price">\s*\$([\d,]+)', block)
-        where = re.search(r'class="location">(.*?)</div>', block, re.S)
-        if not (link and title and price):
+    """Newest instrument listings with a price, from the no-script search results, plus a search for each
+    watched item so an older listing for one isn't missed."""
+    out, seen = [], set()
+    for extra in [{}] + [{"query": q} for q in WATCH_QUERIES]:
+        try:
+            page = _get(SEARCH + "?" + urllib.parse.urlencode({"sort": "date", "min_price": 40, **extra}))
+        except Exception:
+            if not extra:
+                raise
             continue
-        out.append({"title": _text(title.group(1)), "price": int(price.group(1).replace(",", "")),
-                    "url": link.group(1), "where": _text(where.group(1)) if where else None})
+        for block in re.findall(r'<li class="cl-static-search-result"(.*?)</li>', page, re.S):
+            link = re.search(r'href="([^"]+)"', block)
+            title = re.search(r'class="title">(.*?)</div>', block, re.S)
+            price = re.search(r'class="price">\s*\$([\d,]+)', block)
+            where = re.search(r'class="location">(.*?)</div>', block, re.S)
+            if not (link and title and price) or link.group(1) in seen:
+                continue
+            seen.add(link.group(1))
+            out.append({"title": _text(title.group(1)), "price": int(price.group(1).replace(",", "")),
+                        "url": link.group(1), "where": _text(where.group(1)) if where else None})
     if not out:
         raise RuntimeError("Craigslist returned no listings (blocked or the page changed)")
     return out
@@ -180,11 +196,13 @@ def _reverb(query, model):
 def deals(found, cache, reverb_budget=25):
     """Score each listing against a typical used price. cache keeps Reverb lookups between runs."""
     out = []
-    # Drums and percussion first, so they get the Reverb lookups when there are more listings than budget.
-    for item in sorted(found, key=lambda x: not DRUMS.search(x["title"])):
+    watched = lambda t: next((label for pat, label in WATCH if pat.search(t)), None)  # noqa: E731
+    # Watched items, then drums and percussion, get the Reverb lookups first when there are more listings than budget.
+    for item in sorted(found, key=lambda x: (not watched(x["title"]), not DRUMS.search(x["title"]))):
         title = item["title"]
         if SKIP.search(title):
             continue
+        watch = watched(title)
         match = None if ACCESSORY.search(title) else next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
         ref = {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
         q = _query(title).lower()
@@ -201,15 +219,17 @@ def deals(found, cache, reverb_budget=25):
                 cache[key] = ref = {"typical": round(got[0]), "basis": f"low end of {got[1]} matching used listings on Reverb"} if got else None
             except Exception:
                 pass
+        drums = bool(DRUMS.search(title))
         if not ref or not ref["typical"]:
+            if watch:  # on the wish list: worth a look even with nothing to price it against
+                out.append(item | {"typical": None, "basis": None, "pct_off": None, "drums": drums, "flip_profit": None, "watch": watch})
             continue
         ratio = item["price"] / ref["typical"]
-        drums = bool(DRUMS.search(title))
         profit = round(ref["typical"] * RESALE - item["price"])
-        if ratio <= (DRUM_DEAL if drums else DEAL) and ratio >= 0.15:  # far below usually means a part, a typo or a scam
+        if watch or (ratio <= (DRUM_DEAL if drums else DEAL) and ratio >= 0.15):  # far below usually means a part, a typo or a scam
             out.append(item | {"typical": ref["typical"], "basis": ref["basis"], "pct_off": round(100 * (1 - ratio)),
-                               "drums": drums, "flip_profit": profit if profit >= FLIP_PROFIT else None})
+                               "drums": drums, "flip_profit": profit if profit >= FLIP_PROFIT else None, "watch": watch})
     for k in list(cache)[:-400]:
         cache.pop(k)
-    # Flips worth the trouble first, then drums, then the rest by discount.
-    return sorted(out, key=lambda x: (-(x["flip_profit"] or 0), not x["drums"], -x["pct_off"]))[:15]
+    # Wish-list items first, then flips worth the trouble, then drums, then the rest by discount.
+    return sorted(out, key=lambda x: (not x["watch"], -(x["flip_profit"] or 0), not x["drums"], -(x["pct_off"] or 0)))[:15]

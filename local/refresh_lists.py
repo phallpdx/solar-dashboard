@@ -297,7 +297,7 @@ def search_text(results):
 
 # ---------------------------------------------------------------- model
 
-def ask_model(task, text, schema):
+def ask_model(task, text, schema, temperature=0.1):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
     messages = [
         {"role": "system", "content": "You extract facts from web pages into JSON. Use only what the page says. "
@@ -310,7 +310,7 @@ def ask_model(task, text, schema):
     payload = {
         "model": LLM["model"],
         "messages": messages,
-        "temperature": 0.1,
+        "temperature": temperature,
         "max_tokens": 3000,
         # Gemma's thinking step is slow on this laptop and not needed for extraction.
         # LM Studio honours reasoning_effort for Gemma 4; enable_thinking is for other models.
@@ -1317,12 +1317,100 @@ def refresh_liquor(data, sources):
     return data
 
 
+# Alfred's lines for the morning brief: the page fills in the facts, these are his asides around them.
+# key: (kind, when it's used, an example of the old fixed line). "lead" lines go before a colon.
+ALFRED_LINES = {
+    "hello_late": ("sentence", "greeting when Parker is up between midnight and 5 am", "Burning the midnight oil, sir?"),
+    "hello_morning": ("sentence", "morning greeting", "Good morning, sir. The coffee is on."),
+    "hello_afternoon": ("sentence", "afternoon greeting", "Good afternoon, Master Parker."),
+    "hello_evening": ("sentence", "evening greeting", "Evening, Master Parker. A quiet one, I hope."),
+    "intro_urgent": ("sentence", "opening line when something urgent leads the list", "I've put the urgent matters first."),
+    "intro_some": ("sentence", "opening line on an ordinary day with a few things worth knowing", "The overnight post, sir."),
+    "intro_calm": ("sentence", "opening line when nothing is pressing", "All quiet at the manor. A few diversions below."),
+    "sign": ("signoff", "sign-off at the bottom; must end with the name Alfred", "Do try to eat something. Alfred"),
+    "fresh_heading": ("lead", "heading over the new reading for the morning", "Hot off the press"),
+    "nws_alert": ("sentence", "after an official weather warning", "I would take it seriously, sir."),
+    "forecast_alert": ("sentence", "after a rough-weather forecast", "Batten down accordingly."),
+    "rain": ("sentence", "after a rainy day's forecast", "The umbrella is by the door."),
+    "air_bad": ("sentence", "after unhealthy air quality", "I would keep the windows shut and the exertion indoors."),
+    "air_ok": ("sentence", "after moderate, harmless air quality", "Nothing to trouble yourself over."),
+    "commute": ("sentence", "after a slow drive warning", "Allow for it."),
+    "pdx": ("sentence", "after airport delays", "Should you be collecting anyone, check before you leave."),
+    "sick": ("sentence", "after flu or RSV running high", "Wash your hands, sir."),
+    "kids_last_day": ("sentence", "after a family event's last day is today", "Your little one may never forgive you otherwise."),
+    "jazz_lead": ("lead", "introduces a jazz show", "For something civilized"),
+    "iss": ("sentence", "after a space station pass tonight", "Bright enough to wave at."),
+    "full_moon": ("sentence", "after the full moon", "Gotham's criminals are fond of it."),
+    "rare_bird": ("sentence", "after a rare bird sighting nearby", "Binoculars are in the hall closet."),
+    "ski": ("sentence", "after fresh snow on Mt. Hood", "Shall I wax the skis?"),
+    "coast_wild": ("sentence", "after huge waves at the coast", "Admire it from the window."),
+    "bluray": ("sentence", "after a 4K Blu-ray sale ending soon", "The collection could use reinforcement."),
+    "mushrooms": ("sentence", "after good mushroom foraging conditions", "A basket in the boot would not go amiss."),
+    "gear": ("sentence", "after a studio gear bargain on Craigslist", "One might move quickly, sir."),
+    "sunset": ("sentence", "after a promising sunset", "I'd step outside, sir."),
+    "solar_best": ("sentence", "after the solar panels' best day in a while", "Splendid."),
+    "apod": ("sentence", "after NASA's picture of the day", "Worth a look on a big screen."),
+    "science_lead": ("lead", "introduces a science finding", "A finding worth your coffee"),
+    "news_lead": ("lead", "introduces the big news story", "The talk of the morning"),
+    "read_lead": ("lead", "introduces a long read", "For a long sit with your tea"),
+    "larder_lead": ("lead", "introduces a new local food product", "For the larder"),
+    "markets_lead": ("lead", "introduces the market summary", "On the markets"),
+    "property_lead": ("lead", "introduces the Portland housing summary", "Property, sir"),
+    "win_lead": ("lead", "introduces a Blazers or Timbers win", "Good news"),
+    "loss_lead": ("lead", "introduces a Blazers or Timbers loss", "I regret to report"),
+}
+
+
+def refresh_alfred(data, sources):
+    """Fresh asides for Alfred, the butler who writes the brief at the top of the page, so he doesn't
+    say the same thing every morning. The page falls back to its own fixed lines for any key missing here."""
+    recent = {k: v for k, v in (data.get("recent") or {}).items() if v >= (TODAY - dt.timedelta(days=21)).isoformat()}
+    lines = {}
+    keys = list(ALFRED_LINES)
+    for start in range(0, len(keys), 10):
+        batch = keys[start:start + 10]
+        spec = "\n".join(f'- {k} ({ALFRED_LINES[k][0]}): {ALFRED_LINES[k][1]}. Old line: "{ALFRED_LINES[k][2]}"' for k in batch)
+        used = list(recent)[-60:]
+        schema = {"type": "object", "properties": {k: {"type": "array", "items": S, "minItems": 3, "maxItems": 5} for k in batch},
+                  "required": batch, "additionalProperties": False}
+        r = ask_model("You write lines for Alfred, a dry, warm, very British butler (in the manner of Batman's Alfred) who "
+                      "writes Parker a short morning note about his day in Portland, Oregon. For each key below, write 4 "
+                      "fresh, different lines in his voice. Keep each under 14 words. Never state facts, numbers, names, "
+                      "places or dates: the page adds those around your line. A sentence ends with . ? or !. A lead is a "
+                      "short phrase with no ending punctuation, since a colon follows it. A signoff ends with ', Alfred' or "
+                      "'. Alfred'. Address him as sir or Master Parker now and then, not every line. Be witty but kind, and "
+                      "vary the jokes. Don't reuse any of these recent lines: " + json.dumps(used, ensure_ascii=False),
+                      spec, schema, temperature=0.9)  # a little invention is the point here
+        for k in batch:
+            kind = ALFRED_LINES[k][0]
+            good = []
+            for line in (r or {}).get(k) or []:
+                line = clean(line, 120).replace("’", "'").strip('"')
+                if (not line or len(line.split()) > 16 or re.search(r"[\d<>{}\[\]]", line) or line in recent or line in good
+                        or (kind == "lead" and re.search(r"[.:!?]$", line))
+                        or (kind == "sentence" and not re.search(r"[.!?]$", line))
+                        or (kind == "signoff" and not re.search(r"[,.]\s*Alfred$", line))):
+                    continue
+                good.append(line)
+            if len(good) >= 2:
+                lines[k] = good
+        log(f"  lines {start + 1}-{start + len(batch)}: {sum(len(lines.get(k, [])) for k in batch)} kept")
+    if not lines:
+        return data  # keep yesterday's
+    for v in lines.values():
+        for line in v:
+            recent[line] = TODAY.isoformat()
+    return {"note": "Alfred's asides for the morning brief, written nightly by the local model.", "date": TODAY.isoformat(),
+            "lines": lines, "recent": recent}
+
+
 REFRESHERS = {
     "jazz": refresh_jazz, "concerts": refresh_concerts, "events": refresh_events, "kids": refresh_kids,
     "bluray": refresh_bluray, "foodfinds": refresh_foodfinds, "planahead": refresh_planahead,
     "skioutlook": refresh_skioutlook, "teams": refresh_teams, "marketbrief": refresh_marketbrief,
     "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
     "liquor": refresh_liquor,
+    "alfred": refresh_alfred,
 }
 
 

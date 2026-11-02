@@ -351,6 +351,7 @@
         "url": "https://www.olcc.state.or.us/pdfs/NumericPriceListNextMonth.csv",
         "use": "next"
       }
-    ]
+    ],
+    "alfred": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
     {
@@ -17,86 +17,6 @@
       "where": "Portland, OR",
       "detail": "Connect with nature for $13 admission from 9:30 a.m. to 3:30 p.m.",
       "url": "https://www.oregonzoo.org/events/fall-discount-days"
-    },
-    {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Various storytimes including Preschool Storytimes and Toddler Times are available for free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "Monday Mingle",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "Community gathering with coffee and play equipment from 8:30 am to 10:00 am. Free.",
-      "url": "https://pdxparent.com/series/monday-mingle/"
-    },
-    {
-      "title": "Tree Time! Preschool Walks",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "Guided nature walks and stories at Hoyt Arboretum from 10:00 am to 11:00 am. $5 – $8.",
-      "url": "https://pdxparent.com/series/tree-time-preschool-walks/"
-    },
-    {
-      "title": "Tummy Time Connection Circle",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "Postpartum connection and skills for babies through 12 months from 10:00 am to 11:00 am. Free.",
-      "url": "https://pdxparent.com/series/tummy-time-connection-circle-laurelhurst-dance-studio/"
-    },
-    {
-      "title": "Early Childhood Mandarin Music and Movement Class",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Lake Oswego, OR",
-      "detail": "Mandarin singing and movement class for children six and under from 10:30 am to 11:00 am. Free.",
-      "url": "https://pdxparent.com/series/early-childhood-mandarin-music-and-movement-class-12/"
-    },
-    {
-      "title": "Gym Open Play at Sellwood Community House",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Portland, Oregon",
-      "detail": "Toddler-friendly open play with toys and balls from 10:30 am to 12:30 pm. $8.",
-      "url": "https://pdxparent.com/series/gym-open-play-at-sellwood-community-house/"
-    },
-    {
-      "title": "Crowns & Cupcakes",
-      "date": "2026-11-02",
-      "ends": "2026-11-02",
-      "where": "Beaverton",
-      "detail": "Crafting crowns and decorating cupcakes for children aged 2 to 9 from 4:30 pm to 6:00 pm. Free.",
-      "url": "https://pdxparent.com/event-single/crowns-cupcakes/"
-    },
-    {
-      "title": "Portland Book Festival",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Downtown Portland",
-      "detail": "The festival features storytimes specifically geared toward ages 4 and up. Free – $20.",
-      "url": "https://pdxparent.com/series/portland-book-festival/"
-    },
-    {
-      "title": "Aspire Dental’s Halloween Candy Buy Back",
-      "date": "2026-11-02",
-      "ends": "2026-11-02",
-      "where": "Portland",
-      "detail": "Trade in trick-or-treat candy for cash and prizes. 8:00 am - 5:30 pm, Free.",
-      "url": "https://pdxparent.com/series/aspire-dentals-halloween-candy-buy-back/"
-    },
-    {
-      "title": "PDX Mac & Cheese Week",
-      "date": "2026-11-02",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Restaurants offer special mac and cheese recipes for $10.",
-      "url": "https://pdxparent.com/series/pdx-mac-cheese-week/"
     },
     {
       "title": "Storytime at Washington County Libraries",
@@ -161,6 +81,22 @@
       "where": "Portland",
       "detail": "Music and puppet show from 10:00 am to 11:00 am for $10–$20.",
       "url": "https://pdxparent.com/series/red-yarns-family-music-puppet-show-at-taborspace/"
+    },
+    {
+      "title": "Littles Ballet at Laurelhurst Studio",
+      "date": "2026-11-03",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Ballet technique and motor skills for ages 2-5 from 10:15 am to 11:00 am for $18.",
+      "url": "https://pdxparent.com/series/littles-ballet-at-laurelhurst-studio/"
+    },
+    {
+      "title": "Gym Open Play at Sellwood Community House",
+      "date": "2026-11-03",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Toddler-friendly open play in a gym from 10:30 am to 12:30 pm for $8.",
+      "url": "https://pdxparent.com/series/gym-open-play-at-sellwood-community-house/"
     },
     {
       "title": "Veterans Day",

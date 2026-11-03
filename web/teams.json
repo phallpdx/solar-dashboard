@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-02",
-  "updated_at": "2026-11-03T07:23:50Z",
+  "updated": "2026-11-03",
+  "updated_at": "2026-11-03T09:17:14Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and hyped",
-      "pulse": "Fans are ecstatic after breaking an 18-game losing streak in Denver. The team's rise to top 10 power rankings has fueled excitement.",
+      "pulse": "Fans are ecstatic after a significant road win in Denver. The team's 5-1 start has them feeling highly confident.",
       "storylines": [
-        "Blazers improved to 5-1 with a win over Nuggets"
+        "Blazers improved to 5-1 on the season"
       ],
       "sources": [
         {
@@ -33,12 +33,12 @@
     },
     "timbers": {
       "mood": "optimistic and hopeful",
-      "pulse": "Fans are energized after three straight wins that put playoff fate in their hands. Tactical progress under Martí Cifuentes is showing signs of improvement.",
+      "pulse": "Fans are energized following three straight wins. There is growing belief in Martí Cifuentes' tactical overhaul.",
       "storylines": [
-        "Timbers have secured three consecutive wins",
-        "Playoff seeding depends on other results",
-        "Finn Surman selected for New Zealand national team",
-        "Vincent Janssen named to MLS Team of the Matchday 34"
+        "Three consecutive wins put playoff fate in their hands",
+        "Vincent Janssen named to MLS Team of the Matchday 34",
+        "Finn Surman selected for New Zealand National Team",
+        "Playoff seeding depends on upcoming results"
       ],
       "sources": [
         {
@@ -64,13 +64,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory and historic",
-      "pulse": "Fans are celebrating Kimi Antonelli becoming the youngest champion ever. Betting markets predict Max Verstappen for 2027 glory.",
+      "mood": "celebratory and emotional",
+      "pulse": "Fans are celebrating Kimi Antonelli's historic title win in Mexico. Discussions focus on future driver lineups and team dynamics.",
       "storylines": [
-        "Kimi Antonelli wins 2026 World Championship in Mexico",
-        "Max Verstappen favored for 2027 title by betting markets",
-        "Ferrari investigating Hamilton/Leclerc intra-team clash",
-        "Oliver Bearman seeking 2028 Ferrari seat guarantees"
+        "Kimi Antonelli becomes youngest-ever F1 World Champion",
+        "Max Verstappen favored for 2027 title by markets",
+        "Oliver Bearman seeking Ferrari seat guarantees",
+        "Cadillac investigating Bottas high speed failure"
       ],
       "sources": [
         {

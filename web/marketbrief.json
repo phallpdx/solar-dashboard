@@ -1,11 +1,11 @@
 {
   "analysis": {
-    "headline": "Nasdaq fell as Apple's weak margin forecast weighed on tech while oil rose on US-Iran hopes.",
-    "summary": "Apple's weak margin forecast caused a Nasdaq slide. Bonds saw yields drop alongside a Dow rise. Oil prices climbed amid US-Iran hopes. Gold and Bitcoin both experienced declines.",
+    "headline": "Tech stocks fell while oil prices rebounded amid mixed trading.",
+    "summary": "Nasdaq and S&P 500 declined as Apple's weak margin forecast weighed on tech. Oil rose following news regarding Iran. Gold dropped significantly despite a broader market decline. Bitcoin saw slight gains amidst the volatility.",
     "sources": [
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPRnVXWVlvUFpSU0FxcHVyYW1tY2l0ZVJKNHR0a3hjOG9yZE81NU9zVUtLZF9fSTdqcC1nZFQtY3RHeGh6b1lTMWotSklxUDFlTFFIRDY4X2VZNzFJR2RHWjI2enZsVmlXLTM1bVRYNkx2eC1UTk1TOU44NHlrXzBFRXB3TdIBiAFBVV95cUxOTklSTE1CRWZWUTVyemZhc05zRmt6Ui1Ld000Y3ZJWWZDTi1wajZkTWhaOXUzeXVjaWt6VU51WjkwdTROTnc2OWhMRDFYYXFMNEhSTExTamlpREo3NDdxd0xhLUpqOF9TNUxzVWlQV0JhVldFdENEU2Qyc2xhSTg0WVRzcWI0Wlgz?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOekRxNGUzaWpTRy1SLXpVUmlsbkNPVWMyQ3Q4WWx2eHFvRjhvUzViNUtXcGlxLVlmdlphQUc2bk5CX2ZwVmp5RnJQNTJxaVdjd0dra051ZUJNaVpQcVFVQjBPa1MtY0tEZ0N3MG9VMGJWWXZ4cXoyRzhKSm02NHJLbDdlYUpVbE4tbnhuOEZodFlmX0k?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -13,19 +13,19 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUXhSWUZpNlU1UFZVSEtvY3QwQVB4T3FuYlpCT3lpaE05MThfMFFTZVZWWllFZDZDYkJFdTBIWEx1X1ZMVXlESFdaX3Noc2VSSW1QRHFzYzhPZkowLVNZeWR1N2dBN2hlLXY1VlJ3SHJNR3Ayc29JOXN4cXN3bklZQzN5bEctRER1aGp1eFdUVjhITWM0?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNUFhSS0pDcDhxY3pENzBPOFQxQ3p4VkctbjFUT1Jfb1o0OUVoRVpLYUtFS0VqcnVkZGJGbnZwN1pSUGhaZ010dU9sSGw3SUJ0TUl4czk4a3VRc2pMbk10UGozZ1FWZ19pX3VScTZfVlBocmQ1ZDMwVWZHTjkxSHNBbHJiWHRwcHVXTTRqTHJwNjZpVWM2c1ZCNnNlVnFMUjdPa0dBSFFlM2xpS0w2bGE5OFQ1NWNudkw3ZWI2b1YwQ2l5SmJSS0J2Skl0VGJoaEUycFRIanYybTZ6MkFzU0pvSA?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
       "Apple's weak margin forecast",
-      "US-Iran hopes affecting oil prices"
+      "Marvell's $115 billion Lumentum acquisition"
     ],
     "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is onstream producing approximately 73 MMcf/y. This facility supports construction of the first regional helium liquefier in Canada. Production is sold under long-term contracts to major global industrial gas distributors.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. This production could ease a global shortage.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -46,49 +46,45 @@
       {
         "name": "Google News: helium market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVG13OGVTVmJvT1JtY1NTSGtLeFJpTF83SUpuRkhyOU5oeXN6dXozbVctYi1WcWRaZndfSE8zd2tDN2VIR09oai1ic0NabVJtNDlTeWVrYUF5NTFNUmVoeXppRnZqVm9BRnJHQkk3T2tWRTRnZDVvX1FGTGFWeTROSzZKbTdWejBnTThwckZNRzZ4Rmh3?oc=5"
-      },
-      {
-        "name": "Web search: North American Helium",
-        "url": "https://www.newsfilecorp.com/release/315362/North-American-Helium-Starts-Production-at-Canadas-Largest-Helium-Field"
       }
     ],
     "by": "local model",
     "items": [
       {
-        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
         "title": "FEATURE: Saskatchewan’s New Subsurface Economy: Helium, Lithium and Natural Hydrogen",
-        "date": "2026-11-02",
+        "date": "2026-11-03",
         "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPdUh3Wm02RExHSXlIblA3bXd0Y1lBVnBBaDNHc19WNERxX0pfXzJEaEM2VkppMGZLZEJ6YmtfT1dkUlh2Yk8xbV9tVThWYVYwWnRsNkYtLUxneHU2aUtPSmo1cTllYmkwY19valZMbklHSGZVUHBRTU85cmlmc0hBMlRHbUkxc0RyQXVRR3VMOGc0cHo0TWRsU1lydDlkbVMwMnNHRHFvcWJYMlRWRm93?oc=5",
         "source": "Google News: helium market"
       },
       {
-        "title": "Helium and Geologic Hydrogen: From Resource Potential to Commercial Production",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPb0Y4Rkg4NWhnbFU3LXhua1VIYVcya0JhZTFXNmw5Mk9VWjNJX1pTZmRUZ051NjdNQXlZaEM0QXlLVFlxRHVpakZDOWhXN1ZRV0JPX0Fwd05oSVVXZFYxRFBlTmlSVGRCUXc2cWJXLWV5cExRamxlTnhmR3ZubzRrQ3l5NHdDWjZFMDFPTkxoSG1Hbi1TLThmdEdOamVCbjNmQ3dKWFd1VXNnRW1wVEUxUU1KemMzSlEtVHh5eWstNnI2Zw?oc=5",
-        "source": "Google News: helium market"
+        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
+        "date": "2026-11-01",
+        "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
+        "source": "Google News: North American Helium"
       },
       {
         "title": "Helium producer gives Swift Current recreation plans a $100K lift",
-        "date": "2026-11-02",
+        "date": "2026-11-01",
         "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
         "source": "Google News: helium market"
       },
       {
-        "title": "Canada-EU pact: New funding coming for critical mineral projects",
-        "date": "2026-10-31",
-        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOQUdtaWE3N200UHBSVG85YnE2SWx1Tkk0RVctSzZWYlI4RmxDMHRkUUxiMHQ4aGd2UjNzUVJrRFdYeUN5SElvaGVXRlRJQTZ1eFNBWm40OE1aOTBTY1gxNEptV04tQTg1SXpNaFZBa2poaC1RTzNuNEdqTHhKcGpWaTd4a3VsUkNCM2pMOGJYSXpERVNrazRnN3loc0U?oc=5",
+        "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
+        "date": "2026-10-28",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
+        "source": "Google News: North American Helium"
+      },
+      {
+        "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
+        "date": "2026-10-28",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
         "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
-    "headline": "The Portland housing market is stagnant with buyers backing out of deals.",
-    "summary": "Sellers are lowering prices in a stagnant market. Homebuyers are increasingly backing out of deals. Renters are being squeezed by a punishing market. Mortgage rates fell for two straight weeks but remain elevated.",
+    "headline": "The Portland housing market is experiencing stagnation and price reductions.",
+    "summary": "Sellers are lowering prices in a stagnant market. Renters are being squeezed by the punishing market. Homebuyers are backing out of deals. Mortgage rates fell for two straight weeks but remain elevated.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -104,43 +100,39 @@
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNY25jeU5DZ0pBeUdkaHpoZFBLejRwanFmSW1HbWRmUkQxdXMzMURVREM4X25xUkVNZGdiT2xEd1hNQzRraVJvV1liMkhSSjNqS2d0QmMtNENWMzFsWnM2ck0tN2VxSFFiVklnSHdBUkhLNWZDU2VhLW9BYTFuODFuNGFBTmk0bGxwaklkOHlB0gGTAUFVX3lxTE9iUzR0Q3d5RkxzLThMUGFtNEhpWWtOcXBqdTNJU0hVMlRCUFdUNGRzMGllZU5tSDZMTThMc3lJdng3OUFuZGR0M2diVmIyNzhqN0MzUHZyZ3JILU9MUGdGVkIzbk80TWU3V0JNMFZ1M3ROZ0k1VDNZdnhHSXU0M2toaXlCeWtDTnlySkFpdGtEWTlKdw?oc=5"
-      },
-      {
-        "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage rates Tuesday, Nov. 3, 2026",
+        "date": "2026-11-03",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9hMDk4bEpIUnNvMmtOeHFsLW9pT3lYTThycklLUWg0RkNXZ0RrZWlxV2dJZHJDbk1oSDh6QzlfZkh5bWVMVEVocHJXV0JwUDByQjAxZHhyaVlSQVlVcGFVdFV1WnFVdmR4TzI5cktvYw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Current ARM mortgage rates report for Nov. 3, 2026",
+        "date": "2026-11-03",
+        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBrRnlVblV0RFRGTGJBN20ybEdlZzBlZ21lVVRxUEZHN1ZtUlUzU3ZKMkROWWFESHFlWmdQUko0amRWdER5eUdtamlnLS1adkZyLThnUmtSLXh6OC1jV0NTRnRSaUpka0FSYXJNME01bHo1bWVM?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Current refi mortgage rates report for Nov. 3, 2026",
+        "date": "2026-11-03",
+        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE13UHEzcFJ5QWtsMFdwdXp6eDFFNk96RXRmMG12UWZIVi10SVJBTnZmYjF6R29uOS0tRGNqTzd1a3F3R0JGLWxVQzFiS3dVa2ZzSHhENjZ5VXMtMTRWUnJCM2JER08teWZhT0tNbjdXWU1JLVBHU3c?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Today’s home equity loan and HELOC rates, Nov. 3, 2026",
+        "date": "2026-11-03",
+        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBreENMRmZtR3FySzB1S0JWd2lVeDZ6Z00yQkJUQlpNVmhHaXNLb2xKTHhTTlhFcXJxTUpvTHhvRmJDMnZvMFBYZ2hDNXNnVnNXXzR5R0JyRFBHOEpLR1NaVjYtY1dmN3I0?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "Mortgage rates today, Nov. 2, 2026",
         "date": "2026-11-02",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBvVmF1RVZvMC01LVZnYWN6ekExNTJvV05fY25ZNU1KcGdNSnNDOURJRklpbWxXT2JjenJxZVB1cnh3anhOQUE3SU5vV09HNWR3Z1JndzRYNUJ6Wno4MXk5bm5INEY3aV9TdDVpcnY1UQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage Rates Forecast For 2026: Experts Predict Whether Interest Rates Will Drop",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9kMlJHRWhRY2owbnpsZWhWOHVVZFR1ZmM3NzhqTUVEVnpHR2xlMHp0QnR2eXFwV2wzQ2FMbXZTN3lTLUJ5OHgxdnk0S3Z2Q3hEQ2pEYW9xcWhrRktVS3B0RXB0NkdnM0hPMzBReG5neWZ1TTdvVWs4bWgxdWFNUkk?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today's Mortgage Rates, November 2, 2026: 30-Year Rates Remain Unchanged at 7.28%",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPd0MzcHRYNHVEYndfc2ZndGdNVG9VaEZIUnhMa3E0LTg4UUxXaUtIZGNIS1NGRklsZjA1N3J5dUc0bUdnQmN3WVVSRUI1YlVZX2N0dXFTcXdlOWRRQ3otWmpBWnZSWVZUQ3otbGR2TXpaTVZPcGctdnZ2VllCVE8td1BST3NsaVFEcjRfaw?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Compare Today’s Mortgage Rates",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBZWTRCWTZjV2FtYlpMOFBxWjVNRF9EbGN0QUJYRHVXY1VyMTdSdGc2blVoM2lFYkI0elJNRVY2VER1RTJZNGEwendkNEFGejdfZkNOVTRTa3FWSkdISHNTcmNfYlBTY3M?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Weekly survey of mortgage lenders with the lowest rates: 3 lenders remain below 7%",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQLTZQMEdtSjByd083aTBLNWNDc0xuYmlDd2h4aHEyaHB1SDJPbE1Wb3hLVFZsSTREd3NzWWlhT1JtdTdXNjZabjBhdWtLX2RDQm9pYUV6alptZ1lXZ2RtRzVmYmt0allFVVJtdnFGNi1ROTdpUGg0ZXlfM05ZR3h4elhMNUEtZ1hrZEwwMlJRR29weWREUlBxN0tMVXJwZG1CU3dFUllqWHVVNFgtNFI3Tm43OFpIS3ZtYWJZTlBzRVdaYkRIdmZYQkZpcDFWbEJ4Y2xEZVRrZ25YRUtN?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
@@ -175,6 +167,6 @@
       }
     ]
   },
-  "updated_at": "2026-11-03T07:26:04Z",
-  "updated": "2026-11-02"
+  "updated_at": "2026-11-03T09:18:51Z",
+  "updated": "2026-11-03"
 }

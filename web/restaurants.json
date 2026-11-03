@@ -1,6 +1,40 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "restaurants": [
+    {
+      "name": "Pamana",
+      "neighborhood": "",
+      "cuisine": "Filipino",
+      "price": "",
+      "opened": "2026-11-03",
+      "summary": "Brings Filipino cuisine and a family legacy to Portland.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-03",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNQnYzTS1PS1JfVVMtNXFlU0h3QVV1NUUtTUxrdzNJclpfQThURjBjazhEM0RKaEc4bjVGMHNMMERGWjA3RHVJQld0V2tDU1VGa0trRVdxcnhWcHk5UjlkNVpFb2ZQRGV5c09PWDczNHRxNTN1RFRtMDNWS3VueFZhSVEyYW5PeDdFalFwcjVnVkR0WW52YWdJbGhqbTNPQzVKRmFkN3dIRQ?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "North Portland Thai restaurant",
+      "neighborhood": "North Portland",
+      "cuisine": "Thai",
+      "price": "",
+      "opened": "2026-11-02",
+      "summary": "New Thai restaurant worth repeat visits.",
+      "reviews": [
+        {
+          "outlet": "Axios",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-02",
+          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQTnFScjFWa2N4YXVpY2EyWVViUEJ3cVdjQnIwOFB0TTBKWElqOEJFWDVXNS10MmxpUkZ2OUdGTEo5YVBRcGxqM1VLNXA4YXRCNlpUWnRVNXZ1ajBKUUl3ZzhDanczRVZpWXMyT2RhNDh1X0NKMV81bjdHcXFldW53STdhMjJRQV80?oc=5"
+        }
+      ]
+    },
     {
       "name": "Nodoguro",
       "neighborhood": "",
@@ -393,40 +427,6 @@
           "verdict": "Added to the Portland Hit List (updated Oct. 13)",
           "date": "",
           "url": "https://www.theinfatuation.com/portland/reviews/hua-hin-pdx"
-        }
-      ]
-    },
-    {
-      "name": "Strange-Bird",
-      "neighborhood": "SE Clinton (Hosford-Abernethy)",
-      "cuisine": "Wood-fired pizza",
-      "price": "",
-      "opened": "",
-      "summary": "A former food cart now in a SE Clinton space, doing wood-fired pizza and shareable plates; a new entry on The Infatuation's Hit List of new Portland restaurants.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Added to the Portland Hit List (updated Oct. 13)",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/reviews/strange-bird"
-        }
-      ]
-    },
-    {
-      "name": "Mémoire Cà Phê",
-      "neighborhood": "NE Alberta",
-      "cuisine": "Vietnamese American brunch",
-      "price": "",
-      "opened": "",
-      "summary": "A low-key, counter-service Vietnamese American brunch spot on Alberta; the shrimp omelet is the dish to get.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Added to the Portland Hit List (updated Oct. 13)",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/guides/best-new-portland-oregon-restaurants-hit-list"
         }
       ]
     }

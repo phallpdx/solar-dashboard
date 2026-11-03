@@ -1,6 +1,20 @@
 {
-  "updated": "2026-11-01",
+  "updated": "2026-11-03",
   "items": [
+    {
+      "name": "Buji Brown Butter",
+      "maker": "Buji",
+      "kind": "New brand",
+      "what": "Food maker",
+      "where_to_buy": [],
+      "date": "2026-11-03",
+      "sources": [
+        {
+          "name": "September 10, 2025",
+          "url": "https://marketofchoice.com/news"
+        }
+      ]
+    },
     {
       "name": "Joe Brown's Carmel Corn",
       "maker": "Joe Brown's",
@@ -323,49 +337,6 @@
         {
           "name": "New School Beer + Cider: Hollow Jack and Pumpkin Spice return",
           "url": "https://newschoolbeer.com/home/2026/9/pumpkin-cider-season-is-here-hollow-jack-pumpkin-spice-return"
-        }
-      ]
-    },
-    {
-      "name": "Gluten Free 1-to-1 Baking Flour, new formula",
-      "maker": "Bob's Red Mill (Milwaukie)",
-      "kind": "New product",
-      "what": "Bob's reworked its cup-for-cup gluten-free flour to fix grittiness and aftertaste complaints. It's also the first product in the brand's redesigned packaging.",
-      "where_to_buy": [
-        {
-          "store": "Costco",
-          "url": null
-        },
-        {
-          "store": "Whole Foods",
-          "url": null
-        },
-        {
-          "store": "Sprouts",
-          "url": null
-        },
-        {
-          "store": "Albertsons",
-          "url": null
-        },
-        {
-          "store": "Kroger",
-          "url": null
-        },
-        {
-          "store": "Amazon",
-          "url": null
-        }
-      ],
-      "date": "2026-08-19",
-      "sources": [
-        {
-          "name": "Bob's Red Mill release: perfected formula for Gluten Free 1-to-1 Baking Flour",
-          "url": "https://www.nosh.com/pr/2026/08/19/bobs-red-mill-introduces-perfected-formula-for-gluten-free-1to1-baking-flour-with-improved-taste-and-texture"
-        },
-        {
-          "name": "Baking Business: Bob's Red Mill reformulates signature gluten-free flour",
-          "url": "https://www.bakingbusiness.com/articles/66781-bobs-red-mill-reformulates-signature-gluten-free-flour"
         }
       ]
     }

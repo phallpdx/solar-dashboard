@@ -339,6 +339,29 @@
           "url": "https://newschoolbeer.com/home/2026/9/pumpkin-cider-season-is-here-hollow-jack-pumpkin-spice-return"
         }
       ]
+    },
+    {
+      "name": "The Woodland Collection",
+      "maker": "Wildwood Chocolate (Portland)",
+      "kind": "New product",
+      "what": "A new line of personal-sized chocolate bars inspired by the Pacific Northwest understory, with seven debut flavors including Berry Berry, Salted Brown Butter Texas Pecan Brittle and Orange Confit & Cherry; trade coverage said the line would launch in September, with four caramel bars to follow later in the year.",
+      "where_to_buy": [
+        {
+          "store": "Wildwood Chocolate online shop",
+          "url": "https://wildwoodchocolate.com"
+        }
+      ],
+      "date": "2026-07-29",
+      "sources": [
+        {
+          "name": "Nombase newswire: Wildwood Unveils The Woodland Collection",
+          "url": "https://www.nombase.com/newswire/2026/07/29/wildwood-unveils-the-woodland-collection"
+        },
+        {
+          "name": "Snack and Bakery: Wildwood debuts forest creatures chocolate collection",
+          "url": "https://www.snackandbakery.com/articles/116080-wildwood-debuts-forest-creatures-chocolate-collection"
+        }
+      ]
     }
   ]
 }

@@ -236,26 +236,54 @@ def _reverb(query, model, title_query=""):
     return (prices[len(prices) // 4], len(prices)) if len(prices) >= 5 else None
 
 
-def reverb_sold(query, model, title_query=""):
+RECENT_DAYS = 90
+
+
+def _sell_time(days):
+    return ("about a week" if days <= 10 else "about 2 weeks" if days <= 21 else "about a month" if days <= 45
+            else "1 to 3 months" if days <= 90 else "over 3 months")
+
+
+def reverb_sold(query, model, title_query="", today=None):
     """What matching used gear actually sold for on Reverb: the most recent sale and the average of up to the
-    last 30, or None if nothing matching sold. "Most recent" is the most recently listed of the sold ones."""
+    last 30, or None if nothing matching sold. "Most recent" is the most recently listed of the sold ones,
+    since the public API has no sale date.
+
+    How fast it sells: matching sales listed in the last 90 days (all sold since, so a floor on the pace)
+    against matching used listings up now. Current supply over the daily pace is roughly how long a new
+    listing waits for a buyer."""
+    today = today or datetime.date.today()
+    cutoff = (today - datetime.timedelta(days=RECENT_DAYS)).isoformat()
     sales = []
-    for page in (1, 2):
+    for page in (1, 2, 3):
         got = _reverb_page(query, page, sold=True)
         for x in got:
             p = _comparable(x, query, model, title_query)
             if p:
                 sales.append({"price": p, "title": x.get("title"), "url": ((x.get("_links") or {}).get("web") or {}).get("href"),
                               "date": (x.get("published_at") or "")[:10] or None})
-        if len(sales) >= 30 or len(got) < 50:
+        oldest = (got[-1].get("published_at") or "")[:10] if got else ""
+        if (len(sales) >= 30 and oldest < cutoff) or len(got) < 50:
             break
-    kept = set(_trim([s["price"] for s in sales[:30]]))
-    sales = [s for s in sales[:30] if s["price"] in kept]
+    kept = set(_trim([s["price"] for s in sales]))
+    sales = [s for s in sales if s["price"] in kept]
     if not sales:
         return None
-    last = sales[0]
+    recent = sum(1 for s in sales if (s["date"] or "") >= cutoff)
+    live = []
+    for page in (1, 2):
+        got = _reverb_page(query, page)
+        live += [p for p in (_comparable(x, query, model, title_query) for x in got) if p]
+        if len(got) < 50:
+            break
+    active = len(_trim(live))
+    days = active / (recent / RECENT_DAYS) if recent else None
+    speed = None if days is None else "fast" if days <= 21 else "steady" if days <= 60 else "slow"
+    last, avg_of = sales[0], sales[:30]
     return {"last": round(last["price"]), "last_title": last["title"], "last_url": last["url"], "last_date": last["date"],
-            "avg": round(sum(s["price"] for s in sales) / len(sales)), "n": len(sales),
+            "avg": round(sum(s["price"] for s in avg_of) / len(avg_of)), "n": len(avg_of),
+            "recent": recent, "recent_days": RECENT_DAYS, "active": active,
+            "speed": speed or "slow", "sell_time": _sell_time(days) if days is not None else None,
             "url": "https://reverb.com/marketplace?" + urllib.parse.urlencode({"query": query, "show_only_sold": "true"})}
 
 
@@ -270,20 +298,20 @@ def _sold_query(title):
 
 
 def add_sold(picks, cache, today, budget=20):
-    """Put the latest and average Reverb sale price on each deal. Lookups are kept for 3 days."""
+    """Put the latest and average Reverb sale price, and how fast it sells, on each deal. Lookups are kept for 3 days."""
     fresh = (today - datetime.timedelta(days=3)).isoformat()
     for d in picks:
         sq = _sold_query(d["title"])
         if not sq:
             continue
-        key = "sold1 " + sq[0]
+        key = "sold2 " + sq[0]
         hit = cache.get(key)
         if not (hit and hit.get("at", "") >= fresh):
             if budget <= 0:
                 continue
             budget -= 1
             try:
-                hit = cache[key] = {"at": today.isoformat(), "sold": reverb_sold(*sq)}
+                hit = cache[key] = {"at": today.isoformat(), "sold": reverb_sold(*sq, today=today)}
             except Exception:
                 continue
         if hit.get("sold"):

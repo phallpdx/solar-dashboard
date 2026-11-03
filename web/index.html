@@ -2783,12 +2783,23 @@ function dailyTitles() {
   document.documentElement.dataset.day = n % 3;
 }
 
+// Portland here is Portland, Oregon. Drop any list entry about Portland, Maine that slipped past the
+// searches (same rules as solar/portland.py).
+const MAINE = /\bportland,?\s+maine\b|\bportland,\s*me\b|\bsouth portland\b|,\s*maine\b|\bmaine sunday telegram\b|\bpress ?herald\b|pressherald\.com|portlandmaine|portland-maine|mainetoday|newscentermaine|wmtw|wgme|\bwcsh|bangordailynews|mainepublic|mainebiz|portland phoenix|\bcasco bay\b|\bmunjoy hill\b/i;
+const MAINE_WORD = /\bmaine\b(?!\s+(lobster|coon|root|cod|blueberr\w*|potato\w*))/i;
+const aboutMaine = x => { const t = typeof x === 'string' ? x : JSON.stringify(x); return MAINE.test(t) || (MAINE_WORD.test(t) && /\bportland\b/i.test(t)); };
+function dropMaine(d) {
+  if (Array.isArray(d)) return d.map(dropMaine).filter(v => !(v && (typeof v === 'string' || typeof v === 'object') && aboutMaine(v)));
+  if (d && typeof d === 'object') { const o = {}; for (const k in d) o[k] = dropMaine(d[k]); return o; }
+  return d;
+}
+
 async function load() {
   for (const url of ['dashboard.json', 'sample.json']) {
     try {
       const r = await fetch(url + '?t=' + Date.now());
       if (!r.ok) continue;
-      const d = await r.json();
+      const d = dropMaine(await r.json());
       if (url === 'sample.json' || d.solar) return d;
       D = d; // real file without solar yet: keep its status for the banner
     } catch (e) {}
@@ -3806,7 +3817,7 @@ function renderComing() {
 let dealPick;
 async function renderLocal() {
   const dl = D.deals;
-  const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? await r.json() : null; } catch (e) { return null; } };
+  const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
   const [rest, liq, pm] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json'), getJson('localmusic.json')]);
   const stores = (dl && dl.stores) || [];
   $('deals-card').hidden = !stores.length;
@@ -4296,7 +4307,7 @@ const local = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
   del(k) { try { localStorage.removeItem(k); } catch (e) {} },
 };
-const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? await r.json() : null; } catch (e) { return null; } };
+const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
 const todayIso = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
 // ------------------------------------------------------------------ food forest

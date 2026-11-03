@@ -17,6 +17,8 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
+from . import portland
+
 UA = {"User-Agent": "solar-dashboard/1.0 (personal home dashboard; github.com/phallpdx/solar-dashboard)"}
 TZ = "America/Los_Angeles"
 HOME_TZ = ZoneInfo(TZ)
@@ -339,6 +341,8 @@ def openings(today):
                 continue
             src = x["source"] or name or ""
             if ELSEWHERE.search(words) or not (LOCAL_SOURCES.search(src) or PDX_WORDS.search(words)):
+                continue
+            if portland.about_maine(x | {"source": src}):  # "South Portland" and the Press Herald are Maine
                 continue
             if x["date"] and (today - dt.date.fromisoformat(x["date"])).days > 35:
                 continue

@@ -38,6 +38,8 @@ from html.parser import HTMLParser
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
+sys.path.insert(0, REPO)
+from solar import portland  # noqa: E402  Portland, Maine filter shared with the dashboard
 CONFIG = json.load(open(os.path.join(HERE, "sources.json"), encoding="utf-8"))
 LLM = CONFIG["lmstudio"]
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) solar-dashboard-local/1.0"
@@ -1383,13 +1385,27 @@ ALFRED_LINES = {
 }
 
 
-# Car and truck dealers post in every category; a used car is not a flip Parker wants, and its prices depend on
-# year and miles that the searches can't match.
-VEHICLE = re.compile(r"\b(19[5-9]\d|20[0-3]\d)\b.*\b(sedan|suv|truck|coupe|wagon|hatchback|van|4dr|2dr|awd|4wd|4x4|fwd|"
-                     r"miles|mileage|vin|carfax|cudl|financ\w*|dealer|trades? welcome)\b|\b(tesla|toyota|honda|ford|"
-                     r"chevy|chevrolet|nissan|subaru|volvo|bmw|audi|mercedes|lexus|jeep|dodge|ram|gmc|kia|hyundai|mazda|"
-                     r"volkswagen|vw|acura|infiniti|cadillac|buick|lincoln|chrysler|mini cooper|porsche)\b.*\b(model|sedan|suv|"
-                     r"truck|awd|4wd|4dr|miles)\b", re.I)
+# Car and truck dealers post in every category (even Collectibles); a used car is not a flip Parker wants, and its
+# prices depend on year and miles that the searches can't match. A title is a vehicle when it starts with a model
+# year and names a make, or uses words only car ads use.
+MAKES = (r"tesla|toyota|honda|ford|chevy|chevrolet|nissan|subaru|volvo|polestar|rivian|lucid|bmw|audi|mercedes(-benz)?|"
+         r"lexus|jeep|dodge|ram (1500|2500|3500)|gmc|kia|hyundai|mazda|volkswagen|vw|acura|infiniti|cadillac|buick|lincoln|"
+         r"chrysler|mini cooper|porsche|jaguar|land rover|range rover|mitsubishi|scion|saab|pontiac|saturn|fiat|alfa romeo|"
+         r"maserati|mercury|oldsmobile|plymouth|hummer|isuzu|smart fortwo|harley(-davidson)?|kawasaki|ducati|winnebago|airstream|freightliner")
+VEHICLE = re.compile(r"\b(19[5-9]\d|20[0-3]\d)\b.{0,25}\b(" + MAKES + r")\b|"
+                     r"\b(" + MAKES + r")\b.{0,25}\b(19[5-9]\d|20[0-3]\d)\b|"
+                     r"\b(19[5-9]\d|20[0-3]\d)\b.*\b(sedan|suv|truck|pickup|coupe|convertible|wagon|hatchback|minivan|van|"
+                     r"4dr|2dr|awd|4wd|4x4|fwd|rwd|miles|mileage|mpg|v6|v8|turbo|hybrid|ev|motorcycle|rv|camper)\b|"
+                     r"\b(clean|salvage|rebuilt|branded) title\b|\bcarfax\b|\bvin\b|\bcudl\b|\bodometer\b|\bsmog\b|"
+                     r"\b\d{1,3},?\d{3} (miles|mi)\b|\b\d{2,3}k (miles|mi)\b|\bfinanc\w*|\bdealership\b|"
+                     r"\btrades? welcome\b|\bblowout sale\b", re.I)
+# Engines that aren't vehicles, like a Honda generator, are still fair game.
+NOT_VEHICLE = re.compile(r"\b(generator|inverter|mower|lawn|pressure washer|outboard|tiller|snow ?blower|charger|"
+                         r"keyboard|piano|receiver|speakers?|amp(lifier)?|bike|bicycle|e-?bike)\b", re.I)
+
+
+def is_vehicle(title):
+    return bool(VEHICLE.search(title)) and not NOT_VEHICLE.search(title)
 
 
 def refresh_flips(data, sources):
@@ -1413,7 +1429,7 @@ def refresh_flips(data, sources):
     live = {x["url"] for x in found}
     cutoff = (TODAY - dt.timedelta(days=10)).isoformat()
     screened = {u: d for u, d in (data.get("screened") or {}).items() if d >= cutoff}
-    found = [x for x in found if not VEHICLE.search(x["title"])]
+    found = [x for x in found if not is_vehicle(x["title"])]
     fresh = [x for x in found if x["url"] not in screened and not gear.SKIP.search(x["title"])]
     log(f"  {len(found)} listings, {len(fresh)} not screened before")
 
@@ -1441,7 +1457,7 @@ def refresh_flips(data, sources):
     hours = lambda x: gear.trip_hours(x.get("where")) + gear.SELL_HOURS  # noqa: E731
     candidates.sort(key=lambda x: -(x["guess"] * gear.RESALE - x["price"]) / hours(x))
     price_schema = items_schema({"price": {"type": "integer"}, "quote": S, "url": S})
-    flips = [f for f in data.get("flips") or [] if f["url"] in live and not VEHICLE.search(f["title"])]  # still listed
+    flips = [f for f in data.get("flips") or [] if f["url"] in live and not is_vehicle(f["title"])]  # still listed
     for x in candidates[:cfg.get("verify_per_run", 5)]:
         if any(f["url"] == x["url"] for f in flips):
             continue
@@ -1660,6 +1676,7 @@ def main():
             log(f"  failed: {e!r}")
             failed.append(name)
             continue
+        data = portland.scrub(data)  # Portland, Oregon only: drop anything about Portland, Maine
         if dump(data) != before:
             data["updated"] = TODAY.isoformat()
             changed[f"web/{name}.json"] = dump(data)

@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, records, releases, roads, science, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, gear, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, portland, records, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -1416,7 +1416,7 @@ def main():
     save_json(state_path, state)
     status["pge"] = "ok" if any(f.endswith(".csv") for f in os.listdir(os.path.join(DATA_DIR, "pge"))) \
         else "No PGE file yet."
-    out = build(state, status, now_utc)
+    out = portland.scrub(build(state, status, now_utc))  # Portland, Oregon only, never Maine
     save_json(os.path.join(DATA_DIR, "dashboard.json"), out)
     print(json.dumps(status))
     return 0

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "items": [
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
@@ -342,6 +342,24 @@
         {
           "name": "KOIN",
           "url": "https://www.koin.com/news/portland/gracie-abrams-bringing-the-look-at-my-life-tour-to-moda-center-for-two-nights/amp/"
+        }
+      ]
+    },
+    {
+      "title": "DIIV, Revolution Hall (May 12, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Fri Oct 30 at 10 a.m.; buy face value through Revolution Hall's ticketing before the room sells through.",
+      "starts": null,
+      "by": null,
+      "why": "Newly announced stop on the ZIRP! world tour, with new single \"Dare Me\"; no Portland presale details were found in the sources.",
+      "sources": [
+        {
+          "name": "JamBase",
+          "url": "https://www.jambase.com/article/diiv-tour-dates-2027"
+        },
+        {
+          "name": "mxdwn",
+          "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
         }
       ]
     }

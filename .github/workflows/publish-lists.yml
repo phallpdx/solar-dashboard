@@ -41,6 +41,7 @@ jobs:
               git show "origin/$BRANCH:$path" > "/tmp/$f.json"
               if python3 -m json.tool "/tmp/$f.json" > /dev/null && ! cmp -s "/tmp/$f.json" "$path"; then
                 cp "/tmp/$f.json" "$path"
+                python3 -m solar.portland "$path"  # Portland, Oregon only: drop anything about Portland, Maine
                 changed="$changed $f"
               fi
             fi

@@ -37,3 +37,16 @@ def scrub(data):
             out.append(v)
         return out
     return data
+
+
+if __name__ == "__main__":
+    # python -m solar.portland web/events.json ...: drops Portland, Maine entries from list files in place.
+    import sys
+    for path in sys.argv[1:]:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        clean = scrub(data)
+        if clean != data:
+            with open(path, "w", encoding="utf-8", newline="\n") as f:
+                f.write(json.dumps(clean, indent=2, ensure_ascii=False) + "\n")
+            print(f"{path}: dropped Portland, Maine entries")

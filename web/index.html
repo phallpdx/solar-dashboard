@@ -3766,11 +3766,17 @@ function renderComing() {
   const tv = D.streaming || [], al = D.albums || [];
   const shows = (D.top_shows || []).map(x => ({...x, services: [x.service], score: `${x.rating.toFixed(1)} on TVmaze`}));
   const movies = (D.top_movies || []).map(x => ({...x, kind: 'Movie', score: `${x.rating.toFixed(1)} on TMDB · ${x.votes.toLocaleString()} votes`}));
-  const top = [...shows, ...movies].sort((a, b) => b.rating - a.rating);
-  $('watch-row').hidden = !tv.length && !al.length && !top.length;
+  // Newest first; same-day releases by rating.
+  const top = [...shows, ...movies].sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.rating - a.rating);
+  const soonMovies = (D.upcoming_movies || []).map(x => ({...x, kind: 'Movie', score: null}));
+  const weekOut = (() => { const d = new Date(); d.setDate(d.getDate() + 7); return d.toLocaleDateString('en-CA'); })();
+  const todayIso = new Date().toLocaleDateString('en-CA');
+  const upcoming = [...tv.map(x => ({...x, services: [x.service], score: null})), ...soonMovies]
+    .filter(x => x.date >= todayIso).sort((a, b) => a.date.localeCompare(b.date) || (a.title || '').localeCompare(b.title || ''));
+  $('watch-row').hidden = !tv.length && !al.length && !top.length && !soonMovies.length;
   const services = ['Netflix', 'Apple TV', 'Disney+', 'HBO Max', 'Hulu', 'Prime Video'];
   const on = s => x => (x.services || [x.service]).includes(s);
-  chipFilter($('tv-filter'), [['All', tv.length + top.length], ...services.map(s => [s, tv.filter(on(s)).length + top.filter(on(s)).length])],
+  chipFilter($('tv-filter'), [['All', upcoming.length + top.length], ...services.map(s => [s, upcoming.filter(on(s)).length + top.filter(on(s)).length])],
     tvPick, n => { tvPick = n; renderComing(); });
   const pick = x => tvPick === 'All' || on(tvPick)(x);
   const item = (x, when) => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
@@ -3780,12 +3786,14 @@ function renderComing() {
       ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
       ${x.genres ? `<small>${[x.genres.slice(0, 3).join(', '), x.runtime ? x.runtime + ' min episodes' : null,
         x.language && x.language !== 'English' ? x.language : null].filter(Boolean).map(esc).join(' · ')}</small>` : ''}</span></a>`;
-  const topList = top.filter(pick), list = tv.filter(pick).map(x => ({...x, services: [x.service], score: null}));
+  const topList = top.filter(pick), list = upcoming.filter(pick);
+  const thisWeek = list.filter(x => x.date <= weekOut), later = list.filter(x => x.date > weekOut);
   $('tv').innerHTML =
     (topList.length ? `<div class="day-h">Recently released and highly rated</div>` +
       topList.map(x => item(x, x.date ? 'out ' + dayLabel(x.date) : null)).join('') : '') +
-    `<div class="day-h">Coming up, next 30 days</div>` +
-    (list.map(x => item(x, dayLabel(x.date))).join('') || '<p class="note" style="padding:12px 0">Nothing announced yet.</p>');
+    `<div class="day-h">Upcoming, next 7 days</div>` +
+    (thisWeek.map(x => item(x, dayLabel(x.date))).join('') || '<p class="note" style="padding:12px 0">Nothing coming out this week.</p>') +
+    (later.length ? `<div class="day-h">Later this month</div>` + later.map(x => item(x, dayLabel(x.date))).join('') : '');
   const k = D.kids_movie;
   $('kidmov-card').hidden = !k;
   if (k) {

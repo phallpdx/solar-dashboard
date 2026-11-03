@@ -1033,6 +1033,7 @@ def fetch_releases(state, now_utc):
     _refresh(store, "top_shows", releases.top_shows, 24, now_utc, errors)
     if env("TMDB_API_KEY"):
         _refresh(store, "top_movies", lambda: releases.top_movies(env("TMDB_API_KEY")), 24, now_utc, errors)
+        _refresh(store, "upcoming_movies", lambda: releases.upcoming_movies(env("TMDB_API_KEY")), 12, now_utc, errors)
         today = now_utc.astimezone(LOCAL).date()
         failed = store.get("kids_failed_at")  # after a failure, wait a few hours before asking TMDB again
         if ((store.get("kids_movie") or {}).get("date_picked") != today.isoformat()
@@ -1351,6 +1352,8 @@ def build(state, status, now_utc):
         "streaming": [x for x in (state.get("releases") or {}).get("streaming") or [] if x["date"] >= today],
         "top_shows": (state.get("releases") or {}).get("top_shows"),
         "top_movies": (state.get("releases") or {}).get("top_movies") if env("TMDB_API_KEY") else None,
+        "upcoming_movies": [x for x in (state.get("releases") or {}).get("upcoming_movies") or [] if (x.get("date") or "") >= today]
+                           if env("TMDB_API_KEY") else None,
         "kids_movie": (state.get("releases") or {}).get("kids_movie") if env("TMDB_API_KEY") else None,
         "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},

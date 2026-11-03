@@ -26,6 +26,22 @@
       ]
     },
     {
+      "artist": "The Christopher Brown Quartet",
+      "kind": "Local",
+      "date": "2026-11-04",
+      "time": "06:30 PM",
+      "venue": "The 1905's",
+      "price": "$30",
+      "what": "Christopher Brown is an acclaimed musician, composer, bandleader, and educator.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
       "date": "2026-11-05",
@@ -78,6 +94,22 @@
       ]
     },
     {
+      "artist": "Nicole McCabe",
+      "kind": "Local",
+      "date": "2026-11-07",
+      "time": "06:30 PM",
+      "venue": "The 1905's",
+      "price": "$35",
+      "what": "A genre-defying saxophonist and composer bringing modern jazz into dialogue with electronic music.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Mel Brown B3 Organ Group",
       "kind": "Local",
       "date": "2026-11-12",
@@ -110,6 +142,22 @@
       ]
     },
     {
+      "artist": "The Breaks",
+      "kind": "Local",
+      "date": "2026-11-13",
+      "time": null,
+      "venue": "Web search: touring jazz in Portland",
+      "price": null,
+      "what": "The Breaks concert performance.",
+      "tickets": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz"
+        }
+      ]
+    },
+    {
       "artist": "Oz Noy Trio with Brian Charette & Dave Weckl",
       "kind": "Touring",
       "date": "2026-11-16",
@@ -130,6 +178,22 @@
         {
           "name": "Jazz Near You (Nov 17)",
           "url": "https://www.jazznearyou.com/portland/events/oz-noy-trio-w-brian-charette-and-dave-weckl-at-jack-london-revue-on-november-17"
+        }
+      ]
+    },
+    {
+      "artist": "OZ NOY TRIO w/ Brian Charette & Dave Weckl",
+      "kind": "Touring",
+      "date": "2026-11-17",
+      "time": "7:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "A trio performance featuring guests.",
+      "tickets": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },
@@ -202,6 +266,22 @@
         {
           "name": "Event Tickets Center listing",
           "url": "https://www.eventticketscenter.com/scott-bradlees-postmodern-jukebox-portland-tickets/1405558/e"
+        }
+      ]
+    },
+    {
+      "artist": "INFINITY",
+      "kind": "Local",
+      "date": "2026-11-25",
+      "time": "8:00 PM",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Infinity performing in Portland.",
+      "tickets": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
         }
       ]
     },

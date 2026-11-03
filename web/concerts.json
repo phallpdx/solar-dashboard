@@ -85,6 +85,38 @@
   ],
   "missing": [
     {
+      "artist": "@ [At]",
+      "album": "Autosmile",
+      "score": 83,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Fontaines D.C.",
+      "album": "Autosmile",
+      "score": 84,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "Dopamine Chamber",
+      "album": "Dopamine Chamber",
+      "score": 83,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
+    {
+      "artist": "The Avalanches",
+      "album": "No Bad Memories",
+      "score": 92,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
+    {
       "artist": "Shovel Dance Collective",
       "album": "Everything In Readiness",
       "score": 100,

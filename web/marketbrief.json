@@ -1,42 +1,27 @@
 {
   "analysis": {
-    "headline": "Major indices fell sharply as oil prices retreated and tech stocks faced pressure.",
-    "summary": "Stocks declined with the Nasdaq leading losses amid chip sector weakness. Oil prices dropped nearly 4%. Gold rose slightly while Bitcoin saw a minor decrease. Markets face upcoming earnings, jobs data, and midterm elections.",
+    "headline": "Nasdaq fell as Apple's weak margin forecast weighed on tech while oil rose on US-Iran hopes.",
+    "summary": "Apple's weak margin forecast caused a Nasdaq slide. Bonds saw yields drop alongside a Dow rise. Oil prices climbed amid US-Iran hopes. Gold and Bitcoin both experienced declines.",
     "sources": [
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQWmVOUTJ5cEo0bUU2Unp2V093dXNIN3hEaHB5VXRrZlBYRjc5RkVzM2lraGRpZGNIM0s0Uk15bVdPOHNSNGJsN29Ma3lVTzBleWd2WHRuSGlzOXVtV193RE8wbXgyaGNjdGdJRkUxdkR2ajN0MGh2STQ2T2p3YTVMTnRVME8?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPRnVXWVlvUFpSU0FxcHVyYW1tY2l0ZVJKNHR0a3hjOG9yZE81NU9zVUtLZF9fSTdqcC1nZFQtY3RHeGh6b1lTMWotSklxUDFlTFFIRDY4X2VZNzFJR2RHWjI2enZsVmlXLTM1bVRYNkx2eC1UTk1TOU44NHlrXzBFRXB3TdIBiAFBVV95cUxOTklSTE1CRWZWUTVyemZhc05zRmt6Ui1Ld000Y3ZJWWZDTi1wajZkTWhaOXUzeXVjaWt6VU51WjkwdTROTnc2OWhMRDFYYXFMNEhSTExTamlpREo3NDdxd0xhLUpqOF9TNUxzVWlQV0JhVldFdENEU2Qyc2xhSTg0WVRzcWI0Wlgz?oc=5"
       },
       {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQdndJTkZzZVB3bUs3SWZPMjZXZ3JzbnlHbWJoak5WWlJWTnQwZFpJNWZpd0tQb3RYanMyckQxMmVjWm5nQnk2Tzl6QjVCOVFmN21RNks4Q2tsM2tUODBSMldsdVQ3eDBoX3UyZDZMM3JybmZVRVhxT2lReGVMMEJuMTNvLTNUbmR0TmVqeXRXV1FZSVdUV1ZtcWVhQQ?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBrbkQzMEJlOVN5RDBtcEZuU2VQSkZydW01ejJqY2hObWJXOUl0dUhUMWVoVXRwZWhsU3BIRkVGR0lhc3JmM0w4ak5ybUpCVElXOWxKMm1tQ3ByOE5TNzNJQm5YUDFaa2hRNENZNDJacnlMci1tZmU00gF8QVVfeXFMUHRLQWRCRkw3cUdsOVZINFdPc1VsLVN4UzJKT1BmX2ZaMlBrcDM2WER5cXY1LTdZQjZXMy1FVUU3RFhFcHVxcXA5eEx0a041Vlo2Y3BlVXN2S0hpTG9tVVV3SndoWVRMU2JweGZKUVNpVWxJeXk4Sno4a2hmZQ?oc=5"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOTGEyREpLdzRYM3VsY3NTclQ1Y2xud2pYNVl6Y0JhZ3RNczRVVjJ0aG43NmgyWkQ5SU85SmtVWGVCU0wySnBTdkhzZXR3R3RpMWloMWdlckxKM3BBUFB4VU9FbzhDQ2l2dm5xZlIwbFZJTHdJQVVyaU1Qc3djSmowcHdGMDNOVUIyMDdURnFwWWpUbmZN?oc=5"
       },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUXhSWUZpNlU1UFZVSEtvY3QwQVB4T3FuYlpCT3lpaE05MThfMFFTZVZWWllFZDZDYkJFdTBIWEx1X1ZMVXlESFdaX3Noc2VSSW1QRHFzYzhPZkowLVNZeWR1N2dBN2hlLXY1VlJ3SHJNR3Ayc29JOXN4cXN3bklZQzN5bEctRER1aGp1eFdUVjhITWM0?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNOFBJUXdTTkZwUjdOeTJUcDI0OUZsbUpUSkZQNXlha3BpbGxIMUJrTjBGbnFVWjNSRUlsRDVkOThnRHB6MDU3R1NSSXdycmZZN0VRcjU0a2RodDEwMW5VVlZwaTBnN0ZtR1p1YVZkS29yNmhHRTNReUVHVklxcjh1QkdqNllBS29MTUdOZWNPWU1ZOVhlRnhzbWJtZ296a0s2X1lrMWVKVTI1SEg4aElIeTZ0S2plQy0yeDNNQmwyZml6Y0dMOENxU1FkNDF1RDBrNnFUYW9mel9vU1g3b2tZ?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPNGVTNnRya2xiS01lZGhBQ0JvRnQ0VWt0b180TXJ5ZmZNcHVGMFFZUFZNaFhlUGIwcjcyUDFPZG1HM1dXcG5rRU9SN2RjbGRHN256N2kzT3FWUnNuTFBJR3V0ZGROYlgtQVM4SjlrakptODdUaFp3bi1kOWlkZXQwWHVDRldzd3ZDT1E3TktTeEtDTjZWb3ptVA?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Oil price retreat",
-      "Tech/chip sector weakness"
+      "Apple's weak margin forecast",
+      "US-Iran hopes affecting oil prices"
     ],
-    "watch": [
-      "Earnings season",
-      "Jobs data"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -70,9 +55,27 @@
     "by": "local model",
     "items": [
       {
+        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
+        "date": "2026-11-02",
+        "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
+        "source": "Google News: North American Helium"
+      },
+      {
         "title": "FEATURE: Saskatchewan’s New Subsurface Economy: Helium, Lithium and Natural Hydrogen",
-        "date": "2026-10-31",
+        "date": "2026-11-02",
         "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPdUh3Wm02RExHSXlIblA3bXd0Y1lBVnBBaDNHc19WNERxX0pfXzJEaEM2VkppMGZLZEJ6YmtfT1dkUlh2Yk8xbV9tVThWYVYwWnRsNkYtLUxneHU2aUtPSmo1cTllYmkwY19valZMbklHSGZVUHBRTU85cmlmc0hBMlRHbUkxc0RyQXVRR3VMOGc0cHo0TWRsU1lydDlkbVMwMnNHRHFvcWJYMlRWRm93?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "Helium and Geologic Hydrogen: From Resource Potential to Commercial Production",
+        "date": "2026-11-02",
+        "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPb0Y4Rkg4NWhnbFU3LXhua1VIYVcya0JhZTFXNmw5Mk9VWjNJX1pTZmRUZ051NjdNQXlZaEM0QXlLVFlxRHVpakZDOWhXN1ZRV0JPX0Fwd05oSVVXZFYxRFBlTmlSVGRCUXc2cWJXLWV5cExRamxlTnhmR3ZubzRrQ3l5NHdDWjZFMDFPTkxoSG1Hbi1TLThmdEdOamVCbjNmQ3dKWFd1VXNnRW1wVEUxUU1KemMzSlEtVHh5eWstNnI2Zw?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
+        "date": "2026-11-02",
+        "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
         "source": "Google News: helium market"
       },
       {
@@ -80,30 +83,12 @@
         "date": "2026-10-31",
         "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOQUdtaWE3N200UHBSVG85YnE2SWx1Tkk0RVctSzZWYlI4RmxDMHRkUUxiMHQ4aGd2UjNzUVJrRFdYeUN5SElvaGVXRlRJQTZ1eFNBWm40OE1aOTBTY1gxNEptV04tQTg1SXpNaFZBa2poaC1RTzNuNEdqTHhKcGpWaTd4a3VsUkNCM2pMOGJYSXpERVNrazRnN3loc0U?oc=5",
         "source": "Google News: helium market"
-      },
-      {
-        "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
-        "date": "2026-10-28",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "U.S. Declares Helium a Critical Material",
-        "date": "2026-10-28",
-        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5fV2ZDeFB2b1JvMzNtbW56ZlptMzBUQ0FuQ1N6aEV0d29sN2sxcE1wN09ScHNBbnN4WGNoVHRDNExqNHk3VU5uZjczRlA5cE8yeC1tT0dZdjR5R3FSb21lT0VMUHRycVQ4T0Z1U3RsV1Y2WTFYNnUxWk9Eb2hjZnM?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
-        "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
-        "date": "2026-10-28",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
-        "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
-    "headline": "The Portland housing market is experiencing stagnation and shifting dynamics.",
-    "summary": "Sellers are lowering prices in a stagnant market while inventory piles up. Home sales show a slight uptick despite mortgage rate threats. Renters face pressure from a punishing housing market.",
+    "headline": "The Portland housing market is stagnant with buyers backing out of deals.",
+    "summary": "Sellers are lowering prices in a stagnant market. Homebuyers are increasingly backing out of deals. Renters are being squeezed by a punishing market. Mortgage rates fell for two straight weeks but remain elevated.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -115,23 +100,15 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnd1QnhKLU56LXM4S180RkRzTVhzVEFSYWdZX2tEZ2drU1VTVGZqNXJOSnkxQ1l4MlZndE94T1FQYkk2ODVXUGk0RmFLQzhRb18ySFR5aGZlQXloUmxqZWozOU50YTlBZlFiRndTc3kyZ0l5SEtPZXBIclRSazBycEgwNEJjclFJNy00Xzc0UVFUYU53aVVieHFaQ1RBOVhRLUlWQ0Y0bzc5TkQtRWpB?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNdktyRXBXcG5Hc01NNGo3bTZRbXlqUjg2T3YxWlNvaDFqbHlkMFBZZXpSS2hSNl8xa2lNV2FEQVBfa05VY2dEY0ZHWUZpZzZBLUFGcjI2Z1kzWTZpamYwMFgyWTBSRS1XRFlhNHd3c0VnVl9mUlk5c3NRbDlYajRVVnk2UWZtRzMwOUxlNjZ2Q3A2Zjc5eEFuMm00c07SAaIBQVVfeXFMUHJfYU9ZeklNTDZyZGZpUC1oWlY5SVhjeDN4TzRCY3dEYXNWMTNyOTZiZndZMHZmalo5ck9nXzhBbXF1Zm95QWlqMjFUVkFSWTlIWEV1aEVtcWIzYXhQa2NmSmFrWFVlNGgweVdJdmhTbWk4UW9kU2FyZHFHM09SUEc3T2dfbEhhV2FlM3JxOTNuNE9EVzhBWFZJSEFGSWlXMUln?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNY25jeU5DZ0pBeUdkaHpoZFBLejRwanFmSW1HbWRmUkQxdXMzMURVREM4X25xUkVNZGdiT2xEd1hNQzRraVJvV1liMkhSSjNqS2d0QmMtNENWMzFsWnM2ck0tN2VxSFFiVklnSHdBUkhLNWZDU2VhLW9BYTFuODFuNGFBTmk0bGxwaklkOHlB0gGTAUFVX3lxTE9iUzR0Q3d5RkxzLThMUGFtNEhpWWtOcXBqdTNJU0hVMlRCUFdUNGRzMGllZU5tSDZMTThMc3lJdng3OUFuZGR0M2diVmIyNzhqN0MzUHZyZ3JILU9MUGdGVkIzbk80TWU3V0JNMFZ1M3ROZ0k1VDNZdnhHSXU0M2toaXlCeWtDTnlySkFpdGtEWTlKdw?oc=5"
       },
       {
-        "name": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
-      },
-      {
-        "name": "Freddie Mac PMMS via GlobeNewswire, Oct 29, 2026",
-        "url": "https://www.globenewswire.com/news-release/2026/10/29/3391637/0/en/mortgage-rates-decline-further-to-7-24.html"
+        "name": "Google News: mortgage rates",
+        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
       }
     ],
     "by": "local model",
@@ -143,75 +120,61 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Current refi mortgage rates report for Nov. 2, 2026",
+        "title": "Mortgage Rates Forecast For 2026: Experts Predict Whether Interest Rates Will Drop",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE55RnNCTzBIWDNVSjFLbzBocEt3dUpSMWZlR3czY0tCaml0dzBxSVh2U2dxNTVXSndFdTZnbHd0SmJ3bUt0ekZWWTlFLUtjNTRaSkxjR21XcF9nT2ZZLUF5eWRaaXNTU2k0Ynk4bF9UZXlmQjFEVlE?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9kMlJHRWhRY2owbnpsZWhWOHVVZFR1ZmM3NzhqTUVEVnpHR2xlMHp0QnR2eXFwV2wzQ2FMbXZTN3lTLUJ5OHgxdnk0S3Z2Q3hEQ2pEYW9xcWhrRktVS3B0RXB0NkdnM0hPMzBReG5neWZ1TTdvVWs4bWgxdWFNUkk?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Current ARM mortgage rates report for Nov. 2, 2026",
+        "title": "Today's Mortgage Rates, November 2, 2026: 30-Year Rates Remain Unchanged at 7.28%",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9iN05vaDY4SmZyNUozRFRwYlM0U3laWkJDTzl2ZDB4X3loSkFpb2hSRDhDaE9EV3VJN2tGZGFMZnJTc3lCU1FtLXk1b1UxMW54RWtWS1A0Njk2V3BfaHRXOWZ1dktReFVpM1ZuUGpKMWRKb2ZN?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPd0MzcHRYNHVEYndfc2ZndGdNVG9VaEZIUnhMa3E0LTg4UUxXaUtIZGNIS1NGRklsZjA1N3J5dUc0bUdnQmN3WVVSRUI1YlVZX2N0dXFTcXdlOWRRQ3otWmpBWnZSWVZUQ3otbGR2TXpaTVZPcGctdnZ2VllCVE8td1BST3NsaVFEcjRfaw?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage Rates Today: November 2, 2026 – Rates Dive",
+        "title": "Compare Today’s Mortgage Rates",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBsZy1POE1ncmhwUHNnSjVaNjVkd0djejlUOGx0Qklab01BakpkRjdfZENlZjEtNUI3Tm5YQnFrRldid1A4RHZRcnV2RDlsVm1lNk1HV0VKUVpBMHBJWmxOZzJwN2paUVZ0R2RwbTI4SzNDMGs?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBZWTRCWTZjV2FtYlpMOFBxWjVNRF9EbGN0QUJYRHVXY1VyMTdSdGc2blVoM2lFYkI0elJNRVY2VER1RTJZNGEwendkNEFGejdfZkNOVTRTa3FWSkdISHNTcmNfYlBTY3M?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Housing Week Ahead: Monthly Trends Data, Mortgage Rates, and Jobs Report",
+        "title": "Weekly survey of mortgage lenders with the lowest rates: 3 lenders remain below 7%",
         "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOcURVZnZqckUzQXpWeEhDbm0tNVNrcjVHUHZTeDhOTlRoNHVfdVdWRkVGX2ZCcmxXVVVuU0JRYjVPVzY2aVgwNlFMX0U0RDF4UUNHdVRaczV5SFM1LUNYVUc5SzRjYmF4eS1WQmFFNnhvMFBXdHdRbHJaSU9FNEhzNm1zSTRPQzRlMXZyanE2dE04eFpteWR2c0cxQQ?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQLTZQMEdtSjByd083aTBLNWNDc0xuYmlDd2h4aHEyaHB1SDJPbE1Wb3hLVFZsSTREd3NzWWlhT1JtdTdXNjZabjBhdWtLX2RDQm9pYUV6alptZ1lXZ2RtRzVmYmt0allFVVJtdnFGNi1ROTdpUGg0ZXlfM05ZR3h4elhMNUEtZ1hrZEwwMlJRR29weWREUlBxN0tMVXJwZG1CU3dFUllqWHVVNFgtNFI3Tm43OFpIS3ZtYWJZTlBzRVdaYkRIdmZYQkZpcDFWbEJ4Y2xEZVRrZ25YRUtN?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
     "stats": [
       {
-        "label": "Closed sales (Portland metro, September)",
-        "value": "1,752",
-        "change": "-4.0% vs a year ago",
-        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+        "label": "Median sale price (Portland metro, May)",
+        "value": "$525,000",
+        "change": "+12.9% vs a year ago",
+        "source": "www.seanzbecker.com",
+        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
       },
       {
-        "label": "Pending sales (Portland metro, September)",
-        "value": "1,760",
-        "change": "-17.9% vs a year ago",
-        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+        "label": "Inventory in Months (Portland metro, May)",
+        "value": "2.3",
+        "change": null,
+        "source": "www.seanzbecker.com",
+        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
       },
       {
-        "label": "New listings (Portland metro, September)",
-        "value": "2,487",
-        "change": "about flat vs a year ago",
-        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+        "label": "Median sale price (Portland Metro, March 2026)",
+        "value": "$543,800",
+        "change": "+3.6%",
+        "source": "greenbuckrealestate.com",
+        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
       },
       {
-        "label": "Inventory (Portland metro, September)",
-        "value": "4.2 months",
-        "change": "+0.4 months vs August",
-        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
-      },
-      {
-        "label": "Average market time (Portland metro, September)",
-        "value": "68 days",
-        "change": "",
-        "source": "Cano Real Estate (RMLS data), Portland Metro report, September 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
-      },
-      {
-        "label": "30-year fixed mortgage rate (U.S., week of Oct 29)",
-        "value": "7.24%",
-        "change": "down from 7.32% a week earlier; 6.17% a year ago",
-        "source": "Freddie Mac PMMS via GlobeNewswire, Oct 29, 2026",
-        "url": "https://www.globenewswire.com/news-release/2026/10/29/3391637/0/en/mortgage-rates-decline-further-to-7-24.html"
+        "label": "Total market time (Portland Metro, March 2026)",
+        "value": "79 days",
+        "change": "-13%",
+        "source": "greenbuckrealestate.com",
+        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
       }
     ]
   },
-  "updated_at": "2026-11-02T13:39:24Z",
+  "updated_at": "2026-11-03T07:26:04Z",
   "updated": "2026-11-02"
 }

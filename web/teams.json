@@ -1,15 +1,12 @@
 {
   "updated": "2026-11-02",
-  "updated_at": "2026-11-02T11:13:46Z",
+  "updated_at": "2026-11-03T07:23:50Z",
   "teams": {
     "blazers": {
-      "mood": "cautiously optimistic",
-      "pulse": "Fans are celebrating a blowout win over Utah but worry about Scoot Henderson's performance. A difficult November schedule looms ahead.",
+      "mood": "optimistic and hyped",
+      "pulse": "Fans are ecstatic after breaking an 18-game losing streak in Denver. The team's rise to top 10 power rankings has fueled excitement.",
       "storylines": [
-        "Deni Avdija led 112-90 win over Jazz",
-        "Ja Morant sidelined with hamstring injury",
-        "Robert Williams III cleared for Nuggets game",
-        "Scoot Henderson facing scrutiny over low BPM"
+        "Blazers improved to 5-1 with a win over Nuggets"
       ],
       "sources": [
         {
@@ -35,13 +32,13 @@
       ]
     },
     "timbers": {
-      "mood": "optimistic and hyped",
-      "pulse": "Fans are energized after three straight wins. They believe playoff spots are within reach.",
+      "mood": "optimistic and hopeful",
+      "pulse": "Fans are energized after three straight wins that put playoff fate in their hands. Tactical progress under Martí Cifuentes is showing signs of improvement.",
       "storylines": [
-        "Timbers beat Houston 3-1",
-        "Three consecutive wins achieved",
-        "Playoff spot in contention",
-        "Finn Surman named Supporters Player of the Year"
+        "Timbers have secured three consecutive wins",
+        "Playoff seeding depends on other results",
+        "Finn Surman selected for New Zealand national team",
+        "Vincent Janssen named to MLS Team of the Matchday 34"
       ],
       "sources": [
         {
@@ -67,13 +64,13 @@
       ]
     },
     "f1": {
-      "mood": "Awe and tension",
-      "pulse": "Fans are celebrating Kimi Antonelli's historic title win. Ferrari internal drama is causing significant debate.",
+      "mood": "celebratory and historic",
+      "pulse": "Fans are celebrating Kimi Antonelli becoming the youngest champion ever. Betting markets predict Max Verstappen for 2027 glory.",
       "storylines": [
-        "Kimi Antonelli becomes youngest F1 World Champion",
-        "Max Verstappen wins Mexico City GP",
-        "Hamilton and Leclerc clash for position",
-        "Alpine duo lose points due to penalties"
+        "Kimi Antonelli wins 2026 World Championship in Mexico",
+        "Max Verstappen favored for 2027 title by betting markets",
+        "Ferrari investigating Hamilton/Leclerc intra-team clash",
+        "Oliver Bearman seeking 2028 Ferrari seat guarantees"
       ],
       "sources": [
         {

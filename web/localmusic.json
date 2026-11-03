@@ -1,6 +1,22 @@
 {
-  "updated": "2026-10-31",
+  "updated": "2026-11-02",
   "releases": [
+    {
+      "artist": "Zoe FitzGerald Carter",
+      "title": "Chaos By Design",
+      "type": "Album",
+      "local": true,
+      "genre": "album",
+      "label": "fourth album",
+      "date": "2026-10-14",
+      "why": "Zoe FitzGerald Carter is releasing her fourth album.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQaTVWVVdlWXQ3MGZOaEljMDhWV05UVkFTMGtxZ2F3bTNfRFFxbUJGRURnUWJKdGl0SXBCaHc5aFBPSnpvcGRrREhGOEZhSjIzLTRqWFhCeHNhVDNTQmZlcl94RTducUZFdTZqQXlwb3JzYUljWjJFeTJiQkFLbENldzhjU1NOdmdLWnVoUTRRMFNreTdfajBmNllSUFVXVXNHWDBqeFJKYUJRcmlMc1h3alBaaEF0ZlV0R0g1aXNzQUQ0TlNmOHo3djVGbF8tdw?oc=5"
+        }
+      ]
+    },
     {
       "artist": "How Strange It Is",
       "title": "Everyday Evil and Infrastructural Decay",

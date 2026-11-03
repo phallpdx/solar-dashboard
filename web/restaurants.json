@@ -2,6 +2,23 @@
   "updated": "2026-11-02",
   "restaurants": [
     {
+      "name": "Nodoguro",
+      "neighborhood": "",
+      "cuisine": "omakase",
+      "price": "",
+      "opened": "",
+      "summary": "Portland's most original omakase keeps getting better.",
+      "reviews": [
+        {
+          "outlet": "Portland Monthly",
+          "critic": "",
+          "verdict": "Restaurant of the Year",
+          "date": "2026-11-02",
+          "url": "https://www.pdxmonthly.com/eat-and-drink/portland-best-restaurants/nodoguro-portland-restaurant-of-the-year-2026/"
+        }
+      ]
+    },
+    {
       "name": "Rambler Bar",
       "neighborhood": "Portland",
       "cuisine": "Bar",
@@ -410,30 +427,6 @@
           "verdict": "Added to the Portland Hit List (updated Oct. 13)",
           "date": "",
           "url": "https://www.theinfatuation.com/portland/guides/best-new-portland-oregon-restaurants-hit-list"
-        }
-      ]
-    },
-    {
-      "name": "Sushi Fukami",
-      "neighborhood": "Downtown",
-      "cuisine": "Japanese omakase",
-      "price": "",
-      "opened": "Sep 2026",
-      "summary": "Nimblefish chef Cody Auger's eight-seat hinoki counter serves a roughly 21-course omakase mixing Washington crab and Oregon petrale sole with Spanish tuna and Japanese uni.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "A 21-course parade with niche ingredients",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/reviews/sushi-fukami"
-        },
-        {
-          "outlet": "Axios Portland",
-          "critic": "",
-          "verdict": "First look",
-          "date": "2026-09-18",
-          "url": "https://www.axios.com/local/portland/2026/09/18/sushi-fukami-omakase-cody-auger"
         }
       ]
     }

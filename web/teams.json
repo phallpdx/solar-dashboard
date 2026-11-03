@@ -1,10 +1,10 @@
 {
   "updated": "2026-11-03",
-  "updated_at": "2026-11-03T09:17:14Z",
+  "updated_at": "2026-11-03T11:11:30Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and hyped",
-      "pulse": "Fans are ecstatic after a significant road win in Denver. The team's 5-1 start has them feeling highly confident.",
+      "pulse": "Fans are ecstatic after breaking an 18-game losing streak in Denver. The team's 5-1 start has boosted confidence and power rankings.",
       "storylines": [
         "Blazers improved to 5-1 on the season"
       ],
@@ -33,12 +33,11 @@
     },
     "timbers": {
       "mood": "optimistic and hopeful",
-      "pulse": "Fans are energized following three straight wins. There is growing belief in Martí Cifuentes' tactical overhaul.",
+      "pulse": "Fans are encouraged by tactical progress and the win over Houston. There is excitement regarding player performances.",
       "storylines": [
-        "Three consecutive wins put playoff fate in their hands",
         "Vincent Janssen named to MLS Team of the Matchday 34",
         "Finn Surman selected for New Zealand National Team",
-        "Playoff seeding depends on upcoming results"
+        "Timbers2 lost 1-0 in MLS NEXT Pro playoffs"
       ],
       "sources": [
         {
@@ -64,13 +63,14 @@
       ]
     },
     "f1": {
-      "mood": "celebratory and emotional",
-      "pulse": "Fans are celebrating Kimi Antonelli's historic title win in Mexico. Discussions focus on future driver lineups and team dynamics.",
+      "mood": "celebratory yet reflective",
+      "pulse": "Fans are celebrating Kimi Antonelli's historic title win in Mexico City. Discussions include George Russell's emotional reflection and driver market rumors.",
       "storylines": [
-        "Kimi Antonelli becomes youngest-ever F1 World Champion",
-        "Max Verstappen favored for 2027 title by markets",
-        "Oliver Bearman seeking Ferrari seat guarantees",
-        "Cadillac investigating Bottas high speed failure"
+        "Kimi Antonelli becomes youngest F1 World Champion at age 20.",
+        "Max Verstappen is a favorite for the 2027 title.",
+        "Ryo Hirakawa scores points on F1 debut in Mexico.",
+        "Oliver Bearman seeks Ferrari seat guarantees for 2028.",
+        "Bottas faces investigation after high-speed failure and potential concussion."
       ],
       "sources": [
         {

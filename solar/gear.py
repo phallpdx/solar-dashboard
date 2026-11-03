@@ -7,6 +7,7 @@ brand and a model, and only listings whose titles carry that model count, so "ho
 is never priced against $1,200 guitars. Asking prices run above what gear sells for, so the lower
 quartile stands in for the usual price. Anything at 70% or less of it is a deal.
 """
+import datetime
 import html
 import json
 import re
@@ -191,30 +192,103 @@ VARIANT = re.compile(r"\b(valve|tube|signature|artist|custom|shop|elite|ultra|pr
                      r"relic|masterbuilt|mk ?i+|deluxe|select|usa|american|japan|vintage|original|nos)\b", re.I)
 
 
+def _reverb_page(query, page, sold=False):
+    params = {"query": query, "per_page": 50, "page": page}
+    if sold:  # sold listings, newest first; the public API has no sale date, so the listing date stands in for it
+        params |= {"show_only_sold": "true", "sort": "published_at|desc"}
+    data = json.loads(_get("https://api.reverb.com/api/listings/all?" + urllib.parse.urlencode(params),
+                           {**UA, "Accept": "application/hal+json", "Accept-Version": "3.0"}))
+    return data.get("listings") or []
+
+
+def _comparable(x, query, model, title_query):
+    """The Reverb listing's USD price if it is the same used thing as the Craigslist one, else None."""
+    title = (x.get("title") or "").lower()
+    price = x.get("price") or {}
+    if (price.get("amount") and price.get("currency", "USD") == "USD"
+            and (x.get("condition") or {}).get("slug") not in NOT_USED
+            and not (BUNDLE.search(title) and not BUNDLE.search(query))
+            and not (PARTS.search(title) and not PARTS.search(query))
+            and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])
+            and not any(v.group(0).lower() not in title_query for v in VARIANT.finditer(title))):
+        return float(price["amount"])
+    return None
+
+
+def _trim(prices):
+    """Drop a $5 badge or a single drum out of a "kit" search: anything a third or three times off the middle."""
+    if not prices:
+        return prices
+    mid = sorted(prices)[len(prices) // 2]
+    return [p for p in prices if mid / 3 <= p <= mid * 3]
+
+
 def _reverb(query, model, title_query=""):
     """Lower-quartile asking price of used Reverb listings whose titles carry the model words, or None if too few.
     New, B-stock and bundled listings don't count, since they are what made the old medians run high."""
     prices = []
     for page in (1, 2, 3):
-        data = json.loads(_get("https://api.reverb.com/api/listings/all?" + urllib.parse.urlencode(
-            {"query": query, "per_page": 50, "page": page}),
-            {**UA, "Accept": "application/hal+json", "Accept-Version": "3.0"}))
-        for x in data.get("listings") or []:
-            title = (x.get("title") or "").lower()
-            if ((x.get("price") or {}).get("amount") and (x.get("price") or {}).get("currency", "USD") == "USD"
-                    and (x.get("condition") or {}).get("slug") not in NOT_USED
-                    and not (BUNDLE.search(title) and not BUNDLE.search(query))
-                    and not (PARTS.search(title) and not PARTS.search(query))
-                    and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])
-                    and not any(v.group(0).lower() not in title_query for v in VARIANT.finditer(title))):
-                prices.append(float(x["price"]["amount"]))
-        if len(prices) >= 12 or len(data.get("listings") or []) < 50:
+        got = _reverb_page(query, page)
+        prices += [p for p in (_comparable(x, query, model, title_query) for x in got) if p]
+        if len(prices) >= 12 or len(got) < 50:
             break
-    if prices:  # a $5 badge or a single drum out of a "kit" search is not the thing itself
-        mid = sorted(prices)[len(prices) // 2]
-        prices = [p for p in prices if mid / 3 <= p <= mid * 3]
-    prices.sort()
+    prices = sorted(_trim(prices))
     return (prices[len(prices) // 4], len(prices)) if len(prices) >= 5 else None
+
+
+def reverb_sold(query, model, title_query=""):
+    """What matching used gear actually sold for on Reverb: the most recent sale and the average of up to the
+    last 30, or None if nothing matching sold. "Most recent" is the most recently listed of the sold ones."""
+    sales = []
+    for page in (1, 2):
+        got = _reverb_page(query, page, sold=True)
+        for x in got:
+            p = _comparable(x, query, model, title_query)
+            if p:
+                sales.append({"price": p, "title": x.get("title"), "url": ((x.get("_links") or {}).get("web") or {}).get("href"),
+                              "date": (x.get("published_at") or "")[:10] or None})
+        if len(sales) >= 30 or len(got) < 50:
+            break
+    kept = set(_trim([s["price"] for s in sales[:30]]))
+    sales = [s for s in sales[:30] if s["price"] in kept]
+    if not sales:
+        return None
+    last = sales[0]
+    return {"last": round(last["price"]), "last_title": last["title"], "last_url": last["url"], "last_date": last["date"],
+            "avg": round(sum(s["price"] for s in sales) / len(sales)), "n": len(sales),
+            "url": "https://reverb.com/marketplace?" + urllib.parse.urlencode({"query": query, "show_only_sold": "true"})}
+
+
+def _sold_query(title):
+    """Brand-and-model search words for a Craigslist title, falling back to the price list's model name."""
+    for q in (_query(title).lower(),
+              None if ACCESSORY.search(title) else next((n.lower() for pat, n, _ in MODELS if re.search(pat, title, re.I)), None)):
+        model = _model_words(q) if q else None
+        if model and BRANDS.search(q):
+            return f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model, q
+    return None
+
+
+def add_sold(picks, cache, today, budget=20):
+    """Put the latest and average Reverb sale price on each deal. Lookups are kept for 3 days."""
+    fresh = (today - datetime.timedelta(days=3)).isoformat()
+    for d in picks:
+        sq = _sold_query(d["title"])
+        if not sq:
+            continue
+        key = "sold1 " + sq[0]
+        hit = cache.get(key)
+        if not (hit and hit.get("at", "") >= fresh):
+            if budget <= 0:
+                continue
+            budget -= 1
+            try:
+                hit = cache[key] = {"at": today.isoformat(), "sold": reverb_sold(*sq)}
+            except Exception:
+                continue
+        if hit.get("sold"):
+            d["sold"] = hit["sold"]
+    return picks
 
 
 def deals(found, cache, reverb_budget=25):

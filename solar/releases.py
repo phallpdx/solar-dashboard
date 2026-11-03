@@ -99,7 +99,9 @@ def top_shows(days=45, min_rating=7.5, limit=10):
     today = dt.date.today()
     found = [x for x in _premieres(today - dt.timedelta(days=days), days) if (x["rating"] or 0) >= min_rating]
     found.sort(key=lambda x: (-x["rating"], x["date"]))
-    return found[:limit]
+    found = found[:limit]  # the best-rated few, then shown newest first
+    found.sort(key=lambda x: x["date"], reverse=True)
+    return found
 
 
 # ------------------------------------------------------------------ movies (TMDB, availability from JustWatch)
@@ -170,6 +172,42 @@ def top_movies(key, days=180, min_rating=7.0, min_votes=100, limit=10):
             out.append(_movie(m, services))
         if len(out) >= limit:
             break
+    out.sort(key=lambda x: x["date"] or "", reverse=True)  # picked by rating, shown newest first
+    return out
+
+
+def upcoming_movies(key, days=7, limit=10):
+    """Movies coming to the six services in the next week: streaming originals that premiere there, plus US
+    digital releases that are already listed on one of the services' subscriptions."""
+    today = dt.date.today()
+    window = {"gte": today.isoformat(), "lte": (today + dt.timedelta(days=days)).isoformat()}
+    ids = _provider_ids(key)
+    seen, out = set(), []
+    originals = _discover(key, ids, sort_by="popularity.desc",
+                          **{"primary_release_date.gte": window["gte"], "primary_release_date.lte": window["lte"]})
+    digital = _tmdb("/discover/movie", key, region="US", with_release_type="4|6", include_adult="false",
+                    sort_by="popularity.desc",
+                    **{"release_date.gte": window["gte"], "release_date.lte": window["lte"]}).get("results") or []
+    for m in originals + digital[:20]:
+        if m["id"] in seen:
+            continue
+        seen.add(m["id"])
+        when = m.get("release_date") or ""
+        if not window["gte"] <= when <= window["lte"]:
+            # A digital release: the result carries the theater date, so look up when it reaches US streaming.
+            us = next((r for r in _tmdb(f"/movie/{m['id']}/release_dates", key).get("results") or []
+                       if r.get("iso_3166_1") == "US"), {})
+            when = min((d["release_date"][:10] for d in us.get("release_dates") or []
+                        if d.get("type") in (4, 6) and window["gte"] <= (d.get("release_date") or "")[:10] <= window["lte"]),
+                       default=None)
+            if not when:
+                continue
+        services = _where(m["id"], key, ids)
+        if services:
+            out.append(_movie(m, services, date=when))
+        if len(out) >= limit:
+            break
+    out.sort(key=lambda x: (x["date"] or "", x["title"] or ""))
     return out
 
 

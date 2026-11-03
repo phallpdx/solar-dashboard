@@ -22,6 +22,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNUFhSS0pDcDhxY3pENzBPOFQxQ3p4VkctbjFUT1Jfb1o0OUVoRVpLYUtFS0VqcnVkZGJGbnZwN1pSUGhaZ010dU9sSGw3SUJ0TUl4czk4a3VRc2pMbk10UGozZ1FWZ19pX3VScTZfVlBocmQ1ZDMwVWZHTjkxSHNBbHJiWHRwcHVXTTRqTHJwNjZpVWM2c1ZCNnNlVnFMUjdPa0dBSFFlM2xpS0w2bGE5OFQ1NWNudkw3ZWI2b1YwQ2l5SmJSS0J2Skl0VGJoaEUycFRIanYybTZ6MkFzU0pvSA?oc=5"
+      },
+      {
+        "name": "SimianX: November 2026 US market calendar",
+        "url": "https://www.simianx.ai/stories/us-economic-calendar-this-month-in-your-time-zone"
+      },
+      {
+        "name": "FedRateCalc: US economic calendar, November 2026",
+        "url": "https://fedratecalc.com/us-economic-calendar/november-2026/"
+      },
+      {
+        "name": "Guggenheim: 2026 U.S. economic calendar",
+        "url": "https://www.guggenheiminvestments.com/services/advisor-resources/us-economic-calendar"
       }
     ],
     "by": "local model",
@@ -30,7 +42,11 @@
       "#3 US midterm elections",
       "Saudi Aramco profit surge"
     ],
-    "watch": []
+    "watch": [
+      "Tuesday, Nov. 3: U.S. midterm election day; results will come in overnight",
+      "Wednesday, Nov. 4, 10:00 a.m. ET: ISM services PMI for October",
+      "Friday, Nov. 6, 8:30 a.m. ET: October jobs report (nonfarm payrolls and unemployment rate)"
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -114,6 +130,14 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
+      },
+      {
+        "name": "PropertyBlotter: Portland area September 2026 market stats",
+        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
+      },
+      {
+        "name": "Haven Lifestyles: 5 things to know about Portland's housing market this fall",
+        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
       }
     ],
     "by": "local model",
@@ -151,35 +175,42 @@
     ],
     "stats": [
       {
-        "label": "Median sale price (Portland metro, May)",
-        "value": "$525,000",
-        "change": "+12.9% vs a year ago",
-        "source": "www.seanzbecker.com",
-        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
+        "label": "Median sale price (Portland metro, September 2026)",
+        "value": "$545,000",
+        "change": "Flat vs a year ago",
+        "source": "PropertyBlotter (RMLS data)",
+        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
       },
       {
-        "label": "Inventory in Months (Portland metro, May)",
-        "value": "2.3",
-        "change": null,
-        "source": "www.seanzbecker.com",
-        "url": "https://www.seanzbecker.com/wp-content/uploads/2022/06/2022MayPortlandMetro.pdf"
+        "label": "Closed sales (Portland metro, September 2026)",
+        "value": "1,752",
+        "change": "-4.0% vs a year ago",
+        "source": "PropertyBlotter (RMLS data)",
+        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
       },
       {
-        "label": "Median sale price (Portland Metro, March 2026)",
-        "value": "$543,800",
-        "change": "+3.6%",
-        "source": "greenbuckrealestate.com",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "label": "Total market time (Portland metro, September 2026)",
+        "value": "68 days",
+        "change": "+11 days vs August",
+        "source": "PropertyBlotter (RMLS data)",
+        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
       },
       {
-        "label": "Total market time (Portland Metro, March 2026)",
-        "value": "79 days",
-        "change": "-13%",
-        "source": "greenbuckrealestate.com",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "label": "Pending sales (Portland metro, September 2026)",
+        "value": "1,760",
+        "change": "About -18% vs a year ago (2,145)",
+        "source": "Haven Lifestyles (RMLS data)",
+        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
+      },
+      {
+        "label": "Inventory (Portland metro, September 2026)",
+        "value": "4.2 months",
+        "change": "Up from 3.8 months a year ago",
+        "source": "Haven Lifestyles (RMLS data)",
+        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
       }
     ]
   },
-  "updated_at": "2026-11-03T11:13:08Z",
+  "updated_at": "2026-11-03T13:16:49Z",
   "updated": "2026-11-03"
 }

@@ -52,9 +52,12 @@ Logs are in `local\logs\` (kept 30 days).
 `lists.flips` in `sources.json`) that Parker could resell for $150+ after
 about 15% in fees, paying $50+ an hour counting the pickup drive and selling
 time. Gemma screens each new listing once for a known brand and model priced
-well under resale. Its guesses only choose what to check: the best few a run
-(`flips.verify_per_run`, 5) are priced from a web search of used and sold
-prices, and a price only counts if the quoted result really says it.
+well under resale. Its guesses only choose what to check: they wait in a queue
+in `flips.json`, and the best few a run (`flips.verify_per_run`, 10) are priced
+from a web search of used and sold prices. A price only counts if the result
+it cites shows that dollar figure. Guesses not checked tonight stay queued for
+the next run (up to 10 days, while the listing is up), so a busy night's finds
+aren't lost.
 
 ## Web search through Open WebUI
 

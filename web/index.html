@@ -5133,7 +5133,7 @@ async function renderFlips() {
   const list = (f && f.flips) || [];
   $('flips-card').hidden = !f;
   if (!f) return;
-  $('flips-meta').textContent = `${(f.checked || 0).toLocaleString()} listings checked${f.updated ? ' · ' + dayLabel(f.updated) : ''}`;
+  $('flips-meta').textContent = `${(f.checked || 0).toLocaleString()} listings checked${f.waiting ? ` · ${f.waiting} more waiting to be priced` : ''}${f.updated ? ' · ' + dayLabel(f.updated) : ''}`;
   $('flips').innerHTML = list.length ? list.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.first_seen === todayIso() ? ' <small class="up">New</small>' : ''} <small class="up">${esc(x.category)}</small>
       <br><small>Resells for about $${x.value.toLocaleString()} used (${srcLinks(x.sources)})${x.where ? ' · ' + esc(x.where) : ''}</small></span>
       <span style="white-space:nowrap;padding-left:12px">$${x.price.toLocaleString()}<br><small>+$${x.profit.toLocaleString()} · $${x.hourly}/hr</small></span></div>`).join('')

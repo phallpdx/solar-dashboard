@@ -1412,8 +1412,9 @@ def refresh_flips(data, sources):
     """Things on Portland Craigslist that Parker could buy and resell for $150+ that pays $50+ an hour.
 
     Gemma screens every new listing in the categories in sources.json for a known brand and model priced
-    well under what it resells for. Its guesses only pick what to check: the few best are then priced from
-    a web search of used and sold prices, and a figure only counts if the result it cites says it."""
+    well under what it resells for. Its guesses only pick what to check: they wait in a queue, and the best
+    few each run are priced from a web search of used and sold prices, where a figure only counts if the
+    result it cites has it. A guess that isn't checked tonight stays in the queue for the next run."""
     sys.path.insert(0, REPO)
     from solar import gear  # the music-gear scan's Craigslist reader and drive-time estimate
     cfg = CONFIG.get("flips", {})
@@ -1428,7 +1429,10 @@ def refresh_flips(data, sources):
         return data
     live = {x["url"] for x in found}
     cutoff = (TODAY - dt.timedelta(days=10)).isoformat()
+    if data.get("v") != 2:  # the first nights' guesses were mostly cars and then thrown away: screen everything again
+        data = {k: v for k, v in data.items() if k not in ("screened", "queue", "verified")} | {"v": 2}
     screened = {u: d for u, d in (data.get("screened") or {}).items() if d >= cutoff}
+    verified = {u: d for u, d in (data.get("verified") or {}).items() if d >= cutoff}
     found = [x for x in found if not is_vehicle(x["title"])]
     fresh = [x for x in found if x["url"] not in screened and not gear.SKIP.search(x["title"])]
     log(f"  {len(found)} listings, {len(fresh)} not screened before")
@@ -1451,14 +1455,22 @@ def refresh_flips(data, sources):
                     candidates.append(dict(x, item=clean(c["item"], 80), guess=c["value"]))
         for x in batch:
             screened[x["url"]] = TODAY.isoformat()
-    log(f"  {len(candidates)} possible flips to check")
+    # Guesses not checked on earlier runs wait their turn, as long as the listing is still up.
+    seen = {c["url"] for c in candidates}
+    queued = [c for c in data.get("queue") or [] if c["url"] in live and c["url"] not in seen and c["url"] not in verified
+              and c.get("queued", TODAY.isoformat()) >= cutoff and not is_vehicle(c["title"])]
+    for c in candidates:
+        c["queued"] = TODAY.isoformat()
+    candidates += queued
+    log(f"  {len(candidates) - len(queued)} new possible flips, {len(queued)} waiting from earlier runs")
 
     # 2. The best few are priced from real used and sold prices found by web search.
     hours = lambda x: gear.trip_hours(x.get("where")) + gear.SELL_HOURS  # noqa: E731
     candidates.sort(key=lambda x: -(x["guess"] * gear.RESALE - x["price"]) / hours(x))
     price_schema = items_schema({"price": {"type": "integer"}, "quote": S, "url": S})
     flips = [f for f in data.get("flips") or [] if f["url"] in live and not is_vehicle(f["title"])]  # still listed
-    for x in candidates[:cfg.get("verify_per_run", 5)]:
+    checked_now = set()
+    for x in candidates[:cfg.get("verify_per_run", 10)]:
         if any(f["url"] == x["url"] for f in flips):
             continue
         post = gear.read_post(x["url"])  # the search page's price can be wrong ("from $225"); the post's counts
@@ -1473,7 +1485,8 @@ def refresh_flips(data, sources):
             results = web_search(f"{x['item']} used price sold")
         except Exception as e:  # noqa: BLE001
             log(f"  {x['item']}: search failed ({e})")
-            break  # out of searches for today; the rest wait for tomorrow
+            break  # out of searches for today; the rest wait in the queue for the next run
+        checked_now.add(x["url"])
         text, table = number_links(search_text(results)[0])
         r = ask_checked(f"From these search results, list the prices they state for a USED {x['item']}: sold listings, "
                         "used listings or used price guides. Skip prices for new ones, parts, bundles, other models, and "
@@ -1484,8 +1497,8 @@ def refresh_flips(data, sources):
         prices, cites = [], []
         for p in r.get("items") or []:
             url, quote = unnumber(p.get("url"), table), clean(p.get("quote"), 300)
-            if (isinstance(p.get("price"), int) and p["price"] > 0 and quote and quote in snippets.get(url, "")
-                    and re.search(r"\$?\b" + re.escape(f"{p['price']:,}").replace(",", ",?") + r"\b", quote)):
+            if (isinstance(p.get("price"), int) and p["price"] > 0 and url in snippets
+                    and re.search(r"\$\s?" + re.escape(f"{p['price']:,}").replace(",", ",?") + r"(?![\d,])", snippets[url])):
                 prices.append(p["price"])
                 if url not in [c["url"] for c in cites]:
                     cites.append({"name": urllib.parse.urlsplit(url).hostname.replace("www.", ""), "url": url})
@@ -1496,14 +1509,20 @@ def refresh_flips(data, sources):
         profit = round(value * gear.RESALE - x["price"])
         hourly = round(profit / hours(x))
         log(f"  {x['item']}: asking ${x['price']}, resells for about ${value} ({len(prices)} prices), ${profit} profit, ${hourly}/hr")
-        if profit >= gear.FLIP_PROFIT and hourly >= gear.FLIP_HOURLY and x["price"] >= 0.15 * value:
+        if profit >= gear.FLIP_PROFIT and hourly >= gear.FLIP_HOURLY and x["price"] >= 0.3 * value:  # far below: a scam or not the same thing
             flips.append({"title": x["title"], "item": x["item"], "price": x["price"], "value": value, "profit": profit,
                           "hourly": hourly, "where": x.get("where"), "category": x["category"], "url": x["url"],
                           "first_seen": TODAY.isoformat(), "sources": cites[:4]})
     flips.sort(key=lambda f: -f["hourly"])
+    for u in checked_now:
+        verified[u] = TODAY.isoformat()
+    queue = [{k: c.get(k) for k in ("url", "title", "price", "item", "guess", "where", "category", "queued")}
+             for c in candidates if c["url"] not in verified][:60]
+    log(f"  {len(queue)} still waiting to be priced")
     return {"note": "Craigslist listings that could resell for $150+ after about 15% in fees and pay $50+ an hour "
                     "counting the drive and selling time. Resale prices come from used and sold prices found online.",
-            "flips": flips[:12], "checked": len(found), "screened": screened}
+            "flips": flips[:12], "checked": len(found), "waiting": len(queue), "v": 2,
+            "screened": screened, "queue": queue, "verified": verified}
 
 
 def refresh_alfred(data, sources):

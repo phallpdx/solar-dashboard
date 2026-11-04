@@ -9,12 +9,12 @@
   },
   "openwebui": {
     "url": "http://localhost:3000",
-    "max_searches_per_day": 16,
+    "max_searches_per_day": 20,
     "timeout_seconds": 300
   },
   "flips": {
     "min_price": 50,
-    "verify_per_run": 5
+    "verify_per_run": 10
   },
   "push_branch": "claude/local-lists",
   "lists": {

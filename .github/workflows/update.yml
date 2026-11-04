@@ -73,8 +73,13 @@ jobs:
           git checkout --quiet --orphan snapshot
           git add -A
           git commit --quiet -m "Data as of $(date -u +%FT%TZ)"
-          git push --quiet --force \
-            "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" snapshot:data
+          # GitHub sometimes answers a push with a passing 500 error; try again rather than fail the run.
+          for wait in 5 15 45 0; do
+            git push --quiet --force \
+              "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" snapshot:data && break
+            [ "$wait" = 0 ] && exit 1
+            echo "push failed, retrying in ${wait}s"; sleep "$wait"
+          done
 
       - name: Build site
         run: |

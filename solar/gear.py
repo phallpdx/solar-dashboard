@@ -136,7 +136,7 @@ SYNONYMS = [
     (r"\bgold ?top\b", "goldtop"), (r"\bp[- ]?bass\b", "precision bass"), (r"\bj[- ]?bass\b", "jazz bass"),
     (r"\bsingle[- ]?cut(away)?\b|\bsc\b", "singlecut"), (r"\bdouble[- ]?cut(away)?\b|\bdc\b", "doublecut"),
     (r"\bmk\.? ?(ii|2)\b", "mk2"), (r"\bmk\.? ?(iii|3)\b", "mk3"), (r"\bmk\.? ?(iv|4)\b", "mk4"),
-    (r"\bre-?issue\b|\bri\b", "reissue"), (r"\bhollow ?body\b", "hollowbody"), (r"\bsemi[- ]?hollow\b", "semihollow"),
+    (r"\bavri\b", "american vintage reissue"), (r"\bre-?issue\b|\bri\b", "reissue"), (r"\bhollow ?body\b", "hollowbody"), (r"\bsemi[- ]?hollow\b", "semihollow"),
     (r"\b12[- ]?string\b", "12string"), (r"\bleft[- ]?handed\b|\blefty\b|\blh\b", "lefthanded"),
     (r"\bextension cab(inet)?\b|\bcab(inet)?\b", "cabinet"), (r"\bthin ?line\b", "thinline"),
     (r"\bstar ?cast(er)?\b", "starcaster"), (r"\bjazz ?master\b", "jazzmaster"), (r"\bjag ?uar\b", "jaguar"),
@@ -155,7 +155,7 @@ VARIANTS = ("valve tube signature artist custom shop elite ultra professional li
             "china vintage original nos vintera player squier affinity bullet classic vibe standard studio tribute "
             "special junior traditional supreme modern faded plus thinline hollowbody semihollow acoustasonic baritone "
             "12string lefthanded mini micro reissue historic vos heavy light worn silverface blackface exclusive "
-            "prototype goldtop").split()
+            "prototype goldtop partscaster copy clone").split()
 VARIANT_FAMILY = {"reissue", "historic", "vos", "custom", "shop", "vintage"}  # all fine on a reissue listing
 NOT_USED = {"brand-new", "b-stock", "mint-inventory"}  # Reverb ignores condition=used, so this is checked per listing
 NOT_USED_TITLE = re.compile(r"\b(demo|open box|b-?stock|blem(ished)?|showroom|new old stock|brand new|factory sealed)\b", re.I)
@@ -171,6 +171,16 @@ FILLER = re.compile(r"(?i)hardshell|hsc|ohsc|gigbag|gig|bag|upgraded|upgrades?|l
 OPTIONAL = {"distortion", "overdrive", "delay", "fuzz", "chorus", "compressor", "looper", "boost", "tremolo", "phaser",
             "flanger", "wah", "echo", "analog", "preamp", "di"}
 KINDS = {"cabinet": "cabinets", "combo": "combos", "head": "heads", "acoustic": "acoustic", "bass": "bass"}
+
+
+def _stem(w):
+    return w[:-1] if len(w) > 3 and w.endswith("s") and not w[-2].isdigit() else w
+
+
+def _has(token, have):
+    """Whether a model word is among a listing's words: "rockers" matches "rocker", "5410t" matches "g5410t"."""
+    t = _stem(token)
+    return t in have or any(c.isdigit() for c in t) and len(t) >= 4 and any(h.endswith(t) for h in have)
 
 
 def _norm(text):
@@ -226,7 +236,7 @@ def want(title):
         if YEAR.fullmatch(w) or re.fullmatch(r"'?(19)?\d0s", w) or w in OPTIONAL:
             continue
         tokens.append(w)
-    if not tokens:
+    if not any(re.search(r"[a-z]", t) for t in tokens):
         return {"skip": "the title names a brand but no model"}
     reissue = bool(REISSUE.search(_norm(cut)))
     if reissue:  # "Custom Shop 1957 Les Paul Reissue" and "Historic '57 Les Paul" are the same guitar
@@ -258,14 +268,26 @@ def _matches(x, w, optional=frozenset()):
         return "new, demo or B-stock"
     text = f"{title} {x.get('make') or ''} {x.get('model') or ''}"
     have = set(_words(text))
+    stems = {_stem(h) for h in have}
     if w["brand"] not in _norm(text):
         return "other brand"
-    missing = [t for t in w["tokens"] if t not in have and t not in optional]
+    missing = [t for t in w["tokens"] if not _has(t, stems) and t not in optional]
     if missing:
         return "missing " + " ".join(missing)
     extra = [v for v in VARIANTS if v in have and v not in w["words"] and not (w["reissue"] and v in VARIANT_FAMILY)]
     if extra:
         return "a different version (" + extra[0] + ")"
+    # A model year in the name ("'69 Telecaster Thinline") is a reissue of that year, not the plain model.
+    if not w["reissue"] and re.search(r"(?<![\w$])'\d\d\b|\b(19)?[5-7]\d's?\s+(custom|reissue|classic|vintage|series)", _norm(title)):
+        return "a different version (a reissue)"
+    # Reverb's model field names the model plainly; two or more words in it the Craigslist title lacks
+    # ("Jim Adkins JA-90 Telecaster Thinline" for a "Thinline Telecaster") make it a different model.
+    mine = {_stem(t) for t in w["words"]} | {_stem(t) for t in optional}
+    odd = [t for t in _words(x.get("model")) if _stem(t) not in mine and not GENERIC.fullmatch(t) and not FILLER.fullmatch(t)
+           and t not in OPTIONAL and not YEAR.fullmatch(t) and t not in _words(x.get("make")) and t not in _words(x.get("finish"))
+           and not BRANDS.fullmatch(t)]
+    if len(odd) >= 2:
+        return "a different model (" + " ".join(odd[:3]) + ")"
     if BUNDLE.search(title) and not BUNDLE.search(" ".join(w["words"])):
         return "a bundle"
     if PARTS.search(title) and not w["accessory"]:
@@ -328,7 +350,7 @@ def comps(title, today=None, log=None):
     w = want(title)
     if w.get("skip"):
         return {"unsure": w["skip"]}
-    query = " ".join([w["brand"]] + w["tokens"][:5])
+    query = " ".join([w["brand"]] + w["tokens"][:5] + ([w["year_token"]] if w["year_token"] else []))
     extra = {}
     if w["era"]:
         lo, hi = w["era"]

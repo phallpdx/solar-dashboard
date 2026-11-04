@@ -17,34 +17,6 @@
     },
     {
       "title": "Portland Book Festival",
-      "date": "2026-11-02",
-      "ends": "2026-11-08",
-      "venue": "Downtown or the Pearl",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://www.stayportland.com/guide/portland-events-festivals"
-        }
-      ]
-    },
-    {
-      "title": "Medicine Hat Tigers at Portland Winterhawks",
-      "date": "2026-11-04",
-      "ends": "2026-11-04",
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Concert",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://seatgeek.com/cities/portland"
-        }
-      ]
-    },
-    {
-      "title": "Portland Book Festival",
       "date": "2026-11-07",
       "ends": null,
       "venue": "South Park Blocks and Portland Art Museum, Downtown",
@@ -138,8 +110,8 @@
       "date": "2026-11-15",
       "ends": null,
       "venue": "Veterans Memorial Coliseum",
-      "kind": "Festival",
-      "why": "Exhibitions often increase local foot traffic.",
+      "kind": "Expo",
+      "why": "A one-day guitar show at the Coliseum on a Sunday, adding daytime Rose Quarter traffic the weekend Kumoricon fills the convention center nearby.",
       "sources": [
         {
           "name": "Rose Quarter",
@@ -244,20 +216,6 @@
       ]
     },
     {
-      "title": "Grotto Festival of Lights opens",
-      "date": "2026-11-27",
-      "ends": null,
-      "venue": "",
-      "kind": "Holiday lights",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://www.stayportland.com/guide/portland-events-festivals"
-        }
-      ]
-    },
-    {
       "title": "Trans-Siberian Orchestra: The Ghosts of Christmas Eve",
       "date": "2026-11-28",
       "ends": null,
@@ -334,68 +292,16 @@
       "why": "Sunday 7 p.m. country radio holiday show with Max McNown, Ian Munsick, Graham Barham and Blake Whiten, the night after the Triumph show next door, so the Rose Quarter is busy two nights running.",
       "sources": [
         {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/max-mcnown-dec-6-2026"
+        },
+        {
           "name": "Live Nation",
           "url": "https://www.livenation.com/fr-ca/event/vvG1HZ_2B6GkFr/the-wolf-s-nice-christmas-show"
         },
         {
           "name": "Discotech",
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
-        }
-      ]
-    },
-    {
-      "title": "Max McNown Christmas Show",
-      "date": "2026-12-06",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Concert",
-      "why": "Seasonal event may increase crowds.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/max-mcnown-dec-6-2026"
-        }
-      ]
-    },
-    {
-      "title": "Portland Holiday Brew Fest",
-      "date": "2026-12-11",
-      "ends": "2026-12-12",
-      "venue": "Pioneer Courthouse Square",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://dopdx.com"
-        }
-      ]
-    },
-    {
-      "title": "Ram PBR Portland",
-      "date": "2027-01-22",
-      "ends": "2027-01-23",
-      "venue": "Moda Center",
-      "kind": "Sports",
-      "why": "Two nights of Professional Bull Riders at the Moda Center in late January.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
-        }
-      ]
-    },
-    {
-      "title": "Harlem Globetrotters Rivalry Tour",
-      "date": "2027-01-31",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Sports",
-      "why": "No crowd info provided.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
         }
       ]
     }

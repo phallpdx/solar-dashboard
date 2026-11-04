@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "items": [
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
@@ -165,9 +165,9 @@
       "title": "Christmas Ships viewing dinner",
       "kind": "Book",
       "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
-      "starts": null,
+      "starts": "2026-12-03",
       "by": null,
-      "why": "Vancouver's tourism office advises reserving waterfront restaurant seats well in advance on parade nights (Vancouver nights listed Dec 16 to 18).",
+      "why": "The official site says the 2026 schedule is posted, and a festival listing puts the parades Dec 3 to 20; Vancouver's tourism office advises reserving waterfront seats well in advance (Vancouver nights listed Dec 16 to 18).",
       "sources": [
         {
           "name": "Christmas Ships parade schedule",
@@ -176,6 +176,10 @@
         {
           "name": "Visit Vancouver WA",
           "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+        },
+        {
+          "name": "Carnifest 2026 listing",
+          "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
         }
       ]
     },

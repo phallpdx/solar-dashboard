@@ -5156,11 +5156,14 @@ function renderGear() {
   $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
   $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}${d.watch ? ` <small class="up">⭐ ${esc(d.watch)}</small>` : d.drums ? ' <small class="up">🥁 Drums</small>' : ''}${d.flip_profit ? ` <small class="up">💰 Flip: ~$${d.flip_profit.toLocaleString()} profit${d.flip_hourly ? `, ~$${d.flip_hourly}/hr` : ''}</small>` : ''}
       <br><small>${d.typical ? `Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})` : 'On your wish list; no comparable sales to price it against'}${d.where ? ' · ' + esc(d.where) : ''}${d.listed_price ? ` · listed at $${d.listed_price.toLocaleString()}, but the post asks $${d.price.toLocaleString()}` : ''}</small>
-      ${d.sold ? `<br><small>Sold on Reverb: last <a href="${esc(d.sold.last_url || d.sold.url)}" target="_blank" rel="noopener">$${d.sold.last.toLocaleString()}</a>${d.sold.last_date ? ` (listed ${soldDay(d.sold.last_date)})` : ''}${d.sold.n > 1 ? ` · average $${d.sold.avg.toLocaleString()} across <a href="${esc(d.sold.url)}" target="_blank" rel="noopener">${d.sold.n} sales</a>` : ''}</small>` : ''}
+      ${d.sold ? `<br><small>Sold on Reverb: last <a href="${esc(d.sold.last_url || d.sold.url)}" target="_blank" rel="noopener">$${d.sold.last.toLocaleString()}</a>${d.sold.last_title ? ` for a ${esc(d.sold.last_title)}` : ''}${d.sold.last_date ? ` (listed ${soldDay(d.sold.last_date)})` : ''}${d.sold.n > 1 ? ` · average $${d.sold.avg.toLocaleString()} across <a href="${esc(d.sold.url)}" target="_blank" rel="noopener">${d.sold.n} sales</a>` : ''}</small>` : ''}
       ${d.sold && d.sold.recent != null ? `<br><small>${sellSpeed(d.sold)}</small>` : ''}
       ${!d.flip_profit && d.resale_profit != null ? `<br><small>Not a flip: reselling would clear ${d.resale_profit > 0 ? `about $${d.resale_profit.toLocaleString()}, roughly $${Math.max(0, d.resale_hourly)}/hr` : 'nothing'} after fees and the drive, under your $50/hr.</small>` : ''}</span>
       <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off > 0 ? `${d.pct_off}% under` : d.pct_off != null ? 'at market' : 'wish list'}</small></span></div>`).join('')
     : '<p class="note">Nothing priced well below usual right now.</p>';
+  // Bigger listings it couldn't match to the same gear's Reverb sales, so nothing is priced against the wrong thing.
+  const unsure = (g.unsure || []).slice(0, 4);
+  if (unsure.length) $('gear').innerHTML += `<p class="note">Not priced, no confident Reverb match: ${unsure.map(u => `<a href="${esc(u.url)}" target="_blank" rel="noopener">${esc(u.title)}</a> ($${u.price.toLocaleString()}, ${esc(u.why)})`).join('; ')}.</p>`;
 }
 
 // ------------------------------------------------------------------ morning records

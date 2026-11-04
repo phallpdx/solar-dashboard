@@ -994,21 +994,23 @@ def civics_view(state, today):
 def fetch_gear(state, now_utc):
     """Underpriced music gear on Portland Craigslist, checked every few hours."""
     store, errors = state.setdefault("gear", {}), []
-    if store.get("v") != 6:  # Reverb sale prices on each deal: scan again now
+    if store.get("v") != 7:  # priced from exact-match Reverb sales now: scan again with an empty cache
         store.pop("scan_at", None)
-        store["v"] = 6
+        store["reverb"] = {}
+        store["v"] = 7
 
     def scan():
         found = gear.listings()
         first = store.setdefault("first_seen", {})
         today = now_utc.astimezone(zone("America/Los_Angeles")).date().isoformat()
-        picks = gear.deals(found, store.setdefault("reverb", {}))
-        gear.add_sold(picks, store["reverb"], now_utc.astimezone(zone("America/Los_Angeles")).date())
+        picks = gear.deals(found, store.setdefault("reverb", {}), today=now_utc.astimezone(zone("America/Los_Angeles")).date())
         for d in picks:
             d["first_seen"] = first.setdefault(d["url"], today)
         for url in list(first)[:-500]:
             first.pop(url)
-        return {"deals": picks, "checked": len(found)}
+        # Pricier listings it couldn't match to Reverb sales with confidence, and why, so a big one isn't missed.
+        unsure = sorted(gear.deals.unsure, key=lambda x: -x["price"])[:8]
+        return {"deals": picks, "checked": len(found), "unsure": unsure}
     _refresh(store, "scan", scan, 4, now_utc, errors)
     return "; ".join(errors) or None
 

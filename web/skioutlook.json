@@ -1,7 +1,7 @@
 {
   "updated": "2026-11-03",
   "season": {
-    "summary": "A strong-to-very strong El Niño is strengthening and likely through January-March 2027. There is an 83% chance for October-December. The next update is scheduled for 2026-11-12. Impacts consistent with El Niño are possible but not guaranteed.",
+    "summary": "A strong-to-very strong El Niño is strengthening and likely through January-March 2027. There is an 83% chance for October-December. The next update is scheduled for 2026-11-12. This discussion does not specify Pacific Northwest snowpack impacts.",
     "sources": [
       {
         "name": "NOAA CPC ENSO discussion",
@@ -28,9 +28,9 @@
   "openings": [
     {
       "resort": "Mt. Hood Meadows",
-      "date": "2026-12-18",
+      "date": "2026-12-04",
       "status": "Planned",
-      "note": "The date is a projection and subject to change.",
+      "note": "Opening date is a projection.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",
@@ -48,9 +48,9 @@
     },
     {
       "resort": "Timberline",
-      "date": "2026-12-26",
+      "date": "2026-11-21",
       "status": "Planned",
-      "note": "The date is a projection and subject to change.",
+      "note": "Opening date is a projection.",
       "sources": [
         {
           "name": "Timberline lift tickets",
@@ -66,7 +66,7 @@
       "resort": "Mt. Hood Skibowl",
       "date": "2026-11-27",
       "status": "Planned",
-      "note": "The date is a projection and subject to change.",
+      "note": "Opening date is a projection.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",
@@ -82,7 +82,7 @@
       "resort": "Cooper Spur",
       "date": "2026-12-26",
       "status": "Planned",
-      "note": "The date is a projection and subject to change.",
+      "note": "Opening date is a projection.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",

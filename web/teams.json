@@ -1,12 +1,15 @@
 {
   "updated": "2026-11-03",
-  "updated_at": "2026-11-03T11:11:30Z",
+  "updated_at": "2026-11-04T07:33:23Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and hyped",
-      "pulse": "Fans are ecstatic after breaking an 18-game losing streak in Denver. The team's 5-1 start has boosted confidence and power rankings.",
+      "mood": "optimistic and energized",
+      "pulse": "Fans are celebrating a strong 5-1 start and an inspiring road win against Denver. There is excitement for coach Micah Nori's new style of play.",
       "storylines": [
-        "Blazers improved to 5-1 on the season"
+        "Blazers are 5-1 after defeating the Nuggets 118-110.",
+        "Deni Avdija led with 28 points in the recent victory.",
+        "The team faces the Phoenix Suns on Wednesday night.",
+        "Robert Williams III and Scoot Henderson are available for play."
       ],
       "sources": [
         {
@@ -32,12 +35,12 @@
       ]
     },
     "timbers": {
-      "mood": "optimistic and hopeful",
-      "pulse": "Fans are encouraged by tactical progress and the win over Houston. There is excitement regarding player performances.",
+      "mood": "tense and hopeful",
+      "pulse": "Fans are focused on playoff clinching scenarios. There is excitement regarding international call-ups and individual performances.",
       "storylines": [
-        "Vincent Janssen named to MLS Team of the Matchday 34",
-        "Finn Surman selected for New Zealand National Team",
-        "Timbers2 lost 1-0 in MLS NEXT Pro playoffs"
+        "Playoff berth clinch scenarios pending",
+        "Joel Waterman selected for Canada",
+        "Timbers2 lost 1-0 to Ventura County"
       ],
       "sources": [
         {
@@ -63,14 +66,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory yet reflective",
-      "pulse": "Fans are celebrating Kimi Antonelli's historic title win in Mexico City. Discussions include George Russell's emotional reflection and driver market rumors.",
+      "mood": "celebratory and transitional",
+      "pulse": "Fans are celebrating Kimi Antonelli's 2026 title win. There is buzz regarding driver changes for 2026.",
       "storylines": [
-        "Kimi Antonelli becomes youngest F1 World Champion at age 20.",
-        "Max Verstappen is a favorite for the 2027 title.",
-        "Ryo Hirakawa scores points on F1 debut in Mexico.",
-        "Oliver Bearman seeks Ferrari seat guarantees for 2028.",
-        "Bottas faces investigation after high-speed failure and potential concussion."
+        "Kimi Antonelli clinches the 2026 World Championship",
+        "Esteban Ocon leaving Haas for 2026",
+        "Rafael Camara to debut with Haas in Sao Paulo",
+        "Lewis Hamilton reaches 400 Grand Prix starts"
       ],
       "sources": [
         {

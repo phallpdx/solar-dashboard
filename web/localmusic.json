@@ -1,6 +1,22 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "releases": [
+    {
+      "artist": "Darci Phenix",
+      "title": "Ruby",
+      "type": "Single",
+      "local": true,
+      "genre": "",
+      "label": "New single",
+      "date": "",
+      "why": "Darci Phenix released a new single titled Ruby.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE1nd3I2bGI3YjNEU3NNY0Z1RWJBVWgzcUlIOVItUkNRVkhqQ0ttT1ZsMGJocjBUcmhCM2NyQWFwa2lvRU5KQlpJZWtxMVNsWVJPRy1seWZNME1pQ0xyQkktcUJrLVJqQzdFMHBabzJjMVVYcHZwZUZXM1JDVVM?oc=5"
+        }
+      ]
+    },
     {
       "artist": "Zoe FitzGerald Carter",
       "title": "Chaos By Design",
@@ -410,22 +426,6 @@
         {
           "name": "KEXP review",
           "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
-        }
-      ]
-    },
-    {
-      "artist": "Greg Freeman",
-      "title": "All Set The Bone",
-      "type": "Album",
-      "local": false,
-      "genre": "Alt-country",
-      "label": "Transgressive/Canvasback",
-      "date": "",
-      "why": "KEXP's music directors called it an arresting set of rock-forward alt-country in their Oct. 5 New Music Reviews.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/5/new-music-reviews-105/"
         }
       ]
     }

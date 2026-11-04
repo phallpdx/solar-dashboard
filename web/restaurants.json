@@ -2,6 +2,23 @@
   "updated": "2026-11-03",
   "restaurants": [
     {
+      "name": "Unnamed Thai restaurant",
+      "neighborhood": "North Portland",
+      "cuisine": "Thai",
+      "price": "",
+      "opened": "",
+      "summary": "New North Portland Thai spot worth repeat visits.",
+      "reviews": [
+        {
+          "outlet": "Axios",
+          "critic": "",
+          "verdict": "worth repeat visits",
+          "date": "2026-11-02",
+          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQTnFScjFWa2N4YXVpY2EyWVViUEJ3cVdjQnIwOFB0TTBKWElqOEJFWDVXNS10MmxpUkZ2OUdGTEo5YVBRcGxqM1VLNXA4YXRCNlpUWnRVNXZ1ajBKUUl3ZzhDanczRVZpWXMyT2RhNDh1X0NKMV81bjdHcXFldW53STdhMjJRQV80?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Pamana",
       "neighborhood": "",
       "cuisine": "Filipino",
@@ -43,6 +60,13 @@
       "opened": "",
       "summary": "Portland's most original omakase keeps getting better.",
       "reviews": [
+        {
+          "outlet": "Portland Monthly",
+          "critic": "",
+          "verdict": "Restaurant of the Year",
+          "date": "2026-11-02",
+          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNbDJTeENlMzhSd2tLeGdEN2syczg5NmlwNTRMSW9lenJaWlg3bTBmUTVjaGpaZlc5UVphSHprOE9fcUNCZl8tUm9jam8xdjhxUHFLbDJDYVN3V3BiRU9ZRVhZU0tfQy1hdDJ2SW5qT2xJVFBlSklrRVlIWjA1eFNnWWJIZE9FOGVOZUtybjMyUUw4bk4yenN1RzJSVEdGVnlZZV85ZkgyTWpGTG5LYnVDQnVNZw?oc=5"
+        },
         {
           "outlet": "Portland Monthly",
           "critic": "",
@@ -285,6 +309,13 @@
           "outlet": "The Oregonian food",
           "critic": "",
           "verdict": "",
+          "date": "2026-10-28",
+          "url": "https://www.oregonlive.com/dining/2026/10/this-was-always-supposed-to-happen-vegan-mexican-bakery-is-opening-a-storefront-that-finally-feels-like-home.html"
+        },
+        {
+          "outlet": "The Oregonian food",
+          "critic": "",
+          "verdict": "",
           "date": "2026-10-29",
           "url": "https://www.oregonlive.com/dining/2026/10/esto-siempre-debia-suceder-una-panaderia-mexicana-vegana-abre-un-local-que-finalmente-se-siente-como-en-casa.html"
         }
@@ -410,23 +441,6 @@
           "verdict": "New restaurant roundup",
           "date": "2026-08-05",
           "url": "https://www.axios.com/local/portland/2026/08/05/new-restaurant-roundup"
-        }
-      ]
-    },
-    {
-      "name": "Hua Hin PDX",
-      "neighborhood": "SE Hawthorne",
-      "cuisine": "Thai seafood",
-      "price": "$$$$",
-      "opened": "2026",
-      "summary": "Chef-owner Ize Piyanut's sprawling, minimalist Thai restaurant named for her coastal hometown; The Infatuation singles out the steamed barramundi with lime and chile and the grilled pork jowl with jaew.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Added to the Portland Hit List (updated Oct. 13)",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/reviews/hua-hin-pdx"
         }
       ]
     }

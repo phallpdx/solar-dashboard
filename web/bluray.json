@@ -2,23 +2,30 @@
   "updated": "2026-11-03",
   "deals": [
     {
+      "title": "Madagascar: Then Complete Collection",
+      "store": "gruv.com",
+      "detail": "Blu-ray for $12 plus free S&H",
+      "ends": "2026-11-03",
+      "url": "https://slickdeals.net/f/20237151-madagascar-the-complete-collection-blu-ray-set-blu-ray-11-99-plus-extra-15-off-for-new-gruv-accounts"
+    },
+    {
       "title": "Star Trek IX: Insurrection",
-      "store": "amazon.com",
-      "detail": "$12.50 (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "4K UHD + Blu-ray + Digital for $12.49",
       "ends": null,
       "url": "https://slickdeals.net/f/20238003-star-trek-ix-insurrection-uhd-4k-blu-ray-12-49-amazon-com"
     },
     {
       "title": "In The Mouth Of Madness",
-      "store": "amazon.com",
-      "detail": "$25 (4K Ultra HD Blu-ray)",
+      "store": "Amazon",
+      "detail": "4K Ultra HD Blu-ray for $25",
       "ends": null,
       "url": "https://slickdeals.net/f/20231970-in-the-mouth-of-madness-4k-ultra-hd-arrow-edition-25-amazon-com"
     },
     {
       "title": "Clerks",
-      "store": "amazon.com",
-      "detail": "$8 (Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "Blu-ray + Digital for $8",
       "ends": null,
       "url": "https://slickdeals.net/f/20209209-clerks-blu-ray-digital-8"
     }

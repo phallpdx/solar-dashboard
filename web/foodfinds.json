@@ -16,6 +16,20 @@
       ]
     },
     {
+      "name": "Full Sail Brewing",
+      "maker": "Full Sail Brewing",
+      "kind": "New brand",
+      "what": "Acquired by Sazerac",
+      "where_to_buy": [],
+      "date": "2026-11-03",
+      "sources": [
+        {
+          "name": "Sazerac Acquires Oregon’s Full Sail Brewing",
+          "url": "https://www.brewbound.com/news/sazerac-acquires-oregons-full-sail-brewing"
+        }
+      ]
+    },
+    {
       "name": "Joe Brown's Carmel Corn",
       "maker": "Joe Brown's",
       "kind": "New product",
@@ -26,6 +40,20 @@
         {
           "name": "After months of popcorn purgatory, Joe Brown's Carmel Corn has returned — in a new location",
           "url": "https://www.oregonlive.com/washingtoncounty/2026/10/the-beloved-portland-popcorn-shop-that-survived-a-mall-closing-just-reopened-with-a-bigger-menu.html"
+        }
+      ]
+    },
+    {
+      "name": "Team Ghoul'd",
+      "maker": "Liz Marek",
+      "kind": "Award",
+      "what": "Halloween Wars Season 16 winner",
+      "where_to_buy": [],
+      "date": "2026-10-30",
+      "sources": [
+        {
+          "name": "Beaverton's Liz Marek is a 2-time 'Halloween Wars' champ. Here's what's next for her",
+          "url": "https://www.oregonlive.com/food/2026/10/another-sweet-victory-for-oregon-cake-maker-on-halloween-wars.html"
         }
       ]
     },
@@ -291,75 +319,6 @@
         {
           "name": "That Oregon Life: First US cheese to win the World Cheese Awards came from this Oregon creamery",
           "url": "https://thatoregonlife.com/2026/10/rogue-river-blue-cheese-oregon-world-champion-rogue-creamery-central-point/"
-        }
-      ]
-    },
-    {
-      "name": "Glacier Gourmet freeze-dried treats",
-      "maker": "Glacier Gourmet (Redmond)",
-      "kind": "New brand",
-      "what": "A Redmond couple's freeze-dried snack line, launched in 2024, is now in more than 100 Oregon stores. Best sellers are freeze-dried Oregon dark cherry and marionberry pie ice creams, plus fruits, candies and cheesecakes.",
-      "where_to_buy": [
-        {
-          "store": "Made in Oregon (marionberry pie ice cream)",
-          "url": "https://madeinoregon.com/products/glacier-gourmet-freeze-dried-marionberry-pie-ice-cream-3oz"
-        }
-      ],
-      "date": "2026-09-23",
-      "sources": [
-        {
-          "name": "Bend Bulletin: Redmond couple brings freeze-dried snacks to over 100 Oregon retailers",
-          "url": "https://bendbulletin.com/2026/09/23/redmond-couple-brings-freeze-dried-snacks-to-over-100-oregon-retailers/"
-        },
-        {
-          "name": "Made in Oregon: Glacier Gourmet Freeze Dried Marionberry Pie Ice Cream",
-          "url": "https://madeinoregon.com/products/glacier-gourmet-freeze-dried-marionberry-pie-ice-cream-3oz"
-        }
-      ]
-    },
-    {
-      "name": "Hollow Jack pumpkin cider",
-      "maker": "2 Towns Ciderhouse",
-      "kind": "Seasonal",
-      "what": "The Corvallis cidery's fall pumpkin cider is back for 2026 in its classic form, with golden delicious pumpkin and a custom blend of pumpkin pie spices, at 6.9% ABV.",
-      "where_to_buy": [
-        {
-          "store": "2 Towns Ciderhouse taproom and online, plus participating retailers",
-          "url": null
-        }
-      ],
-      "date": "2026-09-03",
-      "sources": [
-        {
-          "name": "BevNET release: Oh my gourd, Jack is back",
-          "url": "https://bevnet.com/pr/2026/09/03/oh-my-gourd-jack-is-back-pumpkin-cider-season-is-here"
-        },
-        {
-          "name": "New School Beer + Cider: Hollow Jack and Pumpkin Spice return",
-          "url": "https://newschoolbeer.com/home/2026/9/pumpkin-cider-season-is-here-hollow-jack-pumpkin-spice-return"
-        }
-      ]
-    },
-    {
-      "name": "The Woodland Collection",
-      "maker": "Wildwood Chocolate (Portland)",
-      "kind": "New product",
-      "what": "A new line of personal-sized chocolate bars inspired by the Pacific Northwest understory, with seven debut flavors including Berry Berry, Salted Brown Butter Texas Pecan Brittle and Orange Confit & Cherry; trade coverage said the line would launch in September, with four caramel bars to follow later in the year.",
-      "where_to_buy": [
-        {
-          "store": "Wildwood Chocolate online shop",
-          "url": "https://wildwoodchocolate.com"
-        }
-      ],
-      "date": "2026-07-29",
-      "sources": [
-        {
-          "name": "Nombase newswire: Wildwood Unveils The Woodland Collection",
-          "url": "https://www.nombase.com/newswire/2026/07/29/wildwood-unveils-the-woodland-collection"
-        },
-        {
-          "name": "Snack and Bakery: Wildwood debuts forest creatures chocolate collection",
-          "url": "https://www.snackandbakery.com/articles/116080-wildwood-debuts-forest-creatures-chocolate-collection"
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {
@@ -182,6 +182,14 @@
       "why": "No Portland date announced"
     },
     {
+      "artist": "Baby Osamaa",
+      "album": "On Tha Run",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/baby-osamaa-on-tha-run/",
+      "why": "No Portland date found yet"
+    },
+    {
       "artist": "Cameron Winter",
       "album": "Live at Carnegie Hall",
       "score": null,
@@ -235,14 +243,6 @@
       "score": null,
       "score_source": "Pitchfork Best New Music",
       "score_url": "https://pitchfork.com/reviews/albums/at-sign-autosmile/",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "Marina Herlop",
-      "album": "Dja Dja",
-      "score": null,
-      "score_source": "Pitchfork Best New Music",
-      "score_url": "https://pitchfork.com/reviews/albums/marina-herlop-dja-dja/",
       "why": "No Portland date found yet"
     }
   ]

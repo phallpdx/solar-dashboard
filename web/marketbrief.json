@@ -1,56 +1,39 @@
 {
   "analysis": {
-    "headline": "Tech losses weigh on markets ahead of US midterm elections while oil prices rise.",
-    "summary": "Stocks drifted lower as tech shares slid following Apple earnings and midterm election caution. Bonds saw yields fall as the 10-year Treasury dropped. Oil rose amid refining margins and Aramco profit surges. Gold and Bitcoin showed mixed performance amidst market volatility.",
+    "headline": "Stocks slide as Democratic midterm wins jolt AI bets and Iran uncertainty drives oil up.",
+    "summary": "Nasdaq rose as chips led an AI revival. Oil climbed due to Iran war uncertainty. Stocks and the dollar slid on Democratic election victories. The trend shows volatility from election results and Middle East risks.",
     "sources": [
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE0tM0xLUm9BNk80ZHdXVFdMX2RJUmtQV3NpNTBoQ0FtRTBQSmhfb1Qxem4xUHJicVUtWlFrNjF5dlhkTXNJblhpbzNqVHl4V1BBN01ORWFSZVF2Qi1rNUV4NmRHUHZpbGVhZXZkMUI5aFMyN3lX0gF6QVVfeXFMUExvb1ZsZk9fQTZvMjltVTBwblFFclFHcHJPOTdlbURXZFQ1UUJpV2daYTVDSVk3dTVyVGtiSGoyMEtMSGVJN2dtVzFFbENwMG1ZNTM5M1ZhbWNIbE5qMkw4OEVONTZUNnpDbVJfUU54c1FIbDBxd29yOUE?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9nc2FkNktwbUVRcjhVVWhQaVRWeWpqX25tSHo3WWF1eW55OGZrb0ZpSHpNakQtaWRMZ0N1dXZRajEtby1lOHk2Vl9aZkdfZUc4Z1ZDYkNrZkpGSGZBT1hIdE5jZDhFNW1BU1hzdnBheTBPV0tmcjFB0gF8QVVfeXFMTW1hbnNIQUZVQlU0eEdtb2E2WTZ0OXprLWVqMFI0Nzk0U0IycTFiRjNScTBzak5Ia21WWXhKOHNxTENWRkRzaUpWYnFLM2phc29CT3BaSXpSUGE1N21vYmFsWWhWczNSdlBLTElYcm1UbjJTWktwNTJsellmMA?oc=5"
       },
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOekRxNGUzaWpTRy1SLXpVUmlsbkNPVWMyQ3Q4WWx2eHFvRjhvUzViNUtXcGlxLVlmdlphQUc2bk5CX2ZwVmp5RnJQNTJxaVdjd0dra051ZUJNaVpQcVFVQjBPa1MtY0tEZ0N3MG9VMGJWWXZ4cXoyRzhKSm02NHJLbDdlYUpVbE4tbnhuOEZodFlmX0k?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE8yNWtyRjVSdzJFSk4xeXctTEFXSloyU0VMWk11R0libnQ2ZnRkRVZfNkJTaGtYSng0akhzT21GSFRfTkRQNG80WDFubEpUWmVRbDJUa0RhcU0zMXFOdWFrc2dGS2dlOHMxQ2NoVGU4M3JUSTNtbzFCbGJvWVBqdw?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPQUEyU0pEVG8xTHJtT2xCU0ltcXVTalphM0RNTEZ0UVlCTW5Qbjg4cS1RQnh5QXZnVEZvdnBacmZRM2FhMWJLWXVjU08yNkpvOHZiLTUtSGN0Mk55NGFBNWdxTmR4b3ZBeGNlX3ptUGNaRVFzRzhyNDZodklncGFZaV96cUxHY1Q1ODZWdmpTVWlWRVp4bVdJb0Zrb1pLaXVsUFFySUd4cm40cFphNGZB?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOTGEyREpLdzRYM3VsY3NTclQ1Y2xud2pYNVl6Y0JhZ3RNczRVVjJ0aG43NmgyWkQ5SU85SmtVWGVCU0wySnBTdkhzZXR3R3RpMWloMWdlckxKM3BBUFB4VU9FbzhDQ2l2dm5xZlIwbFZJTHdJQVVyaU1Qc3djSmowcHdGMDNOVUIyMDdURnFwWWpUbmZN?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBWZWFDY2tZeDZfbXdVWnE2QWZwVlNpX3NqVm1OdmR0bDBGTlJjU3dJWG5yWEFpSG4tSHVhY2NEeVBsNnllVFQyb0tWRU1naXZQLWN3Tlk4VE1PV3o2cU1tVHFYX1hDT1ZtRkVWUWtYR3JwWFRyTXZIRldDWQ?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNUFhSS0pDcDhxY3pENzBPOFQxQ3p4VkctbjFUT1Jfb1o0OUVoRVpLYUtFS0VqcnVkZGJGbnZwN1pSUGhaZ010dU9sSGw3SUJ0TUl4czk4a3VRc2pMbk10UGozZ1FWZ19pX3VScTZfVlBocmQ1ZDMwVWZHTjkxSHNBbHJiWHRwcHVXTTRqTHJwNjZpVWM2c1ZCNnNlVnFMUjdPa0dBSFFlM2xpS0w2bGE5OFQ1NWNudkw3ZWI2b1YwQ2l5SmJSS0J2Skl0VGJoaEUycFRIanYybTZ6MkFzU0pvSA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxObWh3bllKRDFaQU4tbnRhVFpNUGVKUjB0WjEwTTh0cnNfbnFYdjZYWDFKRXI3dHhIWGVDQVNxSkoxemg4NGxYM0hvbl9DZVpialRXLXcwRXd4NmVnOXlIQk51Z1lNRjJ5dTh1OTd4WVZpZ21neXdXNmlIYTBKNFZmS1VlUGhZU05RbGJxNlpIMkZ4dEQ5cmNNR3YzTjRVbTdRNXNMV1ROdjlycTI2cl9VRXp4bkp4b0Q0ZTVTdkhyZlpaOHU1LTFFMVJuVWdyYnVheVA5UQ?oc=5"
       },
       {
-        "name": "SimianX: November 2026 US market calendar",
-        "url": "https://www.simianx.ai/stories/us-economic-calendar-this-month-in-your-time-zone"
-      },
-      {
-        "name": "FedRateCalc: US economic calendar, November 2026",
-        "url": "https://fedratecalc.com/us-economic-calendar/november-2026/"
-      },
-      {
-        "name": "Guggenheim: 2026 U.S. economic calendar",
-        "url": "https://www.guggenheiminvestments.com/services/advisor-resources/us-economic-calendar"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNYnRDUzc3MFhXWEZOZlNxZFIxLXJrVk9aMHhzM2dHY1d6blZ0OE4zajJqZEcxamYzeUl1OG5MSUJZUVBJY1hEWGU0SVFpVjZ2WDBqd0hzRlZBcHQtdVg0R21OTVh0dUMwTGNIakNnVXprM1diZnQwLVJaOWZRU2xiekZpNzR1UG5laWNlREdMWm92WW1JcDh6dWM3eE1sT1lweHA0?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Apple and Palantir earnings slides",
-      "#3 US midterm elections",
-      "Saudi Aramco profit surge"
+      "Democratic midterm wins stoking fears for AI boom",
+      "Iran war uncertainty driving oil prices"
     ],
-    "watch": [
-      "Tuesday, Nov. 3: U.S. midterm election day; results will come in overnight",
-      "Wednesday, Nov. 4, 10:00 a.m. ET: ISM services PMI for October",
-      "Friday, Nov. 6, 8:30 a.m. ET: October jobs report (nonfarm payrolls and unemployment rate)"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. This development may pave the way for a liquefaction facility.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A large helium purification facility is operational in southwest Saskatchewan. This new plant paves the way for a future liquefaction facility.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -71,6 +54,10 @@
       {
         "name": "Google News: helium market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVG13OGVTVmJvT1JtY1NTSGtLeFJpTF83SUpuRkhyOU5oeXN6dXozbVctYi1WcWRaZndfSE8zd2tDN2VIR09oai1ic0NabVJtNDlTeWVrYUF5NTFNUmVoeXppRnZqVm9BRnJHQkk3T2tWRTRnZDVvX1FGTGFWeTROSzZKbTdWejBnTThwckZNRzZ4Rmh3?oc=5"
+      },
+      {
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
       }
     ],
     "by": "local model",
@@ -88,12 +75,6 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Helium and Geologic Hydrogen: From Resource Potential to Commercial Production",
-        "date": "2026-11-02",
-        "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPb0Y4Rkg4NWhnbFU3LXhua1VIYVcya0JhZTFXNmw5Mk9VWjNJX1pTZmRUZ051NjdNQXlZaEM0QXlLVFlxRHVpakZDOWhXN1ZRV0JPX0Fwd05oSVVXZFYxRFBlTmlSVGRCUXc2cWJXLWV5cExRamxlTnhmR3ZubzRrQ3l5NHdDWjZFMDFPTkxoSG1Hbi1TLThmdEdOamVCbjNmQ3dKWFd1VXNnRW1wVEUxUU1KemMzSlEtVHh5eWstNnI2Zw?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
         "title": "Helium producer gives Swift Current recreation plans a $100K lift",
         "date": "2026-11-01",
         "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
@@ -104,12 +85,18 @@
         "date": "2026-11-01",
         "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
         "source": "Google News: helium market"
+      },
+      {
+        "title": "North American Helium’s new Stewart Valley plant paving the way for liquefaction facility",
+        "date": "2026-10-28",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5",
+        "source": "Google News: North American Helium"
       }
     ]
   },
   "realestate": {
     "headline": "The Portland housing market is stagnant with buyers backing out of deals.",
-    "summary": "Home sellers are lowering prices to help buyers in a stagnant market. Renters are being squeezed by the punishing market. Mortgage rates fell for two straight weeks but remain elevated.",
+    "summary": "Sellers are lowering prices to help buyers in a stagnant market. Renters are being squeezed by the punishing market. Homebuyers are increasingly backing out of deals.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -122,42 +109,26 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      },
-      {
-        "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNY25jeU5DZ0pBeUdkaHpoZFBLejRwanFmSW1HbWRmUkQxdXMzMURVREM4X25xUkVNZGdiT2xEd1hNQzRraVJvV1liMkhSSjNqS2d0QmMtNENWMzFsWnM2ck0tN2VxSFFiVklnSHdBUkhLNWZDU2VhLW9BYTFuODFuNGFBTmk0bGxwaklkOHlB0gGTAUFVX3lxTE9iUzR0Q3d5RkxzLThMUGFtNEhpWWtOcXBqdTNJU0hVMlRCUFdUNGRzMGllZU5tSDZMTThMc3lJdng3OUFuZGR0M2diVmIyNzhqN0MzUHZyZ3JILU9MUGdGVkIzbk80TWU3V0JNMFZ1M3ROZ0k1VDNZdnhHSXU0M2toaXlCeWtDTnlySkFpdGtEWTlKdw?oc=5"
-      },
-      {
-        "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
-      },
-      {
-        "name": "PropertyBlotter: Portland area September 2026 market stats",
-        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
-      },
-      {
-        "name": "Haven Lifestyles: 5 things to know about Portland's housing market this fall",
-        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
       }
     ],
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage rates hit highest level in 20 months - ABC News",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNaGlaUEo5dHhaTmdhc3NhS1Z3UHo2SjRsTWhIQmFlRGdxaG5NRWhWRkxOcG1xWDdXUHRRNlNpS21NN25nbm9RX1FWRjJCeThQRVVSVmpodERyVElldXhpQ1p1SGVIa0xiZnF0WmFLY3paUWZYU2hWZmJ6TUtpVk5ZQXBDUW9EdndiSHdkWXJvUzFWYkZl0gGaAUFVX3lxTE9sbVpPaFF1UkhDRGljeTQzbTRrSHdwMWNUZlo1aDZ1dDV6c0lNVkVVTV9FOGFPbUlreFZXTjVqSHE1V1RGUFFqcTEzUmhXUzQ2UzhLQ29sUERyQTJPa1d1VDM3Z0VwbW9VSjBBbEhUTTF1dlUzN3J1U2ZwTmlYOEFMNWt4SW5vYk5mcV9JdDRYWHl0Y0w3T3NiTVE?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Today, November 3, 2026: 30-Year Rates Drop to 7.26%",
+        "date": "2026-11-03",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQZGxKUl9EdldDN1FGQ3FmRzltYWFRMGZqOWhWbkpUNFE3cWk5WXlUcVVybTJyXzV2U2REZWZMRzVKOE96Yl9jZmNoNXJRZHFUc19YNXIybkdrb1otNUtJRVJyMm9kWDltcVVnRGhEd2hIazF2bF9LSDJLYWxvNTdtN28yOXNoUVBEOGxrVw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "Mortgage rates Tuesday, Nov. 3, 2026",
         "date": "2026-11-03",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9hMDk4bEpIUnNvMmtOeHFsLW9pT3lYTThycklLUWg0RkNXZ0RrZWlxV2dJZHJDbk1oSDh6QzlfZkh5bWVMVEVocHJXV0JwUDByQjAxZHhyaVlSQVlVcGFVdFV1WnFVdmR4TzI5cktvYw?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current refi mortgage rates report for Nov. 3, 2026",
-        "date": "2026-11-03",
-        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE13UHEzcFJ5QWtsMFdwdXp6eDFFNk96RXRmMG12UWZIVi10SVJBTnZmYjF6R29uOS0tRGNqTzd1a3F3R0JGLWxVQzFiS3dVa2ZzSHhENjZ5VXMtMTRWUnJCM2JER08teWZhT0tNbjdXWU1JLVBHU3c?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current ARM mortgage rates report for Nov. 3, 2026",
-        "date": "2026-11-03",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBrRnlVblV0RFRGTGJBN20ybEdlZzBlZ21lVVRxUEZHN1ZtUlUzU3ZKMkROWWFESHFlWmdQUko0amRWdER5eUdtamlnLS1adkZyLThnUmtSLXh6OC1jV0NTRnRSaUpka0FSYXJNME01bHo1bWVM?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -167,50 +138,22 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage Rates Today: November 3, 2026 – Rates Decrease",
+        "title": "Mortgage rates hold steady as traders point to December Fed hike",
         "date": "2026-11-03",
-        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE5HWDRfX0c1alVKWHhQTE9FWXZiN3NvQ0VOcEdVRmlTaE44OWlEZG1YNE02eXBDSnlzSENKMldQOUxwM2lLVGtxVkViUVJ2Y0dIbUsyM2JIVEpLcHRuQnB4UEFHeklway1NRk5rOXFUTlc5Wk0?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPWnZWQWI5QXNUQV9MX0JBSjZzY2Z1RzFzdUhyRW9RMkJjU1ZHZ3RseFUxVjNKb2pIdGtjNDZ4bkRsY1JqXzBRUUR2N21acVdjTDEzWnhJbDQ5d2JXVURZRk8zNkhKc1pnOWY0YlBkdnN2OUFCUXdpZ3FfNUVwLUtDRQ?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
     "stats": [
       {
-        "label": "Median sale price (Portland metro, September 2026)",
-        "value": "$545,000",
-        "change": "Flat vs a year ago",
-        "source": "PropertyBlotter (RMLS data)",
-        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
-      },
-      {
-        "label": "Closed sales (Portland metro, September 2026)",
-        "value": "1,752",
-        "change": "-4.0% vs a year ago",
-        "source": "PropertyBlotter (RMLS data)",
-        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
-      },
-      {
-        "label": "Total market time (Portland metro, September 2026)",
-        "value": "68 days",
-        "change": "+11 days vs August",
-        "source": "PropertyBlotter (RMLS data)",
-        "url": "https://www.propertyblotter.com/2026/10/25/portland-area-lo-sept-2026-market-stats/"
-      },
-      {
-        "label": "Pending sales (Portland metro, September 2026)",
-        "value": "1,760",
-        "change": "About -18% vs a year ago (2,145)",
-        "source": "Haven Lifestyles (RMLS data)",
-        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
-      },
-      {
-        "label": "Inventory (Portland metro, September 2026)",
-        "value": "4.2 months",
-        "change": "Up from 3.8 months a year ago",
-        "source": "Haven Lifestyles (RMLS data)",
-        "url": "https://www.havenlifestyles.com/5-things-to-know-about-portlands-housing-market-this-fall"
+        "label": "Mortgage rate (National, 2026-11-03)",
+        "value": "7.26%",
+        "change": null,
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQZGxKUl9EdldDN1FGQ3FmRzltYWFRMGZqOWhWbkpUNFE3cWk5WXlUcVVybTJyXzV2U2REZWZMRzVKOE96Yl9jZmNoNXJRZHFUc19YNXIybkdrb1otNUtJRVJyMm9kWDltcVVnRGhEd2hIazF2bF9LSDJLYWxvNTdtN28yOXNoUVBEOGxrVw?oc=5"
       }
     ]
   },
-  "updated_at": "2026-11-03T13:16:49Z",
+  "updated_at": "2026-11-04T07:36:05Z",
   "updated": "2026-11-03"
 }

@@ -231,7 +231,7 @@ def want(title):
     brand_words = set(_words(brand.group(0)))
     tokens = []
     for w in words:
-        if w in brand_words or GENERIC.fullmatch(w) or FILLER.fullmatch(w) or w in tokens or len(w) < 2 and not w.isdigit():
+        if w in brand_words or GENERIC.fullmatch(w) and not (re.fullmatch(r"\d{4}", w) and not YEAR.fullmatch(w)) or FILLER.fullmatch(w) or w in tokens or len(w) < 2 and not w.isdigit():
             continue
         if YEAR.fullmatch(w) or re.fullmatch(r"'?(19)?\d0s", w) or w in OPTIONAL:
             continue
@@ -388,17 +388,22 @@ def comps(title, today=None, log=None):
             if len(got) < 50:
                 break
     seen, sales = set(), []
+    stale = (today - datetime.timedelta(days=3 * 365)).isoformat()
     for x in sold:
-        if x.get("id") in seen or _matches(x, w, optional):
+        if x.get("id") in seen or (x.get("published_at") or "")[:10] < stale or _matches(x, w, optional):
             continue
         seen.add(x.get("id"))
         sales.append(_sale(x))
+    if not sales:
+        return {"unsure": "no matching Reverb sales in the last 3 years"}
+    sales.sort(key=lambda s: s["date"] or "", reverse=True)  # newest first, across the pages read
     # Same kind of thing: when the sales split between categories (combo vs. cabinet), the title has to say which.
     cats = {}
     for s in sales:
         cats[s["category"]] = cats.get(s["category"], 0) + 1
-    top = max(cats, key=cats.get)
-    if cats[top] < 0.75 * len(sales):
+    top = max(cats, key=lambda c: sum(n for k, n in cats.items() if k == c or c.startswith(k + " /") or k.startswith(c + " /")) * 1000 + cats[c])
+    share = sum(n for k, n in cats.items() if k == top or top.startswith(k + " /") or k.startswith(top + " /"))
+    if share < 0.75 * len(sales):
         hinted = [c for c in cats if w["kind"] and w["kind"] in c.lower()]
         if hinted:
             top = hinted[0]
@@ -406,11 +411,12 @@ def comps(title, today=None, log=None):
             two = sorted(cats, key=cats.get, reverse=True)[:2]
             return {"unsure": "Reverb sales under this name mix " + " and ".join(c.split("/")[-1].strip() for c in two)
                     + " and the title doesn't say which"}
-    sales = [s for s in sales if s["category"] == top]
+    same = lambda c: c == top or top.startswith(c + " /") or c.startswith(top + " /")  # noqa: E731
+    sales = [s for s in sales if same(s["category"])]
     kept = set(_trim([s["price"] for s in sales]))
     sales = [s for s in sales if s["price"] in kept]
     if len(sales) < MIN_SALES:
-        return {"unsure": f"only {len(sales)} matching Reverb sale{'s' if len(sales) != 1 else ''}, too few to price it"}
+        return {"unsure": f"only {len(sales)} matching Reverb sale{'s' if len(sales) != 1 else ''} in 3 years, too few to price it"}
     prices = sorted(s["price"] for s in sales[:30])
     q1, q3 = prices[len(prices) // 4], prices[(3 * len(prices)) // 4]
     if q3 > 2.2 * q1:

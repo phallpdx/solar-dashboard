@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "restaurants": [
+    {
+      "name": "Cafe Rowan",
+      "neighborhood": "",
+      "cuisine": "Dinner",
+      "price": "",
+      "opened": "2026-10-29",
+      "summary": "Introducing dinner service at the cafe.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-29",
+          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "Unnamed Thai restaurant",
       "neighborhood": "North Portland",
@@ -417,30 +434,6 @@
           "verdict": "Reopening of the year",
           "date": "",
           "url": "https://www.pdxmonthly.com/eat-and-drink/2026/10/jinju-patisserie-bakery-reopening"
-        }
-      ]
-    },
-    {
-      "name": "The Malarkey",
-      "neighborhood": "Pearl District",
-      "cuisine": "Steakhouse and seafood grill",
-      "price": "",
-      "opened": "Jul 2026",
-      "summary": "Top Chef alum Brian Malarkey's big Pearl District steakhouse and seafood grill, which Axios called part maximalist fever dream, part Portland love letter; The Infatuation added it to its Portland Hit List on Oct. 19.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Added to the Portland Hit List (Oct. 19)",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/guides/best-new-portland-oregon-restaurants-hit-list"
-        },
-        {
-          "outlet": "Axios Portland",
-          "critic": "",
-          "verdict": "New restaurant roundup",
-          "date": "2026-08-05",
-          "url": "https://www.axios.com/local/portland/2026/08/05/new-restaurant-roundup"
         }
       ]
     }

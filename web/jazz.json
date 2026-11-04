@@ -1,30 +1,6 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-04",
   "shows": [
-    {
-      "artist": "John Scofield's Electrospective with Oteil Burbridge",
-      "kind": "Touring",
-      "date": "2026-11-03",
-      "time": "8:00 pm",
-      "venue": "Revolution Hall",
-      "price": null,
-      "what": "Guitarist John Scofield's Electrospective band with bassist Oteil Burbridge, Larry Goldings and Adam Deitch; doors 7 pm, 21+ (resale listings show tickets from about $64).",
-      "tickets": "https://www.ticketmaster.com/john-scofield-tickets/artist/737786",
-      "sources": [
-        {
-          "name": "Ticketmaster: John Scofield",
-          "url": "https://www.ticketmaster.com/john-scofield-tickets/artist/737786"
-        },
-        {
-          "name": "TickPick event listing",
-          "url": "https://www.tickpick.com/buy-john-scofield-oteil-burbridge-tickets-revolution-hall-portland-11-3-26-8pm/7830653/"
-        },
-        {
-          "name": "Eventworld ticket listing",
-          "url": "https://www.eventworld.com/john-scofield-and-oteil-burbridge-portland-tickets-11-03-2026/event/473397"
-        }
-      ]
-    },
     {
       "artist": "The Christopher Brown Quartet",
       "kind": "Local",

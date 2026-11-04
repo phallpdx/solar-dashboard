@@ -1,14 +1,14 @@
 {
-  "updated": "2026-11-03",
-  "updated_at": "2026-11-04T07:33:23Z",
+  "updated": "2026-11-04",
+  "updated_at": "2026-11-04T09:21:18Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and energized",
-      "pulse": "Fans are celebrating a strong 5-1 start and an inspiring road win against Denver. There is excitement for coach Micah Nori's new style of play.",
+      "pulse": "Fans are celebrating an impressive 5-1 start and a significant road win in Denver. There is growing excitement around coach Micah Nori's impact and the team's rising power rankings.",
       "storylines": [
         "Blazers are 5-1 after defeating the Nuggets 118-110.",
-        "Deni Avdija led with 28 points in the recent victory.",
-        "The team faces the Phoenix Suns on Wednesday night.",
+        "Deni Avdija led Portland with 28 points against Denver.",
+        "Next game is against the Phoenix Suns on 2026-11-04.",
         "Robert Williams III and Scoot Henderson are available for play."
       ],
       "sources": [
@@ -35,12 +35,12 @@
       ]
     },
     "timbers": {
-      "mood": "tense and hopeful",
-      "pulse": "Fans are focused on playoff clinching scenarios. There is excitement regarding international call-ups and individual performances.",
+      "mood": "tense but hopeful",
+      "pulse": "Fans are focused on playoff clinching scenarios at Austin. There is excitement regarding international call-ups and player performances.",
       "storylines": [
-        "Playoff berth clinch scenarios pending",
-        "Joel Waterman selected for Canada",
-        "Timbers2 lost 1-0 to Ventura County"
+        "Playoff berth clinch scenarios pending results at Austin",
+        "Joel Waterman selected for Canada National Team",
+        "Vincent Janssen named to MLS Team of the Matchday 34"
       ],
       "sources": [
         {
@@ -66,13 +66,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory and transitional",
-      "pulse": "Fans are celebrating Kimi Antonelli's 2026 title win. There is buzz regarding driver changes for 2026.",
+      "mood": "celebratory and anticipatory",
+      "pulse": "Fans are celebrating Kimi Antonelli's record-breaking 2026 title win. Anticipation is building for Hamilton's 400th Grand Prix start in Sao Paulo.",
       "storylines": [
-        "Kimi Antonelli clinches the 2026 World Championship",
-        "Esteban Ocon leaving Haas for 2026",
-        "Rafael Camara to debut with Haas in Sao Paulo",
-        "Lewis Hamilton reaches 400 Grand Prix starts"
+        "Kimi Antonelli clinches 2026 World Championship",
+        "Hamilton to make 400th Grand Prix start",
+        "Rafael Camara to debut for Haas in Sao Paulo",
+        "Esteban Ocon leaving Haas after 2026 season"
       ],
       "sources": [
         {

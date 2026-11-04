@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,22 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Singing in the Rain",
-      "date": "2026-11-03",
-      "end": null,
-      "town": "Astoria",
-      "summary": "Singing in the Rain on the Liberty Theatre's November calendar (Tuesday, Nov. 3); see the listing for showtime.",
-      "url": "https://libertyastoria.org/event/"
-    },
-    {
-      "name": "Beach Towel Tuesdays",
-      "date": "2026-11-03",
-      "end": "2026-11-03",
-      "town": "Seaside",
-      "summary": "First five groups to post social media photos receive a free towel. Free.",
-      "url": "https://www.seasideor.com/event/beach-towel-tuesdays-2/2026-11-03/"
     },
     {
       "name": "Rosa Water: Journey Through the Heart",

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "events": [
     {
       "title": "CANVAS 2026",
@@ -358,6 +358,20 @@
       ]
     },
     {
+      "title": "Portland Holiday Brew Fest",
+      "date": "2026-12-11",
+      "ends": "2026-12-12",
+      "venue": "Pioneer Courthouse Square",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
+        }
+      ]
+    },
+    {
       "title": "Ram PBR Portland",
       "date": "2027-01-22",
       "ends": "2027-01-23",
@@ -382,20 +396,6 @@
         {
           "name": "Rose Quarter",
           "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
-        }
-      ]
-    },
-    {
-      "title": "Gracie Abrams The Look At My Life Tour",
-      "date": "2027-01-31",
-      "ends": "2027-02-01",
-      "venue": "Moda Center",
-      "kind": "Concert",
-      "why": "No crowd info provided.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
         }
       ]
     }

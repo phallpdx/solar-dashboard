@@ -51,4 +51,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add web/*.json
           git commit -m "Update lists:$changed (from $BRANCH)"
-          git push origin main
+          # Retry on a GitHub 500 or when main moved while this ran.
+          for wait in 5 15 30 0; do
+            git push origin main && exit 0
+            [ "$wait" = 0 ] && exit 1
+            echo "Push failed, trying again in ${wait}s"; sleep "$wait"
+            git pull --rebase --quiet origin main
+          done

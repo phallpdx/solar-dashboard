@@ -14,13 +14,34 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNQ0ktb3JQam9saVhrUDhjbXZWTDVQaV9tVGFyX0VWdnh1Y3lTd3BDYlBlTFN3WS1tN0szdm4zb184WkZEcnhDZWVaS3h1RHp3azFaUEFfTWNtSjY4UXhXTG5ESjBvRmRHTzluZks0VlBrS1RzR1ZuNVJSa0s3eFNVU3J2WmZpQQ?oc=5"
+      },
+      {
+        "name": "CMC Markets: The Week Ahead (ISM PMI reports, US jobs report, Apple earnings)",
+        "url": "https://www.cmcmarkets.com/en-ie/news-and-analysis/the-week-ahead-ism-pmi-reports-us-jobs-report-apple-earnings"
+      },
+      {
+        "name": "CNBC: Midterms, Apple earnings, jobs report. Wall Street faces a big week ahead",
+        "url": "https://www.cnbc.com/2026/10/30/stock-market-next-week-outlook-for-nov-2-6-2026.html"
+      },
+      {
+        "name": "Earnings Whispers: earnings calendar for Nov 4, 2026",
+        "url": "https://www.earningswhispers.com/calendar/20261104"
+      },
+      {
+        "name": "Market Chameleon: earnings calendar",
+        "url": "https://marketchameleon.com/Calendar/Earnings"
       }
     ],
     "by": "local model",
     "drivers": [
       "Democrats' midterm election wins"
     ],
-    "watch": []
+    "watch": [
+      "Today (Wed, Nov 4): ISM services PMI; CMC Markets lists the forecast at 54.9, unchanged from the prior reading.",
+      "Earnings today: Uber, McDonald's, CVS and Novo Nordisk before the open; Qualcomm, Arm, AppLovin and MercadoLibre after the close (Earnings Whispers, Market Chameleon).",
+      "This week: Bank of England and Reserve Bank of Australia rate decisions (CMC Markets).",
+      "Friday, Nov 6, 8:30 a.m. ET: the October U.S. jobs report."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -108,6 +129,14 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
+      },
+      {
+        "name": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "name": "Redfin: Portland housing market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       }
     ],
     "by": "local model",
@@ -150,9 +179,51 @@
         "change": null,
         "source": "news.google.com",
         "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQZGxKUl9EdldDN1FGQ3FmRzltYWFRMGZqOWhWbkpUNFE3cWk5WXlUcVVybTJyXzV2U2REZWZMRzVKOE96Yl9jZmNoNXJRZHFUc19YNXIybkdrb1otNUtJRVJyMm9kWDltcVVnRGhEd2hIazF2bF9LSDJLYWxvNTdtN28yOXNoUVBEOGxrVw?oc=5"
+      },
+      {
+        "label": "Median sale price (Portland metro, September)",
+        "value": "$545,000",
+        "change": "roughly flat vs a year ago",
+        "source": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "label": "Inventory (Portland metro, September)",
+        "value": "4.2 months",
+        "change": "+0.4 months vs September 2025; highest of 2026",
+        "source": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "label": "Average total market time (Portland metro, September)",
+        "value": "68 days",
+        "change": "+6 days vs September 2025",
+        "source": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "label": "Pending sales (Portland metro, September)",
+        "value": "down 17.9%",
+        "change": "",
+        "source": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "label": "Median sale price (city of Portland, 3 months ending September)",
+        "value": "$518,000",
+        "change": "-2.2% vs a year ago",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "Median days on market (city of Portland)",
+        "value": "25 days",
+        "change": "",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       }
     ]
   },
-  "updated_at": "2026-11-04T09:23:37Z",
+  "updated_at": "2026-11-04T13:21:05Z",
   "updated": "2026-11-04"
 }

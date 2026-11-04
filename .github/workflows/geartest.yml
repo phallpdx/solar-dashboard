@@ -1,0 +1,22 @@
+name: Gear test (temporary)
+on:
+  push:
+    branches: [claude/project-thread-t6a56h]
+permissions:
+  contents: write
+jobs:
+  t:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: |
+          pip install --quiet tzdata
+          git clone --quiet --depth 1 --branch data "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data
+          mkdir out
+          python .github/geartest/run.py > out/log.txt 2>&1 || true
+          cd out && git init -q && git checkout -q -b geartest
+          git config user.name t && git config user.email "actions@users.noreply.github.com"
+          git add -A && git commit -qm t
+          git push -q --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" geartest

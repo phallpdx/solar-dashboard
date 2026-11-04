@@ -398,12 +398,16 @@ def comps(title, today=None, log=None):
         return {"unsure": "no matching Reverb sales in the last 3 years"}
     sales.sort(key=lambda s: s["date"] or "", reverse=True)  # newest first, across the pages read
     # Same kind of thing: when the sales split between categories (combo vs. cabinet), the title has to say which.
+    # A sale filed only under a parent ("Amps", "Effects and Pedals") could be either, so it's left out when
+    # others name the exact kind.
+    found = {s["category"] for s in sales}
+    parent = lambda c: any(o.startswith(c + " /") for o in found)  # noqa: E731
+    sales = [s for s in sales if not parent(s["category"])]
     cats = {}
     for s in sales:
         cats[s["category"]] = cats.get(s["category"], 0) + 1
-    top = max(cats, key=lambda c: sum(n for k, n in cats.items() if k == c or c.startswith(k + " /") or k.startswith(c + " /")) * 1000 + cats[c])
-    share = sum(n for k, n in cats.items() if k == top or top.startswith(k + " /") or k.startswith(top + " /"))
-    if share < 0.75 * len(sales):
+    top = max(cats, key=cats.get)
+    if cats[top] < 0.75 * len(sales):
         hinted = [c for c in cats if w["kind"] and w["kind"] in c.lower()]
         if hinted:
             top = hinted[0]
@@ -411,8 +415,7 @@ def comps(title, today=None, log=None):
             two = sorted(cats, key=cats.get, reverse=True)[:2]
             return {"unsure": "Reverb sales under this name mix " + " and ".join(c.split("/")[-1].strip() for c in two)
                     + " and the title doesn't say which"}
-    same = lambda c: c == top or top.startswith(c + " /") or c.startswith(top + " /")  # noqa: E731
-    sales = [s for s in sales if same(s["category"])]
+    sales = [s for s in sales if s["category"] == top]
     kept = set(_trim([s["price"] for s in sales]))
     sales = [s for s in sales if s["price"] in kept]
     if len(sales) < MIN_SALES:

@@ -85,6 +85,14 @@
   ],
   "missing": [
     {
+      "artist": "Autosmile",
+      "album": "At",
+      "score": 83,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
+    {
       "artist": "Dummy",
       "album": "Do You Love The Color Of The Sky?",
       "score": 83,

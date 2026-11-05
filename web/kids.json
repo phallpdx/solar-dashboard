@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
   "events": [
     {
@@ -19,92 +19,12 @@
       "url": "https://www.oregonzoo.org/events/fall-discount-days"
     },
     {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-04",
+      "title": "STEM Family Sundays",
+      "date": "2026-11-05",
       "ends": null,
-      "where": "Washington County",
-      "detail": "Free storytimes including Toddler Times are available.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "Wildwood at OMSI’s Empirical Theater",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A handcrafted epic fantasy adventure for $7 to $9.",
-      "url": "https://pdxparent.com/series/wildwood-at-omsis-empirical-theater/"
-    },
-    {
-      "title": "PDX Mac & Cheese Week",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Restaurants offer special mac and cheese recipes for $10.",
-      "url": "https://pdxparent.com/series/pdx-mac-cheese-week/"
-    },
-    {
-      "title": "Blue Block Play @ SWPMA PLAY!",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Active indoor playtime with large blocks from 9:00 am to 10:30 am for $1-$10.",
-      "url": "https://pdxparent.com/series/blue-block-play-swpma-play-inside-the-multnomah-arts-ctr/"
-    },
-    {
-      "title": "Tummy Time Connection Circles",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Connection and skills for babies through 12 months from 9:30 am to 10:30 am.",
-      "url": "https://pdxparent.com/series/tummy-time-connection-circles-sellwood-community-house/"
-    },
-    {
-      "title": "Bonjour Bebes",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "French for children ages 0-36 months from 10:00 am to 10:30 am for $10-$20.",
-      "url": "https://pdxparent.com/series/bonjour-bebes/"
-    },
-    {
-      "title": "Morning Music with Mr. Ben at The Heist",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Interactive family singalong from 10:00 am to 10:45 am; free event.",
-      "url": "https://pdxparent.com/series/morning-music-with-mr-ben-at-the-heist/"
-    },
-    {
-      "title": "Creative Movement Dance Class for 2 Year Olds",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Beaverton",
-      "detail": "Playful movement, ballet, jazz, and tap foundations for two-year-olds. Free.",
-      "url": "https://pdxparent.com/series/creative-movement-dance-class-for-2-year-olds/"
-    },
-    {
-      "title": "Moomin Story Time for Kids",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Bilingual English and Finnish story time experience. Free.",
-      "url": "https://pdxparent.com/series/moomin-story-time-for-kids/"
-    },
-    {
-      "title": "Red Yarn’s Family Music & Puppet Show at Village Ballroom",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Weekly family music and puppet show for singing and dancing. $10 – $20.",
-      "url": "https://pdxparent.com/series/red-yarns-family-music-puppet-show-at-village-ballroom/"
-    },
-    {
-      "title": "Early Childhood Mandarin Music and Movement Class",
-      "date": "2026-11-04",
-      "ends": null,
-      "where": "Tigard",
-      "detail": "Mandarin songs, movement, and stories for children six and under. Free.",
-      "url": "https://pdxparent.com/series/early-childhood-mandarin-music-and-movement-class-13/"
+      "where": "iFLY Portland",
+      "detail": "Family STEM activities are available on Sundays.",
+      "url": "https://allevents.in/portland/kids"
     },
     {
       "title": "Veterans Day",

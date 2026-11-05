@@ -1,22 +1,6 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "shows": [
-    {
-      "artist": "The Christopher Brown Quartet",
-      "kind": "Local",
-      "date": "2026-11-04",
-      "time": "06:30 PM",
-      "venue": "The 1905's",
-      "price": "$30",
-      "what": "Christopher Brown is an acclaimed musician, composer, bandleader, and educator.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",

@@ -1,20 +1,6 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "items": [
-    {
-      "title": "Periphery tickets on sale",
-      "kind": "Tickets",
-      "action": "Buy Periphery tickets",
-      "starts": "2026-11-04",
-      "by": null,
-      "why": "Portland concert #3",
-      "sources": [
-        {
-          "name": "Portland on-sale news",
-          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNS1lZNm1zMk1hcE1hcWdtRHI3c1pOa3V3U3dUYWx0OHU4QjQ0b1phVWlJTjhsa3B2SDhNM0QwSG0xS0hWelRLaDNVZnJmejN1aHZQMnVYWmtTOUdLc1VLMUZ6THAwM2s0enpNYldkWVdoamtBSkx5NlpLT2lQb0lNUzRzczRWVjU2cFE?oc=5"
-        }
-      ]
-    },
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",

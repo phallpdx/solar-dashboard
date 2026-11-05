@@ -1,13 +1,6 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "deals": [
-    {
-      "title": "Star Trek 4K UHD Blu-rays",
-      "store": "Amazon",
-      "detail": "Into Darkness $10, First Contact $12.50 & More",
-      "ends": "2026-11-04",
-      "url": "https://slickdeals.net/f/20252106-star-trek-4k-blu-rays-first-contact-12-49-the-search-for-spock-12-49-into-darkness-9-99-more-free-shipping-w-prime-or-on-35"
-    },
     {
       "title": "Blade Runner: The Final Cut (1982)",
       "store": "Amazon",
@@ -16,25 +9,81 @@
       "url": "https://slickdeals.net/f/20256093-blade-runner-the-final-cut-bd-blu-ray-5-amazon-com"
     },
     {
-      "title": "Star Trek IX: Insurrection",
-      "store": "Amazon",
-      "detail": "4K UHD + Blu-ray + Digital for $12.49",
+      "title": "Puss in Boots (4K Ultra HD + Blu-ray) [UHD]",
+      "store": "Gruv",
+      "detail": "$14.99",
       "ends": null,
-      "url": "https://slickdeals.net/f/20238003-star-trek-ix-insurrection-uhd-4k-blu-ray-12-49-amazon-com"
+      "url": "https://gruv.com/collections/4k-uhd-special-offers"
     },
     {
-      "title": "In The Mouth Of Madness",
-      "store": "Amazon",
-      "detail": "4K Ultra HD Blu-ray for $25",
+      "title": "Minions: The Rise of Gru (4K Ultra HD + Blu-ray) [UHD]",
+      "store": "Gruv",
+      "detail": "$14.99",
       "ends": null,
-      "url": "https://slickdeals.net/f/20231970-in-the-mouth-of-madness-4k-ultra-hd-arrow-edition-25-amazon-com"
+      "url": "https://gruv.com/collections/4k-uhd-special-offers"
     },
     {
-      "title": "Clerks",
-      "store": "Amazon",
-      "detail": "Blu-ray + Digital for $8",
+      "title": "Despicable Me 1-3 (4K Ultra HD) [UHD]",
+      "store": "Gruv",
+      "detail": "$27.99",
       "ends": null,
-      "url": "https://slickdeals.net/f/20209209-clerks-blu-ray-digital-8"
+      "url": "https://gruv.com/collections/4k-uhd-special-offers"
+    },
+    {
+      "title": "Kung Fu Panda (4K Ultra HD) [UHD]",
+      "store": "Gruv",
+      "detail": "",
+      "ends": null,
+      "url": "https://gruv.com/collections/4k-uhd-special-offers"
+    },
+    {
+      "title": "4K Go Limited Edition 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "$35.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "4K Pedicab Driver Limited Edition 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "$35.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "4K Excalibur Limited Edition 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "$45.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "4K Futureworld Limited Edition 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "$35.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "RoboCop 4K UHD Blu-ray",
+      "store": "Arrow Films US",
+      "detail": "$35.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "Tremors 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
+    },
+    {
+      "title": "4K Logan's Run Limited Edition 4K UHD",
+      "store": "Arrow Films US",
+      "detail": "$45.00",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
     }
   ],
   "upcoming": [

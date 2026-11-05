@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-05",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {
@@ -84,6 +84,14 @@
     }
   ],
   "missing": [
+    {
+      "artist": "Dummy",
+      "album": "Do You Love The Color Of The Sky?",
+      "score": 83,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music",
+      "why": "No Portland date found yet"
+    },
     {
       "artist": "@ [At]",
       "album": "Autosmile",

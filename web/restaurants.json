@@ -2,6 +2,23 @@
   "updated": "2026-11-04",
   "restaurants": [
     {
+      "name": "The Balboa",
+      "neighborhood": "Pearl District",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-05",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNZ1VqREkyeWRUT1lwVVdXT0VaQTMyYjZFdU00VWUtU1Z1T3ZUUzlhcHlhNmRINkZiSnI4Q2p6M2RKcGExU0JScHNsVWVqdU0wTVRqVHR1UHlpY0xzNUpvc2diVVE5WkxSUVhkQkNLdGczbFBaXzdXR1g2eWQ3SDMzTWRZSWJxY2NPRVhIOXZkSjFxcXM?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Cafe Rowan",
       "neighborhood": "",
       "cuisine": "Dinner",
@@ -410,30 +427,6 @@
           "verdict": "Added to the Portland Hit List",
           "date": "",
           "url": "https://www.theinfatuation.com/portland/reviews/maddoggs"
-        }
-      ]
-    },
-    {
-      "name": "JinJu Patisserie",
-      "neighborhood": "N Williams",
-      "cuisine": "Bakery",
-      "price": "",
-      "opened": "Oct 2026",
-      "summary": "The acclaimed patisserie reopened in a new North Williams home (soft opening Oct. 21); Karen Brooks predicts its salt breads are destined for Portland cult status.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-19",
-          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOMzA3SzFzeUtxUlM3eURYcVF1QUdvamZQYnZWZFpZcnBuNVZ5OG1uOVRtTzdNYlBRaWlmTHN0NW4tM2xMbDFCaDctRGt0VXZUOG1LX2NpYWlYVFV3Y0U4MmwwZTh6WExtTFBNRXYxVXlXZ3djSWRuS29CME1lS2RBQ09NeVg1YW5JLVZmZThn?oc=5"
-        },
-        {
-          "outlet": "Portland Monthly",
-          "critic": "Karen Brooks",
-          "verdict": "Reopening of the year",
-          "date": "",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/2026/10/jinju-patisserie-bakery-reopening"
         }
       ]
     }

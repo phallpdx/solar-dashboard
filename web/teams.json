@@ -1,15 +1,15 @@
 {
   "updated": "2026-11-04",
-  "updated_at": "2026-11-04T09:21:18Z",
+  "updated_at": "2026-11-05T07:29:47Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and energized",
-      "pulse": "Fans are celebrating an impressive 5-1 start and a significant road win in Denver. There is growing excitement around coach Micah Nori's impact and the team's rising power rankings.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are celebrating a 6-1 start and first place in the West. However, Vit Krejci suffered an ankle injury.",
       "storylines": [
-        "Blazers are 5-1 after defeating the Nuggets 118-110.",
-        "Deni Avdija led Portland with 28 points against Denver.",
-        "Next game is against the Phoenix Suns on 2026-11-04.",
-        "Robert Williams III and Scoot Henderson are available for play."
+        "Blazers hold perfect road record at 5-0.",
+        "Vit Krejci fractured his lower left ankle.",
+        "Team holds sole possession of first place in West.",
+        "Deni Avdija leads NBA in foul frequency on drives."
       ],
       "sources": [
         {
@@ -35,12 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "tense but hopeful",
-      "pulse": "Fans are focused on playoff clinching scenarios at Austin. There is excitement regarding international call-ups and player performances.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are excited after three straight wins and packed home games. Playoff scenarios remain complex heading into Decision Day.",
       "storylines": [
-        "Playoff berth clinch scenarios pending results at Austin",
-        "Joel Waterman selected for Canada National Team",
-        "Vincent Janssen named to MLS Team of the Matchday 34"
+        "Timbers have won three consecutive matches.",
+        "Playoff positioning depends on various Decision Day permutations.",
+        "Timbers2 lost 1-0 to Ventura County in playoffs.",
+        "Academy player Eric Izoita signed a first-team contract."
       ],
       "sources": [
         {
@@ -66,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory and anticipatory",
-      "pulse": "Fans are celebrating Kimi Antonelli's record-breaking 2026 title win. Anticipation is building for Hamilton's 400th Grand Prix start in Sao Paulo.",
+      "mood": "tense and uncertain",
+      "pulse": "Fans are reacting to Kimi Antonelli's championship win. Verstappen has raised concerns regarding racing in the Middle East due to regional instability.",
       "storylines": [
-        "Kimi Antonelli clinches 2026 World Championship",
-        "Hamilton to make 400th Grand Prix start",
-        "Rafael Camara to debut for Haas in Sao Paulo",
-        "Esteban Ocon leaving Haas after 2026 season"
+        "Kimi Antonelli wins WDC for Mercedes",
+        "Verstappen questions racing in Qatar/Abu Dhabi",
+        "Rafael Camara to debut with Haas",
+        "Alan Jones passes away aged 80"
       ],
       "sources": [
         {

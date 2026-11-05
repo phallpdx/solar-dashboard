@@ -16,6 +16,20 @@
       ]
     },
     {
+      "title": "Medicine Hat Tigers at Portland Winterhawks",
+      "date": "2026-11-04",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Sports",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://seatgeek.com/cities/portland"
+        }
+      ]
+    },
+    {
       "title": "Portland Book Festival",
       "date": "2026-11-07",
       "ends": null,
@@ -302,6 +316,90 @@
         {
           "name": "Discotech",
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
+        }
+      ]
+    },
+    {
+      "title": "Max McNown Christmas Show",
+      "date": "2026-12-06",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Concert",
+      "why": "Seasonal event may increase crowds.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/max-mcnown-dec-6-2026"
+        }
+      ]
+    },
+    {
+      "title": "Portland Holiday Brew Fest",
+      "date": "2026-12-11",
+      "ends": "2026-12-12",
+      "venue": "Pioneer Courthouse Square",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
+        }
+      ]
+    },
+    {
+      "title": "Ram PBR Portland",
+      "date": "2027-01-22",
+      "ends": "2027-01-23",
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "Family event brings many visitors.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
+        }
+      ]
+    },
+    {
+      "title": "Harlem Globetrotters Rivalry Tour",
+      "date": "2027-01-31",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Sports",
+      "why": "Popular family show attracts crowds.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Gracie Abrams The Look At My Life Tour",
+      "date": "2027-01-31",
+      "ends": "2027-02-01",
+      "venue": "Moda Center",
+      "kind": "Concert",
+      "why": "Music tour likely to draw crowds.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Portland Winter Light Festival",
+      "date": "2027-02-01",
+      "ends": null,
+      "venue": "",
+      "kind": "Holiday lights",
+      "why": "Glowing sculptures and twinkling lights.",
+      "sources": [
+        {
+          "name": "Travel Portland",
+          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
         }
       ]
     }

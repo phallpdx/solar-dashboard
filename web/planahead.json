@@ -2,6 +2,20 @@
   "updated": "2026-11-04",
   "items": [
     {
+      "title": "Periphery tickets on sale",
+      "kind": "Tickets",
+      "action": "Buy Periphery tickets",
+      "starts": "2026-11-04",
+      "by": null,
+      "why": "Portland concert #3",
+      "sources": [
+        {
+          "name": "Portland on-sale news",
+          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNS1lZNm1zMk1hcE1hcWdtRHI3c1pOa3V3U3dUYWx0OHU4QjQ0b1phVWlJTjhsa3B2SDhNM0QwSG0xS0hWelRLaDNVZnJmejN1aHZQMnVYWmtTOUdLc1VLMUZ6THAwM2s0enpNYldkWVdoamtBSkx5NlpLT2lQb0lNUzRzczRWVjU2cFE?oc=5"
+        }
+      ]
+    },
+    {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",
       "action": "Buy face value from the Oregon Symphony for either night at the Arlene Schnitzer Concert Hall, not resale.",
@@ -108,6 +122,28 @@
       ]
     },
     {
+      "title": "Christmas Ships viewing dinner",
+      "kind": "Book",
+      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
+      "starts": "2026-12-03",
+      "by": null,
+      "why": "The official site says the 2026 schedule is posted, and a festival listing puts the parades Dec 3 to 20; Vancouver's tourism office advises reserving waterfront seats well in advance (Vancouver nights listed Dec 16 to 18).",
+      "sources": [
+        {
+          "name": "Christmas Ships parade schedule",
+          "url": "https://www.christmasships.org/parade-schedule"
+        },
+        {
+          "name": "Visit Vancouver WA",
+          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+        },
+        {
+          "name": "Carnifest 2026 listing",
+          "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
+        }
+      ]
+    },
+    {
       "title": "Oregon Ballet Theatre: Balanchine's The Nutcracker (Dec 5 to 24)",
       "kind": "Tickets",
       "action": "Single tickets are on sale from OBT; buy direct for face value rather than resale.",
@@ -158,28 +194,6 @@
         {
           "name": "Iron Maiden",
           "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
-        }
-      ]
-    },
-    {
-      "title": "Christmas Ships viewing dinner",
-      "kind": "Book",
-      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
-      "starts": "2026-12-03",
-      "by": null,
-      "why": "The official site says the 2026 schedule is posted, and a festival listing puts the parades Dec 3 to 20; Vancouver's tourism office advises reserving waterfront seats well in advance (Vancouver nights listed Dec 16 to 18).",
-      "sources": [
-        {
-          "name": "Christmas Ships parade schedule",
-          "url": "https://www.christmasships.org/parade-schedule"
-        },
-        {
-          "name": "Visit Vancouver WA",
-          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
-        },
-        {
-          "name": "Carnifest 2026 listing",
-          "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
         }
       ]
     },

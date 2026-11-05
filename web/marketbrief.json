@@ -1,11 +1,15 @@
 {
   "analysis": {
-    "headline": "Stocks recover as investors digest Democrats' midterm sweep.",
-    "summary": "S&P 500 and Nasdaq rose while Dow dipped following election results. Treasury yields climbed on blue-wave bets. Oil and Gold prices moved amid shifting market sentiment. Bitcoin saw gains despite recent volatility.",
+    "headline": "Wall Street surged as Democrats won control of Congress.",
+    "summary": "Stocks and bonds rose while the dollar slid following US elections. Oil prices dropped and gold saw gains. Bitcoin edged up slightly amid post-election market shifts.",
     "sources": [
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOVEtJOG9HYUZYU0lNTFl5cUE4cEVLN2FsMlVWYUN6cGdSMnpJVDdOVVRsUE8zNUZJSEltczZNM2h2OXZuUVFtTV9uSzcwekdVaGRsTU5YTjYwRmhXVnNHclhfVU5Ed3ZFeHBZY1I0TWszTnVPNktoUG5kSGh4aHhGcTVVc2c?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5sdjFuSm1kNThIRUluMXJ1c3ZyVS1icmJDN1pVNVVOdlVVa1JwWFE3VGw0UkRfeTJqUlg3ZUotVzZPVFdCZ0tIOERPekZYbHRXSER6ZWpka2ZYV0ZQMXNuXzZ0VnBIREVTVVZtTXdZLXM4aGJOc0c40gF8QVVfeXFMTWdkU3RqWXdESzExbWxNemxOYmJQSjh1UEV5aWxqazFGaGRxazE0RUtHc3FfejNiZVFwQWlXMWRjNzlRYkdIRnB4Vjd2S3Z3Qmpia2EzNlhQRW84Q3c1NklFNUlib19EXzJpbUNieEluVnFKNkRHVDFaaDZpVQ?oc=5"
+      },
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPaHBnOEludEdwalhTMXRiLWFQbk9RRVVIVGYzY3cwZUk4TmxLY1hnZExZQTZBTExfR2l2TmpJNXUwRWUwc21Jd0EzZklqc2hCbnRta19OU1lQV2NTdjhuNUZxaGQwaHlBZG51eG44WXFxNTNuX1FRYVluOGdaTFptSWRFY3J1ZTdMTlFzY3VmYVhkbDJH?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -13,39 +17,26 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNQ0ktb3JQam9saVhrUDhjbXZWTDVQaV9tVGFyX0VWdnh1Y3lTd3BDYlBlTFN3WS1tN0szdm4zb184WkZEcnhDZWVaS3h1RHp3azFaUEFfTWNtSjY4UXhXTG5ESjBvRmRHTzluZks0VlBrS1RzR1ZuNVJSa0s3eFNVU3J2WmZpQQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOWkpVS2U5RVFxaEtXOFd1Q2RQWEdZd0x6c1g5bTJtTnZBR3kya185cnZOTkFCTW83eDE4aUNvVk91NmV1ckltdVUxZXZkczY0R3hrRFZOSzJld1lHWEkxdDlQX0dwaWJiZE9pY0xod1pFUEJaTnkxdjY4bGp2Unk0YjJoMWNOTzlDS2RmeXhpaDRESWVrTnFTVGxsYmVPZGYwMkZnaWtUZ2I0MEVvVkRyWExNNDlXTTFIVUFuWEJwVm5mUXBaUFBjadIBzgFBVV95cUxNaDRuLTR0Q01OVG5fQTA0eG9waUVBQXVPN0NhSmdIVW1MdnpxaFowejV3dGRaamVmOWpvaVVlNEh5YlBUUTZsRjRZRzdHUnlsZThXeC1WelhvREEtOW5McGZOUE41RlhiQ2F2eVAxWmVONW9vTElYV2F5dHkteWJBeDR3NzRkVU5GSHY3Y3dsYmtzVi1jb1hCT3Y3VkU5bWl6MVA0OGY5ZEY2WTR2UDdVaHpua19uYkFIRWNRYjRFY3Qxc3QwSXhrZUd4WEcxUQ?oc=5"
       },
       {
-        "name": "CMC Markets: The Week Ahead (ISM PMI reports, US jobs report, Apple earnings)",
-        "url": "https://www.cmcmarkets.com/en-ie/news-and-analysis/the-week-ahead-ism-pmi-reports-us-jobs-report-apple-earnings"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPUFE3OEF2WXgyT0ZCblZxZkJOV3NwRVBkVld6UkhzOUE2UnBfaFhQMkVkQ3FEbkpkWnBOaVdFaXM4aHdsX3RJcTVyeFp2YzUxa0p0UHRqcXFlWTZyZGJZdE5xRkNHOFVPRmFZSS1aV3JHMEpBOUJSRFgtRjZXZmdXQ3VlNW5KZk8teTJhN2k3VHRodHladDRMZkhvOA?oc=5"
       },
       {
-        "name": "CNBC: Midterms, Apple earnings, jobs report. Wall Street faces a big week ahead",
-        "url": "https://www.cnbc.com/2026/10/30/stock-market-next-week-outlook-for-nov-2-6-2026.html"
-      },
-      {
-        "name": "Earnings Whispers: earnings calendar for Nov 4, 2026",
-        "url": "https://www.earningswhispers.com/calendar/20261104"
-      },
-      {
-        "name": "Market Chameleon: earnings calendar",
-        "url": "https://marketchameleon.com/Calendar/Earnings"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPZmpTTnRER1ZfU01zcWNFU2xFVjVMRjNUWHpmQ1FhbU5mc1JRc01JbnRBbW1uYmc2WmVNRDFMUTVmaHFES3VVMmpqcEVYYUd4Xzh0VEJ4UXRxMmZsZ3hCZFpOdnlBSXdaMVVqMTc0RWd6TUg1RUJVNGNVeWZBdTRDZzd3aHEtUzJxdkRVcVZfbVNPeE0?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Democrats' midterm election wins"
+      "Democratic midterm wins"
     ],
-    "watch": [
-      "Today (Wed, Nov 4): ISM services PMI; CMC Markets lists the forecast at 54.9, unchanged from the prior reading.",
-      "Earnings today: Uber, McDonald's, CVS and Novo Nordisk before the open; Qualcomm, Arm, AppLovin and MercadoLibre after the close (Earnings Whispers, Market Chameleon).",
-      "This week: Bank of England and Reserve Bank of Australia rate decisions (CMC Markets).",
-      "Friday, Nov 6, 8:30 a.m. ET: the October U.S. jobs report."
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A large helium purification facility has opened in southwest Saskatchewan. This new plant paves the way for a future liquefaction facility.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A large helium purification facility has opened in southwest Saskatchewan. The new plant paves the way for a liquefaction facility.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -64,19 +55,19 @@
         "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
       },
       {
-        "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdjFySlZiaXdGa0dRQmVYcW5MQ1RSWmtpSE01Z3JwNHQyUUkzZGtXdkN1c3h6M3FEVERkdk90RXZsdnNPa2pJTVF1NV9XWGIyLS1hOGIwTFdDMExGWjVtZnVwSVBMdmEzNmdja1huV3JRYlctbGtDa08xT0xaUFNnVWRwR2dfNDQ2WklmYjBELWh0N2gwNFBUVm4yNXNCaWVuSkQ0MW1zSWpmNzBVLXd6cjFrblpmcElMZ2w0WElPdl9URDBEM0E?oc=5"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPajZ6X1FtMk5hQUhKRi1BLXdvWHNJNHJzMnVITEZSa0M2bG1ocktLRnBCVW90a0V1aUpiRGdUU2NNZ2RYdGNYZFdVaHY3QWxfRzMzY1lJQTdYU18wVlMwTllXcldQUHhNZEpfTmc5OEJZcXhnSVhRXzYzUHNVMXc1SWQ3ek9ub2Z2bG51cHdWNFJSRjNsaEZ6bVVUakR6OHdPd1Jfb0dvR2JidWMtbzFXZmZQVUg5YWhMNTBieUJNdlBLR01EWTc5cVpCRGM2cF90R1E?oc=5"
       },
       {
         "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVG13OGVTVmJvT1JtY1NTSGtLeFJpTF83SUpuRkhyOU5oeXN6dXozbVctYi1WcWRaZndfSE8zd2tDN2VIR09oai1ic0NabVJtNDlTeWVrYUF5NTFNUmVoeXppRnZqVm9BRnJHQkk3T2tWRTRnZDVvX1FGTGFWeTROSzZKbTdWejBnTThwckZNRzZ4Rmh3?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
         "title": "North American Helium lifts SWFF past $5.5 million raised",
-        "date": "2026-11-03",
+        "date": "2026-11-04",
         "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPLXIzSDl3clVoQldJOElfREVSQXpqMEZsZDVaREVzd3dOVE5hVFhUTzhFb3hKdnhxd0E3c1k0WjV2blhEbjc0djNQS2xaMmxoUW5ON1E1ZVJRSzhIaHE5TUZOaDAyQnVuTWthaG5mcFY2eFBhLUxXZFd0VmJtX1I4VlByMGlLTFY4cFpCWUg5VzhGdEh5LW5NUlctcW1mcEtl?oc=5",
         "source": "Google News: North American Helium"
       },
@@ -107,13 +98,9 @@
     ]
   },
   "realestate": {
-    "headline": "The Portland housing market is stagnant with buyers backing out of deals.",
-    "summary": "Sellers are lowering prices to help buyers in a stagnant market. A punishing market is squeezing renters. Homebuyers are backing out of deals. Mortgage rates have fallen for two straight weeks but remain elevated.",
+    "headline": "Sellers are lowering prices in a stagnant Portland housing market.",
+    "summary": "Sellers are lowering prices to help buyers make deals. Homebuyers are backing out of deals and renters are being squeezed. Mortgage rates have dropped for three straight weeks, falling below 7.5%.",
     "sources": [
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnd1QnhKLU56LXM4S180RkRzTVhzVEFSYWdZX2tEZ2drU1VTVGZqNXJOSnkxQ1l4MlZndE94T1FQYkk2ODVXUGk0RmFLQzhRb18ySFR5aGZlQXloUmxqZWozOU50YTlBZlFiRndTc3kyZ0l5SEtPZXBIclRSazBycEgwNEJjclFJNy00Xzc0UVFUYU53aVVieHFaQ1RBOVhRLUlWQ0Y0bzc5TkQtRWpB?oc=5"
-      },
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
@@ -128,47 +115,43 @@
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPZ0xka3FURE5MT2Q1LVo0MkJfeTRFck1Rc0JDRGpqeWd1LWx3TWRYbE52Zmk5MFJCakg1eFB2c3plRGpaTjJIdnpCTDZJSG5KQldaNl9XOUVNZzBUX3Jnc2xpUkl0amtlVFVEQkdYYnVXazFoYVhGNWRWUjB5ZUdXakJYVHF5SE5jdXBVaHVyQXpFU01ucmswRGJ1a0lJNUcyTkdJ0gGoAUFVX3lxTE1EVTh1ZEpNSUdTSFFzN0lvbnh4UW9nWjhJS0lqSW9RNmhfb1AxVkJmSWYtU1cxd2JjRTRvODdHX19hWXlZTkt3RkJObEZEeVZSblJJZU9kUFJYaHQtRUdfQllySENkUEVTS2JFVTQzMGlvNmdtd0tSc3hRc3lZcldzWTJKRHFoRlFnYWFqemJON1NSX0diLXBLaW9fZEVyMFlIZ2t0aDFOcA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQQUxNdUxRMl9pTHVUOEk1UHRWS1pBcW9uRE1Hc1hKWHhNTkNLOGIyYnk0aGJJUTlmTUE0aENMSEhUWGpoN2Q0OHZsNWtaSUZkYjloWk9HT3hmekV6VUk4QjhkQjdNbFZueVNBNDVNM0otUTVtVDN3OU94YWhEN09Hci1YNnFwZDNCV0IzUtIBkgFBVV95cUxPRXRHNnhlNm1mSjZYd08yMWdzcW5zYXRjenBYMXpBWTN2Vm1CRjY3RGpkenJESW1IUEVfUWFYZllhQ3JyWFpBZ2d5TmxDWWI0bHdieGdsb09WbGQtb01vQnR4UGFyVDc0a2RGcFdaeVJFaV8tMEY5MU45M3FKa2xIeFlJV0dXRjlJb1Y2Nk9yRUczdw?oc=5"
       },
       {
-        "name": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
-        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
-      },
-      {
-        "name": "Redfin: Portland housing market",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+        "name": "Google News: mortgage rates",
+        "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQN1J1dS1zRVFDTmZIOFk0S0pBUlZhMnI0Y19vY3YyaFh6TGpYTVlSYm1XRTR6d0xrc3VFdVRLbUhDNG85V2FYemdicVZNMjZRaWVYUDRXYmhmalRzQWRzMVlaeENXeW1kQ2lxLS1ZcFUwSEVodV85ZzFfX2Vha0gwcQ?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage rates drop for the third straight week, but homebuyers are still leaving the market",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQQUxNdUxRMl9pTHVUOEk1UHRWS1pBcW9uRE1Hc1hKWHhNTkNLOGIyYnk0aGJJUTlmTUE0aENMSEhUWGpoN2Q0OHZsNWtaSUZkYjloWk9HT3hmekV6VUk4QjhkQjdNbFZueVNBNDVNM0otUTVtVDN3OU94YWhEN09Hci1YNnFwZDNCV0IzUtIBkgFBVV95cUxPRXRHNnhlNm1mSjZYd08yMWdzcW5zYXRjenBYMXpBWTN2Vm1CRjY3RGpkenJESW1IUEVfUWFYZllhQ3JyWFpBZ2d5TmxDWWI0bHdieGdsb09WbGQtb01vQnR4UGFyVDc0a2RGcFdaeVJFaV8tMEY5MU45M3FKa2xIeFlJV0dXRjlJb1Y2Nk9yRUczdw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Forecast For 2026: Experts Predict Whether Interest Rates Will Drop",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9kMlJHRWhRY2owbnpsZWhWOHVVZFR1ZmM3NzhqTUVEVnpHR2xlMHp0QnR2eXFwV2wzQ2FMbXZTN3lTLUJ5OHgxdnk0S3Z2Q3hEQ2pEYW9xcWhrRktVS3B0RXB0NkdnM0hPMzBReG5neWZ1TTdvVWs4bWgxdWFNUkk?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Fall Further Below 7.5%",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQN1J1dS1zRVFDTmZIOFk0S0pBUlZhMnI0Y19vY3YyaFh6TGpYTVlSYm1XRTR6d0xrc3VFdVRLbUhDNG85V2FYemdicVZNMjZRaWVYUDRXYmhmalRzQWRzMVlaeENXeW1kQ2lxLS1ZcFUwSEVodV85ZzFfX2Vha0gwcQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Today's Current Mortgage Rates: November 4, 2026",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rdmpsVUwtTnZNcjlIbUQ5a0oyZDlUSV9IV1ZYQy0yOHViOEttMVlsTXlfUVEwcXBibVcycFRJZTY2WEhfM2Voby0xbVpIVUtMZ05j?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "Mortgage rates today, Nov. 4, 2026: Rates on many loan types tick slightly up",
         "date": "2026-11-04",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE50OUNKb05BVWxRTjJDUHFNRWwtUDJSOVNjenR0T2h1QmU4eHZWLXRhTk9KTGdwQlZ5Y1pjaEJvM1ZYM1pOcmJsVXZWVDQ0alNXOW4xV1Rsbnc2VHpDbXFEbWlCeDJMck9ybkNuNlRMNA?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage rates hit highest level in 20 months - ABC News",
-        "date": "2026-11-04",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNaGlaUEo5dHhaTmdhc3NhS1Z3UHo2SjRsTWhIQmFlRGdxaG5NRWhWRkxOcG1xWDdXUHRRNlNpS21NN25nbm9RX1FWRjJCeThQRVVSVmpodERyVElldXhpQ1p1SGVIa0xiZnF0WmFLY3paUWZYU2hWZmJ6TUtpVk5ZQXBDUW9EdndiSHdkWXJvUzFWYkZl0gGaAUFVX3lxTE9sbVpPaFF1UkhDRGljeTQzbTRrSHdwMWNUZlo1aDZ1dDV6c0lNVkVVTV9FOGFPbUlreFZXTjVqSHE1V1RGUFFqcTEzUmhXUzQ2UzhLQ29sUERyQTJPa1d1VDM3Z0VwbW9VSjBBbEhUTTF1dlUzN3J1U2ZwTmlYOEFMNWt4SW5vYk5mcV9JdDRYWHl0Y0w3T3NiTVE?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current ARM mortgage rates report for Nov. 4, 2026",
-        "date": "2026-11-04",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE96WVZnaG5Ud2Rrb2JLRklzZGhuSVBzYWJMZmZrMENmVThFVktDeXhkUmtlWWlaZ1AxX3lzRWNseE5VRlNmTVhiMVZER2t5MnlXcUNRMDRtbUxWVTB1eUZhS0x0N3k3WVo3ME53N3hjRU5zYjY3?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current refi mortgage rates report for Nov. 4, 2026",
-        "date": "2026-11-04",
-        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5yY1NGZ2NsMWtTOFBUckQ2QWF6emo0Rlp2SkdMV3lXblBEcmxhc3VEdC1zcVRXQTlYYjlNLVlEUWRvRmVMS2IzdnFfRmhhdTRjYzZCNE1nX2NHOUdiTXcyZDVYVEhKQzlCRDltTm14dW0tQ0ZYdVE?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 4, 2026",
-        "date": "2026-11-04",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFA0clRJRnFMUEJMNllucHc1eTk5bTRjcEpHMUdhZ3oyZWVBMGtRb3loWDRKR3lyaC04aUVCamxaeVFHN2lFR1pLZUYyR002aHdKTFU3eS1URm1WblZQNldGWlBvbllRaEpB?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
@@ -224,6 +207,6 @@
       }
     ]
   },
-  "updated_at": "2026-11-04T13:21:05Z",
+  "updated_at": "2026-11-05T07:32:16Z",
   "updated": "2026-11-04"
 }

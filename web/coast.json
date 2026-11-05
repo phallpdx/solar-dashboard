@@ -82,12 +82,28 @@
       "url": "https://www.seasideor.com/event/scorpio-birthday-karaoke-celebration-at-the-lyons-den/"
     },
     {
+      "name": "Hometown Tourism Days",
+      "date": "2026-11-07",
+      "end": "2026-11-11",
+      "town": "Seaside",
+      "summary": "Explore local attractions in Pacific and Clatsop counties from 8:00 am to 5:00 pm.",
+      "url": "https://www.seasideor.com/event/hometown-tourism-day-at-seaside-museum-seaside-aquarium/"
+    },
+    {
       "name": "North Coast Symphonic Band: The Art of Dance",
       "date": "2026-11-08",
       "end": null,
       "town": "Astoria",
       "summary": "Sunday 2 pm concert at the Liberty Theatre.",
       "url": "https://libertyastoria.org/event/"
+    },
+    {
+      "name": "Seaside Elks Veterans Day Program",
+      "date": "2026-11-08",
+      "end": "2026-11-08",
+      "town": "Seaside",
+      "summary": "Program honoring veterans from 4:00 pm to 5:00 pm. Free.",
+      "url": "https://www.seasideor.com/event/seaside-elks-veterans-day-program-2/"
     },
     {
       "name": "Beach Towel Tuesdays",

@@ -1,14 +1,14 @@
 {
   "date": "2026-11-04",
-  "ran_at": "2026-11-04T09:33:25Z",
+  "ran_at": "2026-11-05T07:50:49Z",
   "lists": {
-    "jazz": "changed",
+    "jazz": "unchanged",
     "concerts": "unchanged",
     "events": "changed",
-    "kids": "changed",
+    "kids": "unchanged",
     "bluray": "changed",
     "foodfinds": "unchanged",
-    "planahead": "unchanged",
+    "planahead": "changed",
     "skioutlook": "changed",
     "teams": "changed",
     "marketbrief": "changed",

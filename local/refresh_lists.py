@@ -1614,8 +1614,17 @@ def push(base, files, branch):
         tree = git("write-tree", env=env)
     names = ", ".join(os.path.splitext(os.path.basename(p))[0] for p in files)
     commit = git("commit-tree", tree, "-p", base, "-m", f"Local model refresh: {names}")
-    git("push", "--force", "origin", f"{commit}:refs/heads/{branch}")
-    return commit
+    # A night's work shouldn't be lost to a short GitHub outage, so try a few times and log why it failed.
+    for wait in (30, 120, 300, None):
+        try:
+            git("push", "--force", "origin", f"{commit}:refs/heads/{branch}")
+            return commit
+        except subprocess.CalledProcessError as e:
+            log(f"git push failed: {(e.stderr or b'').decode('utf-8', 'replace').strip() or 'no message from git'}")
+            if wait is None:
+                raise
+            log(f"  trying again in {wait}s")
+            time.sleep(wait)
 
 
 # ---------------------------------------------------------------- main

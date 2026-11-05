@@ -45,6 +45,9 @@ $owuiStarted = $false; $dockerStarted = $false
 function OpenWebUI-Up {
     try { Invoke-RestMethod "$($cfg.openwebui.url)/health" -TimeoutSec 10 | Out-Null; $true } catch { $false }
 }
+function OpenWebUI-Running {
+    (docker inspect -f '{{.State.Running}}' open-webui 2>$null) -eq 'true'
+}
 if (Test-Path $keyFile) {
     try {
         $secure = Get-Content $keyFile | ConvertTo-SecureString
@@ -60,9 +63,13 @@ if ($env:OPENWEBUI_API_KEY -and -not (OpenWebUI-Up)) {
             for ($i = 0; $i -lt 36; $i++) { Start-Sleep 5; docker info *> $null; if ($LASTEXITCODE -eq 0) { break } }
         }
     }
-    docker start open-webui *> $null
-    if ($LASTEXITCODE -eq 0) {
-        $owuiStarted = $true
+    # The container restarts itself with Docker (restart policy "always"), so "docker start" can
+    # lose that race and report port 3000 as taken while the container is coming up. Wait for it either way.
+    if (-not (OpenWebUI-Running)) {
+        docker start open-webui *> $null
+        $owuiStarted = $LASTEXITCODE -eq 0
+    }
+    if ($owuiStarted -or (OpenWebUI-Running)) {
         for ($i = 0; $i -lt 36 -and -not (OpenWebUI-Up); $i++) { Start-Sleep 5 }
     }
 }

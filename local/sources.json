@@ -12,10 +12,6 @@
     "max_searches_per_day": 16,
     "timeout_seconds": 300
   },
-  "flips": {
-    "min_price": 50,
-    "verify_per_run": 5
-  },
   "push_branch": "claude/local-lists",
   "lists": {
     "jazz": [
@@ -385,52 +381,6 @@
         "use": "next"
       }
     ],
-    "alfred": [],
-    "flips": [
-      {
-        "name": "Electronics",
-        "category": "ela"
-      },
-      {
-        "name": "Photo and video",
-        "category": "pha"
-      },
-      {
-        "name": "Computers",
-        "category": "sya"
-      },
-      {
-        "name": "Video games",
-        "category": "vga"
-      },
-      {
-        "name": "Tools",
-        "category": "tla"
-      },
-      {
-        "name": "Bikes",
-        "category": "bia"
-      },
-      {
-        "name": "Sporting goods",
-        "category": "sga"
-      },
-      {
-        "name": "Appliances",
-        "category": "ppa"
-      },
-      {
-        "name": "Furniture",
-        "category": "fua"
-      },
-      {
-        "name": "Antiques",
-        "category": "ata"
-      },
-      {
-        "name": "Collectibles",
-        "category": "cta"
-      }
-    ]
+    "alfred": []
   }
 }

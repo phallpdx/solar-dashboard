@@ -994,15 +994,15 @@ def civics_view(state, today):
 def fetch_gear(state, now_utc):
     """Underpriced music gear on Portland Craigslist, checked every few hours."""
     store, errors = state.setdefault("gear", {}), []
-    if store.get("v") != 6:  # Reverb sale prices on each deal: scan again now
+    if store.get("v") != 7:  # deals now priced on same-model, same-era Reverb sales: scan again now
         store.pop("scan_at", None)
-        store["v"] = 6
+        store["v"] = 7
 
     def scan():
         found = gear.listings()
         first = store.setdefault("first_seen", {})
         today = now_utc.astimezone(zone("America/Los_Angeles")).date().isoformat()
-        picks = gear.deals(found, store.setdefault("reverb", {}))
+        picks = gear.deals(found, store.setdefault("reverb", {}), today=now_utc.astimezone(zone("America/Los_Angeles")).date())
         gear.add_sold(picks, store["reverb"], now_utc.astimezone(zone("America/Los_Angeles")).date())
         for d in picks:
             d["first_seen"] = first.setdefault(d["url"], today)

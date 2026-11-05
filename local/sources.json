@@ -118,7 +118,15 @@
     ],
     "bluray": [
       {
-        "name": "Slickdeals",
+        "name": "Slickdeals: 4K UHD",
+        "url": "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1&q=4k+uhd"
+      },
+      {
+        "name": "Slickdeals: 4K Blu-ray",
+        "url": "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1&q=4k+blu-ray"
+      },
+      {
+        "name": "Slickdeals: Blu-ray",
         "url": "https://slickdeals.net/newsearch.php?mode=frontpage&searcharea=deals&searchin=first&rss=1&q=blu-ray"
       },
       {
@@ -126,10 +134,31 @@
         "url": "https://www.blu-ray.com/deals/"
       },
       {
+        "name": "r/4kbluray deals",
+        "url": "https://www.reddit.com/r/4kbluray/search.rss?q=flair%3ADeals&restrict_sr=1&sort=new"
+      },
+      {
+        "name": "r/boutiquebluray sales",
+        "url": "https://www.reddit.com/r/boutiquebluray/search.rss?q=sale&restrict_sr=1&sort=new"
+      },
+      {
+        "name": "Dealnews: 4K Blu-ray",
+        "url": "https://www.dealnews.com/search?q=4k+blu-ray"
+      },
+      {
         "name": "Web search: 4K Blu-ray deals",
         "search": "4K UHD Blu-ray deals sale this week",
         "days": [
+          "Mon",
           "Thu"
+        ]
+      },
+      {
+        "name": "Web search: boutique label 4K sales",
+        "search": "Arrow Vinegar Syndrome Kino Criterion 4K UHD sale this week",
+        "days": [
+          "Tue",
+          "Fri"
         ]
       }
     ],

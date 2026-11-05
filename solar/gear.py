@@ -184,12 +184,93 @@ def _model_words(query):
 
 NOT_USED = {"brand-new", "b-stock", "mint-inventory"}  # Reverb ignores condition=used, so this is checked per listing
 BUNDLE = re.compile(r"\b(bundle|lot|package|pack|kit|studio)\b|\+", re.I)
-PARTS = re.compile(ACCESSORY.pattern + r"|\b(replacement|switch|battery|potentiometer|pot|keys?|contacts?|jack|pcb|board|"
-                   r"power supply|adapter|cord|tubes|strings|decal|faceplate|panel|screws?|only)\b", re.I)
+PARTS = re.compile(ACCESSORY.pattern + r"|\b(replacement|switch|battery|potentiometer|pots?|keys?|contacts?|jack|pcb|board|"
+                   r"power supply|adapter|cord|tubes|strings|decal|faceplate|panel|screws?|only|wiring|harness|"
+                   r"capacitor|cap|truss ?rod|bridge|tailpiece|saddles?|nut|buttons?|loaded|kit for|upgrade)\b", re.I)
 # Words that make a pricier version of a model. A comparable carrying one the Craigslist title doesn't is a
 # different thing: a "Spider 112" is not a "Spider Valve 112".
 VARIANT = re.compile(r"\b(valve|tube|signature|artist|custom|shop|elite|ultra|professional|reissue|limited|anniversary|"
-                     r"relic|masterbuilt|mk ?i+|deluxe|select|usa|american|japan|vintage|original|nos)\b", re.I)
+                     r"relic|masterbuilt|mk ?i+|deluxe|select|usa|american|japan|vintage|original|nos|historic|murphy|"
+                     r"tribute|faded|studio|special|dc|double|classic|standard|supreme|modern|player|vintera|"
+                     r"squier|epiphone|maestro|partscaster|classical|avri|avii|ja-?\d+)\b", re.I)
+# Spellings that mean the same thing, so "Les Paul Junior" counts for a "Les Paul Jr".
+ALIASES = [(r"\bjunior\b", "jr"), (r"\bgold[ -]top\b", "goldtop"), (r"\btelecaster\b", "tele"),
+           (r"\bstratocaster\b", "strat"), (r"\bthin ?line\b", "thinline"), (r"\bdouble[ -]?cut(away)?\b", "dc"),
+           (r"\bsingle[ -]?cut(away)?\b", "sc"), (r"\bp[ -]?bass\b", "precision"), (r"\bj[ -]?bass\b", "jazz bass")]
+
+
+def _norm(text):
+    text = re.sub(r"[^\w\s'-]", " ", (text or "").lower().replace("\u2019", "'").replace("\u2018", "'"))
+    for pat, rep in ALIASES:
+        text = re.sub(pat, rep, text)
+    return re.sub(r"\s+", " ", text)
+
+
+THIS_YEAR = datetime.date.today().year
+
+
+def _years(text):
+    """Four-digit years named in a title, and two-digit model years like '57 or '60s (as 1957, 1960)."""
+    t = text or ""
+    full = {int(y) for y in re.findall(r"\b(19[3-9]\d|20[0-3]\d)s?\b", t)}
+    short = {1900 + int(y) for y in re.findall(r"['\u2019\u2018](\d{2})s?\b", t) if int(y) >= 30}
+    return full, short
+
+
+def _built(x):
+    """The years a Reverb listing was made, from its year field ("1963", "2006 - 2017", "2020 - Present",
+    "2000s"), else from four-digit years in its title. Empty when it doesn't say."""
+    field = str(x.get("year") or "").strip()
+    if field.lower() == "new":
+        return [(THIS_YEAR - 1, THIS_YEAR)]
+    spans = []
+    for a, b in re.findall(r"(19\d\d|20\d\d)(?:s|\s*[-\u2013]\s*(19\d\d|20\d\d|present|\d\d))?", field, re.I):
+        lo = int(a)
+        if b.lower() == "present":
+            hi = THIS_YEAR
+        elif len(b) == 2:
+            hi = lo // 100 * 100 + int(b)
+        elif b:
+            hi = int(b)
+        else:
+            hi = lo + 9 if re.search(a + r"s", field) else lo
+        spans.append((lo, hi))
+    if not spans:
+        spans = [(y, y) for y in _years(x.get("title"))[0]]
+    return spans
+
+
+def _same_era(cl_title, x):
+    """A 2022 Les Paul Jr. is not priced against a 1963 one, and a plain "Thinline Telecaster" not against
+    1970s originals. When the Craigslist title gives a year, the Reverb one has to have been made within
+    two years of it, or name the same model year (a '57 reissue against a '57 reissue). With no year,
+    vintage instruments (made before 1985) only count if the title calls it vintage or old."""
+    cl_full, cl_short = _years(cl_title)
+    spans = _built(x)
+    if cl_full:
+        r_full, r_short = _years(x.get("title"))
+        if (cl_full | cl_short) & (r_full | r_short):
+            return True  # same year named on both; VARIANT already keeps reissues and originals apart
+        if spans:
+            return any(lo - 2 <= y <= hi + 2 for y in cl_full for lo, hi in spans)
+        return min(cl_full) >= 1990  # a modern year against a listing that gives none
+    if _years(x.get("title"))[1] and not cl_short:
+        return False  # a '69 or '72 reissue is its own model; a title without a year doesn't mean one
+    if spans and all(hi < 1985 for _, hi in spans):
+        return bool(cl_short) or bool(re.search(r"\b(vintage|old|original|[3-8]0'?s)\b", cl_title or "", re.I))
+    return True
+
+
+def _same_brand(query, x):
+    """The listing's maker has to be the brand in the Craigslist title (so no Maestro by Gibson for a Gibson)."""
+    make = re.sub(r"[^a-z0-9]", "", str(x.get("make") or "").lower())
+    brand = BRANDS.search(query or "")
+    if not make or not brand:
+        return True
+    b = re.sub(r"[^a-z0-9]", "", brand.group(0).lower())
+    b = {"ehx": "electroharmonix", "boogie": "mesa", "lp": "latinpercussion", "kmi": "keithmcmillen",
+         "evh": "evh", "ltd": "esp"}.get(b, b)
+    return b in make or make in b
 
 
 def _reverb_page(query, page, sold=False):
@@ -203,14 +284,20 @@ def _reverb_page(query, page, sold=False):
 
 def _comparable(x, query, model, title_query):
     """The Reverb listing's USD price if it is the same used thing as the Craigslist one, else None."""
-    title = (x.get("title") or "").lower()
+    title = _norm(x.get("title"))
     price = x.get("price") or {}
+    cats = " ".join(c.get("full_name") or "" for c in x.get("categories") or [])
+    wanted = _norm(title_query or query)
+    words = [_norm(w).strip() for w in model[:6]]
     if (price.get("amount") and price.get("currency", "USD") == "USD"
             and (x.get("condition") or {}).get("slug") not in NOT_USED
             and not (BUNDLE.search(title) and not BUNDLE.search(query))
             and not (PARTS.search(title) and not PARTS.search(query))
-            and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in model[:3])
-            and not any(v.group(0).lower() not in title_query for v in VARIANT.finditer(title))):
+            and not (re.match(r"(parts|accessories)\b", cats, re.I) and not PARTS.search(query))
+            and all(re.search(r"\b" + re.escape(w) + r"\b", title) for w in words if w)
+            and not any(v.group(0).lower() not in wanted for v in VARIANT.finditer(title))
+            and _same_brand(query, x)
+            and _same_era(title_query or query, x)):
         return float(price["amount"])
     return None
 
@@ -282,45 +369,80 @@ def reverb_sold(query, model, title_query="", today=None):
     last, avg_of = sales[0], sales[:30]
     return {"last": round(last["price"]), "last_title": last["title"], "last_url": last["url"], "last_date": last["date"],
             "avg": round(sum(s["price"] for s in avg_of) / len(avg_of)), "n": len(avg_of),
+            "median": round(sorted(s["price"] for s in avg_of)[len(avg_of) // 2]),
             "recent": recent, "recent_days": RECENT_DAYS, "active": active,
             "speed": speed or "slow", "sell_time": _sell_time(days) if days is not None else None,
             "url": "https://reverb.com/marketplace?" + urllib.parse.urlencode({"query": query, "show_only_sold": "true"})}
 
 
 def _sold_query(title):
-    """Brand-and-model search words for a Craigslist title, falling back to the price list's model name."""
-    for q in (_query(title).lower(),
-              None if ACCESSORY.search(title) else next((n.lower() for pat, n, _ in MODELS if re.search(pat, title, re.I)), None)):
-        model = _model_words(q) if q else None
-        if model and BRANDS.search(q):
-            return f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model, q
+    """Brand-and-model search words for a Craigslist title, the model words every match has to carry, and the
+    title itself (its years and version words decide what counts as the same thing)."""
+    q = _query(title).lower()
+    model = _model_words(q)
+    if model and BRANDS.search(q):
+        return f"{BRANDS.search(q).group(0)} {' '.join(model[:4])}", model, title.lower()
     return None
 
 
+def lookup(title, cache, today, allow=True):
+    """Reverb sales and asking prices for gear like this listing, kept for 3 days. None when not looked up."""
+    sq = _sold_query(title)
+    if not sq:
+        return None
+    key, fresh = "v5 " + title.lower(), (today - datetime.timedelta(days=3)).isoformat()
+    hit = cache.get(key)
+    if hit and hit.get("at", "") >= fresh:
+        return hit
+    if not allow:
+        return None
+    lookup.fetched += 1
+    hit = {"at": today.isoformat(), "sold": None, "ask": None}
+    try:
+        hit["sold"] = reverb_sold(*sq, today=today)
+    except Exception:
+        pass
+    if not (hit["sold"] and hit["sold"]["n"] >= 5):
+        try:
+            got = _reverb(*sq)
+            hit["ask"] = [round(got[0]), got[1]] if got else None
+        except Exception:
+            pass
+    cache[key] = hit
+    return hit
+
+
+lookup.fetched = 0  # how many lookups went to Reverb, for the budget
+
+
+def reference(hit, title):
+    """What this gear really goes for: the median of matching Reverb sales when there are at least 5, else the
+    low end of matching used listings, else the rough price list. None when nothing fair compares."""
+    if hit and hit.get("sold") and hit["sold"]["n"] >= 5:
+        return {"typical": hit["sold"]["median"], "basis": f"median of the last {hit['sold']['n']} matching sales on Reverb"}
+    if hit and hit.get("ask"):
+        return {"typical": hit["ask"][0], "basis": f"low end of {hit['ask'][1]} matching used listings on Reverb"}
+    match = None if ACCESSORY.search(title) or _years(title)[0] else next(
+        ((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
+    return {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
+
+
 def add_sold(picks, cache, today, budget=20):
-    """Put the latest and average Reverb sale price, and how fast it sells, on each deal. Lookups are kept for 3 days."""
-    fresh = (today - datetime.timedelta(days=3)).isoformat()
+    """Put the latest and average Reverb sale price, and how fast it sells, on each deal that doesn't have it yet."""
     for d in picks:
-        sq = _sold_query(d["title"])
-        if not sq:
+        if d.get("sold"):
             continue
-        key = "sold2 " + sq[0]
-        hit = cache.get(key)
-        if not (hit and hit.get("at", "") >= fresh):
-            if budget <= 0:
-                continue
-            budget -= 1
-            try:
-                hit = cache[key] = {"at": today.isoformat(), "sold": reverb_sold(*sq, today=today)}
-            except Exception:
-                continue
-        if hit.get("sold"):
+        before = lookup.fetched
+        hit = lookup(d["title"], cache, today, allow=budget > 0)
+        budget -= lookup.fetched - before
+        if hit and hit.get("sold"):
             d["sold"] = hit["sold"]
     return picks
 
 
-def deals(found, cache, reverb_budget=25):
-    """Score each listing against a typical used price. cache keeps Reverb lookups between runs."""
+def deals(found, cache, reverb_budget=25, today=None):
+    """Score each listing against what the same gear sells for. cache keeps Reverb lookups between runs."""
+    today = today or datetime.date.today()
     out = []
     watched = lambda t: next((label for pat, label in WATCH if pat.search(t)), None)  # noqa: E731
     # Watched items, then drums and percussion, get the Reverb lookups first when there are more listings than budget.
@@ -329,24 +451,14 @@ def deals(found, cache, reverb_budget=25):
         if SKIP.search(title):
             continue
         watch = watched(title)
-        match = None if ACCESSORY.search(title) else next(((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
-        ref = {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
-        q = _query(title).lower()
-        model, key = _model_words(q), "v4 " + q  # older cache entries came from looser matches
-        if ref or not (BRANDS.search(q) and model):
-            pass  # a title like "hollow body electric guitar" has nothing fair to compare against
-        elif key in cache:
-            ref = cache[key]
-        elif reverb_budget > 0 and item["price"] >= 100:
-            reverb_budget -= 1
-            try:
-                # Brand and model only: Reverb wants every word, and sellers word the rest differently.
-                got = _reverb(f"{BRANDS.search(q).group(0)} {' '.join(model[:3])}", model, q)
-                cache[key] = ref = {"typical": round(got[0]), "basis": f"low end of {got[1]} matching used listings on Reverb"} if got else None
-            except Exception:
-                pass
+        before = lookup.fetched
+        hit = lookup(title, cache, today, allow=reverb_budget > 0 and (item["price"] >= 100 or bool(watch)))
+        reverb_budget -= lookup.fetched - before
+        ref = reference(hit, title)
         scored = _score(item, ref, watch) if (ref and ref["typical"]) or watch else None
         if scored:
+            if hit and hit.get("sold"):
+                scored["sold"] = hit["sold"]
             out.append((item, ref, watch, scored))
     for k in list(cache)[:-400]:
         cache.pop(k)
@@ -360,7 +472,9 @@ def deals(found, cache, reverb_budget=25):
             continue
         if post and post["price"] and post["price"] != item["price"]:
             item = item | {"price": post["price"], "listed_price": item["price"]}
-            scored = _score(item, ref, watch)
+            sold, scored = scored.get("sold"), _score(item, ref, watch)
+            if scored and sold:
+                scored["sold"] = sold
         if scored:
             picks.append(scored | {"post_checked": bool(post)})
         if len(picks) >= 15:

@@ -26,13 +26,34 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPZmpTTnRER1ZfU01zcWNFU2xFVjVMRjNUWHpmQ1FhbU5mc1JRc01JbnRBbW1uYmc2WmVNRDFMUTVmaHFES3VVMmpqcEVYYUd4Xzh0VEJ4UXRxMmZsZ3hCZFpOdnlBSXdaMVVqMTc0RWd6TUg1RUJVNGNVeWZBdTRDZzd3aHEtUzJxdkRVcVZfbVNPeE0?oc=5"
+      },
+      {
+        "name": "Kiplinger: What to Look Out for in Economic Data This Week (November 2-6)",
+        "url": "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar"
+      },
+      {
+        "name": "Schwab: Stocks Surge: Big Democratic Win Eases Uncertainty",
+        "url": "https://www.schwab.com/learn/story/stock-market-update-open"
+      },
+      {
+        "name": "RoboForex: Jobs Report Friday, market week ahead November 2-6",
+        "url": "https://roboforex.com/blog/analysis/jobs-report-friday-market-week-ahead-november-2-6/"
+      },
+      {
+        "name": "Investing.com: Economic Week Ahead: Payrolls, Fed Speakers and Apple Earnings to Watch",
+        "url": "https://www.investing.com/analysis/economic-week-ahead-payrolls-fed-speakers-and-apple-earnings-to-watch-200690640"
       }
     ],
     "by": "local model",
     "drivers": [
       "Democratic midterm wins"
     ],
-    "watch": []
+    "watch": [
+      "Today (Thu): weekly jobless claims and Q3 productivity at 8:30 a.m. ET, plus Bank of England and Banxico rate decisions.",
+      "Fri 8:30 a.m. ET: October jobs report; consensus estimates range from about 40K (RoboForex) to 65K (Schwab) after 29K last month, with unemployment last at 4.2%.",
+      "Fri 10 a.m. ET: University of Michigan preliminary November consumer sentiment (prior 48.0).",
+      "Fed speakers this week include Musalem and Bowman (Kiplinger calendar); earnings this week include Apple, AMD, Qualcomm and Palantir."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",

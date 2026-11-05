@@ -417,14 +417,13 @@ lookup.fetched = 0  # how many lookups went to Reverb, for the budget
 
 def reference(hit, title):
     """What this gear really goes for: the median of matching Reverb sales when there are at least 5, else the
-    low end of matching used listings, else the rough price list. None when nothing fair compares."""
+    low end of matching used listings. None when nothing fair compares. The rough price list is not used: it
+    prices a whole family ("Akai MPC") the same, so an MPC 500 got an MPC Live's price."""
     if hit and hit.get("sold") and hit["sold"]["n"] >= 5:
         return {"typical": hit["sold"]["median"], "basis": f"median of the last {hit['sold']['n']} matching sales on Reverb"}
     if hit and hit.get("ask"):
         return {"typical": hit["ask"][0], "basis": f"low end of {hit['ask'][1]} matching used listings on Reverb"}
-    match = None if ACCESSORY.search(title) or _years(title)[0] else next(
-        ((name, price) for pat, name, price in MODELS if re.search(pat, title, re.I)), None)
-    return {"typical": match[1], "basis": f"usual used price for a {match[0]}"} if match else None
+    return None
 
 
 def add_sold(picks, cache, today, budget=20):

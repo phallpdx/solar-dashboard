@@ -359,6 +359,9 @@ header h1{font-size:40px}
 .bday:hover b{text-decoration:underline}
 .thai-roman{margin:0;font-size:18px;font-weight:800;letter-spacing:.01em}
 .thai-mean{margin:0;font-size:16px;font-style:italic;color:var(--body)}
+.thai-say{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0}
+button.joy-btn{border:0;cursor:pointer;font-family:inherit}
+.thai-tones{margin:0;font-size:12px;color:var(--body);opacity:.85}
 .good-ic{width:72px;height:72px;flex:none;border-radius:12px;background:rgba(255,255,255,.7);display:grid;place-items:center;font-size:30px}
 .j-good .story{border-bottom-color:rgba(75,122,18,.15)}
 /* sunniest hours */
@@ -3048,6 +3051,29 @@ function renderApod() {
     <details class="apod-more"><summary>${esc(a.explanation.slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(a.explanation)} <a class="link" href="${esc(a.page)}" target="_blank" rel="noopener">On NASA's site</a></p></details>`;
 }
 
+// Plays the recorded clip; without one, a Thai voice in the browser; without that, Google Translate.
+let thaiClip;
+function sayThai(t, slow) {
+  if (thaiClip) thaiClip.pause();
+  const speak = () => {
+    const synth = window.speechSynthesis;
+    const voice = synth && synth.getVoices().find(v => /^th(-|_|$)/i.test(v.lang));
+    if (!voice) { window.open('https://translate.google.com/?sl=th&tl=en&op=translate&text=' + encodeURIComponent(t.thai), '_blank', 'noopener'); return; }
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(t.thai);
+    u.voice = voice; u.lang = voice.lang; u.rate = slow ? 0.6 : 0.9;
+    synth.speak(u);
+  };
+  const src = slow ? t.audio_slow : t.audio;
+  if (!src) return speak();
+  let fellBack = false;
+  const fallBack = () => { if (!fellBack) { fellBack = true; speak(); } };
+  thaiClip = new Audio(src);
+  thaiClip.onerror = fallBack;
+  thaiClip.play().catch(e => { if (e.name !== 'AbortError') fallBack(); });
+}
+if (window.speechSynthesis) speechSynthesis.getVoices(); // starts loading the voice list early
+
 function renderPicks() {
   const p = D.picks;
   for (const id of ['drum-card', 'thai-card', 'ask-card']) $(id).hidden = !p;
@@ -3060,7 +3086,10 @@ function renderPicks() {
     <a class="joy-btn" href="${esc(d.listen)}" target="_blank" rel="noopener">▶ Listen</a>`;
   const t = p.thai;
   $('thai-phrase').innerHTML = `<p class="thai-script" lang="th">${esc(t.thai)}</p>
-    <p class="thai-roman">${esc(t.roman)}</p><p class="thai-mean">“${esc(t.meaning)}”</p>${t.tip ? `<p class="note">${esc(t.tip)}</p>` : ''}`;
+    <p class="thai-roman">${esc(t.roman)}</p><p class="thai-mean">“${esc(t.meaning)}”</p>
+    <div class="thai-say"><button type="button" class="joy-btn" data-speed="normal">▶ Hear it</button><button type="button" class="joy-btn" data-speed="slow">🐢 Slowly</button></div>
+    <p class="thai-tones">Tones: à low · â falling · á high · ǎ rising · no mark is mid</p>${t.tip ? `<p class="note">${esc(t.tip)}</p>` : ''}`;
+  $('thai-phrase').querySelectorAll('.thai-say button').forEach(b => b.onclick = () => sayThai(t, b.dataset.speed === 'slow'));
   $('ask').textContent = p.question;
   const a = p.artist;
   $('artist-card').hidden = !a;

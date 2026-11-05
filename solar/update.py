@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, deals, fishing, garden, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, portland, records, releases, roads, science, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, fishing, garden, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, portland, records, releases, roads, science, ships, ski, sky, sports, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -1189,21 +1189,6 @@ def fishing_view(state, out, now_utc):
     }
 
 
-def fetch_deals(state, now_utc):
-    store, errors = state.setdefault("deals", {}), []
-    zip_code = load_json("config.json", {}).get("shopping_zip")
-    if not zip_code:
-        return "Add a shopping ZIP code to config.json."
-    if store.get("v") != 4:  # new ordering and price format
-        store.clear()
-        store["v"] = 4
-    _refresh(store, "weekly", lambda: deals.weekly(zip_code), 6, now_utc, errors)
-    w = store.get("weekly") or {}
-    if w.get("missing"):
-        errors.append("no weekly ad found for " + ", ".join(w["missing"]) + "; ads nearby: " + ", ".join(w.get("merchants") or []))
-    return "; ".join(errors) or None
-
-
 def alerts_view(state, out, now_utc):
     if not out:
         return None
@@ -1366,8 +1351,6 @@ def build(state, status, now_utc):
         "coast": (state.get("places") or {}).get("coast"),
         "surf": surf_view(state, now_utc),
         "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,
-        "deals": {k: v for k, v in ((state.get("deals") or {}).get("weekly") or {}).items()
-                  if k in ("stores", "missing")} or None,
         "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
         "grid": (state.get("extras") or {}).get("grid"),
         "health": (state.get("extras") or {}).get("health"),
@@ -1406,7 +1389,7 @@ def main():
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
-                     ("news", fetch_news), ("releases", fetch_releases), ("deals", fetch_deals), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
+                     ("news", fetch_news), ("releases", fetch_releases), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics),
                      ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings),

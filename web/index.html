@@ -1841,7 +1841,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="local" data-tier="town" id="local" aria-labelledby="local-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food and openings, big events, grocery sales and the liquor store</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food and openings, big events and the liquor store</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
         <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
@@ -1856,17 +1856,10 @@ body{background-color:#8F5A32;
         <div class="lines" id="big"></div>
       </section>
       <div class="row">
-        <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
-          <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
-          <div class="chips" id="deal-filter" role="group" aria-label="Filter by store"></div>
-          <div class="scroll" id="deals" tabindex="0" aria-label="Sale items, scrollable"></div>
-        </section>
         <section class="card half" aria-labelledby="food-new-h" id="rest-card" hidden>
           <div class="head"><h2 id="food-new-h">New restaurants worth trying</h2><span class="meta" id="rest-meta"></span></div>
           <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
         </section>
-      </div>
-      <div class="row">
         <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
           <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
           <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
@@ -2728,7 +2721,6 @@ const DAILY_TITLES = {
   'trend-h': ['What people are searching', 'The internet today', 'Trending now'],
   'finds-h': ['Tasty new finds', 'New places to eat', 'Portland food news'],
   'big-h': ['Happening in town', 'Big nights out', 'In Portland soon'],
-  'deal-h': ['On sale this week', 'Grocery deals', 'Cheap eats this week'],
   'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski conditions'],
   'mkt-h': ['Money check', 'How markets look', 'Stocks at a glance'],
   'f1-h': ['F1 corner', 'Race weekend watch', 'Lights out soon'],
@@ -3804,23 +3796,9 @@ function renderComing() {
   $('alb-meta').textContent = al.length ? `${al.length} albums, next 60 days · Wikipedia` : '';
 }
 
-let dealPick;
 async function renderLocal() {
-  const dl = D.deals;
   const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
   const [rest, liq, pm] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json'), getJson('localmusic.json')]);
-  const stores = (dl && dl.stores) || [];
-  $('deals-card').hidden = !stores.length;
-  if (stores.length) {
-    if (!stores.some(st => st.store === dealPick)) dealPick = stores[0].store;
-    chipFilter($('deal-filter'), stores.map(st => [st.store, null]), dealPick, n => { dealPick = n; renderLocal(); });
-    const st = stores.find(x => x.store === dealPick);
-    $('deal-meta').textContent = st.until ? `Through ${dayLabel(st.until)}` : '';
-    $('deals').innerHTML = st.items.map(x => `<div class="story">
-        ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" onerror="this.remove()" style="object-fit:contain;background:#fff">` : ''}
-        <span><b>${esc(x.name)}</b><small>${[x.price ? esc(x.price) : null, x.was ? 'was $' + x.was.toFixed(2) : null].filter(Boolean).join(' · ')}
-        ${x.pct_off ? ` <span class="pill">${x.pct_off}% off</span>` : ''}</small>${x.deal ? `<p>${esc(x.deal)}</p>` : ''}</span></div>`).join('');
-  }
   const rs = (rest && rest.restaurants) || [];
   $('rest-card').hidden = !rs.length;
   if (rs.length) {
@@ -3848,7 +3826,7 @@ async function renderLocal() {
       ${x.why ? `<p>${esc(x.why)}</p>` : ''}
       ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
-  $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
+  $('local').hidden = $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
 }
 
 function renderDrives() {
@@ -4589,7 +4567,6 @@ const SOURCES = {
   'minus-h': [NOAA_TIDES],
   'cev-h': [DAILY],
   'shell-h': [['Oregon Dept. of Agriculture shellfish closures', 'https://www.oregon.gov/oda/programs/foodsafety/shellfish/pages/shellfishclosures.aspx'], ['ODFW crabbing and clamming report', 'https://myodfw.com/recreation-report/crabbing-clamming-report']],
-  'deal-h': [['Store flyers via Flipp', 'https://flipp.com/']],
   'food-new-h': [DAILY],
   'ski-h': [['Season outlook: daily web check of NOAA, resort and NWAC pages, linked on each item', ''], ['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
   'plan-h': [['Daily web check of venue, ticketing, resort and agency pages; each item links its source', '']],

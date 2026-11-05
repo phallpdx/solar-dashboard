@@ -727,6 +727,29 @@ def fetch_outings(state, now_utc):
     return "; ".join(errors) or None
 
 
+def fetch_poem(state, now_utc):
+    """Pick today's poem once a day and remember every poem ever shown, so none comes back."""
+    store = state.setdefault("poem", {})
+    today = now_utc.astimezone(LOCAL).date()
+    if (store.get("today") or {}).get("date") == today.isoformat():
+        return None
+    history = store.get("history")
+    if history is None:  # first run: count the last few weeks of the old rotation as already read
+        history = store["history"] = list(dict.fromkeys(
+            poems.old_pick(today - dt.timedelta(days=n)) for n in range(1, 29)))
+    try:
+        forecast = ((outside_view(state, now_utc) or {}).get("days") or [None])[0]
+    except Exception:
+        forecast = None
+    pick = poems.poem_of_the_day(today, forecast, history)
+    if not pick:
+        store["today"] = None
+        return "Every poem has been shown and PoetryDB had nothing new."
+    store["today"] = {**pick, "date": today.isoformat()}
+    history.append(pick["key"])
+    return None
+
+
 def fetch_culture(state, now_utc):
     """What's trending, book picks from Goodreads and long reads."""
     store, errors = state.setdefault("culture", {}), []
@@ -1388,7 +1411,7 @@ def build(state, status, now_utc):
                      if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
         "books": cu.get("books") if cu.get("books_user") else None,
         "long_read": culture.long_read(dt.date.fromisoformat(today)),
-        "poem": poems.poem_of_the_day(dt.date.fromisoformat(today), ((out or {}).get("days") or [None])[0]),
+        "poem": (state.get("poem") or {}).get("today") if ((state.get("poem") or {}).get("today") or {}).get("date") == today else None,
         "science": (state.get("science") or {}).get("items"),
         "longreads": cu.get("longreads"),
         "civics": civics_view(state, today),
@@ -1411,7 +1434,7 @@ def main():
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
                      ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics), ("gear", fetch_gear),
                      ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings),
-                     ("records", fetch_records)):
+                     ("records", fetch_records), ("poem", fetch_poem)):
         try:
             status[name] = fn(state, now_utc) or "ok"
         except Exception as e:  # keep going so the page still shows cached data

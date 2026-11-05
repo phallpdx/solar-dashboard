@@ -214,6 +214,10 @@
       "why": "Those are 2025 details; the farm hasn't posted 2026 tree dates yet.",
       "sources": [
         {
+          "name": "Sauvie Island Farms blog",
+          "url": "https://sifarms.blogspot.com/"
+        },
+        {
           "name": "Portland Monthly 2025 tree guide",
           "url": "https://www.pdxmonthly.com/travel-and-outdoors/christmas-tree-farms-near-portland"
         }
@@ -364,6 +368,24 @@
         {
           "name": "mxdwn",
           "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
+        }
+      ]
+    },
+    {
+      "title": "Nothing But Thieves, Crystal Ballroom (Apr 1, 2027)",
+      "kind": "Tickets",
+      "action": "Check Live Nation for the Crystal Ballroom date and buy face value there rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "Spring 2027 North American tour behind the new album Stray Dogs; the Portland on-sale and presale dates weren't confirmed in the sources found.",
+      "sources": [
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_5cqhwrb/nothing-but-thieves-the-stray-dogs-world-tour"
+        },
+        {
+          "name": "JamBase tour announcement",
+          "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
         }
       ]
     }

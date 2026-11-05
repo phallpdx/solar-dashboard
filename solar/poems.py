@@ -3,7 +3,9 @@
 Every poem here is in the public domain, so the text can sit on a public page.
 """
 import datetime as dt
+import json
 import urllib.parse
+import urllib.request
 
 # key: (title, poet, year, text, excerpt?)
 POEMS = {
@@ -530,20 +532,69 @@ def _weather(today, season):
     return None
 
 
-def poem_of_the_day(day, today_forecast=None):
-    # An occasion's poems count down to its day, one per day with the main one on the day itself,
-    # so a week-long window never shows the same poem twice. Other days follow the weather and season.
+def _candidates(day, today_forecast):
+    """(key, reason) pairs in the order they fit today: an occasion first, then the weather, then the season."""
+    out = []
+    # An occasion's poems count down to its day with the main one on the day itself.
     # A month-long occasion gets every other day.
     near = lambda o: (o[1] - day).days < len(o[3])
     hits = [o for o in _occasions(day) if o[0] <= day <= o[1] and (near(o) or ((o[1] - o[0]).days >= 14 and day.toordinal() % 2 == 0))]
-    if hits:
-        start, end, why, keys = min(hits, key=lambda o: (o[1] - o[0]).days)
-        key = keys[len(keys) - 1 - (end - day).days] if near((start, end, why, keys)) else keys[day.toordinal() // 2 % len(keys)]
-    else:
-        season = _season(day)
-        weather = _weather(today_forecast, season)
-        keys, why = weather or (SEASONS[season], f"It's {season}")
-        key = keys[day.toordinal() % len(keys)]
+    for start, end, why, keys in sorted(hits, key=lambda o: (o[1] - o[0]).days):
+        i = len(keys) - 1 - (end - day).days if near((start, end, why, keys)) else day.toordinal() // 2 % len(keys)
+        out += [(k, why) for k in keys[i:] + keys[:i]]
+    season = _season(day)
+    weather = _weather(today_forecast, season)
+    if weather:
+        out += [(k, weather[1]) for k in weather[0]]
+    keys = SEASONS[season]
+    i = day.toordinal() % len(keys)
+    out += [(k, f"It's {season}") for k in keys[i:] + keys[:i]]
+    return out
+
+
+def _search(title, poet):
+    return "https://duckduckgo.com/?" + urllib.parse.urlencode({"q": f"{title} {poet} poem"})
+
+
+def _poetrydb(seen, tries=3):
+    """A short public-domain poem from PoetryDB that hasn't been shown yet, or None."""
+    for _ in range(tries):
+        try:
+            req = urllib.request.Request("https://poetrydb.org/random/20", headers={"User-Agent": "solar-dashboard"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                found = json.load(r)
+        except Exception:
+            return None
+        for p in found if isinstance(found, list) else []:
+            title, poet, lines = (p.get("title") or "").strip(), (p.get("author") or "").strip(), p.get("lines") or []
+            key = f"pdb:{title}|{poet}"
+            if title and poet and 4 <= len(lines) <= 40 and key not in seen:
+                return {"key": key, "title": title, "poet": poet, "year": None, "text": "\n".join(lines),
+                        "excerpt": False, "why": "A poem you haven't read here yet", "url": _search(title, poet)}
+    return None
+
+
+def poem_of_the_day(day, today_forecast=None, history=()):
+    """Today's poem, never one whose key is in history.
+
+    The best fit for the day comes first; once those have all been shown, a fresh one from PoetryDB,
+    then any curated poem not yet shown. Returns None rather than repeat a poem.
+    """
+    seen = set(history)
+    pick = next(((k, why) for k, why in _candidates(day, today_forecast) if k not in seen), None)
+    if not pick:  # save the other seasons' and holidays' poems for their own days if PoetryDB has one
+        fresh = _poetrydb(seen)
+        if fresh:
+            return fresh
+        pick = next(((k, "A poem you haven't read here yet") for k in POEMS if k not in seen), None)
+    if not pick:
+        return None
+    key, why = pick
     title, poet, year, text, excerpt = POEMS[key]
-    return {"title": title, "poet": poet, "year": year, "text": text, "excerpt": excerpt, "why": why,
+    return {"key": key, "title": title, "poet": poet, "year": year, "text": text, "excerpt": excerpt, "why": why,
             "url": "https://duckduckgo.com/?" + urllib.parse.urlencode({"q": f"! poetryfoundation {title} {poet}"})}
+
+
+def old_pick(day):
+    """The poem the old rotation (no history, no weather) showed on a day, to seed the history once."""
+    return _candidates(day, None)[0][0]

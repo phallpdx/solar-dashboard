@@ -3084,7 +3084,7 @@ function renderPoem() {
   $('poem-card').hidden = !p;
   if (!p) return;
   $('poem-why').textContent = p.why;
-  $('poem').innerHTML = `<b class="poem-title">${esc(p.title)}</b><span class="poem-by">${esc(p.poet)} · ${p.year}</span>
+  $('poem').innerHTML = `<b class="poem-title">${esc(p.title)}</b><span class="poem-by">${esc(p.poet)}${p.year ? ` · ${p.year}` : ''}</span>
     <div class="poem-text${p.text.split('\n').length > 14 ? ' poem-long' : ''}">${p.text.split('\n').map(l => l.trim() ? `<span>${esc(l)}</span>` : '<span class="gap"></span>').join('')}</div>
     ${p.text.split('\n').length > 14 ? '<button type="button" class="poem-more">Keep reading ▾</button>' : ''}${p.excerpt ? '<p class="note">An excerpt. The rest is worth it.</p>' : ''}
     <a class="joy-btn" href="${esc(p.url)}" target="_blank" rel="noopener">${p.excerpt ? 'Read the whole poem' : 'More about this poem'}</a>`;

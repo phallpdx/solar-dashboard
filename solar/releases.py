@@ -413,21 +413,109 @@ def _albums_on_page(title, year):
                 i = col[name]
                 return re.sub(r"\s+", " ", row[i]["text"]).strip() if i is not None and i < len(row) else ""
 
-            album_cell = row[col["album"]]
+            album_href, artist_href = row[col["album"]]["href"], row[col["artist"]]["href"]
             found.append({"date": when.isoformat(), "artist": text("artist"), "album": text("album"),
                           "genre": text("genre") or None, "label": text("label") or None,
-                          "url": album_cell["href"] or row[col["artist"]]["href"]})
+                          "url": album_href or artist_href, "album_page": album_href, "artist_page": artist_href})
     if not found and heads:
         raise RuntimeError(f"{len(heads)} tables, headers like {heads[:2]}")
     return found
 
 
-def albums(days=60, limit=250):
-    """Notable albums due out in the next couple of months, from Wikipedia's yearly album lists."""
+# Only notable albums make the list: ones critics liked, and big releases people are waiting for. Anticipation is
+# measured by how many people read the album's own Wikipedia article in the last 30 days.
+GOOD_REVIEWS = 75        # Metacritic score that counts as well reviewed
+BUZZ_UPCOMING = 5_000    # article views for an album not out yet (U2, Peter Gabriel, Steven Wilson clear this)
+BUZZ_RELEASED = 25_000   # article views for an album already out with no review score yet
+
+
+def _wiki_title(url):
+    if not url or "/wiki/" not in url:
+        return None
+    return urllib.parse.unquote(url.rsplit("/wiki/", 1)[-1].split("#")[0]).replace("_", " ") or None
+
+
+def _wiki_query(titles, **params):
+    """Run a Wikipedia query over many titles, 50 at a time, following continuations.
+    Returns {title as asked: page}, mapping redirects and normalized titles back to what was asked."""
+    pages = {}
+    titles = sorted(set(filter(None, titles)))
+    for i in range(0, len(titles), 50):
+        batch, cont = titles[i:i + 50], {}
+        while True:
+            data = _get("https://en.wikipedia.org/w/api.php?" + urllib.parse.urlencode(
+                {"action": "query", "titles": "|".join(batch), "format": "json", "formatversion": 2,
+                 "redirects": 1, **params, **cont}))
+            q = data.get("query") or {}
+            back = {}
+            for step in ("normalized", "redirects"):
+                for m in q.get(step) or []:
+                    back[m["to"]] = back.get(m["from"], m["from"])
+            for page in q.get("pages") or []:
+                asked = back.get(page.get("title"), page.get("title"))
+                merged = pages.setdefault(asked, {})
+                for k, v in page.items():
+                    if isinstance(v, dict) and isinstance(merged.get(k), dict):
+                        merged[k].update(v)
+                    elif v is not None:
+                        merged.setdefault(k, v)
+            cont = data.get("continue")
+            if not cont:
+                break
+    return pages
+
+
+def _views(titles):
+    """Page views over the last 30 days for each Wikipedia title."""
+    return {t: sum(v or 0 for v in (p.get("pageviews") or {}).values())
+            for t, p in _wiki_query(titles, prop="pageviews", pvipdays=30).items()}
+
+
+def _metacritic(titles):
+    """Metacritic scores (out of 100) from album articles' review boxes or reception sections."""
+    out = {}
+    for t, p in _wiki_query(titles, prop="revisions", rvprop="content", rvslots="main").items():
+        text = (((p.get("revisions") or [{}])[0].get("slots") or {}).get("main") or {}).get("content") or ""
+        m = (re.search(r"\|\s*MC\s*=[^|\n]*?(\d{1,3})\s*/\s*100", text)
+             or re.search(r"Metacritic[^.\n]{0,250}?(\d{1,3}) out of 100", text))
+        if m and 0 < int(m.group(1)) <= 100:
+            out[t] = int(m.group(1))
+    return out
+
+
+def _notable(found, today):
+    """Keep the well-reviewed and much-anticipated albums, each with a short reason."""
+    with_page = [a for a in found if a["album_page"]]  # an album with no article of its own isn't a big deal yet
+    if not with_page:
+        return []
+    out = lambda a: a["date"] <= today.isoformat()
+    views = _views(_wiki_title(a["album_page"]) for a in with_page)
+    scores = _metacritic(_wiki_title(a["album_page"]) for a in with_page if out(a))
+    picked = []
+    for a in with_page:
+        title = _wiki_title(a["album_page"])
+        buzz, score = views.get(title, 0), scores.get(title) if out(a) else None
+        if score is not None and score >= GOOD_REVIEWS:
+            why = f"Metacritic {score}"
+        elif not out(a) and buzz >= BUZZ_UPCOMING:
+            why = "Much anticipated"
+        elif out(a) and score is None and buzz >= BUZZ_RELEASED:
+            why = "Big release"
+        else:
+            continue
+        a = {k: v for k, v in a.items() if k not in ("album_page", "artist_page")}
+        picked.append({**a, "score": score, "buzz": buzz, "why": why})
+    return picked
+
+
+def albums(days=60, back=30, limit=60):
+    """Notable albums from the last month and the next couple of months, from Wikipedia's yearly album lists:
+    released ones that critics rated well on Metacritic, and big releases people are reading up on.
+    """
     today = dt.date.today()
-    end = today + dt.timedelta(days=days)
+    start, end = today - dt.timedelta(days=back), today + dt.timedelta(days=days)
     out, pages, notes = [], [], []
-    for year in sorted({today.year, end.year}):
+    for year in sorted({start.year, today.year, end.year}):
         for title in (f"List of {year} albums", f"List of {year} albums (January–June)",
                       f"List of {year} albums (July–December)"):
             try:
@@ -441,10 +529,10 @@ def albums(days=60, limit=250):
                 out.extend(rows)
     if not pages:
         raise RuntimeError("couldn't read Wikipedia's album lists (" + "; ".join(notes) + ")")
-    seen, picked = set(), []
+    seen, found = set(), []
     for a in sorted(out, key=lambda x: (x["date"], x["artist"].lower())):
         key = (a["artist"].lower(), a["album"].lower())
-        if today.isoformat() <= a["date"] <= end.isoformat() and a["artist"] and a["album"] and key not in seen:
+        if start.isoformat() <= a["date"] <= end.isoformat() and a["artist"] and a["album"] and key not in seen:
             seen.add(key)
-            picked.append(a)
-    return picked[:limit]
+            found.append(a)
+    return _notable(found, today)[:limit]

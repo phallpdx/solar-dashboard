@@ -1905,7 +1905,7 @@ body{background-color:#8F5A32;
       <div class="row">
         <section class="card half" aria-labelledby="alb-h">
           <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
-          <div class="scroll" id="albums" tabindex="0" aria-label="Upcoming albums, scrollable"></div>
+          <div class="scroll" id="albums" tabindex="0" aria-label="Notable new and upcoming albums, scrollable"></div>
         </section>
         <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
           <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
@@ -3786,14 +3786,21 @@ function renderComing() {
     $('kidmov').innerHTML = item({...k, kind: k.date ? k.date.slice(0, 4) : null,
       score: `${k.rating.toFixed(1)} on TMDB · ${k.votes.toLocaleString()} votes`}, null);
   }
-  let last = '';
-  $('albums').innerHTML = al.map(x => {
-    const head = x.date !== last ? `<div class="day-h">${dayLabel(x.date)}</div>` : '';
-    last = x.date;
-    const body = `<span><b>${esc(x.artist)} · <i>${esc(x.album)}</i></b><small>${[x.genre, x.label].filter(Boolean).map(esc).join(' · ') || '&nbsp;'}</small></span>`;
-    return head + (x.url ? `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">${body}</a>` : `<div class="story">${body}</div>`);
-  }).join('') || '<p class="note" style="padding:12px 0">No albums listed yet.</p>';
-  $('alb-meta').textContent = al.length ? `${al.length} albums, next 60 days · Wikipedia` : '';
+  // Only notable albums: well reviewed (Metacritic) or much anticipated. Lists saved before that filter existed
+  // carry no reason and are skipped, so the old every-release list never shows.
+  const notable = al.filter(x => x.why);
+  const out = notable.filter(x => x.date <= todayIso).sort((a, b) => b.date.localeCompare(a.date) || (b.score || 0) - (a.score || 0));
+  const due = notable.filter(x => x.date > todayIso).sort((a, b) => a.date.localeCompare(b.date));
+  const albumRow = x => {
+    const body = `<span><b>${esc(x.artist)} · <i>${esc(x.album)}</i></b><small>${[x.date > todayIso ? dayLabel(x.date) : 'out ' + dayLabel(x.date), x.genre].filter(Boolean).map(esc).join(' · ')}
+      <span class="pill">${x.score ? '★ ' : ''}${esc(x.why)}</span></small></span>`;
+    return x.url ? `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">${body}</a>` : `<div class="story">${body}</div>`;
+  };
+  $('albums').innerHTML =
+    (out.length ? `<div class="day-h">Out now and worth hearing</div>` + out.map(albumRow).join('') : '') +
+    (due.length ? `<div class="day-h">Much anticipated, coming up</div>` + due.map(albumRow).join('') : '') ||
+    '<p class="note" style="padding:12px 0">No standout albums right now.</p>';
+  $('alb-meta').textContent = notable.length ? 'Well reviewed or much anticipated · Metacritic, Wikipedia' : '';
 }
 
 async function renderLocal() {
@@ -4575,7 +4582,7 @@ const SOURCES = {
   'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY], 'jazz-h': [DAILY],
   'tv-h': [['TVmaze schedule and viewer ratings', 'https://www.tvmaze.com/'], ['Movie ratings: TMDB users', 'https://www.themoviedb.org/'], ['Where movies stream: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'kidmov-h': [['TMDB family movies rated G or PG', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
-  'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums']],
+  'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums'], ['Metacritic new releases', 'https://www.metacritic.com/browse/albums/release-date/new-releases/date']],
   'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
   'jar-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],
   'stake-h': [['NRCS SNOTEL', 'https://www.nrcs.usda.gov/wps/portal/wcc/home/']],
@@ -4839,7 +4846,7 @@ async function renderBriefing() {
   if (ending) add(48, 'br-card', `The <b>${esc(ending.title)}</b> ends ${whenWord(ending.ends)}. ${say('bluray', 0, 'Should the collection need reinforcement, now would be the time.')}`);
   const show = (D.streaming || []).filter(s => soon(s.date, 1) && s.kind === 'New series')[0];
   if (show) add(24, 'coming', `New ${whenWord(show.date)} on ${esc(show.service)}: ${esc(show.name || show.show || show.title || '')}.`);
-  const alb = (D.albums || []).filter(a => soon(a.date, 1))[0];
+  const alb = (D.albums || []).filter(a => a.why && soon(a.date, 1))[0];
   if (alb) add(18, 'music', `New music ${whenWord(alb.date)}: ${esc(alb.artist)}, “${esc(alb.album)}.”`);
   const sp5 = (D.markets || []).find(m => m.name === 'S&P 500');
   if (sp5 && Math.abs(sp5.day_pct) >= 1.5) add(46, 'more', `The markets ${sp5.day_pct > 0 ? 'rallied' : 'fell'} ${Math.abs(sp5.day_pct).toFixed(1)}% on the last trading day.`);

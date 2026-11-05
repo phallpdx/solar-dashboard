@@ -244,7 +244,7 @@ header h1{font-size:40px}
 .rec-k{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .rec b{font-size:19px;font-weight:800;letter-spacing:-.01em}.rec span:not(.rec-k){font-size:13.5px;font-weight:600;color:var(--body)}
 .rec .note{margin:4px 0}
-.rec a,#gear a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+.rec a,.rep a,#statewide a,#elect a,.group[data-sec=civics] .note a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
 .party{display:inline-block;font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--grid);color:var(--body);vertical-align:1px}
 .party.p-D{background:#E1EAFB;color:#1E4FA8}.party.p-R{background:#FBE3E1;color:#A8261E}
 .vote{white-space:nowrap;padding-left:12px}.vote.v-yea,.vote.v-aye{color:#2C7A3F}.vote.v-nay,.vote.v-no{color:#B3261E}.vote.v-notvoting{color:var(--muted)}
@@ -1328,11 +1328,6 @@ body{background-color:#8F5A32;
   mask:radial-gradient(circle 4px at 0 50%,transparent 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 4px at 100% 50%,transparent 97%,#000) right/51% 100% no-repeat}
 .group[data-sec=music] .lines a.link:hover{background-color:var(--orange);color:#FFF4DC}
 
-/* Used gear wears a record-shop price sticker */
-#gear>div>span:last-child,#flips>div>span:last-child{flex:none;align-self:center;width:74px;height:74px;margin-left:12px;padding:0 !important;border-radius:50%;display:grid;place-content:center;text-align:center;
-  background:var(--orange);color:#FFF4DC;font:400 17px/1 var(--funk);box-shadow:0 0 0 2px var(--ink),2px 2px 0 2px rgba(31,26,20,.5);transform:rotate(-8deg)}
-#gear>div>span:last-child small,#flips>div>span:last-child small{color:#FFF4DC;font:700 9.5px/1.3 var(--type);letter-spacing:.04em;text-transform:uppercase}
-
 /* Album birthdays and new albums get a little record instead of a cake */
 .bday .cake{flex:none;width:30px;height:30px;font-size:0;--lbl:var(--orange)}
 .bday:nth-child(6n+2) .cake{--lbl:var(--mustard)}.bday:nth-child(6n+3) .cake{--lbl:var(--teal)}.bday:nth-child(6n+4) .cake{--lbl:var(--brick)}
@@ -1846,7 +1841,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="local" data-tier="town" id="local" aria-labelledby="local-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food and openings, big events, grocery sales and the liquor store</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food and openings, big events and the liquor store</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
         <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
@@ -1861,17 +1856,10 @@ body{background-color:#8F5A32;
         <div class="lines" id="big"></div>
       </section>
       <div class="row">
-        <section class="card half" aria-labelledby="deal-h" id="deals-card" hidden>
-          <div class="head"><h2 id="deal-h">Grocery sales this week</h2><span class="meta" id="deal-meta"></span></div>
-          <div class="chips" id="deal-filter" role="group" aria-label="Filter by store"></div>
-          <div class="scroll" id="deals" tabindex="0" aria-label="Sale items, scrollable"></div>
-        </section>
         <section class="card half" aria-labelledby="food-new-h" id="rest-card" hidden>
           <div class="head"><h2 id="food-new-h">New restaurants worth trying</h2><span class="meta" id="rest-meta"></span></div>
           <div class="scroll" id="restaurants" tabindex="0" aria-label="Restaurants, scrollable"></div>
         </section>
-      </div>
-      <div class="row">
         <section class="card half" aria-labelledby="liq-h" id="liq-card" hidden>
           <div class="head"><h2 id="liq-h">New at the St. Johns liquor store</h2><span class="meta" id="liq-meta"></span></div>
           <div class="scroll" id="liquor" tabindex="0" aria-label="New bottles, scrollable"></div>
@@ -1881,7 +1869,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="music" data-tier="town" id="music" aria-labelledby="music-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to put on, shows and jazz around town, new albums and gear</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to put on, shows and jazz around town and new albums</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
         <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season and the weather; never repeated within a year</span></div>
@@ -1922,18 +1910,6 @@ body{background-color:#8F5A32;
         <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
           <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
           <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
-        </section>
-      </div>
-      <div class="row">
-        <section class="card half" aria-labelledby="gear-h" id="gear-card" hidden>
-          <div class="head"><h2 id="gear-h">Underpriced music gear</h2><span class="meta" id="gear-meta"></span></div>
-          <div class="lines" id="gear"></div>
-          <p class="note">Asking price against the low end of what the same model sells for used. Drums and percussion come first; 💰 marks ones that could resell for $150+ after about 15% in fees and pay $50+ an hour, counting the drive and selling time. Check it in person before handing over cash.</p>
-        </section>
-        <section class="card half" aria-labelledby="flips-h" id="flips-card" hidden>
-          <div class="head"><h2 id="flips-h">Flips around town</h2><span class="meta" id="flips-meta"></span></div>
-          <div class="lines" id="flips"></div>
-          <p class="note">Anything on Portland Craigslist that could resell for $150+ after about 15% in fees and pay $50+ an hour, counting the drive and selling time. The PC's model picks candidates overnight; resale prices come from used and sold prices it found online, linked below each one. Check condition and the going rate before you buy.</p>
         </section>
       </div>
     </div>
@@ -2745,7 +2721,6 @@ const DAILY_TITLES = {
   'trend-h': ['What people are searching', 'The internet today', 'Trending now'],
   'finds-h': ['Tasty new finds', 'New places to eat', 'Portland food news'],
   'big-h': ['Happening in town', 'Big nights out', 'In Portland soon'],
-  'deal-h': ['On sale this week', 'Grocery deals', 'Cheap eats this week'],
   'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski conditions'],
   'mkt-h': ['Money check', 'How markets look', 'Stocks at a glance'],
   'f1-h': ['F1 corner', 'Race weekend watch', 'Lights out soon'],
@@ -2892,7 +2867,6 @@ function render() {
   renderAlmanac();
   renderTrails();
   renderCivics();
-  renderGear();
   renderOutings();
   waits.push(renderRecords().then(renderBriefing));
   syncGroups();
@@ -3822,23 +3796,9 @@ function renderComing() {
   $('alb-meta').textContent = al.length ? `${al.length} albums, next 60 days · Wikipedia` : '';
 }
 
-let dealPick;
 async function renderLocal() {
-  const dl = D.deals;
   const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
   const [rest, liq, pm] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json'), getJson('localmusic.json')]);
-  const stores = (dl && dl.stores) || [];
-  $('deals-card').hidden = !stores.length;
-  if (stores.length) {
-    if (!stores.some(st => st.store === dealPick)) dealPick = stores[0].store;
-    chipFilter($('deal-filter'), stores.map(st => [st.store, null]), dealPick, n => { dealPick = n; renderLocal(); });
-    const st = stores.find(x => x.store === dealPick);
-    $('deal-meta').textContent = st.until ? `Through ${dayLabel(st.until)}` : '';
-    $('deals').innerHTML = st.items.map(x => `<div class="story">
-        ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" onerror="this.remove()" style="object-fit:contain;background:#fff">` : ''}
-        <span><b>${esc(x.name)}</b><small>${[x.price ? esc(x.price) : null, x.was ? 'was $' + x.was.toFixed(2) : null].filter(Boolean).join(' · ')}
-        ${x.pct_off ? ` <span class="pill">${x.pct_off}% off</span>` : ''}</small>${x.deal ? `<p>${esc(x.deal)}</p>` : ''}</span></div>`).join('');
-  }
   const rs = (rest && rest.restaurants) || [];
   $('rest-card').hidden = !rs.length;
   if (rs.length) {
@@ -3866,7 +3826,7 @@ async function renderLocal() {
       ${x.why ? `<p>${esc(x.why)}</p>` : ''}
       ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
-  $('local').hidden = $('deals-card').hidden && $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
+  $('local').hidden = $('rest-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
 }
 
 function renderDrives() {
@@ -4607,7 +4567,6 @@ const SOURCES = {
   'minus-h': [NOAA_TIDES],
   'cev-h': [DAILY],
   'shell-h': [['Oregon Dept. of Agriculture shellfish closures', 'https://www.oregon.gov/oda/programs/foodsafety/shellfish/pages/shellfishclosures.aspx'], ['ODFW crabbing and clamming report', 'https://myodfw.com/recreation-report/crabbing-clamming-report']],
-  'deal-h': [['Store flyers via Flipp', 'https://flipp.com/']],
   'food-new-h': [DAILY],
   'ski-h': [['Season outlook: daily web check of NOAA, resort and NWAC pages, linked on each item', ''], ['Resort conditions pages', 'https://www.skihood.com/the-mountain/conditions'], ['NRCS SNOTEL', 'https://www.nrcs.usda.gov/resources/data-and-reports/snow-and-water-interactive-map'], ['NWAC avalanche forecast', 'https://nwac.us/'], OM],
   'plan-h': [['Daily web check of venue, ticketing, resort and agency pages; each item links its source', '']],
@@ -4745,9 +4704,9 @@ async function renderBriefing() {
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
   const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
-  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf, flipList] = await Promise.all(
+  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf] = await Promise.all(
     ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json', 'restaurants.json',
-     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json', 'flips.json'].map(getJson));
+     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json'].map(getJson));
   // Something different every morning: lists are walked one item a day, so the same note never sits there for weeks.
   const dayNo = Math.floor(new Date(today + 'T12:00').getTime() / 864e5);
   const rot = (list, salt = 0) => list && list.length ? list[(dayNo + salt) % list.length] : null;
@@ -4928,16 +4887,6 @@ async function renderBriefing() {
     const morning = now.getHours() < 12;
     add(morning ? 66 : 24, 'rec-card', `For the gramophone this ${morning ? 'morning' : 'day'}: <b>${esc(rp.classic.album)}</b> by ${esc(rp.classic.artist)} (${rp.classic.year}).${rp.classic.why ? ' ' + esc(rp.classic.why.replace(/^(.*?[.!?])\s.*$/s, '$1')) : ''} And for something newer, <b>${esc(rp.modern.album)}</b> by ${esc(rp.modern.artist)}${rp.live ? `, playing ${esc(rp.live.venue)} ${calDay(rp.live.date).toLowerCase()}` : ''}.`);
   }
-
-  // Craigslist
-  // Wish-list finds (Craviotto, old K Zildjians), then flips worth the trouble, then drum gear: what Parker is after.
-  const gearNew = ((D.gear && D.gear.deals) || []).filter(d => d.first_seen && daysTo(d.first_seen) >= -1);
-  const wish = gearNew.find(d => d.watch);
-  if (wish) add(88, 'gear-card', `<b>On your wish list:</b> ${esc(wish.title)} is on Craigslist for $${wish.price.toLocaleString()}${wish.pct_off > 0 ? `, about ${wish.pct_off}% under the usual` : ''}. ${say('gear', 1, 'One might move quickly, sir.')}`);
-  const flip = ((flipList && flipList.flips) || []).find(x => x.first_seen && daysTo(x.first_seen) >= -1);
-  if (flip) add(flip.hourly >= 100 ? 79 : 70, 'flips-card', `A flip worth the drive: <b>${esc(flip.title)}</b> for $${flip.price.toLocaleString()}${flip.where ? ' in ' + esc(flip.where) : ''}. It resells for about $${flip.value.toLocaleString()}, so roughly $${flip.profit.toLocaleString()} after fees, near $${flip.hourly} an hour. ${say('gear', 2, 'One might move quickly, sir.')}`);
-  const steal = gearNew.find(d => d.flip_profit && d !== wish) || gearNew.find(d => d.drums && !d.watch) || gearNew.find(d => d.pct_off >= 45 && !d.watch);
-  if (steal) add(steal.flip_profit ? 74 : steal.drums ? 60 : steal.pct_off >= 55 ? 57 : 43, 'gear-card', `On Craigslist: <b>${esc(steal.title)}</b> for $${steal.price.toLocaleString()}, about ${steal.pct_off}% under the usual${steal.flip_profit ? `. Resold, it could clear roughly $${steal.flip_profit.toLocaleString()} after fees${steal.flip_hourly ? `, about $${steal.flip_hourly} an hour with the drive and the selling` : ''}` : ''}. ${say('gear', 0, 'One might move quickly, sir.')}`);
 
   // Elections
   const cv = D.civics;
@@ -5125,42 +5074,6 @@ function renderCivics() {
   const missing = [!c.keys.congress && 'a free CONGRESS_KEY shows the bills your members of Congress sponsor', !c.keys.openstates && 'a free OPENSTATES_KEY adds your state senator and representative', !c.keys.ballot && 'a GOOGLE_CIVIC_KEY lists what’s on your ballot'].filter(Boolean);
   $('civ-keys').hidden = !missing.length;
   $('civ-keys').textContent = missing.length ? 'To add more: ' + missing.join('; ') + '.' : '';
-}
-
-// ------------------------------------------------------------------ craigslist gear
-async function renderFlips() {
-  const f = await getJson('flips.json');
-  const list = (f && f.flips) || [];
-  $('flips-card').hidden = !f;
-  if (!f) return;
-  $('flips-meta').textContent = `${(f.checked || 0).toLocaleString()} listings checked${f.updated ? ' · ' + dayLabel(f.updated) : ''}`;
-  $('flips').innerHTML = list.length ? list.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.first_seen === todayIso() ? ' <small class="up">New</small>' : ''} <small class="up">${esc(x.category)}</small>
-      <br><small>Resells for about $${x.value.toLocaleString()} used (${srcLinks(x.sources)})${x.where ? ' · ' + esc(x.where) : ''}</small></span>
-      <span style="white-space:nowrap;padding-left:12px">$${x.price.toLocaleString()}<br><small>+$${x.profit.toLocaleString()} · $${x.hourly}/hr</small></span></div>`).join('')
-    : '<p class="note">No flips worth the trip right now.</p>';
-}
-
-// "Oct 4", or "Oct 4, 2025" when it isn't this year
-const soldDay = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: y === new Date().getFullYear() ? undefined : 'numeric' }); };
-// How fast it would resell on Reverb: recent sales against what's listed now (solar/gear.py reverb_sold)
-const sellSpeed = s => {
-  const icon = { fast: '🐇 Sells fast', steady: '🚶 Sells steadily', slow: '🐢 Sells slowly' }[s.speed] || 'Sells slowly';
-  const pace = s.recent ? `${s.recent} sold in the last ${s.recent_days} days, ${s.active >= 100 ? '100+' : s.active} listed now` : `none sold in the last ${s.recent_days} days`;
-  return `${icon} on Reverb${s.sell_time ? `, likely ${s.sell_time} to sell` : ''} (${pace})`;
-};
-function renderGear() {
-  renderFlips();
-  const g = D.gear;
-  $('gear-card').hidden = !g;
-  if (!g) return;
-  $('gear-meta').innerHTML = `Portland Craigslist · ${g.checked} listings checked ${g.at ? ago(g.at) : ''} · <a href="https://portland.craigslist.org/search/msa" target="_blank" rel="noopener">All</a>`;
-  $('gear').innerHTML = g.deals.length ? g.deals.map(d => `<div><span><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>${d.first_seen === todayIso() ? ' <small class="up">New</small>' : ''}${d.watch ? ` <small class="up">⭐ ${esc(d.watch)}</small>` : d.drums ? ' <small class="up">🥁 Drums</small>' : ''}${d.flip_profit ? ` <small class="up">💰 Flip: ~$${d.flip_profit.toLocaleString()} profit${d.flip_hourly ? `, ~$${d.flip_hourly}/hr` : ''}</small>` : ''}
-      <br><small>${d.typical ? `Usually about $${d.typical.toLocaleString()} (${esc(d.basis)})` : 'On your wish list; no comparable sales to price it against'}${d.where ? ' · ' + esc(d.where) : ''}${d.listed_price ? ` · listed at $${d.listed_price.toLocaleString()}, but the post asks $${d.price.toLocaleString()}` : ''}</small>
-      ${d.sold ? `<br><small>Sold on Reverb: last <a href="${esc(d.sold.last_url || d.sold.url)}" target="_blank" rel="noopener">$${d.sold.last.toLocaleString()}</a>${d.sold.last_date ? ` (listed ${soldDay(d.sold.last_date)})` : ''}${d.sold.n > 1 ? ` · average $${d.sold.avg.toLocaleString()} across <a href="${esc(d.sold.url)}" target="_blank" rel="noopener">${d.sold.n} sales</a>` : ''}</small>` : ''}
-      ${d.sold && d.sold.recent != null ? `<br><small>${sellSpeed(d.sold)}</small>` : ''}
-      ${!d.flip_profit && d.resale_profit != null ? `<br><small>Not a flip: reselling would clear ${d.resale_profit > 0 ? `about $${d.resale_profit.toLocaleString()}, roughly $${Math.max(0, d.resale_hourly)}/hr` : 'nothing'} after fees and the drive, under your $50/hr.</small>` : ''}</span>
-      <span style="white-space:nowrap;padding-left:12px">$${d.price.toLocaleString()}<br><small>${d.pct_off > 0 ? `${d.pct_off}% under` : d.pct_off != null ? 'at market' : 'wish list'}</small></span></div>`).join('')
-    : '<p class="note">Nothing priced well below usual right now.</p>';
 }
 
 // ------------------------------------------------------------------ morning records

@@ -2,94 +2,43 @@
   "updated": "2026-11-05",
   "deals": [
     {
-      "title": "Blade Runner: The Final Cut (1982)",
+      "title": "In the Mouth of Madness (Arrow 4K UHD)",
       "store": "Amazon",
-      "detail": "$5 (Blu-ray)",
-      "ends": "2026-11-05",
-      "url": "https://slickdeals.net/f/20256093-blade-runner-the-final-cut-bd-blu-ray-5-amazon-com"
+      "detail": "Arrow's limited edition 4K for $25 (list $49.95), posted Oct 30; free shipping with Prime or on $35+.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20231970-in-the-mouth-of-madness-4k-ultra-hd-arrow-edition-25-amazon-com"
     },
     {
       "title": "Star Trek 4K UHD Blu-rays",
       "store": "Amazon",
-      "detail": "Into Darkness $10, First Contact $12.50 & More",
+      "detail": "Into Darkness $9.99, First Contact $12.49, The Search for Spock $12.49 and more; posted Nov 3.",
       "ends": null,
       "url": "https://slickdeals.net/f/20252106-star-trek-4k-blu-rays-first-contact-12-49-the-search-for-spock-12-49-into-darkness-9-99-more-free-shipping-w-prime-or-on-35"
     },
     {
       "title": "Star Trek IX: Insurrection (4K UHD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "$12.50",
+      "detail": "$12.49.",
       "ends": null,
       "url": "https://slickdeals.net/f/20238003-star-trek-ix-insurrection-uhd-4k-blu-ray-12-49-amazon-com"
     },
     {
-      "title": "Madagascar: The Complete Collection (Blu-ray)",
-      "store": "gruv.com",
-      "detail": "$12 + Free S&H",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20237151-madagascar-the-complete-collection-blu-ray-set-blu-ray-11-99-plus-extra-15-off-for-new-gruv-accounts"
-    },
-    {
-      "title": "Clerks (Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$8",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20209209-clerks-blu-ray-digital-8"
-    },
-    {
-      "title": "Puss in Boots (4K Ultra HD + Blu-ray) [UHD]",
+      "title": "Gruv 4K UHD special offers",
       "store": "Gruv",
-      "detail": "$14.99",
+      "detail": "Family 4K discs: Puss in Boots $14.99, Minions: The Rise of Gru $14.99, Despicable Me 1-3 $27.99.",
       "ends": null,
       "url": "https://gruv.com/collections/4k-uhd-special-offers"
-    },
-    {
-      "title": "Minions: The Rise of Gru (4K Ultra HD + Blu-ray) [UHD]",
-      "store": "Gruv",
-      "detail": "$14.99",
-      "ends": null,
-      "url": "https://gruv.com/collections/4k-uhd-special-offers"
-    },
-    {
-      "title": "Despicable Me 1-3 (4K Ultra HD) [UHD]",
-      "store": "Gruv",
-      "detail": "$27.99",
-      "ends": null,
-      "url": "https://gruv.com/collections/4k-uhd-special-offers"
-    },
-    {
-      "title": "Kung Fu Panda (4K Ultra HD) [UHD]",
-      "store": "Gruv",
-      "detail": "",
-      "ends": null,
-      "url": "https://gruv.com/collections/4k-uhd-special-offers"
-    },
-    {
-      "title": "4K Go Limited Edition 4K UHD",
-      "store": "Arrow Films US",
-      "detail": "$35.00",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
-    },
-    {
-      "title": "4K Pedicab Driver Limited Edition 4K UHD",
-      "store": "Arrow Films US",
-      "detail": "$35.00",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
-    },
-    {
-      "title": "4K Excalibur Limited Edition 4K UHD",
-      "store": "Arrow Films US",
-      "detail": "$45.00",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/new-in/4k-ultra-hd"
     }
   ],
   "upcoming": [
     {
+      "title": "Barnes & Noble Criterion 50% off",
+      "detail": "Reported (not yet confirmed by B&N) to run Friday, Nov 6 through Sunday, Dec 6, covering all in-stock discs including preorders.",
+      "url": "https://x.com/iNCREDiPiNOY/status/2117654747654308220"
+    },
+    {
       "title": "Vinegar Syndrome Black Friday",
-      "detail": "Flash pre-order event reported for Nov 1 at 12:01 a.m. ET through Nov 4, with the main Black Friday sale starting Nov 27 at 12:01 a.m. ET.",
+      "detail": "Main Black Friday sale reported to start Nov 27 at 12:01 a.m. ET, after a Nov 1 to 4 flash pre-order event.",
       "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
     }
   ],

@@ -1,54 +1,86 @@
 {
   "updated": "2026-11-05",
-  "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates are reported by guides but not yet confirmed by organizers, so check before going.",
+  "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
       "title": "Curiosity Kids at OMSI",
       "date": "2026-10-31",
       "ends": "2026-11-28",
       "where": "OMSI, Portland",
-      "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Oct 31, Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
+      "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
       "url": "https://omsi.edu/curiosity-kids/"
     },
     {
-      "title": "Fall Discount Days",
+      "title": "Fall Discount Days at the Oregon Zoo",
       "date": "2026-11-02",
       "ends": "2026-11-08",
-      "where": "Portland, OR",
-      "detail": "Connect with nature for $13 admission from 9:30 a.m. to 3:30 p.m.",
+      "where": "Oregon Zoo, Portland",
+      "detail": "$13 zoo admission, 9:30 a.m. to 3:30 p.m.",
       "url": "https://www.oregonzoo.org/events/fall-discount-days"
     },
     {
-      "title": "STEM Family Sundays",
-      "date": "2026-11-05",
-      "ends": null,
-      "where": "iFLY Portland",
-      "detail": "Family STEM activities are available on Sundays.",
-      "url": "https://allevents.in/portland/kids"
-    },
-    {
-      "title": "Veterans Day",
+      "title": "Veterans Day at the Oregon Zoo",
       "date": "2026-11-11",
       "ends": null,
-      "where": "Portland, OR",
-      "detail": "Free admission for military members, veterans and their families from 9:30 a.m. to 3:30 p.m.",
+      "where": "Oregon Zoo, Portland",
+      "detail": "Free admission for military members, veterans and their families, 9:30 a.m. to 3:30 p.m.",
       "url": "https://www.oregonzoo.org/events/veterans-day"
     },
     {
-      "title": "ZooLights Sensory-Friendly",
+      "title": "ZooLights Sensory-Friendly Night",
       "date": "2026-11-16",
       "ends": null,
-      "where": "Portland, OR",
-      "detail": "A sensory-friendly experience for families with different processing needs from 4:30 to 8:30 p.m.",
+      "where": "Oregon Zoo, Portland",
+      "detail": "A calmer ZooLights evening for families with different sensory processing needs, 4:30 to 8:30 p.m.",
       "url": "https://www.oregonzoo.org/sensory-night"
     },
     {
       "title": "ZooLights",
       "date": "2026-11-20",
       "ends": null,
-      "where": "Portland, OR",
-      "detail": "Enjoy dazzling wildlife-inspired light displays and familiar favorites.",
+      "where": "Oregon Zoo, Portland",
+      "detail": "Wildlife-themed holiday light displays; tickets are sold for specific dates. Go early in the evening with little ones.",
       "url": "https://www.oregonzoo.org/lights"
+    },
+    {
+      "title": "U-cut Christmas trees at Sauvie Island Farms",
+      "date": "2026-11-21",
+      "ends": "2026-12-24",
+      "where": "Sauvie Island Farms, Sauvie Island",
+      "detail": "The farm's blog lists u-cut trees Nov 21 to Dec 24, 9 am to 5 pm, self-serve on the honor system; all trees $60, paid by Venmo or cash.",
+      "url": "https://sifarms.blogspot.com/"
+    },
+    {
+      "title": "Vancouver Community Tree Lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Vancouver Waterfront, Vancouver WA",
+      "detail": "Free Rotary Club tree lighting; Explore Washington State reports Friday, Nov 27, 2026, with the Christmas Ships escorting Santa's tugboat to the waterfront. Time not yet confirmed by the organizer.",
+      "url": "https://explorewashingtonstate.com/?p=156568"
+    },
+    {
+      "title": "Winter Wonderland drive-through lights",
+      "date": "2026-11-27",
+      "ends": "2026-12-31",
+      "where": "Portland International Raceway, North Portland",
+      "detail": "Drive-through holiday light show benefiting Sunshine Division; Travel Portland lists Nov 27 to Dec 31, 2026, with hours that vary by day. Easy for a toddler since you stay in the car.",
+      "url": "https://www.travelportland.com/event/806447/"
+    },
+    {
+      "title": "Seaside Turn On The Town",
+      "date": "2026-11-28",
+      "ends": null,
+      "where": "Seaside Amphitheater, Seaside",
+      "detail": "Holiday season kickoff party listed for 3 to 5 pm, with Santa lighting the town; this date comes from a third-party listing, not the Seaside Chamber.",
+      "url": "https://homeownerscollection.com/events/holidays/turn-town"
+    },
+    {
+      "title": "Christmas Ships Parade",
+      "date": "2026-12-03",
+      "ends": "2026-12-20",
+      "where": "Columbia and Willamette rivers",
+      "detail": "Lighted boat parades on both rivers; Carnifest reports Dec 3 to 20, 2026. Nightly routes are on christmasships.org, and parades can be cancelled for weather.",
+      "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
     }
   ]
 }

@@ -913,16 +913,19 @@ def refresh_bluray(data, sources):
         url = pick_url(r.get("url"), links, None)
         if not url:
             return None  # a deal without its own link isn't usable
+        if not re.search(r"\b(4k|uhd|2160p)\b", f"{r.get('title')} {r.get('detail')}", re.I):
+            return None  # the list is 4K deals only
         return {"title": clean(r["title"], 140), "store": clean(r.get("store"), 60), "detail": clean(r.get("detail"), 300),
                 "ends": r.get("ends"), "url": url}
 
-    new = extract(sources, "List current Blu-ray or 4K UHD disc deals and sales on this page. store is the retailer. "
+    new = extract(sources, "List every current 4K UHD disc deal and every sale that includes 4K UHD discs on this page. "
+                           "Skip deals that are only regular Blu-ray or DVD. store is the retailer. "
                            "detail gives the price and what is included. ends is the end date if stated, else null.",
                   {"title": S, "store": S, "detail": S, "ends": DATE, "url": S}, build, max_age_days=4)
     old = data.get("deals", [])
     # Deals with no end date are only replaced when there is fresh news to replace them with.
     keep = (lambda x: x.get("ends") and still_current(x, ["ends"])) if len(new) >= 3 else (lambda x: still_current(x, ["ends"]))
-    data["deals"] = merge(old, new, "title", "ends", keep, by_date("ends"), 12)
+    data["deals"] = merge(old, new, "title", "ends", keep, by_date("ends"), 40)
     return data
 
 

@@ -8,6 +8,10 @@ on:
       urls:
         description: "Space-separated URLs"
         required: true
+      headers:
+        description: "Optional extra request headers, separated by | (e.g. Accept-Version: 3.0|Accept: application/hal+json)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -19,13 +23,17 @@ jobs:
       - name: Fetch
         env:
           URLS: ${{ inputs.urls }}
+          HEADERS: ${{ inputs.headers }}
         run: |
           mkdir out && cd out
           i=0
+          hdr=()
+          IFS='|' read -ra hs <<< "$HEADERS"
+          for h in "${hs[@]}"; do [ -n "$h" ] && hdr+=(-H "$h"); done
           for u in $URLS; do
             i=$((i+1))
             : > body
-            code=$(curl -sL -A "Mozilla/5.0 (solar-dashboard personal dashboard)" -e "$u" -o body --max-time 40 -w '%{http_code} %{content_type}' "$u" || echo "fail")
+            code=$(curl -sL "${hdr[@]}" -A "Mozilla/5.0 (solar-dashboard personal dashboard)" -e "$u" -o body --max-time 40 -w '%{http_code} %{content_type}' "$u" || echo "fail")
             { echo "URL: $u"; echo "STATUS: $code"; echo "BYTES: $(wc -c < body 2>/dev/null)"; echo; head -c 4000000 body 2>/dev/null; } > "$i.txt"
             rm -f body
           done

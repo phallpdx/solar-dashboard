@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 VOICE = "th-TH-PremwadeeNeural"
-SLOW = "-35%"
+SLOW = ("-35%", "-25%", "-15%")  # the voice sometimes returns nothing for a short phrase at one rate, so try the next
 
 
 def name(thai, slow=False):
@@ -28,13 +28,15 @@ async def make(folder, todo):
     folder.mkdir(parents=True, exist_ok=True)
     for thai, slow in todo:
         out = folder / name(thai, slow)
-        try:
-            await edge_tts.Communicate(thai, VOICE, rate=SLOW if slow else "+0%").save(str(out) + ".part")
-            os.replace(str(out) + ".part", out)
-            print("Recorded", out.name)
-        except Exception as e:  # one failed phrase shouldn't stop the rest; it is tried again next run
-            Path(str(out) + ".part").unlink(missing_ok=True)
-            print("Could not record", thai, e, file=sys.stderr)
+        for rate in SLOW if slow else ("+0%",):
+            try:
+                await edge_tts.Communicate(thai, VOICE, rate=rate).save(str(out) + ".part")
+                os.replace(str(out) + ".part", out)
+                print("Recorded", out.name, rate)
+                break
+            except Exception as e:  # one failed phrase shouldn't stop the rest; it is tried again next run
+                Path(str(out) + ".part").unlink(missing_ok=True)
+                print("Could not record", thai, rate, e, file=sys.stderr)
 
 
 def main():

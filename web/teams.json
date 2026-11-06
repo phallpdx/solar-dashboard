@@ -1,101 +1,55 @@
 {
-  "updated": "2026-11-04",
-  "updated_at": "2026-11-05T07:29:47Z",
+  "updated": "2026-11-06",
+  "updated_at": "2026-11-06T13:12:15Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are celebrating a 6-1 start and first place in the West. However, Vit Krejci suffered an ankle injury.",
+      "mood": "Thrilled but wary",
+      "pulse": "Rip City is riding a 6-1 start after road wins in Denver and Phoenix, and the road record is still perfect. The buzz got dented when Vit Krejci fractured his lower left leg against the Suns, leaving the backcourt thin heading into tonight's game at the Lakers.",
       "storylines": [
-        "Blazers hold perfect road record at 5-0.",
-        "Vit Krejci fractured his lower left ankle.",
-        "Team holds sole possession of first place in West.",
-        "Deni Avdija leads NBA in foul frequency on drives."
+        "Won 132-119 at Phoenix on Wednesday: Lillard had 25, Clingan had his best offensive night of the season (24 pts, 11 reb, 3 blk).",
+        "Beat Denver 118-110 on Monday behind Deni Avdija's 28, with Toumani Camara's late three sealing it.",
+        "Krejci fractured his lower left leg taking a charge; he's out tonight and coach Micah Nori says surgery hasn't been decided.",
+        "With Sharpe, Morant and Krejci all out, Lillard, Scoot Henderson and Jrue Holiday carry the guard minutes."
       ],
       "sources": [
-        {
-          "name": "Blazer's Edge",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/117593/portland-trail-blazers-los-angeles-lakers-final-score-boxscore-luka-doncic-ja-morant-deni-avdija"
-        },
-        {
-          "name": "ESPN",
-          "url": "https://www.espn.com/nba/recap?gameId=401909880"
-        },
-        {
-          "name": "Yahoo Sports box score",
-          "url": "https://sports.yahoo.com/nba/portland-trail-blazers-los-angeles-lakers-2026102713/"
-        },
-        {
-          "name": "Al Jazeera",
-          "url": "https://www.aljazeera.com/sports/2026/10/28/nba-portland-blazers-prevail-in-battle-of-unbeatens-against-la-lakers-celtics-spurs-knicks-pistons"
-        },
-        {
-          "name": "KATU schedule",
-          "url": "https://katu.com/resources/pdf/1d121093-8a38-46bb-a273-41e09f1e0929-202627TrailBlazersSchedulebyList.pdf"
-        }
+        {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/gameday-coverage/117944/portland-trail-blazers-phoenix-suns-score-recap-deni-avdija-damian-lillard-donovan-clingan-nba-news"},
+        {"name": "ESPN (Suns recap)", "url": "https://www.espn.com/nba/recap?gameId=401909932"},
+        {"name": "ESPN (Nuggets recap)", "url": "https://www.espn.com/nba/recap?gameId=401909918"},
+        {"name": "Hoops Rumors", "url": "https://www.hoopsrumors.com/2026/11/blazers-vit-krejci-expected-to-miss-significant-time.html"},
+        {"name": "SI / Blazers On SI", "url": "https://www.si.com/nba/trailblazers/onsi/vit-krejci-injury-means-blazers-rotation-winners-and-losers"}
       ]
     },
     "timbers": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans are excited after three straight wins and packed home games. Playoff scenarios remain complex heading into Decision Day.",
+      "mood": "Nervous hope",
+      "pulse": "The 3-1 home win over Houston on Sunday pulled Portland back into an eighth-place Wild Card spot, so the playoff fate is in their own hands. It all comes down to Decision Day at Austin tomorrow.",
       "storylines": [
-        "Timbers have won three consecutive matches.",
-        "Playoff positioning depends on various Decision Day permutations.",
-        "Timbers2 lost 1-0 to Ventura County in playoffs.",
-        "Academy player Eric Izoita signed a first-team contract."
+        "Beat Houston 3-1 on Nov. 1: David Da Costa and Kristoffer Velde scored, and Vincent Janssen added the insurance goal after Houston pulled one back.",
+        "A win at Austin on Saturday clinches a third straight playoff berth, in Martí Cifuentes' first season in charge.",
+        "A draw is enough only if Colorado loses at Dallas.",
+        "A win guarantees at least a Wild Card spot, and seventh place (a direct Round One berth) is still possible."
       ],
       "sources": [
-        {
-          "name": "beIN Sports",
-          "url": "https://beinsports.com/en-us/soccer/mls/articles/portland-great-chara-confirms-impending-retirement-2026-10-27"
-        },
-        {
-          "name": "Field Level Media",
-          "url": "https://www.yardbarker.com/soccer/articles/st_louis_city_out_to_shake_mini_league_slump_vs_visiting_timbers/s1_17064_44482570"
-        },
-        {
-          "name": "Sports Mole",
-          "url": "https://www.sportsmole.co.uk/football/saint-louis-city/preview/st-louis-city-vs-portland-prediction-team-news-lineups_577154.html"
-        },
-        {
-          "name": "Prost Amerika",
-          "url": "https://prostinternational.com/2026/10/26/timbers-stay-alive-in-the-playoff-race-after-an-in-extremis-3-2-win-over-charlotte-fc/"
-        },
-        {
-          "name": "OPB",
-          "url": "https://www.opb.org/article/2026/10/25/alexander-aravena-ariel-lassiter-rally-timbers-to-3-2-victory-over-charlotte/"
-        }
+        {"name": "MLSsoccer.com", "url": "https://www.mlssoccer.com/news/portland-timbers-put-playoff-fate-back-in-own-hands"},
+        {"name": "Timbers.com scenarios", "url": "https://www.timbers.com/news/postseason-scenarios-how-the-timbers-can-clinch-a-spot-in-the-audi-2026-mls-cup-playoffs"},
+        {"name": "MLS Decision Day scenarios", "url": "https://www.mlssoccer.com/news/decision-day-scenarios-final-playoff-spots-round-one-hosting-2026"},
+        {"name": "Sports Mole preview", "url": "https://www.sportsmole.co.uk/football/austin-fc/preview/austin-vs-portland-prediction-team-news-lineups_608550.html"}
       ]
     },
     "f1": {
-      "mood": "tense and uncertain",
-      "pulse": "Fans are reacting to Kimi Antonelli's championship win. Verstappen has raised concerns regarding racing in the Middle East due to regional instability.",
+      "mood": "Spicy",
+      "pulse": "Kimi Antonelli is now F1's youngest-ever champion after finishing third in Mexico City, where Max Verstappen took the win. The bigger talking point is Ferrari's civil war after Hamilton and Leclerc tangled for the lead and threw away a likely win, and the circus heads to Interlagos this weekend.",
       "storylines": [
-        "Kimi Antonelli wins WDC for Mercedes",
-        "Verstappen questions racing in Qatar/Abu Dhabi",
-        "Rafael Camara to debut with Haas",
-        "Alan Jones passes away aged 80"
+        "Antonelli, 20, clinched the title in Mexico: first Italian champion since Ascari in 1953 and Mercedes' first drivers' crown since 2020.",
+        "Ferrari row: Hamilton said a teammate 'worked against' him, Leclerc got a 5-second penalty, and Vasseur scolded both for a lack of respect.",
+        "Mercedes can wrap up the constructors' title in Brazil by outscoring Ferrari by three points or more.",
+        "Rafael Câmara makes his F1 debut for Haas at his home race, replacing Esteban Ocon; no sprint this weekend."
       ],
       "sources": [
-        {
-          "name": "Sky Sports",
-          "url": "https://www.skysports.com/f1/news/13603683/kimi-antonelli-f1-title-permutations-how-mercedes-driver-can-win-2026-formula-1-drivers-championship-at-mexico-city-gp-on-sunday"
-        },
-        {
-          "name": "Autosport",
-          "url": "https://www.autosport.com/f1/news/the-maths-behind-antonelli-becoming-f1-world-champion-at-mexico-gp/10868378/"
-        },
-        {
-          "name": "Grande Prêmio",
-          "url": "https://grandepremio.com/en/f1/antonelli-moves-within-2-points-of-f1-title-as-russell-and-hamilton-survive-austin-showdown/"
-        },
-        {
-          "name": "ESPN",
-          "url": "https://www.espn.com/f1/story/_/id/50131911/kimi-antonelli-formula-1-title-race-permutations-standings-explained"
-        },
-        {
-          "name": "RaceFans",
-          "url": "https://www.racefans.net/2026/10/25/antonelli-on-cusp-of-winning-title-after-victory-in-austin-and-penalty-for-russell/"
-        }
+        {"name": "Formula1.com (race)", "url": "https://www.formula1.com/en/latest/article/antonelli-crowned-youngest-ever-f1-champion-as-verstappen-wins-eventful-mexico-city-grand-prix.xpMMeef0KmRURs9IDs3LH"},
+        {"name": "ESPN", "url": "https://www.espn.com/f1/story/_/id/50320323/max-verstappen-wins-mexico-city-gp-red-bull-kimi-antonelli-seals-historic-title-mexico-city-grand-prix-formula-1-autodromo-hermanos-rodriguez"},
+        {"name": "Formula1.com (Vasseur)", "url": "https://www.formula1.com/en/latest/article/its-a-matter-of-respect-vasseur-airs-frustrations-over-ferrari-intra-team-clash-in-mexico.33Ed4HMOlbqcaZlQ37hA0F"},
+        {"name": "The Race", "url": "https://the-race.com/formula-1/where-ferrari-f1-drivers-mexico-clash-crossed-new-line/"},
+        {"name": "Grande Prêmio", "url": "https://grandepremio.com/en/f1/sao-paulo-f1-gp-2026-five-things-to-watch-before-practice-begins-at-interlagos/"}
       ]
     }
   }

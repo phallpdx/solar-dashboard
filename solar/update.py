@@ -772,7 +772,16 @@ def fetch_culture(state, now_utc):
         if store.get("books_user") != user or store.get("books_v") != 5:  # v5 adds unread classics, the to-read pile, and skips translations
             store.pop("books_at", None)
             store["books_user"], store["books_v"] = user, 5
-        _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, errors)
+        book_errors = []
+        _refresh(store, "books", lambda: culture.book_picks(user, today), 12, now_utc, book_errors)
+        if book_errors and "404" in book_errors[0] and store.get("books"):
+            # Goodreads took its public shelf feeds down in November 2026. Keep the last good picks and say so
+            # on the card instead of counting it as a failure every run.
+            store["books_note"] = f"Goodreads no longer publishes shelf feeds; picks are from your shelves as of {store.get('books_at', '')[:10]}"
+        else:
+            errors += book_errors
+            if not book_errors:
+                store.pop("books_note", None)
     return "; ".join(errors) or None
 
 
@@ -1118,7 +1127,7 @@ def fetch_live(state, now_utc):
     _refresh(store, "fires", lambda: live.wildfires(lat, lon), 1, now_utc, errors)
     _refresh(store, "planes", lambda: live.planes(lat, lon), 0, now_utc, errors)
     try:
-        live.add_details(store.get("planes"), state.setdefault("flight_lookups", {}), now_utc)
+        live.add_details(store.get("planes"), state.setdefault("flight_lookups", {}), now_utc, home=(lat, lon))
     except Exception as e:
         errors.append(f"flight details: {e}")
     _refresh(store, "pdx", live.pdx_status, 0.3, now_utc, errors)
@@ -1222,11 +1231,9 @@ def ships_view(state, now_utc):
     loc = (load_json("config.json", {}).get("river_view") or {})
     if not store.get("cache") or not loc:
         return None
-    parked, nearby = ships.parked(store["cache"], loc["lat"], loc["lon"], now_utc, loc.get("parked_km", 5))
-    return {
-        "approaching": ships.approaching(store["cache"], loc["lat"], loc["lon"], now_utc)[:8],
+    parked, _ = ships.parked(store["cache"], loc["lat"], loc["lon"], now_utc, loc.get("parked_km", 5))
+    return {  # only the ship parked across from home; passing traffic is not shown
         "parked": parked,
-        "parked_nearby": nearby,
         "last_parked": store.get("last_parked"),
         "parked_km": loc.get("parked_km", 5),
         "in_area": len(store["cache"]),
@@ -1373,7 +1380,7 @@ def build(state, status, now_utc):
         "outings": outings_view(state, today),
         "trending": {"google": cu.get("trends"), "wiki": (cu.get("wiki") or {}).get("articles")
                      if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
-        "books": cu.get("books") if cu.get("books_user") else None,
+        "books": ({**cu["books"], "note": cu.get("books_note")} if cu.get("books") else None) if cu.get("books_user") else None,
         "long_read": culture.long_read(dt.date.fromisoformat(today)),
         "poem": (state.get("poem") or {}).get("today") if ((state.get("poem") or {}).get("today") or {}).get("date") == today else None,
         "science": (state.get("science") or {}).get("items"),
@@ -1388,6 +1395,8 @@ def main():
     os.makedirs(os.path.join(DATA_DIR, "pge"), exist_ok=True)
     state_path = os.path.join(DATA_DIR, "state.json")
     state = load_json(state_path, {})
+    for gone in ("deals", "gear"):  # caches of the removed grocery and gear cards
+        state.pop(gone, None)
     now_utc = dt.datetime.now(dt.timezone.utc)
     status = {}
     for name, fn in (("solar", fetch_solar), ("weather", fetch_weather), ("outside", fetch_outside),

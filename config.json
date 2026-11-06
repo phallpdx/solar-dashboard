@@ -8,7 +8,9 @@
   "river_view": {
     "lat": 45.72,
     "lon": -122.77,
-    "zoom": 12
+    "zoom": 12,
+    "parked_km": 1,
+    "parked_note": "Only a ship stopped within 1 km of this spot counts as parked across from the house."
   },
   "places": [
     {

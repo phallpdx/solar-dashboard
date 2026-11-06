@@ -1,5 +1,6 @@
 """What's powering the Northwest grid right now, from BPA's 5-minute balancing authority data."""
 import datetime as dt
+import re
 import urllib.request
 
 UA = {"User-Agent": "solar-dashboard (personal home dashboard)"}
@@ -13,7 +14,8 @@ def parse(text):
         if len(parts) < 6 or not parts[0][:2].isdigit():
             continue
         try:
-            when = dt.datetime.strptime(parts[0].strip(), "%m/%d/%Y %H:%M")
+            # Since early November BPA stamps each row with its zone ("10/30/2026 00:00 PDT").
+            when = dt.datetime.strptime(re.sub(r"\s+[A-Z]{2,4}$", "", parts[0].strip()), "%m/%d/%Y %H:%M")
             load, ver, hydro, fossil, nuclear = (float(p) if p.strip() else None for p in parts[1:6])
         except ValueError:
             continue

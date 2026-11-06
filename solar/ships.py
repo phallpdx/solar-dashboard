@@ -185,61 +185,6 @@ def route(destination):
     return None, _place(d)
 
 
-def approaching(cache, home_lat, home_lon, now_utc):
-    """Ships moving toward home, soonest first, plus ones passing right now."""
-    out = []
-    for ship in cache.values():
-        pos_at = _pos_at(ship)
-        # Projecting a position forward gets unreliable fast on a winding river, so skip stale ones.
-        if ship.get("lat") is None or not pos_at or now_utc - pos_at > dt.timedelta(minutes=POS_MAX_AGE_MIN):
-            continue
-        km = _km(ship["lat"], ship["lon"], home_lat, home_lon)
-        sog = ship.get("sog") or 0
-        if ship.get("stop") and sog < PARKED_KN:
-            continue  # parked, shown in its own box
-        heading_home = abs((_bearing(ship["lat"], ship["lon"], home_lat, home_lon) - (ship.get("cog") or 0) + 180) % 360 - 180) < 50
-        if km < 1.5:
-            eta_min = 0
-        elif sog >= 2 and heading_home:
-            # River distance runs about 1.3x the straight line on this stretch.
-            eta_min = round(km * 1.3 / (sog * 1.852) * 60)
-        else:
-            continue
-        eta_min -= round((now_utc - pos_at).total_seconds() / 60)
-        if eta_min < -10 or eta_min > 360:
-            continue
-        code = ship.get("type")
-        # The Columbia runs north-west past the island toward the ocean.
-        if eta_min <= 0:
-            upriver = 90 < (ship.get("cog") or 0) < 270
-        else:
-            upriver = ship["lat"] > home_lat  # north of home and closing in means heading upriver
-        direction = "Headed toward Portland" if upriver else "Headed toward Astoria"
-        origin, dest = route(ship.get("destination"))
-        if not origin:
-            # AIS only carries the destination, so infer where it came from by which way it's going.
-            origin = "the ocean or a downriver port" if upriver else "Portland or Vancouver"
-            origin_guess = True
-        else:
-            origin_guess = False
-        out.append({
-            "direction": direction,
-            "name": (ship.get("name") or f"MMSI {ship['mmsi']}").title(),
-            "type": type_name(code) if code else "Vessel",
-            "destination": dest,
-            "origin": origin, "origin_guess": origin_guess,
-            "length_m": ship.get("length_m"),
-            "km": round(km, 1),
-            "knots": round(sog, 1),
-            "eta_utc": (now_utc + dt.timedelta(minutes=max(eta_min, 0))).isoformat(),
-            "passing_now": eta_min <= 0,
-            "big": bool(code and code >= 60 and code < 90),
-            "url": f"https://www.vesselfinder.com/vessels/details/{ship['mmsi']}",
-        })
-    out.sort(key=lambda s: s["eta_utc"])
-    return out
-
-
 # Ports above home (toward Portland); everything else on a ship's route is downriver or overseas.
 UPRIVER = ("Portland", "Vancouver, WA", "Pasco", "Rivergate", "Terminal", "Tic Vancouver")
 COMPASS = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"]

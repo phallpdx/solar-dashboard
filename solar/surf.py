@@ -6,6 +6,7 @@ whether the wind is offshore, cross or onshore there. They're a guide, not a sub
 """
 import datetime as dt
 import json
+import time
 import urllib.parse
 import urllib.request
 
@@ -31,8 +32,14 @@ RATINGS = ["Flat", "Poor", "Fair", "Good", "Great"]
 
 def _get(url, **params):
     req = urllib.request.Request(url + "?" + urllib.parse.urlencode(params), headers=UA)
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
+    for attempt in range(2):  # Open-Meteo now and then times out on the TLS handshake; one more try usually works
+        try:
+            with urllib.request.urlopen(req, timeout=40) as resp:
+                return json.load(resp)
+        except OSError:
+            if attempt:
+                raise
+            time.sleep(5)
 
 
 def compass(deg):

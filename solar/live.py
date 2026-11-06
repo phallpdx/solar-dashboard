@@ -79,7 +79,7 @@ def planes(lat, lon):
         if on_ground or plat is None or alt_m is None:
             continue
         out.append({"callsign": callsign or s[0], "miles": round(_km(lat, lon, plat, plon) / 1.609, 1),
-                    "feet": round(alt_m * 3.281 / 100) * 100, "mph": round((speed or 0) * 2.237),
+                    "feet": max(0, round(alt_m * 3.281 / 100) * 100),  # barometric altitude reads below 0 on a PDX landing "mph": round((speed or 0) * 2.237),
                     "heading": round(heading or 0), "country": s[2],
                     "url": f"https://globe.adsbexchange.com/?icao={s[0]}"})
     out.sort(key=lambda p: p["miles"])
@@ -103,7 +103,31 @@ def _airport(a):
     if not a:
         return None
     city = a.get("municipality") or a.get("name")
-    return {"code": a.get("iata_code") or a.get("icao_code"), "city": city}
+    return {"code": a.get("iata_code") or a.get("icao_code"), "city": city, "lat": a.get("latitude"), "lon": a.get("longitude")}
+
+
+def _on_route(r, lat, lon, slack_km=160):
+    """True when a flight between r's airports could plausibly be over (lat, lon): it starts or ends nearby, or the
+    straight path between them passes close. A flight number often has several legs a day, and adsbdb returns
+    only one, so a Southwest plane landing at PDX can come back as Santa Ana to San Jose."""
+    a, b = r.get("from") or {}, r.get("to") or {}
+    if None in (a.get("lat"), a.get("lon"), b.get("lat"), b.get("lon")):
+        return True  # can't tell, keep it
+    d_a, d_b, d_ab = _km(lat, lon, a["lat"], a["lon"]), _km(lat, lon, b["lat"], b["lon"]), _km(a["lat"], a["lon"], b["lat"], b["lon"])
+    if min(d_a, d_b) < 150:
+        return True
+    # Cross-track distance from the great circle a->b, and whether the point sits between the two ends.
+    R = 6371.0
+    brg = lambda la1, lo1, la2, lo2: math.atan2(
+        math.sin(math.radians(lo2 - lo1)) * math.cos(math.radians(la2)),
+        math.cos(math.radians(la1)) * math.sin(math.radians(la2)) -
+        math.sin(math.radians(la1)) * math.cos(math.radians(la2)) * math.cos(math.radians(lo2 - lo1)))
+    xt = abs(math.asin(math.sin(d_a / R) * math.sin(brg(a["lat"], a["lon"], lat, lon) - brg(a["lat"], a["lon"], b["lat"], b["lon"]))) * R)
+    return xt < slack_km and d_a < d_ab + slack_km and d_b < d_ab + slack_km
+
+
+def _public(ap):
+    return {"code": ap["code"], "city": ap["city"]} if ap else None
 
 
 def flight_route(callsign):
@@ -126,17 +150,17 @@ def aircraft(icao24):
     return {"type": kind or None, "owner": a.get("registered_owner"), "photo": a.get("url_photo_thumbnail")}
 
 
-def add_details(planes, cache, now_utc, limit=8):
+def add_details(planes, cache, now_utc, limit=8, home=None):
     """Fill in where each nearby plane is flying from and to, and what it is. Lookups are cached."""
     routes, craft = cache.setdefault("routes", {}), cache.setdefault("aircraft", {})
     day = now_utc.strftime("%Y-%m-%d")
     for p in (planes or {}).get("closest", [])[:limit]:
         cs, icao = p.get("callsign") or "", (p.get("url") or "").split("icao=")[-1]
-        if cs and (cs not in routes or routes[cs].get("day") != day):
+        if cs and (cs not in routes or routes[cs].get("day") != day or routes[cs].get("v") != 2):
             try:
-                routes[cs] = {**flight_route(cs), "day": day}
+                routes[cs] = {**flight_route(cs), "day": day, "v": 2}
             except Exception:
-                routes[cs] = {"day": day}  # unknown flight (often private or military); don't retry today
+                routes[cs] = {"day": day, "v": 2}  # unknown flight (often private or military); don't retry today
             time.sleep(0.3)
         if icao and icao not in craft:
             try:
@@ -145,7 +169,9 @@ def add_details(planes, cache, now_utc, limit=8):
                 craft[icao] = {}
             time.sleep(0.3)
         r, a = routes.get(cs) or {}, craft.get(icao) or {}
-        p.update({"airline": r.get("airline"), "from": r.get("from"), "to": r.get("to"),
+        fits = not home or _on_route(r, *home)  # a different leg of the same flight number: show the airline only
+        p.update({"airline": r.get("airline"), "from": _public(r.get("from")) if fits else None,
+                  "to": _public(r.get("to")) if fits else None,
                   "aircraft": a.get("type"), "owner": a.get("owner"), "photo": a.get("photo")})
     # Keep the caches small.
     for d in (routes, craft):

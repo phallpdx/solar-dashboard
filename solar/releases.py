@@ -287,8 +287,31 @@ def kids_movie(key, history, day=None):
 DECADES = (1930, 1940, 1950, 1960, 1970, 1980, 1990)
 
 
+def _sentences(text):
+    text = re.sub(r"\s+", " ", re.sub(r"\[\d+\]", "", text or "")).strip()
+    return [x for x in re.split(r"(?<=[.!?])\s+(?=[A-Z\"“])", text) if len(x) > 20]
+
+
+def _take(sentences, limit=360):
+    out = ""
+    for x in sentences:
+        if out and len(out) + len(x) > limit:
+            break
+        out = (out + " " + x).strip()
+    return out
+
+
+# Lead sentences that say why a film is worth watching (acclaim, awards, standing), and the article sections that
+# say why it matters (its legacy and influence), most telling first.
+ACCLAIM = re.compile(r"greatest|acclaim|Academy Award|Oscar|Palme d|masterpiece|praised|landmark|influential|"
+                     r"National Film Registry|highest-grossing|cult (film|classic|following)|BAFTA|Golden Globe", re.I)
+LEGACY = ("legacy", "influence", "cultural impact", "impact", "cultural significance", "reception", "critical response")
+
+
 def _wiki_context(title, year):
-    """The opening of the movie's Wikipedia article, as {text, url}, or None when no film article is found."""
+    """From the movie's Wikipedia article: what it is (the opening line), why to watch it (lead sentences about its
+    acclaim and awards) and why it matters (the start of its Legacy or Reception section), with the link.
+    None when no film article is found."""
     for name in (f"{title} ({year} film)", f"{title} (film)", title):
         try:
             s = _get("https://en.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(name.replace(" ", "_")))
@@ -296,15 +319,33 @@ def _wiki_context(title, year):
             continue
         if s.get("type") != "standard" or "film" not in (s.get("description") or "").lower():
             continue
-        sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z])", (s.get("extract") or "").strip())
-        text = ""
-        for sentence in sentences:
-            if text and len(text) + len(sentence) > 360:
-                break
-            text = (text + " " + sentence).strip()
         url = ((s.get("content_urls") or {}).get("desktop") or {}).get("page")
-        if text and url:
-            return {"text": text, "url": url, "image": (s.get("originalimage") or s.get("thumbnail") or {}).get("source")}
+        if not url:
+            continue
+        out = {"url": url, "image": (s.get("originalimage") or s.get("thumbnail") or {}).get("source")}
+        lead = _sentences(s.get("extract"))
+        out["text"] = _take(lead[:1])
+        try:
+            pages = _get("https://en.wikipedia.org/w/api.php?" + urllib.parse.urlencode(
+                {"action": "query", "prop": "extracts", "explaintext": 1, "redirects": 1, "format": "json",
+                 "formatversion": 2, "titles": s.get("title") or name}))["query"]["pages"]
+            full = pages[0].get("extract") or ""
+        except Exception:
+            full = ""
+        intro, *rest = re.split(r"\n={2,}\s*", full) if full else ("",)
+        lead = _sentences(intro) or lead
+        out["watch"] = _take([x for x in lead[1:] if ACCLAIM.search(x)][:2]) or None
+        sections = {}
+        for part in rest:
+            head, _, body = part.partition("\n")
+            sections.setdefault(head.strip(" =").lower(), _sentences(body))
+        for want in LEGACY:
+            body = next((v for k, v in sections.items() if want in k and v), None)
+            if body:
+                out["matters"] = _take(body[:2])
+                break
+        if out["text"]:
+            return out
     return None
 
 

@@ -3757,7 +3757,10 @@ function renderComing() {
       item({...c, kind: c.date ? c.date.slice(0, 4) : null,
       score: `${c.rating.toFixed(1)} on TMDB · ${c.votes.toLocaleString()} votes`, summary: c.context ? null : c.summary, image: c.poster ? null : c.image}, null) +
       (credits ? `<p class="note">${esc(credits)}.</p>` : '') +
-      (c.context ? `<p>${esc(c.context.text)} <a href="${esc(c.context.url)}" target="_blank" rel="noopener">Wikipedia</a></p>` : '');
+      (c.context ? `<p>${esc(c.context.text)}</p>` +
+        (c.context.matters ? `<p><b>Why it matters.</b> ${esc(c.context.matters)}</p>` : '') +
+        (c.context.watch ? `<p><b>Why watch it.</b> ${esc(c.context.watch)}</p>` : '') +
+        `<p class="note">From <a href="${esc(c.context.url)}" target="_blank" rel="noopener">its Wikipedia article</a>.</p>` : '');
   }
   // Only notable albums: well reviewed (Metacritic) or much anticipated. Lists saved before that filter existed
   // carry no reason and are skipped, so the old every-release list never shows.

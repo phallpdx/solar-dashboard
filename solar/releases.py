@@ -304,7 +304,7 @@ def _wiki_context(title, year):
             text = (text + " " + sentence).strip()
         url = ((s.get("content_urls") or {}).get("desktop") or {}).get("page")
         if text and url:
-            return {"text": text, "url": url}
+            return {"text": text, "url": url, "image": (s.get("originalimage") or s.get("thumbnail") or {}).get("source")}
     return None
 
 
@@ -335,8 +335,12 @@ def classic_movie(key, history, day=None, skip=()):
                 directors = [c["name"] for c in credits.get("crew") or [] if c.get("job") == "Director"]
                 stars = [c["name"] for c in sorted(credits.get("cast") or [], key=lambda c: c.get("order", 99))[:3]]
                 why = f"a {lo}s classic" if hi - lo == 9 else "a classic"
-                return _movie(m, services, why=why, directors=directors[:2], stars=stars,
-                              context=_wiki_context(m.get("title") or "", year), date_picked=day.isoformat())
+                context = _wiki_context(m.get("title") or "", year)
+                # A wide still for the top of the card: TMDB's backdrop, else the Wikipedia article's lead image.
+                still = (f"https://image.tmdb.org/t/p/w780{m['backdrop_path']}" if m.get("backdrop_path")
+                         else (context or {}).get("image"))
+                return _movie(m, services, why=why, directors=directors[:2], stars=stars, still=still,
+                              context=context, date_picked=day.isoformat())
             if len(found) < 20:
                 break
     raise RuntimeError("no classic movie left on the six services that hasn't been picked already")

@@ -284,6 +284,7 @@ header h1{font-size:40px}
 .poem-long{max-height:22em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
 .poem-more{align-self:flex-start;border:0;background:none;padding:0;font:inherit;font-size:13.5px;font-weight:700;color:#6B4A2B;cursor:pointer}
 #poem{display:flex;flex-direction:column;gap:4px}
+.cls-still{display:block;width:100%;aspect-ratio:16/9;max-height:300px;object-fit:cover;object-position:center 30%;border-radius:10px;margin:2px 0 10px}
 .group[data-sec=science]{--accent:#0F7B8C;--tint:#E0F3F5}
 .sci-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media (max-width:1000px){.sci-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -3750,8 +3751,9 @@ function renderComing() {
     $('clsmov-meta').textContent = c.why ? c.why[0].toUpperCase() + c.why.slice(1) : '';
     const credits = [c.directors && c.directors.length ? 'Directed by ' + c.directors.join(' and ') : null,
       c.stars && c.stars.length ? 'with ' + c.stars.join(', ') : null].filter(Boolean).join(' ');
-    $('clsmov').innerHTML = item({...c, kind: c.date ? c.date.slice(0, 4) : null,
-      score: `${c.rating.toFixed(1)} on TMDB · ${c.votes.toLocaleString()} votes`, summary: c.context ? null : c.summary}, null) +
+    $('clsmov').innerHTML = (c.still ? `<a href="${esc(c.url)}" target="_blank" rel="noopener"><img class="cls-still" src="${esc(c.still)}" alt="A still from ${esc(c.title)}" loading="lazy" onerror="this.parentNode.remove()"></a>` : '') +
+      item({...c, kind: c.date ? c.date.slice(0, 4) : null,
+      score: `${c.rating.toFixed(1)} on TMDB · ${c.votes.toLocaleString()} votes`, summary: c.context ? null : c.summary, image: c.still ? null : c.image}, null) +
       (credits ? `<p class="note">${esc(credits)}.</p>` : '') +
       (c.context ? `<p>${esc(c.context.text)} <a href="${esc(c.context.url)}" target="_blank" rel="noopener">Wikipedia</a></p>` : '');
   }

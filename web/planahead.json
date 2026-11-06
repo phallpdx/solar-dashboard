@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "items": [
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
@@ -206,20 +206,16 @@
       ]
     },
     {
-      "title": "Sauvie Island Farms U-cut Christmas trees",
+      "title": "Sauvie Island Farms U-cut Christmas trees (Nov 21 to Dec 24)",
       "kind": "Buy",
-      "action": "Check the farm for 2026 dates; last year U-cut ran Nov 21 to Dec 24, 9 to 5, self-serve, $60 a tree.",
-      "starts": null,
+      "action": "Plan a U-cut trip from Nov 21; open 9 to 5 daily through Dec 24, self-serve, pay by Venmo or cash.",
+      "starts": "2026-11-21",
       "by": null,
-      "why": "Those are 2025 details; the farm hasn't posted 2026 tree dates yet.",
+      "why": "The farm's blog lists the U-cut season as Nov 21 to Dec 24 with all trees $60; call ahead to confirm before driving out.",
       "sources": [
         {
           "name": "Sauvie Island Farms blog",
           "url": "https://sifarms.blogspot.com/"
-        },
-        {
-          "name": "Portland Monthly 2025 tree guide",
-          "url": "https://www.pdxmonthly.com/travel-and-outdoors/christmas-tree-farms-near-portland"
         }
       ]
     },
@@ -386,6 +382,38 @@
         {
           "name": "JamBase tour announcement",
           "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
+        }
+      ]
+    },
+    {
+      "title": "The Chats, Roseland Theater (Apr 9, 2027)",
+      "kind": "Tickets",
+      "action": "Public sale opens Fri Nov 6 at 10 a.m. through Ticketmaster; buy face value there.",
+      "starts": "2026-11-06",
+      "by": null,
+      "why": "Part of the Australian punk band's 30-date spring 2027 North American tour; artist presale ran Nov 4, per TicketNews (not yet on the venue's listings).",
+      "sources": [
+        {
+          "name": "TicketNews",
+          "url": "https://www.ticketnews.com/2026/11/the-chats-announce-30-date-north-american-tour-for-spring-2027/"
+        }
+      ]
+    },
+    {
+      "title": "Boy Throb, Wonder Ballroom (Apr 5, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opens Fri Nov 6; buy face value through the Wonder Ballroom's ticketing.",
+      "starts": "2026-11-06",
+      "by": null,
+      "why": "Newly announced 20-city Real Tour; fan club and artist presales ran Nov 4 and 5, per Consequence and Exclaim! (not yet on the venue's listings).",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/boy-throb-2027-north-american-tour/"
+        },
+        {
+          "name": "Exclaim!",
+          "url": "https://exclaim.ca/music/article/boy-throb-announce-2027-north-american-tour"
         }
       ]
     }

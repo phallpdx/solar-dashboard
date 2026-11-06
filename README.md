@@ -22,8 +22,15 @@ Elections and representatives work without keys. Optional free keys add more:
 `CONGRESS_KEY` (api.data.gov, bills your members of Congress sponsor), `OPENSTATES_KEY`
 (openstates.org, your state legislators and their bills) and `GOOGLE_CIVIC_KEY` (a Google Cloud key
 with the Civic Information API turned on, for what's on your ballot).
-With an `AISSTREAM_KEY`, the river section shows ships heading your way and, in its own box, the ship
-parked across from `river_view` in `config.json` (big ships within `parked_km`, default 5 km).
+With an `AISSTREAM_KEY`, the river section shows the ship parked across from `river_view` in `config.json`
+(a ship stopped within `parked_km`, default 1 km). The river itself needs no key: USGS gauges, the NWS river
+forecast, marine warnings for the Columbia River bar and the coast surf-zone forecast.
+`roof` in `config.json` (panel tilt and azimuth) feeds the irradiance-on-the-roof forecast (Open-Meteo) and the
+long-term yield comparison (PVGIS); the system size comes from APsystems unless `kwp` is set there.
+Also keyless: 7Timer's night-sky forecast, NOAA's half-hour aurora model, Tiangong and Hubble passes (CelesTrak),
+asteroid close approaches (NASA JPL), NOAA's daily sunspot and flare counts with the SDO image, the Open-Meteo
+smoke (PM2.5) outlook, Portland State and Portland Pilots basketball (ESPN), and one free archive item a day each
+from the Art Institute of Chicago, the Library of Congress and the Internet Archive's Live Music Archive.
 Optional `TMDB_API_KEY` (free for non-commercial use from themoviedb.org/settings/api; either the API key or the
 API Read Access Token works) adds the best-rated new movies on your streaming services, movies coming to them in the next week, and a daily kids' movie pick
 that fits the season and never repeats. New shows and their TVmaze ratings work without a key.

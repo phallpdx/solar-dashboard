@@ -169,15 +169,36 @@ def upcoming_events(now_utc, lat, lon, limit=8):
 
 # ------------------------------------------------------------- satellites and launches
 
-def iss_tle():
-    """Current ISS orbit (two-line elements) from CelesTrak."""
-    req = urllib.request.Request("https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE", headers=UA)
+def tle(catnr=25544):
+    """Current orbit (two-line elements) for a satellite, from CelesTrak."""
+    req = urllib.request.Request(f"https://celestrak.org/NORAD/elements/gp.php?CATNR={catnr}&FORMAT=TLE", headers=UA)
     with urllib.request.urlopen(req, timeout=30) as resp:
         lines = [l.strip() for l in resp.read().decode().splitlines() if l.strip()]
-    tle = [l for l in lines if l[:2] in ("1 ", "2 ")]
-    if len(tle) != 2:
-        raise RuntimeError("CelesTrak returned no ISS elements")
-    return tle
+    out = [l for l in lines if l[:2] in ("1 ", "2 ")]
+    if len(out) != 2:
+        raise RuntimeError(f"CelesTrak returned no elements for {catnr}")
+    return out
+
+
+def iss_tle():
+    return tle(25544)
+
+
+# Other bright things that pass over: China's space station and Hubble are the two easiest naked-eye
+# satellites after the ISS.
+SATELLITES = [("Tiangong", 48274), ("Hubble", 20580)]
+
+
+def satellite_tles():
+    out = {}
+    for name, catnr in SATELLITES:
+        try:
+            out[name] = tle(catnr)
+        except Exception:
+            continue
+    if not out:
+        raise RuntimeError("CelesTrak returned no satellite elements")
+    return out
 
 
 def _sun_vec(when):
@@ -288,6 +309,98 @@ def launch_events(items, lat, lon, now_utc, limit=3):
                     "detail": detail, "visible": show, "kind": "launch"})
     shows = [e for e in out if e["visible"]]
     return (shows + [e for e in out if not e["visible"]])[:limit]
+
+
+def seeing(lat, lon):
+    """7Timer!'s astronomy forecast for the next 3 nights: cloud cover, seeing and transparency every 3 hours."""
+    data = _get("https://www.7timer.info/bin/astro.php", lon=lon, lat=lat, ac=0, unit="metric", output="json", tzshift=0)
+    init = data.get("init") or ""
+    start = dt.datetime.strptime(init, "%Y%m%d%H").replace(tzinfo=dt.timezone.utc)
+    out = []
+    for p in data.get("dataseries") or []:
+        when = start + dt.timedelta(hours=p["timepoint"])
+        out.append({"utc": when.isoformat(), "cloud": p.get("cloudcover"), "seeing": p.get("seeing"),
+                    "transparency": p.get("transparency")})
+    return {"init": start.isoformat(), "points": out}
+
+
+def night_quality(points, tz, nights=3):
+    """One verdict per night from 7Timer's 1-9 scales (cloud 1 = clear, seeing 1 = steady, transparency 1 = clear)."""
+    by_night = {}
+    for p in points or []:
+        local = dt.datetime.fromisoformat(p["utc"]).astimezone(tz)
+        if local.hour < 20 and local.hour > 3:
+            continue
+        night = (local - dt.timedelta(hours=4)).strftime("%Y-%m-%d")
+        by_night.setdefault(night, []).append(p)
+    out = []
+    for night, ps in sorted(by_night.items())[:nights]:
+        cloud = sum(p["cloud"] or 9 for p in ps) / len(ps)
+        see = sum(p["seeing"] or 8 for p in ps) / len(ps)
+        trans = sum(p["transparency"] or 8 for p in ps) / len(ps)
+        verdict = ("Clear and steady" if cloud <= 2 and see <= 3 and trans <= 3 else
+                   "Clear but twinkly" if cloud <= 2 else "Some gaps" if cloud <= 5 else "Clouded out")
+        out.append({"night": night, "verdict": verdict, "cloud": round(cloud, 1), "seeing": round(see, 1), "transparency": round(trans, 1)})
+    return out
+
+
+def aurora_now(lat, lon):
+    """NOAA's OVATION model: the chance (%) of aurora overhead in the next half hour, at home and the view line
+    to the north (the aurora is usually seen low on the horizon, so the best cell within 5 degrees north counts)."""
+    data = _get("https://services.swpc.noaa.gov/json/ovation_aurora_latest.json")
+    grid = {}
+    for lo, la, v in data.get("coordinates") or []:
+        grid[(int(lo), int(la))] = v
+    lo = int(round(lon)) % 360
+    here = grid.get((lo, int(round(lat))), 0)
+    north = max(grid.get((lo + d, la), 0) for d in (-1, 0, 1) for la in range(int(round(lat)), int(round(lat)) + 6))
+    return {"here_pct": here, "north_pct": north, "forecast_utc": data.get("Forecast Time"), "observed_utc": data.get("Observation Time"),
+            "url": "https://www.swpc.noaa.gov/products/aurora-30-minute-forecast"}
+
+
+def close_approaches(days=14, limit=5):
+    """Asteroids and comets passing within 0.05 au (about 20 lunar distances) in the next two weeks (NASA JPL)."""
+    data = _get("https://ssd-api.jpl.nasa.gov/cad.api", **{"date-min": "now", "date-max": f"+{days}", "dist-max": "0.05", "sort": "date"})
+    fields = data.get("fields") or []
+    out = []
+    for row in data.get("data") or []:
+        r = dict(zip(fields, row))
+        ld = float(r["dist"]) / 0.002569  # au -> lunar distances
+        h = float(r["h"]) if r.get("h") else None
+        # Rough size from absolute magnitude at a typical albedo (NASA's own rule of thumb).
+        size_m = round(1329 / math.sqrt(0.14) * 10 ** (-h / 5) * 1000) if h else None
+        out.append({"name": r["des"], "utc": dt.datetime.strptime(r["cd"], "%Y-%b-%d %H:%M").replace(tzinfo=dt.timezone.utc).isoformat(),
+                    "lunar_distances": round(ld, 1), "km_s": round(float(r["v_rel"]), 1), "size_m": size_m,
+                    "url": "https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=" + urllib.parse.quote(r["des"])})
+    out.sort(key=lambda x: x["lunar_distances"])
+    return out[:limit]
+
+
+def sun_activity():
+    """Today's sunspot number, 10.7 cm flux and flare counts from NOAA SWPC's daily solar data, plus the
+    latest HMI intensitygram from NASA's SDO."""
+    req = urllib.request.Request("https://services.swpc.noaa.gov/text/daily-solar-indices.txt", headers=UA)
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        text = resp.read().decode("utf-8", "replace")
+    rows = []
+    for l in text.splitlines():
+        parts = l.split()
+        if len(parts) >= 7 and parts[0].isdigit() and len(parts[0]) == 4:
+            try:
+                rows.append({"date": f"{parts[0]}-{int(parts[1]):02d}-{int(parts[2]):02d}", "flux": int(parts[3]), "sunspots": int(parts[4]),
+                             "area": int(parts[5]), "new_regions": int(parts[6]),
+                             "flares_c": int(parts[9]) if len(parts) > 11 else None, "flares_m": int(parts[10]) if len(parts) > 11 else None,
+                             "flares_x": int(parts[11]) if len(parts) > 11 else None})
+            except ValueError:
+                continue
+    if not rows:
+        raise RuntimeError("SWPC daily solar data had no rows")
+    last = rows[-1]
+    month = rows[-30:]
+    return {**last, "sunspots_30d_avg": round(sum(r["sunspots"] for r in month) / len(month)),
+            "days": [{"date": r["date"], "sunspots": r["sunspots"]} for r in month],
+            "image": "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_HMIIF.jpg",
+            "url": "https://www.swpc.noaa.gov/products/solar-cycle-progression"}
 
 
 def stargazing(hours, moon_lit_pct, now_local):

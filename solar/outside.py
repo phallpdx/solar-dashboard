@@ -56,6 +56,21 @@ def air(lat, lon, tz):
     )
 
 
+def smoke(lat, lon, tz):
+    """PM2.5 forecast for the next 3 days (Open-Meteo air quality, which carries the HRRR/CAMS smoke forecast):
+    the daily peak and an EPA-style word for it."""
+    data = _get("https://air-quality-api.open-meteo.com/v1/air-quality", latitude=lat, longitude=lon,
+                hourly="pm2_5", forecast_days=3, timezone=tz)
+    h = data.get("hourly") or {}
+    days = {}
+    for t, v in zip(h.get("time") or [], h.get("pm2_5") or []):
+        if v is not None:
+            days[t[:10]] = max(days.get(t[:10], 0), v)
+    word = lambda v: ("Good" if v <= 12 else "Moderate" if v <= 35.4 else "Unhealthy for sensitive groups" if v <= 55.4
+                      else "Unhealthy" if v <= 150.4 else "Very unhealthy")
+    return [{"date": d, "pm2_5": round(v), "word": word(v)} for d, v in sorted(days.items())]
+
+
 def tide_station(lat, lon, max_km=25.0):
     """Nearest NOAA water-level station within ~25 km, or None for inland homes."""
     data = _get("https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json",

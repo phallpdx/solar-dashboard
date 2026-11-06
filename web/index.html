@@ -259,7 +259,7 @@ header h1{font-size:40px}
 .shelf.one .shelf-grid{grid-template-columns:minmax(0,1fr)}
 .shelf.two-even .shelf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .stack{display:flex;flex-direction:column;gap:16px;min-width:0}
-.stack>.card{flex:1}
+.stack>.card{flex:1 0 auto}
 @media (max-width:1000px){.shelf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shelf-grid>.card:last-child:nth-child(odd){grid-column:1/-1}}
 @media (max-width:640px){.shelf-grid,.shelf.two .shelf-grid,.shelf.two-even .shelf-grid{grid-template-columns:minmax(0,1fr)}}
 .joy-card{border:0;position:relative;overflow:hidden}

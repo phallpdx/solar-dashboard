@@ -1,5 +1,5 @@
 """New shows and seasons on the big streaming services (TVmaze), the best-rated new movies and a daily kids' movie
-on those services (TMDB, needs a free TMDB_API_KEY), and new albums (Wikipedia)."""
+on those services plus a daily classic movie (TMDB, needs a free TMDB_API_KEY), and new albums (Wikipedia)."""
 import datetime as dt
 import html
 import json
@@ -282,6 +282,64 @@ def kids_movie(key, history, day=None):
                 if services:
                     return _movie(m, services, why=why, date_picked=day.isoformat())
     raise RuntimeError("no family movie left on the six services that hasn't been picked already")
+
+
+DECADES = (1930, 1940, 1950, 1960, 1970, 1980, 1990)
+
+
+def _wiki_context(title, year):
+    """The opening of the movie's Wikipedia article, as {text, url}, or None when no film article is found."""
+    for name in (f"{title} ({year} film)", f"{title} (film)", title):
+        try:
+            s = _get("https://en.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(name.replace(" ", "_")))
+        except Exception:
+            continue
+        if s.get("type") != "standard" or "film" not in (s.get("description") or "").lower():
+            continue
+        sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z])", (s.get("extract") or "").strip())
+        text = ""
+        for sentence in sentences:
+            if text and len(text) + len(sentence) > 360:
+                break
+            text = (text + " " + sentence).strip()
+        url = ((s.get("content_urls") or {}).get("desktop") or {}).get("page")
+        if text and url:
+            return {"text": text, "url": url}
+    return None
+
+
+def classic_movie(key, history, day=None, skip=()):
+    """A classic or iconic movie (25+ years old, widely seen and highly rated) that streams on the six services,
+    never one picked before. The decade rotates day by day so the picks don't all come from one era."""
+    day = day or dt.date.today()
+    ids = _provider_ids(key)
+    used = set(history) | set(skip)
+    latest = (day.year - 25) // 10 * 10 - 1  # last year of the newest decade that is fully 25+ years old
+    decades = [d for d in DECADES if d + 9 <= latest] or [DECADES[0]]
+    start = day.toordinal() % len(decades)
+    tries = [(decades[(start + i) % len(decades)], decades[(start + i) % len(decades)] + 9) for i in range(len(decades))]
+    tries.append((1900, latest))  # anything old enough, if every decade on its own is used up
+    for lo, hi in tries:
+        params = {"primary_release_date.gte": f"{lo}-01-01", "primary_release_date.lte": f"{hi}-12-31",
+                  "vote_count.gte": 1000, "vote_average.gte": 7.3, "sort_by": "vote_average.desc"}
+        for page in range(1, 6):
+            found = _discover(key, ids, page=page, **params)
+            for m in found:
+                if m["id"] in used:
+                    continue
+                services = _where(m["id"], key, ids)
+                if not services:
+                    continue
+                year = (m.get("release_date") or "")[:4]
+                credits = _tmdb(f"/movie/{m['id']}/credits", key)
+                directors = [c["name"] for c in credits.get("crew") or [] if c.get("job") == "Director"]
+                stars = [c["name"] for c in sorted(credits.get("cast") or [], key=lambda c: c.get("order", 99))[:3]]
+                why = f"a {lo}s classic" if hi - lo == 9 else "a classic"
+                return _movie(m, services, why=why, directors=directors[:2], stars=stars,
+                              context=_wiki_context(m.get("title") or "", year), date_picked=day.isoformat())
+            if len(found) < 20:
+                break
+    raise RuntimeError("no classic movie left on the six services that hasn't been picked already")
 
 
 # ------------------------------------------------------------------ albums

@@ -1057,6 +1057,19 @@ def fetch_releases(state, now_utc):
             except Exception as e:
                 store["kids_failed_at"] = now_utc.isoformat()
                 errors.append(f"kids_movie: {e}")
+        failed = store.get("classic_failed_at")
+        if ((store.get("classic_movie") or {}).get("date_picked") != today.isoformat()
+                and not (failed and (now_utc - dt.datetime.fromisoformat(failed)).total_seconds() < 3 * 3600)):
+            history = store.setdefault("classic_history", [])  # every classic ever picked, so none comes back
+            try:
+                kids_today = (store.get("kids_movie") or {}).get("id")
+                store["classic_movie"] = releases.classic_movie(env("TMDB_API_KEY"), history, today,
+                                                                skip=[kids_today] if kids_today else [])
+                history.append(store["classic_movie"]["id"])
+                store.pop("classic_failed_at", None)
+            except Exception as e:
+                store["classic_failed_at"] = now_utc.isoformat()
+                errors.append(f"classic_movie: {e}")
     if any("why" not in a for a in store.get("albums") or []):  # the old every-release list: replace it now
         store.pop("albums_at", None)
     _refresh(store, "albums", releases.albums, 6, now_utc, errors)
@@ -1351,6 +1364,7 @@ def build(state, status, now_utc):
         "upcoming_movies": [x for x in (state.get("releases") or {}).get("upcoming_movies") or [] if (x.get("date") or "") >= today]
                            if env("TMDB_API_KEY") else None,
         "kids_movie": (state.get("releases") or {}).get("kids_movie") if env("TMDB_API_KEY") else None,
+        "classic_movie": (state.get("releases") or {}).get("classic_movie") if env("TMDB_API_KEY") else None,
         "albums": [x for x in (state.get("releases") or {}).get("albums") or []
                    if x["date"] >= (dt.date.fromisoformat(today) - dt.timedelta(days=30)).isoformat()],
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},

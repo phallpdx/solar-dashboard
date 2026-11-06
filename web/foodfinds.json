@@ -1,40 +1,17 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-06",
   "items": [
-    {
-      "name": "Buji Brown Butter",
-      "maker": "Buji",
-      "kind": "New brand",
-      "what": "Food maker",
-      "where_to_buy": [],
-      "date": "2026-11-03",
-      "sources": [
-        {
-          "name": "September 10, 2025",
-          "url": "https://marketofchoice.com/news"
-        }
-      ]
-    },
-    {
-      "name": "Full Sail Brewing",
-      "maker": "Full Sail Brewing",
-      "kind": "New brand",
-      "what": "Acquired by Sazerac",
-      "where_to_buy": [],
-      "date": "2026-11-03",
-      "sources": [
-        {
-          "name": "Sazerac Acquires Oregon’s Full Sail Brewing",
-          "url": "https://www.brewbound.com/news/sazerac-acquires-oregons-full-sail-brewing"
-        }
-      ]
-    },
     {
       "name": "Joe Brown's Carmel Corn",
       "maker": "Joe Brown's",
       "kind": "New product",
-      "what": "Carmel Corn returned in a new location",
-      "where_to_buy": [],
+      "what": "Portland's longtime caramel corn shop, which lost its home when its mall closed, has reopened in a new location with a bigger menu.",
+      "where_to_buy": [
+        {
+          "store": "Joe Brown's Carmel Corn",
+          "url": "https://joebrownscarmelcorn.com/"
+        }
+      ],
       "date": "2026-10-31",
       "sources": [
         {
@@ -47,7 +24,7 @@
       "name": "Team Ghoul'd",
       "maker": "Liz Marek",
       "kind": "Award",
-      "what": "Halloween Wars Season 16 winner",
+      "what": "Beaverton cake maker Liz Marek's Team Ghoul'd won Season 16 of Halloween Wars, making her a two-time champion of the show.",
       "where_to_buy": [],
       "date": "2026-10-30",
       "sources": [

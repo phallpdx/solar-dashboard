@@ -33,6 +33,7 @@ async def make(folder, todo):
             os.replace(str(out) + ".part", out)
             print("Recorded", out.name)
         except Exception as e:  # one failed phrase shouldn't stop the rest; it is tried again next run
+            Path(str(out) + ".part").unlink(missing_ok=True)
             print("Could not record", thai, e, file=sys.stderr)
 
 

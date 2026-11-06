@@ -36,6 +36,11 @@
       "name": "Surf Pines, Warrenton"
     }
   ],
+  "roof": {
+    "tilt": 25,
+    "azimuth": 0,
+    "note": "Panel tilt from horizontal and azimuth (0 = due south, -90 = east, 90 = west) for the irradiance and PVGIS comparisons. System size comes from APsystems; set kwp here to override."
+  },
   "places_note": "Neighborhood-level places only; this repo is public.",
   "goodreads": "phallpdx"
 }

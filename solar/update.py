@@ -22,7 +22,7 @@ import time
 import traceback
 from zoneinfo import ZoneInfo
 
-from . import alerts, almanac, ambient, aps, birds, civics, coastsafety, culture, daily, fishing, garden, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, portland, records, releases, roads, science, ships, ski, sky, sports, surf, world
+from . import alerts, almanac, ambient, aps, archives, birds, civics, coastsafety, culture, daily, fishing, garden, grid, health, live, markets, mycal, nature, news, outings, outside, pge, places, poems, pollen, portland, records, releases, river, roads, science, ships, ski, sky, sports, sunpower, surf, world
 
 DATA_DIR = os.environ.get("DATA_DIR", "data")
 BUDGET = int(os.environ.get("APS_MONTHLY_BUDGET", "850"))
@@ -499,6 +499,22 @@ def fetch_outside(state, now_utc):
     attempt("nws_alerts", lambda: alerts.nws(lat, lon))
     attempt("birds", lambda: outside.birds(lat, lon), 6)
     attempt("blooms", lambda: outside.blooms(lat, lon), 12)
+    attempt("smoke", lambda: outside.smoke(lat, lon, tz_name), 3)
+    # The night sky: 7Timer's seeing forecast, NOAA's half-hour aurora model, other bright satellites and
+    # the asteroids passing close by this fortnight.
+    attempt("seeing", lambda: sky.seeing(lat, lon), 3)
+    attempt("aurora_now", lambda: sky.aurora_now(lat, lon), 0.5)
+    attempt("sat_tles", sky.satellite_tles, 12)
+    attempt("close_approaches", sky.close_approaches, 24)
+    attempt("sun_activity", sky.sun_activity, 6)
+    # What the sun should deliver to the panels: Open-Meteo's irradiance on the roof's tilt, and PVGIS's
+    # long-term monthly yield for a system this size.
+    roof = load_json("config.json", {}).get("roof") or {}
+    tilt, azimuth = roof.get("tilt", 25), roof.get("azimuth", 0)
+    attempt("irradiance", lambda: sunpower.irradiance(lat, lon, tilt, azimuth, tz_name), 2)
+    kwp = roof.get("kwp") or fnum(((state.get("solar") or {}).get("details") or {}).get("capacity"))
+    if kwp:
+        attempt("pvgis", lambda: sunpower.pvgis_monthly(lat, lon, kwp, tilt, azimuth), 24 * 30)
     return "; ".join(errors) or None
 
 
@@ -594,8 +610,40 @@ def outside_view(state, now_utc):
                              + sky.launch_events(out.get("launches"), out["lat"], out["lon"], now_utc),
                              key=lambda e: e["utc"])[:10],
         "iss": _iss(out, now_utc),
+        "satellites": _satellites(out, now_utc),
         "stargazing": sky.stargazing(next_hours, sky.moon_state(now_utc)["lit_pct"], now),
+        "nights": _nights(out, tz),
+        "aurora_now": out.get("aurora_now"),
+        "close_approaches": [a for a in out.get("close_approaches") or [] if a["utc"] >= now_utc.isoformat()],
+        "sun_activity": out.get("sun_activity"),
+        "irradiance": _irradiance(out, today),
+        "pvgis": out.get("pvgis"),
+        "smoke": [d for d in out.get("smoke") or [] if d["date"] >= today],
     }
+
+
+def _satellites(out, now_utc):
+    """Visible passes of the other bright satellites, each worked out from its own orbit."""
+    passes = []
+    for name, tle in (out.get("sat_tles") or {}).items():
+        try:
+            for p in sky.iss_passes(tle, out["lat"], out["lon"], now_utc, limit=2):
+                passes.append({**p, "name": name})
+        except Exception:
+            continue
+    return sorted(passes, key=lambda p: p["utc"])[:4]
+
+
+def _nights(out, tz):
+    points = (out.get("seeing") or {}).get("points")
+    return sky.night_quality(points, tz) if points else None
+
+
+def _irradiance(out, today):
+    irr = out.get("irradiance")
+    if not irr:
+        return None
+    return {**irr, "days": [{k: v for k, v in d.items() if k != "hours"} for d in irr["days"] if d["date"] >= today]}
 
 
 def _iss(out, now_utc):
@@ -644,6 +692,9 @@ def fetch_sports(state, now_utc):
     _refresh(store, "blazers", lambda: sports.team("basketball/nba", "Trail Blazers", 3), every("blazers"), now_utc, errors)
     _refresh(store, "timbers", lambda: sports.team("soccer/usa.1", "Timbers"), every("timbers"), now_utc, errors)
     _refresh(store, "f1", sports.f1, 5.5, now_utc, errors)
+    # The two Division I programs in town. ESPN's college basketball calls them Portland State Vikings and Portland Pilots.
+    _refresh(store, "psu", lambda: sports.team("basketball/mens-college-basketball", "Portland State"), every("psu"), now_utc, errors)
+    _refresh(store, "pilots", lambda: sports.team("basketball/mens-college-basketball", "Portland Pilots"), every("pilots"), now_utc, errors)
     reddit = store.setdefault("reddit", {})
     for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1")):
         if reddit.get(key + "_at") is None or (now_utc - dt.datetime.fromisoformat(reddit[key + "_at"])).total_seconds() >= 7200:
@@ -687,6 +738,10 @@ def fetch_almanac(state, now_utc):
         store.pop("albums_at", None)
     _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
     _refresh(store, "good_news", daily.good_news, 2, now_utc, errors)
+    # The free archives: one artwork, one old photograph of Portland and one Portland concert a day.
+    _refresh(store, "artwork", lambda: {"date": today.isoformat(), **archives.artwork(today)}, 24, now_utc, errors)
+    _refresh(store, "old_portland", lambda: {"date": today.isoformat(), **archives.old_portland(today)}, 24, now_utc, errors)
+    _refresh(store, "show", lambda: {"date": today.isoformat(), **archives.portland_show(today)}, 24, now_utc, errors)
     if env("CALENDAR_ICS"):
         _refresh(store, "calendar", lambda: mycal.upcoming(env("CALENDAR_ICS"), now_utc), 0.3, now_utc, errors)
     return "; ".join(errors) or None
@@ -751,14 +806,11 @@ def fetch_poem(state, now_utc):
 
 
 def fetch_culture(state, now_utc):
-    """What's trending, book picks from Goodreads and long reads."""
+    """Book picks from Goodreads and long reads."""
     store, errors = state.setdefault("culture", {}), []
     today = now_utc.astimezone(zone("America/Los_Angeles")).date()
-    _refresh(store, "trends", culture.google_trends, 1, now_utc, errors)
-    if (store.get("wiki") or {}).get("date") != today.isoformat():
-        store.pop("wiki_at", None)
-    _refresh(store, "wiki", lambda: {"date": today.isoformat(), "articles": culture.wiki_most_read(today)}, 24, now_utc, errors)
-    _refresh(store, "reddit", culture.reddit_popular, 2, now_utc, errors)
+    for gone in ("trends", "wiki", "reddit"):  # the trending card is gone; its caches go with it
+        store.pop(gone, None), store.pop(gone + "_at", None)
     _refresh(store, "longreads", culture.fresh_longreads, 4, now_utc, errors)
     user = culture.goodreads_user(env("GOODREADS_USER") or str(load_json("config.json", {}).get("goodreads") or ""))
     if user and not user.isdigit():
@@ -1127,7 +1179,7 @@ def fetch_fishing(state, now_utc):
     if "water_f" not in (store.get("dam") or {}):
         store.pop("dam_at", None)
     _refresh(store, "dam", lambda: fishing.dam_counts(today), 6, now_utc, errors)
-    _refresh(store, "river", fishing.river, 1, now_utc, errors)
+    store.pop("river", None), store.pop("river_at", None)  # stage and temperature now live on the river card
     return "; ".join(errors) or None
 
 
@@ -1207,7 +1259,6 @@ def fishing_view(state, out, now_utc):
                                       moon.get("moonrise") if fresh else None, moon.get("moonset") if fresh else None,
                                       out.get("tides") or [], t.get("sunrise"), t.get("sunset")),
         "dam": store.get("dam"),
-        "river": store.get("river"),
         "moon": out["moon"]["name"],
         "links": [{"name": n, "url": u} for n, u in fishing.LINKS],
     }
@@ -1218,6 +1269,25 @@ def alerts_view(state, out, now_utc):
         return None
     official = alerts.active((state.get("outside") or {}).get("nws_alerts") or [], now_utc)
     return {"official": official, "forecast": alerts.from_forecast(out["days"], official), "days": 3}
+
+
+def fetch_river(state, now_utc):
+    """The river itself: USGS gauges, the NWS river forecast, bar warnings and the coast surf-zone forecast."""
+    store, errors = state.setdefault("river", {}), []
+    _refresh(store, "usgs", river.usgs, 0.5, now_utc, errors)
+    _refresh(store, "nwps", river.nwps, 3, now_utc, errors)
+    _refresh(store, "bar", river.bar_alerts, 0.5, now_utc, errors)
+    _refresh(store, "surf_zone", river.surf_zone, 6, now_utc, errors)
+    return "; ".join(errors) or None
+
+
+def river_view(state, now_utc):
+    store = state.get("river") or {}
+    if not store.get("usgs"):
+        return None
+    bar = [a for a in store.get("bar") or [] if not a.get("expires") or a["expires"] >= now_utc.isoformat()]
+    return {"gauges": store["usgs"], "forecast": store.get("nwps"), "bar": bar, "surf_zone": store.get("surf_zone"),
+            "updated": store.get("usgs_at")}
 
 
 def fetch_ships(state, now_utc):
@@ -1354,6 +1424,7 @@ def build(state, status, now_utc):
         "markets": (state.get("markets") or {}).get("quotes"),
         "market_news": {k: (state.get("markets") or {}).get(k) for k in ("helium", "realestate")},
         "ships": ships_view(state, now_utc),
+        "river": river_view(state, now_utc),
         "holidays": [h for h in (state.get("world") or {}).get("holidays") or [] if h["date"] >= today],
         "bangkok": (state.get("world") or {}).get("bangkok"),
         "thai_buddhist": world.thai_buddhist(dt.date.fromisoformat(today)),
@@ -1391,9 +1462,8 @@ def build(state, status, now_utc):
         "records": (state.get("records") or {}).get("today") if ((state.get("records") or {}).get("today") or {}).get("date") == today else None,
         "album_birthdays": (al.get("albums") or {}).get("albums") if (al.get("albums") or {}).get("date") == today else None,
         "good_news": al.get("good_news"),
+        "archives": {k: al.get(k) if (al.get(k) or {}).get("date") == today else None for k in ("artwork", "old_portland", "show")},
         "outings": outings_view(state, today),
-        "trending": {"google": cu.get("trends"), "wiki": (cu.get("wiki") or {}).get("articles")
-                     if (cu.get("wiki") or {}).get("date") == today else None, "reddit": cu.get("reddit")} if cu else None,
         "books": ({**cu["books"], "note": cu.get("books_note")} if cu.get("books") else None) if cu.get("books_user") else None,
         "long_read": culture.long_read(dt.date.fromisoformat(today)),
         "poem": (state.get("poem") or {}).get("today") if ((state.get("poem") or {}).get("today") or {}).get("date") == today else None,
@@ -1417,7 +1487,7 @@ def main():
                      ("sports", fetch_sports), ("markets", fetch_markets), ("world", fetch_world),
                      ("news", fetch_news), ("releases", fetch_releases), ("ski", fetch_ski), ("surf", fetch_surf), ("fishing", fetch_fishing),
                      ("live", fetch_live), ("places", fetch_places), ("extras", fetch_extras),
-                     ("ships", fetch_ships), ("almanac", fetch_almanac), ("civics", fetch_civics),
+                     ("ships", fetch_ships), ("river", fetch_river), ("almanac", fetch_almanac), ("civics", fetch_civics),
                      ("culture", fetch_culture), ("science", fetch_science), ("outings", fetch_outings),
                      ("records", fetch_records), ("poem", fetch_poem)):
         try:

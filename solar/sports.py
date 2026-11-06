@@ -19,7 +19,7 @@ def _get(url):
 
 
 def _find_team(league_path, name):
-    data = _get(f"{ESPN}/{league_path}/teams")
+    data = _get(f"{ESPN}/{league_path}/teams?limit=1000")  # college leagues list hundreds
     for group in data.get("sports", [{}])[0].get("leagues", [{}])[0].get("teams", []):
         team = group.get("team", {})
         if name.lower() in (team.get("displayName", "") + " " + team.get("name", "")).lower():

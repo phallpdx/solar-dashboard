@@ -871,6 +871,12 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
 .j-mush{background:linear-gradient(150deg,#F3E7D3,#E6D3B5);--jc:#7A4A1E}
 .j-whale{background:linear-gradient(160deg,#DDEBEC,#C9DEDF);--jc:#1F5B66}
 .j-potd{background:linear-gradient(150deg,#EFE9DF,#E2D8C6);--jc:#5B4A33}
+.j-art{background:linear-gradient(150deg,#F6EFE2,#E9DCC4);--jc:#7A4B2A}.j-oldpdx{background:linear-gradient(150deg,#ECE6DA,#D9D0C0);--jc:#4A4036}.j-show{background:linear-gradient(150deg,#E8E4F2,#D6D0E6);--jc:#4B3F7A}
+.arch-img{display:block;width:100%;max-height:360px;object-fit:contain;border-radius:10px;background:rgba(0,0,0,.04)}
+.arch-img.photo{object-fit:cover;max-height:300px}
+.arch-cap{margin:8px 0 0;font-size:13.5px;line-height:1.5}.arch-cap b{font-weight:800}.arch-cap small{display:block;color:var(--muted);font-weight:600}
+#surfzone .v small{display:block;font-weight:600;margin-top:2px}
+.stage-chart{width:100%;height:120px;display:block}.stage-chart text{font:600 11px Manrope,sans-serif;fill:var(--muted)}
 .mtn{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(60,40,20,.18)}
 .mtn:last-of-type{border-bottom:0}
 .mtn b{font-family:var(--display,inherit);font-size:17px}
@@ -1391,6 +1397,7 @@ body{background-color:#8F5A32;
       <section class="card" aria-labelledby="fc-h" id="fc-card" hidden>
         <div class="head"><h2 id="fc-h">Next 7 days</h2><span class="meta">Expected solar is based on your system’s last 30 days</span></div>
         <div class="fc" id="forecast"></div>
+        <p class="note" id="roof-sun"></p>
       </section>
       <div class="row">
         <section class="card half yard-card" aria-labelledby="yard-h" id="yard-card" hidden>
@@ -1430,6 +1437,14 @@ body{background-color:#8F5A32;
         <div class="legend" id="grid-legend"></div>
         <p class="note" id="grid-note"></p>
       </section>
+      <section class="card" aria-labelledby="sunact-h" id="sunact-card" hidden>
+        <div class="head"><h2 id="sunact-h">The sun itself</h2><span class="meta" id="sunact-meta"></span></div>
+        <div class="row" style="gap:18px;align-items:center;flex-wrap:wrap">
+          <a id="sunact-link" href="https://sdo.gsfc.nasa.gov/data/" target="_blank" rel="noopener" style="flex:none"><img id="sunact-img" alt="The sun today, from NASA's Solar Dynamics Observatory" style="width:150px;height:150px;border-radius:50%;display:block;background:#000" loading="lazy" onerror="this.parentNode.hidden=true"></a>
+          <div style="flex:1 1 240px"><p class="summary" id="sunact-summary"></p><div class="facts" id="sunact-facts"></div></div>
+        </div>
+        <p class="note" id="sunact-note"></p>
+      </section>
       <section class="card" aria-labelledby="main-h">
         <div class="head"><h2 id="main-h">Power through the day</h2>
           <div class="seg" role="group" aria-label="Time range">
@@ -1450,6 +1465,7 @@ body{background-color:#8F5A32;
           <div id="month-chart"></div>
           <div class="axis" id="month-axis"></div>
           <p class="note" id="month-note"></p>
+          <p class="note" id="pvgis-note"></p>
         </section>
         <section class="card side" aria-labelledby="bill-h">
           <div class="head"><h2 id="bill-h">PGE bill cycle</h2><span class="meta" id="bill-meta"></span></div>
@@ -1547,11 +1563,18 @@ body{background-color:#8F5A32;
   </section>
 
 <section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">The ship across the way, tides, radar and fishing</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">The ship across the way, the river's level and forecast, tides, radar and fishing</p></div></div>
   <div class="sec-body">
     <section class="card" aria-labelledby="moor-h" id="moor-card">
       <div class="head"><h2 id="moor-h">Across from the house</h2><span class="meta" id="moor-meta"></span></div>
       <div id="moored"><p class="note">Waiting for the first listen to ship radio on the river.</p></div>
+    </section>
+    <section class="card" aria-labelledby="columbia-h" id="columbia-card" hidden>
+      <div class="head"><h2 id="columbia-h">The Columbia today</h2><span class="meta" id="columbia-meta"></span></div>
+      <p class="summary" id="columbia-summary"></p>
+      <div class="facts" id="columbia-facts"></div>
+      <div id="columbia-chart"></div>
+      <p class="note" id="columbia-note"></p>
     </section>
     <div class="row">
       <section class="card wide" aria-labelledby="radar-h">
@@ -1569,7 +1592,6 @@ body{background-color:#8F5A32;
         </div>
         <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:10px">
           <h3 class="sub">Running upriver this week</h3><div class="lines" id="fish-season"></div>
-          <div class="minis" id="fish-river"></div>
         </div>
       </div>
       <p class="note" id="fish-dam"></p>
@@ -1688,13 +1710,20 @@ body{background-color:#8F5A32;
               </section>
           </div>
         </div>
-        <div class="shelf one" data-shelf="online">
-          <h3 class="shelf-h"><span aria-hidden="true">📈</span>Online right now</h3>
+        <div class="shelf" data-shelf="archives">
+          <h3 class="shelf-h"><span aria-hidden="true">🗄️</span>From the archives</h3>
           <div class="shelf-grid">
-            <section class="card joy-card j-trend" aria-labelledby="trend-h" id="trend-card" hidden>
-              <div class="head"><h2 id="trend-h">What's trending</h2><span class="meta" id="trend-meta"></span></div>
-              <div class="trend-tabs" id="trend-tabs"></div>
-              <div id="trends"></div>
+            <section class="card joy-card j-art" aria-labelledby="art-h" id="art-card" hidden>
+              <div class="head"><h2 id="art-h">Artwork of the day</h2><span class="meta" id="art-meta"></span></div>
+              <div id="art"></div>
+            </section>
+            <section class="card joy-card j-oldpdx" aria-labelledby="oldpdx-h" id="oldpdx-card" hidden>
+              <div class="head"><h2 id="oldpdx-h">Old Portland</h2><span class="meta" id="oldpdx-meta"></span></div>
+              <div id="oldpdx"></div>
+            </section>
+            <section class="card joy-card j-show" aria-labelledby="show-h" id="show-card" hidden>
+              <div class="head"><h2 id="show-h">A Portland show, recorded live</h2><span class="meta" id="show-meta"></span></div>
+              <div id="show"></div>
             </section>
           </div>
         </div>
@@ -1723,9 +1752,15 @@ body{background-color:#8F5A32;
         <section class="card wide" aria-labelledby="sky-h">
           <div class="head"><h2 id="sky-h">Coming up in the sky</h2><span class="meta" id="aurora"></span></div>
           <p class="summary" id="stargaze" hidden></p>
+          <div class="lines" id="nights"></div>
           <div class="lines" id="sky"></div>
           <h3 class="sub" id="iss-h" style="margin-top:6px" hidden>Space station passes you can see</h3>
           <div class="lines" id="iss"></div>
+          <h3 class="sub" id="sat-h" style="margin-top:6px" hidden>Other bright satellites</h3>
+          <div class="lines" id="sats"></div>
+          <h3 class="sub" id="neo-h" style="margin-top:6px" hidden>Asteroids passing by</h3>
+          <div class="lines" id="neo"></div>
+          <p class="note" id="sky-note"></p>
         </section>
       </div>
       <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
@@ -1753,6 +1788,12 @@ body{background-color:#8F5A32;
         <div class="facts" id="surf-facts"></div>
         <div class="breaks" id="surf-breaks"></div>
         <p class="note">Ratings are a rough call from the Open-Meteo wave and wind models: swell size and period, how squarely the swell hits each break, and whether the wind is offshore there. Sizes are approximate wave faces. Check the water before paddling out; this coast is cold and rips are common.</p>
+      </section>
+      <section class="card" aria-labelledby="bar-h" id="bar-card" hidden>
+        <div class="head"><h2 id="bar-h">The bar and the surf zone</h2><span class="meta" id="bar-meta"></span></div>
+        <div class="lines" id="bar-alerts"></div>
+        <div class="facts" id="surfzone"></div>
+        <p class="note" id="bar-note"></p>
       </section>
       <div class="row">
         <section class="card half" aria-labelledby="minus-h">
@@ -1885,20 +1926,16 @@ body{background-color:#8F5A32;
         </div>
       </div>
       <div class="row">
-        <section class="card half" aria-labelledby="alb-h">
+        <section class="card" aria-labelledby="alb-h">
           <div class="head"><h2 id="alb-h">New albums</h2><span class="meta" id="alb-meta"></span></div>
           <div class="scroll" id="albums" tabindex="0" aria-label="Notable new and upcoming albums, scrollable"></div>
-        </section>
-        <section class="card half" aria-labelledby="pdxm-h" id="pdxm-card" hidden>
-          <div class="head"><h2 id="pdxm-h">Portland and indie music getting played</h2><span class="meta" id="pdxm-meta"></span></div>
-          <div class="scroll" id="pdxmusic" tabindex="0" aria-label="Local and indie releases, scrollable"></div>
         </section>
       </div>
     </div>
   </section>
 
   <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, F1, the markets, helium and Portland real estate</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, the Vikings and Pilots, F1, the markets, helium and Portland real estate</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
       <div class="row">
@@ -2680,6 +2717,12 @@ const DAILY_TITLES = {
   'food-h': ['Fresh this month', 'Eating with the season', 'What is ripe'],
   'radar-h': ['Rain on the way?', 'Radar loop', 'Watch the showers'],
   'moor-h': ['Parked across the river', 'Ship across the way', 'At anchor out front'],
+  'columbia-h': ['How the river is running', 'The Columbia, by the numbers', 'River level and forecast'],
+  'bar-h': ['Crossing the bar', 'Bar and beach warnings', 'Surf and the bar'],
+  'sunact-h': ['Our star today', 'Spots on the sun', 'The sun, close up'],
+  'art-h': ['A painting for today', 'Something to look at', 'From the museum'],
+  'oldpdx-h': ['Portland, back then', 'The city as it was', 'A Portland photograph'],
+  'show-h': ['A night out, years ago', 'Live from Portland', 'A show from the archive'],
   'fish-h': ['Fishing report', 'Will they bite?', 'On the Columbia'],
   'surf-h': ['Waves this week', 'Should you paddle out?', 'Surf check'],
   'minus-h': ['Low tides for tide pools', 'Tidepool days', 'Extra-low tides'],
@@ -2824,6 +2867,10 @@ function render() {
   renderPanels();
   renderOutside();
   renderParked();
+  renderRiver();
+  renderBar();
+  renderSunActivity();
+  renderArchives();
   renderNews();
   renderComing();
   const waits = [renderLocal(), renderBluray(), renderKids(), renderBigEvents(), renderPlan(), renderSkiOutlook(), renderFinds(), renderJazz()];
@@ -3111,25 +3158,6 @@ function renderLongRead() {
     ${fresh.length ? `<h3 class="sub">Fresh from Longreads</h3>${fresh.slice(0, 3).map(x => `<a class="read-fresh" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join('')}` : ''}`;
 }
 
-let trendTab = 'google';
-function renderTrends() {
-  const t = D.trending;
-  const tabs = [['google', 'Searches', t && t.google], ['wiki', 'Wikipedia', t && t.wiki], ['reddit', 'Reddit', t && t.reddit]].filter(x => x[2] && x[2].length);
-  $('trend-card').hidden = !tabs.length;
-  if (!tabs.length) return;
-  if (!tabs.some(x => x[0] === trendTab)) trendTab = tabs[0][0];
-  $('trend-tabs').innerHTML = tabs.map(([k, label]) => `<button type="button" class="chip" aria-pressed="${k === trendTab}" data-k="${k}">${label}</button>`).join('');
-  $('trend-tabs').querySelectorAll('button').forEach(b => b.onclick = () => { trendTab = b.dataset.k; renderTrends(); });
-  const list = tabs.find(x => x[0] === trendTab)[2];
-  const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'K' : n;
-  $('trend-meta').textContent = trendTab === 'google' ? 'Rising US searches' : trendTab === 'wiki' ? 'Most read yesterday' : 'Top today';
-  $('trends').innerHTML = `<ol class="trend-list">${list.slice(0, 6).map(x => trendTab === 'google'
-    ? `<li><a href="${esc(x.url || 'https://www.google.com/search?q=' + encodeURIComponent(x.title))}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.story ? `<small>${esc(x.story)}${x.source ? ' · ' + esc(x.source) : ''}</small>` : ''}</a><span class="heat">${esc(x.traffic)}</span></li>`
-    : trendTab === 'wiki'
-    ? `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b>${x.about ? `<small>${esc(x.about)}</small>` : ''}</a><span class="heat">${fmt(x.views)}</span></li>`
-    : `<li><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b><small>r/${esc(x.sub)}${x.comments != null ? ` · ${fmt(x.comments)} comments` : ''}</small></a>${x.score != null ? `<span class="heat">▲${fmt(x.score)}</span>` : ''}</li>`).join('')}</ol>`;
-}
-
 function renderBooks() {
   const b = D.books;
   $('books-card').hidden = !b;
@@ -3162,7 +3190,7 @@ function bookDoodle(x) {
 
 function renderJoy() {
   const shelves = () => document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
-  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderTrends, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, renderSetting, renderRainJar, renderStake, renderOverhead, renderTitleFight, scene, dailyTitles, shelves].forEach(tryRender);
+  [renderLoads, renderYard, renderShades, renderWins, renderSunset, renderApod, renderPicks, renderBirthdays, renderGood, renderLongRead, renderBooks, renderPoem, renderScience, renderLook, renderHarvest, renderLight, renderAhead, renderTherms, renderShelf, renderSetting, renderRainJar, renderStake, renderOverhead, renderTitleFight, scene, dailyTitles, shelves].forEach(tryRender);
 }
 
 // Long cards start trimmed with a "Show all" button so the page stays skimmable.
@@ -3327,6 +3355,8 @@ function renderMonth() {
     note = `Past ${both.length} days: ${Math.round(now).toLocaleString()} kWh vs ${Math.round(then).toLocaleString()} kWh on the same dates last year (${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%). ` + note;
   }
   $('month-note').textContent = note;
+  const pv = D.outside && D.outside.pvgis, mo = new Date().getMonth() + 1, pm = pv && (pv.months || []).find(x => x.month === mo);
+  $('pvgis-note').innerHTML = pm ? `For a ${pv.kwp} kW roof at this spot, the European Commission's PVGIS long-term model (${esc(pv.db || 'ERA5')}, 2005–2023) expects about ${pm.kwh.toLocaleString()} kWh in ${MON[mo - 1]} (${pm.per_day} a day) and ${pv.year_kwh.toLocaleString()} kWh a year. ${cite([['PVGIS', pv.url]])}` : '';
 }
 
 function renderBill() {
@@ -3417,6 +3447,112 @@ const clock = hhmm => { if (!hhmm) return '–'; const [h, m] = hhmm.split(':').
 const AQI_COLORS = [[50, '#3FA34D'], [100, '#E3B505'], [150, '#F08A24'], [200, '#D64545'], [300, '#8E3B9E'], [1e9, '#7A2E2E']];
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+// The Columbia itself: how high and how fast it runs, where the NWS says it is headed, and how warm the water is.
+function renderRiver() {
+  const r = D.river, card = $('columbia-card');
+  card.hidden = !r;
+  if (!r) return;
+  const g = r.gauges || {}, van = g.vancouver || {}, pw = g.columbia || {}, wil = g.willamette || {};
+  const fc = (r.forecast || {}).columbia || {};
+  const stage = van.stage_ft ?? fc.stage_ft, days = van.stage_ft_days || [];
+  const prev = days.length > 1 ? days[days.length - 2].v : null;
+  const trend = prev == null || stage == null ? '' : stage - prev > 0.3 ? 'rising' : prev - stage > 0.3 ? 'dropping' : 'steady';
+  const parts = [];
+  if (stage != null) parts.push(`The river is at ${n1(stage)} ft at Vancouver${trend ? `, ${trend} since yesterday` : ''}; it rises and falls a foot or two with each tide this far down.`);
+  if (pw.flow_cfs != null) parts.push(`${Math.round(pw.flow_cfs / 1000)},000 cubic feet a second are going past the island.`);
+  if (fc.crest_ft != null && fc.crest_at) parts.push(`The NWS forecast tops out at ${n1(fc.crest_ft)} ft ${localDay(fc.crest_at)}${fc.action_ft ? `, ${fc.crest_ft >= fc.action_ft ? 'above' : 'below'} the ${n1(fc.action_ft)} ft action stage` : ''}.`);
+  if (wil.temp_f != null) parts.push(`The water is ${wil.temp_f}° at Portland.`);
+  $('columbia-summary').textContent = parts.join(' ');
+  $('columbia-meta').textContent = van.at ? `USGS reading ${localWhen(van.at)}` : '';
+  const facts = [];
+  if (stage != null) facts.push(['Level at Vancouver', `${n1(stage)} <small>ft${trend ? ' · ' + trend : ''}</small>`]);
+  if (pw.flow_cfs != null) facts.push(['Flow', `${Math.round(pw.flow_cfs / 1000)}k <small>cfs</small>`]);
+  if (wil.temp_f != null) facts.push(['Water temp', `${wil.temp_f}° <small>Willamette</small>`]);
+  if (fc.crest_ft != null) facts.push(['Forecast crest', `${n1(fc.crest_ft)} <small>ft ${fc.crest_at ? localDay(fc.crest_at) : ''}</small>`]);
+  if (fc.minor_ft) facts.push(['Flood stage', `${n1(fc.minor_ft)} <small>ft (minor)</small>`]);
+  $('columbia-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+  // Eight days of readings, then the forecast line, on one little chart.
+  const hist = days.map(d => [new Date(d.date + 'T12:00').getTime(), d.v]), fut = (fc.forecast || []).map(p => [new Date(p.at).getTime(), p.stage_ft]);
+  const all = [...hist, ...fut];
+  if (all.length >= 3) {
+    const vals = all.map(x => x[1]);
+    const lo = Math.min(...vals) - 0.5, hi = Math.max(...vals) + 0.5, W = 600, H = 120;
+    const t0 = Math.min(...all.map(x => x[0])), t1 = Math.max(...all.map(x => x[0]));
+    const X = t => 40 + (t - t0) / (t1 - t0 || 1) * (W - 60), Y = v => 10 + (hi - v) / (hi - lo) * 90;
+    const line = pts => pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(' ');
+    const hp = hist, fp = hist.length && fut.length ? [hist[hist.length - 1], ...fut] : fut;
+    const act = fc.action_ft && fc.action_ft <= hi + 1 ? `<line x1="40" x2="${W - 20}" y1="${Y(fc.action_ft).toFixed(1)}" y2="${Y(fc.action_ft).toFixed(1)}" stroke="#D64545" stroke-dasharray="4 4"/><text x="${W - 18}" y="${(Y(fc.action_ft) - 3).toFixed(1)}" text-anchor="end">action ${n1(fc.action_ft)} ft</text>` : '';
+    const labels = [];
+    for (let t = new Date(t0).setHours(12, 0, 0, 0); t <= t1; t += 864e5) labels.push([t, new Date(t)]);
+    const step = Math.ceil(labels.length / 7);
+    const lab = labels.filter((_, i) => i % step === 0).map(([t, d]) => `<text x="${X(t).toFixed(1)}" y="${H - 4}" text-anchor="middle">${MON[d.getMonth()]} ${d.getDate()}</text>`).join('');
+    $('columbia-chart').innerHTML = `<svg class="stage-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="River level, past week and forecast">
+      <text x="2" y="${Y(hi - 0.5).toFixed(1)}">${n1(hi - 0.5)} ft</text><text x="2" y="${Y(lo + 0.5).toFixed(1)}">${n1(lo + 0.5)} ft</text>${act}
+      <path d="${line(hp)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="${line(fp)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" opacity=".8"/>${lab}</svg>`;
+  } else $('columbia-chart').innerHTML = '';
+  const src = [['USGS Water Services', 'https://waterdata.usgs.gov/monitoring-location/14144700/'], ['NWS National Water Prediction Service', fc.url || 'https://water.noaa.gov/']];
+  $('columbia-note').innerHTML = `Solid line: the last eight days at Vancouver. Dashed: the NWS forecast${fc.forecast_issued ? ', issued ' + localWhen(fc.forecast_issued) : ''}. Flow is measured at Port Westward, the nearest gauge below the island; temperature on the Willamette at Portland. ${cite(src)}`;
+}
+
+// The Columbia River bar and the NWS surf zone forecast for the beach near the coast house.
+function renderBar() {
+  const r = D.river, alerts = (r && r.bar) || [], sz = r && r.surf_zone, card = $('bar-card');
+  card.hidden = !alerts.length && !(sz && sz.days && sz.days.length);
+  if (card.hidden) return;
+  $('bar-meta').textContent = sz && sz.issued ? `NWS Portland · surf zone issued ${localWhen(sz.issued)}` : 'NWS Portland';
+  const sev = x => /warning/i.test(x.event || '') || x.severity === 'Extreme' || x.severity === 'Severe' ? '#D64545' : '#E3B505';
+  // NWS bundles several products into one description ("For the Gale Warning, seas 14 to 19 ft..."): keep this event's sentence.
+  const about = x => { const d = x.description || ''; const m = d.match(new RegExp('For the ' + (x.event || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ',?\\s*([^*]+?)(?=\\s+For the |\\s*\\*|$)', 'i'));
+    const t = (m ? m[1] : (d.split('* WHERE')[0].replace(/^\* WHAT\.{3}/, ''))).trim(); return t.charAt(0).toUpperCase() + t.slice(1); };
+  $('bar-alerts').innerHTML = alerts.map(x => `<div><span><b style="font-weight:700"><i class="aqi" style="background:${sev(x)}"></i>${esc(x.event)}</b> at the Columbia River bar<br><small>${esc(about(x))}</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${x.expires ? 'until ' + localWhen(x.expires) : ''}</span></div>`).join('') || `<div><span>No marine warnings for the Columbia River bar right now.</span><span></span></div>`;
+  const days = (sz && sz.days) || [];
+  $('surfzone').innerHTML = days.slice(0, 2).map(d => `<div class="mini"><span class="k">${esc(d.day)} · ${esc(sz.segment || 'north coast')}</span><span class="v">${esc(d.surf || '–')}<small>${[d.swell, d.wind ? 'wind ' + d.wind : null, d.rip ? 'rip current risk ' + d.rip : null].filter(Boolean).map(esc).join(' · ')}</small></span></div>`).join('');
+  $('bar-note').innerHTML = `Warnings are NWS marine alerts for the bar zone (PZZ210); the Coast Guard posts its own bar restrictions by phone and radio. The surf zone forecast is the Portland office's text product for the Seaside and Cannon Beach beaches, a few miles south of the house. ${cite([['NWS alerts for PZZ210', 'https://alerts.weather.gov/search?zone=PZZ210'], ['Surf zone forecast (SRFPQR)', (sz && sz.url) || 'https://forecast.weather.gov/product.php?site=PQR&product=SRF&issuedby=PQR']])}`;
+}
+
+// The sun as a star: today's sunspot count, radio flux and flares, with the latest SDO image.
+function renderSunActivity() {
+  const sa = D.outside && D.outside.sun_activity, card = $('sunact-card');
+  card.hidden = !sa;
+  if (!sa) return;
+  $('sunact-img').src = sa.image + '?t=' + Math.floor(Date.now() / 36e5);
+  $('sunact-meta').textContent = `NOAA SWPC daily indices for ${fmtDate(sa.date)}`;
+  const flares = [sa.flares_x ? `${sa.flares_x} X-class` : '', sa.flares_m ? `${sa.flares_m} M-class` : '', sa.flares_c ? `${sa.flares_c} C-class` : ''].filter(Boolean);
+  const quiet = sa.sunspots < 40 ? 'quiet' : sa.sunspots < 100 ? 'moderately active' : 'busy';
+  $('sunact-summary').textContent = `${sa.sunspots} sunspots today against a 30-day average of ${sa.sunspots_30d_avg}: a ${quiet} sun. ${flares.length ? `Flares in the last day: ${flares.join(', ')}.` : 'No flares reported in the last day.'}`;
+  const facts = [['Sunspot number', sa.sunspots], ['30-day average', sa.sunspots_30d_avg], ['10.7 cm radio flux', `${sa.flux} <small>sfu</small>`], ['New regions', sa.new_regions]];
+  $('sunact-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+  $('sunact-note').innerHTML = `The picture is the latest HMI intensitygram from NASA's Solar Dynamics Observatory: dark spots are sunspots. Sunspots and flux track the 11-year cycle; big flares can bring the aurora south (see The sky). ${cite([['NOAA SWPC daily solar indices', sa.url], ['NASA SDO', 'https://sdo.gsfc.nasa.gov/data/']])}`;
+}
+
+// Free archives, one each a day: an artwork, an old photograph of Portland and a Portland concert recording.
+function renderArchives() {
+  const a = D.archives || {};
+  const art = a.artwork, old = a.old_portland, show = a.show;
+  $('art-card').hidden = !art;
+  if (art) {
+    $('art-meta').textContent = 'Art Institute of Chicago · public domain';
+    $('art').innerHTML = `<a href="${esc(art.url)}" target="_blank" rel="noopener"><img class="arch-img" src="${esc(art.image)}" alt="${esc(art.title)}" loading="lazy"></a>
+      <p class="arch-cap"><b>${esc(art.title)}</b>${art.artist ? `, ${esc(art.artist)}` : ''}<small>${[art.when, art.medium].filter(Boolean).map(esc).join(' · ')}</small></p>
+      ${cite([['Art Institute of Chicago API', 'https://api.artic.edu/docs/']])}`;
+  }
+  $('oldpdx-card').hidden = !old;
+  if (old) {
+    $('oldpdx-meta').textContent = old.year ? `Library of Congress · ${esc(old.year)}` : 'Library of Congress';
+    $('oldpdx').innerHTML = `<a href="${esc(old.url)}" target="_blank" rel="noopener"><img class="arch-img photo" src="${esc(old.image)}" alt="${esc(old.title)}" loading="lazy"></a>
+      <p class="arch-cap"><b>${esc(old.title)}</b><small>${(old.subjects || []).map(esc).join(' · ')}</small></p>
+      ${cite([['Library of Congress prints and photographs', 'https://www.loc.gov/photos/?q=portland+oregon']])}`;
+  }
+  $('show-card').hidden = !show;
+  if (show) {
+    $('show-meta').textContent = show.when && show.when.length === 10 ? `Internet Archive · ${fmtDate(show.when)}, ${show.when.slice(0, 4)}` : 'Internet Archive';
+    $('show').innerHTML = `<iframe src="${esc(show.embed)}&playlist=1&list_height=150" style="width:100%;height:200px;border:0;border-radius:10px" loading="lazy" title="${esc(show.title)}" allow="autoplay"></iframe>
+      <p class="arch-cap"><b>${esc(show.artist || show.title)}</b>${show.venue ? ` at ${esc(show.venue)}` : ''}<small><a href="${esc(show.url)}" target="_blank" rel="noopener">${esc(show.title)}</a>${show.count ? ` · one of ${show.count.toLocaleString()} Portland shows in the Live Music Archive` : ''}</small></p>
+      ${cite([['Internet Archive Live Music Archive', 'https://archive.org/details/etree']])}`;
+  }
+}
+
 function renderOutside() {
   const o = D.outside;
   $('today-card').hidden = $('fc-card').hidden = !o;
@@ -3450,6 +3586,13 @@ function renderOutside() {
   ];
   if (tides.length) facts.push(['Next tide', `${tides[0].type} ${clock(tides[0].t.slice(11))} <small>${tides[0].ft} ft</small>`]);
   if (tomorrow && tomorrow.solar_kwh != null) facts.push(['Solar tomorrow', `~${tomorrow.solar_kwh} <small>kWh</small>`]);
+  const irr = o.irradiance, idays = irr ? irr.days.slice(0, 7) : [];
+  $('roof-sun').innerHTML = idays.length ? `Sun on the roof (tilted ${irr.tilt}°): ` + idays.map((d, i) => {
+      const [y, m, dd] = d.date.split('-').map(Number);
+      return `<b>${i === 0 ? 'today' : DOW[new Date(y, m - 1, dd).getDay()]}</b> ${d.tilted_kwh_m2} kWh/m² <small>${d.kind === 'sunny' ? 'direct sun' : d.kind === 'mixed' ? 'sun and cloud' : 'grey'}</small>`;
+    }).join(', ') + `. ${cite([['Open-Meteo tilted irradiance', 'https://open-meteo.com/en/docs#hourly=global_tilted_irradiance']])}` : '';
+  const smoke = (o.smoke || []).filter(d => d.pm2_5 > 12);
+  if (smoke.length) facts.push(['Smoke outlook', `${smoke[0].pm2_5} <small>µg/m³ PM2.5 ${smoke[0].date === todayIso() ? 'today' : fmtDate(smoke[0].date)} · ${esc(smoke[0].word.toLowerCase())}</small>`]);
   $('out-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
 
   $('forecast').innerHTML = o.days.map((d, i) => {
@@ -3518,8 +3661,9 @@ function renderSky(o) {
     <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:22px;font-weight:800">${esc(m.name)}</span>
     <span class="meta" style="font-size:13px">${times || `Day ${Math.round(m.age_days)} of 29`}</span></div></div>
     <div class="lines">${(o.phases || []).map(p => `<div><span>${esc(p.phase)}</span><span>${localDay(p.utc)}</span></div>`).join('')}</div>`;
-  const a = o.aurora;
-  $('aurora').textContent = a ? (a.kp >= 6 ? `Aurora possible ${localDay(a.when_utc)} (Kp ${a.kp})` : `Aurora unlikely (Kp up to ${a.kp})`) : '';
+  const a = o.aurora, an = o.aurora_now;
+  const nowWord = an && an.north_pct >= 10 ? ` · ${an.north_pct}% chance to the north in the next half hour` : '';
+  $('aurora').textContent = a ? (a.kp >= 6 ? `Aurora possible ${localDay(a.when_utc)} (Kp ${a.kp})` : `Aurora unlikely (Kp up to ${a.kp})`) + nowWord : '';
   const sg = o.stargazing;
   $('stargaze').hidden = !sg;
   if (sg) $('stargaze').textContent = `${sg.verdict} (${sg.cloud}% cloud cover 9 pm to 1 am, moon ${m.lit_pct}% lit).` + (sg.good ? ' Good night to look up.' : '');
@@ -3527,6 +3671,21 @@ function renderSky(o) {
   $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${e.kind === 'launch' && e.visible ? '🚀 ' : ''}${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
     <span style="white-space:nowrap;padding-left:12px">${localDay(e.utc)}${e.kind === 'launch' ? '<br><small>' + tm(e.utc) + '</small>' : ''}</span></div>`).join('');
   const iss = o.iss || [];
+  const nights = o.nights || [];
+  const scale = (v, words) => words[Math.min(words.length - 1, Math.floor((v - 1) / 3))];
+  $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
+  const sats = o.satellites || [];
+  $('sat-h').hidden = !sats.length;
+  $('sats').innerHTML = sats.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> · ${localDay(p.utc)} at ${tm(p.utc)}<br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
+  const neo = o.close_approaches || [];
+  $('neo-h').hidden = !neo.length;
+  $('neo').innerHTML = neo.slice(0, 4).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a><br><small>${x.size_m ? `about ${x.size_m >= 1000 ? (x.size_m / 1000).toFixed(1) + ' km' : x.size_m + ' m'} across, ` : ''}${x.km_s} km/s</small></span>
+    <span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}<br><small>${x.lunar_distances} lunar distance${x.lunar_distances === 1 ? '' : 's'}</small></span></div>`).join('');
+  const skySrc = [['Sky events: in-house almanac', ''], ['Launches: The Space Devs', 'https://thespacedevs.com/llapi'], ['Orbits: CelesTrak', 'https://celestrak.org/'], ['Aurora: NOAA SWPC', 'https://www.swpc.noaa.gov/products/aurora-30-minute-forecast']];
+  if (nights.length) skySrc.push(['Night sky forecast: 7Timer!', 'https://www.7timer.info/']);
+  if (neo.length) skySrc.push(['Close approaches: NASA JPL', 'https://cneos.jpl.nasa.gov/ca/']);
+  $('sky-note').innerHTML = `Passes count when the satellite is sunlit, at least 10° up and your sky is dark. ${cite(skySrc)}`;
   $('iss-h').hidden = !iss.length;
   $('iss').innerHTML = iss.map(p => `<div><span><b style="font-weight:700">${localDay(p.utc)} at ${tm(p.utc)}</b><br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high${p.bright ? ' · bright' : ''}</small></span>
     <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
@@ -3781,7 +3940,7 @@ function renderComing() {
 
 async function renderLocal() {
   const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
-  const [rest, liq, pm] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json'), getJson('localmusic.json')]);
+  const [rest, liq] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json')]);
   // The researched restaurant list joins the openings card: only named places with a linked write-up,
   // skipping ones the openings feed already covers and the list's own near-duplicates.
   const norm = t => (t || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 3 && !/^(the|and|with|from|that|this|new|portland|restaurant|opens|opening)$/.test(w));
@@ -3812,16 +3971,7 @@ async function renderLocal() {
       ${x.rating ? ` <span class="pill">${esc(x.rating)}${x.rating_source ? ' ' + esc(x.rating_source) : ''}</span>` : ''}</small>
       ${x.why ? `<p>${esc(x.why)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
   }
-  const rel = (pm && pm.releases) || [];
-  $('pdxm-card').hidden = !rel.length;
-  if (rel.length) {
-    $('pdxm-meta').textContent = `Updated ${fmtDate(pm.updated)}`;
-    $('pdxmusic').innerHTML = rel.map(x => `<div class="story"><span><b>${esc(x.artist)} · <i>${esc(x.title)}</i></b>
-      <small>${[x.type, x.local ? 'Portland' : null, x.genre, x.label, x.date ? dayLabel(x.date) : null].filter(Boolean).map(esc).join(' · ')}</small>
-      ${x.why ? `<p>${esc(x.why)}</p>` : ''}
-      ${(x.links || []).length ? `<small>${x.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ')}</small>` : ''}</span></div>`).join('');
-  }
-  $('local').hidden = $('open-card').hidden && $('liq-card').hidden && $('pdxm-card').hidden && $('ski-card').hidden;
+  $('local').hidden = $('open-card').hidden && $('liq-card').hidden && $('ski-card').hidden;
 }
 
 function renderDrives() {
@@ -3978,11 +4128,6 @@ function renderFishing() {
   const dam = f.dam;
   const run = dam ? Object.entries(dam.week).filter(([, v]) => v > 0) : [];
   $('fish-season').innerHTML = run.map(([k, v]) => `<div><span><b style="font-weight:700">${esc(k)}</b></span><span>${v.toLocaleString()}</span></div>`).join('') || '<div><span>No dam counts right now</span><span></span></div>';
-  const r = f.river || {};
-  const minis = [];
-  if (r.stage_ft != null) minis.push(['River level', `${r.stage_ft} <small>ft ${r.stage_change_ft > 0.2 ? 'rising' : r.stage_change_ft < -0.2 ? 'dropping' : 'steady'}</small>`]);
-  if (r.water_f != null) minis.push(['Water temp', `${r.water_f}°`]);
-  $('fish-river').innerHTML = minis.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year, so check the rules below before you go.` : '';
   $('fish-links').innerHTML = 'Check seasons and rules before you go: ' + f.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ');
 }
@@ -4086,7 +4231,7 @@ function renderMore() {
   const sp = D.sports, mk = D.markets;
   $('more').hidden = !sp && !mk;
   const teams = [];
-  for (const key of ['blazers', 'timbers']) {
+  for (const key of ['blazers', 'timbers', 'psu', 'pilots']) {
     const t = sp && sp[key];
     if (!t) continue;
     const g = t.next, l = t.last;
@@ -4565,7 +4710,7 @@ const SOURCES = {
   'plan-h': [['Daily web check of venue, ticketing, resort and agency pages; each item links its source', '']],
   'finds-h': [DAILY],
   'big-h': [['Daily web check of venue, league and city event pages; each event links its source', ''], ['Home games: ESPN schedule', 'https://www.espn.com/']],
-  'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY], 'jazz-h': [DAILY],
+  'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY], 'jazz-h': [DAILY],
   'tv-h': [['TVmaze schedule and viewer ratings', 'https://www.tvmaze.com/'], ['Movie ratings: TMDB users', 'https://www.themoviedb.org/'], ['Where movies stream: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'kidmov-h': [['TMDB family movies rated G or PG', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'clsmov-h': [['TMDB movies 25+ years old with 1,000+ votes and a 7.3+ average', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['Context: the movie\'s Wikipedia article', 'https://en.wikipedia.org/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
@@ -4697,9 +4842,9 @@ async function renderBriefing() {
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
   const add = (score, sec, text) => { if (text) notes.push([score, sec, text]); };
-  const [events, plan, kids, jazz, gigs, blu, rests, finds, pdxm, coastEv, fans, brief, alf] = await Promise.all(
+  const [events, plan, kids, jazz, gigs, blu, rests, finds, coastEv, fans, brief, alf] = await Promise.all(
     ['events.json', 'planahead.json', 'kids.json', 'jazz.json', 'concerts.json', 'bluray.json', 'restaurants.json',
-     'foodfinds.json', 'localmusic.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json'].map(getJson));
+     'foodfinds.json', 'coast.json', 'teams.json', 'marketbrief.json', 'alfred.json'].map(getJson));
   // Something different every morning: lists are walked one item a day, so the same note never sits there for weeks.
   const dayNo = Math.floor(new Date(today + 'T12:00').getTime() / 864e5);
   const rot = (list, salt = 0) => list && list.length ? list[(dayNo + salt) % list.length] : null;
@@ -4708,8 +4853,8 @@ async function renderBriefing() {
   // They sit in a span so his memory of what he told you goes by the facts, not the phrasing.
   const said = {};  // a key used twice in one brief moves on to its next line
   const say = (key, salt, ...fallback) => {
-    const fresh = alf && alf.lines && alf.lines[key];
-    const pool = fresh && fresh.length ? fresh : fallback;
+    const fresh = (alf && alf.lines && alf.lines[key] || []).filter(x => typeof x === 'string' && /\s/.test(x.trim()));  // a bare key name is not a line
+    const pool = fresh.length ? fresh : fallback;
     said[key] = (said[key] ?? -1) + 1;
     return `<span class="aside">${esc(pool[(dayNo + salt + said[key]) % pool.length]).replace(/'/g, '’')}</span>`;
   };
@@ -4798,10 +4943,20 @@ async function renderBriefing() {
   if (o.moon && o.moon.lit_pct >= 98) add(30, 'nearby', `The moon is full${o.moon.moonrise ? `, rising at ${hhmm(o.moon.moonrise)}` : ''}. ${say('full_moon', 0, 'Gotham’s criminals are fond of it.')}`);
   const launch = (o.sky_events || []).filter(e => e.kind === 'launch' && e.visible && soon(isoLocal(new Date(e.utc)), 1))[0];
   if (launch) add(58, 'nearby', `A rocket launch may be visible from here: ${esc(launch.title)} at ${timeOf(launch.utc)}.`);
+  const an = o.aurora_now;
+  if (an && an.north_pct >= 30) add(64, 'nearby', `NOAA gives a ${an.north_pct}% chance of aurora to the north in the next half hour. ${say('aurora_now', 0, 'The north field is the darkest spot.')}`);
+  const sat = (o.satellites || []).find(p => p.max_alt >= 40 && soon(isoLocal(new Date(p.utc)), 1));
+  if (sat) add(36, 'nearby', `${esc(sat.name)} passes high overhead ${whenWord(isoLocal(new Date(sat.utc)))} at ${timeOf(sat.utc)}, from the ${esc(sat.from)} to the ${esc(sat.to)}.`);
+  const smk = (o.smoke || []).find(d => d.pm2_5 > 35);
+  if (smk) add(66, 'today', `Smoke is forecast ${smk.date === today ? 'today' : whenWord(smk.date)}: PM2.5 around ${smk.pm2_5} µg/m³, ${esc(smk.word.toLowerCase())}.`);
 
   // Wildlife and the river
   const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];
   if (rare) add(rare.confirmed ? 50 : 34, 'birds-card', `A ${esc(rare.name)} has been reported at ${esc(rare.where)}. ${say('rare_bird', 0, 'Binoculars are in the hall closet.')}`);
+  const riv = D.river || {}, rvf = (riv.forecast || {}).columbia || {};
+  if (rvf.crest_ft != null && rvf.action_ft && rvf.crest_ft >= rvf.action_ft) add(70, 'columbia-card', `The Columbia is forecast to reach ${n1(rvf.crest_ft)} ft at Vancouver ${localDay(rvf.crest_at)}, above the ${n1(rvf.action_ft)} ft action stage. ${say('river_high', 0, 'I would move anything precious up from the bank.')}`);
+  const barWarn = (riv.bar || []).find(x => /gale|storm|hurricane|hazardous seas/i.test(x.event || ''));
+  if (barWarn) add(44, 'bar-card', `A ${esc(barWarn.event.toLowerCase())} is up for the Columbia River bar${barWarn.expires ? ` until ${localWhen(barWarn.expires)}` : ''}.`);
   const moored = D.ships && D.ships.parked;
   if (moored && moored.big) add(38, 'moor-card', `The ${esc(moored.name)}, a ${esc((moored.type || 'ship').toLowerCase())}, is ${esc((moored.status || 'parked').toLowerCase())} across the river${moored.destination ? `, bound for ${esc(moored.destination)}` : ''}.`);
   const dam = D.fishing && D.fishing.dam;
@@ -4917,8 +5072,10 @@ async function renderBriefing() {
   if (gn) add(33, 'good-card', `Some good news${gn.local ? ' from close to home' : ''}: ${esc(gn.title)}.`);
   const lr = rot((D.longreads || []).slice(0, 4), 3);
   if (lr) add(29, 'read-card', `${say('read_lead', 0, 'For a long sit with your tea')}: <b>${esc(lr.title)}</b>${lr.author ? ' by ' + esc(lr.author) : ''}.`);
-  const tr = rot(((D.trending && D.trending.google) || []).filter(t => t.story).slice(0, 4), 1);
-  if (tr) add(27, 'trend-card', `Everyone is searching for “${esc(tr.title)}”: ${esc(tr.story)}.`);
+  const art = D.archives && D.archives.artwork;
+  if (art) add(27, 'art-card', `Today's artwork is <b>${esc(art.title)}</b>${art.artist ? ' by ' + esc(art.artist) : ''}${art.when ? ` (${esc(art.when)})` : ''}, from the Art Institute of Chicago.`);
+  const old = D.archives && D.archives.old_portland;
+  if (old && old.year) add(25, 'oldpdx-card', `From the Library of Congress: Portland in ${esc(old.year)}, ${esc(old.title)}.`);
   if (D.apod && D.apod.title && D.apod.title !== 'NASA Science') add(31, 'apod-card', `NASA’s ${D.apod.video ? 'film' : 'picture'} of the day is <b>${esc(D.apod.title)}</b>. ${D.apod.video ? 'It plays right on the page.' : say('apod', 0, 'Worth a look on a big screen.')}`);
   const freshList = (j, field, days) => ((j && j[field]) || []).filter(x => x.date && daysTo(x.date) >= -days);
   const rv = (rests && rests.restaurants || []).flatMap(r => (r.reviews || []).map(v => [r, v])).filter(([, v]) => v.date && daysTo(v.date) >= -4)[0];
@@ -4927,8 +5084,6 @@ async function renderBriefing() {
     : `Should you dine out, <b>${esc(rr.name)}</b> (${[rr.cuisine && rr.cuisine.toLowerCase(), rr.neighborhood].filter(Boolean).map(x => esc(x)).join(', ')}) is among the newer places worth the trip.`);
   const ff = freshList(finds, 'items', 10)[0] || rot((finds && finds.items || []).slice(0, 8), 5);
   if (ff) add(28, 'finds-card', `${say('larder_lead', 0, 'For the larder')}: <b>${esc(ff.name)}</b>${ff.maker && ff.maker !== ff.name ? ' from ' + esc(ff.maker) : ''}. ${esc((ff.what || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`);
-  const lm = rot((pdxm && pdxm.releases || []).filter(x => x.local).slice(0, 10), 6);
-  if (lm) add(26, 'pdxm-card', `New from Portland: ${esc(lm.artist)}, “${esc(lm.title)}” ${lm.type ? ` (${esc(lm.type.toLowerCase())})` : ''}.`);
   const ce = ((coastEv && coastEv.events) || []).find(e => soon(e.date, 2) || (e.end && e.date <= today && e.end >= today));
   if (ce) add(37, 'coast-events-card', `At the coast ${daysTo(ce.date) <= 0 ? 'today' : whenWord(ce.date)}: ${esc(ce.name)} in ${esc(ce.town)}.`);
   const pulseFresh = fans && fans.updated_at && (now - new Date(fans.updated_at)) < 30 * 3600e3;
@@ -4951,7 +5106,7 @@ async function renderBriefing() {
   notes.sort((a, b) => b[0] - a[0]);
   const top = notes.filter(n => n[0] >= 50).slice(0, 4);
   const lead = top.length ? top : notes.slice(0, 2);
-  const FRESH = ['science', 'news', 'good-card', 'read-card', 'trend-card', 'apod-card', 'open-card', 'finds-card', 'pdxm-card', 'poem-card'];
+  const FRESH = ['science', 'news', 'good-card', 'read-card', 'art-card', 'oldpdx-card', 'apod-card', 'open-card', 'finds-card', 'poem-card'];
   const reading = notes.filter(n => !lead.includes(n) && FRESH.includes(n[1])).slice(0, 4);
   const rest = notes.filter(n => !lead.includes(n) && !reading.includes(n)).slice(0, 12);
   try {

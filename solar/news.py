@@ -14,22 +14,36 @@ NEWS_SOURCES = [
     ("Ars Technica", ["https://feeds.arstechnica.com/arstechnica/index"]),
     ("Engadget", ["https://www.engadget.com/rss.xml"]),
     ("What Hi-Fi?", ["https://www.whathifi.com/feeds.xml", "https://www.whathifi.com/feeds/all"]),
-    ("FlatpanelsHD", ["https://www.flatpanelshd.com/rss/news.xml", "https://www.flatpanelshd.com/rss.php"]),
-    ("Sound & Vision", ["https://www.soundandvision.com/rss.xml", "https://www.soundandvision.com/content/feed"]),
+    ("FlatpanelsHD", ["https://www.flatpanelshd.com/rss/news.xml"]),
+    ("AVForums", ["https://www.avforums.com/news/index.rss"]),
     ("Audioholics", ["https://www.audioholics.com/rss.xml", "https://www.audioholics.com/news/RSS"]),
     ("Digital Trends", ["https://www.digitaltrends.com/feed/"]),
+    ("CNET", ["https://www.cnet.com/rss/all/"]),
+    ("ZDNet", ["https://www.zdnet.com/news/rss.xml"]),
+    ("Tom's Hardware", ["https://www.tomshardware.com/feeds/all"]),
+    ("ecoustics", ["https://www.ecoustics.com/feed/"]),
+    ("Darko.Audio", ["https://darko.audio/feed/"]),
+    # Sound & Vision, Stereophile, Gizmodo and HomeTheaterReview sit behind a bot check and don't answer feed readers.
 ]
 REVIEW_SOURCES = [
     ("The Verge", ["https://www.theverge.com/rss/reviews/index.xml"]),
-    ("What Hi-Fi?", ["https://www.whathifi.com/reviews/feeds.xml", "https://www.whathifi.com/feeds.xml"]),
-    ("Engadget", ["https://www.engadget.com/reviews/rss.xml"]),
-    ("Sound & Vision", ["https://www.soundandvision.com/rss.xml"]),
+    ("What Hi-Fi?", ["https://www.whathifi.com/feeds.xml"]),
+    ("Engadget", ["https://www.engadget.com/rss.xml"]),
+    ("AVForums", ["https://www.avforums.com/reviews/index.rss"]),
     ("TechRadar", ["https://www.techradar.com/reviews/feeds.xml", "https://www.techradar.com/feeds.xml"]),
     ("Tom's Guide", ["https://www.tomsguide.com/reviews/feeds.xml", "https://www.tomsguide.com/feeds.xml"]),
-    ("Digital Trends", ["https://www.digitaltrends.com/product-reviews/feed/"]),
-    ("CNET", ["https://www.cnet.com/rss/reviews/"]),
+    ("Tom's Hardware", ["https://www.tomshardware.com/feeds/all"]),
+    ("Digital Trends", ["https://www.digitaltrends.com/feed/"]),
+    ("CNET", ["https://www.cnet.com/rss/all/"]),
+    ("ZDNet", ["https://www.zdnet.com/news/rss.xml"]),
     ("Wired", ["https://www.wired.com/feed/tag/review/latest/rss", "https://www.wired.com/feed/category/gear/latest/rss"]),
     ("PCMag", ["https://www.pcmag.com/feeds/rss/reviews", "https://www.pcmag.com/feeds/rss/latest"]),
+    ("SoundGuys", ["https://www.soundguys.com/feed/"]),
+    ("Headphonesty", ["https://www.headphonesty.com/feed/"]),
+    ("ecoustics", ["https://www.ecoustics.com/feed/"]),
+    ("Darko.Audio", ["https://darko.audio/feed/"]),
+    ("Audioholics", ["https://www.audioholics.com/rss.xml"]),
+    # Only items whose link or title says "review" are kept, so a site's main feed works where its reviews feed is gone.
 ]
 PER_SOURCE = 6  # keep one busy site from filling the whole list
 AV_WORDS = re.compile(r"\b(tv|oled|qled|mini-?led|projector|soundbar|speaker|headphone|earbud|airpods|amp|"

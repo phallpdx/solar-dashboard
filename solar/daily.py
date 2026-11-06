@@ -8,7 +8,7 @@ import re
 import urllib.parse
 import urllib.request
 
-from . import news
+from . import news, thai_audio
 
 UA = {"User-Agent": "solar-dashboard/1.0 (personal home dashboard)"}
 
@@ -51,44 +51,44 @@ DRUM_BREAKS = [
 
 # (Thai, romanization, meaning, tip or None)
 THAI_PHRASES = [
-    ("สวัสดี", "sa-wat-dee", "Hello / goodbye", "Add khrap (men) or kha (women) at the end to be polite."),
-    ("ขอบคุณ", "khop khun", "Thank you", "Khop khun khrap / khop khun kha."),
-    ("ไม่เป็นไร", "mai pen rai", "Never mind / no worries", "Maybe the most Thai phrase there is: let it go."),
-    ("สบายดีไหม", "sa-bai dee mai", "How are you?", "Answer: sa-bai dee, I'm well."),
-    ("กินข้าวหรือยัง", "gin khao rue yang", "Have you eaten yet?", "A common friendly greeting, not always a dinner invite."),
-    ("อร่อย", "a-roi", "Delicious", "A-roi mak means very delicious."),
-    ("เผ็ด", "phet", "Spicy", "Mai phet: not spicy. Phet nit noi: a little spicy."),
-    ("เท่าไร", "tao rai", "How much?", "Point at it and say an-nee tao rai: how much is this?"),
+    ("สวัสดี", "sà-wàt-dee", "Hello / goodbye", "Add khráp (men) or khâ (women) at the end to be polite."),
+    ("ขอบคุณ", "khòp khun", "Thank you", "Khòp khun khráp / khòp khun khâ."),
+    ("ไม่เป็นไร", "mâi pen rai", "Never mind / no worries", "Maybe the most Thai phrase there is: let it go."),
+    ("สบายดีไหม", "sà-bai dee mǎi", "How are you?", "Answer: sà-bai dee, I'm well."),
+    ("กินข้าวหรือยัง", "gin khâo rǔe yang", "Have you eaten yet?", "A common friendly greeting, not always a dinner invite."),
+    ("อร่อย", "à-ròi", "Delicious", "À-ròi mâk means very delicious."),
+    ("เผ็ด", "phèt", "Spicy", "Mâi phèt: not spicy. Phèt nít nòi: a little spicy."),
+    ("เท่าไร", "tâo rai", "How much?", "Point at it and say an-née tâo rai: how much is this?"),
     ("แพงไป", "phaeng pai", "Too expensive", "Smile when you say it. Bargaining is friendly at markets."),
-    ("ลดหน่อยได้ไหม", "lot noi dai mai", "Can you lower the price a bit?", None),
-    ("ห้องน้ำอยู่ที่ไหน", "hong nam yoo tee nai", "Where is the bathroom?", None),
+    ("ลดหน่อยได้ไหม", "lót nòi dâi mǎi", "Can you lower the price a bit?", None),
+    ("ห้องน้ำอยู่ที่ไหน", "hông nám yòo têe nǎi", "Where is the bathroom?", None),
     ("ใจเย็นๆ", "jai yen yen", "Calm down / take it easy", "Literally cool heart. Keeping a cool heart is a big Thai value."),
-    ("สนุก", "sa-nuk", "Fun", "Sa-nuk is a whole outlook: life should be enjoyable."),
-    ("ฝันดี", "fan dee", "Sweet dreams", None),
-    ("โชคดี", "chok dee", "Good luck", "Also a warm way to say goodbye."),
-    ("ยินดีที่ได้รู้จัก", "yin dee tee dai roo jak", "Nice to meet you", None),
-    ("ไม่เข้าใจ", "mai khao jai", "I don't understand", None),
-    ("พูดช้าๆ หน่อย", "phut cha cha noi", "Please speak slowly", None),
-    ("พูดภาษาไทยได้นิดหน่อย", "phut pha-sa thai dai nit noi", "I speak a little Thai", "This one usually gets a big smile."),
-    ("น้ำเปล่า", "nam plao", "Plain water", None),
-    ("เช็คบิล", "chek bin", "Check, please", "Borrowed straight from English."),
-    ("อิ่มแล้ว", "im laew", "I'm full", None),
-    ("หิว", "hiu", "Hungry", "Hiu khao: hungry for rice, meaning hungry for a meal."),
-    ("เหนื่อย", "nueai", "Tired", None),
-    ("ร้อน", "ron", "Hot (weather)", "Ron mak: very hot. Useful in Bangkok."),
-    ("หนาว", "nao", "Cold", "Handy for a Portland winter too."),
-    ("ฝนตก", "fon tok", "It's raining", "Literally rain falls."),
-    ("ทะเล", "ta-lay", "The sea", "Pai ta-lay: go to the beach."),
-    ("ไปเที่ยว", "pai tiao", "Go out / take a trip", None),
-    ("รักนะ", "rak na", "Love you", None),
-    ("คิดถึง", "khit thueng", "Miss you", None),
-    ("เก่งมาก", "keng mak", "Very good / so clever", "Great praise for your kid."),
-    ("สุขสันต์วันเกิด", "suk san wan koet", "Happy birthday", None),
-    ("ตลาด", "ta-lat", "Market", "Ta-lat nam: floating market."),
-    ("ข้าวเหนียวมะม่วง", "khao niao ma-muang", "Mango sticky rice", None),
+    ("สนุก", "sà-nùk", "Fun", "Sà-nùk is a whole outlook: life should be enjoyable."),
+    ("ฝันดี", "fǎn dee", "Sweet dreams", None),
+    ("โชคดี", "chôk dee", "Good luck", "Also a warm way to say goodbye."),
+    ("ยินดีที่ได้รู้จัก", "yin dee têe dâi róo jàk", "Nice to meet you", None),
+    ("ไม่เข้าใจ", "mâi khâo jai", "I don't understand", None),
+    ("พูดช้าๆ หน่อย", "phût chá chá nòi", "Please speak slowly", None),
+    ("พูดภาษาไทยได้นิดหน่อย", "phût pha-sǎ thai dâi nít nòi", "I speak a little Thai", "This one usually gets a big smile."),
+    ("น้ำเปล่า", "nám plào", "Plain water", None),
+    ("เช็คบิล", "chék bin", "Check, please", "Borrowed straight from English."),
+    ("อิ่มแล้ว", "ìm láew", "I'm full", None),
+    ("หิว", "hǐu", "Hungry", "Hǐu khâo: hungry for rice, meaning hungry for a meal."),
+    ("เหนื่อย", "nùeai", "Tired", None),
+    ("ร้อน", "rón", "Hot (weather)", "Rón mâk: very hot. Useful in Bangkok."),
+    ("หนาว", "nǎo", "Cold", "Handy for a Portland winter too."),
+    ("ฝนตก", "fǒn tòk", "It's raining", "Literally rain falls."),
+    ("ทะเล", "tá-lay", "The sea", "Pai tá-lay: go to the beach."),
+    ("ไปเที่ยว", "pai tîao", "Go out / take a trip", None),
+    ("รักนะ", "rák ná", "Love you", None),
+    ("คิดถึง", "khít thǔeng", "Miss you", None),
+    ("เก่งมาก", "kèng mâk", "Very good / so clever", "Great praise for your kid."),
+    ("สุขสันต์วันเกิด", "sùk sǎn wan kòet", "Happy birthday", None),
+    ("ตลาด", "tà-làt", "Market", "Tà-làt nám: floating market."),
+    ("ข้าวเหนียวมะม่วง", "khâo nǐao má-mûang", "Mango sticky rice", None),
     ("กาแฟเย็น", "ka-fae yen", "Iced coffee", "Thai iced coffee is usually very sweet."),
-    ("อากาศดี", "a-kat dee", "Nice weather", None),
-    ("ช่วยด้วย", "chuay duay", "Help!", None),
+    ("อากาศดี", "a-kàt dee", "Nice weather", None),
+    ("ช่วยด้วย", "chûay dûay", "Help!", None),
 ]
 
 DINNER_QUESTIONS = [
@@ -226,7 +226,8 @@ def picks(day):
     return {
         "drum": {"song": song, "artist": artist, "year": year, "drummer": drummer, "note": note,
                  "listen": "https://www.youtube.com/results?" + urllib.parse.urlencode({"search_query": f"{artist} {song}"})},
-        "thai": {"thai": thai, "roman": roman, "meaning": meaning, "tip": tip},
+        "thai": {"thai": thai, "roman": roman, "meaning": meaning, "tip": tip,
+                 "audio": "thai/" + thai_audio.name(thai), "audio_slow": "thai/" + thai_audio.name(thai, slow=True)},
         "question": _pick(DINNER_QUESTIONS, day, 3),
         "artist": local_artist(day),
     }

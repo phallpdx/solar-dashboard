@@ -65,6 +65,13 @@ jobs:
           pip install --quiet tzdata websockets sgp4
           python -m solar.update
 
+      # Recordings of the Thai phrases. Made once each (about 80 short clips), then kept on the data branch.
+      - name: Record Thai phrases
+        continue-on-error: true
+        env:
+          DATA_DIR: data
+        run: python -m solar.thai_audio --check || { pip install --quiet edge-tts && python -m solar.thai_audio; }
+
       - name: Save data
         working-directory: data
         run: |
@@ -86,6 +93,7 @@ jobs:
           mkdir -p _site
           cp web/* _site/
           cp data/dashboard.json _site/
+          if [ -d data/thai ]; then cp -r data/thai _site/; fi
 
       - uses: actions/upload-pages-artifact@v3
         with:

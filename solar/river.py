@@ -41,11 +41,12 @@ def parse_usgs(data):
         field = PARAMS[code]
         g[field] = round(values[-1][1], 2)
         g["at"] = values[-1][0]
-        # One reading a day (the last of each day) for a small sparkline.
+        # The day's average for a small sparkline: the lower river rises and falls with each tide, so a single
+        # reading a day would jump around; the mean shows the river's own trend. USGS times are local.
         by_day = {}
         for when, val in values:
-            by_day[when[:10]] = val
-        g[field + "_days"] = [{"date": d, "v": round(v, 2)} for d, v in sorted(by_day.items())[-8:]]
+            by_day.setdefault(when[:10], []).append(val)
+        g[field + "_days"] = [{"date": d, "v": round(sum(v) / len(v), 2)} for d, v in sorted(by_day.items())[-8:]]
         if field == "temp_c":
             g["temp_f"] = round(values[-1][1] * 9 / 5 + 32)
     if not out:
@@ -60,6 +61,23 @@ def usgs():
     return parse_usgs(_get(url))
 
 
+PACIFIC = dt.timezone(dt.timedelta(hours=-8))  # standard time is close enough to bin a day's forecast
+
+
+def forecast_days(points):
+    """The hourly NWS forecast as one average a day (Pacific dates), like the observed line. The hourly values
+    swing with the tide; sampling them every few hours drew a zigzag. Days missing more than a few hours are dropped, since a part day skews the tidal average."""
+    by_day = {}
+    for t, v in points:
+        try:
+            when = dt.datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(PACIFIC)
+        except ValueError:
+            continue
+        by_day.setdefault(when.date().isoformat(), []).append(v)
+    full = max((len(v) for v in by_day.values()), default=0)
+    return [{"date": d, "v": round(sum(v) / len(v), 2)} for d, v in sorted(by_day.items()) if len(v) * 6 >= full * 5]
+
+
 def parse_nwps(gauge, series):
     status = gauge.get("status") or {}
     obs, fc = status.get("observed") or {}, status.get("forecast") or {}
@@ -72,7 +90,7 @@ def parse_nwps(gauge, series):
     return {"lid": gauge.get("lid"), "name": gauge.get("name"), "stage_ft": obs.get("primary"), "at": obs.get("validTime"),
             "category": obs.get("floodCategory"), "action_ft": action if action not in (None, -9999) else None,
             "minor_ft": minor if minor not in (None, -9999) else None,
-            "forecast": [{"at": t, "stage_ft": v} for t, v in points[::4]][:20],  # every ~day for a 5-day line
+            "forecast_days": forecast_days(points),
             "crest_ft": round(crest[1], 2) if crest else None, "crest_at": crest[0] if crest else None,
             "forecast_issued": (series.get("forecast") or {}).get("issuedTime"),
             "url": f"https://water.noaa.gov/gauges/{gauge.get('lid')}"}

@@ -1048,6 +1048,8 @@ def fetch_releases(state, now_utc):
             except Exception as e:
                 store["kids_failed_at"] = now_utc.isoformat()
                 errors.append(f"kids_movie: {e}")
+    if any("why" not in a for a in store.get("albums") or []):  # the old every-release list: replace it now
+        store.pop("albums_at", None)
     _refresh(store, "albums", releases.albums, 6, now_utc, errors)
     return "; ".join(errors) or None
 
@@ -1342,7 +1344,8 @@ def build(state, status, now_utc):
         "upcoming_movies": [x for x in (state.get("releases") or {}).get("upcoming_movies") or [] if (x.get("date") or "") >= today]
                            if env("TMDB_API_KEY") else None,
         "kids_movie": (state.get("releases") or {}).get("kids_movie") if env("TMDB_API_KEY") else None,
-        "albums": [x for x in (state.get("releases") or {}).get("albums") or [] if x["date"] >= today],
+        "albums": [x for x in (state.get("releases") or {}).get("albums") or []
+                   if x["date"] >= (dt.date.fromisoformat(today) - dt.timedelta(days=30)).isoformat()],
         "ski": {**{k: v for k, v in (state.get("ski") or {}).items() if not k.endswith("_at")},
                 "resorts": ski.resorts()} if state.get("ski") else None,
         "fishing": fishing_view(state, out, now_utc),

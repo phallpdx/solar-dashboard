@@ -3501,27 +3501,38 @@ function renderRiver() {
   if (fc.crest_ft != null) facts.push(['Forecast crest', `${n1(fc.crest_ft)} <small>ft ${fc.crest_at ? localDay(fc.crest_at) : ''}</small>`]);
   if (fc.minor_ft) facts.push(['Flood stage', `${n1(fc.minor_ft)} <small>ft (minor)</small>`]);
   $('columbia-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
-  // Eight days of readings, then the forecast line, on one little chart.
-  const hist = days.map(d => [new Date(d.date + 'T12:00').getTime(), d.v]), fut = (fc.forecast || []).map(p => [new Date(p.at).getTime(), p.stage_ft]);
+  // Eight days of readings, then the forecast line, on one little chart. Both are one average a day: the
+  // river here rises and falls with each tide, so raw hourly forecast values drew a zigzag.
+  const noon = ds => new Date(ds + 'T12:00').getTime();
+  const localDate = t => { const d = new Date(t); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  let fdays = fc.forecast_days;
+  if (!fdays && fc.forecast) {  // older data: a few raw points a day, averaged here the same way
+    const by = {};
+    fc.forecast.forEach(p => (by[localDate(p.at)] ||= []).push(p.stage_ft));
+    const full = Math.max(...Object.values(by).map(v => v.length));
+    fdays = Object.keys(by).sort().filter(d => by[d].length * 6 >= full * 5).map(d => ({date: d, v: by[d].reduce((a, b) => a + b, 0) / by[d].length}));
+  }
+  const lastObs = days.length ? days[days.length - 1].date : '';
+  const hist = days.map(d => [noon(d.date), d.v]), fut = (fdays || []).filter(d => d.date > lastObs).map(d => [noon(d.date), d.v]);
   const all = [...hist, ...fut];
   if (all.length >= 3) {
-    const vals = all.map(x => x[1]);
-    const lo = Math.min(...vals) - 0.5, hi = Math.max(...vals) + 0.5, W = 600, H = 120;
-    const t0 = Math.min(...all.map(x => x[0])), t1 = Math.max(...all.map(x => x[0]));
-    const X = t => 40 + (t - t0) / (t1 - t0 || 1) * (W - 60), Y = v => 10 + (hi - v) / (hi - lo) * 90;
+    const vals = all.map(x => x[1]), vmax = Math.max(...vals), vmin = Math.min(...vals);
+    const lo = vmin - 0.5, hi = vmax + 0.5, W = 600, H = 120;
+    const t0 = all[0][0], t1 = all[all.length - 1][0];
+    const X = t => 40 + (t - t0) / (t1 - t0 || 1) * (W - 70), Y = v => 10 + (hi - v) / (hi - lo) * 90;
     const line = pts => pts.map((p, i) => `${i ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(' ');
     const hp = hist, fp = hist.length && fut.length ? [hist[hist.length - 1], ...fut] : fut;
-    const act = fc.action_ft && fc.action_ft <= hi + 1 ? `<line x1="40" x2="${W - 20}" y1="${Y(fc.action_ft).toFixed(1)}" y2="${Y(fc.action_ft).toFixed(1)}" stroke="#D64545" stroke-dasharray="4 4"/><text x="${W - 18}" y="${(Y(fc.action_ft) - 3).toFixed(1)}" text-anchor="end">action ${n1(fc.action_ft)} ft</text>` : '';
-    const labels = [];
-    for (let t = new Date(t0).setHours(12, 0, 0, 0); t <= t1; t += 864e5) labels.push([t, new Date(t)]);
-    const step = Math.ceil(labels.length / 7);
-    const lab = labels.filter((_, i) => i % step === 0).map(([t, d]) => `<text x="${X(t).toFixed(1)}" y="${H - 4}" text-anchor="middle">${MON[d.getMonth()]} ${d.getDate()}</text>`).join('');
-    $('columbia-chart').innerHTML = `<svg class="stage-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="River level, past week and forecast">
-      <text x="2" y="${Y(hi - 0.5).toFixed(1)}">${n1(hi - 0.5)} ft</text><text x="2" y="${Y(lo + 0.5).toFixed(1)}">${n1(lo + 0.5)} ft</text>${act}
+    const act = fc.action_ft && fc.action_ft <= hi + 1 ? `<line x1="40" x2="${W - 30}" y1="${Y(fc.action_ft).toFixed(1)}" y2="${Y(fc.action_ft).toFixed(1)}" stroke="#D64545" stroke-dasharray="4 4"/><text x="${W - 30}" y="${(Y(fc.action_ft) - 3).toFixed(1)}" text-anchor="end">action ${n1(fc.action_ft)} ft</text>` : '';
+    // One label every day or few, counted back from the last day so the forecast's end is always labeled.
+    const ticks = all.map(x => x[0]), step = Math.ceil(ticks.length / 7);
+    const lab = ticks.filter((_, i) => (ticks.length - 1 - i) % step === 0).map(t => { const d = new Date(t); return `<text x="${X(t).toFixed(1)}" y="${H - 4}" text-anchor="middle">${MON[d.getMonth()]} ${d.getDate()}</text>`; }).join('');
+    const now = fut.length && hist.length ? `<line x1="${X(hist[hist.length - 1][0]).toFixed(1)}" x2="${X(hist[hist.length - 1][0]).toFixed(1)}" y1="8" y2="102" stroke="currentColor" stroke-opacity=".25"/><text x="${(X(hist[hist.length - 1][0]) + 4).toFixed(1)}" y="16" opacity=".7">forecast</text>` : '';
+    $('columbia-chart').innerHTML = `<svg class="stage-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="River level, daily average: past week and forecast">
+      <text x="2" y="${(Y(vmax) + 3).toFixed(1)}">${n1(vmax)} ft</text><text x="2" y="${(Y(vmin) + 3).toFixed(1)}">${n1(vmin)} ft</text>${act}${now}
       <path d="${line(hp)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="${line(fp)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" opacity=".8"/>${lab}</svg>`;
   } else $('columbia-chart').innerHTML = '';
   const src = [['USGS Water Services', 'https://waterdata.usgs.gov/monitoring-location/14144700/'], ['NWS National Water Prediction Service', fc.url || 'https://water.noaa.gov/']];
-  $('columbia-note').innerHTML = `Solid line: the last eight days at Vancouver. Dashed: the NWS forecast${fc.forecast_issued ? ', issued ' + localWhen(fc.forecast_issued) : ''}. Level and flow are the USGS gauge at Vancouver, a few miles upstream; temperature is the Willamette at Portland. ${cite(src)}`;
+  $('columbia-note').innerHTML = `The chart shows each day's average level, since the river rises and falls with every tide. Solid line: the last eight days at Vancouver. Dashed: the NWS forecast${fc.forecast_issued ? ', issued ' + localWhen(fc.forecast_issued) : ''}. Level and flow are the USGS gauge at Vancouver, a few miles upstream; temperature is the Willamette at Portland. ${cite(src)}`;
 }
 
 // The Columbia River bar and the NWS surf zone forecast for the beach near the coast house.
@@ -3577,7 +3588,7 @@ function renderArchives() {
   $('show-card').hidden = !show;
   if (show) {
     $('show-meta').textContent = show.when && show.when.length === 10 ? `Internet Archive · ${fmtDate(show.when)}, ${show.when.slice(0, 4)}` : 'Internet Archive';
-    $('show').innerHTML = `<iframe src="${esc(show.embed)}&playlist=1&list_height=150" style="width:100%;height:200px;border:0;border-radius:10px" loading="lazy" title="${esc(show.title)}" allow="autoplay"></iframe>
+    $('show').innerHTML = `<iframe src="${esc(show.embed)}?playlist=1&list_height=150" style="width:100%;height:200px;border:0;border-radius:10px" loading="lazy" title="${esc(show.title)}" allow="autoplay"></iframe>
       <p class="arch-cap"><b>${esc(show.artist || show.title)}</b>${show.venue ? ` at ${esc(show.venue)}` : ''}<small><a href="${esc(show.url)}" target="_blank" rel="noopener">${esc(show.title)}</a>${show.count ? ` · one of ${show.count.toLocaleString()} Portland shows in the Live Music Archive` : ''}</small></p>
       ${cite([['Internet Archive Live Music Archive', 'https://archive.org/details/etree']])}`;
   }

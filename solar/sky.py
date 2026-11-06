@@ -184,9 +184,9 @@ def iss_tle():
     return tle(25544)
 
 
-# Other bright things that pass over: China's space station and Hubble are the two easiest naked-eye
-# satellites after the ISS.
-SATELLITES = [("Tiangong", 48274), ("Hubble", 20580)]
+# The other bright thing that passes over: China's space station. (Hubble's 28° orbit never climbs out of
+# the murk this far north.)
+SATELLITES = [("Tiangong", 48274)]
 
 
 def satellite_tles():

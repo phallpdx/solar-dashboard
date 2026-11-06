@@ -1286,7 +1286,8 @@ def river_view(state, now_utc):
     if not store.get("usgs"):
         return None
     bar = [a for a in store.get("bar") or [] if not a.get("expires") or a["expires"] >= now_utc.isoformat()]
-    return {"gauges": store["usgs"], "forecast": store.get("nwps"), "bar": bar, "surf_zone": store.get("surf_zone"),
+    sz = {k: v for k, v in (store.get("surf_zone") or {}).items() if k != "text"}  # the parsed lines, not the whole product
+    return {"gauges": store["usgs"], "forecast": store.get("nwps"), "bar": bar, "surf_zone": sz or None,
             "updated": store.get("usgs_at")}
 
 

@@ -3459,14 +3459,15 @@ function renderRiver() {
   const trend = prev == null || stage == null ? '' : stage - prev > 0.3 ? 'rising' : prev - stage > 0.3 ? 'dropping' : 'steady';
   const parts = [];
   if (stage != null) parts.push(`The river is at ${n1(stage)} ft at Vancouver${trend ? `, ${trend} since yesterday` : ''}; it rises and falls a foot or two with each tide this far down.`);
-  if (pw.flow_cfs != null) parts.push(`${Math.round(pw.flow_cfs / 1000)},000 cubic feet a second are going past the island.`);
+  const flow = van.flow_cfs ?? pw.flow_cfs;  // Port Westward is tidal and its flow reverses; Vancouver's is the river's
+  if (flow != null) parts.push(`${Math.round(flow / 1000)},000 cubic feet a second are coming down past the island.`);
   if (fc.crest_ft != null && fc.crest_at) parts.push(`The NWS forecast tops out at ${n1(fc.crest_ft)} ft ${localDay(fc.crest_at)}${fc.action_ft ? `, ${fc.crest_ft >= fc.action_ft ? 'above' : 'below'} the ${n1(fc.action_ft)} ft action stage` : ''}.`);
   if (wil.temp_f != null) parts.push(`The water is ${wil.temp_f}° at Portland.`);
   $('columbia-summary').textContent = parts.join(' ');
   $('columbia-meta').textContent = van.at ? `USGS reading ${localWhen(van.at)}` : '';
   const facts = [];
   if (stage != null) facts.push(['Level at Vancouver', `${n1(stage)} <small>ft${trend ? ' · ' + trend : ''}</small>`]);
-  if (pw.flow_cfs != null) facts.push(['Flow', `${Math.round(pw.flow_cfs / 1000)}k <small>cfs</small>`]);
+  if (flow != null) facts.push(['Flow', `${Math.round(flow / 1000)}k <small>cfs</small>`]);
   if (wil.temp_f != null) facts.push(['Water temp', `${wil.temp_f}° <small>Willamette</small>`]);
   if (fc.crest_ft != null) facts.push(['Forecast crest', `${n1(fc.crest_ft)} <small>ft ${fc.crest_at ? localDay(fc.crest_at) : ''}</small>`]);
   if (fc.minor_ft) facts.push(['Flood stage', `${n1(fc.minor_ft)} <small>ft (minor)</small>`]);
@@ -3491,7 +3492,7 @@ function renderRiver() {
       <path d="${line(hp)}" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="${line(fp)}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" opacity=".8"/>${lab}</svg>`;
   } else $('columbia-chart').innerHTML = '';
   const src = [['USGS Water Services', 'https://waterdata.usgs.gov/monitoring-location/14144700/'], ['NWS National Water Prediction Service', fc.url || 'https://water.noaa.gov/']];
-  $('columbia-note').innerHTML = `Solid line: the last eight days at Vancouver. Dashed: the NWS forecast${fc.forecast_issued ? ', issued ' + localWhen(fc.forecast_issued) : ''}. Flow is measured at Port Westward, the nearest gauge below the island; temperature on the Willamette at Portland. ${cite(src)}`;
+  $('columbia-note').innerHTML = `Solid line: the last eight days at Vancouver. Dashed: the NWS forecast${fc.forecast_issued ? ', issued ' + localWhen(fc.forecast_issued) : ''}. Level and flow are the USGS gauge at Vancouver, a few miles upstream; temperature is the Willamette at Portland. ${cite(src)}`;
 }
 
 // The Columbia River bar and the NWS surf zone forecast for the beach near the coast house.

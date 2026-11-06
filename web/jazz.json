@@ -1,42 +1,6 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "shows": [
-    {
-      "artist": "Chuck Israels Jazz Orchestra",
-      "kind": "Big band",
-      "date": "2026-11-05",
-      "time": "7:00 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Bassist Chuck Israels's jazz orchestra in Jack London Revue's Jazz Titan Thursdays series.",
-      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901243?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
-      "artist": "The Ben Wolfe Trio with Nicole Glover and Ron Steen",
-      "kind": "Local",
-      "date": "2026-11-05",
-      "time": null,
-      "venue": "The 1905",
-      "price": "$50",
-      "what": "Homecoming show featuring acclaimed jazz musicians.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        },
-        {
-          "name": "Songkick: The 1905",
-          "url": "https://www.songkick.com/venues/3607654-1905"
-        }
-      ]
-    },
     {
       "artist": "Dmitri Matheny Group",
       "kind": "Touring",

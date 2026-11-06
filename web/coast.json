@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,14 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Rosa Water: Journey Through the Heart",
-      "date": "2026-11-05",
-      "end": "2026-11-05",
-      "town": "Seaside",
-      "summary": "Native American song and drum performance from 6:00 pm to 8:00 pm, no cover.",
-      "url": "https://www.seasideor.com/event/rosa-water-journey-through-the-heart-live-at-the-lyons-den/"
     },
     {
       "name": "Seaside Fall Whiskey & Wine Walk",

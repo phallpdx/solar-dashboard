@@ -42,6 +42,18 @@
       {
         "name": "Investing.com: Economic Week Ahead: Payrolls, Fed Speakers and Apple Earnings to Watch",
         "url": "https://www.investing.com/analysis/economic-week-ahead-payrolls-fed-speakers-and-apple-earnings-to-watch-200690640"
+      },
+      {
+        "name": "CNBC: The October jobs report is out Friday. Here's everything to expect",
+        "url": "https://www.cnbc.com/2026/11/05/october-jobs-report-preview.html"
+      },
+      {
+        "name": "Kiplinger: What to Expect From the October Jobs Report",
+        "url": "https://www.kiplinger.com/investing/economy/jobs-report-october-2026-what-to-expect"
+      },
+      {
+        "name": "Thrive in Markets: CPI release dates 2026",
+        "url": "https://thriveinmarkets.com/calendar/dates/cpi-2026/"
       }
     ],
     "by": "local model",
@@ -49,10 +61,9 @@
       "Democratic midterm wins"
     ],
     "watch": [
-      "Today (Thu): weekly jobless claims and Q3 productivity at 8:30 a.m. ET, plus Bank of England and Banxico rate decisions.",
-      "Fri 8:30 a.m. ET: October jobs report; consensus estimates range from about 40K (RoboForex) to 65K (Schwab) after 29K last month, with unemployment last at 4.2%.",
-      "Fri 10 a.m. ET: University of Michigan preliminary November consumer sentiment (prior 48.0).",
-      "Fed speakers this week include Musalem and Bowman (Kiplinger calendar); earnings this week include Apple, AMD, Qualcomm and Palantir."
+      "Today (Fri) 8:30 a.m. ET: October jobs report; FactSet consensus is about 65,000 new jobs and the Dow Jones survey median 59,000, after 29,000 in September, with unemployment expected to hold at 4.2% (CNBC preview).",
+      "Today (Fri) 10 a.m. ET: University of Michigan preliminary November consumer sentiment (prior 48.0).",
+      "Tue Nov 10, 8:30 a.m. ET: October consumer price index (CPI) report, per the published BLS release calendar."
     ]
   },
   "helium": {
@@ -141,6 +152,18 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQN1J1dS1zRVFDTmZIOFk0S0pBUlZhMnI0Y19vY3YyaFh6TGpYTVlSYm1XRTR6d0xrc3VFdVRLbUhDNG85V2FYemdicVZNMjZRaWVYUDRXYmhmalRzQWRzMVlaeENXeW1kQ2lxLS1ZcFUwSEVodV85ZzFfX2Vha0gwcQ?oc=5"
+      },
+      {
+        "name": "Freddie Mac: Mortgage Rates Decline for Third Consecutive Week to 7.18%",
+        "url": "https://globenewswire.com/news-release/2026/11/05/3396882/0/en/mortgage-rates-decline-for-third-consecutive-week-to-7-18.html"
+      },
+      {
+        "name": "The McCreith Team (RMLS Market Action, Oct 2026 report)",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "name": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       }
     ],
     "by": "local model",
@@ -178,11 +201,11 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (National, 2026-11-03)",
-        "value": "7.26%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQZGxKUl9EdldDN1FGQ3FmRzltYWFRMGZqOWhWbkpUNFE3cWk5WXlUcVVybTJyXzV2U2REZWZMRzVKOE96Yl9jZmNoNXJRZHFUc19YNXIybkdrb1otNUtJRVJyMm9kWDltcVVnRGhEd2hIazF2bF9LSDJLYWxvNTdtN28yOXNoUVBEOGxrVw?oc=5"
+        "label": "30-year fixed mortgage rate (Freddie Mac, week of Nov 5)",
+        "value": "7.18%",
+        "change": "down from 7.24% a week earlier; 6.22% a year ago",
+        "source": "Freddie Mac (GlobeNewswire)",
+        "url": "https://globenewswire.com/news-release/2026/11/05/3396882/0/en/mortgage-rates-decline-for-third-consecutive-week-to-7-18.html"
       },
       {
         "label": "Median sale price (Portland metro, September)",
@@ -228,6 +251,6 @@
       }
     ]
   },
-  "updated_at": "2026-11-05T11:36:58Z",
-  "updated": "2026-11-05"
+  "updated_at": "2026-11-06T13:21:36Z",
+  "updated": "2026-11-06"
 }

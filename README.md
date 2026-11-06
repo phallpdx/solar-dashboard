@@ -26,7 +26,7 @@ With an `AISSTREAM_KEY`, the river section shows ships heading your way and, in 
 parked across from `river_view` in `config.json` (big ships within `parked_km`, default 5 km).
 Optional `TMDB_API_KEY` (free for non-commercial use from themoviedb.org/settings/api; either the API key or the
 API Read Access Token works) adds the best-rated new movies on your streaming services, movies coming to them in the next week, and a daily kids' movie pick
-that fits the season and never repeats. New shows and their TVmaze ratings work without a key.
+that fits the season and never repeats, and a daily classic movie (25+ years old, widely loved) that never repeats either. New shows and their TVmaze ratings work without a key.
 Optional repository variable `PGE_CYCLE_START_DAY` (the day of the month your
 PGE bill cycle starts).
 

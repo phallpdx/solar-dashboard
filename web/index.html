@@ -284,6 +284,9 @@ header h1{font-size:40px}
 .poem-long{max-height:22em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
 .poem-more{align-self:flex-start;border:0;background:none;padding:0;font:inherit;font-size:13.5px;font-weight:700;color:#6B4A2B;cursor:pointer}
 #poem{display:flex;flex-direction:column;gap:4px}
+#clsmov::after{content:'';display:block;clear:both}
+.cls-poster{float:left;width:160px;aspect-ratio:2/3;object-fit:cover;border-radius:8px;margin:2px 18px 8px 0;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+@media (max-width:480px){.cls-poster{width:110px;margin-right:12px}}
 .group[data-sec=science]{--accent:#0F7B8C;--tint:#E0F3F5}
 .sci-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media (max-width:1000px){.sci-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -1936,6 +1939,10 @@ body{background-color:#8F5A32;
         <section class="card half" aria-labelledby="kidmov-h" id="kidmov-card" hidden>
           <div class="head"><h2 id="kidmov-h">Kids' movie of the day</h2><span class="meta" id="kidmov-meta"></span></div>
           <div id="kidmov"></div>
+        </section>
+        <section class="card half" aria-labelledby="clsmov-h" id="clsmov-card" hidden>
+          <div class="head"><h2 id="clsmov-h">Classic movie of the day</h2><span class="meta" id="clsmov-meta"></span></div>
+          <div id="clsmov"></div>
         </section>
       </div>
       <section class="card" aria-labelledby="br-h" id="br-card" hidden>
@@ -3739,6 +3746,22 @@ function renderComing() {
     $('kidmov').innerHTML = item({...k, kind: k.date ? k.date.slice(0, 4) : null,
       score: `${k.rating.toFixed(1)} on TMDB · ${k.votes.toLocaleString()} votes`}, null);
   }
+  // A classic a day, never repeated: who made it and a few lines from Wikipedia on why it matters.
+  const c = D.classic_movie;
+  $('clsmov-card').hidden = !c;
+  if (c) {
+    $('clsmov-meta').textContent = c.why ? c.why[0].toUpperCase() + c.why.slice(1) : '';
+    const credits = [c.directors && c.directors.length ? 'Directed by ' + c.directors.join(' and ') : null,
+      c.stars && c.stars.length ? 'with ' + c.stars.join(', ') : null].filter(Boolean).join(' ');
+    $('clsmov').innerHTML = (c.poster ? `<a href="${esc(c.url)}" target="_blank" rel="noopener"><img class="cls-poster" src="${esc(c.poster)}" alt="Poster for ${esc(c.title)}" loading="lazy" onerror="this.parentNode.remove()"></a>` : '') +
+      item({...c, kind: c.date ? c.date.slice(0, 4) : null,
+      score: `${c.rating.toFixed(1)} on TMDB · ${c.votes.toLocaleString()} votes`, summary: c.context ? null : c.summary, image: c.poster ? null : c.image}, null) +
+      (credits ? `<p class="note">${esc(credits)}.</p>` : '') +
+      (c.context ? `<p>${esc(c.context.text)}</p>` +
+        (c.context.matters ? `<p><b>Why it matters.</b> ${esc(c.context.matters)}</p>` : '') +
+        (c.context.watch ? `<p><b>Why watch it.</b> ${esc(c.context.watch)}</p>` : '') +
+        `<p class="note">From <a href="${esc(c.context.url)}" target="_blank" rel="noopener">its Wikipedia article</a>.</p>` : '');
+  }
   // Only notable albums: well reviewed (Metacritic) or much anticipated. Lists saved before that filter existed
   // carry no reason and are skipped, so the old every-release list never shows.
   const notable = al.filter(x => x.why);
@@ -4545,6 +4568,7 @@ const SOURCES = {
   'pdxm-h': [DAILY], 'liq-h': [DAILY], 'br-h': [DAILY], 'gig-h': [DAILY], 'jazz-h': [DAILY],
   'tv-h': [['TVmaze schedule and viewer ratings', 'https://www.tvmaze.com/'], ['Movie ratings: TMDB users', 'https://www.themoviedb.org/'], ['Where movies stream: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'kidmov-h': [['TMDB family movies rated G or PG', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
+  'clsmov-h': [['TMDB movies 25+ years old with 1,000+ votes and a 7.3+ average', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['Context: the movie\'s Wikipedia article', 'https://en.wikipedia.org/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums'], ['Metacritic new releases', 'https://www.metacritic.com/browse/albums/release-date/new-releases/date']],
   'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
   'jar-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],

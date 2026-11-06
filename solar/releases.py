@@ -1,5 +1,5 @@
 """New shows and seasons on the big streaming services (TVmaze), the best-rated new movies and a daily kids' movie
-on those services (TMDB, needs a free TMDB_API_KEY), and new albums (Wikipedia)."""
+on those services plus a daily classic movie (TMDB, needs a free TMDB_API_KEY), and new albums (Wikipedia)."""
 import datetime as dt
 import html
 import json
@@ -282,6 +282,109 @@ def kids_movie(key, history, day=None):
                 if services:
                     return _movie(m, services, why=why, date_picked=day.isoformat())
     raise RuntimeError("no family movie left on the six services that hasn't been picked already")
+
+
+DECADES = (1930, 1940, 1950, 1960, 1970, 1980, 1990)
+
+
+def _sentences(text):
+    text = re.sub(r"\s+", " ", re.sub(r"\[\d+\]", "", text or "")).strip()
+    return [x for x in re.split(r"(?<=[.!?])\s+(?=[A-Z\"“])", text) if len(x) > 20]
+
+
+def _take(sentences, limit=360):
+    out = ""
+    for x in sentences:
+        if out and len(out) + len(x) > limit:
+            break
+        out = (out + " " + x).strip()
+    return out
+
+
+# Lead sentences that say why a film is worth watching (acclaim, awards, standing), and the article sections that
+# say why it matters (its legacy and influence), most telling first.
+ACCLAIM = re.compile(r"greatest|acclaim|Academy Award|Oscar|Palme d|masterpiece|praised|landmark|influential|"
+                     r"National Film Registry|highest-grossing|cult (film|classic|following)|BAFTA|Golden Globe", re.I)
+LEGACY = ("legacy", "influence", "cultural impact", "impact", "cultural significance", "reception", "critical response")
+
+
+def _wiki_context(title, year):
+    """From the movie's Wikipedia article: what it is (the opening line), why to watch it (lead sentences about its
+    acclaim and awards) and why it matters (the start of its Legacy or Reception section), with the link.
+    None when no film article is found."""
+    for name in (f"{title} ({year} film)", f"{title} (film)", title):
+        try:
+            s = _get("https://en.wikipedia.org/api/rest_v1/page/summary/" + urllib.parse.quote(name.replace(" ", "_")))
+        except Exception:
+            continue
+        if s.get("type") != "standard" or "film" not in (s.get("description") or "").lower():
+            continue
+        url = ((s.get("content_urls") or {}).get("desktop") or {}).get("page")
+        if not url:
+            continue
+        out = {"url": url, "image": (s.get("originalimage") or s.get("thumbnail") or {}).get("source")}
+        lead = _sentences(s.get("extract"))
+        out["text"] = _take(lead[:1])
+        try:
+            pages = _get("https://en.wikipedia.org/w/api.php?" + urllib.parse.urlencode(
+                {"action": "query", "prop": "extracts", "explaintext": 1, "redirects": 1, "format": "json",
+                 "formatversion": 2, "titles": s.get("title") or name}))["query"]["pages"]
+            full = pages[0].get("extract") or ""
+        except Exception:
+            full = ""
+        intro, *rest = re.split(r"\n={2,}\s*", full) if full else ("",)
+        lead = _sentences(intro) or lead
+        out["watch"] = _take([x for x in lead[1:] if ACCLAIM.search(x)][:2]) or None
+        sections = {}
+        for part in rest:
+            head, _, body = part.partition("\n")
+            sections.setdefault(head.strip(" =").lower(), _sentences(body))
+        for want in LEGACY:
+            body = next((v for k, v in sections.items() if want in k and v), None)
+            if body:
+                out["matters"] = _take(body[:2])
+                break
+        if out["text"]:
+            return out
+    return None
+
+
+def classic_movie(key, history, day=None, skip=()):
+    """A classic or iconic movie (25+ years old, widely seen and highly rated) that streams on the six services,
+    never one picked before. The decade rotates day by day so the picks don't all come from one era."""
+    day = day or dt.date.today()
+    ids = _provider_ids(key)
+    used = set(history) | set(skip)
+    latest = (day.year - 25) // 10 * 10 - 1  # last year of the newest decade that is fully 25+ years old
+    decades = [d for d in DECADES if d + 9 <= latest] or [DECADES[0]]
+    start = day.toordinal() % len(decades)
+    tries = [(decades[(start + i) % len(decades)], decades[(start + i) % len(decades)] + 9) for i in range(len(decades))]
+    tries.append((1900, latest))  # anything old enough, if every decade on its own is used up
+    for lo, hi in tries:
+        params = {"primary_release_date.gte": f"{lo}-01-01", "primary_release_date.lte": f"{hi}-12-31",
+                  "vote_count.gte": 1000, "vote_average.gte": 7.3, "sort_by": "vote_average.desc"}
+        for page in range(1, 6):
+            found = _discover(key, ids, page=page, **params)
+            for m in found:
+                if m["id"] in used:
+                    continue
+                services = _where(m["id"], key, ids)
+                if not services:
+                    continue
+                year = (m.get("release_date") or "")[:4]
+                credits = _tmdb(f"/movie/{m['id']}/credits", key)
+                directors = [c["name"] for c in credits.get("crew") or [] if c.get("job") == "Director"]
+                stars = [c["name"] for c in sorted(credits.get("cast") or [], key=lambda c: c.get("order", 99))[:3]]
+                why = f"a {lo}s classic" if hi - lo == 9 else "a classic"
+                context = _wiki_context(m.get("title") or "", year)
+                # A big poster for the card: TMDB's, else the Wikipedia article's lead image (usually the poster too).
+                poster = (f"https://image.tmdb.org/t/p/w342{m['poster_path']}" if m.get("poster_path")
+                          else (context or {}).get("image"))
+                return _movie(m, services, why=why, directors=directors[:2], stars=stars, poster=poster,
+                              context=context, date_picked=day.isoformat())
+            if len(found) < 20:
+                break
+    raise RuntimeError("no classic movie left on the six services that hasn't been picked already")
 
 
 # ------------------------------------------------------------------ albums

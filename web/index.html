@@ -743,6 +743,7 @@ html[data-day='1'] .joy-card::after{left:28%;rotate:6deg}html[data-day='2'] .joy
 /* Doodle charts */
 .group[data-sec=doodles]{--accent:#C2643A}
 .dd svg{display:block;width:100%;height:auto;overflow:visible}
+#stake svg,#set-chart svg,#jar svg,#shelf svg{max-width:460px;margin:0 auto}
 .dd .ink{fill:none;stroke:var(--inkline);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dd .ink.thin{stroke-width:1.3;opacity:.7}
 .dd .dots{fill:none;stroke:var(--inkline);stroke-width:2;stroke-linecap:round;stroke-dasharray:.1 7;opacity:.6}
@@ -1373,13 +1374,14 @@ body{background-color:#8F5A32;
 
   <div id="banner" class="banner" hidden></div>
   <section class="group" data-sec="today" data-tier="top" id="today" aria-labelledby="today-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">Weather, your calendar and what to plan for</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">☀️</span><div class="sec-titles"><h2 class="sec-h" id="today-h">Today</h2><p class="sec-sub">The weather, your plans and anything worth booking early</p></div></div>
     <div class="sec-body">
       <section id="alerts" aria-label="Weather alerts" class="alerts" hidden></section>
       <div class="row" id="today-row">
         <section class="card side" aria-labelledby="wx-h">
           <div class="head"><h2 id="wx-h">Weather at home</h2><span class="meta" id="wx-meta"></span></div>
           <div id="wx"></div>
+          <div class="dd" id="jar-wrap" hidden><p class="note" id="jar-sum"></p><div id="jar"></div></div>
         </section>
         <section class="card wide" aria-labelledby="day-h" id="today-card" hidden>
           <div class="head"><h2 id="day-h">Today</h2><span class="meta" id="day-meta"></span></div>
@@ -1416,7 +1418,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="solar" data-tier="home" id="solar" aria-labelledby="solar-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Sun and power</h2><p class="sec-sub">What the roof is making, when to run big loads, the grid, your PGE bill and every panel</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⚡</span><div class="sec-titles"><h2 class="sec-h" id="solar-h">Sun and power</h2><p class="sec-sub">What the roof is cooking up, when to run the big stuff, and how the bill is shaping up</p></div></div>
     <div class="sec-body">
       <section class="tiles" aria-label="Solar right now">
         <div class="tile dark"><span class="k">Producing now</span><span class="big" id="t-now">–</span><span class="s" id="t-now-s"></span></div>
@@ -1510,7 +1512,7 @@ body{background-color:#8F5A32;
 </section>
 
   <section class="group" data-sec="garden" data-tier="home" id="garden" aria-labelledby="garden-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's happening on the land, what to do about it, who's visiting and what's fruiting in the woods</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌱</span><div class="sec-titles"><h2 class="sec-h" id="garden-h">Garden and wildlife</h2><p class="sec-sub">What's growing, what needs doing, and who's flapping, sprouting or fruiting nearby</p></div></div>
     <div class="sec-body">
       <section class="card look-card" aria-labelledby="look-h" id="look-card" hidden>
         <div class="head"><h2 id="look-h">Out on the land today</h2><span class="meta" id="look-meta"></span></div>
@@ -1566,7 +1568,7 @@ body{background-color:#8F5A32;
   </section>
 
 <section class="group" data-sec="river" data-tier="home" id="outside" aria-labelledby="river-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">The ship across the way, the river's level and forecast, tides, radar and fishing</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🛶</span><div class="sec-titles"><h2 class="sec-h" id="river-h">On the river</h2><p class="sec-sub">Ships, river levels, tides, radar and whether the fish are biting</p></div></div>
   <div class="sec-body">
     <section class="card" aria-labelledby="moor-h" id="moor-card">
       <div class="head"><h2 id="moor-h">Across from the house</h2><span class="meta" id="moor-meta"></span></div>
@@ -1604,7 +1606,7 @@ body{background-color:#8F5A32;
 </section>
 
 <section class="group" data-sec="doodles" data-tier="home" id="doodles" aria-labelledby="doodles-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">✏️</span><div class="sec-titles"><h2 class="sec-h" id="doodles-h">Your world, in doodles</h2><p class="sec-sub">Little charts drawn from your own roof, sky, shelf and calendar</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">✏️</span><div class="sec-titles"><h2 class="sec-h" id="doodles-h">Your world, in doodles</h2><p class="sec-sub">Hand-drawn charts from your own roof, sky and calendar</p></div></div>
   <div class="sec-body">
     <div class="row">
       <section class="card half dd" aria-labelledby="harvest-h" id="harvest-card" hidden>
@@ -1630,42 +1632,11 @@ body{background-color:#8F5A32;
         <p class="note" id="therm-note"></p>
       </section>
     </div>
-    <div class="row">
-      <section class="card half dd" aria-labelledby="set-h" id="set-card" hidden>
-        <div class="head"><h2 id="set-h">Where the sun goes down</h2><span class="meta" id="set-meta"></span></div>
-        <p class="summary" id="set-sum"></p>
-        <div id="set-chart"></div>
-      </section>
-      <section class="card half dd" aria-labelledby="jar-h" id="jar-card" hidden>
-        <div class="head"><h2 id="jar-h">The rain jar</h2><span class="meta" id="jar-meta"></span></div>
-        <p class="summary" id="jar-sum"></p>
-        <div id="jar"></div>
-        <p class="note" id="jar-note"></p>
-      </section>
-    </div>
-    <div class="row">
-      <section class="card half dd" aria-labelledby="stake-h" id="stake-card" hidden>
-        <div class="head"><h2 id="stake-h">The snow stake</h2><span class="meta" id="stake-meta"></span></div>
-        <p class="summary" id="stake-sum"></p>
-        <div id="stake"></div>
-      </section>
-    </div>
-    <section class="card dd" aria-labelledby="title-h" id="title-card" hidden>
-      <div class="head"><h2 id="title-h">The title fight</h2><span class="meta" id="title-meta"></span></div>
-      <p class="summary" id="title-sum"></p>
-      <div id="title-race"></div>
-      <p class="note" id="title-note"></p>
-    </section>
-    <section class="card dd" aria-labelledby="shelf-h" id="shelf-card" hidden>
-      <div class="head"><h2 id="shelf-h">Your bookshelf</h2><span class="meta" id="shelf-meta"></span></div>
-      <div id="shelf"></div>
-      <p class="note" id="shelf-note"></p>
-    </section>
   </div>
 </section>
 
   <section class="group" data-sec="delights" data-tier="fun" id="delights" aria-labelledby="delights-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">Something to read, something to talk about, and a picture, new every day</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎁</span><div class="sec-titles"><h2 class="sec-h" id="delights-h">Daily fun</h2><p class="sec-sub">Something to read, something to talk about and something to look at. New every morning</p></div></div>
     <div class="sec-body">
       <div class="joy" id="joy">
         <div class="shelf" data-shelf="read">
@@ -1682,6 +1653,7 @@ body{background-color:#8F5A32;
             <section class="card joy-card j-books" aria-labelledby="books-h" id="books-card" hidden>
               <div class="head"><h2 id="books-h">Books for you</h2><span class="meta" id="books-meta"></span></div>
               <div id="books"></div>
+              <div class="dd" id="shelf-wrap" hidden><div id="shelf"></div><p class="note" id="shelf-note"></p></div>
             </section>
           </div>
         </div>
@@ -1735,12 +1707,13 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="nearby" data-tier="fun" id="nearby" aria-labelledby="nearby-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌙</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">The sky</h2><p class="sec-sub">Tonight's sunset, the moon, what's coming up overhead and who's flying over</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌙</span><div class="sec-titles"><h2 class="sec-h" id="nearby-h">The sky</h2><p class="sec-sub">Sunset odds, the moon, meteor showers and who's flying over the house</p></div></div>
     <div class="sec-body">
       <div class="row">
         <section class="card half joy-card j-sunset" aria-labelledby="sunset-h" id="sunset-card" hidden>
           <div class="head"><h2 id="sunset-h">Tonight's sunset</h2><span class="meta" id="sunset-meta"></span></div>
           <div id="sunset"></div>
+          <div class="dd" id="set-wrap" hidden><p class="note" id="set-sum"></p><div id="set-chart"></div></div>
         </section>
         <section class="card half joy-card j-apod" aria-labelledby="apod-h" id="apod-card" hidden>
           <div class="head"><h2 id="apod-h">Astronomy picture of the day</h2><span class="meta">NASA</span></div>
@@ -1776,7 +1749,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="coast" data-tier="fun" id="coast" aria-labelledby="coast-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Beach getaway</h2><p class="sec-sub">Surf, tides, whales and weather down at Surf Pines, for your next trip</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌊</span><div class="sec-titles"><h2 class="sec-h" id="coast-h">Beach getaway</h2><p class="sec-sub">Waves, tides, whales and weather at Surf Pines, for when you sneak away</p></div></div>
     <div class="sec-body">
       <div id="coast-alerts" class="alerts"></div>
       <section class="card" aria-label="Beach getaway weather" data-src="coast-wx">
@@ -1823,7 +1796,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="roads" data-tier="town" id="roads" aria-labelledby="roads-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⛰️</span><div class="sec-titles"><h2 class="sec-h" id="roads-h">Roads and mountains</h2><p class="sec-sub">Traffic, road cameras, trail reports, Mt. Hood, and quakes and fires further down</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">⛰️</span><div class="sec-titles"><h2 class="sec-h" id="roads-h">Roads and mountains</h2><p class="sec-sub">Traffic, road cams, trails and Mt. Hood snow, plus quakes and fires to keep an eye on</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="drive-h" id="drive-card" hidden>
         <div class="head"><h2 id="drive-h">Traffic right now</h2><span class="meta" id="drive-meta"></span></div>
@@ -1850,6 +1823,7 @@ body{background-color:#8F5A32;
         <p class="summary" id="ski-summary"></p>
         <div class="facts" id="ski-facts"></div>
         <div class="fc" id="ski-fc"></div>
+        <div class="dd" id="stake" hidden></div>
         <div id="ski-outlook" hidden>
           <h3 class="sub">Season outlook</h3>
           <p class="note" id="ski-season"></p>
@@ -1872,7 +1846,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="local" data-tier="town" id="local" aria-labelledby="local-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New food, places opening, big events and the liquor store</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🍜</span><div class="sec-titles"><h2 class="sec-h" id="local-h">Around Portland</h2><p class="sec-sub">New bites, fresh openings, big nights out and new bottles at the liquor store</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="finds-h" id="finds-card" hidden>
         <div class="head"><h2 id="finds-h">New Portland food finds</h2><span class="meta" id="finds-meta"></span></div>
@@ -1895,7 +1869,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="music" data-tier="town" id="music" aria-labelledby="music-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to put on, shows and jazz around town and new albums</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎵</span><div class="sec-titles"><h2 class="sec-h" id="music-h">Music and shows</h2><p class="sec-sub">Records to spin, shows to catch and albums hot off the press</p></div></div>
     <div class="sec-body">
       <section class="card" aria-labelledby="rec-h" id="rec-card" hidden>
         <div class="head"><h2 id="rec-h">Records for this morning</h2><span class="meta">Picked for the season and the weather; never repeated within a year</span></div>
@@ -1938,7 +1912,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, the Vikings and Pilots, F1, the markets, helium and Portland real estate</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, Vikings, Pilots and F1, then the markets, helium and houses</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
       <div class="row">
@@ -1952,6 +1926,8 @@ body{background-color:#8F5A32;
         <section class="card side" aria-labelledby="f1-h">
           <div class="head"><h2 id="f1-h">Formula 1</h2><span class="meta" id="f1-meta"></span></div>
           <div id="f1"></div>
+          <div class="dd" id="title-wrap" hidden><h3 class="sub">The title fight <span class="meta" id="title-meta"></span></h3><p class="summary" id="title-sum"></p><div id="title-race"></div><p class="note" id="title-note"></p></div>
+          <div id="f1-talk"></div>
         </section>
       </div>
       <div class="row">
@@ -1968,7 +1944,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="watch" data-tier="town" id="coming" aria-labelledby="watch-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">On screen</h2><p class="sec-sub">New on streaming and 4K disc deals</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🎬</span><div class="sec-titles"><h2 class="sec-h" id="watch-h">On screen</h2><p class="sec-sub">What's good on streaming tonight, and 4K discs on sale</p></div></div>
     <div class="sec-body">
       <div class="row" id="watch-row">
         <section class="card half" aria-labelledby="tv-h">
@@ -2011,7 +1987,7 @@ body{background-color:#8F5A32;
 </section>
 
 <section class="group" data-sec="almanac" data-tier="world" id="almanac" aria-labelledby="almanac-h" hidden>
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">Today in history, what’s special about the date, and history near home</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📜</span><div class="sec-titles"><h2 class="sec-h" id="almanac-h">This day</h2><p class="sec-sub">What happened on this date, and the stories hiding near home</p></div></div>
   <div class="sec-body">
     <div class="chips" id="date-facts"></div>
     <p class="note" id="hol-today" hidden></p>
@@ -2034,14 +2010,14 @@ body{background-color:#8F5A32;
 </section>
 
 <section class="group" data-sec="science" data-tier="world" id="science" aria-labelledby="science-h" hidden>
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs and what they mean, from Quanta, Science News and more</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🔬</span><div class="sec-titles"><h2 class="sec-h" id="science-h">New science</h2><p class="sec-sub">Fresh breakthroughs in plain English, from Quanta, Science News and more</p></div></div>
   <div class="sec-body">
     <div class="sci-grid" id="sci"></div>
   </div>
 </section>
 
 <section class="group" data-sec="news" data-tier="world" id="news" aria-labelledby="news-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">Gadget news and hands-on reviews, minus the hype</p></div></div>
   <div class="sec-body">
     <div class="row">
       <section class="card half" aria-labelledby="stories-h">
@@ -2057,7 +2033,7 @@ body{background-color:#8F5A32;
 </section>
 
 <section class="group" data-sec="world" data-tier="world" id="world" aria-labelledby="world-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Time, weather and air in Bangkok; USA and Thailand holidays</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">🌏</span><div class="sec-titles"><h2 class="sec-h" id="world-h">Bangkok and holidays</h2><p class="sec-sub">Bangkok's time, weather and air, and the holidays coming up in both countries</p></div></div>
   <div class="sec-body">
     <div class="row">
       <section class="card side" aria-labelledby="bkk-h">
@@ -2090,6 +2066,8 @@ const srcLinks = list => (list || []).map(x => Array.isArray(x) ? {name: x[0], u
 const cite = list => { const l = srcLinks(list); return l ? `<span class="cite">Source: ${l}</span>` : ''; };
 const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmtDate = iso => { const [y,m,d] = iso.split('-').map(Number); return `${MON[m-1]} ${d}`; };
+// Text stripped from HTML can keep stray spaces before punctuation ("Tasmania , Australia", "( Vombatus"); close them up.
+const tidy = t => String(t).replace(/\s+([,.;:)\]])/g, '$1').replace(/([(\[])\s+/g, '$1').replace(/\s+'s\b/g, "'s").replace(/\s{2,}/g, ' ').trim();
 const n1 = x => (Math.round(x * 10) / 10).toFixed(1);
 const money = x => (x < 0 ? '−$' : '$') + Math.abs(x).toFixed(2);
 const mins = t => { const [h, m] = t.split(' ').pop().split(':').map(Number); return h * 60 + m; };
@@ -2269,10 +2247,10 @@ function renderHarvest() {
     ['M6 40h52M12 40l4-14h28l8 14M18 40a5 5 0 1 0 .1 0M46 40a5 5 0 1 0 .1 0M20 26l3-8h16l4 8', Math.round(miles).toLocaleString(), 'miles in an electric car'],
     ['M12 24h42l-5 30H17zM18 24c0-8 6-14 15-14s15 6 15 14M22 34h22M24 44h18', Math.round(kwh / 3).toLocaleString(), 'loads of laundry, washed and dried'],
     [DOODLE.cup, Math.round(kwh / 0.1).toLocaleString(), 'kettles of tea'],
-    perDay ? ['M8 50c0-20 11-32 25-32s25 12 25 32zM24 50V38a9 9 0 0 1 18 0v12M37 44h.1M4 50h58', Math.round(kwh / perDay), 'days of running the house in deep winter'] : [DOODLE.note, Math.round(kwh / 0.1).toLocaleString(), 'hours of TV'],
+    perDay ? ['M8 50c0-20 11-32 25-32s25 12 25 32zM24 50V38a9 9 0 0 1 18 0v12M37 44h.1M4 50h58', Math.round(kwh / perDay), Math.round(kwh / perDay) === 1 ? 'day of running the whole house in deep winter' : 'days of running the whole house in deep winter'] : [DOODLE.note, Math.round(kwh / 0.1).toLocaleString(), 'hours of TV'],
   ];
   $('harvest-units').innerHTML = units.map(([e, n, t]) => `<div class="dd-unit"><svg viewBox="0 0 66 66" aria-hidden="true"><path d="${e}"/></svg><span><b class="boingable">${n}</b><small>${t}</small></span></div>`).join('') +
-    (trips ? `<p class="note" style="grid-column:1/-1;margin:0;font-style:italic">…or ${trips} journeys to the sea and back.</p>` : '');
+    (trips ? `<p class="note" style="grid-column:1/-1;margin:0;font-style:italic">…or ${trips === 1 ? 'one road trip' : `${trips} road trips`} to the beach and back.</p>` : '');
   // Lifetime: how far toward the moon the panels could have driven you.
   const life = sm.lifetime || 0, frac = life * 3.5 / 238855, laps = Math.floor(frac), t = frac % 1;
   const P = pen(11), A = [40, 70], B = [160, -6], C = [282, 40];
@@ -2326,7 +2304,7 @@ function renderLight() {
     <text class="sm" x="${rd(X(172) - 30)}" y="${rd(Y(mx) - 8)}">longest ${hmLong(mx)}</text>
     <text class="sm" x="${rd(X(1) + 2)}" y="${rd(Y(lens[0]) - 10)}">shortest ${hmLong(mn)}</text>
     <circle cx="${rd(sx)}" cy="${rd(sy)}" r="7" fill="#FFD86B"/>${ink(P.circle(sx, sy, 7, .4))}${ink(rays)}
-    <text x="${rd(sx + (sx > 220 ? -92 : 18))}" y="${rd(sy + (sx > 220 ? 4 : -14))}">you are here</text>${months}</svg>` + moonDoodle(o.moon);
+    <text x="${rd(sx + (sx > 220 ? -92 : 18))}" y="${rd(sy + (sx > 220 ? 4 : -14))}">you are here</text>${months}</svg>`;
 }
 
 // What's coming up: your calendar's all-day days, holidays, the election and the solstice, along a winding road.
@@ -2390,8 +2368,8 @@ function renderTherms() {
 // Everything you've read, as spines on a shelf.
 function renderShelf() {
   const b = D.books;
-  $('shelf-card').hidden = !b || !b.read_count;
-  if ($('shelf-card').hidden) return;
+  $('shelf-wrap').hidden = !b || !b.read_count;
+  if ($('shelf-wrap').hidden) return;
   const n = Math.min(b.read_count, 90), pile = Math.min(b.to_read_count || 0, 6), P = pen(31);
   const colors = ['#B4553A', '#5E8A2C', '#3D6E8C', '#C98A1F', '#6E5288', '#8B5E34', '#3F7F76', '#A24D5E', '#D7B26A'];
   const room = 560 - (pile ? 70 : 0), w = Math.max(5, Math.min(14, room / n - 1.5));
@@ -2412,8 +2390,8 @@ function renderShelf() {
     ${spines}${stack}${ink(P.line(6, 133, end + 30, 133, .8))}${ink(P.line(6, 140, end + 30, 140, .8), 'ink thin')}
     ${pile ? `<text class="sm" x="${rd(x + 12)}" y="${rd(132 - pile * 13 - 8)}">to read</text>` : ''}
     <path d="M${rd(end + 8)} 132v-22h8v22M${rd(end + 12)} 110c-3-5 0-9 0-12 2 3 4 7 0 12" fill="#F3E3B5" stroke="#3A2614" stroke-width="1.3"/><text class="big" x="18" y="${rd(132 - 132)}" dy="22">${b.read_count} books</text></svg>`;
-  $('shelf-meta').textContent = 'From Goodreads';
-  $('shelf-note').textContent = b.top_authors && b.top_authors.length ? `Most-loved authors: ${b.top_authors.slice(0, 5).join(', ')}.` : '';
+  $('shelf-note').textContent = `${b.read_count} books down${b.to_read_count ? `, ${b.to_read_count} still waiting their turn` : ''}.` +
+    (b.top_authors && b.top_authors.length ? ` Your all-stars: ${b.top_authors.slice(0, 5).join(', ')}.` : '');
 }
 
 // Flat catalog colors for the doodles, straight from the page's palette.
@@ -2428,14 +2406,13 @@ const setAz = (lat, doy) => {
 };
 function renderSetting() {
   const o = D.outside;
-  $('set-card').hidden = !o || o.lat == null;
-  if ($('set-card').hidden) return;
+  $('set-wrap').hidden = !o || o.lat == null;
+  if ($('set-wrap').hidden) return;
   const now = new Date(), doy = dayOfYear(now), az = setAz(o.lat, doy), azS = setAz(o.lat, 355), azN = setAz(o.lat, 172);
   const week = setAz(o.lat, doy + 7) - az, south = week < 0, off = Math.round(Math.abs(az - 270));
   const X = a => 24 + (a - azS + 5) / (azN - azS + 10) * 312, sx = X(az), P = pen(61), HZ = 132;
   const t = (o.days || []).find(d => d.date === todayIso()) || {};
-  $('set-meta').textContent = `Looking west from ${o.label}`;
-  $('set-sum').innerHTML = `Tonight the sun drops behind the hills${t.sunset ? ` at <b>${clock(t.sunset)}</b>` : ''}, ` +
+  $('set-sum').innerHTML = `Where to point your face: ` +
     (off < 1 ? 'almost exactly due west. ' : `${off}° ${az < 270 ? 'south' : 'north'} of due west. `) +
     `It's sliding about ${Math.max(0.1, Math.abs(week)).toFixed(1)}° ${south ? 'south' : 'north'} a week until the ${south ? 'winter solstice on Dec 21' : 'summer solstice on Jun 21'}.`;
   // The sun, in the catalog's striped style, sitting on the hills.
@@ -2461,8 +2438,8 @@ function renderSetting() {
 const PDX_RAIN_IN = [4.88, 3.66, 3.68, 2.73, 2.47, 1.70, 0.45, 0.56, 1.47, 2.99, 5.63, 5.37];
 function renderRainJar() {
   const r = D.weather && D.weather.rain;
-  $('jar-card').hidden = !r || r.month_in == null;
-  if ($('jar-card').hidden) return;
+  $('jar-wrap').hidden = !r || r.month_in == null;
+  if ($('jar-wrap').hidden) return;
   const now = new Date(), m = now.getMonth(), dim = new Date(now.getFullYear(), m + 1, 0).getDate();
   const full = PDX_RAIN_IN[m], byNow = full * now.getDate() / dim, got = r.month_in, top = Math.max(full, got) * 1.12;
   const Y = v => 182 - v / top * 136, P = pen(67), wy = Y(got);
@@ -2472,8 +2449,7 @@ function renderRainJar() {
   for (let i = 1; i < labs.length; i++) labs[i].push(Math.max(labs[i][0], (labs[i - 1][3] ?? labs[i - 1][0]) + 24));
   labs[0].push(labs[0][0]);
   const vs = got >= byNow * 1.1 ? `ahead of the ${byNow.toFixed(1)} in Portland usually has by now` : got <= byNow * 0.9 ? `behind the ${byNow.toFixed(1)} in Portland usually has by now` : 'right about what Portland usually has by now';
-  $('jar-meta').textContent = 'Your rain gauge';
-  $('jar-sum').innerHTML = `<b>${got.toFixed(2)} in</b> in the jar so far this ${MON[m]}, ${vs}.`;
+  $('jar-sum').innerHTML = `<b>The rain jar:</b> ${got.toFixed(2)} in so far this ${MON[m]}, ${vs}.`;
   $('jar').innerHTML = `<svg viewBox="0 0 360 196" role="img" aria-label="${got.toFixed(2)} inches of rain this month; usual by now ${byNow.toFixed(1)}, usual for the month ${full.toFixed(1)}">
     <defs><clipPath id="jar-clip"><path d="${jar} Z"/></clipPath></defs>
     <g clip-path="url(#jar-clip)"><path d="M30 ${rd(wy)} q14 -6 28 0 t28 0 t28 0 t28 0 t28 0 V200 H30Z" ${fl('teal', .85)}/>
@@ -2481,15 +2457,13 @@ function renderRainJar() {
     ${ink(jar + ' Z')}<rect x="50" y="22" width="88" height="18" rx="4" ${fl('mustard')}/><rect x="50" y="28" width="88" height="5" ${fl('orange')}/>${ink(P.rect(50, 22, 88, 18, .5))}
     ${dot(P.line(36, Y(byNow), 154, Y(byNow), .4))}${ink(P.line(36, Y(full), 154, Y(full), .4), 'ink thin')}
     ${labs.map(([y0, l, c, y]) => `${Math.abs(y - y0) > 2 ? ink(P.line(156, y0, 166, y - 4, .2), 'ink thin') : ''}<text class="${c}" x="170" y="${rd(y + (c === 'big' ? 8 : 4))}">${l}</text>`).join('')}</svg>`;
-  const days = (r.recent || []).filter(d => d.in > 0).map(d => `${DOW[new Date(d.date + 'T12:00').getDay()]} ${d.in.toFixed(2)}`);
-  $('jar-note').textContent = (days.length ? `Recent rainy days: ${days.join(', ')} in.` : '') + (r.today_in > 0 ? ` Today so far: ${r.today_in.toFixed(2)} in.` : '');
 }
 
 // Mt. Hood's snow depth on a painted stake, with the last week and a bit as little drifts.
 function renderStake() {
   const sn = D.ski && D.ski.snow, ser = (sn && sn.series) || [];
-  $('stake-card').hidden = !sn || sn.depth_in == null || ser.length < 2;
-  if ($('stake-card').hidden) return;
+  $('stake').hidden = !sn || sn.depth_in == null || ser.length < 2;
+  if ($('stake').hidden) return;
   const mx = Math.max(sn.depth_in, ...ser.map(d => d.depth_in || 0)), scale = [12, 24, 48, 72, 96, 144, 192].find(v => v >= mx * 1.15) || Math.ceil(mx / 48) * 48;
   const G = 160, Y = v => G - v / scale * 128, P = pen(71), step = scale / 6;
   const bands = Array.from({length: 6}, (_, i) => `<rect x="54" y="${rd(Y((i + 1) * step))}" width="14" height="${rd(128 / 6)}" ${fl(i % 2 ? 'mustard' : 'orange')}/>`).join('');
@@ -2501,9 +2475,6 @@ function renderStake() {
     return `<rect x="${rd(x + 2)}" y="${rd(G - h)}" width="${rd(bw - 5)}" height="${rd(h)}" rx="3" style="fill:#FFF8EA"/>${ink(P.rect(x + 2, G - h, bw - 5, h, .3), 'ink thin')}`;
   }).join('');
   const peak = 'M150 160 L232 52 L246 38 L258 50 L344 160 Z', cap = 'M218 70 L246 38 L272 66 L262 62 L254 72 L244 62 L232 74 Z';
-  $('stake-meta').textContent = `Measured ${fmtDate(sn.date)}`;
-  $('stake-sum').innerHTML = (d > 0 ? `<b>${d} in</b> of snow on the ground at ${esc(sn.station)}` + (sn.new_7d_in ? `, ${sn.new_7d_in} in new this week.` : '.') : `Still bare at ${esc(sn.station)}.`) +
-    (sn.temp_f != null ? ` It's ${Math.round(sn.temp_f)}° up there.` : '');
   $('stake').innerHTML = `<svg viewBox="0 0 360 192" role="img" aria-label="Snow depth ${d} inches; daily depths ${ser.map(s => s.depth_in).join(', ')}">
     <path d="${peak}" ${fl('sky', .55)}/><path d="${cap}" style="fill:#FFF8EA"/>${ink(peak.replace(' Z', ''), 'ink thin')}
     ${bars}${bands}${ink(P.rect(54, G - 128, 14, 128, .4))}${ticks}${drift}
@@ -2542,8 +2513,8 @@ function renderOverhead() {
 const F1_TEAM = [[/mercedes/i, 'teal'], [/ferrari/i, 'brick'], [/red bull/i, 'sky'], [/mclaren/i, 'orange'], [/aston/i, 'olive'], [/williams/i, 'sky'], [/alpine/i, 'plum']];
 function renderTitleFight() {
   const f = D.sports && D.sports.f1, st = ((f && f.standings) || []).slice(0, 5);
-  $('title-card').hidden = st.length < 2 || !f.rounds;
-  if ($('title-card').hidden) return;
+  $('title-wrap').hidden = st.length < 2 || !f.rounds;
+  if ($('title-wrap').hidden) return;
   const next = f.next || [], left = next.length ? f.rounds - next[0].round + 1 : 0, sprints = next.filter(r => r.sprint).length;
   const avail = left * 25 + sprints * 8, lead = st[0].points;
   const lo = Math.min(...st.map(d => d.points)) - 30, hi = Math.max(lead, ...st.map(d => d.points + avail)) + 8;
@@ -2563,7 +2534,7 @@ function renderTitleFight() {
   }).join('');
   const fx = X(lead), bottom = top + st.length * LH;
   const flag = Array.from({length: 8}, (_, k) => `<rect x="${rd(fx + 1 + (k % 4) * 6)}" y="${8 + Math.floor(k / 4) * 6 + (k % 2 ? 0 : 0)}" width="6" height="6" style="fill:${(k + Math.floor(k / 4)) % 2 ? 'var(--ink)' : '#FFF8EA'}"/>`).join('');
-  $('title-meta').textContent = `${f.season} · ${left ? `${left} race${left > 1 ? 's' : ''} left` : 'season over'}`;
+  $('title-meta').textContent = `${left ? `${left} race${left > 1 ? 's' : ''} left` : 'season over'}`;
   const gap = lead - st[1].points;
   $('title-sum').innerHTML = !left || gap > avail ? `<b>${esc(st[0].name)} has the title</b>, ${Math.round(gap)} points clear with ${avail ? `only ${avail}` : 'nothing'} left to win.` :
     `<b>${esc(last(st[0]))} leads by ${Math.round(gap)}</b> with up to ${avail} points left. ` +
@@ -2690,72 +2661,76 @@ function wonders() {
 
 // Every card's title is reworded each day, so the page reads fresh every morning even when the facts are steady.
 const DAILY_TITLES = {
-  'wx-h': ['On the porch right now', 'Your weather station says', 'Out the window'],
-  'day-h': ['The shape of today', 'How today looks', 'Today, hour by hour'],
+  'wx-h': ['On the porch right now', 'Your weather station says', 'Stick a hand out the window'],
+  'day-h': ['The shape of today', 'Today, in a nutshell', 'What today has up its sleeve'],
+  'yard-h': ['Your yard knows better', 'Forecast, corrected for your yard', 'Microclimate check'],
   'loads-h': ['Best hours for the dryer', 'When the sun pays for chores', 'Laundry on sunshine'],
-  'shade-h': ['Shades, open or shut', 'Curtain call', 'Sun in, sun out'],
-  'cal-h': ['On the docket', 'Coming up for you', 'Your week ahead'],
+  'shade-h': ['Shades, open or shut', 'Curtain call', 'Let the sun in (or don’t)'],
+  'cal-h': ['On the docket', 'Coming up for you', 'Your week, at a glance'],
   'fc-h': ['The week in weather', 'Seven days out', 'What the sky has planned'],
-  'drive-h': ['How the roads look', 'Drive times', 'Getting around today'],
-  'plan-h': ['Worth planning for', 'Mark the calendar', 'Coming soon'],
+  'drive-h': ['How the roads look', 'Drive times', 'How long to get there'],
+  'plan-h': ['Worth planning for', 'Mark the calendar', 'Don’t miss the window'],
   'road-h': ['Eyes on the road', 'Road cams and slowdowns', 'Before you head out'],
   'harvest-h': ['What the roof made', 'Sunshine, spent wisely', 'Your solar, in real life'],
-  'road-ahead-h': ['Counting down', 'Coming up the lane', 'Milestones ahead'],
-  'therm-h': ['Three places, one moment', 'Warm here, warm there', 'Temperature check'],
-  'shelf-h': ['Everything you have read', 'The library so far', 'Spines on the shelf'],
-  'set-h': ['Where the sun goes down', 'Sunset, on the move', 'The sun walks the hills'],
-  'jar-h': ['The rain jar', 'Rain so far this month', 'Filling the jar'],
-  'stake-h': ['The snow stake', 'Snow on Hood', 'How deep up there'],
-  'title-h': ['The title fight', 'Who can still win it', 'Race for the crown'],
-  'play-h': ['Things to do together', 'Little adventures', 'This week, for fun'],
-  'out-h': ['Kid outings nearby', 'Places to go together', 'Family trips'],
-  'bug-h': ['Bugs making the rounds', 'Germ report', 'Sniffles watch'],
+  'road-ahead-h': ['Counting down', 'Coming up the lane', 'Circle these days'],
+  'therm-h': ['Three places, one moment', 'Warm here, warm there', 'Who has the best weather?'],
+  'play-h': ['Things to do together', 'Little adventures', 'Rainy-day rescue ideas'],
+  'out-h': ['Kid outings nearby', 'Places to go together', 'Get out of the house'],
+  'bug-h': ['Bugs making the rounds', 'Germ report', 'Sniffle watch'],
   'look-h': ['What to look for today', 'Walk the land', 'Notes from the field'],
-  'plant-h': ['Into the ground now', 'Sow and plant', 'Planting window'],
+  'plant-h': ['Into the ground now', 'Sow and plant', 'Dirt under the nails'],
   'forest-h': ['Chores in the food forest', 'Forest garden to-dos', 'Tending the forest'],
-  'pollen-h': ['Sneeze forecast', 'What is in the air', 'Pollen count'],
-  'burn-h': ['Can you burn today?', 'Brush pile check', 'Burn or wait'],
-  'birds-h': ['Who is visiting', 'Feathered neighbors', 'Birds seen nearby'],
-  'bloom-h': ['Wildflowers out now', 'What is blooming', 'Native blooms'],
+  'pollen-h': ['Sneeze forecast', 'What is in the air', 'Achoo outlook'],
+  'burn-h': ['Can you burn today?', 'Brush pile check', 'Light it or leave it'],
+  'birds-h': ['Who is visiting', 'Feathered neighbors', 'Binoculars, please'],
+  'bloom-h': ['Wildflowers out now', 'What is blooming', 'Petal report'],
   'food-h': ['Fresh this month', 'Eating with the season', 'What is ripe'],
-  'radar-h': ['Rain on the way?', 'Radar loop', 'Watch the showers'],
-  'moor-h': ['Parked across the river', 'Ship across the way', 'At anchor out front'],
-  'columbia-h': ['How the river is running', 'The Columbia, by the numbers', 'River level and forecast'],
-  'bar-h': ['Crossing the bar', 'Bar and beach warnings', 'Surf and the bar'],
-  'sunact-h': ['Our star today', 'Spots on the sun', 'The sun, close up'],
-  'art-h': ['A painting for today', 'Something to look at', 'From the museum'],
-  'oldpdx-h': ['Portland, back then', 'The city as it was', 'A Portland photograph'],
-  'show-h': ['A night out, years ago', 'Live from Portland', 'A show from the archive'],
-  'fish-h': ['Fishing report', 'Will they bite?', 'On the Columbia'],
+  'mush-h': ['Mushroom forecast', 'Fungi on the move', 'Basket weather?'],
+  'radar-h': ['Rain on the way?', 'Radar loop', 'Umbrella or not'],
+  'moor-h': ['Parked across the river', 'Ship across the way', 'Who’s parked out front'],
+  'columbia-h': ['How the river is running', 'The Columbia, by the numbers', 'Big river check-in'],
+  'bar-h': ['Crossing the bar', 'Bar and beach warnings', 'How rough is the bar?'],
+  'sunact-h': ['Our star today', 'Spots on the sun', 'The sun’s complexion'],
+  'art-h': ['A painting for today', 'Something to look at', 'From the museum walls'],
+  'oldpdx-h': ['Portland, back then', 'The city as it was', 'Portland in black and white'],
+  'show-h': ['A night out, years ago', 'Live from Portland', 'Bootleg of the day'],
+  'fish-h': ['Fishing report', 'Will they bite?', 'Tight lines'],
   'surf-h': ['Waves this week', 'Should you paddle out?', 'Surf check'],
-  'minus-h': ['Low tides for tide pools', 'Tidepool days', 'Extra-low tides'],
-  'cev-h': ['Going on at the coast', 'Coast happenings', 'Near the beach'],
+  'minus-h': ['Low tides for tide pools', 'Tidepool days', 'When the ocean steps back'],
+  'cev-h': ['Going on at the coast', 'Coast happenings', 'Things to do by the beach'],
   'shell-h': ['Clams and crab', 'Shellfish check', 'Can you dig today?'],
-  'grid-h': ['Where your power comes from', 'The grid this hour', 'How clean is the grid'],
-  'mo-h': ['The month in sunshine', 'A month of solar', 'Day by day'],
+  'whale-h': ['Whale watch', 'Thar she blows', 'Who’s spouting offshore'],
+  'grid-h': ['Where your power comes from', 'The grid this hour', 'How clean is the grid?'],
+  'mo-h': ['The month in sunshine', 'A month of solar', 'Day by sunny day'],
   'bill-h': ['Your power bill', 'This billing cycle', 'What PGE will see'],
-  'pn-h': ['Every panel', 'Panel by panel', 'The array right now'],
+  'pn-h': ['Every panel', 'Panel by panel', 'Roll call on the roof'],
   'wins-h': ['Solar bragging rights', 'Good solar news', 'Little wins'],
   'read-h': ['A great read for today', 'Something long and good', 'Settle in with this'],
   'poem-h': ['A poem for today', "Today's verse", 'Read this one aloud'],
   'books-h': ['Your next book', 'Books picked for you', 'For the nightstand'],
   'artist-h': ['Portland artist to know', 'Meet a local artist', 'Made in Portland'],
   'drum-h': ['Groove of the day', 'Listen to this drummer', 'Break of the day'],
-  'bday-h': ['Albums turning a year older', 'Happy birthday, records', 'Record birthdays'],
+  'bday-h': ['Albums turning a year older', 'Happy birthday, records', 'Blow out the candles'],
   'apod-h': ['Picture from the cosmos', 'A view from space', "NASA's picture today"],
+  'potd-h': ['Picture of the day', 'Worth a long look', 'One great photo'],
   'ask-h': ['Ask over dinner', 'Table talk', 'A question for tonight'],
   'thai-h': ['Thai to try today', 'Say it in Thai', 'A little Thai'],
   'good-h': ['Something nice', 'Faith in humanity', 'Happy news'],
   'trend-h': ['What people are searching', 'The internet today', 'Trending now'],
-  'finds-h': ['Tasty new finds', 'New places to eat', 'Portland food news'],
+  'finds-h': ['Tasty new finds', 'New places to eat', 'Hungry yet?'],
+  'open-h': ['New and opening around town', 'Ribbon cuttings', 'Just opened'],
   'big-h': ['Happening in town', 'Big nights out', 'In Portland soon'],
-  'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Ski conditions'],
+  'ski-h': ['Snow on the mountain', 'Mt. Hood today', 'Wax the skis?'],
+  'mtn-h': ['Is the mountain out?', 'Volcano spotting', 'Peekaboo, Mt. Hood'],
   'mkt-h': ['Money check', 'How markets look', 'Stocks at a glance'],
+  'he-h': ['North American Helium', 'Helium watch', 'Up, up and away'],
+  're-h': ['Portland real estate', 'The housing market', 'Open house report'],
   'f1-h': ['F1 corner', 'Race weekend watch', 'Lights out soon'],
   'gig-h': ['Gigs worth a ticket', 'Live music ahead', 'See a show'],
   'jazz-h': ['Jazz tonight and soon', 'Where the jazz is', 'Swing by'],
-  'rec-h': ['Spin this today', 'Put this record on', 'Morning listening'],
-  'tv-h': ['New to stream', 'Something to watch', 'Fresh on streaming'],
+  'rec-h': ['Spin this today', 'Put this record on', 'Drop the needle'],
+  'tv-h': ['New to stream', 'Something to watch', 'Couch plans'],
+  'br-h': ['4K Blu-ray deals', 'Shiny discs on sale', 'For the shelf'],
   'alb-h': ['Fresh albums', 'New music out', 'Records just released'],
   'plane-h': ['Up above you', 'Planes overhead', 'Who is flying over'],
   'trail-h': ['Gorge trails lately', 'Trail notes', 'Hikers say'],
@@ -2968,7 +2943,8 @@ function renderSunset() {
   $('sunset-meta').textContent = `Sets at ${clock(s.sunset)}`;
   const [h, m] = s.sunset.split(':').map(Number), t = h * 60 + m;
   const at = x => clock(`${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`);
-  const why = s.score >= 60 ? 'High and mid clouds to catch the color, and not much low cloud in the way.'
+  const why = s.score >= 60 ? 'High and mid clouds to catch the color, and not much low cloud in the way. Grab a window seat.'
+    : s.score < 10 && s.high + s.mid >= 150 ? 'Socked in top to bottom, so expect a quiet fade to gray. Better luck next time.'
     : s.low > 60 ? 'A thick low cloud deck will probably hide it.'
     : Math.max(s.mid, s.high) < 10 ? 'Clear skies: a clean glow, but few clouds to light up.'
     : s.rain_pct > 50 ? 'Rain likely around sunset.' : 'Some color possible if gaps open up.';
@@ -3022,7 +2998,7 @@ function renderOutings() {
   $('potd-card').hidden = !(pic && pic.image);
   if (pic && pic.image) {
     $('potd').innerHTML = `<a class="potd-img" href="${esc(pic.url || pic.full)}" target="_blank" rel="noopener"><img src="${esc(pic.image)}" alt="${esc(pic.title)}" loading="lazy"></a>
-      <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? `<p class="note">${esc(pic.caption.slice(0, 260))}${pic.caption.length > 260 ? '…' : ''}</p>` : ''}${pic.artist ? `<small class="muted">${esc(pic.artist)}</small>` : ''}`;
+      <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? (cap => `<p class="note">${esc(cap.slice(0, 260))}${cap.length > 260 ? '…' : ''}</p>`)(tidy(pic.caption)) : ''}${pic.artist ? `<small class="muted">${esc(pic.artist)}</small>` : ''}`;
   }
   const op = o.openings;
   $('open-card').hidden = !(op && op.length);
@@ -3050,7 +3026,7 @@ function renderApod() {
     : `<a href="${esc(a.page)}" target="_blank" rel="noopener" class="apod-img"><img src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy" ${hide}></a>`;
   $('apod').innerHTML = media + `
     <b class="apod-title">${esc(a.title)}</b>${a.credit ? `<small class="muted">${esc(a.credit)}</small>` : ''}
-    <details class="apod-more"><summary>${esc(a.explanation.slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(a.explanation)} <a class="link" href="${esc(a.page)}" target="_blank" rel="noopener">On NASA's site</a></p></details>`;
+    <details class="apod-more"><summary>${esc(tidy(a.explanation).slice(0, 160))}${a.explanation.length > 160 ? '…' : ''}</summary><p class="note">${esc(tidy(a.explanation))} <a class="link" href="${esc(a.page)}" target="_blank" rel="noopener">On NASA's site</a></p></details>`;
 }
 
 // Plays the recorded clip; without one, a Thai voice in the browser; without that, Google Translate.
@@ -3191,7 +3167,7 @@ function renderBooks() {
   const b = D.books;
   $('books-card').hidden = !b;
   if (!b) return;
-  $('books-meta').textContent = b.note || `From your ${b.read_count} books on Goodreads`;
+  $('books-meta').textContent = (b.note || `From your ${b.read_count} books on Goodreads`).replace(/(\d{4})-(\d{2})-(\d{2})$/, (m, y, mo, d) => fmtDate(`${y}-${mo}-${d}`));
   const stars = n => n ? '★'.repeat(n) : '';
   // One pick for today, changing each day: new books first, then unread favorites, then your to-read pile.
   const all = [...(b.picks || []), ...(b.backlist || []), ...(b.pile || [])];
@@ -3316,7 +3292,7 @@ function renderWeather() {
   $('wx-meta').textContent = esc(w.station) + (ago != null ? ` · ${ago < 60 ? ago + ' min' : Math.round(ago / 60) + ' hr'} ago` : '');
   const hilo = w.hi_f != null ? `High ${w.hi_f}° · low ${w.lo_f}°` : '';
   // Solar panels make less power as they heat up (roughly 0.4% per °C above 25 °C).
-  const note = w.heat_loss_pct == null ? 'Solar panels lose some output when they get hot. Too little sun right now for that to matter.'
+  const note = w.heat_loss_pct == null ? 'Solar panels lose some output when they get hot. Not much sun right now, so they’re keeping their cool.'
     : w.heat_loss_pct < 1 ? 'Solar panels lose some output when they get hot. Yours are cool right now, so they’re losing nothing to heat.'
     : w.heat_loss_pct <= 4 ? `Solar panels lose some output when they get hot. Yours are warm and losing about ${w.heat_loss_pct}% right now.`
     : `Solar panels lose some output when they get hot. Yours are losing about ${w.heat_loss_pct}% to heat right now.`;
@@ -3375,7 +3351,7 @@ function renderMonth() {
     const src = D.sun_source === 'station' ? 'your weather station' : 'the weather records';
     note = `Low days: ${list}. ` + (!D.sun_source ? 'Connecting your weather station will show whether clouds explain them.'
       : cloudy === low.length ? `They match cloudy days in ${src}, so the system is fine.`
-      : `Not all of them were cloudy in ${src}, so they may be worth a look.`);
+      : `Some of them looked sunny in ${src}, so it might be worth a peek at the panels.`);
   }
   const both = days.slice(0, -1).filter(d => d.produced != null && d.last_year != null);
   if (both.length >= 7) {
@@ -3420,13 +3396,13 @@ function renderBills(b, pct) {
   const max = Math.max(1, ...b.history.map(h => h.cost || 0));
   const bars = `<div class="bars" style="height:80px;gap:3px" role="img" aria-label="PGE bill amounts for the last ${b.history.length} months">` +
     b.history.map(h => `<div title="${span(h)}: ${money(h.cost)}, ${h.kwh} kWh"><i style="background:var(--use);height:${(h.cost || 0) / max * 100}%"></i></div>`).join('') + '</div>' +
-    `<div class="axis"><span>${MON[+b.history[0].start.slice(5, 7) - 1]}</span><span>${MON[+b.history[b.history.length - 1].start.slice(5, 7) - 1]}</span></div>`;
+    `<div class="axis"><span>${MON[+b.history[0].start.slice(5, 7) - 1]} ’${b.history[0].start.slice(2, 4)}</span><span>${MON[+b.history[b.history.length - 1].start.slice(5, 7) - 1]} ’${b.history[b.history.length - 1].start.slice(2, 4)}</span></div>`;
   let note = '';
   if (b.winter_share != null && b.winter_share >= 0.6) note += `${Math.round(b.winter_share * 100)}% of the last year’s PGE cost came from October through March, when the panels make less and heating runs. `;
   if (b.solar_value_cycle != null) note += `So far this cycle your panels made ${b.solar_kwh_cycle.toLocaleString()} kWh, worth about $${Math.round(b.solar_value_cycle)} at your rate.`;
   $('bill').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
     <div class="progress"><div style="width:${pct}%"></div></div>
-    <span class="meta" style="margin-top:-6px">Day ${Math.min(b.cycle_day, b.cycle_days)} of about ${b.cycle_days}</span>
+    <span class="meta" style="margin-top:-6px">${b.cycle_day > b.cycle_days ? `Cycle closed ${fmtDate(b.cycle_end)}; the new bill should land any day` : `Day ${b.cycle_day} of about ${b.cycle_days}`}</span>
     <div class="lines">${rows.map(r => `<div><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
     ${bars}
     <p class="note">${esc(note)}</p></div>`;
@@ -3446,7 +3422,7 @@ function renderPanels() {
   $('pn-meta').textContent = `${panels.length} panels` +
     (dead.length ? ` · ${dead.length} made nothing today (${ids(dead)})` : '') +
     (low.length ? ` · ${low.length} running low (${ids(low)})` : '') +
-    (!dead.length && !low.length ? ' · all looking even' : '');
+    (!dead.length && !low.length ? (panels.every(p => !p.w) ? ' · all asleep until sunrise 😴' : ' · all pulling their weight') : '');
   $('panels').innerHTML = panels.map(p => {
     const a = Math.round(40 + score(p) / max * 60);
     const bg = p.low ? '' : `background:color-mix(in srgb, var(--solar) ${a}%, #FFFFFF)`;
@@ -3706,7 +3682,8 @@ function renderSky(o) {
   const nowWord = an && an.north_pct >= 10 ? ` · ${an.north_pct}% chance to the north in the next half hour` : '';
   $('aurora').textContent = a ? (a.kp >= 6 ? `Aurora possible ${localDay(a.when_utc)} (Kp ${a.kp})` : `Aurora unlikely (Kp up to ${a.kp})`) + nowWord : '';
   const sg = o.stargazing;
-  $('stargaze').hidden = !sg;
+  // 7Timer's night-by-night outlook below covers tonight too, so this Open-Meteo line only shows when 7Timer is missing.
+  $('stargaze').hidden = !sg || !!(o.nights || []).length;
   if (sg) $('stargaze').textContent = `${sg.verdict} (${sg.cloud}% cloud cover 9 pm to 1 am, moon ${m.lit_pct}% lit).` + (sg.good ? ' Good night to look up.' : '');
   const tm = iso => new Date(iso).toLocaleTimeString(undefined, {hour: 'numeric', minute: '2-digit'});
   $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${e.kind === 'launch' && e.visible ? '🚀 ' : ''}${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
@@ -3714,7 +3691,7 @@ function renderSky(o) {
   const iss = o.iss || [];
   const nights = o.nights || [];
   const scale = (v, words) => words[Math.min(words.length - 1, Math.floor((v - 1) / 3))];
-  $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
+  $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)} ${{'Clear and steady': '✨', 'Clear but twinkly': '⭐', 'Some gaps': '⛅', 'Clouded out': '☁️'}[n.verdict] || ''}${i === 0 && m && m.lit_pct != null ? `<br><small>moon ${m.lit_pct}% lit</small>` : ''}</span></div>`).join('');
   const sats = o.satellites || [];
   $('sat-h').hidden = !sats.length;
   $('sats').innerHTML = sats.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> · ${localDay(p.utc)} at ${tm(p.utc)}<br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high</small></span>
@@ -3797,7 +3774,7 @@ function renderParked() {
   const p = sh.parked;
   if (!p) {
     const l = sh.last_parked;
-    el.innerHTML = `<p class="summary">No ship parked across from you right now.</p>` +
+    el.innerHTML = `<p class="summary">The parking spot across the river is empty right now.</p>` +
       (l ? `<p class="note">The last one was ${esc(l.name)} (${esc(l.type.toLowerCase())}), which left ${ago(l.left)} after ${l.since_known ? '' : 'at least '}${span(new Date(l.left) - new Date(l.since))}.</p>` : '') +
       `<p class="note">Watching for any big ship stopped within ${sh.parked_km} km of home.</p>`;
     return;
@@ -3860,12 +3837,17 @@ function renderWorld() {
     all.push({date: t.date, ends: t.ends, name: t.name, about: t.about, approx: t.approx, thai: true});
   }
   all.sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
-  $('holidays').innerHTML = all.slice(0, 18).map(h => {
+  const rows = [];
+  for (const h of all) {
+    const twin = rows.find(r => r.date === h.date && r.thai !== h.thai && norm(r.name) === norm(h.name));
+    if (twin) { twin.both = true; twin.about = twin.about || h.about; } else rows.push(h);
+  }
+  $('holidays').innerHTML = rows.slice(0, 18).map(h => {
     const [y, m, d] = h.date.split('-').map(Number);
     const when = (h.approx ? 'Around ' : '') + new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined }) +
       (h.ends ? '–' + fmtDate(h.ends).replace(/^\w+ /, '') : '');
     const sub = [h.local && h.local !== h.name ? h.local : '', h.about || ''].filter(Boolean).map(x => esc(x)).join(' · ');
-    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.thai ? 'var(--solar)' : 'var(--use)'}"></i>${esc(h.name)}${sub ? `<br><small>${sub}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.both ? 'linear-gradient(90deg,var(--use) 50%,var(--solar) 50%)' : h.thai ? 'var(--solar)' : 'var(--use)'}"></i>${esc(h.name)}${h.both ? ' <small>(both)</small>' : ''}${sub ? `<br><small>${sub}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('');
 }
 
@@ -3958,7 +3940,7 @@ function renderComing() {
       score: `${c.rating.toFixed(1)} on TMDB · ${c.votes.toLocaleString()} votes`, summary: c.context ? null : c.summary, image: c.poster ? null : c.image}, null) +
       (credits ? `<p class="note">${esc(credits)}.</p>` : '') +
       (c.context ? `<p>${esc(c.context.text)}</p>` +
-        (c.context.matters ? `<p><b>Why it matters.</b> ${esc(c.context.matters)}</p>` : '') +
+        (c.context.matters ? `<p><b>Why people love it:</b> ${esc(c.context.matters)}</p>` : '') +
         (c.context.watch ? `<p><b>Why watch it.</b> ${esc(c.context.watch)}</p>` : '') +
         `<p class="note">From <a href="${esc(c.context.url)}" target="_blank" rel="noopener">its Wikipedia article</a>.</p>` : '');
   }
@@ -4061,7 +4043,6 @@ async function renderCoast() {
   const facts = [];
   if (c.water_f != null) facts.push(['Ocean temp', `${c.water_f}°`]);
   if (days[0] && days[0].waves_ft != null) facts.push(['Waves today', `${days[0].waves_ft} <small>ft · ${days[0].period_s}s</small>`]);
-  if (nextTide) facts.push(['Next tide', `${nextTide.type} ${clock(nextTide.t.slice(11))} <small>${nextTide.ft} ft</small>`]);
   if (days[0]) facts.push(['Sunset', clock(days[0].sunset)]);
   $('coast-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('coast-fc').innerHTML = days.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
@@ -4095,13 +4076,13 @@ function renderSurf() {
   $('surf-meta').innerHTML = b ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.station)}</a> · ${localWhen(b.at)}` : '';
   const parts = [];
   const top = [...breaks].sort((x, y) => y.now.score - x.now.score)[0];
-  if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
+  if (top.now.score <= 0) parts.push('Flat as a lake everywhere nearby right now.');
   else parts.push(`Best bet right now: ${top.name}, ${top.now.rating.toLowerCase()} at ${top.now.surf_ft} ft (${top.now.period_s} s ${top.now.swell_dir || ''} swell, ${surfWind(top.now)}).`);
   const ahead = breaks.flatMap(x => x.days.map(d => ({ ...d, name: x.name }))).filter(d => d.score >= 3);
   if (ahead.length) {
     const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
-    parts.push(`Pick of the week: ${dayLabel(d.date)} at ${d.name}, ${d.rating.toLowerCase()} ${d.surf_ft} ft from about ${clock(d.from)} to ${clock(d.to)}.`);
-  } else parts.push('Nothing better than fair in the next five days.');
+    parts.push(`Pick of the week: ${dayLabel(d.date)} at ${d.name}, ${d.rating.toLowerCase()} ${d.surf_ft} ft ${d.from === d.to ? `around ${clock(d.from)}` : `from about ${clock(d.from)} to ${clock(d.to)}`}.`);
+  } else parts.push('Nothing better than fair for the next five days. Maybe just watch from the dunes.');
   $('surf-summary').textContent = parts.join(' ');
   const facts = [];
   if (b) {
@@ -4181,17 +4162,17 @@ function renderLive() {
   if (q) {
     $('quake-meta').textContent = `${q.count} within 190 miles · USGS`;
     const v = Object.entries(q.volcano_counts || {}).filter(([, n]) => n > 0);
-    $('volc').textContent = v.length ? 'Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : 'Quiet under the Cascade volcanoes this week.';
+    $('volc').textContent = v.length ? 'Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : 'The Cascade volcanoes are snoozing this week.';
     $('quakes').innerHTML = q.biggest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${x.mag}</a> ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · felt by ${x.felt}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
   }
   if (p) {
-    $('plane-meta').textContent = `${p.count} planes within about 25 miles`;
+    $('plane-meta').textContent = p.closest.filter(x => x.feet != null && x.miles != null).length < 2 ? `${p.count} plane${p.count === 1 ? '' : 's'} within about 25 miles` : 'Within about 25 miles';
     const ap = a => a ? `${esc(a.city)}${a.code ? ` (${esc(a.code)})` : ''}` : '?';
     $('planes').innerHTML = p.closest.map(x => `<div><span style="display:flex;gap:10px;align-items:flex-start">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy" onerror="this.remove()" style="width:64px;height:44px;object-fit:cover;border-radius:8px;flex:none">` : ''}<span>
       <a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(x.callsign)}</a>${x.airline || x.owner ? ` <small>${esc(x.airline || x.owner)}</small>` : ''}
       ${x.from || x.to ? `<br><b style="font-weight:700">${ap(x.from)} → ${ap(x.to)}</b>` : ''}
-      <br><small>${[x.aircraft ? esc(x.aircraft) : null, `${x.feet.toLocaleString()} ft`, `${x.mph} mph`].filter(Boolean).join(' · ')}</small></span></span><span>${x.miles} mi</span></div>`).join('')
-      || '<div><span>Nothing overhead right now</span><span></span></div>';
+      <br><small>${[x.aircraft ? esc(x.aircraft) : null, `${x.feet.toLocaleString()} ft`, x.mph ? `${x.mph} mph` : null].filter(Boolean).join(' · ')}</small></span></span><span>${x.miles} mi</span></div>`).join('')
+      || '<div><span>Clear skies, nobody overhead right now</span><span></span></div>';
   }
   const pdx = l.pdx;
   $('pdx').textContent = pdx ? (pdx.delays.length ? 'PDX: ' + pdx.delays.map(d => `${d.type}${d.reason ? ' (' + d.reason + ')' : ''}${d.average ? ', average ' + d.average : ''}`).join('; ') : 'PDX: no FAA delays right now.') : '';
@@ -4304,9 +4285,9 @@ function renderMore() {
   if (f) {
     $('f1-meta').textContent = f.season ? `${f.season} season` : '';
     $('f1').innerHTML = `<div class="lines">${f.next.map(r => `<div><span>${esc(r.name)}${r.sprint ? ' <span class="pill">Sprint</span>' : ''}<br><small>${esc(r.where)}</small></span><span style="white-space:nowrap;padding-left:12px">${localWhen(r.utc)}</span></div>`).join('') || '<div><span>Season finished</span><span></span></div>'}</div>
-      <h3 style="margin:6px 0 0;font-size:14px">Championship</h3>
-      <div class="lines">${f.standings.map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>
-      <div id="pulse-f1"></div>${redditBlock(sp.reddit && sp.reddit.f1)}`;
+      ${(f.standings || []).length >= 2 && f.rounds ? '' : `<h3 style="margin:6px 0 0;font-size:14px">Championship</h3>
+      <div class="lines">${(f.standings || []).map(d => `<div><span>${d.pos}. ${esc(d.name)} <small>${esc(d.team)}</small></span><span>${Math.round(d.points)}</span></div>`).join('')}</div>`}`;
+    $('f1-talk').innerHTML = `<div id="pulse-f1"></div>${redditBlock(sp.reddit && sp.reddit.f1)}`;
   }
 
   if (mk && mk.length) {
@@ -4378,7 +4359,7 @@ function renderHealth() {
   const high = it.filter(x => (x.rank ?? 0) >= 3).map(x => x.name);
   const up = it.filter(x => x.trend === 'rising' && (x.rank ?? 0) >= 2).map(x => x.name);
   $('bug-note').textContent = high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
-    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.';
+    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around. Carry on, healthy people.';
 }
 
 function renderShellfish() {
@@ -4424,10 +4405,15 @@ function renderPollen() {
   $('pollen-card').hidden = !p || !p.length;
   if ($('pollen-card').hidden) return;
   const names = [...new Set(p.flatMap(d => d.types.map(t => t.name)))];
+  if (p.every(d => d.types.every(t => t.in_season === false || !t.value))) {
+    $('pollen').innerHTML = '<p class="summary">Grass, trees and weeds are all off duty for the season. Breathe easy 🤧❌</p>';
+    $('pollen-note').textContent = '';
+    return;
+  }
   $('pollen').innerHTML = names.map(n => `<div><span><b style="font-weight:700">${esc(n)}</b></span><span>${p.map((d, i) => {
       const t = d.types.find(x => x.name === n) || {};
       const v = t.value ?? 0;
-      return `<span class="pill" style="margin-left:6px;background:${LEVEL_COLORS[Math.min(4, Math.max(0, v - 1))]}22" title="${esc(t.category || 'None')}">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}: ${esc(t.in_season === false ? 'Off season' : (t.category || 'None'))}</span>`;
+      return `<span class="pill" style="margin-left:6px;background:${LEVEL_COLORS[Math.min(4, Math.max(0, v - 1))]}22" title="${esc(t.category || 'None')}">${d.date === todayIso() ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}: ${esc(t.in_season === false ? 'Off season' : (t.category || 'None'))}</span>`;
     }).join('')}</span></div>`).join('');
   const plants = p[0].top_plants || [];
   $('pollen-note').textContent = plants.length ? `Biggest sources today: ${plants.join(', ')}.` : '';
@@ -4720,7 +4706,7 @@ const NOAA_TIDES = ['NOAA Tides & Currents', 'https://tidesandcurrents.noaa.gov/
 const APS = ['Your APsystems inverter (EMA)', 'https://www.apsystemsema.com/'];
 const DAILY = ['Daily web check; each item links its source', ''];
 const SOURCES = {
-  'wx-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], OM],
+  'wx-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], OM, ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],
   'day-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api'], NOAA_TIDES, APS],
   'fc-h': [OM, ['Expected solar: your system\'s last 30 days of output against Open-Meteo sunshine', 'https://www.apsystemsema.com/']],
   'drive-h': [['TomTom live traffic routing', 'https://developer.tomtom.com/routing-api/documentation/routing/routing-service']],
@@ -4757,9 +4743,6 @@ const SOURCES = {
   'clsmov-h': [['TMDB movies 25+ years old with 1,000+ votes and a 7.3+ average', 'https://www.themoviedb.org/'], ['Where it streams: JustWatch, via TMDB', 'https://www.justwatch.com/'], ['Context: the movie\'s Wikipedia article', 'https://en.wikipedia.org/'], ['This product uses the TMDB API but is not endorsed or certified by TMDB', '']],
   'alb-h': [['Wikipedia album release lists', 'https://en.wikipedia.org/wiki/Lists_of_albums'], ['Metacritic new releases', 'https://www.metacritic.com/browse/albums/release-date/new-releases/date']],
   'mkt-h': [['Yahoo Finance', 'https://finance.yahoo.com/']],
-  'jar-h': [['Your Ambient Weather station', 'https://ambientweather.net/'], ['NOAA 1991-2020 normals for Portland (PDX)', 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals']],
-  'stake-h': [['NRCS SNOTEL', 'https://www.nrcs.usda.gov/wps/portal/wcc/home/']],
-  'title-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1']],
   'f1-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1'], ['r/formula1', 'https://www.reddit.com/r/formula1/']],
   'stories-h': [['Each story links its publisher', '']], 'reviews-h': [['Each review links its publisher', '']],
   'bkk-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api']],
@@ -5229,7 +5212,7 @@ function renderTrails() {
   if (!t || !t.length) return;
   $('trails').innerHTML = t.map(x => `<div><span><a href="${esc(x.latest.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.hike)}</b></a>
     ${x.latest.issues ? ` <small>· ${esc(x.latest.issues)}</small>` : ''}${x.latest.text ? `<br><small>“${esc(x.latest.text)}”${x.latest.by ? ' · ' + esc(x.latest.by) : ''}</small>` : ''}</span>
-    <span style="white-space:nowrap;padding-left:12px">${fmtDate(x.latest.date)}<br><small>${x.count} in 3 weeks</small></span></div>`).join('');
+    <span style="white-space:nowrap;padding-left:12px">${fmtDate(x.latest.date)}<br><small>${x.count === 1 ? '1 trip report' : `${x.count} trip reports`} in 3 weeks</small></span></div>`).join('');
 }
 
 // ------------------------------------------------------------------ civics
@@ -5238,7 +5221,7 @@ function renderCivics() {
   const c = D.civics;
   $('civics').hidden = !c;
   if (!c) return;
-  const d = c.districts, e = c.elections || [];
+  const d = c.districts, e = (c.elections || []).filter(x => !/test election/i.test(x.name || ''));
   $('civ-meta').textContent = [d.county, d.congress && `Congressional District ${d.congress}`, d.senate && `State Senate ${d.senate}`, d.house && `State House ${d.house}`].filter(Boolean).join(' · ');
   const next = e[0];
   if (next) {

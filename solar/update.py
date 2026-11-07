@@ -829,7 +829,7 @@ def fetch_culture(state, now_utc):
         if book_errors and "404" in book_errors[0] and store.get("books"):
             # Goodreads took its public shelf feeds down in November 2026. Keep the last good picks and say so
             # on the card instead of counting it as a failure every run.
-            store["books_note"] = f"Goodreads no longer publishes shelf feeds; picks are from your shelves as of {store.get('books_at', '')[:10]}"
+            store["books_note"] = f"From your Goodreads shelves as of {store.get('books_at', '')[:10]}"
         else:
             errors += book_errors
             if not book_errors:

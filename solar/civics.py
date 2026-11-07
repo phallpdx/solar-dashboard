@@ -292,7 +292,7 @@ def civic_elections(address, key, today):
     data = _json("https://www.googleapis.com/civicinfo/v2/elections?" + urllib.parse.urlencode({"key": key}))
     out = []
     for e in data.get("elections") or []:
-        if e["id"] == "2000" or e.get("electionDay", "") < today.isoformat():  # 2000 is Google's test election
+        if e["id"] == "2000" or "test election" in (e.get("name") or "").lower() or e.get("electionDay", "") < today.isoformat():  # Google's test elections (id 2000, "Google Test Election (Future)")
             continue
         try:
             info = _json("https://www.googleapis.com/civicinfo/v2/voterinfo?" + urllib.parse.urlencode(

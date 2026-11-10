@@ -1,38 +1,6 @@
 {
-  "updated": "2026-11-06",
+  "updated": "2026-11-09",
   "shows": [
-    {
-      "artist": "Dmitri Matheny Group",
-      "kind": "Touring",
-      "date": "2026-11-06",
-      "time": "6:30 pm",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "An acclaimed American flugelhornist known for his warm tone and soaring lyricism.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
-    {
-      "artist": "Nicole McCabe",
-      "kind": "Local",
-      "date": "2026-11-07",
-      "time": "06:30 PM",
-      "venue": "The 1905's",
-      "price": "$35",
-      "what": "A genre-defying saxophonist and composer bringing modern jazz into dialogue with electronic music.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Mel Brown B3 Organ Group",
       "kind": "Local",

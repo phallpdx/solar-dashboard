@@ -1,17 +1,7 @@
 {
-  "updated": "2026-11-05",
+  "updated": "2026-11-09",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {
-      "artist": "The Tallest Man on Earth",
-      "album": "Just Beyond Endless Mountain",
-      "score": 82,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/just-beyond-endless-mountain/the-tallest-man-on-earth/",
-      "date": "2026-11-08",
-      "venue": "Revolution Hall",
-      "tickets": "https://www.ticketmaster.com/event/Z7r9jZ1A70zog"
-    },
     {
       "artist": "Bonobo",
       "album": "Distance in Static",

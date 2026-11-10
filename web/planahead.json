@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-10",
   "items": [
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
@@ -12,6 +12,28 @@
         {
           "name": "Oregon Symphony",
           "url": "https://orsymphony.org/productions/2627/portugal-the-man-with-the-oregon-symphony/"
+        }
+      ]
+    },
+    {
+      "title": "Fall Out Boy, Providence Park (Aug 26, 2027)",
+      "kind": "Tickets",
+      "action": "Sign up at twilightofthepunkstour.com for the artist presale, which opens Wed, Nov 11 at 10 a.m. local time.",
+      "starts": "2026-11-11",
+      "by": null,
+      "why": "Newly announced stadium stop on the Twilight of the Punks tour with The Offspring, Good Charlotte and The Story So Far; the general on-sale date wasn't confirmed in the sources found.",
+      "sources": [
+        {
+          "name": "Portland Timbers",
+          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
+        },
+        {
+          "name": "Live Nation Entertainment",
+          "url": "https://news.livenationentertainment.com/news/fall-out-boy-announces-2027-twilight-of-the-punks-headline-world-tour-returns-with-highly-anticipated-new-single-aces"
+        },
+        {
+          "name": "Grimy Goods presale guide",
+          "url": "https://www.grimygoods.com/2026/11/09/fall-out-boy-2027-tour-presale-code/"
         }
       ]
     },
@@ -72,6 +94,20 @@
         {
           "name": "Christmas Mountain on Facebook",
           "url": "https://www.facebook.com/ChristmasMountain/"
+        }
+      ]
+    },
+    {
+      "title": "Sauvie Island Farms U-cut trees (opens Nov 21)",
+      "kind": "Buy",
+      "action": "Plan a U-cut trip from Nov 21; bring cash or Venmo, all trees $60.",
+      "starts": "2026-11-21",
+      "by": "2026-12-24",
+      "why": "The farm's blog lists U-cut trees Nov 21 to Dec 24, 9 a.m. to 5 p.m., self-serve on the honor system.",
+      "sources": [
+        {
+          "name": "Sauvie Island Farms blog",
+          "url": "https://sifarms.blogspot.com/"
         }
       ]
     },

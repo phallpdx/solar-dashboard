@@ -299,6 +299,9 @@ def search_text(results):
 
 # ---------------------------------------------------------------- model
 
+MODEL_ERRORS = [0]  # failed model calls this run; a list that hits any is reported as failed
+
+
 def ask_model(task, text, schema, temperature=0.1):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
     messages = [
@@ -328,10 +331,16 @@ def ask_model(task, text, schema, temperature=0.1):
             if e.code == 400 and "response_format" in payload:
                 payload.pop("response_format")  # model or server without structured output
                 continue
-            log("  model error:", e)
+            try:
+                detail = e.read().decode("utf-8", "replace")[:300].strip()
+            except Exception:  # noqa: BLE001 - the reason is a nice-to-have
+                detail = ""
+            log("  model error:", e, detail)
+            MODEL_ERRORS[0] += 1
             return None
         except (urllib.error.URLError, TimeoutError, OSError) as e:
             log("  model error:", e)
+            MODEL_ERRORS[0] += 1
             return None
         parsed = _parse_json(content)
         if parsed is not None:
@@ -1559,12 +1568,18 @@ def main():
     for name in names:
         log(f"{name}:")
         before = dump(lists[name])
+        errors_before = MODEL_ERRORS[0]
         try:
             data = REFRESHERS[name](json.loads(before), CONFIG["lists"][name])
         except Exception as e:  # noqa: BLE001 - keep going with the other lists
             log(f"  failed: {e!r}")
             failed.append(name)
             continue
+        if MODEL_ERRORS[0] > errors_before:
+            # The model crashed or refused for some of this list's pages (GPU faults, say), so the list
+            # may be missing things. Report it as failed so the cloud runs redo it instead of skipping it.
+            log(f"  {MODEL_ERRORS[0] - errors_before} model error(s), so this list counts as failed tonight")
+            failed.append(name)
         data = portland.scrub(data)  # Portland, Oregon only: drop anything about Portland, Maine
         if dump(data) != before:
             data["updated"] = TODAY.isoformat()

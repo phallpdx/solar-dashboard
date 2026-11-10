@@ -1,6 +1,6 @@
 {
   "date": "2026-11-10",
-  "ran_at": "2026-11-10T09:48:31Z",
+  "ran_at": "2026-11-10T11:23:51Z",
   "lists": {
     "jazz": "unchanged",
     "concerts": "unchanged",
@@ -12,11 +12,11 @@
     "skioutlook": "unchanged",
     "teams": "unchanged",
     "marketbrief": "unchanged",
-    "coast": "changed",
+    "coast": "unchanged",
     "restaurants": "unchanged",
     "localmusic": "unchanged",
     "liquor": "unchanged",
     "alfred": "unchanged"
   },
-  "web_search": "failed"
+  "web_search": "ok"
 }

@@ -45,9 +45,11 @@ python -m solar.update          # writes data/dashboard.json
 cp data/dashboard.json web/ && python -m http.server -d web 8000
 ```
 
-## Kindle page
+## Kindle pages
 
-Each site build also writes `kindle.html`: a plain black-and-white morning
-page (weather, calendar, drive times, solar, poem) with no JavaScript or
-images, so it loads quickly in the Kindle browser. Bookmark
-`<your Pages URL>/kindle.html` on the Kindle.
+Each site build renders the full dashboard once in headless Chromium and saves
+a static, black-and-white copy in `kindle/`: a contents page plus one page per
+section, with images and links kept and no JavaScript to run. Tap the right
+side of the Kindle screen to turn a screen forward, the left side to go back.
+`kindle.html` redirects there, so bookmark `<your Pages URL>/kindle.html`.
+If that step fails, `kindle.html` falls back to a simple text-only morning page.

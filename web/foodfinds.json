@@ -340,52 +340,6 @@
           "url": "https://www.nombase.com/newswire/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
         }
       ]
-    },
-    {
-      "name": "The Woodland Collection",
-      "maker": "Wildwood Chocolate (Portland)",
-      "kind": "New product",
-      "what": "Portland chocolatier Wildwood launched a line of personal-sized bars in September, with seven botanical flavors such as Berry Berry, Salted Brown Butter Texas Pecan Brittle and Orange Confit & Cherry. Four caramel-filled bars, including Fennel Pollen Caramel and Rosemary Caramel, are slated to join later this year.",
-      "where_to_buy": [
-        {
-          "store": "Wildwood Chocolate online",
-          "url": "https://wildwoodchocolate.com"
-        }
-      ],
-      "date": "2026-09-01",
-      "sources": [
-        {
-          "name": "Nosh: Wildwood Unveils The Woodland Collection",
-          "url": "https://www.nosh.com/pr/2026/07/29/wildwood-unveils-the-woodland-collection"
-        },
-        {
-          "name": "Snack & Bakery: Wildwood returns to its roots with chocolate collection",
-          "url": "https://www.snackandbakery.com/articles/116080-wildwood-returns-to-its-roots-with-chocolate-collection"
-        }
-      ]
-    },
-    {
-      "name": "Bacon Cheddar Brazilian Cheese Bread",
-      "maker": "Brazi Bites (Portland)",
-      "kind": "New product",
-      "what": "Portland's Brazi Bites added an uncured bacon and cheddar version of its gluten-free Brazilian cheese bread, sold frozen in 18-count bags with a suggested price of $6.99 to $7.99.",
-      "where_to_buy": [
-        {
-          "store": "Whole Foods Market (freezer aisle)",
-          "url": null
-        }
-      ],
-      "date": "2026-08-25",
-      "sources": [
-        {
-          "name": "Nosh: Brazi Bites Turns Up the Flavor with New Bacon Cheddar Brazilian Cheese Bread",
-          "url": "https://www.nosh.com/pr/2026/08/25/brazi-bites-turns-up-the-flavor-with-new-bacon-cheddar-brazilian-cheese-bread"
-        },
-        {
-          "name": "Nosh: Brazi Bites Uncured Bacon Cheddar product page",
-          "url": "https://www.nosh.com/brands/brazi-bites/brazilian-cheese-bread-uncured-bacon-cheddar"
-        }
-      ]
     }
   ]
 }

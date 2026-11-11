@@ -38,6 +38,48 @@
       ]
     },
     {
+      "title": "WWE Friday Night Smackdown at Moda Center",
+      "kind": "Tickets",
+      "action": "On sale",
+      "starts": "2026-11-11",
+      "by": null,
+      "why": "Remind Like List",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
+        }
+      ]
+    },
+    {
+      "title": "Ricky Montgomery at Crystal Ballroom",
+      "kind": "Tickets",
+      "action": "On sale",
+      "starts": "2026-11-13",
+      "by": null,
+      "why": "Remind Like List",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
+        }
+      ]
+    },
+    {
+      "title": "The Basement Yard Live at Arlene Schnitzer Concert Hall",
+      "kind": "Tickets",
+      "action": "On sale",
+      "starts": "2026-11-13",
+      "by": null,
+      "why": "Remind Like List",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
+        }
+      ]
+    },
+    {
       "title": "Epic Pass price increase",
       "kind": "Deadline",
       "action": "Buy before Nov 15 to beat the next price step; sales end Dec 6.",
@@ -94,20 +136,6 @@
         {
           "name": "Christmas Mountain on Facebook",
           "url": "https://www.facebook.com/ChristmasMountain/"
-        }
-      ]
-    },
-    {
-      "title": "Sauvie Island Farms U-cut trees (opens Nov 21)",
-      "kind": "Buy",
-      "action": "Plan a U-cut trip from Nov 21; bring cash or Venmo, all trees $60.",
-      "starts": "2026-11-21",
-      "by": "2026-12-24",
-      "why": "The farm's blog lists U-cut trees Nov 21 to Dec 24, 9 a.m. to 5 p.m., self-serve on the honor system.",
-      "sources": [
-        {
-          "name": "Sauvie Island Farms blog",
-          "url": "https://sifarms.blogspot.com/"
         }
       ]
     },

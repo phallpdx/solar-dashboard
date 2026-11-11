@@ -1,194 +1,65 @@
 {
   "note": "Alfred's asides for the morning brief, written nightly by the local model.",
-  "date": "2026-11-05",
+  "date": "2026-11-10",
   "lines": {
-    "hello_late": [
-      "The moon is your only company, Master Parker.",
-      "Rest is a concept you seem to avoid!",
-      "A rather late night for such pursuits, sir."
-    ],
-    "hello_morning": [
-      "The sun has seen fit to rise, sir.",
-      "A fresh start awaits your command, Master Parker.",
-      "Morning light finds you at last, sir.",
-      "I trust the slumber was restorative, sir."
-    ],
-    "hello_afternoon": [
-      "The day marches on quite briskly, sir.",
-      "Hope the midday lull finds you well.",
-      "A fine afternoon for some progress, Master Parker.",
-      "Time slips away even when we notice it."
-    ],
-    "hello_evening": [
-      "The shadows are lengthening, sir.",
-      "A gentle transition to twilight, Master Parker.",
-      "Evening approaches with its usual grace, sir.",
-      "Time to wind down, I presume, sir?"
-    ],
-    "intro_urgent": [
-      "I fear some business is quite pressing, sir!",
-      "Do not overlook these, Master Parker!"
-    ],
-    "intro_some": [
-      "The day's tidings have arrived, sir.",
-      "Nothing too taxing, just some updates."
-    ],
-    "sign": [
-      "I shall be waiting, Alfred",
-      "Until the next matter, Alfred",
-      "Ever at your service, Alfred"
-    ],
-    "fresh_heading": [
-      "Newly arrived reading",
-      "The latest findings",
-      "Freshly gathered insights",
-      "A recent discovery"
-    ],
-    "nws_alert": [
-      "Nature appears a bit temperamental today, sir.",
-      "One should perhaps stay indoors, Master Parker!",
-      "The elements are acting rather unruly, sir.",
-      "Do take heed of the sky, sir!"
-    ],
     "forecast_alert": [
-      "Prepare for a bit of turbulence, sir.",
-      "A spirited tempest is brewing, Master Parker.",
-      "One should prepare for rather unruly weather.",
-      "The elements are feeling quite temperamental today, sir."
+      "Brace for some unruly weather, sir.",
+      "The elements appear rather temperamental today!",
+      "One should prepare for a bit of chaos.",
+      "Do keep your wits about you, Master Parker."
     ],
     "rain": [
-      "Ensure your waterproof attire is ready, sir.",
-      "A most damp morning lies ahead.",
-      "The clouds appear rather heavy this morning, Master Parker.",
-      "Splashing about may be required, sir."
+      "Prepare for a thorough soaking, sir.",
+      "A rather damp disposition is expected!",
+      "It may be quite moist out there.",
+      "The sky intends to weep today, sir."
     ],
     "air_bad": [
-      "Keep the glass firmly shut today, sir.",
-      "The atmosphere is not quite up to standard.",
-      "I suggest avoiding any vigorous outdoor exertion.",
-      "A bit of indoor leisure is advised, Master Parker."
+      "Keep the glass firmly in its frame, sir.",
+      "The atmosphere is not behaving itself.",
+      "I suggest avoiding any heavy exertion!",
+      "Stay indoors for your own comfort, Master Parker."
     ],
     "air_ok": [
-      "The breeze is perfectly acceptable today, sir.",
-      "No need for concern regarding the air.",
-      "Quite pleasant for a stroll, Master Parker."
+      "The breeze remains quite pleasant, sir.",
+      "A perfectly breathable day ahead!",
+      "Nothing to cause concern today, sir.",
+      "Nature's air is in good form."
     ],
     "commute": [
-      "The journey may take slightly longer than usual.",
-      "Do allow for some unexpected delays, Master Parker.",
-      "Traffic is behaving quite stubbornly today, sir."
+      "The journey may prove rather tedious!",
+      "Expect a bit of a crawl, Master Parker.",
+      "Traffic is feeling particularly sluggish today."
     ],
     "pdx": [
-      "A quick check of the arrivals is advised.",
-      "Travel plans might face a slight hiccup, sir.",
-      "Keep an eye on the departure boards.",
-      "The local skies are running behind schedule, sir."
+      "Arrivals are proving a bit flighty, sir.",
+      "Check the schedule before venturing out!",
+      "A bit of timing may be required, sir.",
+      "The terminals are behaving quite poorly."
     ],
     "sick": [
-      "Do mind your health in this weather.",
-      "Proper hygiene remains paramount, Master Parker.",
-      "Avoid any unnecessary social gatherings today, sir.",
-      "A cautious approach to wellness is advised, sir."
+      "One must prioritize hygiene, sir.",
+      "Keep those germs at bay, Master Parker.",
+      "Health is your greatest asset, sir.",
+      "Avoid any unwanted guests in your lungs!"
     ],
     "kids_last_day": [
-      "A milestone for the small ones, sir.",
-      "The final chapter of their schooling arrives!",
-      "One must prepare for a celebratory atmosphere.",
-      "It is quite the significant day, Master Parker."
+      "The schoolhouse doors close for them today!",
+      "A final farewell to the classroom, sir.",
+      "Their academic journey reaches a peak!",
+      "One last hurrah for the little ones."
     ],
     "jazz_lead": [
-      "For your auditory pleasure",
-      "A melodic interlude awaits",
-      "Something rhythmically inclined",
-      "To soothe the soul with notes"
+      "For your melodic pleasure",
+      "Prepare your ears for rhythm",
+      "A certain syncopation awaits",
+      "To soothe with brass and reed"
     ],
     "iss": [
-      "A celestial guest may visit tonight, sir.",
-      "Look up to see a passing wonder!",
-      "An orbital visitor is expected, Master Parker.",
-      "A luminous sight for those looking upward."
-    ],
-    "full_moon": [
-      "A certain celestial glow prevails tonight.",
-      "One might find it quite illuminating, Master Parker.",
-      "Watch for shadows under the moonlight."
-    ],
-    "rare_bird": [
-      "A most peculiar visitor has arrived!",
-      "Nature provides a winged curiosity, sir.",
-      "Keep your eyes peeled for feathers.",
-      "A fleeting guest in our midst, Master Parker."
-    ],
-    "ski": [
-      "The mountain is wearing a fresh coat.",
-      "A white blanket awaits your descent, sir.",
-      "The slopes look quite pristine today!",
-      "One might require some downhill vigor, Master Parker."
-    ],
-    "coast_wild": [
-      "The ocean is showing its teeth, sir.",
-      "A rather spirited display by the surf!",
-      "Brace yourself for some maritime chaos.",
-      "The waves are feeling quite ambitious, sir."
-    ],
-    "bluray": [
-      "A final chance to bolster your library.",
-      "The digital shelves beckon, Master Parker.",
-      "Time is of the essence for these discs.",
-      "An exquisite cinematic opportunity, sir."
-    ],
-    "mushrooms": [
-      "The damp earth offers its bounty.",
-      "A fungal feast awaits your basket, sir.",
-      "One must forage while the conditions hold.",
-      "The forest floor is quite generous, Master Parker."
-    ],
-    "gear": [
-      "Some rather clever tools have surfaced.",
-      "Your creative arsenal could benefit, sir.",
-      "A most opportune find for the studio.",
-      "An excellent acquisition for your workspace, Master Parker."
-    ],
-    "sunset": [
-      "The heavens are putting on a show!",
-      "A colorful farewell to the day, sir.",
-      "Nature's evening palette is quite striking.",
-      "Do not miss this golden hour, Master Parker."
-    ],
-    "solar_best": [
-      "An abundance of light for your collection, sir.",
-      "The panels are quite satisfied today.",
-      "A bright outlook for your energy, Master Parker."
-    ],
-    "apod": [
-      "A cosmic marvel for your perusal.",
-      "Something truly spectacular from above, sir.",
-      "A stellar sight to capture your interest.",
-      "NASA has presented a fine vision, Master Parker."
-    ],
-    "science_lead": [
-      "news_lead",
-      "read_lead"
-    ],
-    "news_lead": [
-      "read_lead",
-      "larder_lead"
-    ],
-    "read_lead": [
-      "larder_lead",
-      "markets_lead"
-    ],
-    "larder_lead": [
-      "markets_lead",
-      "property_lead"
-    ],
-    "markets_lead": [
-      "property_lead",
-      "win_lead"
-    ],
-    "property_lead": [
-      "win_lead",
-      "loss_lead"
+      "A celestial visitor approaches, sir.",
+      "Look up for a glowing guest!",
+      "The station makes its appearance tonight.",
+      "An orbital traveler passes by, Master Parker."
     ]
   },
   "recent": {
@@ -1514,7 +1385,46 @@
     "markets_lead": "2026-11-05",
     "property_lead": "2026-11-05",
     "win_lead": "2026-11-05",
-    "loss_lead": "2026-11-05"
+    "loss_lead": "2026-11-05",
+    "Brace for some unruly weather, sir.": "2026-11-10",
+    "The elements appear rather temperamental today!": "2026-11-10",
+    "One should prepare for a bit of chaos.": "2026-11-10",
+    "Do keep your wits about you, Master Parker.": "2026-11-10",
+    "Prepare for a thorough soaking, sir.": "2026-11-10",
+    "A rather damp disposition is expected!": "2026-11-10",
+    "It may be quite moist out there.": "2026-11-10",
+    "The sky intends to weep today, sir.": "2026-11-10",
+    "Keep the glass firmly in its frame, sir.": "2026-11-10",
+    "The atmosphere is not behaving itself.": "2026-11-10",
+    "I suggest avoiding any heavy exertion!": "2026-11-10",
+    "Stay indoors for your own comfort, Master Parker.": "2026-11-10",
+    "The breeze remains quite pleasant, sir.": "2026-11-10",
+    "A perfectly breathable day ahead!": "2026-11-10",
+    "Nothing to cause concern today, sir.": "2026-11-10",
+    "Nature's air is in good form.": "2026-11-10",
+    "The journey may prove rather tedious!": "2026-11-10",
+    "Expect a bit of a crawl, Master Parker.": "2026-11-10",
+    "Traffic is feeling particularly sluggish today.": "2026-11-10",
+    "Arrivals are proving a bit flighty, sir.": "2026-11-10",
+    "Check the schedule before venturing out!": "2026-11-10",
+    "A bit of timing may be required, sir.": "2026-11-10",
+    "The terminals are behaving quite poorly.": "2026-11-10",
+    "One must prioritize hygiene, sir.": "2026-11-10",
+    "Keep those germs at bay, Master Parker.": "2026-11-10",
+    "Health is your greatest asset, sir.": "2026-11-10",
+    "Avoid any unwanted guests in your lungs!": "2026-11-10",
+    "The schoolhouse doors close for them today!": "2026-11-10",
+    "A final farewell to the classroom, sir.": "2026-11-10",
+    "Their academic journey reaches a peak!": "2026-11-10",
+    "One last hurrah for the little ones.": "2026-11-10",
+    "For your melodic pleasure": "2026-11-10",
+    "Prepare your ears for rhythm": "2026-11-10",
+    "A certain syncopation awaits": "2026-11-10",
+    "To soothe with brass and reed": "2026-11-10",
+    "A celestial visitor approaches, sir.": "2026-11-10",
+    "Look up for a glowing guest!": "2026-11-10",
+    "The station makes its appearance tonight.": "2026-11-10",
+    "An orbital traveler passes by, Master Parker.": "2026-11-10"
   },
-  "updated": "2026-11-05"
+  "updated": "2026-11-10"
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-10",
   "restaurants": [
     {
       "name": "The Balboa",
@@ -9,6 +9,13 @@
       "opened": "",
       "summary": "",
       "reviews": [
+        {
+          "outlet": "The Oregonian food",
+          "critic": "Not named",
+          "verdict": "New bar opening",
+          "date": "2026-11-10",
+          "url": "https://www.oregonlive.com/dining/2026/11/balboa-club-takes-over-prime-pearl-district-space-with-cocktails-and-classic-americana.html"
+        },
         {
           "outlet": "WhatNow",
           "critic": "",

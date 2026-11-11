@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "items": [
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",
-      "action": "Buy face value from the Oregon Symphony for either night at the Arlene Schnitzer Concert Hall, not resale.",
+      "action": "Last chance: buy face value from the Oregon Symphony for Thursday's show at the Arlene Schnitzer Concert Hall, not resale.",
       "starts": null,
-      "by": "2026-11-11",
+      "by": "2026-11-12",
       "why": "Two concerts with the band backed by its hometown orchestra, per the Oregon Symphony.",
       "sources": [
         {
@@ -18,10 +18,10 @@
     {
       "title": "Fall Out Boy, Providence Park (Aug 26, 2027)",
       "kind": "Tickets",
-      "action": "Sign up at twilightofthepunkstour.com for the artist presale, which opens Wed, Nov 11 at 10 a.m. local time.",
-      "starts": "2026-11-11",
+      "action": "Artist presale opened Wed, Nov 11 at 10 a.m. (sign up at twilightofthepunkstour.com); general on-sale is Thu, Nov 12 at 10 a.m. PT.",
+      "starts": "2026-11-12",
       "by": null,
-      "why": "Newly announced stadium stop on the Twilight of the Punks tour with The Offspring, Good Charlotte and The Story So Far; the general on-sale date wasn't confirmed in the sources found.",
+      "why": "Newly announced stadium stop on the Twilight of the Punks tour with The Offspring, Good Charlotte and The Story So Far; the Timbers say general sale opens Nov 12 at 10 a.m. PT.",
       "sources": [
         {
           "name": "Portland Timbers",
@@ -38,44 +38,34 @@
       ]
     },
     {
-      "title": "WWE Friday Night Smackdown at Moda Center",
+      "title": "WWE Friday Night SmackDown, Moda Center (Jan 29, 2027)",
       "kind": "Tickets",
-      "action": "On sale",
+      "action": "Tickets go on sale Wed, Nov 11 at 10 a.m. local through Ticketmaster.",
       "starts": "2026-11-11",
       "by": null,
-      "why": "Remind Like List",
+      "why": "One of 11 new early-2027 WWE dates announced by WWE.",
       "sources": [
         {
-          "name": "Web search: Portland presales",
-          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
+          "name": "WWE announcement",
+          "url": "https://www.wwe.com/article/wwe-announces-11-new-event-dates-to-kick-off-2027"
         }
       ]
     },
     {
-      "title": "Ricky Montgomery at Crystal Ballroom",
+      "title": "Ricky Montgomery, Crystal Ballroom (May 3, 2027)",
       "kind": "Tickets",
-      "action": "On sale",
+      "action": "General sale Fri, Nov 13 at 10 a.m.; buy face value through Etix/Cascade Tickets, the ballroom's official seller.",
       "starts": "2026-11-13",
       "by": null,
-      "why": "Remind Like List",
+      "why": "Listings call it his first Portland show since 2024; date comes from ticket listings, not an official artist page.",
       "sources": [
         {
-          "name": "Web search: Portland presales",
-          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
-        }
-      ]
-    },
-    {
-      "title": "The Basement Yard Live at Arlene Schnitzer Concert Hall",
-      "kind": "Tickets",
-      "action": "On sale",
-      "starts": "2026-11-13",
-      "by": null,
-      "why": "Remind Like List",
-      "sources": [
+          "name": "Eventworld listing",
+          "url": "https://www.eventworld.com/ricky-montgomery-portland-tickets-05-03-2027/event/604977"
+        },
         {
-          "name": "Web search: Portland presales",
-          "url": "https://everout.com/portland/articles/ticket-alert-the-chats-noah-gundersen-and-more-portland-events-going-on-sale-this-week/c6609"
+          "name": "Discotech listing",
+          "url": "https://app.discotech.me/events/38312370-ricky-montgomery-the-monty-tour-at-crystal-ballroom"
         }
       ]
     },
@@ -230,24 +220,6 @@
       ]
     },
     {
-      "title": "Iron Maiden, Moda Center (Apr 18, 2027)",
-      "kind": "Tickets",
-      "action": "General sale opened Fri Oct 23 at 10 a.m. through Live Nation; buy face value there rather than resale.",
-      "starts": null,
-      "by": null,
-      "why": "Surprise 2027 North American return with Bullet for My Valentine and The Raven Age.",
-      "sources": [
-        {
-          "name": "Live Nation",
-          "url": "https://www.livenation.com/event/vvG1HZ_fUJy6d7/iron-maiden-run-for-your-lives-north-american-tour-2027"
-        },
-        {
-          "name": "Iron Maiden",
-          "url": "https://www.ironmaiden.com/rfyl-north-america-2027/"
-        }
-      ]
-    },
-    {
       "title": "Mt. Hood National Forest Christmas tree permit",
       "kind": "Permit",
       "action": "Watch Recreation.gov for this year's $5 permits and print yours; digital copies aren't accepted.",
@@ -288,20 +260,20 @@
       ]
     },
     {
-      "title": "Barnes & Noble Criterion 50% off sale",
+      "title": "Barnes & Noble Criterion 50% off sale (through Dec 6)",
       "kind": "Buy",
-      "action": "Hold Criterion 4K wish-list buys for November.",
+      "action": "Buy Criterion 4K wish-list titles now, online or in store; the sale ends Dec 6.",
       "starts": null,
-      "by": null,
-      "why": "B&N runs the half-off Criterion sale every July and November (last November's began Nov 7); 2026 dates aren't announced yet.",
+      "by": "2026-12-06",
+      "why": "Criterion says all in-stock discs are half off at B&N through Dec 6; B&N notes it doesn't combine with the Premium Member discount.",
       "sources": [
         {
-          "name": "Jeff Rauseo guide",
-          "url": "https://www.jeffrauseo.com/p/the-criterion-collection-50-off-sale-barnes-and-noble"
+          "name": "Criterion on X",
+          "url": "https://x.com/Criterion/status/2118728293608493316"
         },
         {
-          "name": "Slickdeals (Nov 2025 sale)",
-          "url": "https://slickdeals.net/f/18763741-semi-annual-criterion-collection-sale-at-barnes-noble-starts-friday-november-7th"
+          "name": "Barnes & Noble Criterion page",
+          "url": "https://www.barnesandnoble.com/collections/movies-tv/the-criterion-collection"
         }
       ]
     },
@@ -432,6 +404,38 @@
         {
           "name": "JamBase tour announcement",
           "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
+        }
+      ]
+    },
+    {
+      "title": "Royal Blood with Bodega, Revolution Hall (Apr 18, 2027)",
+      "kind": "Tickets",
+      "action": "Presale Thu, Nov 12 at 10 a.m. via Ticketmaster; general on-sale Fri, Nov 13 at 10 a.m.",
+      "starts": "2026-11-12",
+      "by": null,
+      "why": "Newly announced 2027 North American tour stop at Revolution Hall with Bodega opening.",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/royal-blood-2027-north-american-tour/"
+        }
+      ]
+    },
+    {
+      "title": "King Gizzard & The Lizard Wizard, Portland (Aug 19, 2027)",
+      "kind": "Tickets",
+      "action": "Mailing-list presale started Nov 11; general on-sale Fri, Nov 13 at 9 a.m. Pacific. Venue not yet announced.",
+      "starts": "2026-11-13",
+      "by": null,
+      "why": "New album Entropy and two 2027 North American legs; the Portland venue is listed as TBD.",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/king-gizzard-and-the-lizard-wizard-entropy-2027-tours/"
+        },
+        {
+          "name": "Glide Magazine",
+          "url": "https://glidemagazine.com/332952/king-gizzard-the-lizard-wizard-announce-new-album-entropy-two-north-american-tours/"
         }
       ]
     }

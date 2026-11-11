@@ -725,6 +725,27 @@ CURATE = r"""
     if (km && /\b(PG-13|teen)\b/i.test(txt(km))) kill(km);
   });
 
+  step('trim', () => {
+    for (const h of $$('#reps h3')) {
+      const l = h.nextElementSibling;
+      if (/sponsored/i.test(txt(h))) { kill(l); kill(h); }
+      else if (/floor votes/i.test(txt(h)) && l) [...l.children].slice(2).forEach(kill);
+      else if (/in the news/i.test(txt(h)) && l) [...l.children].slice(2).forEach(kill);
+    }
+    for (const el of $$('#reps *')) if (!el.children.length && el.textContent.length > 120) el.textContent = el.textContent.slice(0, 104).replace(/[\s;,:]+\S*$/, '') + '…';
+    [...document.querySelectorAll('#restaurants .lines > div')].slice(8).forEach(kill);
+    for (const el of [...document.querySelectorAll('#restaurants span')]) if (!el.children.length && /^Not named, /.test(el.textContent)) el.textContent = el.textContent.replace(/^Not named, /, '');
+    for (const d of [...document.querySelectorAll('#finds > div')]) if (!/Where to buy/.test(txt(d))) kill(d);
+    for (const box of [...document.querySelectorAll('#finds, #openings, #restaurants')]) [...box.children].filter(c => !/^H[2-4]$/.test(c.tagName)).slice(5).forEach(kill);
+    const now = new Date(), days = d => (d - now) / 864e5;
+    const dateOf = t => { const m = t.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/); if (!m) return null;
+      const d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (days(d) < -2) d.setFullYear(now.getFullYear() + 1); return d; };
+    for (const r of $$('#jazz > *')) { const d = dateOf(txt(r)); if (!d) continue;
+      if (days(d) > 45) kill(r); else if (days(d) > 10) r.querySelectorAll('p, small, .cite').forEach(kill); }
+    for (const r of $$('#kid-out a.story, #kid-out .story')) { const d = dateOf(txt(r)); if (d && days(d) > 30) kill(r); }
+    const any = $$('#kid-out .story').filter(r => /Any time|In season/.test(txt(r))); any.slice(4).forEach(kill);
+  });
+
   step('civics', () => {
     for (const el of $$('#reps *, #elect *')) if (!el.children.length) {
       el.textContent = el.textContent
@@ -880,6 +901,7 @@ CURATE = r"""
     const ol = document.createElement('ol'); ol.className = 'kplan';
     ol.innerHTML = plan.map(([t, x]) => `<li><span class="kt">${label(t)}</span><span>${x}</span></li>`).join('');
     const head = brief.querySelector('.brief-head') || brief.querySelector('h2');
+    for (const ul of brief.querySelectorAll('ul')) if (!ul.querySelector('li')) { const h = ul.previousElementSibling; if (h && h.tagName === 'H3') kill(h); kill(ul); }
     if (head) { head.after(v); if (plan.length) { const lab = document.createElement('h3'); lab.className = 'sub'; lab.textContent = 'The day, as I would arrange it'; v.after(lab); lab.after(ol); } }
   });
 
@@ -2268,9 +2290,10 @@ DEDUPE = r"""
       const subj = t.split(': ').pop().replace(/[.!]+$/, '');
       if (/ is today\.?$/.test(t) || keys.some(k => t.includes(k) || b.some(x => k.includes(x)) || (subj.length >= 15 && k.includes(subj)))) prune(li);
     }
+    for (const ul of [...d.querySelectorAll('ul')]) if (!ul.querySelector('li')) ul.remove();
     for (const h of [...d.querySelectorAll('h3')]) {
       const nx = h.nextElementSibling;
-      if (!nx || /^H3$/.test(nx.tagName) || !norm(nx.textContent)) h.remove();
+      if (!nx || /^H3$/.test(nx.tagName) || !norm(nx.textContent) || /brief-sign/.test(nx.className)) h.remove();
     }
   });
   return docs.map(d => d.innerHTML);

@@ -5,6 +5,10 @@ files, and billing-period files (START DATE / END DATE), with either USAGE or
 IMPORT/EXPORT columns. Returns a list of rows:
 {"date": "YYYY-MM-DD", "hour": int|None, "import": kWh, "export": kWh, "cost": $|None}
 Billing rows also carry "bill": True, "start" and "end", with "date" = end.
+Billing rows may also carry net-metering figures copied from the paper bill
+(optional columns NET CONSUMPTION (KWH), EXCESS GENERATION (KWH), BANKED (KWH)):
+"grid" (kWh delivered by PGE), "sent" (kWh sent back) and "bank" (banked excess
+generation after this bill). They are None when the column is missing.
 """
 import csv
 import glob
@@ -50,6 +54,9 @@ def read_file(path):
                 "import": imp or 0.0,
                 "export": abs(exp or 0.0),
                 "cost": _num(rec.get("COST")),
+                "grid": _num(rec.get("NET CONSUMPTION (KWH)")),
+                "sent": _num(rec.get("EXCESS GENERATION (KWH)")),
+                "bank": _num(rec.get("BANKED (KWH)")),
             })
             continue
         start_time = rec.get("START TIME", "").strip()

@@ -11,6 +11,12 @@ Weather station and PGE Green Button downloads.
 - Cached API responses, call counts and PGE CSVs live on the `data` branch.
   Personal details (name, address, account number) are stripped from PGE
   files before they are saved.
+- PGE's usage download doesn't include net metering. To show it, add a
+  `pge/pge-bill-details.csv` on the `data` branch with one row per paper bill:
+  `TYPE,START DATE,END DATE,USAGE (kWh),COST,NET CONSUMPTION (kWh),EXCESS GENERATION (kWh),BANKED (kWh)`
+  (USAGE is the billed kWh; the last three come from the bill's Net Metering
+  Monthly Summary). The bill card then shows the banked credit and when it
+  should run out.
 
 ## Settings
 

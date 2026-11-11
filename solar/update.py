@@ -387,9 +387,10 @@ def bills_view(bills, today, solar_daily):
     lengths = [(dt.date.fromisoformat(b["end"]) - dt.date.fromisoformat(b["start"])).days for b in bills[-6:]]
     cycle_days = round(statistics.mean(lengths)) if lengths else 30
     end = start + dt.timedelta(days=cycle_days)
-    # Fixed monthly charge: what a bill costs when no energy was billed.
+    # Fixed monthly charge: what the latest bill with no billed energy cost
+    # (the basic charge and pass-throughs drift up each year, so not a median).
     zero = [b["cost"] for b in bills if b["import"] == 0 and b["cost"] is not None]
-    base = statistics.median(zero) if zero else min(b["cost"] or 0 for b in bills)
+    base = zero[-1] if zero else min(b["cost"] or 0 for b in bills)
     rates = [(b["cost"] - base) / b["import"] for b in bills if b["cost"] and b["import"] >= 100]
     rate = round(statistics.median(rates), 3) if rates else None
     solar_kwh = sum(v for d, v in solar_daily.items() if start.isoformat() <= d <= today and v)
@@ -400,13 +401,37 @@ def bills_view(bills, today, solar_daily):
     last12 = [b for b in bills if b["end"] > (start - dt.timedelta(days=365)).isoformat()]
     winter = [b for b in last12 if int(b["start"][5:7]) in (10, 11, 12, 1, 2, 3)]
     total12 = sum(b["cost"] or 0 for b in last12)
+    # Net metering: the banked kWh on the newest bill that lists it, and how long
+    # it lasts at that bill's net daily use (delivered minus sent back).
+    banked = [b for b in bills if b.get("bank") is not None]
+    bank = None
+    if banked:
+        nb = banked[-1]
+        bank = {"kwh": round(nb["bank"]), "as_of": nb["end"], "runs_out": None}
+        if nb.get("grid") is not None and nb.get("sent") is not None:
+            days = (dt.date.fromisoformat(nb["end"]) - dt.date.fromisoformat(nb["start"])).days or 1
+            per_day = (nb["grid"] - nb["sent"]) / days
+            bank["net_per_day"] = round(per_day, 1)
+            if per_day > 0:
+                bank["runs_out"] = (dt.date.fromisoformat(nb["end"])
+                                    + dt.timedelta(days=int(nb["bank"] // per_day))).isoformat()
+
+    def brief(b):
+        out = {"start": b["start"], "end": b["end"], "kwh": round(b["import"]), "cost": b["cost"]}
+        if b.get("grid") is not None:
+            out["grid_kwh"] = round(b["grid"])
+        if b.get("sent") is not None:
+            out["sent_kwh"] = round(b["sent"])
+        return out
+
     return {
         "kind": "bills",
         "cycle_start": start.isoformat(),
         "cycle_end": end.isoformat(),
         "cycle_day": (dt.date.fromisoformat(today) - start).days + 1,
         "cycle_days": cycle_days,
-        "last": {"start": last["start"], "end": last["end"], "kwh": round(last["import"]), "cost": last["cost"]},
+        "last": brief(last),
+        "bank": bank,
         "same_last_year": {"start": same["start"], "end": same["end"], "kwh": round(same["import"]),
                            "cost": same["cost"]} if same else None,
         "last12_cost": round(total12, 2),

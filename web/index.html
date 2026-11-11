@@ -3414,6 +3414,8 @@ function renderBills(b, pct) {
   const span = x => `${fmtDate(x.start)} – ${fmtDate(x.end)}`;
   $('bill-meta').textContent = `${fmtDate(b.cycle_start)} – ${fmtDate(b.cycle_end)}`;
   const rows = [[`Last bill <small class="meta">${span(b.last)}</small>`, `${money(b.last.cost)} · ${b.last.kwh.toLocaleString()} kWh`]];
+  if (b.last.grid_kwh != null && b.last.sent_kwh != null) rows.push(['From grid / sent back', `${b.last.grid_kwh.toLocaleString()} / ${b.last.sent_kwh.toLocaleString()} kWh`]);
+  if (b.bank) rows.push(['Banked solar credit', `${b.bank.kwh.toLocaleString()} kWh`]);
   if (b.same_last_year) rows.push([`Same time last year`, `${money(b.same_last_year.cost)} · ${b.same_last_year.kwh.toLocaleString()} kWh`]);
   rows.push(['Last 12 months', '$' + Math.round(b.last12_cost).toLocaleString()]);
   if (b.rate) rows.push(['Your energy rate', `about ${(b.rate * 100).toFixed(1)}¢/kWh`]);
@@ -3423,6 +3425,8 @@ function renderBills(b, pct) {
     `<div class="axis"><span>${MON[+b.history[0].start.slice(5, 7) - 1]}</span><span>${MON[+b.history[b.history.length - 1].start.slice(5, 7) - 1]}</span></div>`;
   let note = '';
   if (b.winter_share != null && b.winter_share >= 0.6) note += `${Math.round(b.winter_share * 100)}% of the last year’s PGE cost came from October through March, when the panels make less and heating runs. `;
+  if (b.bank && b.bank.runs_out) note += `At the last bill’s pace (about ${Math.round(b.bank.net_per_day)} kWh a day more than the panels send back), the banked credit runs out around ${fmtDate(b.bank.runs_out)}, after which PGE bills the rest. `;
+  else if (b.bank && b.bank.kwh === 0) note += 'The banked solar credit is used up, so every net kWh is billed until the panels catch up in spring. ';
   if (b.solar_value_cycle != null) note += `So far this cycle your panels made ${b.solar_kwh_cycle.toLocaleString()} kWh, worth about $${Math.round(b.solar_value_cycle)} at your rate.`;
   $('bill').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px">
     <div class="progress"><div style="width:${pct}%"></div></div>

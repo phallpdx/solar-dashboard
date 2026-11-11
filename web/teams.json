@@ -1,58 +1,56 @@
 {
-  "updated": "2026-11-10",
-  "updated_at": "2026-11-10T13:16:50Z",
+  "updated": "2026-11-11",
+  "updated_at": "2026-11-11T13:16:14Z",
   "teams": {
     "blazers": {
-      "mood": "Humbled",
-      "pulse": "The hot start cooled off with two straight losses, and Portland sits at 6-3. Luka Doncic dropped 53 on them in LA on Friday, then Wembanyama's Spurs ran them off the floor the next night, reopening old wounds from last spring's playoff exit.",
+      "mood": "Relieved",
+      "pulse": "Skid over. Portland handled the Thunder 123-103 at home on Tuesday to get to 7-3, ending OKC's four-game win streak. The lineup shakeup paid off right away, and they get OKC again tonight at Moda.",
       "storylines": [
-        "Lost 125-103 to the Spurs on Saturday on the second night of a back-to-back: Wembanyama had 29 in 24 minutes and Avdija led Portland with just 15.",
-        "Blazers broadcasters ripped Wembanyama for flopping, but both teams shot 33 free throws, so the officiating excuse doesn't really hold up.",
-        "Lost 124-118 at the Lakers on Friday in an NBA Cup game as Doncic scored a league-high 53; Avdija (22 pts, 11 ast, 9 reb) and Lillard (22) kept it close.",
-        "Yahoo's takeaways say the schedule is an easy excuse, but Portland was simply outplayed on both ends by San Antonio, the team that bounced them in five games last spring."
+        "Beat OKC 123-103: Lillard had 25 (13 in the third), Avdija added 24 points and 8 assists, and a 38-21 third quarter broke it open.",
+        "Sidy Cissoko got his first start of the season in place of Scoot Henderson and scored 17 with three threes; Henderson had 11 off the bench on 3-of-12.",
+        "SGA scored 26 but went 0-for-4 from three, and OKC was missing Jalen Williams, Chet Holmgren and Cason Wallace, so temper the celebration a bit.",
+        "Back-to-back home set: the rematch with the Thunder is Wednesday night, and there's no word yet on who starts."
       ],
       "sources": [
-        {"name": "ESPN (Spurs recap)", "url": "https://www.espn.com/nba/recap?gameId=401909944"},
-        {"name": "ESPN (Lakers recap)", "url": "https://africa.espn.com/nba/recap/_/gameId/401909294"},
-        {"name": "Yahoo: 3 takeaways", "url": "https://sports.yahoo.com/articles/3-takeaways-blazers-loss-against-210002735.html"},
-        {"name": "Yahoo: Spurs nightmare is back", "url": "https://sports.yahoo.com/articles/blazers-spurs-nightmare-back-why-130011833.html"},
-        {"name": "Fadeaway World", "url": "https://fadeawayworld.net/nba/san-antonio-spurs/trail-blazers-announcers-rip-victor-wembanyama-for-flopping-what-are-we-doing-here"},
-        {"name": "SI / Blazers On SI", "url": "https://www.si.com/nba/trailblazers/onsi/blazers-lose-turnover-and-rebound-battle-fall-big-to-spurs"}
+        {"name": "ESPN (Thunder recap)", "url": "https://www.espn.com/nba/recap?gameId=401909965"},
+        {"name": "Yahoo / AP recap", "url": "https://sports.yahoo.com/articles/damian-lillard-scores-25-points-065238034.html"},
+        {"name": "Yahoo: Six reasons", "url": "https://sports.yahoo.com/articles/six-reasons-why-trail-blazers-063653374.html"},
+        {"name": "Blazer's Edge (lineup)", "url": "https://www.blazersedge.com/trail-blazers-news/118225/blazers-move-scoot-henderson-out-of-starting-lineup-versus-thunder"},
+        {"name": "ClutchPoints (Scoot to bench)", "url": "https://clutchpoints.com/nba/portland-trail-blazers/blazers-news-scoot-henderson-returning-bench-favor-sidy-cissoko"}
       ]
     },
     "timbers": {
       "mood": "Fired up",
-      "pulse": "Mission accomplished: Portland won 2-0 at Austin on Decision Day to finish seventh and skip the Wild Card. Four straight wins to close the season has fans feeling like this team is peaking at the right time.",
+      "pulse": "Still riding the Decision Day high after the 2-0 win at Austin that locked up the No. 7 seed. Now it's a long wait: the playoff series with No. 2 FC Dallas doesn't start until Nov. 21.",
       "storylines": [
-        "Beat Austin 2-0 on Saturday: Ariel Lassiter scored in the 3rd minute, Kristoffer Velde added one in the 70th, and James Pantemis made seven saves.",
-        "Finished 13-14-7 with 46 points, the No. 7 seed in the West, after winning the last four games of the season.",
-        "Round One is a best-of-three against No. 2 FC Dallas; Game 2 is at Providence Park on Nov. 28.",
-        "Pantemis: 'We've been in playoff mode for the last three to four weeks.' Dallas coach Eric Quill called Portland's home ground probably the hardest place to play in the league."
+        "Game 1 is Saturday, Nov. 21 at 1 p.m. Pacific in Frisco (Apple TV); Game 2 is at Providence Park on Nov. 28; a Game 3, if needed, is back in Dallas on Dec. 2.",
+        "Portland closed the regular season with four straight wins to finish 13-14-7 with 46 points.",
+        "Dallas striker Petar Musa (22 goals, 6 assists) is the guy to stop; Dallas topped 60 goals for the first time in club history.",
+        "Martí Cifuentes has the Timbers in the playoffs for a third straight year, and Pantemis says they've been in playoff mode for weeks."
       ],
       "sources": [
+        {"name": "KPTV (schedule)", "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"},
+        {"name": "FCDallas.com (dates)", "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"},
         {"name": "Timbers.com (clinch)", "url": "https://www.timbers.com/news/timbers-clinch-spot-in-audi-2026-mls-cup-playoffs-as-no-7-seed"},
-        {"name": "Timbers.com (recap)", "url": "https://www.timbers.com/news/recap-timbers-dust-austin-fc-with-2-0-to-earn-spot-in-postseason"},
-        {"name": "MLSsoccer.com (clinch)", "url": "https://www.mlssoccer.com/playoffs/2026/news/portland-timbers-clinch-audi-2026-mls-cup-playoffs-spot"},
         {"name": "MLSsoccer.com (hot streak)", "url": "https://www.mlssoccer.com/news/portland-timbers-ride-hot-streak-into-audi-mls-cup-playoffs"},
-        {"name": "Dallas Morning News", "url": "https://www.dallasnews.com/sports/fc-dallas/article/fc-dallas-eric-quill-mls-playoffs-portland-preview-22516585.php"}
+        {"name": "Yahoo (hot streak)", "url": "https://sports.yahoo.com/articles/portland-timbers-ride-hot-streak-041300702.html"}
       ]
     },
     "f1": {
-      "mood": "Wild finish",
-      "pulse": "Lando Norris won a wet, chaotic São Paulo GP, but the talk is Max Verstappen charging from 21st on the grid to second. Mercedes wrapped up the constructors' title, so both 2026 championships are now settled with three races left.",
+      "mood": "Spicy",
+      "pulse": "Both titles are done, so the fight is now for second: Verstappen leads Russell by 17 points with Vegas, Qatar and Abu Dhabi left. Wolff saying Mercedes wants Russell second has fans arguing about whether Antonelli will be asked to help.",
       "storylines": [
-        "Podium: Norris, Verstappen, Isack Hadjar, giving Red Bull a double podium; Russell 4th and champion Antonelli 5th.",
-        "Mercedes clinched the constructors' crown with three races to go, matching Williams' nine titles.",
-        "Engine penalties sent Verstappen, Hamilton and Leclerc down the grid; Verstappen blamed a slow start on holding the clutch wrong and thinks a win was possible.",
-        "Rough day for Ferrari: Hamilton went from 20th to 9th in his 400th F1 start despite a spin, and Leclerc was 8th with a five-second penalty."
+        "Standings: Verstappen 279, Russell 262, Hamilton one point behind Russell, with 75 points still on the table.",
+        "Wolff says Mercedes wants Russell to finish second, but reports say no team-order policy has actually been confirmed.",
+        "Verstappen has outscored Russell by 90 points over the last five races, capped by his drive from 21st to 2nd in Brazil.",
+        "Las Vegas is next: qualifying Friday, Nov. 20 and the race Saturday night, Nov. 21."
       ],
       "sources": [
-        {"name": "Formula1.com (results)", "url": "https://www.formula1.com/en/results/2026/races/1299/brazil/race-result"},
-        {"name": "Sky Sports", "url": "https://www.skysports.com/f1/news/13609694/sao-paulo-gp-lando-norris-wins-wet-race-for-mclaren-as-mercedes-seal-2026-f1-constructors-championship-in-brazil"},
-        {"name": "PlanetF1 (race report)", "url": "https://www.planetf1.com/news/2026-brazilian-grand-prix-race-report"},
-        {"name": "PlanetF1 (Ferrari penalties)", "url": "https://www.planetf1.com/news/fia-lewis-hamilton-charles-leclerc-brazilian-grand-prix-2026-penalty"},
-        {"name": "Yahoo (Verstappen)", "url": "https://sports.yahoo.com/articles/verstappen-confesses-unusual-error-during-223000183.html"},
-        {"name": "The Race", "url": "https://www.the-race.com/formula-1/winners-and-losers-from-f1-2026-brazilian-grand-prix/"}
+        {"name": "RacingNews365 (Wolff)", "url": "https://racingnews365.com/toto-wolff-addresses-prospect-of-mercedes-imposing-team-orders-on-kimi-antonelli"},
+        {"name": "Yahoo (Russell plays it down)", "url": "https://sports.yahoo.com/articles/russell-plays-down-verstappen-chase-163000472.html"},
+        {"name": "Grande Prêmio (P2 fight)", "url": "https://grandepremio.com/en/f1/mercedes-considers-helping-russell-beat-verstappen-to-f1-runner-up-spot-after-90-point-collapse/"},
+        {"name": "Grande Prêmio (last five races)", "url": "https://grandepremio.com/en/f1/verstappen-leads-last-five-races-as-mercedes-dominance-fades-despite-2026-titles"},
+        {"name": "McLaren (Vegas schedule)", "url": "https://www.mclaren.com/racing/formula-1/2026/las-vegas-grand-prix/"}
       ]
     }
   }

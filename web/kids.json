@@ -1,78 +1,110 @@
 {
-  "updated": "2026-11-09",
-  "note": "Toddler-friendly events near Sauvie Island, St. Johns, Portland, Vancouver and the coast, soonest first. Several holiday dates come from guides or listings rather than the organizers, so check before going.",
+  "updated": "2026-11-11",
+  "note": "Toddler-friendly events near North Portland, Vancouver and the coast, soonest first. Many holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
-    {
-      "title": "Curiosity Kids at OMSI",
-      "date": "2026-10-31",
-      "ends": "2026-11-28",
-      "where": "OMSI, Portland",
-      "detail": "Hands-on 9 to 10 am Saturday sessions for ages 3 to 5 with family, including same-day museum admission: Become a Nature Detective (Nov 21), Design and Discover (Nov 7, Nov 28) and Sasquatch Science Team (Nov 14). Up to 20 people per class.",
-      "url": "https://omsi.edu/curiosity-kids/"
-    },
     {
       "title": "Veterans Day at the Oregon Zoo",
       "date": "2026-11-11",
       "ends": null,
       "where": "Oregon Zoo, Portland",
-      "detail": "Free admission for military members, veterans and their families, 9:30 a.m. to 3:30 p.m.",
-      "url": "https://www.oregonzoo.org/events/veterans-day"
+      "detail": "The zoo's Veterans Day page offers free admission on Nov. 10 and 11 for military members, veterans and their families. The page doesn't state a year, so confirm before going.",
+      "url": "https://oregonzoo.org/events/veterans-day"
     },
     {
-      "title": "ZooLights Sensory-Friendly Night",
+      "title": "Pittock Mansion: Home for the Holidays",
       "date": "2026-11-16",
-      "ends": null,
-      "where": "Oregon Zoo, Portland",
-      "detail": "A calmer ZooLights evening for families with different sensory processing needs, 4:30 to 8:30 p.m.",
-      "url": "https://www.oregonzoo.org/sensory-night"
+      "ends": "2027-01-10",
+      "where": "Pittock Mansion, Portland",
+      "detail": "The mansion decorated for 'Holidays from Around the World'; Travel Portland lists Nov. 16, 2026 to Jan. 10, 2027, with days and times that vary.",
+      "url": "https://www.travelportland.com/event/68f14265d6b9f4033114e411/"
     },
     {
       "title": "ZooLights",
       "date": "2026-11-20",
-      "ends": null,
+      "ends": "2027-01-03",
       "where": "Oregon Zoo, Portland",
-      "detail": "Wildlife-themed holiday light displays; tickets are sold for specific dates. Go early in the evening with little ones.",
-      "url": "https://www.oregonzoo.org/lights"
-    },
-    {
-      "title": "U-cut Christmas trees at Sauvie Island Farms",
-      "date": "2026-11-21",
-      "ends": "2026-12-24",
-      "where": "Sauvie Island Farms, Sauvie Island",
-      "detail": "The farm's blog lists u-cut trees Nov 21 to Dec 24, 9 am to 5 pm, self-serve on the honor system; all trees $60, paid by Venmo or cash.",
-      "url": "https://sifarms.blogspot.com/"
-    },
-    {
-      "title": "Vancouver Community Tree Lighting",
-      "date": "2026-11-27",
-      "ends": null,
-      "where": "Vancouver Waterfront, Vancouver WA",
-      "detail": "Free Rotary Club tree lighting; Explore Washington State reports Friday, Nov 27, 2026, with the Christmas Ships escorting Santa's tugboat to the waterfront. Time not yet confirmed by the organizer.",
-      "url": "https://explorewashingtonstate.com/?p=156568"
+      "detail": "Wildlife-themed holiday lights. A third-party guide reports Nov. 20, 2026 to Jan. 3, 2027, opening at 4:30 p.m., with tickets for specific dates; the zoo hasn't fully posted its 2026 calendar. Go early in the evening with little ones.",
+      "url": "https://thrillzing.com/seasonal-events/zoolights-2026-oregon-zoo/"
     },
     {
       "title": "Winter Wonderland drive-through lights",
       "date": "2026-11-27",
       "ends": "2026-12-31",
       "where": "Portland International Raceway, North Portland",
-      "detail": "Drive-through holiday light show benefiting Sunshine Division; Travel Portland lists Nov 27 to Dec 31, 2026, with hours that vary by day. Easy for a toddler since you stay in the car.",
-      "url": "https://www.travelportland.com/event/806447/"
+      "detail": "Drive-through holiday light show benefiting Sunshine Division; a BringFido listing gives Nov. 27 to Dec. 31, 2026 with evening hours. Easy with a toddler since you stay in the car.",
+      "url": "https://www.bringfido.ca/event/43627"
     },
     {
-      "title": "Seaside Turn On The Town",
-      "date": "2026-11-28",
+      "title": "Christmas Festival of Lights at The Grotto",
+      "date": "2026-11-27",
+      "ends": "2026-12-30",
+      "where": "The Grotto, Northeast Portland",
+      "detail": "Holiday lights and choir concerts, 5 to 9:30 p.m. nightly (grounds close at 10), closed Christmas Day, per The Grotto.",
+      "url": "https://thegrotto.org/christmas-festival-of-lights"
+    },
+    {
+      "title": "Holiday Express steam train",
+      "date": "2026-11-27",
+      "ends": "2026-12-27",
+      "where": "Oregon Rail Heritage Center, Southeast Portland",
+      "detail": "A 45-minute round-trip holiday train ride along the Willamette on select dates Nov. 27 to Dec. 27, per the rail center. Exact 2026 run dates were still listed as coming soon; infants under 3 ride free on a lap.",
+      "url": "https://orhf.org/holiday-express/"
+    },
+    {
+      "title": "Vancouver Community Tree Lighting",
+      "date": "2026-11-27",
       "ends": null,
-      "where": "Seaside Amphitheater, Seaside",
-      "detail": "Holiday season kickoff party listed for 3 to 5 pm, with Santa lighting the town; this date comes from a third-party listing, not the Seaside Chamber.",
-      "url": "https://homeownerscollection.com/events/holidays/turn-town"
+      "where": "Vancouver Waterfront and Esther Short Park, Vancouver WA",
+      "detail": "Free Rotary Club tree lighting with Santa arriving by tugboat; Explore Washington State reports Friday, Nov. 27, 2026. Time not yet confirmed by the organizer.",
+      "url": "https://explorewashingtonstate.com/?p=156568"
+    },
+    {
+      "title": "Pioneer Courthouse Square Tree Lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Pioneer Courthouse Square, downtown Portland",
+      "detail": "Free annual tree lighting and singalong the day after Thanksgiving. The Nov. 27 date comes from an event listing; The Square hasn't posted its 2026 page yet.",
+      "url": "https://ma.to/event/annual-tree-lighting-27-nov-2026"
     },
     {
       "title": "Christmas Ships Parade",
       "date": "2026-12-03",
       "ends": "2026-12-20",
       "where": "Columbia and Willamette rivers",
-      "detail": "Lighted boat parades on both rivers; Carnifest reports Dec 3 to 20, 2026. Nightly routes are on christmasships.org, and parades can be cancelled for weather.",
+      "detail": "Lighted boat parades on both rivers; Carnifest reports Dec. 3 to 20, 2026. Nightly routes are posted on christmasships.org, and parades can be cancelled for weather.",
       "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
+    },
+    {
+      "title": "Washougal Lighted Christmas Parade and Tree Lighting",
+      "date": "2026-12-03",
+      "ends": null,
+      "where": "Downtown Washougal, WA",
+      "detail": "The city says the lighted parade starts at 6 p.m., followed right away by the tree lighting ceremony.",
+      "url": "https://cityofwashougal.us/727/Washougal-Lighted-Christmas-Parade-and-T"
+    },
+    {
+      "title": "La Center Christmas Festival",
+      "date": "2026-12-04",
+      "ends": "2026-12-06",
+      "where": "La Center, WA",
+      "detail": "Small-town Christmas festival with a tree lighting; Explore Washington State lists Dec. 4 to 6, 2026. Times not yet confirmed by the organizer.",
+      "url": "https://explorewashingtonstate.com/?p=156568"
+    },
+    {
+      "title": "Cannon Beach Lamp Lighting Ceremony",
+      "date": "2026-12-05",
+      "ends": null,
+      "where": "Sandpiper Square, Cannon Beach",
+      "detail": "Free Haystack Holidays tradition where the town lights its Christmas tree and gas lamps, 4 p.m., per the Cannon Beach Chamber.",
+      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
+    },
+    {
+      "title": "Pizza with Santa",
+      "date": "2026-12-11",
+      "ends": null,
+      "where": "Firstenburg Community Center, Vancouver WA",
+      "detail": "City of Vancouver event, 6 to 8 p.m.; registration required, $12 for Vancouver residents.",
+      "url": "https://www.cityofvancouver.us/?p=74306"
     }
   ]
 }

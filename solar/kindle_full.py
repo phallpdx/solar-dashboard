@@ -205,8 +205,9 @@ CURATE = r"""
     if (mb.children.length) sports.after(money);
   }
   const SEC = { sports: ['Sports', 'Blazers, Timbers, the Vikings and Pilots, and Formula 1'], delights: ['Diversions', null],
-                almanac: ['Almanac', null], science: ['Science', null], civics: ['Civics', null], doodles: ['By the Numbers', null],
-                world: ['Bangkok', null], nearby: ['The Sky', null] };
+                almanac: ['Almanac', null], science: ['Science', null], civics: ['Civics', null], doodles: ['By the numbers', null],
+                world: ['Bangkok', null], nearby: ['The sky', null], family: ['Little one', 'Ideas for ages 2 to 3, places to go and what is going around'],
+                roads: ['Roads and mountains', 'Traffic, road work, Mt. Hood, trails, fires and quakes'] };
   for (const [id, [title, sub]] of Object.entries(SEC)) {
     const g = $(`section.group[data-sec=${id}]`); if (!g) continue;
     const h = g.querySelector('.sec-h'); if (h) h.textContent = title;
@@ -430,6 +431,556 @@ CURATE = r"""
     }
   } catch (e) { console.log('kindle editor pass: ' + e); }
 
+  // 12. Data pages, designed for the page: the one number that matters biggest,
+  // a verdict line, grids instead of repeated rows. Each step stands alone.
+  const step = (name, f) => { try { f(); } catch (e) { console.log('kindle design ' + name + ': ' + e); } };
+  const verdict = (text, before) => { if (!text || !before) return; const v = document.createElement('p'); v.className = 'kverdict'; v.textContent = text; before.before(v); return v; };
+  const todayShort = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Los_Angeles'});
+
+  step('swatches', () => {
+    for (const card of $$('.card')) { const leg = [...card.querySelectorAll('.legend .sw, .legend i')].slice(0, 2).map(x => getComputedStyle(x).backgroundColor);
+      if (leg.length < 2) continue;
+      card.querySelectorAll('.sw, .legend i').forEach(x => { const k = leg.indexOf(getComputedStyle(x).backgroundColor); if (k >= 0) x.classList.add('ksw' + k); }); }
+  });
+  step('bullets', () => {
+    for (const li of $$('li')) { const p = li.previousElementSibling; if (p && p.tagName === 'LI' && /^[a-z]/.test(li.textContent.trim())) { p.append('; ' + li.textContent.trim()); li.remove(); } }
+  });
+  step('surf', () => {
+    const brks = $$('#surf-breaks .brk');
+    if (!brks.length) return;
+    const days = [...brks[0].querySelectorAll('.sday')].map(r => txt(r.firstElementChild).replace(/^Today$/, 'Today'));
+    const pips = n => '<em class="kq">' + [1, 2, 3, 4].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('') + '</em>';
+    const t = document.createElement('table'); t.className = 'kmatrix ksurf';
+    t.innerHTML = '<thead><tr><th></th>' + days.map(d => `<th>${d}</th>`).join('') + '</tr></thead><tbody>' +
+      brks.map(b => '<tr><th>' + txt(b.querySelector('.brk-top b') || b.querySelector('b')).replace(/ \/ Gearhart| \(.*\)/, '') + '</th>' +
+        [...b.querySelectorAll('.sday')].map(r => {
+          const ch = [...r.children], rt = ch[1], sz = ch[2], when = ch[3];
+          const n = +((rt && rt.className.match(/rt(\d)/)) || [0, 0])[1];
+          const m = txt(sz).match(/([\d.]+-[\d.]+|[\d.]+) ft · (\d+)s/) || [0, txt(sz), ''];
+          return `<td class="q${n}">${pips(n)}<b>${txt(rt)}</b><span>${String(m[1]).replace('-', '–')} ft</span><small>${m[2] ? m[2] + 's · ' : ''}${txt(when)}</small></td>`;
+        }).join('') + '</tr>').join('') + '</tbody>';
+    const key = document.createElement('p'); key.className = 'note kkey';
+    key.textContent = brks.map(b => txt(b.querySelector('.brk-top b') || b.querySelector('b')) + ': ' + txt(b.querySelector('small'))).filter(s => s.length > 4).join('. ') + '.';
+    $('#surf-breaks').replaceWith(t); t.after(key);
+  });
+
+  step('morning units', () => {
+    for (const s of $$('#out-facts small')) s.textContent = s.textContent.replace(/ PM2\.5 today · .*/, '').replace(/^\s*·\s*/, '');
+  });
+
+  step('hours', () => {
+    const p = $('p.khours'); if (!p) return;
+    const cells = [...p.textContent.matchAll(/(\d{1,2} ?[ap]m) (-?\d+)°/g)].map(m => [m[1], +m[2]]);
+    if (cells.length < 4) return;
+    const lo = Math.min(...cells.map(c => c[1])), hi = Math.max(...cells.map(c => c[1]));
+    const k = document.createElement('div'); k.className = 'khr';
+    k.innerHTML = cells.map(([h, t]) => `<div${t === hi ? ' class="hot"' : ''}><b>${t}°</b><i style="height:${4 + Math.round((t - lo) / Math.max(1, hi - lo) * 26)}px"></i><span>${h.replace(/ ?([ap])m/, '$1').replace(/^12p$/, 'noon')}</span></div>`).join('');
+    p.replaceWith(k);
+  });
+
+  step('markets', () => {
+    const mk = $('#mkt'), sp = $('#mkt-spark'), ms = $('#mkt-summary');
+    if (mk && ms) { ms.after(mk); if (sp) mk.after(sp);
+      const keep = txt(ms).split(/(?<=\.)\s+/).filter(x => !/^The (Nasdaq|Dow|10-year)|Treasury yields/.test(x));
+      if (keep.length) ms.textContent = keep.join(' ').replace(/^The S&P 500 is (up|down) [\d.]+% at [\d,]+, /, 'The S&P 500 is ').replace(/^The S&P 500 is up/, 'The S&P 500 is up'); }
+    const sx = sp && sp.querySelector('.axis span'); if (sx) sx.textContent = 'S&P 500, 30 trading days ago';
+  });
+
+  step('sports', () => {
+    for (const top of $$('.team-top')) {
+      const card = top.closest('.card'); if (!card) continue;
+      const rows = [...card.querySelectorAll('.lines>div')];
+      const nx = rows.find(d => /^Next:/.test(txt(d.firstElementChild))), w = rows.find(d => /^Watch on/.test(txt(d.firstElementChild)));
+      const ln = [...card.querySelectorAll('p.note')].find(p => /^Last game:/.test(txt(p)));
+      const m = ln && txt(ln).match(/^Last game: (\w+) ([\d–-]+) (vs\.?|at) (.+?) on (\w+)/);
+      if (!nx && !m) continue;
+      const k = document.createElement('div'); k.className = 'kscore'; let h = '';
+      if (m) h += `<div><span class="k">Last game</span><b>${({won: 'W', lost: 'L', drew: 'D', tied: 'T'})[m[1]] || ''} ${m[2].replace('-', '–')}</b><small>${m[3]} ${m[4]} · ${m[5]}</small></div>`;
+      if (nx) {
+        const when = txt(nx.lastElementChild), opp = txt(nx.firstElementChild).replace(/^Next:\s*/, '');
+        let big = when;
+        if (when.indexOf(todayShort) === 0) { const hr = +(when.match(/(\d+)(?::\d\d)? pm/) || [0, 0])[1]; big = when.replace(todayShort + ', ', hr >= 5 && hr < 12 ? 'Tonight ' : 'Today '); }
+        h += `<div><span class="k">Next</span><b>${big}</b><small>${opp}${w ? ' · ' + txt(w.lastElementChild) : ''}</small></div>`;
+      }
+      k.innerHTML = h; top.after(k); [nx, w, ln].forEach(kill);
+    }
+  });
+
+  step('seven days', () => {
+    const fds = $$('#forecast .fd'); if (fds.length < 3) return;
+    for (const f of fds) { const r = f.querySelector('.r'); const c = f.getAttribute('title'); if (r && c && !txt(r).includes(c)) r.textContent = `${c} · ${txt(r)}`; }
+    const kwh = f => +(txt(f.querySelector('.e')).match(/\d+/) || [0])[0];
+    const wet = f => +(txt(f.querySelector('.r')).match(/(\d+)%/) || [0, 0])[1] >= 70;
+    const name = f => txt(f.querySelector('.d')).replace(/^Today$/, 'today');
+    const best = [...fds].sort((a, b) => kwh(b) - kwh(a)).slice(0, 2).filter(f => kwh(f) > 0);
+    if (best[0]) { const e = best[0].querySelector('.e'); if (e) e.style.setProperty('font-weight', '700', 'important'); }
+    const runs = fds.filter(wet).map(name);
+    verdict((best.length ? `Sunniest: ${best.map(f => `${name(f)} (~${kwh(f)} kWh)`).join(' and ')}.` : '') +
+      (runs.length ? ` Wettest: ${runs.length > 2 ? runs[0] + ' to ' + runs[runs.length - 1] : runs.join(' and ')}.` : ''), $('#forecast'));
+    const rs = $('#roof-sun'); if (rs) kill(rs);
+  });
+
+  step('solar asleep', () => {
+    const now = $('#t-now'), load = $('#loads .load');
+    if (!now || parseFloat(txt(now)) !== 0 || !load) return;
+    const kw = txt(load).match(/~?(\d+) kWh/), when = txt(load.querySelector('b'));
+    const tile = now.closest('.tile'); if (!tile || !kw) return;
+    const k = tile.querySelector('.k'); if (k) k.textContent = 'Expected today';
+    now.textContent = `~${kw[1]} kWh`;
+    const s = $('#t-now-s'); if (s) s.textContent = when ? `Best ${when}` : 'The inverter wakes at sunrise';
+  });
+
+  step('bill', () => {
+    const bb = $('#bill .bars'); if (!bb) return;
+    const ds = [...bb.children].filter(d => d.title), val = d => +((d.title.match(/\$([\d,.]+)/) || [0, '0'])[1].replace(/,/g, ''));
+    if (ds.length < 3) return;
+    const peak = ds.reduce((a, b) => val(b) > val(a) ? b : a), last = ds[ds.length - 1];
+    for (const d of new Set([peak, last])) { const s = document.createElement('b'); s.className = 'kbv'; s.textContent = '$' + Math.round(val(d)); d.prepend(s); const fi = d.querySelector('i'); if (fi && fi.style.height) s.style.bottom = fi.style.height; }
+    const ax = document.createElement('div'); ax.className = 'kbx';
+    ax.innerHTML = ds.map(d => `<span>${((d.title.match(/^\s*(\w)/) || ['', ''])[1])}</span>`).join('');
+    const old = bb.nextElementSibling; if (old && /axis/.test(old.className)) old.replaceWith(ax); else bb.after(ax);
+    const lines = $$('#bill .lines>div').map(d => [txt(d.firstElementChild), txt(d.lastElementChild)]);
+    const lastBill = lines.find(l => /^Last bill/i.test(l[0])), ly = lines.find(l => /last year/i.test(l[0]));
+    if (lastBill && ly) verdict(`Your last bill was ${lastBill[1].match(/\$[\d,.]+/) ? lastBill[1].match(/\$[\d,.]+/)[0] : lastBill[1]}. This time last year it was ${ly[1].match(/\$[\d,.]+/) ? ly[1].match(/\$[\d,.]+/)[0] : ly[1]}.`, $('#bill'));
+  });
+
+  step('grid', () => {
+    const sp = $$('#grid-legend span').map(s => txt(s).match(/^(.*?) (\d+)%$/)).filter(Boolean);
+    if (sp.length < 2) return;
+    sp.sort((a, b) => b[2] - a[2]);
+    const fossil = /gas|coal|oil|biomass|other/i;
+    const k = document.createElement('div'); k.className = 'kmix';
+    k.innerHTML = sp.map(m => `<div class="${fossil.test(m[1]) ? 'fossil' : ''}"><span>${m[1]}</span><em><i style="width:${m[2]}%"></i></em><b>${m[2]}%</b></div>`).join('');
+    const bar = $('#grid-bar'); if (bar) bar.replaceWith(k); else $('#grid-legend').before(k);
+    kill($('#grid-legend'));
+    const gs = $('#grid-summary'), m = gs && txt(gs).match(/(\d+)% carbon-free/);
+    if (m) { const b = document.createElement('p'); b.className = 'kbignum'; b.innerHTML = `<b>${m[1]}%</b> carbon-free right now`; gs.before(b);
+      const wk = txt(gs).match(/past week averaged (\d+%)/); if (wk) gs.textContent = `The past week averaged ${wk[1]}.`; else kill(gs); }
+  });
+
+  step('mountain', () => {
+    const rows = $$('#mtn > div, #mtn .mtn');
+    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r)))) {
+      verdict('All three peaks are hidden today and tomorrow.', $('#mtn'));
+      for (const r of rows) for (const el of r.querySelectorAll('*')) if (!el.children.length && /Hidden today|Tomorrow: hidden/i.test(txt(el))) kill(el);
+    }
+    for (const el of $$('#ski-card .k, #ski-card .tile span')) if (/^Last 24 hours$/i.test(txt(el))) el.textContent = '24-hour change';
+  });
+
+  step('pollen', () => {
+    const rows = $$('#pollen > div, #pollen .lines > div');
+    if (!rows.length) return;
+    if (rows.every(r => /Off season/i.test(txt(r)) && !/(Low|Moderate|High)\b/.test(txt(r).replace(/Off season/g, '')))) {
+      const v = document.createElement('p'); v.className = 'kverdict'; v.textContent = 'Nothing in the air: grass, tree and weed pollen are all off season for the next three days.';
+      const box = $('#pollen'); box.replaceWith(v);
+    }
+  });
+
+  step('river', () => {
+    for (const el of $$('#columbia-facts .mini, #columbia-card .mini')) {
+      const t = txt(el), m = t.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/);
+      if (/crest|tops out|peak/i.test(t) && m) {
+        const d = new Date(`${m[1]} ${m[2]}, ${new Date().getFullYear()}`), today = new Date(); today.setHours(0, 0, 0, 0);
+        if (d < today) kill(el);
+      }
+    }
+    for (const el of $$('#columbia-card p, #columbia-summary')) if (/tops out at [\d.]+ ft (Mon|Tue|Wed|Thu|Fri|Sat|Sun)/.test(txt(el))) {
+      const m = txt(el).match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/);
+      if (m) { const d = new Date(`${m[1]} ${m[2]}, ${new Date().getFullYear()}`), t0 = new Date(); t0.setHours(0, 0, 0, 0);
+        if (d < t0) el.textContent = el.textContent.replace(/[;,]?\s*(the )?forecast tops out at [^.;]*[.;]?/i, '.').replace(/\.\s*\./, '.'); }
+    }
+  });
+
+  step('bangkok', () => {
+    if (typeof D === 'undefined' || !D.bangkok || !D.bangkok.days) return;
+    $$('#bkk .lines>div>span:first-child, #world .lines>div>span:first-child').forEach((s, i) => {
+      const d = D.bangkok.days[i]; if (!d || !d.date) return;
+      s.textContent = new Date(d.date + 'T12:00:00+07:00').toLocaleDateString('en-US', {timeZone: 'Asia/Bangkok', weekday: 'short', month: 'short', day: 'numeric'}) + (i === 0 ? ' (today there)' : '');
+    });
+  });
+  $$('i.aqi, .aqi-dot').forEach(kill);
+
+  step('rain totals', () => {
+    for (const s of $$('.rain-tot > span')) s.innerHTML = s.innerHTML.replace(/(\d)(?:″|")/g, '$1 in');
+  });
+
+  step('album birthdays', () => {
+    for (const b of $$('.bday')) {
+      const t = b.querySelector('b'); if (t && t.nextSibling && t.nextSibling.nodeType === 1) t.after(document.createTextNode(' '));
+      const age = b.querySelector('.age'); if (age) age.textContent = txt(age).replace(/\s*yrs?\.?$/, '');
+    }
+  });
+
+  step('quakes', () => {
+    for (const el of $$('#quakes *, #quake-card *')) if (!el.children.length) {
+      el.textContent = el.textContent.replace(/Under the volcanoes: (.+?) (\d+)\./, (m, v, n) => `${n} small quake${n === '1' ? '' : 's'} under ${v} this week.`);
+    }
+  });
+
+  // 13. Copy desk: web-isms out, house style in, long lists edited down, wrong facts fixed.
+  step('bangkok rows', () => {
+    if (typeof D === 'undefined' || !D.bangkok || !D.bangkok.days) return;
+    const bkToday = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Bangkok'});
+    const rows = $$('#bkk .lines>div, #world .lines>div').filter(r => r.firstElementChild);
+    rows.forEach((r, i) => {
+      const d = D.bangkok.days[i]; if (!d || !d.date) return;
+      if (d.date < bkToday) { kill(r); return; }
+      const lab = d.date === bkToday ? 'Today' : new Date(d.date + 'T12:00:00+07:00').toLocaleDateString('en-US', {timeZone: 'Asia/Bangkok', weekday: 'short', month: 'short', day: 'numeric'});
+      r.firstElementChild.textContent = lab;
+    });
+  });
+
+  step('web-isms', () => {
+    kill($('#kid-change'));
+    for (const el of $$('button, .joy-btn')) if (/Change|Listen|Play|Show|Hide|Refresh/i.test(txt(el))) kill(el);
+    $$('#jazz .cite, #gigs .cite, #shows .cite, #kid-out .cite, #big .cite, #concerts .cite').forEach(kill);
+    for (const a of $$('a, span.pill, span.tag')) if (/^(Tickets|Buy|Book|Deadline|Permit)\s*(→|›)?$/i.test(txt(a)) && a.closest('#jazz, #gigs, #plan, #shows, #concerts')) kill(a);
+    for (const el of $$('#plan *')) if (!el.children.length && /^\s*·\s*(Tickets|Buy|Book|Deadline|Permit)\s*$/i.test(el.textContent)) kill(el);
+    const PROV = /\b(listing|guide|page|site) (gives|lists|reports|says)\b|\breports? (Nov|Dec|Jan|Fri|Sat|Sun|Mon|Tue|Wed|Thu)|hasn['’]t (fully )?posted|doesn['’]t state a year|found (only )?on (ticket|event) listings|date confirmed by|comes from an event listing|not yet confirmed by the organizer|^Source:|^Sources?:|A third-party guide/i;
+    for (const el of $$('#kid-out small, #kid-out p, #jazz small, #jazz p, #big small, #plan small, #coast-events small, #bluray small, #gigs small, #gigs p, #family small, #family p')) {
+      if (el.children.length > 1) continue;
+      const parts = el.textContent.split(/(?<=[.;])\s+/), keep = parts.filter(x => !PROV.test(x));
+      let s2 = keep.join(' ').replace(/,? (?:per|according to) (?:the )?[A-Z][\w'’&. ]+(?=[.;]|$)/g, '').replace(/\s*Price not given\.?/g, '').trim();
+      if (s2 !== el.textContent.trim()) { if (s2) el.textContent = s2; else kill(el); }
+    }
+    for (const el of $$('section.group small, section.group .cite')) if (/^Source: /.test(txt(el)) && el.closest('#jazz, #gigs, #shows')) kill(el);
+    for (const sel of ['#jazz-regulars', '#br-upcoming']) {
+      const el = $(sel); if (!el) continue;
+      const t = txt(el).replace(/\.$/, ''), m = t.match(/^([^:]{3,30}):\s*(.*)$/);
+      if (!m) continue;
+      const items = m[2].split(/\s*;\s*/).filter(Boolean);
+      if (items.length < 2) continue;
+      el.innerHTML = `<b>${m[1]}</b><ul class="kplain">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    }
+    // Chips every row shares say nothing.
+    for (const box of $$('#kid-out, #family-out, .places')) {
+      const chips = [...box.querySelectorAll('.pill, .when')]; const set = new Set(chips.map(txt));
+      if (chips.length > 3 && set.size === 1) chips.forEach(kill);
+    }
+    for (const el of $$('.pill')) { const h = el.closest('section') && el.closest('section').querySelector('h3'); if (h && txt(h).toLowerCase().startsWith(txt(el).toLowerCase()) && txt(el).length > 4) kill(el); }
+  });
+
+  step('lists', () => {
+    // Streaming: the best of what's new, not every release in every language.
+    const tv = $('#tv');
+    if (tv) {
+      let section = '', kept = {recent: 0, soon: 0};
+      for (const el of [...tv.children]) {
+        if (/day-h|sub/.test(el.className) || /^H3$/.test(el.tagName)) { section = /later this month/i.test(txt(el)) ? 'later' : /recent|out now|new/i.test(txt(el)) ? 'recent' : 'soon'; if (section === 'later') kill(el); continue; }
+        if (section === 'later') { kill(el); continue; }
+        const score = +(txt(el).match(/(\d\.\d) on TMDB/) || [0, 0])[1];
+        if (section === 'recent') { if (kept.recent >= 8) kill(el); else kept.recent++; }
+        else { if (kept.soon >= 8 || (score && score < 6.5)) kill(el); else kept.soon++; }
+      }
+    }
+    // Play ideas: three for the season, three for any day, a new set each morning.
+    const ideas = $$('#play .idea, #play-card .idea');
+    if (ideas.length > 6) {
+      const doy = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 864e5);
+      const season = ideas.filter(i => /season/i.test(txt(i.querySelector('.k, small, .when')) + i.className)), any = ideas.filter(i => !season.includes(i));
+      const pick = (arr, n) => arr.length <= n ? arr : arr.map((x, k) => [x, (k - doy % arr.length + arr.length) % arr.length]).sort((a, b) => a[1] - b[1]).slice(0, n).map(x => x[0]);
+      const keep = new Set([...pick(season, 3), ...pick(any, 3)]);
+      ideas.forEach(i => { if (!keep.has(i)) kill(i); });
+    }
+    // Tickets and deadlines: the next three weeks in full; the rest on one line.
+    const plan = $('#plan');
+    if (plan) {
+      const rest = [];
+      for (const it of [...plan.children]) {
+        const t = txt(it), m = t.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
+        const dated = /\b(Today|Tomorrow|In \d+ days|Starts|By)\b/.test(t);
+        if (!dated) { const b = it.querySelector('b'); if (b) rest.push(txt(b).replace(/\s*(Tickets|Buy|Book|Deadline|Permit)$/, '')); kill(it); }
+      }
+      if (rest.length) { const p = document.createElement('p'); p.className = 'note kalso'; p.innerHTML = '<b>Already on sale:</b> ' + rest.join(' · '); plan.after(p); }
+    }
+    // Reviews: audio and video first; no business software.
+    const rv = $('#reviews');
+    if (rv) {
+      const st = [...rv.querySelectorAll('.story')];
+      st.forEach(s => { if (/VoIP|Password Manager|Case review|\bAIO\b|CRM|Payroll/i.test(txt(s))) kill(s); });
+      const live = st.filter(s => s.isConnected), av = live.filter(s => /A\/V|TV|headphone|speaker|turntable|soundbar|projector|OLED|4K|audio/i.test(txt(s)));
+      av.reverse().forEach(s => rv.prepend(s));
+      [...rv.querySelectorAll('.story')].slice(10).forEach(kill);
+    }
+    for (const box of $$('#stories, #finds, #openings, #restaurants')) [...box.querySelectorAll('.story')].slice(8).forEach(kill);
+    for (const s of $$('#openings .story, #restaurants .story')) if (/Not named/.test(txt(s))) kill(s);
+    // Blu-ray: US deals only, each title once.
+    const seenBr = new Set();
+    for (const d of $$('#bluray .deal, #bluray .story')) {
+      if (/£|\bUK\b|Amazon (Italy|UK|Germany|France|Spain)/.test(txt(d))) { kill(d); continue; }
+      const k = txt(d.querySelector('b')).replace(/\(.*?\)|:? The Criterion Collection|4K.*$/gi, '').trim().toLowerCase();
+      if (k && seenBr.has(k)) kill(d); else seenBr.add(k);
+    }
+    // Holidays: the next two months; Thailand's marked.
+    for (const r of $$('#holidays > div, #holidays .lines > div')) {
+      if (/(Second|Third) Day of Chinese New Year|\bobserved/i.test(txt(r))) { kill(r); continue; }
+      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})(?:, (20\d\d))?\b/);
+      if (m) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${m[3] || now.getFullYear()}`); if (d < new Date(now - 864e5)) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
+    }
+    // Albums: skip compilations; round birthdays get a word.
+    for (const b of $$('.bday')) {
+      const t = txt(b.querySelector('b')), age = +(txt(b.querySelector('.age')).match(/\d+/) || [0])[0];
+      if (/Greatest|Best of|Sessions|Collection|Anthology|Hits\b/i.test(t)) kill(b);
+      else if (age && age % 10 === 0) { const s = b.querySelector('small'); if (s) s.textContent += ` · turns ${age} today`; }
+    }
+    // Sky: meteor showers in the next two months.
+    for (const r of $$('#sky > div')) {
+      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
+      if (m && /meteor/i.test(txt(r))) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (d < now) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
+    }
+    // Kids' movie: little ones get G and animation.
+    const km = $('#kidmov-card');
+    if (km && /\b(PG-13|teen)\b/i.test(txt(km))) kill(km);
+  });
+
+  step('trim', () => {
+    for (const h of $$('#reps h3')) {
+      const l = h.nextElementSibling;
+      if (/sponsored/i.test(txt(h))) { kill(l); kill(h); }
+      else if (/floor votes/i.test(txt(h)) && l) [...l.children].slice(2).forEach(kill);
+      else if (/in the news/i.test(txt(h)) && l) [...l.children].slice(2).forEach(kill);
+    }
+    for (const el of $$('#reps *')) if (!el.children.length && el.textContent.length > 120) el.textContent = el.textContent.slice(0, 104).replace(/[\s;,:]+\S*$/, '') + '…';
+    [...document.querySelectorAll('#restaurants .lines > div')].slice(8).forEach(kill);
+    for (const el of [...document.querySelectorAll('#restaurants span')]) if (!el.children.length && /^Not named, /.test(el.textContent)) el.textContent = el.textContent.replace(/^Not named, /, '');
+    for (const d of [...document.querySelectorAll('#finds > div')]) if (!/Where to buy/.test(txt(d))) kill(d);
+    for (const box of [...document.querySelectorAll('#finds, #openings, #restaurants')]) [...box.children].filter(c => !/^H[2-4]$/.test(c.tagName)).slice(5).forEach(kill);
+    const now = new Date(), days = d => (d - now) / 864e5;
+    const dateOf = t => { const m = t.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/); if (!m) return null;
+      const d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (days(d) < -2) d.setFullYear(now.getFullYear() + 1); return d; };
+    for (const r of $$('#jazz > *')) { const d = dateOf(txt(r)); if (!d) continue;
+      if (days(d) > 45) kill(r); else if (days(d) > 10) r.querySelectorAll('p, small, .cite').forEach(kill); }
+    for (const r of $$('#kid-out a.story, #kid-out .story')) { const d = dateOf(txt(r)); if (d && days(d) > 30) kill(r); }
+    const any = $$('#kid-out .story').filter(r => /Any time|In season/.test(txt(r))); any.slice(4).forEach(kill);
+  });
+
+  step('civics', () => {
+    for (const el of $$('#reps *, #elect *')) if (!el.children.length) {
+      el.textContent = el.textContent
+        .replace(/Read twice and referred to the (.+?)\./g, 'In the $1.').replace(/Referred to the (.+?)\./g, 'In the $1.')
+        .replace(/Chapter \d+, \(\d{4} Laws\): Effective date (\w+ \d+), \d{4}\.?/g, 'Law since $1.')
+        .replace(/In committee upon adjournment\.?/g, 'Died in committee.')
+        .replace(/Oregon Public Broadcasting - OPB/g, 'OPB').replace(/KOIN\.com/g, 'KOIN');
+      if (/^A bill to /.test(el.textContent) && el.textContent.length > 110) el.textContent = el.textContent.slice(0, 100).replace(/\s+\S*$/, '') + '…';
+    }
+    for (const el of $$('#reps .story, #reps .lines>div')) if (/^[SH]D-\d+ — Oregon$/.test(txt(el.querySelector('b')))) kill(el);
+    // Bills they sponsored: the three latest.
+    for (const h of $$('#reps h3')) if (/sponsored/i.test(txt(h))) { const l = h.nextElementSibling; if (l) [...l.children].slice(3).forEach(kill); }
+  });
+
+  step('repeats', () => {
+    const words = s => new Set(s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 3));
+    const names = s => new Set((s.match(/\b[A-Z][a-z]{3,}\b/g) || []).slice(1));
+    const alike = (a, b) => { let k = 0; for (const w of a.w) if (b.w.has(w)) k++; const ov = k / Math.max(1, Math.min(a.w.size, b.w.size));
+      let n = 0; for (const w of a.n) if (b.n.has(w)) n++; return ov >= 0.6 || (n >= 2 && ov >= 0.35); };
+    for (const box of $$('#bignews, #localnews, #reviews, #stories, #finds')) {
+      const seen = [];
+      for (const s of box.querySelectorAll('.story')) {
+        const t = txt(s.querySelector('b')), x = {w: words(t), n: names(t)};
+        if (seen.some(y => alike(x, y))) kill(s); else seen.push(x);
+      }
+    }
+    // Repeated small print under each row of a list.
+    for (const list of $$('.lines, #mush, #re, #he')) {
+      let prev = '';
+      for (const c of list.querySelectorAll('.cite, small')) { const t = txt(c); if (t && t === prev) kill(c); else prev = t; }
+    }
+    const mm = txt($('#mush-meta')).replace(/″/g, ' in');
+    if (mm) for (const s of $$('#mush small')) if (mm.includes(txt(s).replace(/″/g, ' in'))) kill(s);
+    // Standings bullets that repeat the table above.
+    for (const li of $$('[id^="pulse-"] li')) if (/^(Standings|Beat \w+ \d+-\d+):/.test(txt(li))) kill(li);
+    // A deck that says what the first line says.
+    for (const c of $$('section.card, .card')) {
+      const m = c.querySelector('.head .meta'), f = c.querySelector('.head ~ * p, .head ~ p');
+      if (m && f && txt(f).indexOf(txt(m)) === 0 && txt(m).length > 10) kill(m);
+    }
+    // Freshness stamps from this morning.
+    const td = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+    for (const el of $$('p, small, .meta, span')) if (!el.children.length && /^(Summary|Analysis) as of /.test(txt(el)) && txt(el).includes(td)) kill(el);
+    // Germ report that contradicts itself.
+    for (const el of $$('#germ-card p, #germs p, #germ p')) if (/Nothing much going around/i.test(txt(el)) && /Moderate|High/.test(txt(el.closest('.card') || el))) el.textContent = 'Mostly quiet; one thing is running at a moderate level, below.';
+  });
+
+  step('small copy', () => {
+    for (const el of $$('#trail-card *, #trails *')) if (!el.children.length) el.textContent = el.textContent.replace(/^(\d+) in (\d+) weeks?$/, (m, n, w) => `${n} report${n === '1' ? '' : 's'} in ${w} weeks`);
+    for (const el of $$('#mo-card *, #month-card *')) if (!el.children.length) el.textContent = el.textContent.replace(/\((\d+(?:\.\d+)?) a day\)/, '($1 kWh a day)');
+    for (const el of $$('#blooms *')) if (!el.children.length && /^[a-z]/.test(el.textContent.trim())) el.textContent = el.textContent.trim().replace(/^./, c => c.toUpperCase());
+    const ws = $('#whale-card');
+    if (ws) for (const r of ws.querySelectorAll('.story, .lines>div, a')) if (/^(Cetaceans|Whales)\b/.test(txt(r.querySelector('b') || r))) { const h = r.closest('div, a'); kill(r); }
+    for (const el of $$('#out-facts *')) if (!el.children.length && /^Next tide$/i.test(txt(el))) el.textContent = 'River tide';
+    const intro = $('#brief .brief-intro');
+    // (Alfred's intro is rewritten with the planner below.)
+    for (const h of $$('h3')) { const h2 = h.closest('.card') && h.closest('.card').querySelector('h2'); if (h2 && txt(h2).toLowerCase() === txt(h).toLowerCase()) kill(h); }
+    for (const el of $$('.story p, .story small')) { const t = txt(el); if (/\b(Camera|Editor|Motion GFX|Colour):/.test(t) || (t.length < 200 && t.length > 20 && /[a-z]$/.test(t) && !/[.!?]/.test(t))) kill(el); }
+    for (const el of $$('section.group *')) if (!el.children.length && /\s[A-Z ]{6,}!$/.test(el.textContent)) el.textContent = el.textContent.replace(/\s*[A-Z ]{6,}!$/, '');
+    for (const el of $$('#potd *, #art-card *')) if (!el.children.length && /^[a-z0-9_.-]{3,30}$/.test(txt(el)) && el.tagName === 'SMALL') el.textContent = 'Photo: ' + txt(el);
+  });
+
+  step('house style', () => {
+    const tdate = new Date(), tm = new Date(Date.now() + 864e5);
+    const fmt = d => d.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+    const T = fmt(tdate), M = fmt(tm);
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      let t = n.nodeValue, o = t;
+      if (n.parentElement && n.parentElement.closest('script, style, svg')) continue;
+      t = t.replace(/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g, '$1, $2 $3');
+      t = t.replace(/ +([,.;:!?])(?=\s|$)/g, '$1');
+      t = t.replace(/(\d) %/g, '$1%');
+      t = t.replace(/\b12 pm\b/g, 'noon').replace(/\b12 am\b/g, 'midnight');
+      t = t.replace(/(\d{1,2}(?::\d\d)? [ap]m) (?:PT|Pacific|local)\b/g, '$1');
+      t = t.replace(/(\d(?::\d\d)?(?: [ap]m)?) – (\d)/g, '$1–$2');
+      t = t.replace(/\b(\d+)h (\d+)m\b/g, '$1 hr $2 min');
+      t = t.replace(/(\d)(?:″)(?=[\s,.;)]|$)/g, '$1 in');
+      t = t.replace(/(\d)-(\d+(?:\.\d+)?) (ft|in|mph|kt)\b/g, '$1–$2 $3');
+      t = t.replace(/(^|[\s(])-(\d)/g, '$1−$2');
+      t = t.replace(/\bMPH\b/g, 'mph').replace(/ · Other · /g, ' · ').replace(/\$(\d+)\.00\b/g, '$$$1');
+      t = t.replace(/(\d+) \/100\b/g, '$1/100').replace(/from the (\w+) to the \1\b/g, 'in the $1');
+      t = t.replace(/\b(Ii|Iii|Iv|Vi|Vii|Viii)\b/g, m => m.toUpperCase());
+      t = t.replace(/\bcovered by (\d+) outlets\b/g, '$1 outlets');
+      if (t.length > 60 && n.parentElement && !n.parentElement.closest('#cal, .sday, .fd, .kmatrix, #plan .when')) {
+        t = t.replace(new RegExp('(\\b(?:on|is|opens|starts|ends|from) )' + T + '\\b', 'g'), '$1today').replace(new RegExp('(\\b(?:on|is|opens|starts|ends|from) )' + M + '\\b', 'g'), '$1tomorrow');
+      }
+      if (t !== o) n.nodeValue = t;
+    }
+  });
+
+  // 14. Alfred plans the day: one judgement, then the day in time order, built
+  // from the rest of the edition (calendar, shades, the sun, the sky, the game).
+  step('alfred', () => {
+    const brief = $('#brief'); if (!brief) return;
+    const mins = s => { s = (s || '').toLowerCase().trim(); if (s === 'noon') return 720;
+      const m = s.match(/(\d{1,2})(?::(\d\d))?\s*([ap])m?/); if (!m) return null;
+      let h = +m[1] % 12; if (m[3] === 'p') h += 12; return h * 60 + (+m[2] || 0); };
+    const label = n => { const h = Math.floor(n / 60), mm = n % 60; if (n === 720) return 'Noon';
+      return `${h % 12 || 12}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
+    const nowM = (() => { const d = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'})); return d.getHours() * 60 + d.getMinutes(); })();
+    const plan = [];
+    const add = (t, text) => { if (t !== null && t >= nowM - 30 && text) plan.push([t, text]); };
+    // Calendar, today.
+    const day = $$('#cal h3.cal-day').find(h => /^Today$/i.test(txt(h)));
+    const calRows = day && day.nextElementSibling ? [...day.nextElementSibling.children] : [];
+    let gameInCal = false;
+    for (const r of calRows) { const t = txt(r.firstElementChild).replace(/\s*(Moda Center|Video call)$/, ''), w = txt(r.lastElementChild);
+      if (/Blazers|Timbers/.test(t)) { gameInCal = true; continue; }
+      add(mins(w), t); }
+    // The game, with the channel.
+    for (const k of $$('.kscore')) { const nx = [...k.children].find(d => /Next/.test(txt(d.querySelector('.k'))));
+      if (nx && /^(Tonight|Today)/.test(txt(nx.querySelector('b')))) {
+        const team = txt(k.closest('.card') && k.closest('.card').querySelector('h2')).replace(/^Portland (Trail Blazers|Timbers|Thorns)/, '$1');
+        const parts = txt(nx.querySelector('small')).replace(/^vs\.? /, 'v. ').split(' · ');
+        add(mins(txt(nx.querySelector('b')).replace(/^(Tonight|Today) /, '')), `${team} ${parts[0]}${parts[1] ? ', on ' + parts[1].split(',')[0] : ''}`); } }
+    // Shades, today.
+    const sd = $('#shades .shade-day');
+    if (sd) for (const b of sd.querySelectorAll('.shade-step b')) { const m = txt(b).match(/^(.*?) at (\d{1,2}(?::\d\d)? [ap]m|noon)$/i);
+      if (m) add(mins(m[2]), m[1].replace(/^Open sunny-side shades$/i, 'Open the sunny-side shades').replace(/^Close all shades$/i, 'Close the shades to hold the warmth')); }
+    // Sun for the big loads.
+    const ld = $('#loads .load'), lb = ld && txt(ld.querySelector('b'));
+    const lm = lb && lb.match(/(\d{1,2}(?::\d\d)? ?[ap]m|noon)\s*[–-]\s*(\d{1,2}(?::\d\d)? ?[ap]m|noon)/i);
+    if (lm) add(mins(lm[1]), `Dishwasher, laundry, the car: the panels cover it until ${lm[2].replace(/ ?([ap])m/, ' $1m')}`);
+    // Warmest hour.
+    const hot = $('.khr .hot');
+    if (hot) add(mins(txt(hot.querySelector('span')).replace(/^(\d+)([ap])$/i, '$1 $2m')), `Warmest hour, ${txt(hot.querySelector('b'))}: a good time outside with the little one`);
+    // Sunset and the sky.
+    const ss = $$('#out-facts > div, #out-facts .f').find(d => /^Sunset/i.test(txt(d)));
+    const sst = ss && txt(ss).match(/(\d{1,2}:\d\d [ap]m)/);
+    if (sst) add(mins(sst[1]) - 15, 'Look west: the sun sets at ' + sst[1]);
+    const iss = $$('#sats > div, #sats .lines > div').find(r => /Good/.test(txt(r)) && txt(r).includes(new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'})));
+    const im = iss && txt(iss).match(/at (\d{1,2}:\d\d [ap]m)[^,]*?(\d+ min), (from the [A-Z]+)/);
+    if (im) add(mins(im[1]), `The space station passes over, ${im[3]}, for ${im[2]}`);
+    plan.sort((a, b) => a[0] - b[0]);
+    // The judgement: what kind of day, and what is coming.
+    const fds = $$('#forecast .fd'), kwh = f => +(txt(f.querySelector('.e')).match(/\d+/) || [0])[0];
+    const rain = f => +(txt(f.querySelector('.r')).match(/(\d+)%/) || [0, 0])[1];
+    let say = '';
+    if (fds.length > 3) {
+      const t0 = fds[0], best = Math.max(...fds.map(kwh)), wet = fds.slice(1).filter(f => rain(f) >= 70).map(f => txt(f.querySelector('.d')));
+      if (kwh(t0) >= best && rain(t0) < 40) say = 'Today is the pick of the week, sir: the driest and sunniest day we will see.';
+      else if (rain(t0) >= 70) say = 'A wet one today, sir. Indoor plans are wise.';
+      else say = 'A fair day, sir.';
+      if (wet.length) say += ` Rain settles in ${wet.length > 1 ? `from ${wet[0]} to ${wet[wet.length - 1]}` : 'on ' + wet[0]}, so anything outdoors belongs to ${kwh(t0) >= best ? 'today' : 'the dry days'}.`;
+    }
+    const smoke = [...brief.querySelectorAll('li')].find(li => /Smoke is forecast tomorrow/i.test(txt(li)));
+    if (smoke) { say += ' Smoke arrives tomorrow; I shall keep the windows shut.'; kill(smoke); }
+    kill(brief.querySelector('.brief-intro'));
+    // Lines the plan now carries.
+    for (const li of brief.querySelectorAll('ul li')) if (plan.some(([, x]) => /Blazers|Timbers|Vikings|Pilots/.test(x) && /Blazers|Timbers|Vikings|Pilots/.test(txt(li)) && (txt(li).match(/Blazers|Timbers|Vikings|Pilots/) || [''])[0] && x.includes((txt(li).match(/Blazers|Timbers|Vikings|Pilots/) || [''])[0]))) kill(li);
+    const v = document.createElement('p'); v.className = 'kverdict kalfred'; v.textContent = say.trim();
+    const ol = document.createElement('ol'); ol.className = 'kplan';
+    ol.innerHTML = plan.map(([t, x]) => `<li><span class="kt">${label(t)}</span><span>${x}</span></li>`).join('');
+    const head = brief.querySelector('.brief-head') || brief.querySelector('h2');
+    for (const ul of brief.querySelectorAll('ul')) if (!ul.querySelector('li')) { const h = ul.previousElementSibling; if (h && h.tagName === 'H3') kill(h); kill(ul); }
+    if (head) { head.after(v); if (plan.length) { const lab = document.createElement('h3'); lab.className = 'sub'; lab.textContent = 'The day, as I would arrange it'; v.after(lab); lab.after(ol); } }
+  });
+
+  // 15. Final desk: the sign-off list.
+  step('final', () => {
+    // River: a stale crest sentence goes whole.
+    for (const el of $$('#columbia-card p, #columbia-summary, #columbia-card .summary')) {
+      const t = el.textContent.replace(/\s*The NWS forecast tops out at \d+(?:\.\d+)? ft [^]*?stage\.(?=\s|$)/i, m => {
+        const d = m.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/); if (!d) return m;
+        const dd = new Date(`${d[1]} ${d[2]}, ${new Date().getFullYear()}`), t0 = new Date(); t0.setHours(0, 0, 0, 0); return dd < t0 ? '' : m; });
+      if (t !== el.textContent) el.textContent = t;
+    }
+    // Volcano line.
+    for (const el of [...$$('#volc'), ...$$('#volc *')]) if (!el.children.length) el.textContent = el.textContent.replace(/Under the volcanoes: (.+?) (\d+)\./, (m, v, n) => `${n} small quake${n === '1' ? '' : 's'} under ${v} this week.`);
+    // Standings: the table is the truth.
+    for (const card of $$('.card')) {
+      const rank = [...card.querySelectorAll('.lines>div')].find(d => /\d+(st|nd|rd|th) of \d+/.test(txt(d)));
+      const meta = card.querySelector('.head .meta, .team-top .meta');
+      if (rank && meta) meta.textContent = meta.textContent.replace(/ · \d+(st|nd|rd|th) in .+$/, '');
+      if (meta && /Timbers|Thorns/.test(txt(card.querySelector('h2')))) { const m = txt(meta).match(/^(\d+)-(\d+)-(\d+)\b/);
+        if (m) meta.textContent = txt(meta).replace(/^\d+-\d+-\d+/, `${m[1]}W ${m[3]}L ${m[2]}D`); }
+    }
+    $$('.card small, .card p').filter(s => /^Goals:/.test(txt(s))).forEach(kill);
+    // Stale night and surf-zone rows.
+    const dow = new Date().toLocaleDateString('en-US', {weekday: 'short', timeZone: 'America/Los_Angeles'});
+    const nr = $$('#nights>div');
+    if (nr[1] && new RegExp('^' + dow + ' night').test(txt(nr[1].querySelector('b') || nr[1]))) { kill(nr[0]); const b = nr[1].querySelector('b'); if (b) b.textContent = 'Tonight'; }
+    const longDow = new Date().toLocaleDateString('en-US', {weekday: 'long', timeZone: 'America/Los_Angeles'});
+    const zs = $$('#surfzone .mini, #surfzone > div');
+    if (zs.length > 1 && zs.slice(1).some(z => new RegExp('^' + longDow).test(txt(z.querySelector('b, .k') || z))) && /^Today/.test(txt(zs[0].querySelector('b, .k') || zs[0]))) {
+      kill(zs[0]); for (const z of zs.slice(1)) { const b = z.querySelector('b, .k'); if (b && new RegExp('^' + longDow).test(txt(b))) b.textContent = b.textContent.replace(longDow, 'Today'); }
+    }
+    // Doubled stories and shows.
+    const key = s => new Set((s.match(/\b[A-Z][a-z]{4,}\b/g) || []).map(w => w.toLowerCase()));
+    for (const box of $$('#stories, #bignews, #localnews')) { const seen = [];
+      for (const s of box.querySelectorAll('.story')) { const k = key(txt(s.querySelector('b')));
+        if (seen.some(x => { let n = 0; for (const w of k) if (x.has(w)) n++; return n >= 2; })) kill(s); else seen.push(k); } }
+    const js = new Set();
+    for (const r of $$('#jazz > *')) { const b = r.querySelector('b'); if (!b) continue;
+      const k = txt(b).toLowerCase().replace(/\W+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
+      if (js.has(k) && !/mel brown|chuck israels/.test(k)) kill(r); else js.add(k); }
+    // Web chrome: inline source lines and link rows.
+    $$('small, .cite, p.note, p, span').filter(e => !e.children.length && /^Sources?:/.test(txt(e))).forEach(kill);
+    for (const p of $$('p.note, small, p')) if (p.children.length <= 3 && /^Sources?:/.test(txt(p))) kill(p);
+    for (const p of $$('.note')) if (!p.children.length) p.textContent = p.textContent.replace(/\s*Source: .*$/, '');
+    kill($('#ski-links'));
+    for (const p of $$('.note, p, div')) if (p.isConnected && txt(p).length < 140 && /^(Check (seasons|your registration)|Razor clam seasons|Lifts and grooming:)/.test(txt(p))) kill(p);
+    for (const a of $$('a, span')) if (a.isConnected && /^(About the album|Email|Site|Contact)$/.test(txt(a))) {
+      const prev = a.previousSibling; if (prev && prev.nodeType === 3) prev.nodeValue = prev.nodeValue.replace(/\s*·\s*$/, ''); kill(a); }
+    for (const el of $$('section.group small, section.group span, section.group p')) if (!el.children.length && /·\s*$/.test(el.textContent)) el.textContent = el.textContent.replace(/\s*·\s*$/, '');
+    const sun = $('#sunact-card') || $('#sun-card');
+    if (sun && !sun.querySelector('img')) for (const el of sun.querySelectorAll('p, small')) if (!el.children.length) el.textContent = el.textContent.replace(/The picture is[^.]*\.\s*/, '');
+    // Rows.
+    for (const r of $$('#openings .lines>div, #restaurants .lines>div')) if (/Not named/.test(txt(r)) && !txt(r).replace(/Not named,?/, '').trim()) kill(r);
+    for (const el of $$('#openings *, #restaurants *')) if (!el.children.length) el.textContent = el.textContent.replace(/Not named, /, '').replace(/(.{6,}?) · \1/, '$1');
+    for (const el of $$('#restaurants small')) el.innerHTML = el.innerHTML.replace(/(<span>[^<]*<\/span>: [^·<]+)\s*·\s*\1/, '$1');
+    for (const s of $$('#good .story, #good > div')) if (/East Hampton|Connecticut|Maine|Wangunk/.test(txt(s))) kill(s);
+    for (const r of $$('#kid-out .story, #kid-out > div')) { const b = r.querySelector('b'); if (b && txt(r) === txt(b)) kill(r); }
+    // Copy nits.
+    for (const el of $$('#fires *, #fire-card *')) if (!el.children.length) el.textContent = el.textContent.replace(/^\d{3,4} (?=[A-Z])/, '').replace(/\bMc([a-z])/g, (m, c) => 'Mc' + c.toUpperCase());
+    for (const el of $$('.bday small')) el.textContent = el.textContent.replace(/(turns (\d+) today) \2$/, '$1');
+    for (const r of $$('#reps .story, #reps .lines>div, #reps a')) if (/^[SH]D-\d+ — Oregon/.test(txt(r))) kill(r);
+    const tnow = $('#t-now');
+    for (const t of $$('.tile')) if (/^Produced today/i.test(txt(t.querySelector('.k'))) && /^0\.0/.test(txt(t.querySelector('.v, b, strong') || t).replace(/^Produced today\s*/i, ''))) {
+      const v = t.querySelector('.v') || t.querySelector('b'); if (v) v.innerHTML = 'Not reported yet'; }
+    // Long lists: about eight, the next three weeks first.
+    for (const sel of ['#big', '#liquor']) { const box = $(sel); if (box) [...box.children].filter(c => !/^H\d$/.test(c.tagName)).slice(8).forEach(kill); }
+    const jz = $$('#jazz > *').filter(r => r.querySelector('b')); jz.slice(12).forEach(kill);
+    const also = $('.kalso'); if (also) { const items = also.innerHTML.split(' · '); if (items.length > 8) also.innerHTML = items.slice(0, 8).join(' · ') + ` · and ${items.length - 8} more`; }
+  });
+
 }
 """
 
@@ -437,6 +988,15 @@ CURATE = r"""
 EXTRACT = r"""
 () => {
   const abs = u => { try { return new URL(u, location.href).href } catch (e) { return u } };
+  // Chrome 75 has no flex gap: write the spacing as margins.
+  for (const el of document.querySelectorAll('body *')) { const c = getComputedStyle(el); if (!/flex/.test(c.display)) continue;
+    const cg = parseFloat(c.columnGap) || 0, rg = parseFloat(c.rowGap) || 0; if (!cg && !rg) continue;
+    const col = /column/.test(c.flexDirection); let prev = null;
+    for (const k of el.children) { const kc = getComputedStyle(k); if (kc.display === 'none' || kc.position === 'absolute') continue;
+      if (prev) { if (col || k.offsetTop > prev.offsetTop + 2) { if (rg) k.style.setProperty('margin-top', (parseFloat(kc.marginTop) + rg) + 'px', 'important'); }
+        else if (cg) k.style.setProperty('margin-left', (parseFloat(kc.marginLeft) + cg) + 'px', 'important'); }
+      prev = k; }
+    el.style.setProperty('gap', '0', 'important'); }
   for (const g of document.querySelectorAll('.facts, .tiles, .minis')) g.dataset.n = g.children.length;
   // A witty card title keeps its plain name as a kicker above it.
   for (const h of document.querySelectorAll('.card h2[data-base]')) {
@@ -1031,7 +1591,6 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain #out-facts>.mini:nth-child(even){padding-left:14px !important}
 #kmain #out-facts .k{margin:0 !important}
 #kmain #out-facts .v{font:680 var(--t4)/var(--l4) var(--k-serif) !important;white-space:nowrap;text-align:right}
-#kmain #out-facts .v small{display:none !important}
 #kmain .allclear{font:italic 430 var(--t5)/var(--l5) var(--k-serif) !important;border:0 !important;border-top:1px solid var(--hair) !important;padding:var(--s1) 0 0 !important;background:none !important}
 #kmain .allclear i{display:none !important}
 
@@ -1053,6 +1612,179 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain .lines>div>span:only-child{padding-left:0 !important;max-width:none !important;text-align:left !important}
 #kmain svg{overflow:visible}
 
+/* ===== PROTO: art-director review ===== */
+:root{--hair:#5c5c5c;--k-hair:#5c5c5c;--ink2:#222;--k-grey:#222}
+/* Cover */
+.kcontents #kmain .kmast{padding:4px 0 0}
+.kcontents #kmain .kear{display:flex;justify-content:space-between;align-items:baseline;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
+.kcontents #kmain .kname{font:700 50px/52px var(--k-serif) !important;letter-spacing:-.02em;margin:0 0 10px !important}
+.kcontents #kmain .kdate{border-top:4px solid #000;border-bottom:1px solid #000;margin:0 0 18px !important;padding:7px 0 !important}
+.kcontents #kmain .kgl{border-bottom:2px solid #000;margin:0 0 16px;padding:0 0 12px}
+.kcontents #kmain .kgl .kdeg{width:150px;font:700 76px/0.9 var(--k-serif)}
+.kcontents #kmain .kgl li{font:430 16px/21px var(--k-serif);padding:6px 0 !important}
+.kcontents #kmain .kgl li b{display:block;margin:0 0 1px}
+.kcontents #kmain .klab{border-top:0;padding:0 !important;margin:0 0 4px !important}
+.kcontents #kmain .kleads a{padding:9px 0 10px}
+.kcontents #kmain .kleads a:first-child b{font:700 26px/31px var(--k-serif)}
+.kcontents #kmain .kleads small{margin:0 0 2px}
+.kcontents #kmain .kpart{margin:10px 0 0 !important}
+.kcontents #kmain .kpartbox a{padding:6px 0 5px !important}
+/* Section fronts */
+.ksecfront #kmain .kfhead{display:flex;align-items:flex-end;border-bottom:4px solid #000;padding:0 0 10px;margin:8px 0 0}
+.ksecfront #kmain .kfhead>div{-webkit-box-flex:1;flex:1 1 auto;min-width:0}
+.ksecfront #kmain .kfnum{flex:none;font:700 120px/88px var(--k-serif);letter-spacing:-.05em;font-variant-numeric:lining-nums;margin:0 0 -2px 16px}
+.ksecfront #kmain .kfsub{border-bottom:0;padding:0 !important}
+.ksecfront #kmain .kfl .kt b{white-space:normal}
+.ksecfront #kmain .kfl .kt small{display:block !important;font:italic 430 15px/20px var(--k-serif);color:#222 !important;margin-top:2px}
+.ksecfront #kmain .kfl a{padding:10px 0 !important}
+/* Album birthdays */
+#kmain .bday{display:flex !important;align-items:center;padding:9px 0 !important;border-bottom:1px solid var(--hair) !important}
+#kmain .bday>span:first-child{flex:1 1 auto !important;display:block !important;min-width:0}
+#kmain .bday>span:first-child b{display:block;font:680 var(--t4)/var(--l4) var(--k-serif) !important}
+#kmain .bday>span:first-child small{display:block;font:italic 430 var(--t5)/var(--l5) var(--k-serif) !important}
+#kmain .bday .age{flex:none !important;display:block !important;min-width:64px;text-align:right;padding:0 0 0 16px !important;color:#000 !important;font:700 30px/30px var(--k-serif) !important;font-variant-numeric:lining-nums}
+#kmain .bday .age::after{content:"years";display:block;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;opacity:1}
+/* Markets quote board */
+#kmain #mkt{display:grid !important;grid-template-columns:repeat(12,1fr);border-top:3px solid #000 !important;border-bottom:1px solid #000 !important;margin:4px 0 14px !important}
+#kmain #mkt>div{display:block !important;grid-column:span 4;border:0 !important;padding:8px 8px 10px 0 !important}
+#kmain #mkt>div:nth-child(n+4){grid-column:span 3;border-top:1px solid var(--hair) !important}
+#kmain #mkt>div+div:not(:nth-child(4)){border-left:1px solid var(--hair) !important;padding-left:10px !important}
+#kmain #mkt>div>span:first-child{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.1em;text-transform:uppercase}
+#kmain #mkt>div>span:last-child{display:block !important;max-width:none !important;padding:0 !important;text-align:left !important;font:700 26px/30px var(--k-serif) !important;font-variant-numeric:lining-nums tabular-nums}
+#kmain #mkt>div:nth-child(n+4)>span:last-child{font-size:19px !important;line-height:24px !important}
+#kmain #mkt .up,#kmain #mkt .down{display:block;font:600 15px/19px var(--k-serif) !important}
+#kmain #mkt .up::before{content:"\25B2\00A0";font-size:11px} #kmain #mkt .down::before{content:"\25BC\00A0";font-size:11px}
+#kmain #mkt-spark{margin:0 0 6px}
+.kcontents #kmain .kname{font-size:46px !important;line-height:48px !important;margin:0 0 8px !important}
+.kcontents #kmain .kdate{margin:0 0 14px !important}
+.kcontents #kmain .kgl{padding:0 0 8px;margin:0 0 12px}
+.kcontents #kmain .kgl li{padding:4px 0 !important}
+.kcontents #kmain .kleads a{padding:7px 0 8px}
+.kcontents #kmain .kleads a:first-child b{font:700 24px/29px var(--k-serif)}
+.kcontents #kmain .kpartbox a{padding:4px 0 3px !important}
+.kcontents #kmain .kpart{margin:8px 0 0 !important}
+.kcontents #kmain .ktochead{margin:0 0 6px !important}
+#kmain #tv{display:grid !important;grid-template-columns:1fr 1fr;grid-column-gap:22px}
+#kmain #tv>.day-h{grid-column:1 / -1}
+#kmain #tv>.story{padding:8px 0 !important}
+#kmain #tv>.story b{font-size:17px !important;line-height:22px !important}
+#kmain #tv>.story small{font-size:14px !important;line-height:19px !important}
+#kmain #tv .pill{display:block;font-size:13px !important}
+#kmain #tv .pill::before{content:none}
+
+.kcontents #kmain .kgl{display:flex;align-items:center}
+.kcontents #kmain .kgl .kdeg small{display:block;font:600 13px/16px var(--k-serif);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.kcontents #kmain .kwx{flex:1 1 auto;margin:0 0 0 18px !important;font:italic 430 18px/26px var(--k-serif)}
+.kcontents #kmain .kpart a{color:#000 !important;text-decoration:underline}
+.kcontents #kmain .kc{font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kbrief{border-top:1px solid #000;margin-top:16px !important;padding-top:12px}
+#kmain h3.kfold{font:700 var(--t3)/var(--l3) var(--k-serif) !important;margin:0 0 6px !important;text-transform:none !important;letter-spacing:0 !important;border:0 !important;padding:0 !important}
+#kmain .kbrief .head{display:block}
+#kmain .kbrief .meta{display:block;font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kcredits h3{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em;text-transform:uppercase;margin:14px 0 2px !important}
+#kmain .kcredits p{font:italic 430 15px/21px var(--k-serif) !important;margin:0 !important}
+#kmain .kcredits a{text-decoration:none !important}
+#kmain .chips:empty{display:none !important}
+#kmain small,#kmain .meta{font-weight:480 !important}
+
+
+
+/* Data pages */
+#kmain .kverdict{font:600 18px/26px var(--k-serif) !important;color:#000 !important;margin:8px 0 12px !important}
+#kmain table.kmatrix{width:100%;table-layout:fixed;border-collapse:collapse;border-top:1px solid #000;margin:12px 0 10px}
+#kmain .kmatrix thead th{font:600 13px/16px var(--k-serif) !important;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:6px 4px}
+#kmain .kmatrix thead th:first-child{width:104px}
+#kmain .kmatrix tbody th{font:700 15px/19px var(--k-serif) !important;text-align:left;vertical-align:top;padding:8px 6px 8px 0;border-top:1px solid #000}
+#kmain .kmatrix td{vertical-align:top;padding:7px 4px;border-top:1px solid #000}
+#kmain .kmatrix td.q4{outline:2px solid #000;outline-offset:-2px}
+#kmain .kmatrix td b,#kmain .kmatrix td span,#kmain .kmatrix td small,#kmain .kq{display:block}
+#kmain .kmatrix td b{font:600 13px/16px var(--k-serif) !important;letter-spacing:.06em;text-transform:uppercase}
+#kmain .kmatrix td.q1 b{font-weight:400 !important;font-style:italic}
+#kmain .kmatrix td span{font:700 15px/19px var(--k-serif) !important;font-variant-numeric:tabular-nums}
+#kmain .kmatrix td small{font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kq{margin:0 0 3px}
+#kmain .kq i{display:inline-block;width:9px;height:9px;margin-right:2px;border:1px solid #000;background:#fff}
+#kmain .kq i.on{background:#000 !important}
+#kmain .kkey{font:italic 430 13px/18px var(--k-serif) !important}
+#kmain .khr{display:flex;align-items:flex-end;border-top:1px solid #000;border-bottom:1px solid #000;padding:8px 0;margin:12px 0}
+#kmain .khr>div{flex:1 1 0;text-align:center}
+#kmain .khr b{display:block;font:680 17px/20px var(--k-serif) !important}
+#kmain .khr i{display:block;width:55%;margin:4px auto;background:#5a5a5a}
+#kmain .khr .hot i{background:#000}
+#kmain .khr .hot b{text-decoration:underline}
+#kmain .khr span{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.06em;text-transform:uppercase}
+#kmain #out-facts .v small{display:inline !important;font:430 13px/16px var(--k-serif) !important;margin-left:4px}
+#kmain .kscore{display:flex;border-top:2px solid #000;border-bottom:1px solid #000;margin:10px 0 12px}
+#kmain .kscore>div{flex:1 1 0;padding:8px 10px 8px 0}
+#kmain .kscore>div+div{border-left:1px solid #000;padding-left:12px}
+#kmain .kscore .k{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em;text-transform:uppercase}
+#kmain .kscore b{display:block;font:700 26px/32px var(--k-serif) !important;font-variant-numeric:tabular-nums}
+#kmain .kscore small{display:block;font:italic 430 14px/19px var(--k-serif) !important}
+#kmain #bill .progress{border:1px solid #000 !important;height:10px !important;background:#fff !important}
+#kmain #bill .progress>div,#kmain #bill .progress>i{height:100% !important;background:#000 !important}
+#kmain .kbx{display:table;width:100%;table-layout:fixed}
+#kmain .kbx span{display:table-cell;text-align:center;font:600 13px/16px var(--k-serif) !important}
+#kmain .kbv{display:block;font:700 13px/16px var(--k-serif) !important;text-align:center;margin-bottom:2px;white-space:nowrap}
+#kmain .kmix>div{display:table;width:100%;padding:6px 0;border-bottom:1px solid #000}
+#kmain .kmix span,#kmain .kmix em,#kmain .kmix b{display:table-cell;vertical-align:middle}
+#kmain .kmix span{width:170px;font:430 15px/20px var(--k-serif) !important}
+#kmain .kmix b{width:52px;text-align:right;font:700 15px var(--k-serif) !important}
+#kmain .kmix em{padding-right:8px}
+#kmain .kmix i{display:block;height:12px;background:#000}
+#kmain .kmix .fossil i{background:#5a5a5a}
+#kmain .kbignum{font:italic 430 17px/24px var(--k-serif) !important;margin:6px 0 10px !important}
+#kmain .kbignum b{font:700 44px/48px var(--k-serif) !important;font-style:normal;margin-right:8px}
+
+/* Alfred's plan for the day */
+#kmain .kalfred{font:italic 430 19px/28px var(--k-serif) !important;margin:10px 0 14px !important}
+#kmain ol.kplan{list-style:none !important;padding:0 !important;margin:0 0 12px !important;border-top:2px solid #000}
+#kmain ol.kplan li{display:table;width:100%;border-bottom:1px solid #000;padding:8px 0 !important;margin:0 !important}
+#kmain ol.kplan li::before{display:none !important;content:none !important}
+#kmain ol.kplan .kt{display:table-cell;width:5.2em;font:700 16px/22px var(--k-serif) !important;font-variant-numeric:tabular-nums;vertical-align:top}
+#kmain ol.kplan .kt+span{display:table-cell;font:430 17px/24px var(--k-serif) !important}
+#kmain ul.kplain{margin:4px 0 0 !important;padding:0 0 0 18px !important}
+#kmain .kalso{font:430 15px/22px var(--k-serif) !important}
+
+/* Final sign-off */
+html.kfit4{--s2:8px;--s3:14px;--l4:22px;--l5:19px}
+html.kfit4 #kmain .story,html.kfit4 #kmain .lines>div,html.kfit4 #kmain .fd,html.kfit4 #kmain .sday,html.kfit4 #kmain .rep,html.kfit4 #kmain li{padding-top:5px !important;padding-bottom:5px !important}
+.ksecfront #kmain .kfl.ktight a{padding:6px 0 !important}
+.ksecfront #kmain .kfl.ktight .kt small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ksecfront #kmain .kfl.kcompact .kt small{display:none !important}
+#kmain .bars>div{position:relative}
+#kmain .bars .kbv{position:absolute;left:-14px;right:-14px;margin:0 0 2px !important}
+#kmain #bill .bars{margin-top:22px !important}
+#kmain .sw,#kmain .legend i{width:12px;height:12px}
+#kmain .ksw0{background:#000 !important}
+#kmain .ksw1{background:#fff !important;border:2px solid #000;box-sizing:border-box}
+.kcontents #kmain .kt{white-space:normal !important;line-height:20px}
+.kcontents #kmain .kgl .kdeg{display:flex;align-items:flex-end;width:auto}
+.kcontents #kmain .kgl .kdeg small{margin:0 0 10px 16px !important;font-size:15px !important}
+#kmain .book img{display:none !important}
+#kmain .arch-img,#kmain .card img.photo{max-height:330px;width:auto;max-width:100%}
+/* Controls a finger can hit */
+html body .krun{height:44px !important;padding:16px 0 6px !important;cursor:pointer}
+.kbar #kmore{height:44px !important;padding:13px 16px !important}
+.ksecfront #kmain .kfl a{padding:12px 0 !important}
+/* Section list from the running head */
+#kjump{display:none}
+html.kjumpopen #kjump{display:block;position:absolute;left:24px;right:24px;top:44px;bottom:52px;background:#fff;z-index:50;
+  border-top:4px solid #000;-webkit-column-count:2;column-count:2;-webkit-column-gap:24px;column-gap:24px;padding-top:8px}
+#kjump a{display:block;min-height:44px;line-height:44px;border-bottom:1px solid #000;font:430 17px/44px var(--k-serif);color:#000;text-decoration:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-column-break-inside:avoid;break-inside:avoid}
+.ksecfront #kmain .kfl .kt b{white-space:normal !important;overflow:visible !important;text-overflow:clip !important}
+/* Pick up where you stopped */
+.kcontents #kmain .kresume{display:block;border:2px solid #000;padding:8px 14px;margin:0 0 14px;color:#000;text-decoration:none}
+.kcontents #kmain .kresume small{display:block;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase}
+.kcontents #kmain .kresume b{font:700 19px/26px var(--k-serif)}
+/* The end */
+#kmain .kend .kfname{font-size:40px !important;line-height:46px !important;margin-top:40px !important}
+#kmain .kend .kbig{display:block;border:2px solid #000;text-align:center;font:700 20px/56px var(--k-serif);margin:24px 0;color:#000;text-decoration:none}
+#kmain .kendl{-webkit-column-count:2;column-count:2;-webkit-column-gap:24px;column-gap:24px;padding:0;margin:0;list-style:none}
+#kmain .kendl li{-webkit-column-break-inside:avoid;break-inside:avoid}
+#kmain .kendl a{display:block;line-height:40px;border-bottom:1px solid #000;color:#000;text-decoration:none;font:430 16px/40px var(--k-serif)}
+#kmain .kendsrc{margin-top:18px !important;font:italic 430 15px/20px var(--k-serif)}
+
 /* Bottom bar: one 52px row */
 .kbar{display:none}
 html.kpaged,html.kpaged body{height:100% !important;overflow:hidden !important;overscroll-behavior:none;touch-action:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}
@@ -1060,7 +1792,7 @@ html.kpaged body{display:flex !important;flex-direction:column !important;paddin
 html.kpaged .krun{flex:none}
 html.kpaged #kview{flex:none;position:relative;overflow:hidden}
 html.kpaged #kclip{position:relative;overflow:hidden}
-html.kpaged #kmain{position:relative;top:0}
+html.kpaged #kmain{position:relative;top:0;display:flow-root}
 html.kpaged .kfoot{display:none}
 html.kpaged .kbar{flex:none;display:flex;align-items:center;height:52px;box-sizing:border-box;padding:0 !important;margin:0 !important;border-top:1px solid #000;
   font:600 var(--t6)/var(--l6) var(--k-serif);letter-spacing:.1em;text-transform:uppercase}
@@ -1137,10 +1869,11 @@ PAGER_JS = r"""
 /* The Morning Edition pager, written for the Paperwhite 11 browser (Chrome 75, ES5).
    No scrolling: each card is cut into screen-sized sheets at whole-item
    boundaries and shown one sheet at a time.
-   Right tap: next page (or, after "More", the next sheet of this card).
-   Left tap: back. If anything here fails the page is left as a plain page. */
+   Right tap or swipe left: the next sheet, then the next page.
+   Left tap or swipe right: back. The bar's right link skips to the next page. If anything here fails the page is left as a plain page. */
 (function(){
-  var NEXT_URL = __NEXT__, PREV_URL = __PREV__;
+  var NEXT_URL = __NEXT__, PREV_URL = __PREV__, busy = false, store = {};
+  try { store = window.sessionStorage || {}; } catch (e) {}
   var FLOW = /\b(kcontents|ksecfront)\b/.test(document.body.className);
   var root = document.documentElement, kview = document.getElementById('kview');
   var view = document.getElementById('kclip'), main = document.getElementById('kmain');
@@ -1149,7 +1882,8 @@ PAGER_JS = r"""
   var run = document.querySelector('.krun'), bar = document.querySelector('.kbar'), st = root.style;
   if (!view || !main || !kview || !bar || !window.getComputedStyle || !('flexBasis' in st || 'webkitFlexBasis' in st)) return;
   var cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
-  var UNITS = '.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail';
+  var knx = document.querySelector('.kbar .knx'), knxLabel = knx ? knx.innerHTML : '';
+  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail';
   var TITLE = (function(){ var h = main.querySelector('h2,.sci-title,.poem-title'); return h ? (h.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : document.title; })();
   function on() { return (' ' + root.className + ' ').indexOf(' kpaged ') >= 0; }
   function cls(name, v) { root.className = root.className.replace(new RegExp('(^|\\s)' + name + '(?=\\s|$)', 'g'), '') + (v ? ' ' + name : ''); }
@@ -1163,7 +1897,7 @@ PAGER_JS = r"""
       var r = el.getBoundingClientRect();
       if (r.height <= 0) continue;
       var top = r.top - base, bottom = r.bottom - base, tag = el.tagName.toUpperCase();
-      var isHead = /^(H3|H4|SUMMARY)$/.test(tag) || /\b(cal-day|day-h|sub|shelf-h|rep-head)\b/.test(el.className || '');
+      var isHead = /^(H3|H4|SUMMARY)$/.test(tag) || /\b(cal-day|day-h|sub|shelf-h|rep-head|kkick|kkicker|klab|kpart|rec-k|sci-topic)\b/.test(el.className || '');
       if (isHead) hs.push({ top: top, text: txt(/rep-head/.test(el.className) ? (el.querySelector('b,strong,a') || el) : el) });
       if (el.matches ? el.matches(UNITS) : (el.webkitMatchesSelector && el.webkitMatchesSelector(UNITS))) {
         us.push({ top: top, bottom: bottom }); ls.push({ top: top, bottom: bottom, head: isHead });   // a whole item is a good place to turn
@@ -1180,7 +1914,7 @@ PAGER_JS = r"""
         var rg = document.createRange(); rg.selectNodeContents(el);
         var lr = rg.getClientRects(), seen = {};
         for (var m = 0; m < lr.length; m++) { var lbt = Math.round(lr[m].bottom - base);
-          if (!seen[lbt] && lbt < bottom - 2) { seen[lbt] = 1; ls.push({ top: top, bottom: lbt, head: false }); } }
+          if (!seen[lbt] && lbt < bottom - 2) { seen[lbt] = 1; ls.push({ top: Math.round(lr[m].top - base), bottom: lbt, head: false }); } }
       }
     }
     return { ls: ls, us: us, hs: hs, lb: lb };
@@ -1192,13 +1926,14 @@ PAGER_JS = r"""
     if (window.pageYOffset || window.pageXOffset) window.scrollTo(0, 0); }
   // Design to fit: tighten leading, then type, then set short lists in two
   // columns. Only if none of that fits is the card paged at full size.
-  var LADDER = ['', 'kfit1', 'kfit1 kfit2', 'kfit1 kfit2 kfit3'];
+  var LADDER = ['', 'kfit1', 'kfit1 kfit2', 'kfit1 kfit2 kfit3', 'kfit1 kfit2 kfit3 kfit4'];
+  function fits() { if (drawn() > H) return false; var b = boxes(); var off = main.getBoundingClientRect().top - view.getBoundingClientRect().top; return !b.lb || b.lb + off + 4 <= H && main.scrollHeight + off <= H + 2; }
   function fit() {
-    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); main.style.zoom = '';
+    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); cls('kfit4', false); main.style.zoom = '';
     if (rail) rail.style.display = 'none';
-    if (FLOW) return;
+    if (FLOW) { var kfl = main.querySelector('ol.kfl'); if (kfl) { kfl.className = 'kfl'; var st2 = ['kfl ktight', 'kfl ktight kcompact']; for (var s2 = 0; s2 < st2.length && drawn() > H; s2++) kfl.className = st2[s2]; } return; }
     var h0 = drawn();
-    if (h0 <= H) {
+    if (fits()) {
       if (rail && h0 < H * 0.6) { rail.style.display = 'block'; if (drawn() > H) rail.style.display = 'none'; }
       return;
     }
@@ -1206,12 +1941,9 @@ PAGER_JS = r"""
     for (var i = 1; i < LADDER.length; i++) {
       var p = LADDER[i].split(' ');
       for (var k = 0; k < p.length; k++) cls(p[k], true);
-      if (drawn() <= H) return;
+      if (fits()) return;
     }
-    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false);
-    main.style.zoom = '0.95';
-    if (drawn() <= H) return;
-    main.style.zoom = '';
+    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); cls('kfit4', false);
   }
   function splits(u, c) { for (var i = 0; i < u.length; i++) { var x = u[i];
     if (x.top < c - 1 && x.bottom > c + 1 && x.bottom - x.top < H * 0.6) return true; } return false; }
@@ -1242,6 +1974,7 @@ PAGER_JS = r"""
       if (nt > cut + 80 || nt >= total) nt = cut;
       c.push(cut); t.push(nt); start = nt;
     }
+    if (c.length > 2 && b.lb - start < 8) { c.pop(); t.pop(); start = t[t.length - 1]; }
     c.push(Math.max(total, start + 1));
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
@@ -1257,24 +1990,31 @@ PAGER_JS = r"""
       if (!main.style.zoom && !root.className.match(/kfit1/)) {
         pl = plan();
         // A last screen with a line or two on it: set the card a little tighter instead.
-        if (!FLOW && pl.cuts.length > 2 && pl.last < H * 0.2) {
-          var tries = [['kfit1'], ['kfit1', 'kfit2']];
+        if (!FLOW && pl.cuts.length > 2 && pl.last < H * 0.28) {
+          var tries = [['kfit1'], ['kfit1', 'kfit2'], ['kfit1', 'kfit2', 'kfit4']];
           for (var w = 0; w < tries.length; w++) {
             for (var y = 0; y < tries[w].length; y++) cls(tries[w][y], true);
             var p2 = plan();
             if (p2.cuts.length < pl.cuts.length) { pl = p2; break; }
-            cls('kfit1', false); cls('kfit2', false);
+            cls('kfit1', false); cls('kfit2', false); cls('kfit4', false);
           }
         }
       }
       cuts = pl.cuts; tops = pl.tops;
       show(Math.min(sheet, cuts.length - 2));
-      if (!hashDone && location.hash) { hashDone = true; toHash(); }
+      if (!hashDone) { hashDone = true;
+        var back2 = 0; try { back2 = performance.navigation.type === 2; } catch (e) {}
+        if (location.hash) toHash();
+        else if (back2 && store['kme:' + location.pathname]) show(Math.min(+store['kme:' + location.pathname] || 0, cuts.length - 2)); }
     } catch (err) {
+      if (kcont) kcont.style.display = 'none';
       cls('kpaged', false); main.style.zoom = ''; main.style.top = ''; view.style.height = ''; kview.style.height = '';
     }
   }
   function toHash() {
+    var hs = location.hash.slice(1);
+    if (hs === 'kend') { show(cuts.length - 2); return; }
+    if (/^s\d+$/.test(hs)) { show(Math.min(+hs.slice(1), cuts.length - 2)); return; }
     var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (!el || !main.contains(el)) return;
     var y = el.getBoundingClientRect().top - main.getBoundingClientRect().top;
@@ -1299,34 +2039,61 @@ PAGER_JS = r"""
       more.innerHTML = 'More &darr; <span class="kfol">' + (i + 1) + '/' + n + '</span>';
     }
     if (pos) pos.innerHTML = (n > 1 && i === n - 1) ? n + '/' + n : '';
+    if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
+    try { store['kme:' + location.pathname] = i;
+      if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
+    if (busy) return;
     if (++turns % FLASH_EVERY) { show(i); return; }
+    busy = true;
     var f = document.createElement('div');
     f.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';
     document.body.appendChild(f);
-    setTimeout(function(){ show(i); document.body.removeChild(f); }, 250);
+    setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 250);
   }
-  function go(url) { if (url) location.href = url; }
-  function forward(fromMore) { var n = cuts.length - 1;
-    if ((fromMore || FLOW || sheet > 0) && sheet < n - 1) turn(sheet + 1); else go(NEXT_URL); }
-  function back() { if (sheet > 0) turn(sheet - 1); else go(PREV_URL); }
+  function go(url) { location.href = url || 'index.html'; }
+  function forward() { var n = cuts.length - 1;
+    if (sheet < n - 1) turn(sheet + 1); else go(NEXT_URL); }
+  function back() { if (sheet > 0) turn(sheet - 1); else if (PREV_URL) go(PREV_URL + (/#/.test(PREV_URL) ? '' : '#kend')); }
+  // The running head opens a list of every section.
+  var jump = document.getElementById('kjump');
+  if (run && jump) run.onclick = function(e){ if (!on()) return; e.preventDefault(); e.stopPropagation();
+    cls('kjumpopen', !/kjumpopen/.test(root.className)); };
+  // Swipes turn pages, as in the Kindle's own reader.
+  var x0 = null, y0 = 0, swallow = false;
+  document.addEventListener('touchstart', function(e){ if (e.touches && e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, false);
+  document.addEventListener('touchend', function(e){
+    if (x0 === null || !on() || !e.changedTouches) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { swallow = true; setTimeout(function(){ swallow = false; }, 400); if (dx < 0) forward(); else back(); }
+  }, false);
+  // The cover offers to pick up where you stopped.
+  if (/kcontents/.test(document.body.className)) try {
+    var last = JSON.parse(localStorage.getItem('kme:last') || 'null'), mast = main.querySelector('.kmast');
+    if (last && last.u && mast && last.ed === root.getAttribute('data-ed')) { var a = document.createElement('a'); a.className = 'kresume';
+      var ld = main.querySelectorAll('.kleads > a'); if (ld.length > 2) ld[ld.length - 1].parentNode.removeChild(ld[ld.length - 1]);
+      a.href = last.u + (last.ed === root.getAttribute('data-ed') && last.s ? '#s' + last.s : '');
+      a.innerHTML = '<small>Pick up where you stopped</small><b>' + String(last.t).replace(/</g, '&lt;') + ' &rsaquo;</b>';
+      mast.parentNode.insertBefore(a, mast.nextSibling); }
+  } catch (e) {}
   function later() { clearTimeout(timer); timer = setTimeout(layout, 60); }
-  if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(true); };
+  if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(); };
   document.addEventListener('click', function(e){
-    if (!on()) return;
+    if (!on() || swallow) return;
+    if (/kjumpopen/.test(root.className) && !(jump && jump.contains(e.target))) { e.preventDefault(); cls('kjumpopen', false); return; }
     for (var t = e.target; t && t !== document.body; t = t.parentNode) {
       var n = (t.nodeName || '').toUpperCase();
       if ((n === 'A' && t.getAttribute('href')) || t === more || /^(SUMMARY|BUTTON|INPUT|LABEL|SELECT|TEXTAREA)$/.test(n)) return;
     }
     e.preventDefault();
-    if (e.clientX < window.innerWidth / 3) back(); else forward(false);
+    if (e.clientX < window.innerWidth / 3) back(); else forward();
   }, false);
-  document.addEventListener('touchmove', function(e){ if (on()) e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', function(e){ if (on() && !(jump && jump.contains(e.target))) e.preventDefault(); }, { passive: false });
   document.addEventListener('scroll', function(){ if (on()) unscroll(); }, true);
   document.addEventListener('toggle', later, true);
   document.addEventListener('keydown', function(e){
-    if (e.keyCode === 34 || e.keyCode === 39 || e.keyCode === 32) { e.preventDefault(); forward(false); }
+    if (e.keyCode === 34 || e.keyCode === 39 || e.keyCode === 32) { e.preventDefault(); forward(); }
     if (e.keyCode === 33 || e.keyCode === 37) { e.preventDefault(); back(); }
   }, false);
   window.addEventListener('resize', later, false);
@@ -1361,20 +2128,22 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
-    prev_link = f'<a class="kprev" href="{prev}">&lsaquo; Back</a>' if prev else '<span class="kprev"></span>'
-    nxt_short = (f'<a class="knx" href="{nxt}">{nxt_name} &rsaquo;</a>' if nxt
+    prev_link = (f'<a class="kprev" href="{prev}">&lsaquo; {esc(prev_title(prev)) or "Back"}</a>' if prev
+                 else '<span class="kprev"></span>')
+    nxt_short = (f'<a class="knx" href="{nxt}">{"Next: " if next_label is None else ""}{nxt_name} &rsaquo;</a>' if nxt
                  else '<a class="knx" href="index.html">The front &rsaquo;</a>')
-    foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#">More &darr;</a>'
+    foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#" role="button">More &darr;</a>'
             f'<span id="kpos"></span></span>{nxt_short}</footer>'
             f'<footer class="kfoot">{nxt_block}<div class="kmeta"><span></span><span>{stamp}</span></div></footer>')
     js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
     return f"""<!doctype html>
-<html lang="en" class="{esc(html_class)}"><head><meta charset="utf-8">
+<html lang="en" class="{esc(html_class)}" data-ed="{esc(stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
 <body class="{esc(body_class)}">
 {top}
 <div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div></div>
+{_JUMP[0] if top and run_left else ""}
 {foot}
 {js}
 </body></html>
@@ -1382,6 +2151,7 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
 
 
 _TITLES = {}
+_JUMP = [""]
 
 
 def prev_title(href):
@@ -1488,6 +2258,7 @@ def snapshot(site):
                                   has_touch=True, locale="en-US", reduced_motion="reduce")
         p = ctx.new_page()
         p.on("pageerror", lambda e: print(f"kindle_full: page error: {e}", file=sys.stderr))
+        p.on("console", lambda m: m.text.startswith("kindle ") and print(f"kindle_full: {m.text}", file=sys.stderr))
         p.goto(url, wait_until="networkidle", timeout=90_000)
         # Scroll the whole page so cards that load on view get filled in.
         height = p.evaluate("document.body.scrollHeight")
@@ -1521,13 +2292,143 @@ def snapshot(site):
 
 
 # A morning read: your day first, then the news, then home, town and the back pages.
+# Reading order for the first half hour awake: what the day needs, then a calm
+# stretch at home, then the news once the reader is alert, then their own
+# interests, and it ends on Thailand and, last of all, the beach.
 PARTS = [
-    ("Your day", ["today", "family", "roads"]),
-    ("The news", ["news", "sports", "markets"]),
+    ("Your day", ["today", "roads", "family"]),
     ("Home and land", ["solar", "garden", "river", "nearby"]),
-    ("Town and culture", ["local", "music", "watch", "coast"]),
-    ("The back pages", ["science", "civics", "almanac", "world", "delights", "doodles"]),
+    ("The news", ["news", "markets", "civics", "sports"]),
+    ("Around town", ["music", "watch", "local"]),
+    ("The back pages", ["almanac", "science", "doodles", "delights", "world", "coast"]),
 ]
+# Card order inside a section, by the id of each card's heading (titles rotate).
+CARD_ORDER = {
+    "today": ["today-card", "brief-h", "wx-h", "cal-h", "plan-h", "yard-h", "shade-h", "fc-h"],
+    "roads": ["drive-h", "road-h", "ski-h", "mtn-h", "trail-h", "fire-h", "quake-h"],
+    "solar": ["t-now", "loads-h", "bill-h", "grid-h", "mo-h", "wins-h", "sunact-h"],
+    "garden": ["look-h", "pollen-h", "burn-h", "birds-h", "plant-h", "bloom-h", "mush-h"],
+    "news": ["localnews-h", "bignews-h", "stories-h", "reviews-h"],
+    "markets": ["he-h", "mkt-h", "re-h"],
+    "music": ["rec-h", "drum-h", "bday-h", "alb-h", "jazz-h", "gig-h", "artist-h"],
+    "watch": ["br-h", "tv-h", "kidmov-h", "clsmov-h"],
+    "almanac": ["hol-h", "hist-h", "near-h"],
+    "delights": ["potd-h", "apod-h", "art-h", "poem-h", "good-h", "oldpdx-h", "show-h", "ask-h", "books-h", "read-h"],
+    "world": ["bkk-h", "thai-h"],
+    "coast": ["surf-h", "bar-h", "coast-summary", "minus-h", "shell-h", "cev-h", "whale-h"],
+}
+# Cards that read better in another section: (heading id, from, to).
+CARD_MOVES = [("thai-h", "delights", "world")]
+
+# No fact twice: an item already printed earlier in the edition is taken out
+# of the later page. Alfred's briefing is a digest, so it goes last: any line of
+# his that another page already carries is dropped from the briefing.
+DEDUPE = r"""
+(pages) => {
+  const norm = s => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const seen = new Map();           // text -> element that printed it first
+  const MIN = 40;
+  const docs = pages.map(pg => { const d = document.createElement('div'); d.innerHTML = pg.html; return d; });
+  const isAlfred = pages.map(pg => /id="brief-h"/.test(pg.html));
+  const prune = el => {
+    let p = el.parentElement; el.remove();
+    while (p && p.parentElement && !p.querySelector('img, svg, h2') && norm(p.textContent).length < 15) {
+      const up = p.parentElement; p.remove(); p = up; }
+  };
+  const walk = (root) => {
+    const stack = [root.firstElementChild ? root : null].filter(Boolean);
+    const out = [];
+    const visit = el => {
+      for (let c = el.firstElementChild; c; ) { const nx = c.nextElementSibling;
+        const tag = c.tagName;
+        if (/^(H1|H2|SCRIPT|STYLE|SVG)$/.test(tag) || c.querySelector('h2') || c.classList.contains('head')) { visit(c); c = nx; continue; }
+        const t = norm(c.textContent);
+        if (t.length >= MIN) {
+          const prev = seen.get(t);
+          if (prev && !prev.contains(c) && !c.contains(prev)) { prune(c); c = nx; continue; }
+          if (!prev) seen.set(t, c);
+        }
+        visit(c); c = nx; }
+    };
+    visit(root);
+  };
+  // The same event or story under its own name on two pages: keep the first.
+  const named = new Set();
+  docs.forEach((d, i) => {
+    if (isAlfred[i]) return;
+    const mine = [];
+    for (const b of [...d.querySelectorAll('b, strong')]) {
+      const t = norm(b.textContent).replace(/[.:]$/, '');
+      if (t.length < 18 || !b.isConnected) continue;
+      if (named.has(t)) {
+        let it = b;
+        while (it.parentElement && it.parentElement !== d && it.parentElement.querySelectorAll('b, strong').length === 1) it = it.parentElement;
+        if (it !== b && !it.querySelector('h2') && !it.classList.contains('head')) prune(it);
+      } else mine.push(t);
+    }
+    mine.forEach(t => named.add(t));
+  });
+  for (const d of docs) for (const a of [...d.querySelectorAll('a[href^="http"], a[href^="tel:"]')]) {
+    if (a.classList.contains('read-fresh')) continue;
+    if (/^(Listen|Spotify|Tickets|Buy|Book|Watch|Read more|More)\b.{0,12}$/i.test(norm(a.textContent))) { a.remove(); continue; }
+    const sp = document.createElement('span'); if (a.className) sp.className = a.className;
+    while (a.firstChild) sp.appendChild(a.firstChild); a.replaceWith(sp);
+  }
+  docs.forEach((d, i) => { if (!isAlfred[i]) walk(d); });
+  // The front page's "Big in town" is the calendar's evening game again.
+  docs.forEach(d => { const x = d.querySelector('#day-big'); if (x) x.remove(); });
+  // Alfred: drop any line that repeats something printed elsewhere.
+  const keys = [...seen.keys()].filter(k => k.length >= 25);
+  for (const t of $titles) keys.push(t);
+  for (const t of named) keys.push(t);
+  const texts = docs.map((d, i) => isAlfred[i] ? '' : norm(d.textContent));
+  docs.forEach((d, i) => {
+    if (!isAlfred[i]) return;
+    for (const li of [...d.querySelectorAll('li')]) {
+      if (li.closest('.kplan')) continue;
+      const bs = [...li.querySelectorAll('b, strong')].map(x => norm(x.textContent)).filter(x => x.length >= 6);
+      if (bs.length && texts.some(pt => bs.every(x => pt.includes(x)))) { prune(li); continue; }
+      const t = norm(li.textContent);
+      const b = [...li.querySelectorAll('b')].map(x => norm(x.textContent)).filter(x => x.length >= 12);
+      const subj = t.split(': ').pop().replace(/[.!]+$/, '');
+      if (/ is today\.?$/.test(t) || keys.some(k => t.includes(k) || b.some(x => k.includes(x)) || (subj.length >= 15 && k.includes(subj)))) prune(li);
+    }
+    for (const ul of [...d.querySelectorAll('ul')]) if (!ul.querySelector('li')) ul.remove();
+    for (const h of [...d.querySelectorAll('h3')]) {
+      const nx = h.nextElementSibling;
+      if (!nx || /^H3$/.test(nx.tagName) || !norm(nx.textContent) || /brief-sign/.test(nx.className)) h.remove();
+    }
+  });
+  for (const d of docs) {
+    const tw = document.createTreeWalker(d, NodeFilter.SHOW_TEXT);
+    let prev = null;
+    for (let n = tw.nextNode(); n; n = tw.nextNode()) {
+      if (/^\s+[,.;:!?](\s|$)/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/^\s+/, '');
+      if (prev && /^[,.;:!?](\s|$)/.test(n.nodeValue) && /\s$/.test(prev.nodeValue)) prev.nodeValue = prev.nodeValue.replace(/\s+$/, '');
+      n.nodeValue = n.nodeValue.replace(/ +([,.;:!?])(?=\s|$)/g, '$1');
+      prev = n;
+    }
+  }
+  return docs.map(d => d.innerHTML);
+}
+"""
+
+
+def dedupe(pages, titles):
+    """Run DEDUPE over the pages in reading order (in place)."""
+    import json
+    exe = os.environ.get("KINDLE_CHROMIUM") or None
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=exe)
+            p = browser.new_page()
+            js = DEDUPE.replace("$titles", json.dumps([t.lower() for t in titles if len(t) >= 20]))
+            res = p.evaluate(js, [{"html": pg["html"]} for pg in pages])
+            browser.close()
+        for pg, h in zip(pages, res):
+            pg["html"] = h
+    except Exception as e:  # never lose the edition over this
+        print(f"kindle_full: dedupe skipped: {e}", file=sys.stderr)
 
 
 def self_host_fonts(out):
@@ -1622,8 +2523,6 @@ def main(site):
             if pred(c):
                 cards.insert(to, cards.pop(k))
                 return
-    move_first("solar", lambda c: c["title"].lower().startswith("solar right now"))
-    move_first("today", lambda c: c["title"] == "Your weather station says", to=2)
     # Repeats and one-liners.
     if "doodles" in by_id:
         by_id["doodles"]["cards"] = [c for c in by_id["doodles"]["cards"] if c["title"] != "Who can still win it"]
@@ -1634,9 +2533,15 @@ def main(site):
         if a and b:
             a["html"] += re.sub(r"<h2\b", '<h3', re.sub(r"</h2>", "</h3>", b["html"]))
             gc.remove(b)
-    # Bangkok is one page: it reads best at the end of the Almanac.
-    if "world" in by_id and "almanac" in by_id:
-        by_id["almanac"]["cards"] += by_id.pop("world")["cards"]
+    for key, src, dst in CARD_MOVES:
+        if src in by_id and dst in by_id:
+            for c in list(by_id[src]["cards"]):
+                if f'id="{key}"' in c["html"]:
+                    by_id[src]["cards"].remove(c)
+                    by_id[dst]["cards"].append(c)
+    if "world" in by_id:
+        by_id["world"]["title"] = "Thailand"
+        by_id["world"]["sub"] = "Bangkok right now, and a phrase to try"
     by_id = {k: s for k, s in by_id.items() if s["cards"]}
 
     # Today opens with one front page: the greeting, the weather and the day ahead.
@@ -1654,6 +2559,61 @@ def main(site):
             cards[1] = {"title": "Good morning",
                         "html": head + (hero if g.get("temp") else "") + cards[1]["html"] + alerts}
             cards.pop(0)
+
+    for sid, keys in CARD_ORDER.items():
+        if sid not in by_id:
+            continue
+        def rank(c, keys=keys):
+            for n, k in enumerate(keys):
+                if f'id="{k}"' in c["html"]:
+                    return n
+            return len(keys)
+        by_id[sid]["cards"].sort(key=rank)
+
+    def as_sub(h):
+        """A card's body as a block inside another card: its headline becomes an h3."""
+        h = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', "", h, flags=re.S)
+        return re.sub(r"<h2\b([^>]*)>(.*?)</h2>", r'<h3 class="kfold"\1>\2</h3>', h, flags=re.S)
+
+    # Science: one page of briefs, not seven taps of three lines each.
+    sci = by_id.get("science", {}).get("cards", [])
+    if len(sci) > 2:
+        by_id["science"]["cards"] = [{"title": "Science this morning",
+                                      "html": '<div class="head"><p class="kkick">Science</p><h2>This morning in science</h2></div>'
+                                              + "".join(f'<div class="kbrief">{as_sub(c["html"])}</div>' for c in sci)}]
+    # Thailand: Bangkok and the phrase of the day on one page.
+    wc = by_id.get("world", {}).get("cards", [])
+    if len(wc) > 1:
+        wc[0]["html"] += "".join(f'<div class="kbrief">{as_sub(c["html"])}</div>' for c in wc[1:])
+        del wc[1:]
+    # A card with a line or two in it joins the card before it.
+    KEEP = ("ask-h", "drum-h", "brief-h", "today-card", "rec-h", "poem-h")
+    for sid, sec in by_id.items():
+        kept = []
+        for c in sec["cards"]:
+            thin = (len(body_text(c["html"])) < 140 and "<img" not in c["html"] and "<svg" not in c["html"]
+                    and not any(f'id="{k}"' in c["html"] for k in KEEP))
+            if thin and kept:
+                kept[-1]["html"] += f'<div class="kbrief">{as_sub(c["html"])}</div>'
+            else:
+                kept.append(c)
+        sec["cards"] = kept
+    # Before the panels wake up, "Solar right now" is a page of zeros: it goes last.
+    if "solar" in by_id:
+        sc = by_id["solar"]["cards"]
+        for c in list(sc):
+            if 'id="t-now"' in c["html"] and re.search(r"hasn.t reported|Producing now\s*0\.0", _text(c["html"])):
+                sc.remove(c)
+                sc.append(c)
+    # Source credits leave the reading pages for one page at the back.
+    credits = {}
+    for sid, sec in by_id.items():
+        for c in sec["cards"]:
+            for m in re.findall(r'<p class="ksources"[^>]*>(.*?)</p>', c["html"], flags=re.S):
+                m = re.sub(r"^\s*<b>[^<]*</b>\s*", "", m).strip(" ·")
+                if m and m not in credits.setdefault(sid, []):
+                    credits[sid].append(m)
+            c["html"] = re.sub(r'<p class="ksources"[^>]*>.*?</p>', "", c["html"], flags=re.S)
 
     known = [i for _, ids in PARTS for i in ids]
     parts = [(name, [i for i in ids if i in by_id]) for name, ids in PARTS]
@@ -1680,6 +2640,7 @@ def main(site):
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
             pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
                           "k": k + 1, "of": len(cards)})
+    dedupe(pages, [])
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -1695,9 +2656,53 @@ def main(site):
         return re.sub(r'href="KHASH:([^"]*)"',
                       lambda m: f'href="{where[m.group(1)]}#{m.group(1)}"' if m.group(1) in where else "", doc)
 
+    SKIP = re.compile(r"^(Updated|Checked|As of|Summary as of|Analysis as of|Events checked|Next \d+ days|From home)\b"
+                      r"|\b(TomTom|TripCheck|WTA|NIFC|USGS|BPA|Google|Wikidata|Metacritic|Wikipedia|eBird|iNaturalist|Open-Meteo"
+                      r"|NOAA|SWPC|CDC|Goodreads|Library of Congress|Internet Archive|Art Institute|TVmaze|TMDB|Yahoo|ODOT|NWS)\b"
+                      r"|\b(outlets|sources)$|^Source", re.I)
+
+    TEASER = {}
+    for pg in pages:
+        if pg["sec"] == "civics" and 'id="reps' in pg["html"]:
+            who = [_text(x) for x in re.findall(r'<div class="rep-head"[^>]*>.*?<b[^>]*>(.*?)</b>', pg["html"], re.S)]
+            if who:
+                TEASER[pg["file"]] = ", ".join(who[:3]) + (" and more" if len(who) > 3 else "")
+        if pg["sec"] == "world":
+            m = re.search(r"(\d+°F)", _text(pg["html"]))
+            TEASER[pg["file"]] = f"Bangkok right now{', ' + m.group(1) if m else ''}, the next days, and a Thai phrase to try"
+
+    BAD = re.compile(r"not named|stories first|:$|^(Because|A \d{4}s classic)|^Learned from|^Inside now|^Expected solar|^\d+ in the next")
+
     def teaser(pg):
-        m = re.search(r'class="meta"[^>]*>(.*?)</span>', pg["html"], re.S)
-        return _text(m.group(1)) if m else ""
+        h = pg["html"]
+        if pg["sec"] == "science":
+            return ""
+        if pg["file"] in TEASER:
+            return TEASER[pg["file"]]
+        cands = []
+        m = re.search(r'class="meta"[^>]*>(.*?)</span>', h, re.S)
+        meta = _text(m.group(1)) if m else ""
+        if meta and not SKIP.search(meta) and meta.lower() != pg["title"].lower() and len(meta) > 12:
+            cands.append(meta)
+        body = re.sub(r'<h2\b.*?</h2>|<p class="kkick[^"]*".*?</p>|<span class="meta".*?</span>|<h3\b.*?</h3>', "", h, flags=re.S)
+        body = re.sub(r'<p class="(?:note )?kalso".*?</p>', "", body, flags=re.S)
+        for para in re.findall(r'<(?:p|li|div class="ksum")\b[^>]*>(.*?)</(?:p|li|div)>', body, re.S):
+            t = _text(para)
+            if (t.count(" · ") >= 2 or re.match(r"(Tones:|Voted the same|Already on sale|Mostly quiet)", t)
+                    or re.search(r"\(\w+ announced", t) or re.search(r" is an? [\w ]+ in [A-Z]\w+, [A-Z]", t)):
+                continue
+            if len(t) >= 30 and not SKIP.search(t):
+                sm = re.match(r"(.{25,110}?[a-z0-9)%°]{2}[.!?])(\s+[A-Z(\"]|$)", t)
+                cands.append(sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…")
+        for b in re.findall(r"<(?:b|strong)\b[^>]*>(.*?)</(?:b|strong)>", body, re.S):
+            t = _text(b)
+            if len(t) > 8:
+                cands.append(t)
+        for t in cands:
+            t = re.sub(r"\s+([,.;:])", r"\1", t)
+            if not BAD.search(t) and t.lower() != pg["title"].lower():
+                return t
+        return ""
 
     edition = stamp.split(" ", 1)[-1].replace("AM", "am").replace("PM", "pm")
     stamp_txt = html.escape(f"Edition of {edition}")
@@ -1705,6 +2710,11 @@ def main(site):
     for i in order:
         seq.append(front[i])
         seq.extend(pg["file"] for pg in pages if pg["sec"] == i)
+    _TITLES["sources.html"] = "Sources and credits"
+    seq.append("end.html")
+    _TITLES["end.html"] = "The end"
+    _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
+                + "".join(f'<a href="{front[i]}">{html.escape(by_id[i]["title"])}</a>' for i in order) + "</nav>")
     after = {f: (seq[n + 1] if n + 1 < len(seq) else None) for n, f in enumerate(seq)}
     before = {f: (seq[n - 1] if n else "index.html") for n, f in enumerate(seq)}
     nsec = len(order)
@@ -1724,7 +2734,7 @@ def main(site):
             label = f'Next: {_TITLES[nxt]}'
         doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, data["htmlClass"], data["bodyClass"] + " kcard",
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
-                   run_right=f'Page {pg["k"]} of {pg["of"]}', fonts=font_links, next_label=label,
+                   run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
                    run_href=front[pg["sec"]])
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
@@ -1736,14 +2746,37 @@ def main(site):
         rows = "".join(
             f'<li><a href="{pg["file"]}"><span class="kn">{pg["k"]:02d}</span><span class="kt"><b>{html.escape(pg["title"])}</b>'
             f'<small>{html.escape(teaser(pg))}</small></span></a></li>' for pg in cards)
-        body = (f'<p class="kkick">{html.escape(part_of[i])} &middot; Section {num} of {nsec}</p>'
+        if i == "science" and cards:
+            # One page of briefs: the front lists the briefs themselves.
+            rows = "".join(
+                f'<li><a href="{cards[0]["file"]}"><span class="kn">{n:02d}</span><span class="kt"><b>{html.escape(_text(t))}</b></span></a></li>'
+                for n, t in enumerate(re.findall(r'<(?:h3 class="kfold"|b class="sci-title")[^>]*>(.*?)</(?:h3|b)>', cards[0]["html"], re.S), 1))
+        body = (f'<div class="kfhead"><div><p class="kkick">{html.escape(part_of[i])}</p>'
                 f'<h2 class="kfname">{html.escape(sec["title"])}</h2>'
-                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p>'
-                f'<ol class="kfl{" kcompact" if len(cards) > 6 else ""}">{rows}</ol>')
+                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p></div><span class="kfnum">{num:02d}</span></div>'
+                f'<ol class="kfl">{rows}</ol>')
         with open(os.path.join(out, front[i]), "w") as f:
             f.write(page(sec["title"], body, data["htmlClass"], data["bodyClass"] + " ksecfront",
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"Section {num} / {nsec}", fonts=font_links))
+                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links))
+
+    # The end of the edition: where to go from here.
+    with open(os.path.join(out, "end.html"), "w") as f:
+        f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
+                     f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
+                     f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
+                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits else "") + '</div>',
+                     "", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
+                     run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
+
+    if credits:
+        rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
+                       for i in order if credits.get(i))
+        with open(os.path.join(out, "sources.html"), "w") as f:
+            f.write(page("Sources and credits", f'<div class="head"><p class="kkick">The back page</p><h2>Sources and credits</h2></div>'
+                         f'<div class="kcredits">{rows}</div>', data["htmlClass"], data["bodyClass"] + " kcard",
+                         prev="index.html", nxt=None, stamp=stamp_txt, run_left="The Morning Edition",
+                         run_right="", fonts=font_links))
 
     # The front: masthead, today at a glance, the top of the edition, then contents.
     g = data.get("front", {})
@@ -1762,17 +2795,25 @@ def main(site):
             num += 1
             cnt = len([pg for pg in pages if pg["sec"] == i])
             cells.append(f'<li><a href="{front[i]}"><span class="kn">{num:02d}</span><span class="kt">{html.escape(by_id[i]["title"])}</span>'
-                         f'<span class="kc">{cnt}</span></a></li>')
+                         f'<span class="kc">{cnt} {"page" if cnt == 1 else "pages"}</span></a></li>')
         toc.append(f'<p class="kpart">{html.escape(name)}</p><ul class="kpartbox">{"".join(cells)}</ul>')
-    body = (f'<div class="kmast"><p class="kname">The Morning Edition</p>'
+    import datetime as _dt
+    doy = _dt.date.today().timetuple().tm_yday
+    hi = re.search(r"High (\d+°)", _text(by_id.get("today", {}).get("cards", [{}])[0].get("html", "")) if by_id.get("today") else "")
+    wx = ""
+    if g.get("temp"):
+        wx = (f'<div class="kgl"><div class="kdeg">{html.escape(g["temp"])}<small>{html.escape(g.get("where", ""))}</small></div>'
+              '</div>')
+    body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span>No. {doy}</span></div>'
+            f'<p class="kname">The Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
             f' &middot; {html.escape(edition)} edition</p></div>'
-            + (f'<div class="kgl">{deg}<ul>{gl}</ul></div>' if gl or deg else "")
+            + wx
             + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
             + f'<h2 class="ktochead kbreak" id="contents">Contents</h2>{"".join(toc)}'
 )
     with open(os.path.join(out, "index.html"), "w") as f:
-        f.write(page("The Morning Edition", body, "", "kcontents", nxt=seq[0] if seq else None,
+        f.write(page("The Morning Edition", body, "", "kcontents", nxt=(seq[1] if len(seq) > 1 and seq[0] == "today.html" else seq[0]) if seq else None,
                      stamp=stamp_txt, run_left="", run_right="", fonts=font_links))
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.

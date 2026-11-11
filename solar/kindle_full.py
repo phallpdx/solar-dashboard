@@ -1674,8 +1674,8 @@ def main(site):
                 body = f'<h2 class="kh2">{html.escape(c["title"])}</h2>' + body
             if c["title"] in NAMES and NAMES[c["title"]] != c["title"]:
                 plain = html.escape(NAMES[c["title"]])
-                if re.search(r'<p class="kkick">.*?</p>', body):
-                    body = re.sub(r'<p class="kkick">.*?</p>', f'<p class="kkick">{plain}</p>', body, count=1)
+                if re.search(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', body):
+                    body = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', f'<p class="kkick">{plain}</p>', body, count=1)
                 else:
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
             pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,

@@ -205,8 +205,9 @@ CURATE = r"""
     if (mb.children.length) sports.after(money);
   }
   const SEC = { sports: ['Sports', 'Blazers, Timbers, the Vikings and Pilots, and Formula 1'], delights: ['Diversions', null],
-                almanac: ['Almanac', null], science: ['Science', null], civics: ['Civics', null], doodles: ['By the Numbers', null],
-                world: ['Bangkok', null], nearby: ['The Sky', null] };
+                almanac: ['Almanac', null], science: ['Science', null], civics: ['Civics', null], doodles: ['By the numbers', null],
+                world: ['Bangkok', null], nearby: ['The sky', null], family: ['Little one', 'Ideas for ages 2 to 3, places to go and what is going around'],
+                roads: ['Roads and mountains', 'Traffic, road work, Mt. Hood, trails, fires and quakes'] };
   for (const [id, [title, sub]] of Object.entries(SEC)) {
     const g = $(`section.group[data-sec=${id}]`); if (!g) continue;
     const h = g.querySelector('.sec-h'); if (h) h.textContent = title;
@@ -1053,6 +1054,105 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain .lines>div>span:only-child{padding-left:0 !important;max-width:none !important;text-align:left !important}
 #kmain svg{overflow:visible}
 
+/* ===== PROTO: art-director review ===== */
+:root{--hair:#5c5c5c;--k-hair:#5c5c5c;--ink2:#222;--k-grey:#222}
+/* Cover */
+.kcontents #kmain .kmast{padding:4px 0 0}
+.kcontents #kmain .kear{display:flex;justify-content:space-between;align-items:baseline;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px}
+.kcontents #kmain .kname{font:700 50px/52px var(--k-serif) !important;letter-spacing:-.02em;margin:0 0 10px !important}
+.kcontents #kmain .kdate{border-top:4px solid #000;border-bottom:1px solid #000;margin:0 0 18px !important;padding:7px 0 !important}
+.kcontents #kmain .kgl{border-bottom:2px solid #000;margin:0 0 16px;padding:0 0 12px}
+.kcontents #kmain .kgl .kdeg{width:150px;font:700 76px/0.9 var(--k-serif)}
+.kcontents #kmain .kgl li{font:430 16px/21px var(--k-serif);padding:6px 0 !important}
+.kcontents #kmain .kgl li b{display:block;margin:0 0 1px}
+.kcontents #kmain .klab{border-top:0;padding:0 !important;margin:0 0 4px !important}
+.kcontents #kmain .kleads a{padding:9px 0 10px}
+.kcontents #kmain .kleads a:first-child b{font:700 26px/31px var(--k-serif)}
+.kcontents #kmain .kleads small{margin:0 0 2px}
+.kcontents #kmain .kpart{margin:10px 0 0 !important}
+.kcontents #kmain .kpartbox a{padding:6px 0 5px !important}
+/* Section fronts */
+.ksecfront #kmain .kfhead{display:flex;align-items:flex-end;border-bottom:4px solid #000;padding:0 0 10px;margin:8px 0 0}
+.ksecfront #kmain .kfhead>div{-webkit-box-flex:1;flex:1 1 auto;min-width:0}
+.ksecfront #kmain .kfnum{flex:none;font:700 120px/88px var(--k-serif);letter-spacing:-.05em;font-variant-numeric:lining-nums;margin:0 0 -2px 16px}
+.ksecfront #kmain .kfsub{border-bottom:0;padding:0 !important}
+.ksecfront #kmain .kfl .kt b{white-space:normal}
+.ksecfront #kmain .kfl .kt small{display:block !important;font:italic 430 15px/20px var(--k-serif);color:#222 !important;margin-top:2px}
+.ksecfront #kmain .kfl a{padding:10px 0 !important}
+/* Album birthdays */
+#kmain .bday{display:flex !important;align-items:center;padding:9px 0 !important;border-bottom:1px solid var(--hair) !important}
+#kmain .bday>span:first-child{flex:1 1 auto !important;display:block !important;min-width:0}
+#kmain .bday>span:first-child b{display:block;font:680 var(--t4)/var(--l4) var(--k-serif) !important}
+#kmain .bday>span:first-child small{display:block;font:italic 430 var(--t5)/var(--l5) var(--k-serif) !important}
+#kmain .bday .age{flex:none !important;display:block !important;min-width:64px;text-align:right;padding:0 0 0 16px !important;color:#000 !important;font:700 30px/30px var(--k-serif) !important;font-variant-numeric:lining-nums}
+#kmain .bday .age::after{content:"years";display:block;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;opacity:1}
+/* Markets quote board */
+#kmain #mkt{display:grid !important;grid-template-columns:repeat(12,1fr);border-top:3px solid #000 !important;border-bottom:1px solid #000 !important;margin:4px 0 14px !important}
+#kmain #mkt>div{display:block !important;grid-column:span 4;border:0 !important;padding:8px 8px 10px 0 !important}
+#kmain #mkt>div:nth-child(n+4){grid-column:span 3;border-top:1px solid var(--hair) !important}
+#kmain #mkt>div+div:not(:nth-child(4)){border-left:1px solid var(--hair) !important;padding-left:10px !important}
+#kmain #mkt>div>span:first-child{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.1em;text-transform:uppercase}
+#kmain #mkt>div>span:last-child{display:block !important;max-width:none !important;padding:0 !important;text-align:left !important;font:700 26px/30px var(--k-serif) !important;font-variant-numeric:lining-nums tabular-nums}
+#kmain #mkt>div:nth-child(n+4)>span:last-child{font-size:19px !important;line-height:24px !important}
+#kmain #mkt .up,#kmain #mkt .down{display:block;font:600 15px/19px var(--k-serif) !important}
+#kmain #mkt .up::before{content:"\25B2\00A0";font-size:11px} #kmain #mkt .down::before{content:"\25BC\00A0";font-size:11px}
+#kmain #mkt-spark{margin:0 0 6px}
+.kcontents #kmain .kname{font-size:46px !important;line-height:48px !important;margin:0 0 8px !important}
+.kcontents #kmain .kdate{margin:0 0 14px !important}
+.kcontents #kmain .kgl{padding:0 0 8px;margin:0 0 12px}
+.kcontents #kmain .kgl li{padding:4px 0 !important}
+.kcontents #kmain .kleads a{padding:7px 0 8px}
+.kcontents #kmain .kleads a:first-child b{font:700 24px/29px var(--k-serif)}
+.kcontents #kmain .kpartbox a{padding:4px 0 3px !important}
+.kcontents #kmain .kpart{margin:8px 0 0 !important}
+.kcontents #kmain .ktochead{margin:0 0 6px !important}
+#kmain #tv{display:grid !important;grid-template-columns:1fr 1fr;grid-column-gap:22px}
+#kmain #tv>.day-h{grid-column:1 / -1}
+#kmain #tv>.story{padding:8px 0 !important}
+#kmain #tv>.story b{font-size:17px !important;line-height:22px !important}
+#kmain #tv>.story small{font-size:14px !important;line-height:19px !important}
+#kmain #tv .pill{display:block;font-size:13px !important}
+#kmain #tv .pill::before{content:none}
+
+.kcontents #kmain .kgl{display:flex;align-items:center}
+.kcontents #kmain .kgl .kdeg small{display:block;font:600 13px/16px var(--k-serif);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.kcontents #kmain .kwx{flex:1 1 auto;margin:0 0 0 18px !important;font:italic 430 18px/26px var(--k-serif)}
+.kcontents #kmain .kpart a{color:#000 !important;text-decoration:underline}
+.kcontents #kmain .kc{font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kbrief{border-top:1px solid #000;margin-top:16px !important;padding-top:12px}
+#kmain h3.kfold{font:700 var(--t3)/var(--l3) var(--k-serif) !important;margin:0 0 6px !important;text-transform:none !important;letter-spacing:0 !important;border:0 !important;padding:0 !important}
+#kmain .kbrief .head{display:block}
+#kmain .kbrief .meta{display:block;font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kcredits h3{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em;text-transform:uppercase;margin:14px 0 2px !important}
+#kmain .kcredits p{font:italic 430 15px/21px var(--k-serif) !important;margin:0 !important}
+#kmain .kcredits a{text-decoration:none !important}
+#kmain .chips:empty{display:none !important}
+#kmain small,#kmain .meta{font-weight:480 !important}
+
+
+/* Controls a finger can hit */
+html body .krun{height:44px !important;padding:16px 0 6px !important;cursor:pointer}
+.kbar #kmore{height:44px !important;padding:13px 16px !important}
+.ksecfront #kmain .kfl a{padding:12px 0 !important}
+/* Section list from the running head */
+#kjump{display:none}
+html.kjumpopen #kjump{display:block;position:absolute;left:24px;right:24px;top:44px;bottom:52px;background:#fff;z-index:50;
+  border-top:4px solid #000;-webkit-column-count:2;column-count:2;-webkit-column-gap:24px;column-gap:24px;padding-top:8px}
+#kjump a{display:block;min-height:44px;line-height:44px;border-bottom:1px solid #000;font:430 17px/44px var(--k-serif);color:#000;text-decoration:none;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-column-break-inside:avoid;break-inside:avoid}
+.ksecfront #kmain .kfl .kt b{white-space:normal !important;overflow:visible !important;text-overflow:clip !important}
+/* Pick up where you stopped */
+.kcontents #kmain .kresume{display:block;border:2px solid #000;padding:8px 14px;margin:0 0 14px;color:#000;text-decoration:none}
+.kcontents #kmain .kresume small{display:block;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase}
+.kcontents #kmain .kresume b{font:700 19px/26px var(--k-serif)}
+/* The end */
+#kmain .kend .kfname{font-size:40px !important;line-height:46px !important;margin-top:40px !important}
+#kmain .kend .kbig{display:block;border:2px solid #000;text-align:center;font:700 20px/56px var(--k-serif);margin:24px 0;color:#000;text-decoration:none}
+#kmain .kendl{-webkit-column-count:2;column-count:2;-webkit-column-gap:24px;column-gap:24px;padding:0;margin:0;list-style:none}
+#kmain .kendl li{-webkit-column-break-inside:avoid;break-inside:avoid}
+#kmain .kendl a{display:block;line-height:40px;border-bottom:1px solid #000;color:#000;text-decoration:none;font:430 16px/40px var(--k-serif)}
+#kmain .kendsrc{margin-top:18px !important;font:italic 430 15px/20px var(--k-serif)}
+
 /* Bottom bar: one 52px row */
 .kbar{display:none}
 html.kpaged,html.kpaged body{height:100% !important;overflow:hidden !important;overscroll-behavior:none;touch-action:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}
@@ -1137,10 +1237,11 @@ PAGER_JS = r"""
 /* The Morning Edition pager, written for the Paperwhite 11 browser (Chrome 75, ES5).
    No scrolling: each card is cut into screen-sized sheets at whole-item
    boundaries and shown one sheet at a time.
-   Right tap: next page (or, after "More", the next sheet of this card).
-   Left tap: back. If anything here fails the page is left as a plain page. */
+   Right tap or swipe left: the next sheet, then the next page.
+   Left tap or swipe right: back. The bar's right link skips to the next page. If anything here fails the page is left as a plain page. */
 (function(){
-  var NEXT_URL = __NEXT__, PREV_URL = __PREV__;
+  var NEXT_URL = __NEXT__, PREV_URL = __PREV__, busy = false, store = {};
+  try { store = window.sessionStorage || {}; } catch (e) {}
   var FLOW = /\b(kcontents|ksecfront)\b/.test(document.body.className);
   var root = document.documentElement, kview = document.getElementById('kview');
   var view = document.getElementById('kclip'), main = document.getElementById('kmain');
@@ -1149,7 +1250,8 @@ PAGER_JS = r"""
   var run = document.querySelector('.krun'), bar = document.querySelector('.kbar'), st = root.style;
   if (!view || !main || !kview || !bar || !window.getComputedStyle || !('flexBasis' in st || 'webkitFlexBasis' in st)) return;
   var cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
-  var UNITS = '.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail';
+  var knx = document.querySelector('.kbar .knx'), knxLabel = knx ? knx.innerHTML : '';
+  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail';
   var TITLE = (function(){ var h = main.querySelector('h2,.sci-title,.poem-title'); return h ? (h.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : document.title; })();
   function on() { return (' ' + root.className + ' ').indexOf(' kpaged ') >= 0; }
   function cls(name, v) { root.className = root.className.replace(new RegExp('(^|\\s)' + name + '(?=\\s|$)', 'g'), '') + (v ? ' ' + name : ''); }
@@ -1163,7 +1265,7 @@ PAGER_JS = r"""
       var r = el.getBoundingClientRect();
       if (r.height <= 0) continue;
       var top = r.top - base, bottom = r.bottom - base, tag = el.tagName.toUpperCase();
-      var isHead = /^(H3|H4|SUMMARY)$/.test(tag) || /\b(cal-day|day-h|sub|shelf-h|rep-head)\b/.test(el.className || '');
+      var isHead = /^(H3|H4|SUMMARY)$/.test(tag) || /\b(cal-day|day-h|sub|shelf-h|rep-head|kkick|kkicker|klab|kpart|rec-k|sci-topic)\b/.test(el.className || '');
       if (isHead) hs.push({ top: top, text: txt(/rep-head/.test(el.className) ? (el.querySelector('b,strong,a') || el) : el) });
       if (el.matches ? el.matches(UNITS) : (el.webkitMatchesSelector && el.webkitMatchesSelector(UNITS))) {
         us.push({ top: top, bottom: bottom }); ls.push({ top: top, bottom: bottom, head: isHead });   // a whole item is a good place to turn
@@ -1269,12 +1371,19 @@ PAGER_JS = r"""
       }
       cuts = pl.cuts; tops = pl.tops;
       show(Math.min(sheet, cuts.length - 2));
-      if (!hashDone && location.hash) { hashDone = true; toHash(); }
+      if (!hashDone) { hashDone = true;
+        var back2 = 0; try { back2 = performance.navigation.type === 2; } catch (e) {}
+        if (location.hash) toHash();
+        else if (back2 && store['kme:' + location.pathname]) show(Math.min(+store['kme:' + location.pathname] || 0, cuts.length - 2)); }
     } catch (err) {
+      if (kcont) kcont.style.display = 'none';
       cls('kpaged', false); main.style.zoom = ''; main.style.top = ''; view.style.height = ''; kview.style.height = '';
     }
   }
   function toHash() {
+    var hs = location.hash.slice(1);
+    if (hs === 'kend') { show(cuts.length - 2); return; }
+    if (/^s\d+$/.test(hs)) { show(Math.min(+hs.slice(1), cuts.length - 2)); return; }
     var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (!el || !main.contains(el)) return;
     var y = el.getBoundingClientRect().top - main.getBoundingClientRect().top;
@@ -1299,34 +1408,60 @@ PAGER_JS = r"""
       more.innerHTML = 'More &darr; <span class="kfol">' + (i + 1) + '/' + n + '</span>';
     }
     if (pos) pos.innerHTML = (n > 1 && i === n - 1) ? n + '/' + n : '';
+    if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
+    try { store['kme:' + location.pathname] = i;
+      if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
+    if (busy) return;
     if (++turns % FLASH_EVERY) { show(i); return; }
+    busy = true;
     var f = document.createElement('div');
     f.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';
     document.body.appendChild(f);
-    setTimeout(function(){ show(i); document.body.removeChild(f); }, 250);
+    setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 250);
   }
-  function go(url) { if (url) location.href = url; }
-  function forward(fromMore) { var n = cuts.length - 1;
-    if ((fromMore || FLOW || sheet > 0) && sheet < n - 1) turn(sheet + 1); else go(NEXT_URL); }
-  function back() { if (sheet > 0) turn(sheet - 1); else go(PREV_URL); }
+  function go(url) { location.href = url || 'index.html'; }
+  function forward() { var n = cuts.length - 1;
+    if (sheet < n - 1) turn(sheet + 1); else go(NEXT_URL); }
+  function back() { if (sheet > 0) turn(sheet - 1); else if (PREV_URL) go(PREV_URL + (/#/.test(PREV_URL) ? '' : '#kend')); }
+  // The running head opens a list of every section.
+  var jump = document.getElementById('kjump');
+  if (run && jump) run.onclick = function(e){ if (!on()) return; e.preventDefault(); e.stopPropagation();
+    cls('kjumpopen', !/kjumpopen/.test(root.className)); };
+  // Swipes turn pages, as in the Kindle's own reader.
+  var x0 = null, y0 = 0, swallow = false;
+  document.addEventListener('touchstart', function(e){ if (e.touches && e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, false);
+  document.addEventListener('touchend', function(e){
+    if (x0 === null || !on() || !e.changedTouches) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) { swallow = true; setTimeout(function(){ swallow = false; }, 400); if (dx < 0) forward(); else back(); }
+  }, false);
+  // The cover offers to pick up where you stopped.
+  if (/kcontents/.test(document.body.className)) try {
+    var last = JSON.parse(localStorage.getItem('kme:last') || 'null'), mast = main.querySelector('.kmast');
+    if (last && last.u && mast) { var a = document.createElement('a'); a.className = 'kresume';
+      a.href = last.u + (last.ed === root.getAttribute('data-ed') && last.s ? '#s' + last.s : '');
+      a.innerHTML = '<small>Pick up where you stopped</small><b>' + String(last.t).replace(/</g, '&lt;') + ' &rsaquo;</b>';
+      mast.parentNode.insertBefore(a, mast.nextSibling); }
+  } catch (e) {}
   function later() { clearTimeout(timer); timer = setTimeout(layout, 60); }
-  if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(true); };
+  if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(); };
   document.addEventListener('click', function(e){
-    if (!on()) return;
+    if (!on() || swallow) return;
+    if (/kjumpopen/.test(root.className) && !(jump && jump.contains(e.target))) { e.preventDefault(); cls('kjumpopen', false); return; }
     for (var t = e.target; t && t !== document.body; t = t.parentNode) {
       var n = (t.nodeName || '').toUpperCase();
       if ((n === 'A' && t.getAttribute('href')) || t === more || /^(SUMMARY|BUTTON|INPUT|LABEL|SELECT|TEXTAREA)$/.test(n)) return;
     }
     e.preventDefault();
-    if (e.clientX < window.innerWidth / 3) back(); else forward(false);
+    if (e.clientX < window.innerWidth / 3) back(); else forward();
   }, false);
-  document.addEventListener('touchmove', function(e){ if (on()) e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', function(e){ if (on() && !(jump && jump.contains(e.target))) e.preventDefault(); }, { passive: false });
   document.addEventListener('scroll', function(){ if (on()) unscroll(); }, true);
   document.addEventListener('toggle', later, true);
   document.addEventListener('keydown', function(e){
-    if (e.keyCode === 34 || e.keyCode === 39 || e.keyCode === 32) { e.preventDefault(); forward(false); }
+    if (e.keyCode === 34 || e.keyCode === 39 || e.keyCode === 32) { e.preventDefault(); forward(); }
     if (e.keyCode === 33 || e.keyCode === 37) { e.preventDefault(); back(); }
   }, false);
   window.addEventListener('resize', later, false);
@@ -1361,20 +1496,22 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
-    prev_link = f'<a class="kprev" href="{prev}">&lsaquo; Back</a>' if prev else '<span class="kprev"></span>'
-    nxt_short = (f'<a class="knx" href="{nxt}">{nxt_name} &rsaquo;</a>' if nxt
+    prev_link = (f'<a class="kprev" href="{prev}">&lsaquo; {esc(prev_title(prev)) or "Back"}</a>' if prev
+                 else '<span class="kprev"></span>')
+    nxt_short = (f'<a class="knx" href="{nxt}">{"Next: " if next_label is None else ""}{nxt_name} &rsaquo;</a>' if nxt
                  else '<a class="knx" href="index.html">The front &rsaquo;</a>')
-    foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#">More &darr;</a>'
+    foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#" role="button">More &darr;</a>'
             f'<span id="kpos"></span></span>{nxt_short}</footer>'
             f'<footer class="kfoot">{nxt_block}<div class="kmeta"><span></span><span>{stamp}</span></div></footer>')
     js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
     return f"""<!doctype html>
-<html lang="en" class="{esc(html_class)}"><head><meta charset="utf-8">
+<html lang="en" class="{esc(html_class)}" data-ed="{esc(stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
 <body class="{esc(body_class)}">
 {top}
 <div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div></div>
+{_JUMP[0] if top and run_left else ""}
 {foot}
 {js}
 </body></html>
@@ -1382,6 +1519,7 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
 
 
 _TITLES = {}
+_JUMP = [""]
 
 
 def prev_title(href):
@@ -1597,6 +1735,12 @@ DEDUPE = r"""
     }
     mine.forEach(t => named.add(t));
   });
+  for (const d of docs) for (const a of [...d.querySelectorAll('a[href^="http"], a[href^="tel:"]')]) {
+    if (a.classList.contains('read-fresh')) continue;
+    if (/^(Listen|Spotify|Tickets|Buy|Book|Watch|Read more|More)\b.{0,12}$/i.test(norm(a.textContent))) { a.remove(); continue; }
+    const sp = document.createElement('span'); if (a.className) sp.className = a.className;
+    while (a.firstChild) sp.appendChild(a.firstChild); a.replaceWith(sp);
+  }
   docs.forEach((d, i) => { if (!isAlfred[i]) walk(d); });
   // The front page's "Big in town" is the calendar's evening game again.
   docs.forEach(d => { const x = d.querySelector('#day-big'); if (x) x.remove(); });
@@ -1734,7 +1878,6 @@ def main(site):
             if pred(c):
                 cards.insert(to, cards.pop(k))
                 return
-    move_first("solar", lambda c: c["title"].lower().startswith("solar right now"))
     # Repeats and one-liners.
     if "doodles" in by_id:
         by_id["doodles"]["cards"] = [c for c in by_id["doodles"]["cards"] if c["title"] != "Who can still win it"]
@@ -1782,6 +1925,51 @@ def main(site):
             return len(keys)
         by_id[sid]["cards"].sort(key=rank)
 
+    def as_sub(h):
+        """A card's body as a block inside another card: its headline becomes an h3."""
+        h = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', "", h, flags=re.S)
+        return re.sub(r"<h2\b([^>]*)>(.*?)</h2>", r'<h3 class="kfold"\1>\2</h3>', h, flags=re.S)
+
+    # Science: one page of briefs, not seven taps of three lines each.
+    sci = by_id.get("science", {}).get("cards", [])
+    if len(sci) > 2:
+        by_id["science"]["cards"] = [{"title": "Science this morning",
+                                      "html": '<div class="head"><p class="kkick">Science</p><h2>This morning in science</h2></div>'
+                                              + "".join(f'<div class="kbrief">{as_sub(c["html"])}</div>' for c in sci)}]
+    # Thailand: Bangkok and the phrase of the day on one page.
+    wc = by_id.get("world", {}).get("cards", [])
+    if len(wc) > 1:
+        wc[0]["html"] += "".join(f'<div class="kbrief">{as_sub(c["html"])}</div>' for c in wc[1:])
+        del wc[1:]
+    # A card with a line or two in it joins the card before it.
+    KEEP = ("ask-h", "drum-h", "brief-h", "today-card", "rec-h", "poem-h")
+    for sid, sec in by_id.items():
+        kept = []
+        for c in sec["cards"]:
+            thin = (len(body_text(c["html"])) < 140 and "<img" not in c["html"] and "<svg" not in c["html"]
+                    and not any(f'id="{k}"' in c["html"] for k in KEEP))
+            if thin and kept:
+                kept[-1]["html"] += f'<div class="kbrief">{as_sub(c["html"])}</div>'
+            else:
+                kept.append(c)
+        sec["cards"] = kept
+    # Before the panels wake up, "Solar right now" is a page of zeros: it goes last.
+    if "solar" in by_id:
+        sc = by_id["solar"]["cards"]
+        for c in list(sc):
+            if 'id="t-now"' in c["html"] and re.search(r"hasn.t reported|Producing now\s*0\.0", _text(c["html"])):
+                sc.remove(c)
+                sc.append(c)
+    # Source credits leave the reading pages for one page at the back.
+    credits = {}
+    for sid, sec in by_id.items():
+        for c in sec["cards"]:
+            for m in re.findall(r'<p class="ksources"[^>]*>(.*?)</p>', c["html"], flags=re.S):
+                m = re.sub(r"^\s*<b>[^<]*</b>\s*", "", m).strip(" ·")
+                if m and m not in credits.setdefault(sid, []):
+                    credits[sid].append(m)
+            c["html"] = re.sub(r'<p class="ksources"[^>]*>.*?</p>', "", c["html"], flags=re.S)
+
     known = [i for _, ids in PARTS for i in ids]
     parts = [(name, [i for i in ids if i in by_id]) for name, ids in PARTS]
     extra = [i for i in by_id if i not in known]
@@ -1823,9 +2011,27 @@ def main(site):
         return re.sub(r'href="KHASH:([^"]*)"',
                       lambda m: f'href="{where[m.group(1)]}#{m.group(1)}"' if m.group(1) in where else "", doc)
 
+    SKIP = re.compile(r"^(Updated|Checked|As of|Summary as of|Analysis as of|Events checked|Next \d+ days|From home)\b"
+                      r"|\b(TomTom|TripCheck|WTA|NIFC|USGS|BPA|Google|Wikidata|Metacritic|Wikipedia|eBird|iNaturalist|Open-Meteo"
+                      r"|NOAA|SWPC|CDC|Goodreads|Library of Congress|Internet Archive|Art Institute|TVmaze|TMDB|Yahoo|ODOT|NWS)\b"
+                      r"|\b(outlets|sources)$|^Source", re.I)
+
     def teaser(pg):
-        m = re.search(r'class="meta"[^>]*>(.*?)</span>', pg["html"], re.S)
-        return _text(m.group(1)) if m else ""
+        h = pg["html"]
+        if pg["sec"] == "science":
+            return ""
+        m = re.search(r'class="meta"[^>]*>(.*?)</span>', h, re.S)
+        meta = _text(m.group(1)) if m else ""
+        if meta and not SKIP.search(meta) and meta.lower() != pg["title"].lower() and len(meta) > 12:
+            return meta
+        body = re.sub(r'<h2\b.*?</h2>|<p class="kkick[^"]*".*?</p>|<span class="meta".*?</span>|<h3\b.*?</h3>', "", h, flags=re.S)
+        for para in re.findall(r'<(?:p|li|div class="ksum")\b[^>]*>(.*?)</(?:p|li|div)>', body, re.S):
+            t = _text(para)
+            if len(t) >= 30 and not SKIP.search(t):
+                sm = re.match(r"(.{25,110}?[a-z0-9)%°][.!?])(\s|$)", t)
+                return sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…"
+        b = re.search(r"<(b|strong)\b[^>]*>(.*?)</\1>", body, re.S)
+        return _text(b.group(2)) if b else ""
 
     edition = stamp.split(" ", 1)[-1].replace("AM", "am").replace("PM", "pm")
     stamp_txt = html.escape(f"Edition of {edition}")
@@ -1833,6 +2039,11 @@ def main(site):
     for i in order:
         seq.append(front[i])
         seq.extend(pg["file"] for pg in pages if pg["sec"] == i)
+    _TITLES["sources.html"] = "Sources and credits"
+    seq.append("end.html")
+    _TITLES["end.html"] = "The end"
+    _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
+                + "".join(f'<a href="{front[i]}">{html.escape(by_id[i]["title"])}</a>' for i in order) + "</nav>")
     after = {f: (seq[n + 1] if n + 1 < len(seq) else None) for n, f in enumerate(seq)}
     before = {f: (seq[n - 1] if n else "index.html") for n, f in enumerate(seq)}
     nsec = len(order)
@@ -1852,7 +2063,7 @@ def main(site):
             label = f'Next: {_TITLES[nxt]}'
         doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, data["htmlClass"], data["bodyClass"] + " kcard",
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
-                   run_right=f'Page {pg["k"]} of {pg["of"]}', fonts=font_links, next_label=label,
+                   run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
                    run_href=front[pg["sec"]])
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
@@ -1864,14 +2075,37 @@ def main(site):
         rows = "".join(
             f'<li><a href="{pg["file"]}"><span class="kn">{pg["k"]:02d}</span><span class="kt"><b>{html.escape(pg["title"])}</b>'
             f'<small>{html.escape(teaser(pg))}</small></span></a></li>' for pg in cards)
-        body = (f'<p class="kkick">{html.escape(part_of[i])} &middot; Section {num} of {nsec}</p>'
+        if i == "science" and cards:
+            # One page of briefs: the front lists the briefs themselves.
+            rows = "".join(
+                f'<li><a href="{cards[0]["file"]}"><span class="kn">{n:02d}</span><span class="kt"><b>{html.escape(_text(t))}</b></span></a></li>'
+                for n, t in enumerate(re.findall(r'<(?:h3 class="kfold"|b class="sci-title")[^>]*>(.*?)</(?:h3|b)>', cards[0]["html"], re.S), 1))
+        body = (f'<div class="kfhead"><div><p class="kkick">{html.escape(part_of[i])}</p>'
                 f'<h2 class="kfname">{html.escape(sec["title"])}</h2>'
-                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p>'
-                f'<ol class="kfl{" kcompact" if len(cards) > 6 else ""}">{rows}</ol>')
+                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p></div><span class="kfnum">{num:02d}</span></div>'
+                f'<ol class="kfl">{rows}</ol>')
         with open(os.path.join(out, front[i]), "w") as f:
             f.write(page(sec["title"], body, data["htmlClass"], data["bodyClass"] + " ksecfront",
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"Section {num} / {nsec}", fonts=font_links))
+                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links))
+
+    # The end of the edition: where to go from here.
+    with open(os.path.join(out, "end.html"), "w") as f:
+        f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
+                     f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
+                     f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
+                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits else "") + '</div>',
+                     "", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
+                     run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
+
+    if credits:
+        rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
+                       for i in order if credits.get(i))
+        with open(os.path.join(out, "sources.html"), "w") as f:
+            f.write(page("Sources and credits", f'<div class="head"><p class="kkick">The back page</p><h2>Sources and credits</h2></div>'
+                         f'<div class="kcredits">{rows}</div>', data["htmlClass"], data["bodyClass"] + " kcard",
+                         prev="index.html", nxt=None, stamp=stamp_txt, run_left="The Morning Edition",
+                         run_right="", fonts=font_links))
 
     # The front: masthead, today at a glance, the top of the edition, then contents.
     g = data.get("front", {})
@@ -1890,15 +2124,25 @@ def main(site):
             num += 1
             cnt = len([pg for pg in pages if pg["sec"] == i])
             cells.append(f'<li><a href="{front[i]}"><span class="kn">{num:02d}</span><span class="kt">{html.escape(by_id[i]["title"])}</span>'
-                         f'<span class="kc">{cnt}</span></a></li>')
+                         f'<span class="kc">{cnt} {"page" if cnt == 1 else "pages"}</span></a></li>')
         toc.append(f'<p class="kpart">{html.escape(name)}</p><ul class="kpartbox">{"".join(cells)}</ul>')
-    body = (f'<div class="kmast"><p class="kname">The Morning Edition</p>'
+    import datetime as _dt
+    doy = _dt.date.today().timetuple().tm_yday
+    hi = re.search(r"High (\d+°)", _text(by_id.get("today", {}).get("cards", [{}])[0].get("html", "")) if by_id.get("today") else "")
+    wx = ""
+    if g.get("temp"):
+        wx = (f'<div class="kgl"><div class="kdeg">{html.escape(g["temp"])}<small>{html.escape(g.get("where", ""))}</small></div>'
+              f'<p class="kwx">{html.escape(g.get("summary", ""))}</p></div>')
+    body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span>No. {doy}</span></div>'
+            f'<p class="kname">The Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
             f' &middot; {html.escape(edition)} edition</p></div>'
-            + f'<h2 class="ktochead" id="contents">Contents</h2>{"".join(toc)}'
+            + wx
+            + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
+            + f'<h2 class="ktochead kbreak" id="contents">Contents</h2>{"".join(toc)}'
 )
     with open(os.path.join(out, "index.html"), "w") as f:
-        f.write(page("The Morning Edition", body, "", "kcontents", nxt=seq[0] if seq else None,
+        f.write(page("The Morning Edition", body, "", "kcontents", nxt=(seq[1] if len(seq) > 1 and seq[0] == "today.html" else seq[0]) if seq else None,
                      stamp=stamp_txt, run_left="", run_right="", fonts=font_links))
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.

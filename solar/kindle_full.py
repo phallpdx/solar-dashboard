@@ -1521,13 +1521,125 @@ def snapshot(site):
 
 
 # A morning read: your day first, then the news, then home, town and the back pages.
+# Reading order for the first half hour awake: what the day needs, then a calm
+# stretch at home, then the news once the reader is alert, then their own
+# interests, and it ends on Thailand and, last of all, the beach.
 PARTS = [
-    ("Your day", ["today", "family", "roads"]),
-    ("The news", ["news", "sports", "markets"]),
+    ("Your day", ["today", "roads", "family"]),
     ("Home and land", ["solar", "garden", "river", "nearby"]),
-    ("Town and culture", ["local", "music", "watch", "coast"]),
-    ("The back pages", ["science", "civics", "almanac", "world", "delights", "doodles"]),
+    ("The news", ["news", "markets", "civics", "sports"]),
+    ("Around town", ["music", "watch", "local"]),
+    ("The back pages", ["almanac", "science", "doodles", "delights", "world", "coast"]),
 ]
+# Card order inside a section, by the id of each card's heading (titles rotate).
+CARD_ORDER = {
+    "today": ["today-card", "brief-h", "wx-h", "cal-h", "plan-h", "yard-h", "shade-h", "fc-h"],
+    "roads": ["drive-h", "road-h", "ski-h", "mtn-h", "trail-h", "fire-h", "quake-h"],
+    "solar": ["t-now", "loads-h", "bill-h", "grid-h", "mo-h", "wins-h", "sunact-h"],
+    "garden": ["look-h", "pollen-h", "burn-h", "birds-h", "plant-h", "bloom-h", "mush-h"],
+    "news": ["localnews-h", "bignews-h", "stories-h", "reviews-h"],
+    "markets": ["he-h", "mkt-h", "re-h"],
+    "music": ["rec-h", "drum-h", "bday-h", "alb-h", "jazz-h", "gig-h", "artist-h"],
+    "watch": ["br-h", "tv-h", "kidmov-h", "clsmov-h"],
+    "almanac": ["hol-h", "hist-h", "near-h"],
+    "delights": ["potd-h", "apod-h", "art-h", "poem-h", "good-h", "oldpdx-h", "show-h", "ask-h", "books-h", "read-h"],
+    "world": ["bkk-h", "thai-h"],
+    "coast": ["surf-h", "bar-h", "coast-summary", "minus-h", "shell-h", "cev-h", "whale-h"],
+}
+# Cards that read better in another section: (heading id, from, to).
+CARD_MOVES = [("thai-h", "delights", "world")]
+
+# No fact twice: an item already printed earlier in the edition is taken out
+# of the later page. Alfred's briefing is a digest, so it goes last: any line of
+# his that another page already carries is dropped from the briefing.
+DEDUPE = r"""
+(pages) => {
+  const norm = s => (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const seen = new Map();           // text -> element that printed it first
+  const MIN = 40;
+  const docs = pages.map(pg => { const d = document.createElement('div'); d.innerHTML = pg.html; return d; });
+  const isAlfred = pages.map(pg => /id="brief-h"/.test(pg.html));
+  const prune = el => {
+    let p = el.parentElement; el.remove();
+    while (p && p.parentElement && !p.querySelector('img, svg, h2') && norm(p.textContent).length < 15) {
+      const up = p.parentElement; p.remove(); p = up; }
+  };
+  const walk = (root) => {
+    const stack = [root.firstElementChild ? root : null].filter(Boolean);
+    const out = [];
+    const visit = el => {
+      for (let c = el.firstElementChild; c; ) { const nx = c.nextElementSibling;
+        const tag = c.tagName;
+        if (/^(H1|H2|SCRIPT|STYLE|SVG)$/.test(tag) || c.querySelector('h2') || c.classList.contains('head')) { visit(c); c = nx; continue; }
+        const t = norm(c.textContent);
+        if (t.length >= MIN) {
+          const prev = seen.get(t);
+          if (prev && !prev.contains(c) && !c.contains(prev)) { prune(c); c = nx; continue; }
+          if (!prev) seen.set(t, c);
+        }
+        visit(c); c = nx; }
+    };
+    visit(root);
+  };
+  // The same event or story under its own name on two pages: keep the first.
+  const named = new Set();
+  docs.forEach((d, i) => {
+    if (isAlfred[i]) return;
+    const mine = [];
+    for (const b of [...d.querySelectorAll('b, strong')]) {
+      const t = norm(b.textContent).replace(/[.:]$/, '');
+      if (t.length < 18 || !b.isConnected) continue;
+      if (named.has(t)) {
+        let it = b;
+        while (it.parentElement && it.parentElement !== d && it.parentElement.querySelectorAll('b, strong').length === 1) it = it.parentElement;
+        if (it !== b && !it.querySelector('h2') && !it.classList.contains('head')) prune(it);
+      } else mine.push(t);
+    }
+    mine.forEach(t => named.add(t));
+  });
+  docs.forEach((d, i) => { if (!isAlfred[i]) walk(d); });
+  // The front page's "Big in town" is the calendar's evening game again.
+  docs.forEach(d => { const x = d.querySelector('#day-big'); if (x) x.remove(); });
+  // Alfred: drop any line that repeats something printed elsewhere.
+  const keys = [...seen.keys()].filter(k => k.length >= 25);
+  for (const t of $titles) keys.push(t);
+  for (const t of named) keys.push(t);
+  const texts = docs.map((d, i) => isAlfred[i] ? '' : norm(d.textContent));
+  docs.forEach((d, i) => {
+    if (!isAlfred[i]) return;
+    for (const li of [...d.querySelectorAll('li')]) {
+      const bs = [...li.querySelectorAll('b, strong')].map(x => norm(x.textContent)).filter(x => x.length >= 6);
+      if (bs.length && texts.some(pt => bs.every(x => pt.includes(x)))) { prune(li); continue; }
+      const t = norm(li.textContent);
+      const b = [...li.querySelectorAll('b')].map(x => norm(x.textContent)).filter(x => x.length >= 12);
+      const subj = t.split(': ').pop().replace(/[.!]+$/, '');
+      if (/ is today\.?$/.test(t) || keys.some(k => t.includes(k) || b.some(x => k.includes(x)) || (subj.length >= 15 && k.includes(subj)))) prune(li);
+    }
+    for (const h of [...d.querySelectorAll('h3')]) {
+      const nx = h.nextElementSibling;
+      if (!nx || /^H3$/.test(nx.tagName) || !norm(nx.textContent)) h.remove();
+    }
+  });
+  return docs.map(d => d.innerHTML);
+}
+"""
+
+
+def dedupe(pages, titles):
+    """Run DEDUPE over the pages in reading order (in place)."""
+    import json
+    exe = os.environ.get("KINDLE_CHROMIUM") or None
+    try:
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=exe)
+            p = browser.new_page()
+            js = DEDUPE.replace("$titles", json.dumps([t.lower() for t in titles if len(t) >= 20]))
+            res = p.evaluate(js, [{"html": pg["html"]} for pg in pages])
+            browser.close()
+        for pg, h in zip(pages, res):
+            pg["html"] = h
+    except Exception as e:  # never lose the edition over this
+        print(f"kindle_full: dedupe skipped: {e}", file=sys.stderr)
 
 
 def self_host_fonts(out):
@@ -1623,7 +1735,6 @@ def main(site):
                 cards.insert(to, cards.pop(k))
                 return
     move_first("solar", lambda c: c["title"].lower().startswith("solar right now"))
-    move_first("today", lambda c: c["title"] == "Your weather station says", to=2)
     # Repeats and one-liners.
     if "doodles" in by_id:
         by_id["doodles"]["cards"] = [c for c in by_id["doodles"]["cards"] if c["title"] != "Who can still win it"]
@@ -1634,9 +1745,15 @@ def main(site):
         if a and b:
             a["html"] += re.sub(r"<h2\b", '<h3', re.sub(r"</h2>", "</h3>", b["html"]))
             gc.remove(b)
-    # Bangkok is one page: it reads best at the end of the Almanac.
-    if "world" in by_id and "almanac" in by_id:
-        by_id["almanac"]["cards"] += by_id.pop("world")["cards"]
+    for key, src, dst in CARD_MOVES:
+        if src in by_id and dst in by_id:
+            for c in list(by_id[src]["cards"]):
+                if f'id="{key}"' in c["html"]:
+                    by_id[src]["cards"].remove(c)
+                    by_id[dst]["cards"].append(c)
+    if "world" in by_id:
+        by_id["world"]["title"] = "Thailand"
+        by_id["world"]["sub"] = "Bangkok right now, and a phrase to try"
     by_id = {k: s for k, s in by_id.items() if s["cards"]}
 
     # Today opens with one front page: the greeting, the weather and the day ahead.
@@ -1654,6 +1771,16 @@ def main(site):
             cards[1] = {"title": "Good morning",
                         "html": head + (hero if g.get("temp") else "") + cards[1]["html"] + alerts}
             cards.pop(0)
+
+    for sid, keys in CARD_ORDER.items():
+        if sid not in by_id:
+            continue
+        def rank(c, keys=keys):
+            for n, k in enumerate(keys):
+                if f'id="{k}"' in c["html"]:
+                    return n
+            return len(keys)
+        by_id[sid]["cards"].sort(key=rank)
 
     known = [i for _, ids in PARTS for i in ids]
     parts = [(name, [i for i in ids if i in by_id]) for name, ids in PARTS]
@@ -1680,6 +1807,7 @@ def main(site):
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
             pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
                           "k": k + 1, "of": len(cards)})
+    dedupe(pages, [])
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -1767,9 +1895,7 @@ def main(site):
     body = (f'<div class="kmast"><p class="kname">The Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
             f' &middot; {html.escape(edition)} edition</p></div>'
-            + (f'<div class="kgl">{deg}<ul>{gl}</ul></div>' if gl or deg else "")
-            + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
-            + f'<h2 class="ktochead kbreak" id="contents">Contents</h2>{"".join(toc)}'
+            + f'<h2 class="ktochead" id="contents">Contents</h2>{"".join(toc)}'
 )
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(page("The Morning Edition", body, "", "kcontents", nxt=seq[0] if seq else None,

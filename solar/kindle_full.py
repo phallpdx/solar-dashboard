@@ -431,6 +431,458 @@ CURATE = r"""
     }
   } catch (e) { console.log('kindle editor pass: ' + e); }
 
+  // 12. Data pages, designed for the page: the one number that matters biggest,
+  // a verdict line, grids instead of repeated rows. Each step stands alone.
+  const step = (name, f) => { try { f(); } catch (e) { console.log('kindle design ' + name + ': ' + e); } };
+  const verdict = (text, before) => { if (!text || !before) return; const v = document.createElement('p'); v.className = 'kverdict'; v.textContent = text; before.before(v); return v; };
+  const todayShort = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Los_Angeles'});
+
+  step('surf', () => {
+    const brks = $$('#surf-breaks .brk');
+    if (!brks.length) return;
+    const days = [...brks[0].querySelectorAll('.sday')].map(r => txt(r.firstElementChild).replace(/^Today$/, 'Today'));
+    const pips = n => '<em class="kq">' + [1, 2, 3, 4].map(i => `<i class="${i <= n ? 'on' : ''}"></i>`).join('') + '</em>';
+    const t = document.createElement('table'); t.className = 'kmatrix ksurf';
+    t.innerHTML = '<thead><tr><th></th>' + days.map(d => `<th>${d}</th>`).join('') + '</tr></thead><tbody>' +
+      brks.map(b => '<tr><th>' + txt(b.querySelector('.brk-top b') || b.querySelector('b')).replace(/ \/ Gearhart| \(.*\)/, '') + '</th>' +
+        [...b.querySelectorAll('.sday')].map(r => {
+          const ch = [...r.children], rt = ch[1], sz = ch[2], when = ch[3];
+          const n = +((rt && rt.className.match(/rt(\d)/)) || [0, 0])[1];
+          const m = txt(sz).match(/([\d.]+-[\d.]+|[\d.]+) ft · (\d+)s/) || [0, txt(sz), ''];
+          return `<td class="q${n}">${pips(n)}<b>${txt(rt)}</b><span>${String(m[1]).replace('-', '–')} ft</span><small>${m[2] ? m[2] + 's · ' : ''}${txt(when)}</small></td>`;
+        }).join('') + '</tr>').join('') + '</tbody>';
+    const key = document.createElement('p'); key.className = 'note kkey';
+    key.textContent = brks.map(b => txt(b.querySelector('.brk-top b') || b.querySelector('b')) + ': ' + txt(b.querySelector('small'))).filter(s => s.length > 4).join('. ') + '.';
+    $('#surf-breaks').replaceWith(t); t.after(key);
+  });
+
+  step('morning units', () => {
+    for (const s of $$('#out-facts small')) s.textContent = s.textContent.replace(/ PM2\.5 today · .*/, '').replace(/^\s*·\s*/, '');
+  });
+
+  step('hours', () => {
+    const p = $('p.khours'); if (!p) return;
+    const cells = [...p.textContent.matchAll(/(\d{1,2} ?[ap]m) (-?\d+)°/g)].map(m => [m[1], +m[2]]);
+    if (cells.length < 4) return;
+    const lo = Math.min(...cells.map(c => c[1])), hi = Math.max(...cells.map(c => c[1]));
+    const k = document.createElement('div'); k.className = 'khr';
+    k.innerHTML = cells.map(([h, t]) => `<div${t === hi ? ' class="hot"' : ''}><b>${t}°</b><i style="height:${4 + Math.round((t - lo) / Math.max(1, hi - lo) * 26)}px"></i><span>${h.replace(/ ?([ap])m/, '$1').replace(/^12p$/, 'noon')}</span></div>`).join('');
+    p.replaceWith(k);
+  });
+
+  step('markets', () => {
+    const mk = $('#mkt'), sp = $('#mkt-spark'), ms = $('#mkt-summary');
+    if (mk && ms) { ms.after(mk); if (sp) mk.after(sp);
+      const keep = txt(ms).split(/(?<=\.)\s+/).filter(x => !/^The (Nasdaq|Dow|10-year)|Treasury yields/.test(x));
+      if (keep.length) ms.textContent = keep.join(' ').replace(/^The S&P 500 is (up|down) [\d.]+% at [\d,]+, /, 'The S&P 500 is ').replace(/^The S&P 500 is up/, 'The S&P 500 is up'); }
+    const sx = sp && sp.querySelector('.axis span'); if (sx) sx.textContent = 'S&P 500, 30 trading days ago';
+  });
+
+  step('sports', () => {
+    for (const top of $$('.team-top')) {
+      const card = top.closest('.card'); if (!card) continue;
+      const rows = [...card.querySelectorAll('.lines>div')];
+      const nx = rows.find(d => /^Next:/.test(txt(d.firstElementChild))), w = rows.find(d => /^Watch on/.test(txt(d.firstElementChild)));
+      const ln = [...card.querySelectorAll('p.note')].find(p => /^Last game:/.test(txt(p)));
+      const m = ln && txt(ln).match(/^Last game: (\w+) ([\d–-]+) (vs\.?|at) (.+?) on (\w+)/);
+      if (!nx && !m) continue;
+      const k = document.createElement('div'); k.className = 'kscore'; let h = '';
+      if (m) h += `<div><span class="k">Last game</span><b>${({won: 'W', lost: 'L', drew: 'D', tied: 'T'})[m[1]] || ''} ${m[2].replace('-', '–')}</b><small>${m[3]} ${m[4]} · ${m[5]}</small></div>`;
+      if (nx) {
+        const when = txt(nx.lastElementChild), opp = txt(nx.firstElementChild).replace(/^Next:\s*/, '');
+        let big = when;
+        if (when.indexOf(todayShort) === 0) { const hr = +(when.match(/(\d+)(?::\d\d)? pm/) || [0, 0])[1]; big = when.replace(todayShort + ', ', hr >= 5 && hr < 12 ? 'Tonight ' : 'Today '); }
+        h += `<div><span class="k">Next</span><b>${big}</b><small>${opp}${w ? ' · ' + txt(w.lastElementChild) : ''}</small></div>`;
+      }
+      k.innerHTML = h; top.after(k); [nx, w, ln].forEach(kill);
+    }
+  });
+
+  step('seven days', () => {
+    const fds = $$('#forecast .fd'); if (fds.length < 3) return;
+    for (const f of fds) { const r = f.querySelector('.r'); const c = f.getAttribute('title'); if (r && c && !txt(r).includes(c)) r.textContent = `${c} · ${txt(r)}`; }
+    const kwh = f => +(txt(f.querySelector('.e')).match(/\d+/) || [0])[0];
+    const wet = f => +(txt(f.querySelector('.r')).match(/(\d+)%/) || [0, 0])[1] >= 70;
+    const name = f => txt(f.querySelector('.d')).replace(/^Today$/, 'today');
+    const best = [...fds].sort((a, b) => kwh(b) - kwh(a)).slice(0, 2).filter(f => kwh(f) > 0);
+    if (best[0]) { const e = best[0].querySelector('.e'); if (e) e.style.setProperty('font-weight', '700', 'important'); }
+    const runs = fds.filter(wet).map(name);
+    verdict((best.length ? `Sunniest: ${best.map(f => `${name(f)} (~${kwh(f)} kWh)`).join(' and ')}.` : '') +
+      (runs.length ? ` Wettest: ${runs.length > 2 ? runs[0] + ' to ' + runs[runs.length - 1] : runs.join(' and ')}.` : ''), $('#forecast'));
+    const rs = $('#roof-sun'); if (rs) kill(rs);
+  });
+
+  step('solar asleep', () => {
+    const now = $('#t-now'), load = $('#loads .load');
+    if (!now || parseFloat(txt(now)) !== 0 || !load) return;
+    const kw = txt(load).match(/~?(\d+) kWh/), when = txt(load.querySelector('b'));
+    const tile = now.closest('.tile'); if (!tile || !kw) return;
+    const k = tile.querySelector('.k'); if (k) k.textContent = 'Expected today';
+    now.textContent = `~${kw[1]} kWh`;
+    const s = $('#t-now-s'); if (s) s.textContent = when ? `Best ${when}` : 'The inverter wakes at sunrise';
+  });
+
+  step('bill', () => {
+    const bb = $('#bill .bars'); if (!bb) return;
+    const ds = [...bb.children].filter(d => d.title), val = d => +((d.title.match(/\$([\d,.]+)/) || [0, '0'])[1].replace(/,/g, ''));
+    if (ds.length < 3) return;
+    const peak = ds.reduce((a, b) => val(b) > val(a) ? b : a), last = ds[ds.length - 1];
+    for (const d of new Set([peak, last])) { const s = document.createElement('b'); s.className = 'kbv'; s.textContent = '$' + Math.round(val(d)); d.prepend(s); }
+    const ax = document.createElement('div'); ax.className = 'kbx';
+    ax.innerHTML = ds.map(d => `<span>${((d.title.match(/^\s*(\w)/) || ['', ''])[1])}</span>`).join('');
+    const old = bb.nextElementSibling; if (old && /axis/.test(old.className)) old.replaceWith(ax); else bb.after(ax);
+    const lines = $$('#bill .lines>div').map(d => [txt(d.firstElementChild), txt(d.lastElementChild)]);
+    const lastBill = lines.find(l => /^Last bill/i.test(l[0])), ly = lines.find(l => /last year/i.test(l[0]));
+    if (lastBill && ly) verdict(`Your last bill was ${lastBill[1].match(/\$[\d,.]+/) ? lastBill[1].match(/\$[\d,.]+/)[0] : lastBill[1]}. This time last year it was ${ly[1].match(/\$[\d,.]+/) ? ly[1].match(/\$[\d,.]+/)[0] : ly[1]}.`, $('#bill'));
+  });
+
+  step('grid', () => {
+    const sp = $$('#grid-legend span').map(s => txt(s).match(/^(.*?) (\d+)%$/)).filter(Boolean);
+    if (sp.length < 2) return;
+    sp.sort((a, b) => b[2] - a[2]);
+    const fossil = /gas|coal|oil|biomass|other/i;
+    const k = document.createElement('div'); k.className = 'kmix';
+    k.innerHTML = sp.map(m => `<div class="${fossil.test(m[1]) ? 'fossil' : ''}"><span>${m[1]}</span><em><i style="width:${m[2]}%"></i></em><b>${m[2]}%</b></div>`).join('');
+    const bar = $('#grid-bar'); if (bar) bar.replaceWith(k); else $('#grid-legend').before(k);
+    kill($('#grid-legend'));
+    const gs = $('#grid-summary'), m = gs && txt(gs).match(/(\d+)% carbon-free/);
+    if (m) { const b = document.createElement('p'); b.className = 'kbignum'; b.innerHTML = `<b>${m[1]}%</b> carbon-free right now`; gs.before(b);
+      const wk = txt(gs).match(/past week averaged (\d+%)/); if (wk) gs.textContent = `The past week averaged ${wk[1]}.`; else kill(gs); }
+  });
+
+  step('mountain', () => {
+    const rows = $$('#mtn > div, #mtn .mtn');
+    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r)))) {
+      verdict('All three peaks are hidden today and tomorrow.', $('#mtn'));
+      for (const r of rows) for (const el of r.querySelectorAll('*')) if (!el.children.length && /Hidden today|Tomorrow: hidden/i.test(txt(el))) kill(el);
+    }
+    for (const el of $$('#ski-card .k, #ski-card .tile span')) if (/^Last 24 hours$/i.test(txt(el))) el.textContent = '24-hour change';
+  });
+
+  step('pollen', () => {
+    const rows = $$('#pollen > div, #pollen .lines > div');
+    if (!rows.length) return;
+    if (rows.every(r => /Off season/i.test(txt(r)) && !/(Low|Moderate|High)\b/.test(txt(r).replace(/Off season/g, '')))) {
+      const v = document.createElement('p'); v.className = 'kverdict'; v.textContent = 'Nothing in the air: grass, tree and weed pollen are all off season for the next three days.';
+      const box = $('#pollen'); box.replaceWith(v);
+    }
+  });
+
+  step('river', () => {
+    for (const el of $$('#columbia-facts .mini, #columbia-card .mini')) {
+      const t = txt(el), m = t.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/);
+      if (/crest|tops out|peak/i.test(t) && m) {
+        const d = new Date(`${m[1]} ${m[2]}, ${new Date().getFullYear()}`), today = new Date(); today.setHours(0, 0, 0, 0);
+        if (d < today) kill(el);
+      }
+    }
+    for (const el of $$('#columbia-card p, #columbia-summary')) if (/tops out at [\d.]+ ft (Mon|Tue|Wed|Thu|Fri|Sat|Sun)/.test(txt(el))) {
+      const m = txt(el).match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/);
+      if (m) { const d = new Date(`${m[1]} ${m[2]}, ${new Date().getFullYear()}`), t0 = new Date(); t0.setHours(0, 0, 0, 0);
+        if (d < t0) el.textContent = el.textContent.replace(/[;,]?\s*(the )?forecast tops out at [^.;]*[.;]?/i, '.').replace(/\.\s*\./, '.'); }
+    }
+  });
+
+  step('bangkok', () => {
+    if (typeof D === 'undefined' || !D.bangkok || !D.bangkok.days) return;
+    $$('#bkk .lines>div>span:first-child, #world .lines>div>span:first-child').forEach((s, i) => {
+      const d = D.bangkok.days[i]; if (!d || !d.date) return;
+      s.textContent = new Date(d.date + 'T12:00:00+07:00').toLocaleDateString('en-US', {timeZone: 'Asia/Bangkok', weekday: 'short', month: 'short', day: 'numeric'}) + (i === 0 ? ' (today there)' : '');
+    });
+  });
+  $$('i.aqi, .aqi-dot').forEach(kill);
+
+  step('rain totals', () => {
+    for (const s of $$('.rain-tot > span')) s.innerHTML = s.innerHTML.replace(/(\d)(?:″|")/g, '$1 in');
+  });
+
+  step('album birthdays', () => {
+    for (const b of $$('.bday')) {
+      const t = b.querySelector('b'); if (t && t.nextSibling && t.nextSibling.nodeType === 1) t.after(document.createTextNode(' '));
+      const age = b.querySelector('.age'); if (age) age.textContent = txt(age).replace(/\s*yrs?\.?$/, '');
+    }
+  });
+
+  step('quakes', () => {
+    for (const el of $$('#quakes *, #quake-card *')) if (!el.children.length) {
+      el.textContent = el.textContent.replace(/Under the volcanoes: (.+?) (\d+)\./, (m, v, n) => `${n} small quake${n === '1' ? '' : 's'} under ${v} this week.`);
+    }
+  });
+
+  // 13. Copy desk: web-isms out, house style in, long lists edited down, wrong facts fixed.
+  step('bangkok rows', () => {
+    if (typeof D === 'undefined' || !D.bangkok || !D.bangkok.days) return;
+    const bkToday = new Date().toLocaleDateString('en-CA', {timeZone: 'Asia/Bangkok'});
+    const rows = $$('#bkk .lines>div, #world .lines>div').filter(r => r.firstElementChild);
+    rows.forEach((r, i) => {
+      const d = D.bangkok.days[i]; if (!d || !d.date) return;
+      if (d.date < bkToday) { kill(r); return; }
+      const lab = d.date === bkToday ? 'Today' : new Date(d.date + 'T12:00:00+07:00').toLocaleDateString('en-US', {timeZone: 'Asia/Bangkok', weekday: 'short', month: 'short', day: 'numeric'});
+      r.firstElementChild.textContent = lab;
+    });
+  });
+
+  step('web-isms', () => {
+    kill($('#kid-change'));
+    for (const el of $$('button, .joy-btn')) if (/Change|Listen|Play|Show|Hide|Refresh/i.test(txt(el))) kill(el);
+    $$('#jazz .cite, #gigs .cite, #shows .cite, #kid-out .cite, #big .cite, #concerts .cite').forEach(kill);
+    for (const a of $$('a, span.pill, span.tag')) if (/^(Tickets|Buy|Book|Deadline|Permit)\s*(→|›)?$/i.test(txt(a)) && a.closest('#jazz, #gigs, #plan, #shows, #concerts')) kill(a);
+    for (const el of $$('#plan *')) if (!el.children.length && /^\s*·\s*(Tickets|Buy|Book|Deadline|Permit)\s*$/i.test(el.textContent)) kill(el);
+    const PROV = /\b(listing|guide|page|site) (gives|lists|reports|says)\b|\breports? (Nov|Dec|Jan|Fri|Sat|Sun|Mon|Tue|Wed|Thu)|hasn['’]t (fully )?posted|doesn['’]t state a year|found (only )?on (ticket|event) listings|date confirmed by|comes from an event listing|not yet confirmed by the organizer|^Source:|^Sources?:|A third-party guide/i;
+    for (const el of $$('#kid-out small, #kid-out p, #jazz small, #jazz p, #big small, #plan small, #coast-events small, #bluray small, #gigs small, #gigs p, #family small, #family p')) {
+      if (el.children.length > 1) continue;
+      const parts = el.textContent.split(/(?<=[.;])\s+/), keep = parts.filter(x => !PROV.test(x));
+      let s2 = keep.join(' ').replace(/,? (?:per|according to) (?:the )?[A-Z][\w'’&. ]+(?=[.;]|$)/g, '').replace(/\s*Price not given\.?/g, '').trim();
+      if (s2 !== el.textContent.trim()) { if (s2) el.textContent = s2; else kill(el); }
+    }
+    for (const el of $$('section.group small, section.group .cite')) if (/^Source: /.test(txt(el)) && el.closest('#jazz, #gigs, #shows')) kill(el);
+    for (const sel of ['#jazz-regulars', '#br-upcoming']) {
+      const el = $(sel); if (!el) continue;
+      const t = txt(el).replace(/\.$/, ''), m = t.match(/^([^:]{3,30}):\s*(.*)$/);
+      if (!m) continue;
+      const items = m[2].split(/\s*;\s*/).filter(Boolean);
+      if (items.length < 2) continue;
+      el.innerHTML = `<b>${m[1]}</b><ul class="kplain">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    }
+    // Chips every row shares say nothing.
+    for (const box of $$('#kid-out, #family-out, .places')) {
+      const chips = [...box.querySelectorAll('.pill, .when')]; const set = new Set(chips.map(txt));
+      if (chips.length > 3 && set.size === 1) chips.forEach(kill);
+    }
+    for (const el of $$('.pill')) { const h = el.closest('section') && el.closest('section').querySelector('h3'); if (h && txt(h).toLowerCase().startsWith(txt(el).toLowerCase()) && txt(el).length > 4) kill(el); }
+  });
+
+  step('lists', () => {
+    // Streaming: the best of what's new, not every release in every language.
+    const tv = $('#tv');
+    if (tv) {
+      let section = '', kept = {recent: 0, soon: 0};
+      for (const el of [...tv.children]) {
+        if (/day-h|sub/.test(el.className) || /^H3$/.test(el.tagName)) { section = /later this month/i.test(txt(el)) ? 'later' : /recent|out now|new/i.test(txt(el)) ? 'recent' : 'soon'; if (section === 'later') kill(el); continue; }
+        if (section === 'later') { kill(el); continue; }
+        const score = +(txt(el).match(/(\d\.\d) on TMDB/) || [0, 0])[1];
+        if (section === 'recent') { if (kept.recent >= 8) kill(el); else kept.recent++; }
+        else { if (kept.soon >= 8 || (score && score < 6.5)) kill(el); else kept.soon++; }
+      }
+    }
+    // Play ideas: three for the season, three for any day, a new set each morning.
+    const ideas = $$('#play .idea, #play-card .idea');
+    if (ideas.length > 6) {
+      const doy = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 864e5);
+      const season = ideas.filter(i => /season/i.test(txt(i.querySelector('.k, small, .when')) + i.className)), any = ideas.filter(i => !season.includes(i));
+      const pick = (arr, n) => arr.length <= n ? arr : arr.map((x, k) => [x, (k - doy % arr.length + arr.length) % arr.length]).sort((a, b) => a[1] - b[1]).slice(0, n).map(x => x[0]);
+      const keep = new Set([...pick(season, 3), ...pick(any, 3)]);
+      ideas.forEach(i => { if (!keep.has(i)) kill(i); });
+    }
+    // Tickets and deadlines: the next three weeks in full; the rest on one line.
+    const plan = $('#plan');
+    if (plan) {
+      const rest = [];
+      for (const it of [...plan.children]) {
+        const t = txt(it), m = t.match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
+        const dated = /\b(Today|Tomorrow|In \d+ days|Starts|By)\b/.test(t);
+        if (!dated) { const b = it.querySelector('b'); if (b) rest.push(txt(b).replace(/\s*(Tickets|Buy|Book|Deadline|Permit)$/, '')); kill(it); }
+      }
+      if (rest.length) { const p = document.createElement('p'); p.className = 'note kalso'; p.innerHTML = '<b>Already on sale:</b> ' + rest.join(' · '); plan.after(p); }
+    }
+    // Reviews: audio and video first; no business software.
+    const rv = $('#reviews');
+    if (rv) {
+      const st = [...rv.querySelectorAll('.story')];
+      st.forEach(s => { if (/VoIP|Password Manager|Case review|\bAIO\b|CRM|Payroll/i.test(txt(s))) kill(s); });
+      const live = st.filter(s => s.isConnected), av = live.filter(s => /A\/V|TV|headphone|speaker|turntable|soundbar|projector|OLED|4K|audio/i.test(txt(s)));
+      av.reverse().forEach(s => rv.prepend(s));
+      [...rv.querySelectorAll('.story')].slice(10).forEach(kill);
+    }
+    for (const box of $$('#stories, #finds, #openings, #restaurants')) [...box.querySelectorAll('.story')].slice(8).forEach(kill);
+    for (const s of $$('#openings .story, #restaurants .story')) if (/Not named/.test(txt(s))) kill(s);
+    // Blu-ray: US deals only, each title once.
+    const seenBr = new Set();
+    for (const d of $$('#bluray .deal, #bluray .story')) {
+      if (/£|\bUK\b|Amazon (Italy|UK|Germany|France|Spain)/.test(txt(d))) { kill(d); continue; }
+      const k = txt(d.querySelector('b')).replace(/\(.*?\)|:? The Criterion Collection|4K.*$/gi, '').trim().toLowerCase();
+      if (k && seenBr.has(k)) kill(d); else seenBr.add(k);
+    }
+    // Holidays: the next two months; Thailand's marked.
+    for (const r of $$('#holidays > div')) {
+      if (/(Second|Third) Day of Chinese New Year|\bobserved\b/i.test(txt(r))) { kill(r); continue; }
+      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
+      if (m) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (d < new Date(now - 864e5)) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
+    }
+    // Albums: skip compilations; round birthdays get a word.
+    for (const b of $$('.bday')) {
+      const t = txt(b.querySelector('b')), age = +(txt(b.querySelector('.age')).match(/\d+/) || [0])[0];
+      if (/Greatest|Best of|Sessions|Collection|Anthology|Hits\b/i.test(t)) kill(b);
+      else if (age && age % 10 === 0) { const s = b.querySelector('small'); if (s) s.textContent += ` · turns ${age} today`; }
+    }
+    // Sky: meteor showers in the next two months.
+    for (const r of $$('#sky > div')) {
+      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
+      if (m && /meteor/i.test(txt(r))) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (d < now) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
+    }
+    // Kids' movie: little ones get G and animation.
+    const km = $('#kidmov-card');
+    if (km && /\b(PG-13|teen)\b/i.test(txt(km))) kill(km);
+  });
+
+  step('civics', () => {
+    for (const el of $$('#reps *, #elect *')) if (!el.children.length) {
+      el.textContent = el.textContent
+        .replace(/Read twice and referred to the (.+?)\./g, 'In the $1.').replace(/Referred to the (.+?)\./g, 'In the $1.')
+        .replace(/Chapter \d+, \(\d{4} Laws\): Effective date (\w+ \d+), \d{4}\.?/g, 'Law since $1.')
+        .replace(/In committee upon adjournment\.?/g, 'Died in committee.')
+        .replace(/Oregon Public Broadcasting - OPB/g, 'OPB').replace(/KOIN\.com/g, 'KOIN');
+      if (/^A bill to /.test(el.textContent) && el.textContent.length > 110) el.textContent = el.textContent.slice(0, 100).replace(/\s+\S*$/, '') + '…';
+    }
+    for (const el of $$('#reps .story, #reps .lines>div')) if (/^[SH]D-\d+ — Oregon$/.test(txt(el.querySelector('b')))) kill(el);
+    // Bills they sponsored: the three latest.
+    for (const h of $$('#reps h3')) if (/sponsored/i.test(txt(h))) { const l = h.nextElementSibling; if (l) [...l.children].slice(3).forEach(kill); }
+  });
+
+  step('repeats', () => {
+    const words = s => new Set(s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 3));
+    const names = s => new Set((s.match(/\b[A-Z][a-z]{3,}\b/g) || []).slice(1));
+    const alike = (a, b) => { let k = 0; for (const w of a.w) if (b.w.has(w)) k++; const ov = k / Math.max(1, Math.min(a.w.size, b.w.size));
+      let n = 0; for (const w of a.n) if (b.n.has(w)) n++; return ov >= 0.6 || (n >= 2 && ov >= 0.35); };
+    for (const box of $$('#bignews, #localnews, #reviews, #stories, #finds')) {
+      const seen = [];
+      for (const s of box.querySelectorAll('.story')) {
+        const t = txt(s.querySelector('b')), x = {w: words(t), n: names(t)};
+        if (seen.some(y => alike(x, y))) kill(s); else seen.push(x);
+      }
+    }
+    // Repeated small print under each row of a list.
+    for (const list of $$('.lines, #mush, #re, #he')) {
+      let prev = '';
+      for (const c of list.querySelectorAll('.cite, small')) { const t = txt(c); if (t && t === prev) kill(c); else prev = t; }
+    }
+    const mm = txt($('#mush-meta')).replace(/″/g, ' in');
+    if (mm) for (const s of $$('#mush small')) if (mm.includes(txt(s).replace(/″/g, ' in'))) kill(s);
+    // Standings bullets that repeat the table above.
+    for (const li of $$('[id^="pulse-"] li')) if (/^(Standings|Beat \w+ \d+-\d+):/.test(txt(li))) kill(li);
+    // A deck that says what the first line says.
+    for (const c of $$('section.card, .card')) {
+      const m = c.querySelector('.head .meta'), f = c.querySelector('.head ~ * p, .head ~ p');
+      if (m && f && txt(f).indexOf(txt(m)) === 0 && txt(m).length > 10) kill(m);
+    }
+    // Freshness stamps from this morning.
+    const td = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+    for (const el of $$('p, small, .meta, span')) if (!el.children.length && /^(Summary|Analysis) as of /.test(txt(el)) && txt(el).includes(td)) kill(el);
+    // Germ report that contradicts itself.
+    for (const el of $$('#germ-card p, #germs p, #germ p')) if (/Nothing much going around/i.test(txt(el)) && /Moderate|High/.test(txt(el.closest('.card') || el))) el.textContent = 'Mostly quiet; one thing is running at a moderate level, below.';
+  });
+
+  step('small copy', () => {
+    for (const el of $$('#trail-card *, #trails *')) if (!el.children.length) el.textContent = el.textContent.replace(/^(\d+) in (\d+) weeks?$/, (m, n, w) => `${n} report${n === '1' ? '' : 's'} in ${w} weeks`);
+    for (const el of $$('#mo-card *, #month-card *')) if (!el.children.length) el.textContent = el.textContent.replace(/\((\d+(?:\.\d+)?) a day\)/, '($1 kWh a day)');
+    for (const el of $$('#blooms *')) if (!el.children.length && /^[a-z]/.test(el.textContent.trim())) el.textContent = el.textContent.trim().replace(/^./, c => c.toUpperCase());
+    const ws = $('#whale-card');
+    if (ws) for (const r of ws.querySelectorAll('.story, .lines>div, a')) if (/^(Cetaceans|Whales)\b/.test(txt(r.querySelector('b') || r))) { const h = r.closest('div, a'); kill(r); }
+    for (const el of $$('#out-facts *')) if (!el.children.length && /^Next tide$/i.test(txt(el))) el.textContent = 'River tide';
+    const intro = $('#brief .brief-intro');
+    // (Alfred's intro is rewritten with the planner below.)
+    for (const h of $$('h3')) { const h2 = h.closest('.card') && h.closest('.card').querySelector('h2'); if (h2 && txt(h2).toLowerCase() === txt(h).toLowerCase()) kill(h); }
+    for (const el of $$('.story p, .story small')) { const t = txt(el); if (/\b(Camera|Editor|Motion GFX|Colour):/.test(t) || (t.length < 200 && t.length > 20 && /[a-z]$/.test(t) && !/[.!?]/.test(t))) kill(el); }
+    for (const el of $$('section.group *')) if (!el.children.length && /\s[A-Z ]{6,}!$/.test(el.textContent)) el.textContent = el.textContent.replace(/\s*[A-Z ]{6,}!$/, '');
+    for (const el of $$('#potd *, #art-card *')) if (!el.children.length && /^[a-z0-9_.-]{3,30}$/.test(txt(el)) && el.tagName === 'SMALL') el.textContent = 'Photo: ' + txt(el);
+  });
+
+  step('house style', () => {
+    const tdate = new Date(), tm = new Date(Date.now() + 864e5);
+    const fmt = d => d.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+    const T = fmt(tdate), M = fmt(tm);
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      let t = n.nodeValue, o = t;
+      if (n.parentElement && n.parentElement.closest('script, style, svg')) continue;
+      t = t.replace(/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g, '$1, $2 $3');
+      t = t.replace(/ +([,.;:!?])(?=\s|$)/g, '$1');
+      t = t.replace(/(\d) %/g, '$1%');
+      t = t.replace(/\b12 pm\b/g, 'noon').replace(/\b12 am\b/g, 'midnight');
+      t = t.replace(/(\d{1,2}(?::\d\d)? [ap]m) (?:PT|Pacific|local)\b/g, '$1');
+      t = t.replace(/(\d(?::\d\d)?(?: [ap]m)?) – (\d)/g, '$1–$2');
+      t = t.replace(/\b(\d+)h (\d+)m\b/g, '$1 hr $2 min');
+      t = t.replace(/(\d)(?:″)(?=[\s,.;)]|$)/g, '$1 in');
+      t = t.replace(/(\d)-(\d+(?:\.\d+)?) (ft|in|mph|kt)\b/g, '$1–$2 $3');
+      t = t.replace(/(^|[\s(])-(\d)/g, '$1−$2');
+      t = t.replace(/\bMPH\b/g, 'mph').replace(/ · Other · /g, ' · ').replace(/\$(\d+)\.00\b/g, '$$$1');
+      t = t.replace(/(\d+) \/100\b/g, '$1/100').replace(/from the (\w+) to the \1\b/g, 'in the $1');
+      t = t.replace(/\b(Ii|Iii|Iv|Vi|Vii|Viii)\b/g, m => m.toUpperCase());
+      t = t.replace(/\bcovered by (\d+) outlets\b/g, '$1 outlets');
+      if (t.length > 60 && n.parentElement && !n.parentElement.closest('#cal, .sday, .fd, .kmatrix, #plan .when')) {
+        t = t.replace(new RegExp('(\\b(?:on|is|opens|starts|ends|from) )' + T + '\\b', 'g'), '$1today').replace(new RegExp('(\\b(?:on|is|opens|starts|ends|from) )' + M + '\\b', 'g'), '$1tomorrow');
+      }
+      if (t !== o) n.nodeValue = t;
+    }
+  });
+
+  // 14. Alfred plans the day: one judgement, then the day in time order, built
+  // from the rest of the edition (calendar, shades, the sun, the sky, the game).
+  step('alfred', () => {
+    const brief = $('#brief'); if (!brief) return;
+    const mins = s => { s = (s || '').toLowerCase().trim(); if (s === 'noon') return 720;
+      const m = s.match(/(\d{1,2})(?::(\d\d))?\s*([ap])m?/); if (!m) return null;
+      let h = +m[1] % 12; if (m[3] === 'p') h += 12; return h * 60 + (+m[2] || 0); };
+    const label = n => { const h = Math.floor(n / 60), mm = n % 60; if (n === 720) return 'Noon';
+      return `${h % 12 || 12}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
+    const nowM = (() => { const d = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'})); return d.getHours() * 60 + d.getMinutes(); })();
+    const plan = [];
+    const add = (t, text) => { if (t !== null && t >= nowM - 30 && text) plan.push([t, text]); };
+    // Calendar, today.
+    const day = $$('#cal h3.cal-day').find(h => /^Today$/i.test(txt(h)));
+    const calRows = day && day.nextElementSibling ? [...day.nextElementSibling.children] : [];
+    let gameInCal = false;
+    for (const r of calRows) { const t = txt(r.firstElementChild).replace(/\s*(Moda Center|Video call)$/, ''), w = txt(r.lastElementChild);
+      if (/Blazers|Timbers/.test(t)) { gameInCal = true; continue; }
+      add(mins(w), t); }
+    // The game, with the channel.
+    for (const k of $$('.kscore')) { const nx = [...k.children].find(d => /Next/.test(txt(d.querySelector('.k'))));
+      if (nx && /^(Tonight|Today)/.test(txt(nx.querySelector('b')))) {
+        const team = txt(k.closest('.card') && k.closest('.card').querySelector('h2')).replace(/^Portland (Trail Blazers|Timbers|Thorns)/, '$1');
+        const parts = txt(nx.querySelector('small')).replace(/^vs\.? /, 'v. ').split(' · ');
+        add(mins(txt(nx.querySelector('b')).replace(/^(Tonight|Today) /, '')), `${team} ${parts[0]}${parts[1] ? ', on ' + parts[1].split(',')[0] : ''}`); } }
+    // Shades, today.
+    const sd = $('#shades .shade-day');
+    if (sd) for (const b of sd.querySelectorAll('.shade-step b')) { const m = txt(b).match(/^(.*?) at (\d{1,2}(?::\d\d)? [ap]m|noon)$/i);
+      if (m) add(mins(m[2]), m[1].replace(/^Open sunny-side shades$/i, 'Open the sunny-side shades').replace(/^Close all shades$/i, 'Close the shades to hold the warmth')); }
+    // Sun for the big loads.
+    const ld = $('#loads .load'), lb = ld && txt(ld.querySelector('b'));
+    const lm = lb && lb.match(/(\d{1,2}(?::\d\d)? ?[ap]m|noon)\s*[–-]\s*(\d{1,2}(?::\d\d)? ?[ap]m|noon)/i);
+    if (lm) add(mins(lm[1]), `Dishwasher, laundry, the car: the panels cover it until ${lm[2].replace(/ ?([ap])m/, ' $1m')}`);
+    // Warmest hour.
+    const hot = $('.khr .hot');
+    if (hot) add(mins(txt(hot.querySelector('span')).replace(/^(\d+)([ap])$/i, '$1 $2m')), `Warmest hour, ${txt(hot.querySelector('b'))}: a good time outside with the little one`);
+    // Sunset and the sky.
+    const ss = $$('#out-facts > div, #out-facts .f').find(d => /^Sunset/i.test(txt(d)));
+    const sst = ss && txt(ss).match(/(\d{1,2}:\d\d [ap]m)/);
+    if (sst) add(mins(sst[1]) - 15, 'Look west: the sun sets at ' + sst[1]);
+    const iss = $$('#sats > div, #sats .lines > div').find(r => /Good/.test(txt(r)) && txt(r).includes(new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'})));
+    const im = iss && txt(iss).match(/at (\d{1,2}:\d\d [ap]m)[^,]*?(\d+ min), (from the [A-Z]+)/);
+    if (im) add(mins(im[1]), `The space station passes over, ${im[3]}, for ${im[2]}`);
+    plan.sort((a, b) => a[0] - b[0]);
+    // The judgement: what kind of day, and what is coming.
+    const fds = $$('#forecast .fd'), kwh = f => +(txt(f.querySelector('.e')).match(/\d+/) || [0])[0];
+    const rain = f => +(txt(f.querySelector('.r')).match(/(\d+)%/) || [0, 0])[1];
+    let say = '';
+    if (fds.length > 3) {
+      const t0 = fds[0], best = Math.max(...fds.map(kwh)), wet = fds.slice(1).filter(f => rain(f) >= 70).map(f => txt(f.querySelector('.d')));
+      if (kwh(t0) >= best && rain(t0) < 40) say = 'Today is the pick of the week, sir: the driest and sunniest day we will see.';
+      else if (rain(t0) >= 70) say = 'A wet one today, sir. Indoor plans are wise.';
+      else say = 'A fair day, sir.';
+      if (wet.length) say += ` Rain settles in ${wet.length > 1 ? `from ${wet[0]} to ${wet[wet.length - 1]}` : 'on ' + wet[0]}, so anything outdoors belongs to ${kwh(t0) >= best ? 'today' : 'the dry days'}.`;
+    }
+    const smoke = [...brief.querySelectorAll('li')].find(li => /Smoke is forecast tomorrow/i.test(txt(li)));
+    if (smoke) { say += ' Smoke arrives tomorrow; I shall keep the windows shut.'; kill(smoke); }
+    kill(brief.querySelector('.brief-intro'));
+    // Lines the plan now carries.
+    for (const li of brief.querySelectorAll('ul li')) if (plan.some(([, x]) => /Blazers|Timbers|Vikings|Pilots/.test(x) && /Blazers|Timbers|Vikings|Pilots/.test(txt(li)) && (txt(li).match(/Blazers|Timbers|Vikings|Pilots/) || [''])[0] && x.includes((txt(li).match(/Blazers|Timbers|Vikings|Pilots/) || [''])[0]))) kill(li);
+    const v = document.createElement('p'); v.className = 'kverdict kalfred'; v.textContent = say.trim();
+    const ol = document.createElement('ol'); ol.className = 'kplan';
+    ol.innerHTML = plan.map(([t, x]) => `<li><span class="kt">${label(t)}</span><span>${x}</span></li>`).join('');
+    const head = brief.querySelector('.brief-head') || brief.querySelector('h2');
+    if (head) { head.after(v); if (plan.length) { const lab = document.createElement('h3'); lab.className = 'sub'; lab.textContent = 'The day, as I would arrange it'; v.after(lab); lab.after(ol); } }
+  });
+
 }
 """
 
@@ -1032,7 +1484,6 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain #out-facts>.mini:nth-child(even){padding-left:14px !important}
 #kmain #out-facts .k{margin:0 !important}
 #kmain #out-facts .v{font:680 var(--t4)/var(--l4) var(--k-serif) !important;white-space:nowrap;text-align:right}
-#kmain #out-facts .v small{display:none !important}
 #kmain .allclear{font:italic 430 var(--t5)/var(--l5) var(--k-serif) !important;border:0 !important;border-top:1px solid var(--hair) !important;padding:var(--s1) 0 0 !important;background:none !important}
 #kmain .allclear i{display:none !important}
 
@@ -1130,6 +1581,62 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain small,#kmain .meta{font-weight:480 !important}
 
 
+
+/* Data pages */
+#kmain .kverdict{font:600 18px/26px var(--k-serif) !important;color:#000 !important;margin:8px 0 12px !important}
+#kmain table.kmatrix{width:100%;table-layout:fixed;border-collapse:collapse;border-top:1px solid #000;margin:12px 0 10px}
+#kmain .kmatrix thead th{font:600 13px/16px var(--k-serif) !important;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:6px 4px}
+#kmain .kmatrix thead th:first-child{width:104px}
+#kmain .kmatrix tbody th{font:700 15px/19px var(--k-serif) !important;text-align:left;vertical-align:top;padding:8px 6px 8px 0;border-top:1px solid #000}
+#kmain .kmatrix td{vertical-align:top;padding:7px 4px;border-top:1px solid #000}
+#kmain .kmatrix td.q4{outline:2px solid #000;outline-offset:-2px}
+#kmain .kmatrix td b,#kmain .kmatrix td span,#kmain .kmatrix td small,#kmain .kq{display:block}
+#kmain .kmatrix td b{font:600 13px/16px var(--k-serif) !important;letter-spacing:.06em;text-transform:uppercase}
+#kmain .kmatrix td.q1 b{font-weight:400 !important;font-style:italic}
+#kmain .kmatrix td span{font:700 15px/19px var(--k-serif) !important;font-variant-numeric:tabular-nums}
+#kmain .kmatrix td small{font:italic 430 13px/16px var(--k-serif) !important}
+#kmain .kq{margin:0 0 3px}
+#kmain .kq i{display:inline-block;width:9px;height:9px;margin-right:2px;border:1px solid #000;background:#fff}
+#kmain .kq i.on{background:#000 !important}
+#kmain .kkey{font:italic 430 13px/18px var(--k-serif) !important}
+#kmain .khr{display:flex;align-items:flex-end;border-top:1px solid #000;border-bottom:1px solid #000;padding:8px 0;margin:12px 0}
+#kmain .khr>div{flex:1 1 0;text-align:center}
+#kmain .khr b{display:block;font:680 17px/20px var(--k-serif) !important}
+#kmain .khr i{display:block;width:55%;margin:4px auto;background:#5a5a5a}
+#kmain .khr .hot i{background:#000}
+#kmain .khr .hot b{text-decoration:underline}
+#kmain .khr span{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.06em;text-transform:uppercase}
+#kmain #out-facts .v small{display:inline !important;font:430 13px/16px var(--k-serif) !important;margin-left:4px}
+#kmain .kscore{display:flex;border-top:2px solid #000;border-bottom:1px solid #000;margin:10px 0 12px}
+#kmain .kscore>div{flex:1 1 0;padding:8px 10px 8px 0}
+#kmain .kscore>div+div{border-left:1px solid #000;padding-left:12px}
+#kmain .kscore .k{display:block;font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em;text-transform:uppercase}
+#kmain .kscore b{display:block;font:700 26px/32px var(--k-serif) !important;font-variant-numeric:tabular-nums}
+#kmain .kscore small{display:block;font:italic 430 14px/19px var(--k-serif) !important}
+#kmain #bill .progress{border:1px solid #000 !important;height:10px !important;background:#fff !important}
+#kmain #bill .progress>div,#kmain #bill .progress>i{height:100% !important;background:#000 !important}
+#kmain .kbx{display:table;width:100%;table-layout:fixed}
+#kmain .kbx span{display:table-cell;text-align:center;font:600 13px/16px var(--k-serif) !important}
+#kmain .kbv{display:block;font:700 13px/16px var(--k-serif) !important;text-align:center;margin-bottom:2px;white-space:nowrap}
+#kmain .kmix>div{display:table;width:100%;padding:6px 0;border-bottom:1px solid #000}
+#kmain .kmix span,#kmain .kmix em,#kmain .kmix b{display:table-cell;vertical-align:middle}
+#kmain .kmix span{width:170px;font:430 15px/20px var(--k-serif) !important}
+#kmain .kmix b{width:52px;text-align:right;font:700 15px var(--k-serif) !important}
+#kmain .kmix em{padding-right:8px}
+#kmain .kmix i{display:block;height:12px;background:#000}
+#kmain .kmix .fossil i{background:#5a5a5a}
+#kmain .kbignum{font:italic 430 17px/24px var(--k-serif) !important;margin:6px 0 10px !important}
+#kmain .kbignum b{font:700 44px/48px var(--k-serif) !important;font-style:normal;margin-right:8px}
+
+/* Alfred's plan for the day */
+#kmain .kalfred{font:italic 430 19px/28px var(--k-serif) !important;margin:10px 0 14px !important}
+#kmain ol.kplan{list-style:none !important;padding:0 !important;margin:0 0 12px !important;border-top:2px solid #000}
+#kmain ol.kplan li{display:table;width:100%;border-bottom:1px solid #000;padding:8px 0 !important;margin:0 !important}
+#kmain ol.kplan li::before{display:none !important;content:none !important}
+#kmain ol.kplan .kt{display:table-cell;width:5.2em;font:700 16px/22px var(--k-serif) !important;font-variant-numeric:tabular-nums;vertical-align:top}
+#kmain ol.kplan .kt+span{display:table-cell;font:430 17px/24px var(--k-serif) !important}
+#kmain ul.kplain{margin:4px 0 0 !important;padding:0 0 0 18px !important}
+#kmain .kalso{font:430 15px/22px var(--k-serif) !important}
 /* Controls a finger can hit */
 html body .krun{height:44px !important;padding:16px 0 6px !important;cursor:pointer}
 .kbar #kmore{height:44px !important;padding:13px 16px !important}
@@ -1626,6 +2133,7 @@ def snapshot(site):
                                   has_touch=True, locale="en-US", reduced_motion="reduce")
         p = ctx.new_page()
         p.on("pageerror", lambda e: print(f"kindle_full: page error: {e}", file=sys.stderr))
+        p.on("console", lambda m: m.text.startswith("kindle ") and print(f"kindle_full: {m.text}", file=sys.stderr))
         p.goto(url, wait_until="networkidle", timeout=90_000)
         # Scroll the whole page so cards that load on view get filled in.
         height = p.evaluate("document.body.scrollHeight")
@@ -1752,6 +2260,7 @@ DEDUPE = r"""
   docs.forEach((d, i) => {
     if (!isAlfred[i]) return;
     for (const li of [...d.querySelectorAll('li')]) {
+      if (li.closest('.kplan')) continue;
       const bs = [...li.querySelectorAll('b, strong')].map(x => norm(x.textContent)).filter(x => x.length >= 6);
       if (bs.length && texts.some(pt => bs.every(x => pt.includes(x)))) { prune(li); continue; }
       const t = norm(li.textContent);
@@ -2132,7 +2641,7 @@ def main(site):
     wx = ""
     if g.get("temp"):
         wx = (f'<div class="kgl"><div class="kdeg">{html.escape(g["temp"])}<small>{html.escape(g.get("where", ""))}</small></div>'
-              f'<p class="kwx">{html.escape(g.get("summary", ""))}</p></div>')
+              '</div>')
     body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span>No. {doy}</span></div>'
             f'<p class="kname">The Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'

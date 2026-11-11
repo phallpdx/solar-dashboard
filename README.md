@@ -58,19 +58,31 @@ saves "The Morning Edition" in `kindle/`, laid out for the Kindle Paperwhite
 11 browser (618 x 714 CSS px, Chrome 75, black-and-white e-ink). It is made by
 `solar/kindle_full.py`:
 
-- **Cover and contents** (`index.html`): masthead, today's weather in
-  figures, five things about the day, the top stories, then the contents.
-- **Section fronts** (`today.html`, `news.html`, ...): the section name and
-  every story in it.
+- **Cover** (`index.html`): masthead, today's temperature, the top three
+  stories, and "Pick up where you stopped"; the contents on the next screen.
+- **Reading order** for the first half hour awake: your day (Good morning,
+  Alfred's plan for the day, calendar, tickets, roads, the little one), then
+  home and land, then the news, then music and screen, then the back pages,
+  ending on Thailand and, last of all, the beach.
+- **Section fronts** (`today.html`, ...): a big section number and every
+  story with a line of news.
 - **One card per page** (`today-01.html`, ...). Nothing scrolls. A page that
   is a little too long is set tighter until it fits; a long one is cut into
-  screens at whole items, and "More" steps through them. Tap the right of
-  the screen for the next page, the left to go back.
-- The dashboard loads with `?kindle`, which shows whole lists, and an
-  editorial pass drops controls, repeats and feed noise and gives witty
-  card titles a plain name for the contents and "Next" links.
+  screens at whole items. Tap the right of the screen (or swipe) to keep
+  reading, the left to go back; the bar's right link skips to the next
+  page, and tapping the running head opens a list of every section.
+- **Nothing printed twice**: an item already printed earlier in the edition
+  is taken out of the later page, and Alfred only says what no other page
+  does.
+- **Designed data pages**: verdict lines, a surf grid, an hourly
+  temperature strip, a markets quote board, scoreboards, bill and grid
+  charts.
+- Sources and credits sit on one page at the back (`sources.html`); the
+  edition ends on `end.html`.
+- The dashboard loads with `?kindle`; an editorial pass drops controls,
+  feed noise and long tails of lists, and sets house style.
 - One serif (Literata, saved alongside the pages), a fixed type scale, black
-  and two greys only, and pictures saved as small greyscale JPEGs.
+  and greys only, and pictures saved as small greyscale JPEGs.
 
 `kindle.html` redirects there, so bookmark `<your Pages URL>/kindle.html`.
 If the step fails, `kindle.html` stays the simple text-only morning page.

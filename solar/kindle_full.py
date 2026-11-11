@@ -437,6 +437,14 @@ CURATE = r"""
   const verdict = (text, before) => { if (!text || !before) return; const v = document.createElement('p'); v.className = 'kverdict'; v.textContent = text; before.before(v); return v; };
   const todayShort = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Los_Angeles'});
 
+  step('swatches', () => {
+    for (const card of $$('.card')) { const leg = [...card.querySelectorAll('.legend .sw, .legend i')].slice(0, 2).map(x => getComputedStyle(x).backgroundColor);
+      if (leg.length < 2) continue;
+      card.querySelectorAll('.sw, .legend i').forEach(x => { const k = leg.indexOf(getComputedStyle(x).backgroundColor); if (k >= 0) x.classList.add('ksw' + k); }); }
+  });
+  step('bullets', () => {
+    for (const li of $$('li')) { const p = li.previousElementSibling; if (p && p.tagName === 'LI' && /^[a-z]/.test(li.textContent.trim())) { p.append('; ' + li.textContent.trim()); li.remove(); } }
+  });
   step('surf', () => {
     const brks = $$('#surf-breaks .brk');
     if (!brks.length) return;
@@ -527,7 +535,7 @@ CURATE = r"""
     const ds = [...bb.children].filter(d => d.title), val = d => +((d.title.match(/\$([\d,.]+)/) || [0, '0'])[1].replace(/,/g, ''));
     if (ds.length < 3) return;
     const peak = ds.reduce((a, b) => val(b) > val(a) ? b : a), last = ds[ds.length - 1];
-    for (const d of new Set([peak, last])) { const s = document.createElement('b'); s.className = 'kbv'; s.textContent = '$' + Math.round(val(d)); d.prepend(s); }
+    for (const d of new Set([peak, last])) { const s = document.createElement('b'); s.className = 'kbv'; s.textContent = '$' + Math.round(val(d)); d.prepend(s); const fi = d.querySelector('i'); if (fi && fi.style.height) s.style.bottom = fi.style.height; }
     const ax = document.createElement('div'); ax.className = 'kbx';
     ax.innerHTML = ds.map(d => `<span>${((d.title.match(/^\s*(\w)/) || ['', ''])[1])}</span>`).join('');
     const old = bb.nextElementSibling; if (old && /axis/.test(old.className)) old.replaceWith(ax); else bb.after(ax);
@@ -704,10 +712,10 @@ CURATE = r"""
       if (k && seenBr.has(k)) kill(d); else seenBr.add(k);
     }
     // Holidays: the next two months; Thailand's marked.
-    for (const r of $$('#holidays > div')) {
-      if (/(Second|Third) Day of Chinese New Year|\bobserved\b/i.test(txt(r))) { kill(r); continue; }
-      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/);
-      if (m) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${now.getFullYear()}`); if (d < new Date(now - 864e5)) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
+    for (const r of $$('#holidays > div, #holidays .lines > div')) {
+      if (/(Second|Third) Day of Chinese New Year|\bobserved/i.test(txt(r))) { kill(r); continue; }
+      const m = txt(r).match(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})(?:, (20\d\d))?\b/);
+      if (m) { const now = new Date(), d = new Date(`${m[1]} ${m[2]}, ${m[3] || now.getFullYear()}`); if (d < new Date(now - 864e5)) d.setFullYear(now.getFullYear() + 1); if (d - now > 62 * 864e5) kill(r); }
     }
     // Albums: skip compilations; round birthdays get a word.
     for (const b of $$('.bday')) {
@@ -905,6 +913,74 @@ CURATE = r"""
     if (head) { head.after(v); if (plan.length) { const lab = document.createElement('h3'); lab.className = 'sub'; lab.textContent = 'The day, as I would arrange it'; v.after(lab); lab.after(ol); } }
   });
 
+  // 15. Final desk: the sign-off list.
+  step('final', () => {
+    // River: a stale crest sentence goes whole.
+    for (const el of $$('#columbia-card p, #columbia-summary, #columbia-card .summary')) {
+      const t = el.textContent.replace(/\s*The NWS forecast tops out at \d+(?:\.\d+)? ft [^]*?stage\.(?=\s|$)/i, m => {
+        const d = m.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/); if (!d) return m;
+        const dd = new Date(`${d[1]} ${d[2]}, ${new Date().getFullYear()}`), t0 = new Date(); t0.setHours(0, 0, 0, 0); return dd < t0 ? '' : m; });
+      if (t !== el.textContent) el.textContent = t;
+    }
+    // Volcano line.
+    for (const el of [...$$('#volc'), ...$$('#volc *')]) if (!el.children.length) el.textContent = el.textContent.replace(/Under the volcanoes: (.+?) (\d+)\./, (m, v, n) => `${n} small quake${n === '1' ? '' : 's'} under ${v} this week.`);
+    // Standings: the table is the truth.
+    for (const card of $$('.card')) {
+      const rank = [...card.querySelectorAll('.lines>div')].find(d => /\d+(st|nd|rd|th) of \d+/.test(txt(d)));
+      const meta = card.querySelector('.head .meta, .team-top .meta');
+      if (rank && meta) meta.textContent = meta.textContent.replace(/ · \d+(st|nd|rd|th) in .+$/, '');
+      if (meta && /Timbers|Thorns/.test(txt(card.querySelector('h2')))) { const m = txt(meta).match(/^(\d+)-(\d+)-(\d+)\b/);
+        if (m) meta.textContent = txt(meta).replace(/^\d+-\d+-\d+/, `${m[1]}W ${m[3]}L ${m[2]}D`); }
+    }
+    $$('.card small, .card p').filter(s => /^Goals:/.test(txt(s))).forEach(kill);
+    // Stale night and surf-zone rows.
+    const dow = new Date().toLocaleDateString('en-US', {weekday: 'short', timeZone: 'America/Los_Angeles'});
+    const nr = $$('#nights>div');
+    if (nr[1] && new RegExp('^' + dow + ' night').test(txt(nr[1].querySelector('b') || nr[1]))) { kill(nr[0]); const b = nr[1].querySelector('b'); if (b) b.textContent = 'Tonight'; }
+    const longDow = new Date().toLocaleDateString('en-US', {weekday: 'long', timeZone: 'America/Los_Angeles'});
+    const zs = $$('#surfzone .mini, #surfzone > div');
+    if (zs.length > 1 && zs.slice(1).some(z => new RegExp('^' + longDow).test(txt(z.querySelector('b, .k') || z))) && /^Today/.test(txt(zs[0].querySelector('b, .k') || zs[0]))) {
+      kill(zs[0]); for (const z of zs.slice(1)) { const b = z.querySelector('b, .k'); if (b && new RegExp('^' + longDow).test(txt(b))) b.textContent = b.textContent.replace(longDow, 'Today'); }
+    }
+    // Doubled stories and shows.
+    const key = s => new Set((s.match(/\b[A-Z][a-z]{4,}\b/g) || []).map(w => w.toLowerCase()));
+    for (const box of $$('#stories, #bignews, #localnews')) { const seen = [];
+      for (const s of box.querySelectorAll('.story')) { const k = key(txt(s.querySelector('b')));
+        if (seen.some(x => { let n = 0; for (const w of k) if (x.has(w)) n++; return n >= 2; })) kill(s); else seen.push(k); } }
+    const js = new Set();
+    for (const r of $$('#jazz > *')) { const b = r.querySelector('b'); if (!b) continue;
+      const k = txt(b).toLowerCase().replace(/\W+/g, ' ').trim().split(' ').slice(0, 2).join(' ');
+      if (js.has(k) && !/mel brown|chuck israels/.test(k)) kill(r); else js.add(k); }
+    // Web chrome: inline source lines and link rows.
+    $$('small, .cite, p.note, p, span').filter(e => !e.children.length && /^Sources?:/.test(txt(e))).forEach(kill);
+    for (const p of $$('p.note, small, p')) if (p.children.length <= 3 && /^Sources?:/.test(txt(p))) kill(p);
+    for (const p of $$('.note')) if (!p.children.length) p.textContent = p.textContent.replace(/\s*Source: .*$/, '');
+    kill($('#ski-links'));
+    for (const p of $$('.note, p, div')) if (p.isConnected && txt(p).length < 140 && /^(Check (seasons|your registration)|Razor clam seasons|Lifts and grooming:)/.test(txt(p))) kill(p);
+    for (const a of $$('a, span')) if (a.isConnected && /^(About the album|Email|Site|Contact)$/.test(txt(a))) {
+      const prev = a.previousSibling; if (prev && prev.nodeType === 3) prev.nodeValue = prev.nodeValue.replace(/\s*·\s*$/, ''); kill(a); }
+    for (const el of $$('section.group small, section.group span, section.group p')) if (!el.children.length && /·\s*$/.test(el.textContent)) el.textContent = el.textContent.replace(/\s*·\s*$/, '');
+    const sun = $('#sunact-card') || $('#sun-card');
+    if (sun && !sun.querySelector('img')) for (const el of sun.querySelectorAll('p, small')) if (!el.children.length) el.textContent = el.textContent.replace(/The picture is[^.]*\.\s*/, '');
+    // Rows.
+    for (const r of $$('#openings .lines>div, #restaurants .lines>div')) if (/Not named/.test(txt(r)) && !txt(r).replace(/Not named,?/, '').trim()) kill(r);
+    for (const el of $$('#openings *, #restaurants *')) if (!el.children.length) el.textContent = el.textContent.replace(/Not named, /, '').replace(/(.{6,}?) · \1/, '$1');
+    for (const el of $$('#restaurants small')) el.innerHTML = el.innerHTML.replace(/(<span>[^<]*<\/span>: [^·<]+)\s*·\s*\1/, '$1');
+    for (const s of $$('#good .story, #good > div')) if (/East Hampton|Connecticut|Maine|Wangunk/.test(txt(s))) kill(s);
+    for (const r of $$('#kid-out .story, #kid-out > div')) { const b = r.querySelector('b'); if (b && txt(r) === txt(b)) kill(r); }
+    // Copy nits.
+    for (const el of $$('#fires *, #fire-card *')) if (!el.children.length) el.textContent = el.textContent.replace(/^\d{3,4} (?=[A-Z])/, '').replace(/\bMc([a-z])/g, (m, c) => 'Mc' + c.toUpperCase());
+    for (const el of $$('.bday small')) el.textContent = el.textContent.replace(/(turns (\d+) today) \2$/, '$1');
+    for (const r of $$('#reps .story, #reps .lines>div, #reps a')) if (/^[SH]D-\d+ — Oregon/.test(txt(r))) kill(r);
+    const tnow = $('#t-now');
+    for (const t of $$('.tile')) if (/^Produced today/i.test(txt(t.querySelector('.k'))) && /^0\.0/.test(txt(t.querySelector('.v, b, strong') || t).replace(/^Produced today\s*/i, ''))) {
+      const v = t.querySelector('.v') || t.querySelector('b'); if (v) v.innerHTML = 'Not reported yet'; }
+    // Long lists: about eight, the next three weeks first.
+    for (const sel of ['#big', '#liquor']) { const box = $(sel); if (box) [...box.children].filter(c => !/^H\d$/.test(c.tagName)).slice(8).forEach(kill); }
+    const jz = $$('#jazz > *').filter(r => r.querySelector('b')); jz.slice(12).forEach(kill);
+    const also = $('.kalso'); if (also) { const items = also.innerHTML.split(' · '); if (items.length > 8) also.innerHTML = items.slice(0, 8).join(' · ') + ` · and ${items.length - 8} more`; }
+  });
+
 }
 """
 
@@ -912,6 +988,15 @@ CURATE = r"""
 EXTRACT = r"""
 () => {
   const abs = u => { try { return new URL(u, location.href).href } catch (e) { return u } };
+  // Chrome 75 has no flex gap: write the spacing as margins.
+  for (const el of document.querySelectorAll('body *')) { const c = getComputedStyle(el); if (!/flex/.test(c.display)) continue;
+    const cg = parseFloat(c.columnGap) || 0, rg = parseFloat(c.rowGap) || 0; if (!cg && !rg) continue;
+    const col = /column/.test(c.flexDirection); let prev = null;
+    for (const k of el.children) { const kc = getComputedStyle(k); if (kc.display === 'none' || kc.position === 'absolute') continue;
+      if (prev) { if (col || k.offsetTop > prev.offsetTop + 2) { if (rg) k.style.setProperty('margin-top', (parseFloat(kc.marginTop) + rg) + 'px', 'important'); }
+        else if (cg) k.style.setProperty('margin-left', (parseFloat(kc.marginLeft) + cg) + 'px', 'important'); }
+      prev = k; }
+    el.style.setProperty('gap', '0', 'important'); }
   for (const g of document.querySelectorAll('.facts, .tiles, .minis')) g.dataset.n = g.children.length;
   // A witty card title keeps its plain name as a kicker above it.
   for (const h of document.querySelectorAll('.card h2[data-base]')) {
@@ -1659,6 +1744,24 @@ html body .krun{display:flex !important;justify-content:space-between;align-item
 #kmain ol.kplan .kt+span{display:table-cell;font:430 17px/24px var(--k-serif) !important}
 #kmain ul.kplain{margin:4px 0 0 !important;padding:0 0 0 18px !important}
 #kmain .kalso{font:430 15px/22px var(--k-serif) !important}
+
+/* Final sign-off */
+html.kfit4{--s2:8px;--s3:14px;--l4:22px;--l5:19px}
+html.kfit4 #kmain .story,html.kfit4 #kmain .lines>div,html.kfit4 #kmain .fd,html.kfit4 #kmain .sday,html.kfit4 #kmain .rep,html.kfit4 #kmain li{padding-top:5px !important;padding-bottom:5px !important}
+.ksecfront #kmain .kfl.ktight a{padding:6px 0 !important}
+.ksecfront #kmain .kfl.ktight .kt small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ksecfront #kmain .kfl.kcompact .kt small{display:none !important}
+#kmain .bars>div{position:relative}
+#kmain .bars .kbv{position:absolute;left:-14px;right:-14px;margin:0 0 2px !important}
+#kmain #bill .bars{margin-top:22px !important}
+#kmain .sw,#kmain .legend i{width:12px;height:12px}
+#kmain .ksw0{background:#000 !important}
+#kmain .ksw1{background:#fff !important;border:2px solid #000;box-sizing:border-box}
+.kcontents #kmain .kt{white-space:normal !important;line-height:20px}
+.kcontents #kmain .kgl .kdeg{display:flex;align-items:flex-end;width:auto}
+.kcontents #kmain .kgl .kdeg small{margin:0 0 10px 16px !important;font-size:15px !important}
+#kmain .book img{display:none !important}
+#kmain .arch-img,#kmain .card img.photo{max-height:330px;width:auto;max-width:100%}
 /* Controls a finger can hit */
 html body .krun{height:44px !important;padding:16px 0 6px !important;cursor:pointer}
 .kbar #kmore{height:44px !important;padding:13px 16px !important}
@@ -1689,7 +1792,7 @@ html.kpaged body{display:flex !important;flex-direction:column !important;paddin
 html.kpaged .krun{flex:none}
 html.kpaged #kview{flex:none;position:relative;overflow:hidden}
 html.kpaged #kclip{position:relative;overflow:hidden}
-html.kpaged #kmain{position:relative;top:0}
+html.kpaged #kmain{position:relative;top:0;display:flow-root}
 html.kpaged .kfoot{display:none}
 html.kpaged .kbar{flex:none;display:flex;align-items:center;height:52px;box-sizing:border-box;padding:0 !important;margin:0 !important;border-top:1px solid #000;
   font:600 var(--t6)/var(--l6) var(--k-serif);letter-spacing:.1em;text-transform:uppercase}
@@ -1811,7 +1914,7 @@ PAGER_JS = r"""
         var rg = document.createRange(); rg.selectNodeContents(el);
         var lr = rg.getClientRects(), seen = {};
         for (var m = 0; m < lr.length; m++) { var lbt = Math.round(lr[m].bottom - base);
-          if (!seen[lbt] && lbt < bottom - 2) { seen[lbt] = 1; ls.push({ top: top, bottom: lbt, head: false }); } }
+          if (!seen[lbt] && lbt < bottom - 2) { seen[lbt] = 1; ls.push({ top: Math.round(lr[m].top - base), bottom: lbt, head: false }); } }
       }
     }
     return { ls: ls, us: us, hs: hs, lb: lb };
@@ -1823,13 +1926,14 @@ PAGER_JS = r"""
     if (window.pageYOffset || window.pageXOffset) window.scrollTo(0, 0); }
   // Design to fit: tighten leading, then type, then set short lists in two
   // columns. Only if none of that fits is the card paged at full size.
-  var LADDER = ['', 'kfit1', 'kfit1 kfit2', 'kfit1 kfit2 kfit3'];
+  var LADDER = ['', 'kfit1', 'kfit1 kfit2', 'kfit1 kfit2 kfit3', 'kfit1 kfit2 kfit3 kfit4'];
+  function fits() { if (drawn() > H) return false; var b = boxes(); var off = main.getBoundingClientRect().top - view.getBoundingClientRect().top; return !b.lb || b.lb + off + 4 <= H && main.scrollHeight + off <= H + 2; }
   function fit() {
-    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); main.style.zoom = '';
+    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); cls('kfit4', false); main.style.zoom = '';
     if (rail) rail.style.display = 'none';
-    if (FLOW) return;
+    if (FLOW) { var kfl = main.querySelector('ol.kfl'); if (kfl) { kfl.className = 'kfl'; var st2 = ['kfl ktight', 'kfl ktight kcompact']; for (var s2 = 0; s2 < st2.length && drawn() > H; s2++) kfl.className = st2[s2]; } return; }
     var h0 = drawn();
-    if (h0 <= H) {
+    if (fits()) {
       if (rail && h0 < H * 0.6) { rail.style.display = 'block'; if (drawn() > H) rail.style.display = 'none'; }
       return;
     }
@@ -1837,12 +1941,9 @@ PAGER_JS = r"""
     for (var i = 1; i < LADDER.length; i++) {
       var p = LADDER[i].split(' ');
       for (var k = 0; k < p.length; k++) cls(p[k], true);
-      if (drawn() <= H) return;
+      if (fits()) return;
     }
-    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false);
-    main.style.zoom = '0.95';
-    if (drawn() <= H) return;
-    main.style.zoom = '';
+    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); cls('kfit4', false);
   }
   function splits(u, c) { for (var i = 0; i < u.length; i++) { var x = u[i];
     if (x.top < c - 1 && x.bottom > c + 1 && x.bottom - x.top < H * 0.6) return true; } return false; }
@@ -1873,6 +1974,7 @@ PAGER_JS = r"""
       if (nt > cut + 80 || nt >= total) nt = cut;
       c.push(cut); t.push(nt); start = nt;
     }
+    if (c.length > 2 && b.lb - start < 8) { c.pop(); t.pop(); start = t[t.length - 1]; }
     c.push(Math.max(total, start + 1));
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
@@ -1888,13 +1990,13 @@ PAGER_JS = r"""
       if (!main.style.zoom && !root.className.match(/kfit1/)) {
         pl = plan();
         // A last screen with a line or two on it: set the card a little tighter instead.
-        if (!FLOW && pl.cuts.length > 2 && pl.last < H * 0.2) {
-          var tries = [['kfit1'], ['kfit1', 'kfit2']];
+        if (!FLOW && pl.cuts.length > 2 && pl.last < H * 0.28) {
+          var tries = [['kfit1'], ['kfit1', 'kfit2'], ['kfit1', 'kfit2', 'kfit4']];
           for (var w = 0; w < tries.length; w++) {
             for (var y = 0; y < tries[w].length; y++) cls(tries[w][y], true);
             var p2 = plan();
             if (p2.cuts.length < pl.cuts.length) { pl = p2; break; }
-            cls('kfit1', false); cls('kfit2', false);
+            cls('kfit1', false); cls('kfit2', false); cls('kfit4', false);
           }
         }
       }
@@ -1969,7 +2071,8 @@ PAGER_JS = r"""
   // The cover offers to pick up where you stopped.
   if (/kcontents/.test(document.body.className)) try {
     var last = JSON.parse(localStorage.getItem('kme:last') || 'null'), mast = main.querySelector('.kmast');
-    if (last && last.u && mast) { var a = document.createElement('a'); a.className = 'kresume';
+    if (last && last.u && mast && last.ed === root.getAttribute('data-ed')) { var a = document.createElement('a'); a.className = 'kresume';
+      var ld = main.querySelectorAll('.kleads > a'); if (ld.length > 2) ld[ld.length - 1].parentNode.removeChild(ld[ld.length - 1]);
       a.href = last.u + (last.ed === root.getAttribute('data-ed') && last.s ? '#s' + last.s : '');
       a.innerHTML = '<small>Pick up where you stopped</small><b>' + String(last.t).replace(/</g, '&lt;') + ' &rsaquo;</b>';
       mast.parentNode.insertBefore(a, mast.nextSibling); }
@@ -2296,6 +2399,16 @@ DEDUPE = r"""
       if (!nx || /^H3$/.test(nx.tagName) || !norm(nx.textContent) || /brief-sign/.test(nx.className)) h.remove();
     }
   });
+  for (const d of docs) {
+    const tw = document.createTreeWalker(d, NodeFilter.SHOW_TEXT);
+    let prev = null;
+    for (let n = tw.nextNode(); n; n = tw.nextNode()) {
+      if (/^\s+[,.;:!?](\s|$)/.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/^\s+/, '');
+      if (prev && /^[,.;:!?](\s|$)/.test(n.nodeValue) && /\s$/.test(prev.nodeValue)) prev.nodeValue = prev.nodeValue.replace(/\s+$/, '');
+      n.nodeValue = n.nodeValue.replace(/ +([,.;:!?])(?=\s|$)/g, '$1');
+      prev = n;
+    }
+  }
   return docs.map(d => d.innerHTML);
 }
 """
@@ -2548,22 +2661,48 @@ def main(site):
                       r"|NOAA|SWPC|CDC|Goodreads|Library of Congress|Internet Archive|Art Institute|TVmaze|TMDB|Yahoo|ODOT|NWS)\b"
                       r"|\b(outlets|sources)$|^Source", re.I)
 
+    TEASER = {}
+    for pg in pages:
+        if pg["sec"] == "civics" and 'id="reps' in pg["html"]:
+            who = [_text(x) for x in re.findall(r'<div class="rep-head"[^>]*>.*?<b[^>]*>(.*?)</b>', pg["html"], re.S)]
+            if who:
+                TEASER[pg["file"]] = ", ".join(who[:3]) + (" and more" if len(who) > 3 else "")
+        if pg["sec"] == "world":
+            m = re.search(r"(\d+°F)", _text(pg["html"]))
+            TEASER[pg["file"]] = f"Bangkok right now{', ' + m.group(1) if m else ''}, the next days, and a Thai phrase to try"
+
+    BAD = re.compile(r"not named|stories first|:$|^(Because|A \d{4}s classic)|^Learned from|^Inside now|^Expected solar|^\d+ in the next")
+
     def teaser(pg):
         h = pg["html"]
         if pg["sec"] == "science":
             return ""
+        if pg["file"] in TEASER:
+            return TEASER[pg["file"]]
+        cands = []
         m = re.search(r'class="meta"[^>]*>(.*?)</span>', h, re.S)
         meta = _text(m.group(1)) if m else ""
         if meta and not SKIP.search(meta) and meta.lower() != pg["title"].lower() and len(meta) > 12:
-            return meta
+            cands.append(meta)
         body = re.sub(r'<h2\b.*?</h2>|<p class="kkick[^"]*".*?</p>|<span class="meta".*?</span>|<h3\b.*?</h3>', "", h, flags=re.S)
+        body = re.sub(r'<p class="(?:note )?kalso".*?</p>', "", body, flags=re.S)
         for para in re.findall(r'<(?:p|li|div class="ksum")\b[^>]*>(.*?)</(?:p|li|div)>', body, re.S):
             t = _text(para)
+            if (t.count(" · ") >= 2 or re.match(r"(Tones:|Voted the same|Already on sale|Mostly quiet)", t)
+                    or re.search(r"\(\w+ announced", t) or re.search(r" is an? [\w ]+ in [A-Z]\w+, [A-Z]", t)):
+                continue
             if len(t) >= 30 and not SKIP.search(t):
-                sm = re.match(r"(.{25,110}?[a-z0-9)%°][.!?])(\s|$)", t)
-                return sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…"
-        b = re.search(r"<(b|strong)\b[^>]*>(.*?)</\1>", body, re.S)
-        return _text(b.group(2)) if b else ""
+                sm = re.match(r"(.{25,110}?[a-z0-9)%°]{2}[.!?])(\s+[A-Z(\"]|$)", t)
+                cands.append(sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…")
+        for b in re.findall(r"<(?:b|strong)\b[^>]*>(.*?)</(?:b|strong)>", body, re.S):
+            t = _text(b)
+            if len(t) > 8:
+                cands.append(t)
+        for t in cands:
+            t = re.sub(r"\s+([,.;:])", r"\1", t)
+            if not BAD.search(t) and t.lower() != pg["title"].lower():
+                return t
+        return ""
 
     edition = stamp.split(" ", 1)[-1].replace("AM", "am").replace("PM", "pm")
     stamp_txt = html.escape(f"Edition of {edition}")

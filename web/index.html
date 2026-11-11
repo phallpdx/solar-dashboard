@@ -116,6 +116,7 @@ header h1{font-size:40px}
 .story p{margin:4px 0 0;font-size:13px;line-height:1.45;color:var(--body);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .story small{display:block;margin-top:4px;font-size:12px;font-weight:600;color:var(--muted)}
 .story:hover b{text-decoration:underline}
+.story.headline a{color:inherit;text-decoration:none}.story.headline small a{color:inherit;text-decoration:underline;text-decoration-color:var(--grid)}.story.headline small a:hover{text-decoration-color:currentColor}.story.headline:hover b{text-decoration:none}.story.headline a:hover b{text-decoration:underline}
 .chip[aria-pressed]{border:0;font:600 13px Manrope,sans-serif;color:var(--ink);cursor:pointer;min-height:36px;padding:6px 12px}
 .chip[aria-pressed="true"]{background:var(--ink);color:#fff}
 .story img.poster{width:56px;height:80px;border-radius:8px}
@@ -2041,8 +2042,18 @@ body{background-color:#8F5A32;
 </section>
 
 <section class="group" data-sec="news" data-tier="world" id="news" aria-labelledby="news-h">
-  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News and reviews</h2><p class="sec-sub">A/V and tech stories and hands-on reviews</p></div></div>
+  <div class="sec-head"><span class="sec-icon" aria-hidden="true">📰</span><div class="sec-titles"><h2 class="sec-h" id="news-h">News</h2><p class="sec-sub">The biggest stories in the country and the world, Portland news, and A/V and tech</p></div></div>
   <div class="sec-body">
+    <div class="row" id="headlines-row">
+      <section class="card half" aria-labelledby="bignews-h">
+        <div class="head"><h2 id="bignews-h">Big news</h2><span class="meta" id="bignews-meta"></span></div>
+        <div class="scroll" id="bignews" tabindex="0" aria-label="Big national and world news, scrollable"></div>
+      </section>
+      <section class="card half" aria-labelledby="localnews-h">
+        <div class="head"><h2 id="localnews-h">Local news</h2><span class="meta" id="localnews-meta"></span></div>
+        <div class="scroll" id="localnews" tabindex="0" aria-label="Portland area news, scrollable"></div>
+      </section>
+    </div>
     <div class="row">
       <section class="card half" aria-labelledby="stories-h">
         <div class="head"><h2 id="stories-h">Biggest stories in A/V and tech</h2><span class="meta" id="stories-meta"></span></div>
@@ -2767,6 +2778,8 @@ const DAILY_TITLES = {
   'reps-h': ['Your representatives', 'Who speaks for you', 'Your elected folks'],
   'hist-h': ['On this date', 'This day in history', 'Long ago today'],
   'near-h': ['History close to home', 'Local history', 'Right around here'],
+  'bignews-h': ['The big stories', 'Making headlines'],
+  'localnews-h': ['Around Portland', 'Close to home'],
   'stories-h': ['Tech and A/V headlines', 'Gadget news', 'In the tech world'],
   'reviews-h': ['Fresh reviews', 'Worth buying?', 'What reviewers say'],
   'bkk-h': ['Bangkok today', 'Over in Bangkok', 'Krung Thep now'],
@@ -4199,9 +4212,30 @@ function renderLive() {
   $('fires').innerHTML = fires.map(x => `<div><span><b style="font-weight:700">${esc(x.name)}</b><br><small>${esc(x.where)} · ${x.miles} miles away</small></span><span style="text-align:right">${x.acres.toLocaleString()} acres<br><small>${x.contained != null ? x.contained + '% contained' : ''}</small></span></div>`).join('');
 }
 
+// Big and local news: one entry per story, ranked by how many outlets cover it. Each entry links the outlet
+// it came from and the other outlets reporting the same story, so every headline carries its sources.
+function headlineItem(x) {
+  const also = (x.also || []).slice(0, 6).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.source)}</a>`);
+  return `<div class="story headline">
+      ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
+      <span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
+      <small>${[esc(x.source), ago(x.utc)].filter(Boolean).join(' · ')}${also.length ? ` · also ${also.join(', ')}${(x.also || []).length > 6 ? ` and ${x.also.length - 6} more` : ''}` : ''}</small></span></div>`;
+}
+function renderHeadlines() {
+  const n = D.news || {}, big = n.big || [], local = n.local || [];
+  $('headlines-row').hidden = !big.length && !local.length;
+  const none = '<p class="note" style="padding:12px 0">No stories right now.</p>';
+  $('bignews').innerHTML = big.map(headlineItem).join('') || none;
+  $('localnews').innerHTML = local.map(headlineItem).join('') || none;
+  const outlets = list => new Set(list.flatMap(x => [x.source, ...(x.also || []).map(a => a.source)])).size;
+  $('bignews-meta').textContent = big.length ? `Most-covered stories, last 24 hours · ${outlets(big)} outlets` : '';
+  $('localnews-meta').textContent = local.length ? `Portland-area newsrooms · ${outlets(local)} outlets` : '';
+}
+
 function renderNews() {
   const n = D.news || {}, stories = n.stories || [], reviews = n.reviews || [];
-  $('news').hidden = !stories.length && !reviews.length;
+  renderHeadlines();
+  $('news').hidden = !stories.length && !reviews.length && !(n.big || []).length && !(n.local || []).length;
   const item = (x, extra) => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
       ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
       <span><b>${esc(x.title)}</b>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}<small>${extra}</small></span></a>`;
@@ -4761,6 +4795,8 @@ const SOURCES = {
   'stake-h': [['NRCS SNOTEL', 'https://www.nrcs.usda.gov/wps/portal/wcc/home/']],
   'title-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1']],
   'f1-h': [['Jolpica F1 data', 'https://github.com/jolpica/jolpica-f1'], ['r/formula1', 'https://www.reddit.com/r/formula1/']],
+  'bignews-h': [['NPR', 'https://www.npr.org/'], ['New York Times', 'https://www.nytimes.com/'], ['CNN', 'https://www.cnn.com/'], ['ABC News', 'https://abcnews.go.com/'], ['CBS News', 'https://www.cbsnews.com/'], ['NBC News', 'https://www.nbcnews.com/'], ['PBS NewsHour', 'https://www.pbs.org/newshour/'], ['Wall Street Journal', 'https://www.wsj.com/'], ['Axios', 'https://www.axios.com/'], ['Politico', 'https://www.politico.com/'], ['Fox News', 'https://www.foxnews.com/'], ['BBC', 'https://www.bbc.com/news'], ['The Guardian', 'https://www.theguardian.com/us'], ['Al Jazeera', 'https://www.aljazeera.com/']],
+  'localnews-h': [['OPB', 'https://www.opb.org/'], ['The Oregonian', 'https://www.oregonlive.com/'], ['KGW', 'https://www.kgw.com/'], ['KOIN', 'https://www.koin.com/'], ['KATU', 'https://katu.com/'], ['KPTV', 'https://www.kptv.com/'], ['Portland Mercury', 'https://www.portlandmercury.com/'], ['Oregon Capital Chronicle', 'https://oregoncapitalchronicle.com/']],
   'stories-h': [['Each story links its publisher', '']], 'reviews-h': [['Each review links its publisher', '']],
   'bkk-h': [OM, ['Open-Meteo air quality', 'https://open-meteo.com/en/docs/air-quality-api']],
   'hol-h': [['Nager.Date', 'https://date.nager.at/'], ['Google public holiday calendars', 'https://calendar.google.com/']],
@@ -5107,7 +5143,7 @@ async function renderBriefing() {
   // Fresh reading for the morning: the newest things the feeds and lists turned up overnight.
   const sci = rot((D.science || []).slice(0, 4));
   if (sci) add(39, 'science', `${say('science_lead', 1, 'From the laboratories', 'Science, sir', 'A finding worth your coffee')}: <b>${esc(sci.title)}</b>${sci.means ? '. ' + esc(sci.means.replace(/^(.*?[.!?])\s.*$/s, '$1')) : '.'}`);
-  const story = rot(((D.news && D.news.stories) || []).filter(x => (x.coverage || 0) >= 2).slice(0, 5), 2);
+  const story = rot(((D.news && (D.news.big || []).length ? D.news.big : (D.news && D.news.stories)) || []).filter(x => (x.coverage || 0) >= 2).slice(0, 5), 2);
   if (story) add(41, 'news', `${say('news_lead', 2, 'The papers are full of it', 'In the news this morning', 'The talk of the morning')}: <b>${esc(story.title)}</b> (${esc(story.source)}).`);
   const gn = rot((D.good_news || []).slice(0, 3), 1);
   if (gn) add(33, 'good-card', `Some good news${gn.local ? ' from close to home' : ''}: ${esc(gn.title)}.`);

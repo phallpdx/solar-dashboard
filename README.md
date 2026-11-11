@@ -45,11 +45,24 @@ python -m solar.update          # writes data/dashboard.json
 cp data/dashboard.json web/ && python -m http.server -d web 8000
 ```
 
-## Kindle pages
+## Kindle edition
 
-Each site build renders the full dashboard once in headless Chromium and saves
-a static, black-and-white copy in `kindle/`: a contents page plus one page per
-section, with images and links kept and no JavaScript to run. Tap the right
-side of the Kindle screen to turn a screen forward, the left side to go back.
+Each site build also renders the full dashboard once in headless Chromium and
+saves "The Morning Edition" in `kindle/`: a contents page (with "Today at a
+glance") and one page per section, laid out for a black-and-white e-reader.
+It is made by `solar/kindle_full.py`:
+
+- The dashboard loads with `?kindle`, which shows whole lists instead of the
+  top few (top items still first), and every "N more" / "Show all" is opened.
+- An editorial pass drops controls and status text that only make sense on
+  the live page, leads Today with the weather and calendar, gives Money its
+  own section, gathers source lines at the foot of each section and tidies
+  dates and times.
+- The styling is one serif (Literata, saved alongside the pages), small-caps
+  labels and hairline rules, with every colour turned into black, white or
+  one of two greys, and no text reversed out of a dark block.
+- Tap the right side of the Kindle screen to turn a screen forward (it stops
+  at the last whole line), the left side to go back.
+
 `kindle.html` redirects there, so bookmark `<your Pages URL>/kindle.html`.
-If that step fails, `kindle.html` falls back to a simple text-only morning page.
+If the step fails, `kindle.html` stays the simple text-only morning page.

@@ -2093,6 +2093,9 @@ body{background-color:#8F5A32;
 
 <script>
 const $ = id => document.getElementById(id);
+// Kindle snapshot (?kindle): show whole lists instead of the top few, top items still first.
+const KINDLE = /[?&]kindle\b/.test(location.search);
+const cap = n => KINDLE ? Infinity : n;
 const placeName = l => l === 'Coast house' ? 'The beach' : l;  // a getaway, not a second home
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 // Links to the pages that back up a claim: [{name, url}] or [[name, url]].
@@ -2358,7 +2361,7 @@ function renderAhead() {
   add(`${y}-12-21`, 'Winter solstice', 'The shortest day, then the light comes back');
   (D.holidays || []).filter(h => !/black friday|cyber/i.test(h.name)).forEach(h => add(h.date, h.name, h.country === 'Thailand' ? 'In Thailand' : ''));
   stops.sort((a, b) => a.n - b.n);
-  const list = stops.slice(0, 7);
+  const list = stops.slice(0, cap(7));
   $('ahead-card').hidden = !list.length;
   if (!list.length) return;
   const H = 46, P = pen(17), pts = [[30, 0]];
@@ -2424,7 +2427,7 @@ function renderShelf() {
     ${pile ? `<text class="sm" x="${rd(x + 12)}" y="${rd(132 - pile * 13 - 8)}">to read</text>` : ''}
     <path d="M${rd(end + 8)} 132v-22h8v22M${rd(end + 12)} 110c-3-5 0-9 0-12 2 3 4 7 0 12" fill="#F3E3B5" stroke="#3A2614" stroke-width="1.3"/><text class="big" x="18" y="${rd(132 - 132)}" dy="22">${b.read_count} books</text></svg>`;
   $('shelf-meta').textContent = 'From Goodreads';
-  $('shelf-note').textContent = b.top_authors && b.top_authors.length ? `Most-loved authors: ${b.top_authors.slice(0, 5).join(', ')}.` : '';
+  $('shelf-note').textContent = b.top_authors && b.top_authors.length ? `Most-loved authors: ${b.top_authors.slice(0, cap(5)).join(', ')}.` : '';
 }
 
 // Flat catalog colors for the doodles, straight from the page's palette.
@@ -2523,7 +2526,7 @@ function renderStake() {
 
 // Planes near the house when the page last updated, by how far out and how high (a square-root scale so jets and puddle-jumpers both fit).
 function renderOverhead() {
-  const pl = D.live && D.live.planes, list = ((pl && pl.closest) || []).filter(x => x.feet != null && x.miles != null).slice(0, 6);
+  const pl = D.live && D.live.planes, list = ((pl && pl.closest) || []).filter(x => x.feet != null && x.miles != null).slice(0, cap(6));
   $('over-wrap').hidden = list.length < 2;
   if ($('over-wrap').hidden) return;
   const maxMi = Math.max(...list.map(x => x.miles)) * 1.08, maxFt = Math.max(...list.map(x => x.feet)) * 1.1, P = pen(73), G = 168;
@@ -2552,7 +2555,7 @@ function renderOverhead() {
 // The F1 championship as a drag strip: each car sits at its points, and the dotted reach is the most it could still score.
 const F1_TEAM = [[/mercedes/i, 'teal'], [/ferrari/i, 'brick'], [/red bull/i, 'sky'], [/mclaren/i, 'orange'], [/aston/i, 'olive'], [/williams/i, 'sky'], [/alpine/i, 'plum']];
 function renderTitleFight() {
-  const f = D.sports && D.sports.f1, st = ((f && f.standings) || []).slice(0, 5);
+  const f = D.sports && D.sports.f1, st = ((f && f.standings) || []).slice(0, cap(5));
   $('title-card').hidden = st.length < 2 || !f.rounds;
   if ($('title-card').hidden) return;
   const next = f.next || [], left = next.length ? f.rounds - next[0].round + 1 : 0, sprints = next.filter(r => r.sprint).length;
@@ -3026,7 +3029,7 @@ function renderOutings() {
     const seen = (wh && wh.sightings) || [];
     $('whale').innerHTML = (season ? `<p class="note">${esc(season.text)}</p>` : '')
       + (day.whale_spot ? `<div class="spot"><b>Spot of the day: ${esc(day.whale_spot.name)}</b><span class="note">${esc(day.whale_spot.how)}</span></div>` : '')
-      + (seen.length ? `<h3 class="sub">Seen on the coast lately</h3>${seen.slice(0, 4).map(x => `<div class="whale">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy">` : ''}
+      + (seen.length ? `<h3 class="sub">Seen on the coast lately</h3>${seen.slice(0, cap(4)).map(x => `<div class="whale">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy">` : ''}
           <span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.what)}</a><small>${x.date ? fmtDate(x.date) : ''}${x.where ? ' · ' + esc(x.where) : ''}</small></span></div>`).join('')}`
         : '<p class="note">No whale sightings logged on iNaturalist in the last six weeks.</p>')
       + (day.whale_fact ? `<p class="note">${esc(day.whale_fact)}</p>` : '');
@@ -3044,7 +3047,7 @@ function renderOutings() {
     $('open-meta').textContent = `${op.length} in the last month · Eater Portland and local news`;
     const row = x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`;
     $('openings').innerHTML = `<div class="open-pick"><small><b>Worth a look today</b></small><div class="lines">${row(pick)}</div></div>
-      <div class="lines">${op.filter(x => x !== pick).slice(0, 7).map(row).join('')}</div>`;
+      <div class="lines">${op.filter(x => x !== pick).slice(0, cap(7)).map(row).join('')}</div>`;
   }
   document.querySelectorAll('.shelf').forEach(sh => { sh.hidden = ![...sh.querySelectorAll('.card')].some(c => !c.hidden); });
 }
@@ -3118,7 +3121,7 @@ function renderBirthdays() {
   const list = D.album_birthdays || [];
   $('bday-card').hidden = !list.length;
   if (!list.length) return;
-  $('bdays').innerHTML = list.slice(0, 6).map(a => `<a class="bday" href="${listen(a.artist, a.title)}" target="_blank" rel="noopener">
+  $('bdays').innerHTML = list.slice(0, cap(6)).map(a => `<a class="bday" href="${listen(a.artist, a.title)}" target="_blank" rel="noopener">
     <span class="cake" aria-hidden="true">${a.age % 10 === 0 || a.age % 25 === 0 ? '🎉' : '🎂'}</span>
     <span><b>${esc(a.title)}</b><small>${esc(a.artist)} · ${a.year}</small></span><span class="age">${a.age}</span></a>`).join('');
 }
@@ -3197,7 +3200,7 @@ function renderLongRead() {
     <b class="read-title">${esc(r.title)}</b><span class="read-by">by ${esc(r.author)}</span>
     <p class="note">${esc(r.why)}</p>
     <a class="joy-btn" href="${esc(r.url)}" target="_blank" rel="noopener">📖 Read it</a>
-    ${fresh.length ? `<h3 class="sub">Fresh from Longreads</h3>${fresh.slice(0, 3).map(x => `<a class="read-fresh" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join('')}` : ''}`;
+    ${fresh.length ? `<h3 class="sub">Fresh from Longreads</h3>${fresh.slice(0, cap(3)).map(x => `<a class="read-fresh" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join('')}` : ''}`;
 }
 
 function renderBooks() {
@@ -3209,7 +3212,7 @@ function renderBooks() {
   // One pick for today, changing each day: new books first, then unread favorites, then your to-read pile.
   const all = [...(b.picks || []), ...(b.backlist || []), ...(b.pile || [])];
   const day = Math.floor((new Date(todayIso() + 'T12:00') - new Date(2020, 0, 1)) / 864e5);
-  const pick = all.length ? all[day % all.length] : null, rest = all.filter(x => x !== pick).slice(0, 3);
+  const pick = all.length ? all[day % all.length] : null, rest = all.filter(x => x !== pick).slice(0, cap(3));
   const cover = x => x.cover ? `<img src="${esc(x.cover)}" alt="" loading="lazy">` : bookDoodle(x);
   $('books').innerHTML = (pick ? `<a class="book-today" href="${esc(pick.url)}" target="_blank" rel="noopener">${cover(pick)}
       <span><small class="k">Today's pick</small><b>${esc(pick.title)}</b><small>${esc(pick.author)}${pick.year ? ' · ' + pick.year : ''}</small><small class="why">${esc(pick.because)}</small></span></a>` : '') +
@@ -3734,7 +3737,7 @@ function renderSky(o) {
     <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
   const neo = o.close_approaches || [];
   $('neo-h').hidden = !neo.length;
-  $('neo').innerHTML = neo.slice(0, 4).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a><br><small>${x.size_m ? `about ${x.size_m >= 1000 ? (x.size_m / 1000).toFixed(1) + ' km' : x.size_m + ' m'} across, ` : ''}${x.km_s} km/s</small></span>
+  $('neo').innerHTML = neo.slice(0, cap(4)).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a><br><small>${x.size_m ? `about ${x.size_m >= 1000 ? (x.size_m / 1000).toFixed(1) + ' km' : x.size_m + ' m'} across, ` : ''}${x.km_s} km/s</small></span>
     <span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}<br><small>${x.lunar_distances} lunar distance${x.lunar_distances === 1 ? '' : 's'}</small></span></div>`).join('');
   const skySrc = [['Sky events: in-house almanac', ''], ['Launches: The Space Devs', 'https://thespacedevs.com/llapi'], ['Orbits: CelesTrak', 'https://celestrak.org/'], ['Aurora: NOAA SWPC', 'https://www.swpc.noaa.gov/products/aurora-30-minute-forecast']];
   if (nights.length) skySrc.push(['Night sky forecast: 7Timer!', 'https://www.7timer.info/']);
@@ -3873,7 +3876,7 @@ function renderWorld() {
     all.push({date: t.date, ends: t.ends, name: t.name, about: t.about, approx: t.approx, thai: true});
   }
   all.sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
-  $('holidays').innerHTML = all.slice(0, 18).map(h => {
+  $('holidays').innerHTML = all.slice(0, cap(18)).map(h => {
     const [y, m, d] = h.date.split('-').map(Number);
     const when = (h.approx ? 'Around ' : '') + new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined }) +
       (h.ends ? '–' + fmtDate(h.ends).replace(/^\w+ /, '') : '');
@@ -4215,7 +4218,7 @@ function renderLive() {
 // Big and local news: one entry per story, ranked by how many outlets cover it. Each entry links the outlet
 // it came from and the other outlets reporting the same story, so every headline carries its sources.
 function headlineItem(x) {
-  const also = (x.also || []).slice(0, 6).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.source)}</a>`);
+  const also = (x.also || []).slice(0, cap(6)).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.source)}</a>`);
   return `<div class="story headline">
       ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
       <span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
@@ -4278,9 +4281,9 @@ function renderAlerts() {
 function redditBlock(r) {
   if (!r || !r.posts) return '';
   const color = r.mood === 'Upbeat' ? 'up' : r.mood === 'Grumpy' ? 'down' : '';
-  if (r.mood_score == null) return `<h3 class="sub">Talked about on r/${esc(r.sub)}</h3><div class="lines">${r.posts.slice(0, 4).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></span><span></span></div>`).join('')}</div>`;
+  if (r.mood_score == null) return `<h3 class="sub">Talked about on r/${esc(r.sub)}</h3><div class="lines">${r.posts.slice(0, cap(4)).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></span><span></span></div>`).join('')}</div>`;
   return `<h3 class="sub">r/${esc(r.sub)} mood: <span class="${color}">${esc(r.mood)}</span></h3>
-    <div class="lines">${r.posts.slice(0, 4).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>${p.flair ? ` <small>${esc(p.flair)}</small>` : ''}</span>
+    <div class="lines">${r.posts.slice(0, cap(4)).map(p => `<div><span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>${p.flair ? ` <small>${esc(p.flair)}</small>` : ''}</span>
       <span style="white-space:nowrap;padding-left:12px"><small>${p.score != null ? `▲ ${p.score} · ${p.comments} 💬` : ''}</small></span></div>`).join('')}</div>`;
 }
 function teamInsight(t, r) {
@@ -4288,7 +4291,7 @@ function teamInsight(t, r) {
   const injHtml = inj == null ? '' : `<h3 class="sub">Injury report</h3>` + (inj.length
     ? `<div class="lines">${inj.map(i => `<div><span><b style="font-weight:700">${esc(i.player)}</b>${i.position ? ` <small>${esc(i.position)}</small>` : ''}${i.injury || i.detail ? `<br><small>${esc([i.injury, i.detail].filter(Boolean).join(' · '))}${i.return ? ' · back around ' + esc(fmtDate(i.return.slice(0, 10))) : ''}</small>` : ''}</span><span>${esc(i.status || '')}</span></div>`).join('')}</div>`
     : '<p class="note">Nobody on the injury report.</p>');
-  const news = Array.isArray(t.news) && t.news.length ? `<h3 class="sub">Latest news</h3><div class="lines">${t.news.slice(0, 3).map(n => `<div><span><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a></span><span style="white-space:nowrap;padding-left:12px"><small>${n.utc ? localDay(n.utc) : ''}</small></span></div>`).join('')}</div>` : '';
+  const news = Array.isArray(t.news) && t.news.length ? `<h3 class="sub">Latest news</h3><div class="lines">${t.news.slice(0, cap(3)).map(n => `<div><span><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline)}</a></span><span style="white-space:nowrap;padding-left:12px"><small>${n.utc ? localDay(n.utc) : ''}</small></span></div>`).join('')}</div>` : '';
   return injHtml + news + redditBlock(r);
 }
 
@@ -4317,7 +4320,7 @@ function renderMore() {
     const rc = t.recap && !t.recap.error && l && l.completed && t.recap.game_id === l.id ? t.recap : null;
     const recap = rc ? `<div class="recap">${rc.headline ? `<b>${rc.url ? `<a href="${esc(rc.url)}" target="_blank" rel="noopener">${esc(rc.headline)}</a>` : esc(rc.headline)}</b>` : ''}
       ${rc.summary ? `<p>${esc(rc.summary)}</p>` : ''}
-      ${rc.leaders.length ? `<small>${rc.leaders.slice(0, 3).map(x => `${esc(x.stat)}: ${esc(x.player)} ${esc(x.value)}`).join(' · ')}</small>` : ''}
+      ${rc.leaders.length ? `<small>${rc.leaders.slice(0, cap(3)).map(x => `${esc(x.stat)}: ${esc(x.player)} ${esc(x.value)}`).join(' · ')}</small>` : ''}
       ${rc.goals.length ? `<small>Goals: ${rc.goals.map(x => `${esc(x.player || '?')}${x.minute ? ` (${esc(x.minute)})` : ''}`).join(', ')}</small>` : ''}</div>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
       <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}<p class="src-line">Sources: <a href="https://www.espn.com/" target="_blank" rel="noopener">ESPN scores, standings and recaps</a>${sp.reddit && sp.reddit[key] ? ' · <a href="https://www.reddit.com/" target="_blank" rel="noopener">Reddit fan threads</a>' : ''}</p></section>`);
@@ -4376,7 +4379,7 @@ async function renderBrief() {
   const br = await getJson('marketbrief.json'), news = D.market_news || {};
   const ageDays = br && br.updated ? Math.round((new Date(todayIso() + 'T12:00') - new Date(br.updated + 'T12:00')) / 864e5) : 99;
   const asOf = br ? (br.updated_at ? localWhen(br.updated_at) : fmtDate(br.updated)) : '';
-  const items = list => (list || []).slice(0, 5).map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.what ? `<br><small>${esc(x.what)}</small>` : ''}${!x.what && x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`).join('');
+  const items = list => (list || []).slice(0, cap(5)).map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.what ? `<br><small>${esc(x.what)}</small>` : ''}${!x.what && x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`).join('');
   const stale = ageDays > 1 ? `<p class="meta">This analysis is from ${fmtDate(br.updated)}; today’s hasn’t landed yet.</p>` : '';
   const a = br && br.analysis;
   $('mkt-brief').innerHTML = a && ageDays <= 3 ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
@@ -4727,7 +4730,7 @@ async function renderKids() {
   const mix = (arr, k) => arr.map((p, i) => [((i + 1) * 2654435761 + seed * 40503 + k) % 1000003, p]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
   const pool = [...mix(seasonal, 1), ...mix(anytime, 2)];
   const per = 6, pages = Math.max(1, Math.ceil(pool.length / per));
-  const pick = pool.slice((playPage % pages) * per, (playPage % pages) * per + per);
+  const pick = KINDLE ? pool : pool.slice((playPage % pages) * per, (playPage % pages) * per + per);
   $('play').innerHTML = pick.map(p => `<div class="idea"><small>${p[4].length ? 'This season' : 'Any day'}</small><b>${esc(p[0])}</b><span>${esc(p[1])}</span></div>`).join('');
   $('play-more').hidden = pages < 2;
   $('play-more').onclick = () => { playPage++; renderKids(); };
@@ -5185,7 +5188,7 @@ async function renderBriefing() {
   const lead = top.length ? top : notes.slice(0, 2);
   const FRESH = ['science', 'news', 'good-card', 'read-card', 'art-card', 'oldpdx-card', 'apod-card', 'open-card', 'finds-card', 'poem-card'];
   const reading = notes.filter(n => !lead.includes(n) && FRESH.includes(n[1])).slice(0, 4);
-  const rest = notes.filter(n => !lead.includes(n) && !reading.includes(n)).slice(0, 12);
+  const rest = notes.filter(n => !lead.includes(n) && !reading.includes(n)).slice(0, cap(12));
   try {
     const keep = {};
     for (const [id, days] of Object.entries(seen)) { const d = days.filter(x => daysTo(x) >= -10); if (d.length) keep[id] = d; }
@@ -5239,14 +5242,14 @@ function renderAlmanac() {
   $('date-facts').innerHTML = (a.facts || []).map(f => `<span class="chip">${esc(f)}</span>`).join('');
   const hol = (h && h.holidays) || [];
   $('hol-today').hidden = !hol.length;
-  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${hol.slice(0, 6).map(x => pageLink(x.page, esc(x.text))).join(' · ')}` : '';
+  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${hol.slice(0, cap(6)).map(x => pageLink(x.page, esc(x.text))).join(' · ')}` : '';
   $('hist-card').hidden = !h;
   if (h) {
     const row = x => `<div><span>${pageLink(x.page, esc(x.text))}${x.page && x.page.summary ? `<br><small>${esc(x.page.summary.slice(0, 220))}${x.page.summary.length > 220 ? '…' : ''}</small>` : ''}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`;
     $('hist-local-h').hidden = !h.local.length;
     $('hist-local').innerHTML = h.local.map(row).join('');
-    $('hist').innerHTML = h.selected.slice(0, 6).map(row).join('');
-    $('births').innerHTML = h.births.slice(0, 5).map(x => `<div><span>${pageLink(x.page, esc(x.text))}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`).join('');
+    $('hist').innerHTML = h.selected.slice(0, cap(6)).map(row).join('');
+    $('births').innerHTML = h.births.slice(0, cap(5)).map(x => `<div><span>${pageLink(x.page, esc(x.text))}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`).join('');
   }
   const nb = a.nearby;
   $('near-card').hidden = !nb;
@@ -5255,7 +5258,7 @@ function renderAlmanac() {
     $('near-meta').textContent = `${nb.count} Wikipedia articles within about 6 miles`;
     $('near').innerHTML = `<div class="near-feature">${f.image ? `<img src="${esc(f.image)}" alt="" loading="lazy">` : ''}<div>
       <b>${pageLink(f, esc(f.title))}</b> <small>${f.miles} mi away</small><p class="note">${esc(f.summary || '')}</p></div></div>
-      <h3 class="sub">Also nearby</h3><div class="lines">${nb.others.slice(0, 6).map(x => `<div><span>${pageLink(x, esc(x.title))}</span><span>${x.miles} mi</span></div>`).join('')}</div>`;
+      <h3 class="sub">Also nearby</h3><div class="lines">${nb.others.slice(0, cap(6)).map(x => `<div><span>${pageLink(x, esc(x.title))}</span><span>${x.miles} mi</span></div>`).join('')}</div>`;
   }
 }
 
@@ -5291,8 +5294,8 @@ function renderCivics() {
   $('reps').innerHTML = c.people.map(p => `<div class="rep">
       <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>
         <div class="rep-links">${p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : ''}${p.phone ? ` · <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : ''}${p.email ? ` · <a href="mailto:${esc(p.email)}">Email</a>` : ''}${p.url && p.url !== p.contact ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''}</div></div>
-      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3><div class="lines">${p.votes.slice(0, 4).map(voteRow).join('')}</div>` : ''}
-      ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, 3).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
+      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3><div class="lines">${p.votes.slice(0, cap(4)).map(voteRow).join('')}</div>` : ''}
+      ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, cap(3)).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
       ${p.news.length ? `<h3 class="sub">In the news</h3><div class="lines">${p.news.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${x.date ? fmtDate(x.date) : ''}</small></span></div>`).join('')}</div>` : ''}
     </div>`).join('');
   $('statewide').innerHTML = c.statewide.map(s => `<div><span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a> ${partyTag(s.party)}</span><span>${esc(s.role)}</span></div>`).join('');

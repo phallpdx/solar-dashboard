@@ -1,22 +1,22 @@
 {
-  "date": "2026-11-10",
-  "ran_at": "2026-11-11T09:25:38Z",
+  "date": "2026-11-11",
+  "ran_at": "2026-11-11T12:54:46Z",
   "lists": {
     "jazz": "unchanged",
     "concerts": "unchanged",
     "events": "unchanged",
     "kids": "unchanged",
     "bluray": "changed",
-    "foodfinds": "changed",
-    "planahead": "changed",
-    "skioutlook": "changed",
+    "foodfinds": "unchanged",
+    "planahead": "unchanged",
+    "skioutlook": "unchanged",
     "teams": "unchanged",
     "marketbrief": "unchanged",
-    "coast": "unchanged",
-    "restaurants": "changed",
+    "coast": "changed",
+    "restaurants": "unchanged",
     "localmusic": "unchanged",
     "liquor": "unchanged",
-    "alfred": "changed"
+    "alfred": "unchanged"
   },
   "web_search": "ok"
 }

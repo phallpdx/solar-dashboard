@@ -2,20 +2,6 @@
   "updated": "2026-11-11",
   "deals": [
     {
-      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
-      "store": "Barnes & Noble",
-      "detail": "Criterion 4K UHD, Blu-ray and DVD editions are 50% off at prices as marked, through Dec 6 or while supplies last; not combinable with the Premium Member discount. New 4K discs such as Marie Antoinette and Wild at Heart are reported at $24.98, and Seven Samurai 4K at $29.99.",
-      "ends": "2026-12-06",
-      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
-    },
-    {
-      "title": "Criterion Collection 50% off at Amazon (4K UHD included)",
-      "store": "Amazon",
-      "detail": "Consequence reports Criterion 4K UHD, Blu-ray and DVD editions are 50% off at Amazon through Dec 7, with 4K picks at $24.98 including KPop Demon Hunters, The Silence of the Lambs, The Princess Bride, No Country for Old Men and Killers of the Flower Moon.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
       "title": "Buy two 4K UHDs, save 40% (Amazon Italy, via a UK deal site)",
       "store": "Amazon Italy",
       "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout; the example given is The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
@@ -23,121 +9,84 @@
       "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
     },
     {
+      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "Criterion confirms all in-stock Criterion discs are 50% off online and in stores through Dec 6, preorders releasing during the sale included. Reported 4K sale prices: Blue Velvet, Mulholland Drive and The Silence of the Lambs $24.99, Harold and Maude $25, Seven Samurai $29.99, The Complete Kubrick 4K $299.99. Amazon is price-matching many Criterion 4Ks (see the entries below).",
+      "ends": "2026-12-06",
+      "url": "https://x.com/Criterion/status/2118728293608493316"
+    },
+    {
       "title": "KPop Demon Hunters (Criterion 4K UHD)",
       "store": "Amazon",
       "detail": "$24.98 in 4K, posted Nov 6; commenters say Amazon is matching the Barnes & Noble Criterion sale.",
-      "ends": "2026-12-07",
+      "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
     },
     {
       "title": "No Country for Old Men (Criterion 4K UHD)",
       "store": "Amazon",
-      "detail": "$24.98 for the 4K UHD + Blu-ray (Dolby Vision), 50% off, posted Nov 6.",
-      "ends": "2026-12-07",
+      "detail": "$24.98 in 4K, posted Nov 6, half the usual Criterion list price.",
+      "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
     },
     {
-      "title": "Seven Samurai (Criterion 4K UHD)",
+      "title": "Star Trek: The Original 4-Movie Collection",
       "store": "Amazon",
-      "detail": "$29.99 in 4K, posted Nov 6; Barnes & Noble has the same price.",
-      "ends": "2026-12-07",
-      "url": "https://slickdeals.net/f/20266179-29-99-seven-samurai-the-criterion-collection-4k-uhd-at-amazon"
-    },
-    {
-      "title": "The Silence of the Lambs (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 in 4K, half off, per Consequence's roundup of the Criterion sale.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "The Princess Bride (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 in 4K, half off, per Consequence's roundup of the Criterion sale.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "Killers of the Flower Moon (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 in 4K, half off, per Consequence's roundup of the Criterion sale.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "Marie Antoinette (Criterion 4K UHD, new this week)",
-      "store": "Criterion sale (Amazon / Barnes & Noble)",
-      "detail": "Sofia Coppola's film in 4K, released Nov 10, listed at $24.98 (half off) in Blu-ray.com's weekly roundup.",
-      "ends": "2026-12-06",
-      "url": "https://www.blu-ray.com/news/?id=39300"
-    },
-    {
-      "title": "Wild at Heart (Criterion 4K UHD, pre-order)",
-      "store": "Criterion sale (Amazon / Barnes & Noble)",
-      "detail": "David Lynch's film in 4K, out Nov 17, listed at $24.98 in Blu-ray.com's weekly roundup.",
-      "ends": "2026-12-06",
-      "url": "https://www.blu-ray.com/news/?id=39300"
-    },
-    {
-      "title": "Star Trek: The Original 4-Movie Collection (4K UHD)",
-      "store": "Amazon",
-      "detail": "$20.99 for the 4K + Blu-ray + Digital set, posted Nov 9; Best Buy was reported matching.",
+      "detail": "$21 (4K Ultra HD + Blu-Ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
     },
     {
-      "title": "Star Trek 4K UHD singles",
+      "title": "Whiplash (2014)",
       "store": "Amazon",
-      "detail": "Select Star Trek 4K discs, posted Nov 3: Into Darkness $9.99, First Contact $12.49, The Search for Spock $12.49 and more.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20252106-star-trek-4k-blu-rays-first-contact-12-49-the-search-for-spock-12-49-into-darkness-9-99-more-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "The Hunger Games 4-Film Collection (4K UHD)",
-      "store": "Amazon",
-      "detail": "$34.41 for the 4K + Blu-ray set, posted Nov 8; Blu-ray.com's price list shows $34.03.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
-    },
-    {
-      "title": "Whiplash (2014) (4K UHD)",
-      "store": "Amazon",
-      "detail": "$15.36 for 4K + Blu-ray + Digital, posted Nov 8; Walmart has the same price.",
+      "detail": "$15.36 (4K + Blu-Ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20276370-whiplash-4k-blu-ray-digital-15-36-amazon-com"
     },
     {
-      "title": "Cinderella (1950) (4K UHD)",
+      "title": "The Hunger Games 4-Film Collection",
       "store": "Amazon",
-      "detail": "$15.20 for 4K UHD + Blu-ray + Digital (list $35), posted Nov 7.",
+      "detail": "$34.41 (4K Ultra HD + Blu-ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
+    },
+    {
+      "title": "Cinderella (1950)",
+      "store": "Amazon",
+      "detail": "$15.20 (4K UHD + Blu-Ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
     },
     {
-      "title": "Battlestar Galactica (4K UHD, UK pre-order)",
-      "store": "UK retailer (via hotukdeals)",
-      "detail": "£16.99 for the 4K UHD, posted as the first UK store taking pre-orders; deal listed through Nov 30. UK price, US shipping not confirmed.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+      "title": "KPop Demon Hunters The Criterion Collection",
+      "store": "Amazon",
+      "detail": "$25 (4K UHD)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
     },
     {
-      "title": "Jurassic World: Dominion Extended Edition (4K UHD)",
-      "store": "Amazon Italy",
-      "detail": "£7.29 for the 4K UHD + Blu-ray, per a UK deal post listed through Nov 21. Shipping to the US not confirmed.",
-      "ends": "2026-11-21",
-      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
+      "title": "Seven Samurai: The Criterion Collection",
+      "store": "Amazon",
+      "detail": "$29.99 (4K UHD)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20266179-29-99-seven-samurai-the-criterion-collection-4k-uhd-at-amazon"
     }
   ],
   "upcoming": [
     {
       "title": "Amazon Black Friday sale",
-      "detail": "TechRadar reports Amazon's Black Friday sale runs Nov 19 to 30; specific 4K disc deals were not named yet.",
-      "url": "https://www.techradar.com/seasonal-sales/amazon-announces-the-start-date-for-its-massive-black-friday-sale-here-are-the-best-early-deals-and-the-ones-to-watch"
+      "detail": "Amazon announced its Black Friday event starts Nov 19 at 12:01 a.m. PT and runs through Nov 30; specific 4K disc deals were not named yet.",
+      "url": "https://9to5toys.com/2026/11/10/amazon-black-friday-2026-officially-announced/"
     },
     {
       "title": "Best Buy Black Friday sale",
       "detail": "MacRumors reports Best Buy's Black Friday sale runs Nov 19 to 28, with Cyber Monday deals Nov 29 to 30; disc deals were not detailed.",
       "url": "https://macrumors.com/2026/11/06/best-buy-reveals-black-friday-2/"
+    },
+    {
+      "title": "Vinegar Syndrome Black Friday",
+      "detail": "Main Black Friday sale reported to start Nov 27 at 12:01 a.m. ET, after a Nov 1 to 4 flash pre-order event.",
+      "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
     }
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"

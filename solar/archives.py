@@ -29,9 +29,7 @@ def _pick(items, day, salt=""):
 ART_QUERIES = ["landscape", "river", "garden", "winter", "seascape", "forest", "night", "harvest", "mountain", "rain", "birds", "boats"]
 
 
-def artwork(day):
-    """A public-domain painting or print from the Art Institute of Chicago, matched loosely to the season."""
-    q = ART_QUERIES[(day.month * 3 + day.day) % len(ART_QUERIES)]
+def _aic_artwork(day, q):
     url = "https://api.artic.edu/api/v1/artworks/search?" + urllib.parse.urlencode(
         {"q": q, "query[term][is_public_domain]": "true", "fields": "id,title,artist_display,date_display,image_id,thumbnail,medium_display,place_of_origin",
          "limit": 40})
@@ -45,6 +43,35 @@ def artwork(day):
             "medium": a.get("medium_display"), "query": q,
             "image": f"{iiif}/{a['image_id']}/full/843,/0/default.jpg",
             "url": f"https://www.artic.edu/artworks/{a['id']}", "source": "Art Institute of Chicago"}
+
+
+def _cma_artwork(day, q):
+    """The same idea from the Cleveland Museum of Art's open access collection (CC0), served from their own CDN."""
+    url = "https://openaccess-api.clevelandart.org/api/artworks/?" + urllib.parse.urlencode(
+        {"q": q, "cc0": 1, "has_image": 1, "type": "Painting", "limit": 40,
+         "fields": "id,title,creators,creation_date,technique,images,url"})
+    items = [a for a in _get(url).get("data") or [] if ((a.get("images") or {}).get("web") or {}).get("url")]
+    a = _pick(items, day, "art")
+    if not a:
+        raise RuntimeError("no Cleveland artworks with images")
+    creator = ((a.get("creators") or [{}])[0] or {}).get("description") or ""
+    return {"title": a.get("title"), "artist": creator, "when": a.get("creation_date"), "medium": a.get("technique"),
+            "query": q, "image": a["images"]["web"]["url"], "url": a.get("url"), "source": "Cleveland Museum of Art"}
+
+
+def artwork(day):
+    """A public-domain painting or print matched loosely to the season: from the Art Institute of Chicago, with a
+    second pick from the Cleveland Museum of Art for the page to fall back on if Chicago's image server won't load."""
+    q = ART_QUERIES[(day.month * 3 + day.day) % len(ART_QUERIES)]
+    picks, errors = [], []
+    for fetch in (_aic_artwork, _cma_artwork):
+        try:
+            picks.append(fetch(day, q))
+        except Exception as e:
+            errors.append(f"{fetch.__name__}: {e}")
+    if not picks:
+        raise RuntimeError("; ".join(errors))
+    return {**picks[0], "backup": picks[1] if len(picks) > 1 else None}
 
 
 # ---------------------------------------------------------------- old Portland (Library of Congress)

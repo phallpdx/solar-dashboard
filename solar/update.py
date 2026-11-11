@@ -1081,7 +1081,9 @@ def fetch_news(state, now_utc):
     if (store.get("reviews") or {}).get("v") != 2:  # pick up filter changes now
         store.pop("reviews_at", None)
     _refresh(store, "reviews", news.reviews, 3, now_utc, errors)
-    failed = sorted(set((store.get("stories") or {}).get("failed", []) + (store.get("reviews") or {}).get("failed", [])))
+    _refresh(store, "big", news.big_news, 0.5, now_utc, errors)
+    _refresh(store, "local", news.local_news, 0.5, now_utc, errors)
+    failed = sorted({f for k in ("stories", "reviews", "big", "local") for f in (store.get(k) or {}).get("failed", [])})
     if failed:
         errors.append("feeds not answering: " + ", ".join(failed))
     kept = (store.get("reviews") or {}).get("kept")
@@ -1447,7 +1449,7 @@ def build(state, status, now_utc):
         "coast": (state.get("places") or {}).get("coast"),
         "surf": surf_view(state, now_utc),
         "live": {k: v for k, v in (state.get("live") or {}).items() if not k.endswith("_at")} or None,
-        "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews")},
+        "news": {k: ((state.get("news") or {}).get(k) or {}).get("items") for k in ("stories", "reviews", "big", "local")},
         "grid": (state.get("extras") or {}).get("grid"),
         "health": (state.get("extras") or {}).get("health"),
         "roads": {"cameras": (state.get("extras") or {}).get("cameras") or [],

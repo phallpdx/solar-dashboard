@@ -2,6 +2,7 @@
 import datetime as dt
 import email.utils
 import html
+import math
 import re
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -45,6 +46,38 @@ REVIEW_SOURCES = [
     ("Audioholics", ["https://www.audioholics.com/rss.xml"]),
     # Only items whose link or title says "review" are kept, so a site's main feed works where its reviews feed is gone.
 ]
+# Big national and world news: outlets with working public feeds (AP and Reuters have none).
+BIG_SOURCES = [
+    ("NPR", ["https://feeds.npr.org/1001/rss.xml"]),
+    ("New York Times", ["https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"]),
+    ("CNN", ["http://rss.cnn.com/rss/cnn_topstories.rss"]),
+    ("ABC News", ["https://feeds.abcnews.com/abcnews/topstories"]),
+    ("CBS News", ["https://www.cbsnews.com/latest/rss/main"]),
+    ("NBC News", ["https://feeds.nbcnews.com/nbcnews/public/news"]),
+    ("PBS NewsHour", ["https://www.pbs.org/newshour/feeds/rss/headlines"]),
+    ("Wall Street Journal", ["https://feeds.a.dj.com/rss/RSSWorldNews.xml"]),
+    ("Axios", ["https://api.axios.com/feed/"]),
+    ("Politico", ["https://rss.politico.com/politics-news.xml"]),
+    ("Fox News", ["https://moxie.foxnews.com/google-publisher/latest.xml"]),
+    ("BBC", ["https://feeds.bbci.co.uk/news/world/rss.xml"]),
+    ("The Guardian", ["https://www.theguardian.com/us-news/rss", "https://www.theguardian.com/world/rss"]),
+    ("Al Jazeera", ["https://www.aljazeera.com/xml/rss/all.xml"]),
+]
+# Portland-area newsrooms. Willamette Week has no working feed, and KXL's feed isn't valid XML.
+LOCAL_SOURCES = [
+    ("OPB", ["https://www.opb.org/arc/outboundfeeds/rss/?outputType=xml"]),
+    ("The Oregonian", ["https://www.oregonlive.com/arc/outboundfeeds/rss/?outputType=xml"]),
+    ("KGW", ["https://www.kgw.com/feeds/syndication/rss/news/local"]),
+    ("KOIN", ["https://www.koin.com/news/feed/"]),
+    ("KATU", ["https://katu.com/news/local.rss"]),
+    ("KPTV", ["https://www.kptv.com/arc/outboundfeeds/rss/?outputType=xml"]),
+    ("Portland Mercury", ["https://www.portlandmercury.com/feed"]),
+    ("Oregon Capital Chronicle", ["https://oregoncapitalchronicle.com/feed/"]),
+]
+# Feed items that aren't news stories: shopping, puzzles, horoscopes, live blogs of games and the like.
+NOT_NEWS = re.compile(r"\b(wordle|connections hint|crossword|horoscope|best deals?|deals? of the day|coupon|"
+                      r"promo code|sponsored|newsletter|podcast|quiz|recipe|watch live|how to watch|live stream|"
+                      r"what to watch|obituar\w*|photos?:|gallery|readers respond|letters to the editor|opinion:|editorial:)\b", re.I)
 PER_SOURCE = 6  # keep one busy site from filling the whole list
 AV_WORDS = re.compile(r"\b(tv|oled|qled|mini-?led|projector|soundbar|speaker|headphone|earbud|airpods|amp|"
                       r"amplifier|receiver|av|a/v|hdmi|dolby|atmos|imax|streaming|turntable|vinyl|hi-?fi|"
@@ -156,6 +189,97 @@ def top_stories(limit=25):
     if not picked:
         raise RuntimeError("no news feeds answered (" + ", ".join(failed) + ")")
     return {"items": picked, "failed": failed}
+
+
+def _headlines(sources, hours, limit, keep=None):
+    """Stories from the last `hours`, grouped so each story appears once, ranked by how many outlets cover it.
+    Words are weighted by rarity, so two items only count as one story when they share its distinctive words
+    (names, places), not common ones like "man" or "sentenced"."""
+    items, failed = _collect(sources, hours / 24)
+    now = dt.datetime.now(dt.timezone.utc)
+    items = [it for it in items if not NOT_NEWS.search(it["title"]) and (keep is None or keep(it))]
+    if not items:
+        raise RuntimeError("no news feeds answered (" + ", ".join(failed) + ")")
+    words = [_words(it["title"]) | _words(it["summary"][:160]) for it in items]
+    df = {}
+    for w in words:
+        for x in w:
+            df[x] = df.get(x, 0) + 1
+    n = len(items)
+    weight = {x: math.log(n / c) for x, c in df.items()}
+    mass = [sum(weight[x] for x in w) or 1 for w in words]
+
+    def similar(i, j):
+        shared = sum(weight[x] for x in words[i] & words[j] if df[x] > 1)
+        return shared / min(mass[i], mass[j]) >= 0.28 and shared >= 8
+
+    parent = list(range(n))  # union-find: items about the same story end up in one group
+
+    def root(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    for i in range(n):
+        for j in range(i + 1, n):
+            if items[i]["source"] != items[j]["source"] and similar(i, j):
+                parent[root(i)] = root(j)
+    groups = {}
+    for i in range(n):
+        groups.setdefault(root(i), []).append(i)
+    order = {name: k for k, (name, _) in enumerate(sources)}
+    stories = []
+    for members in groups.values():
+        latest = max(dt.datetime.fromisoformat(items[i]["utc"]) for i in members)
+        outlets = {}
+        for i in sorted(members, key=lambda i: items[i]["utc"]):
+            outlets.setdefault(items[i]["source"], i)  # each outlet's first story on it
+        # Lead with the version that best matches the rest of the group; ties go to the earlier-listed outlet.
+        lead = max(outlets.values(), key=lambda i: (sum(similar(i, j) for j in outlets.values() if j != i),
+                                                    -order[items[i]["source"]]))
+        age_h = (now - latest).total_seconds() / 3600
+        it = items[lead]
+        stories.append({**{k: it[k] for k in ("title", "url", "source", "utc", "summary", "image")},
+                        "coverage": len(outlets),
+                        "also": [{"source": items[i]["source"], "url": items[i]["url"]}
+                                 for i in sorted(outlets.values(), key=lambda i: order[items[i]["source"]]) if i != lead],
+                        "score": len(outlets) * 3 - age_h / 8})
+    stories.sort(key=lambda x: -x["score"])
+    picked, per = [], {}
+    for st in stories:  # no single outlet fills the list with its own exclusives
+        if st["coverage"] == 1 and per.get(st["source"], 0) >= 2:
+            continue
+        per[st["source"]] = per.get(st["source"], 0) + 1
+        picked.append({k: v for k, v in st.items() if k != "score"})
+        if len(picked) >= limit:
+            break
+    return {"items": picked, "failed": failed}
+
+
+def big_news(limit=12):
+    """The biggest national and world stories right now: the ones the most outlets are covering."""
+    return _headlines(BIG_SOURCES, 24, limit)
+
+
+# OPB, The Oregonian and the Capital Chronicle also carry national wire and NPR stories; from them, keep only
+# items that name a place or thing around here. The TV stations' feeds above are local-only already.
+MIXED_FEEDS = {"OPB", "The Oregonian", "Oregon Capital Chronicle"}
+NEARBY = re.compile(r"\b(portland\w*|oregon\w*|ore\.|pdx|multnomah|clackamas|washington county|clark county|"
+                    r"vancouver|gresham|beaverton|hillsboro|tigard|tualatin|lake oswego|oregon city|milwaukie|"
+                    r"troutdale|happy valley|wilsonville|sherwood|forest grove|salem|eugene|bend|corvallis|medford|"
+                    r"astoria|columbia river|willamette|mount hood|mt\. hood|trimet|max line|pge|pacific power|"
+                    r"kotek|blazers|timbers|thorns|ducks|beavers|pacific northwest|washington state|wash\.|"
+                    r"st\. johns|sauvie|scappoose|st\. helens|ice building|i-5|i-84|i-205)\b", re.I)
+
+
+def local_news(limit=12):
+    """Portland-area news from local newsrooms, with stories several of them cover first."""
+    from .portland import about_maine
+
+    def keep(it):
+        text = it["title"] + " " + it["summary"]
+        return not about_maine(text) and (it["source"] not in MIXED_FEEDS or bool(NEARBY.search(text)))
+    return _headlines(LOCAL_SOURCES, 36, limit, keep=keep)
 
 
 def reviews(limit=25):

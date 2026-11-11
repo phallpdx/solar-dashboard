@@ -24,6 +24,7 @@ import io
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -300,10 +301,60 @@ def search_text(results):
 # ---------------------------------------------------------------- model
 
 MODEL_ERRORS = [0]  # failed model calls this run; a list that hits any is reported as failed
+_FAILED = object()  # what _ask_model returns when LM Studio errors rather than answers
+
+# On the Vulkan runtime Gemma loses the GPU ("device lost") some 18 minutes after it's loaded, and every
+# call after that fails until it is reloaded (flipfinder saw the same). So reload it every 14 minutes, and
+# when a call fails, reload, give the GPU a few minutes to settle, and try that call once more.
+RELOAD_EVERY = LLM.get("reload_every_seconds", 840)
+MAX_CRASH_RELOADS = 4
+_model = {"loaded_at": time.time(), "crash_reloads": 0}
+
+
+def lms(*args):
+    exe = os.path.join(os.path.expanduser("~"), ".lmstudio", "bin", "lms.exe")
+    if not os.path.exists(exe):
+        exe = shutil.which("lms") or "lms"
+    # A console of its own (with no window), so a Ctrl+C that lms sends can't end this script.
+    r = subprocess.run([exe, *args], capture_output=True, timeout=900,
+                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    return r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace").strip()
+
+
+def reload_model(settle_seconds, why):
+    log(f"  {why}")
+    lms("unload", LLM["model"])
+    time.sleep(settle_seconds)
+    args = ["load", LLM["model"], "--context-length", str(LLM.get("context_length", 16384)), "-y"]
+    if LLM.get("gpu_offload"):
+        args += ["--gpu", str(LLM["gpu_offload"])]
+    try:
+        code, out = lms(*args)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        code, out = 1, str(e)
+    _model["loaded_at"] = time.time()
+    if code != 0:
+        log(f"  reloading the model failed: {out[-300:]}")
+    return code == 0
 
 
 def ask_model(task, text, schema, temperature=0.1):
     """Asks the LM Studio model to fill `schema` from `text`. Returns a dict or None."""
+    if time.time() - _model["loaded_at"] > RELOAD_EVERY:
+        reload_model(20, "reloading the model before it usually loses the GPU")
+    result = _ask_model(task, text, schema, temperature)
+    if result is _FAILED and _model["crash_reloads"] < MAX_CRASH_RELOADS:
+        _model["crash_reloads"] += 1
+        if reload_model(180, f"reloading the model after that error and trying again "
+                             f"({_model['crash_reloads']} of {MAX_CRASH_RELOADS} tonight)"):
+            result = _ask_model(task, text, schema, temperature)
+    if result is _FAILED:
+        MODEL_ERRORS[0] += 1
+        return None
+    return result
+
+
+def _ask_model(task, text, schema, temperature):
     messages = [
         {"role": "system", "content": "You extract facts from web pages into JSON. Use only what the page says. "
                                       "Never invent dates, prices or links. Links on the page are numbered like (#12); for a link "
@@ -336,12 +387,10 @@ def ask_model(task, text, schema, temperature=0.1):
             except Exception:  # noqa: BLE001 - the reason is a nice-to-have
                 detail = ""
             log("  model error:", e, detail)
-            MODEL_ERRORS[0] += 1
-            return None
+            return _FAILED
         except (urllib.error.URLError, TimeoutError, OSError) as e:
             log("  model error:", e)
-            MODEL_ERRORS[0] += 1
-            return None
+            return _FAILED
         parsed = _parse_json(content)
         if parsed is not None:
             return parsed

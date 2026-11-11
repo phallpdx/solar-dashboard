@@ -1,80 +1,72 @@
 {
-  "updated": "2026-11-10",
-  "updated_at": "2026-11-10T13:24:18Z",
+  "updated": "2026-11-11",
+  "updated_at": "2026-11-11T13:20:16Z",
   "analysis": {
-    "headline": "Stocks staged their best day since April on Monday (S&P 500 +2.35%, Nasdaq +2.74%, Dow +2.15%) as oil slid on easing U.S.-Iran tensions, and this morning futures are mixed, with the Dow up and the Nasdaq-100 down, ahead of the 8:30 a.m. ET October CPI report.",
-    "summary": "Monday's rally came after the S&P 500's worst week since April 2025, and it was led by semiconductors, per CNBC and the Motley Fool. The big driver was oil: Brent fell 3.6% to about $94 after President Trump said he would hold off on new strikes against Iran and Qatar brought an Iranian proposal to reopen the Strait of Hormuz, and Brent was trading near $91 overnight, about 22% below its Oct. 30 high. Lower oil eases the inflation worries that have kept the 10-year Treasury yield near 4.85% to 4.88% after a strong jobs report raised talk of a Fed rate hike in December; Fed Governor Waller said a 50-basis-point hike should be considered if core inflation stays elevated. Gold rose Monday (about +1.4% to roughly $4,131 in Schwab's morning snapshot) while Bitcoin slipped to about $74,700, and 24/7 Wall St. notes both have been among 2026's worst major assets as high yields and a firm dollar weigh on assets that pay no interest. Today's CPI print is the next test: economists expect a 0.3% monthly rise in headline prices and 0.2% in core, cooler than September.",
+    "headline": "Stocks slipped Tuesday after a hotter-than-expected October CPI report (S&P 500 -0.38%, Nasdaq -0.74%, Dow -0.30%), and this morning futures point to a tech-led rebound, with Nasdaq-100 futures up about 1.5% early on, while the bond market is closed for Veterans Day.",
+    "summary": "The Bureau of Labor Statistics said consumer prices rose 0.4% in October and core prices 0.3%, both a tenth above the Dow Jones consensus, though cooler than September's 0.6% headline gain; the BLS published no year-over-year rate because October 2025 prices were never collected during the 2025 shutdown. Traders read the report as locking in a December Fed rate hike, and some now price a half-point move, since core at 0.3% meets the bar Fed Governor Waller set for weighing a 50-basis-point hike (Stock Titan, investingLive). That sent the 2-year Treasury yield up about 18 basis points to roughly 4.73% and the 10-year up about 10 basis points to near 4.98%, briefly above 5%. Higher yields and a firmer dollar knocked gold futures down about 2% to settle near $4,030 and pushed Bitcoin to about $73,800, near a three-month low, while Brent crude eased 1.2% to $91.49, briefly dipping under $90 for the first time since August as President Trump said the Iran war could end soon. Nvidia's 5.5% drop made tech the weakest sector, but CoreWeave's raised 2026 revenue forecast is lifting tech futures this morning (MLQ.ai).",
     "drivers": [
-      "Oil's slide: Brent fell 3.6% Monday to about $94 and kept falling overnight after Trump signaled a pause in military action against Iran (Oilprice.com, Globe and Mail).",
-      "Chip stocks rebounded and led the Nasdaq's 2.74% gain, while Nvidia lagged after its board opened an independent investigation tied to reports about CEO Jensen Huang (Motley Fool, Stock Titan, Nvidia).",
-      "Rate-hike worries: Friday's stronger-than-expected jobs report pushed the 10-year yield toward 4.9%, and Fed Governor Waller said a 50-basis-point December hike should be considered if core inflation stays high (Schwab, StockTwits).",
-      "Gold and Bitcoin, both down for 2026, got some support after last week's midterm results but remain pressured by high yields (Yahoo Finance, 24/7 Wall St.)."
+      "October CPI: +0.4% headline and +0.3% core month over month, vs. 0.3% and 0.2% expected, raising odds of a December Fed hike (BLS, CNBC).",
+      "Treasury selloff: the 2-year yield jumped about 18 basis points and the 10-year briefly topped 5% (investingLive).",
+      "Nvidia fell about 5.5% and dragged the Nasdaq, as tech was the S&P 500's weakest sector (TradingKey).",
+      "Gold fell about 2% and Bitcoin slid toward a three-month low on higher yields and a stronger dollar, while Brent eased on hopes the Iran war could end (Mining.com, Closing Look)."
     ],
     "watch": [
-      "Today (Tue) 8:30 a.m. ET: October CPI; consensus is +0.3% headline and +0.2% core month over month, after +0.6% and +0.3% in September (TipRanks, FXStreet).",
-      "Today (Tue) 1:00 p.m. ET: 10-year Treasury note auction (economic calendar).",
-      "Fri Nov 13, 8:30 a.m. ET: October producer price index (PPI) (economic calendar)."
+      "Today (Wed): Veterans Day, so U.S. stock markets are open but the bond market and the Fed are closed (investingLive).",
+      "Thu Nov 12: weekly jobless claims (forecast near 195,000 after 189,000), Cisco and Applied Materials earnings after the close, and Fed speakers including Hammack, Barr, Goolsbee, Daly, Schmid and Williams (Yahoo Finance, MLQ.ai).",
+      "Fri Nov 13, 8:30 a.m. ET: October producer price index, expected +0.4% headline and +0.3% core, plus Fed speakers Collins, Bowman, Daly and Jefferson (Yahoo Finance)."
     ],
     "sources": [
       {
-        "name": "Motley Fool: Stock Market Today, Nov. 9",
-        "url": "https://www.fool.com/coverage/stock-market-today/2026/11/09/stock-market-today-nov-9-markets-rally-as-semiconductor-gains-lift-nasdaq/"
+        "name": "BLS: Consumer Price Index News Release, October 2026",
+        "url": "https://www.bls.gov/news.release/cpi.htm"
       },
       {
-        "name": "CNBC: Stock market news for Nov. 9, 2026",
-        "url": "https://www.cnbc.com/2026/11/08/stock-market-today-live-updates.html"
+        "name": "CNBC: CPI inflation report, October 2026",
+        "url": "https://www.cnbc.com/2026/11/10/cpi-inflation-report-october-2026.html"
       },
       {
-        "name": "Stock Titan: The Stock Market Today, November 9, 2026",
-        "url": "https://www.stocktitan.net/articles/stock-market-today-live-november-9-2026"
+        "name": "Stock Titan: Core prices up 0.3% again, hitting Waller's line for weighing a half-point hike",
+        "url": "https://www.stocktitan.net/articles/october-2026-cpi-inflation-report"
       },
       {
-        "name": "TipRanks: Stock Market Today, Nov. 10",
-        "url": "https://www.tipranks.com/news/stock-market-today-nov-10-markets-await-the-consumer-inflation-report"
+        "name": "TradingKey: Nasdaq falls 0.74% as sticky October inflation stokes December rate-hike bets",
+        "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262299537-us-october-cpi-tops-forecasts-nasdaq-falls-nvidia-stock-drops-tradingkey"
       },
       {
-        "name": "TipRanks: CPI Data Due Today",
-        "url": "https://www.tipranks.com/news/cpi-data-due-today-cooler-inflation-could-support-u-s-stocks"
+        "name": "Seeking Alpha: Wall Street ends in the red after the October CPI print",
+        "url": "https://seekingalpha.com/news/4670094-wall-street-ends-in-the-red-after-the-october-cpi-print"
       },
       {
-        "name": "FXStreet: Dow Jones futures advance as market eyes inflation data",
-        "url": "https://www.fxstreet.com/news/dow-jones-futures-advance-as-market-eyes-inflation-data-tech-earnings-202611100850"
+        "name": "investingLive: Americas FX news wrap 10 Nov, hot US CPI puts a bigger Fed hike in play",
+        "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-10-nov-it-s-a-wrap-hot-us-cpi-puts-a-bigger-fed-hike-in-play/"
       },
       {
-        "name": "StockTwits: Fed's Waller says 50bp hike should be considered",
-        "url": "https://stocktwits.com/news-articles/markets/equity/cpi-report-today-fed-s-waller-says-50-basis-point-rate-hike-should-be-considered-if-core-inflation-remains-elevated/cNGuW4pR97v"
+        "name": "Mining.com: Gold price falls as CPI tops forecasts, lifting dollar and yields",
+        "url": "https://www.mining.com/web/gold-price-falls-nearly-3-as-cpi-tops-forecasts-lifting-dollar-and-yields/"
       },
       {
-        "name": "CNBC: Treasury yields rise as investors await October CPI and producer prices",
-        "url": "https://www.cnbc.com/2026/11/09/us-treasurys-bonds-yields.html"
+        "name": "Closing Look: Tuesday, November 10, 2026",
+        "url": "https://cappnotes.substack.com/p/closing-look-tuesday-november-10"
       },
       {
-        "name": "Charles Schwab: Stocks Up Despite Nvidia, Lifted by Crude's Drop",
-        "url": "https://www.schwab.com/learn/story/stock-market-update-open"
+        "name": "ChainCatcher: Bitget UEX Daily Report, inflation exceeds expectations",
+        "url": "https://www.chaincatcher.com/en/article/2303590"
       },
       {
-        "name": "Oilprice.com: Oil Sinks to $94 as Iran's Hormuz Deal Heads to Trump",
-        "url": "https://oilprice.com/Latest-Energy-News/World-News/Oil-Sinks-to-94-as-Irans-8-Billion-Hormuz-Deal-Heads-to-Trump.html"
+        "name": "MLQ.ai: Nasdaq futures jump as CoreWeave surges 13% on Veterans Day",
+        "url": "https://mlq.ai/news/nasdaq-futures-jump-as-coreweave-surges-13-and-european-stocks-rise-on-veterans-day/"
       },
       {
-        "name": "Globe and Mail: Oil falls below $90 as Trump downplays escalation with Iran",
-        "url": "https://www.theglobeandmail.com/investing/article-oil-falls-as-trump-downplays-prospect-of-escalation-with-iran/"
+        "name": "investingLive: US bond market closed for Veterans Day as stocks face a hot CPI hangover",
+        "url": "https://investinglive.com/news/heads-up-us-bond-market-closed-for-veterans-day-as-stocks-face-a-hot-cpi-hangover/"
       },
       {
-        "name": "24/7 Wall St.: Bitcoin and gold the two worst major assets in 2026",
-        "url": "https://247wallst.com/investing/cryptocurrency/2026/11/09/bitcoin-and-gold-have-never-been-the-two-worst-major-assets-in-the-same-year-until-2026-why-are-both-store-of-value-assets-falling/"
+        "name": "Yahoo Finance: What to expect in markets this week (CRWV, CSCO, CPI, Fed speeches)",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/expect-markets-week-crwv-csco-105942813.html"
       },
       {
-        "name": "Yahoo Finance: Gold and bitcoin were 2026's worst assets",
-        "url": "https://finance.yahoo.com/markets/article/gold-and-bitcoin-were-2026s-worst-assets--the-midterms-just-gave-them-a-pulse-174344496.html"
-      },
-      {
-        "name": "Nvidia: Statement from NVIDIA Board of Directors",
-        "url": "https://investor.nvidia.com/news/press-release-details/2026/Statement-from-NVIDIA-Board-of-Directors/default.aspx"
-      },
-      {
-        "name": "November 2026 U.S. Economic Calendar",
-        "url": "https://fedratecalc.com/us-economic-calendar/november-2026/"
+        "name": "MLQ.ai: What markets are watching this week",
+        "url": "https://mlq.ai/news/what-markets-are-watching-this-week-october-cpi-a-veterans-day-bond-market-close-coreweave-and-cisco/"
       }
     ]
   },

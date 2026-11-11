@@ -136,6 +136,18 @@ def solar(d, today):
     return section("Solar and power", rows)
 
 
+def headlines(d):
+    news = d.get("news") or {}
+    rows = []
+    for key, label in (("big", "Big news"), ("local", "Local news")):
+        items = [it for it in news.get(key) or [] if it.get("title")][:5]
+        if items:
+            lis = "".join(f"<li>{esc(it['title'])} <span class=dim>· {esc(it.get('source') or '')}</span></li>"
+                          for it in items)
+            rows.append(f"<h3>{label}</h3><ul>{lis}</ul>")
+    return section("Headlines", rows)
+
+
 def extras(d, today):
     rows = []
     facts = (d.get("almanac") or {}).get("facts") or []
@@ -174,7 +186,7 @@ def render(d):
         made = t.strftime("%a %-I:%M %p").replace(" 0", " ")
     parts = []
     for fn in (lambda: weather(d, today), lambda: calendar(d, today), lambda: commute(d),
-               lambda: solar(d, today), lambda: extras(d, today)):
+               lambda: solar(d, today), lambda: headlines(d), lambda: extras(d, today)):
         try:
             parts.append(fn())
         except Exception as e:  # one bad field should not blank the page

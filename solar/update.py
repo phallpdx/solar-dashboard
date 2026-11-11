@@ -739,6 +739,8 @@ def fetch_almanac(state, now_utc):
     _refresh(store, "albums", lambda: daily.album_birthdays(today), 24, now_utc, errors)
     _refresh(store, "good_news", daily.good_news, 2, now_utc, errors)
     # The free archives: one artwork, one old photograph of Portland and one Portland concert a day.
+    if store.get("artwork") and "backup" not in store["artwork"]:  # picked before there was a fallback: pick again now
+        store.pop("artwork_at", None)
     _refresh(store, "artwork", lambda: {"date": today.isoformat(), **archives.artwork(today)}, 24, now_utc, errors)
     _refresh(store, "old_portland", lambda: {"date": today.isoformat(), **archives.old_portland(today)}, 24, now_utc, errors)
     _refresh(store, "show", lambda: {"date": today.isoformat(), **archives.portland_show(today)}, 24, now_utc, errors)

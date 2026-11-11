@@ -3036,6 +3036,10 @@ function renderOutings() {
   if (pic && pic.image) {
     $('potd').innerHTML = `<a class="potd-img" href="${esc(pic.url || pic.full)}" target="_blank" rel="noopener"><img src="${esc(pic.image)}" alt="${esc(pic.title)}" loading="lazy"></a>
       <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? `<p class="note">${esc(pic.caption.slice(0, 260))}${pic.caption.length > 260 ? '…' : ''}</p>` : ''}${pic.artist ? `<small class="muted">${esc(pic.artist)}</small>` : ''}`;
+    // A thumbnail that won't load: try the full-size file, then hide the card rather than show a broken image.
+    $('potd').querySelector('img').onerror = function () {
+      if (pic.full && this.src !== pic.full) this.src = pic.full; else $('potd-card').hidden = true;
+    };
   }
   const op = o.openings;
   $('open-card').hidden = !(op && op.length);
@@ -3580,21 +3584,31 @@ function renderSunActivity() {
   $('sunact-note').innerHTML = `The picture is the latest HMI intensitygram from NASA's Solar Dynamics Observatory: dark spots are sunspots. Sunspots and flux track the 11-year cycle; big flares can bring the aurora south (see The sky). ${cite([['NOAA SWPC daily solar indices', sa.url], ['NASA SDO', 'https://sdo.gsfc.nasa.gov/data/']])}`;
 }
 
+// The artwork card: if the museum's image server won't load the picture, switch to the backup pick from another
+// museum, and if that fails too, hide the card rather than show a broken image.
+const ART_API = {'Art Institute of Chicago': 'https://api.artic.edu/docs/', 'Cleveland Museum of Art': 'https://openaccess-api.clevelandart.org/'};
+function showArtwork(art, backup) {
+  const src = art.source || 'Art Institute of Chicago';
+  $('art-meta').textContent = `${src} · public domain`;
+  $('art').innerHTML = `<a href="${esc(art.url)}" target="_blank" rel="noopener"><img class="arch-img" src="${esc(art.image)}" alt="${esc(art.title)}" loading="lazy"></a>
+    <p class="arch-cap"><b>${esc(art.title)}</b>${art.artist ? `, ${esc(art.artist)}` : ''}<small>${[art.when, art.medium].filter(Boolean).map(esc).join(' · ')}</small></p>
+    ${cite([[`${src} API`, ART_API[src] || '']])}`;
+  $('art').querySelector('img').onerror = () => {
+    if (backup && backup.image) showArtwork(backup, null);
+    else $('art-card').hidden = true;
+  };
+}
+
 // Free archives, one each a day: an artwork, an old photograph of Portland and a Portland concert recording.
 function renderArchives() {
   const a = D.archives || {};
   const art = a.artwork, old = a.old_portland, show = a.show;
   $('art-card').hidden = !art;
-  if (art) {
-    $('art-meta').textContent = 'Art Institute of Chicago · public domain';
-    $('art').innerHTML = `<a href="${esc(art.url)}" target="_blank" rel="noopener"><img class="arch-img" src="${esc(art.image)}" alt="${esc(art.title)}" loading="lazy"></a>
-      <p class="arch-cap"><b>${esc(art.title)}</b>${art.artist ? `, ${esc(art.artist)}` : ''}<small>${[art.when, art.medium].filter(Boolean).map(esc).join(' · ')}</small></p>
-      ${cite([['Art Institute of Chicago API', 'https://api.artic.edu/docs/']])}`;
-  }
+  if (art) showArtwork(art, art.backup);
   $('oldpdx-card').hidden = !old;
   if (old) {
     $('oldpdx-meta').textContent = old.year ? `Library of Congress · ${esc(old.year)}` : 'Library of Congress';
-    $('oldpdx').innerHTML = `<a href="${esc(old.url)}" target="_blank" rel="noopener"><img class="arch-img photo" src="${esc(old.image)}" alt="${esc(old.title)}" loading="lazy"></a>
+    $('oldpdx').innerHTML = `<a href="${esc(old.url)}" target="_blank" rel="noopener"><img class="arch-img photo" src="${esc(old.image)}" alt="${esc(old.title)}" loading="lazy" onerror="document.getElementById('oldpdx-card').hidden=true"></a>
       <p class="arch-cap"><b>${esc(old.title)}</b><small>${(old.subjects || []).map(esc).join(' · ')}</small></p>
       ${cite([['Library of Congress prints and photographs', 'https://www.loc.gov/photos/?q=portland+oregon']])}`;
   }
@@ -5150,7 +5164,7 @@ async function renderBriefing() {
   const lr = rot((D.longreads || []).slice(0, 4), 3);
   if (lr) add(29, 'read-card', `${say('read_lead', 0, 'For a long sit with your tea')}: <b>${esc(lr.title)}</b>${lr.author ? ' by ' + esc(lr.author) : ''}.`);
   const art = D.archives && D.archives.artwork;
-  if (art) add(27, 'art-card', `Today's artwork is <b>${esc(art.title)}</b>${art.artist ? ' by ' + esc(art.artist) : ''}${art.when ? ` (${esc(art.when)})` : ''}, from the Art Institute of Chicago.`);
+  if (art) add(27, 'art-card', `Today's artwork is <b>${esc(art.title)}</b>${art.artist ? ' by ' + esc(art.artist) : ''}${art.when ? ` (${esc(art.when)})` : ''}, from the ${esc(art.source || 'Art Institute of Chicago')}.`);
   const old = D.archives && D.archives.old_portland;
   if (old && old.year) add(25, 'oldpdx-card', `From the Library of Congress: Portland in ${esc(old.year)}, ${esc(old.title)}.`);
   if (D.apod && D.apod.title && D.apod.title !== 'NASA Science') add(31, 'apod-card', `NASA’s ${D.apod.video ? 'film' : 'picture'} of the day is <b>${esc(D.apod.title)}</b>. ${D.apod.video ? 'It plays right on the page.' : say('apod', 0, 'Worth a look on a big screen.')}`);

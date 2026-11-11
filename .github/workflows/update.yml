@@ -93,6 +93,7 @@ jobs:
           mkdir -p _site
           cp web/* _site/
           cp data/dashboard.json _site/
+          python -m solar.kindle data/dashboard.json _site/kindle.html
           if [ -d data/thai ]; then cp -r data/thai _site/; fi
 
       - uses: actions/upload-pages-artifact@v3

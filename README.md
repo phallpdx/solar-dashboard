@@ -44,3 +44,10 @@ export APSYSTEMS_APP_ID=... APSYSTEMS_APP_SECRET=... APSYSTEMS_SID=...
 python -m solar.update          # writes data/dashboard.json
 cp data/dashboard.json web/ && python -m http.server -d web 8000
 ```
+
+## Kindle page
+
+Each site build also writes `kindle.html`: a plain black-and-white morning
+page (weather, calendar, drive times, solar, poem) with no JavaScript or
+images, so it loads quickly in the Kindle browser. Bookmark
+`<your Pages URL>/kindle.html` on the Kindle.

@@ -1,6 +1,33 @@
 {
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "items": [
+    {
+      "name": "Nocino walnut liqueur, 2026 batch",
+      "maker": "New Deal Distillery (Portland)",
+      "kind": "Seasonal",
+      "what": "New Deal's small-batch green-walnut liqueur, part of its Distiller's Workshop series, was released for 2026 with a party at the Portland distillery on November 8. It's a classic holiday sipper and the base for New Deal's Nocino Sour and Solstice Negroni recipes.",
+      "where_to_buy": [
+        {
+          "store": "New Deal Distillery bottle shop",
+          "url": null
+        }
+      ],
+      "date": "2026-11-08",
+      "sources": [
+        {
+          "name": "New Deal Distillery: Nocino Liqueur Release Party",
+          "url": "https://newdealdistillery.com/event/nocino-liqueur-release-party/"
+        },
+        {
+          "name": "PDX Pipeline: Nocino Liqueur Release Party @ New Deal Distillery",
+          "url": "https://www.pdxpipeline.com/nocino-liqueur-release-party-new-deal-distillery-11-2026/"
+        },
+        {
+          "name": "New Deal Distillery: Nocino Sour recipe",
+          "url": "https://newdealdistillery.com/recipes/nocino-sour/"
+        }
+      ]
+    },
     {
       "name": "Joe Brown's Carmel Corn",
       "maker": "Joe Brown's",

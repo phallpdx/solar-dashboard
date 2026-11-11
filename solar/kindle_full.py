@@ -1762,6 +1762,9 @@ html.kfit4 #kmain .story,html.kfit4 #kmain .lines>div,html.kfit4 #kmain .fd,html
 .kcontents #kmain .kgl .kdeg small{margin:0 0 10px 16px !important;font-size:15px !important}
 #kmain .book img{display:none !important}
 #kmain .arch-img,#kmain .card img.photo{max-height:330px;width:auto;max-width:100%}
+/* Saved offline note */
+.ksaved{font:italic var(--t6)/var(--l6) var(--k-serif);color:var(--ink2,#333);text-align:center;margin:0 0 6px}
+.ksaved:empty{display:none}
 /* Controls a finger can hit */
 html body .krun{height:44px !important;padding:16px 0 6px !important;cursor:pointer}
 .kbar #kmore{height:44px !important;padding:13px 16px !important}
@@ -1773,6 +1776,26 @@ html.kjumpopen #kjump{display:block;position:absolute;left:24px;right:24px;top:4
 #kjump a{display:block;min-height:44px;line-height:44px;border-bottom:1px solid #000;font:430 17px/44px var(--k-serif);color:#000;text-decoration:none;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-column-break-inside:avoid;break-inside:avoid}
 .ksecfront #kmain .kfl .kt b{white-space:normal !important;overflow:visible !important;text-overflow:clip !important}
+/* The navigator: skip a section, jump to a page or any section */
+.krun .ksecbtn{display:inline-block;margin-left:12px;border:1px solid #000;padding:5px 8px 4px;margin-top:-6px;font:600 12px/1 var(--k-serif);
+  letter-spacing:.12em;text-transform:uppercase;vertical-align:baseline}
+html.kjumpopen .krun .ksecbtn{background:#000;color:#fff}
+html.kjumpopen #kjump{display:block;position:absolute;left:24px;right:24px;top:44px;bottom:52px;background:#fff;z-index:50;
+  border-top:4px solid #000;-webkit-column-count:auto;column-count:auto;padding-top:10px;overflow:hidden}
+#kjump .kjtop{display:flex;margin:0 0 4px}
+#kjump .kjtop a{display:block;border:2px solid #000;padding:7px 12px 8px;min-height:0;line-height:22px;font:700 18px/22px var(--k-serif);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+#kjump .kjtop small{display:block;font:600 11px/14px var(--k-serif);letter-spacing:.12em;text-transform:uppercase}
+#kjump .kjskip{-webkit-box-flex:1;flex:1 1 auto;min-width:0;background:#000;color:#fff !important}
+#kjump .kjskip small{color:#fff !important}
+#kjump .kjfront{flex:none;margin-left:10px !important;font-weight:500 !important}
+#kjump .kjh{font:600 11px/14px var(--k-serif);letter-spacing:.14em;text-transform:uppercase;margin:14px 0 0 !important;border-bottom:1px solid #000;padding-bottom:4px !important}
+#kjump .kjg{display:flex;flex-wrap:wrap}
+#kjump .kjg a{width:50%;box-sizing:border-box;padding-right:12px;min-height:0;height:31px;line-height:31px;font:430 16px/31px var(--k-serif);
+  border-bottom:1px solid #bbb}
+#kjump .kjg a i{display:inline-block;width:26px;font:600 12px/31px var(--k-serif);font-style:normal}
+#kjump .kjg a.kjcur{font-weight:700}
+#kjump .kjg a.kjcur i:before{content:'\25B8 '}
 /* Pick up where you stopped */
 .kcontents #kmain .kresume{display:block;border:2px solid #000;padding:8px 14px;margin:0 0 14px;color:#000;text-decoration:none}
 .kcontents #kmain .kresume small{display:block;font:600 13px/16px var(--k-serif);letter-spacing:.12em;text-transform:uppercase}
@@ -1877,6 +1900,9 @@ PAGER_JS = r"""
   var FLOW = /\b(kcontents|ksecfront)\b/.test(document.body.className);
   var root = document.documentElement, kview = document.getElementById('kview');
   var view = document.getElementById('kclip'), main = document.getElementById('kmain');
+  // A saved page from an earlier day sends you to today's front instead.
+  try { var edd = (root.getAttribute('data-ed') || '').match(/^\w+, (\w+ \d+, \d{4})/);
+    if (edd && navigator.onLine !== false && !/kcontents/.test(document.body.className) && new Date(edd[1]).toDateString() !== new Date().toDateString()) { location.replace('index.html'); return; } } catch (e) {}
   var more = document.getElementById('kmore'), pos = document.getElementById('kpos');
   var kcont = document.getElementById('kcont'), rail = document.getElementById('krail');
   var run = document.querySelector('.krun'), bar = document.querySelector('.kbar'), st = root.style;
@@ -2112,19 +2138,111 @@ PAGER_JS = r"""
     else if (!imgs[k].naturalWidth) { imgs[k].style.display = 'none'; var ip = imgs[k].parentNode; if (ip && ip !== main && !txt(ip)) ip.style.display = 'none'; }
   }
   layout();
+  // Instant turns: a service worker keeps the whole edition on the Kindle.
+  // Without one, the next and previous pages are fetched ahead into the browser cache.
+  var ED = root.getAttribute('data-ed') || '';
+  function warm(u) { if (!u) return; try { var x = new XMLHttpRequest(); x.open('GET', u, true);
+    x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
+      for (var i = 0; i < m.length && i < 6; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); } };
+    x.send(); } catch (e) {} }
+  function saved(ok) { var el = document.getElementById('ksaved'); if (!el) return;
+    el.innerHTML = ok ? 'Saved on this Kindle &middot; pages open instantly' : ''; }
+  setTimeout(function(){
+    var sw = navigator.serviceWorker;
+    if (sw && window.caches && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      try {
+        sw.register('sw.js').then(function(){ return sw.ready; }).then(function(reg){
+          var once = false; try { once = store['kme:sync'] === ED; } catch (e) {}
+          if (reg.active && (!once || FLOW)) { reg.active.postMessage({ sync: ED }); try { store['kme:sync'] = ED; } catch (e) {} }
+        }).catch(function(){});
+        sw.addEventListener('message', function(e){ if (e.data && e.data.saved === ED) saved(true); });
+        caches.has('kme-' + ED).then(saved);
+      } catch (e) {}
+      if (sw.controller) return;
+    }
+    warm(NEXT_URL); warm(PREV_URL);
+  }, 900);
 })();
 </script>
 """
+
+
+SW_JS = r"""// The Morning Edition, kept on the Kindle so pages open instantly.
+// The cover always asks the network first; every other page comes from the saved edition.
+self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+let syncing = null;
+async function sync(want) {
+  const r = await fetch('edition.json', { cache: 'no-store' });
+  const ed = await r.json();
+  if (want && ed.ed !== want) return;
+  const name = 'kme-' + ed.ed;
+  if (!(await caches.has(name))) {
+    const tmp = await caches.open('kme-tmp-' + ed.ed);
+    const todo = ed.files.slice();
+    const worker = async () => { for (let f; (f = todo.shift());) {
+      try { const res = await fetch(f, { cache: 'no-cache' }); if (res.ok) await tmp.put(f, res); } catch (e) {} } };
+    await Promise.all([worker(), worker(), worker()]);
+    const done = await caches.open(name);
+    for (const req of await tmp.keys()) await done.put(req, await tmp.match(req));
+  }
+  for (const k of await caches.keys()) if (k !== name) await caches.delete(k);
+  for (const c of await self.clients.matchAll()) c.postMessage({ saved: ed.ed });
+}
+self.addEventListener('message', e => {
+  if (!e.data || !e.data.sync) return;
+  if (!syncing) syncing = sync(e.data.sync).catch(() => {}).then(() => { syncing = null; });
+  e.waitUntil(syncing);
+});
+async function fromCache(req) {
+  for (const k of await caches.keys()) if (!/^kme-tmp/.test(k)) {
+    const hit = await (await caches.open(k)).match(req, { ignoreSearch: true }); if (hit) return hit; }
+  return null;
+}
+self.addEventListener('fetch', e => {
+  const req = e.request, url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== location.origin) return;
+  const cover = req.mode === 'navigate' && /\/(index\.html)?$/.test(url.pathname);
+  if (cover || /edition\.json$/.test(url.pathname) || /sw\.js$/.test(url.pathname)) {
+    e.respondWith(fetch(req).catch(() => fromCache(req).then(r => r || Response.error())));
+    return;
+  }
+  e.respondWith(fromCache(req).then(r => r || fetch(req)));
+});
+"""
+
+
+def write_offline(out, ed):
+    """The service worker and the list of every file in this edition."""
+    import json
+    import re
+    files = []
+    for root_dir, _, names in os.walk(out):
+        for nm in sorted(names):
+            rel = os.path.relpath(os.path.join(root_dir, nm), out).replace(os.sep, "/")
+            if rel in ("sw.js", "edition.json") or not re.search(r"\.(html|css|woff2?|jpe?g|png|gif|webp|svg)$", rel):
+                continue
+            files.append(rel)
+    files.sort(key=lambda f: (f != "kindle.css", "/" in f, f))
+    with open(os.path.join(out, "edition.json"), "w") as f:
+        json.dump({"ed": ed, "files": files}, f)
+    with open(os.path.join(out, "sw.js"), "w") as f:
+        f.write(SW_JS)
 
 
 FONT_CSS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@"
             "0,7..72,400..700;1,7..72,400..700&display=block")
 
 
+BUILD = {}  # this edition's id, for the saved copy and "pick up where you stopped"
+
+
 def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run_left="", run_right="",
-         fonts="", next_label=None, run_href="index.html"):
+         fonts="", next_label=None, run_href="index.html", jump=None):
     esc = html.escape
-    top = f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}</span></nav>'
+    nav = (_JUMP[0] if jump is None else jump) if run_left else ""
+    btn = '<b class="ksecbtn">Sections &#9662;</b>' if nav else ""
+    top = f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>'
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
@@ -2137,13 +2255,13 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
             f'<footer class="kfoot">{nxt_block}<div class="kmeta"><span></span><span>{stamp}</span></div></footer>')
     js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
     return f"""<!doctype html>
-<html lang="en" class="{esc(html_class)}" data-ed="{esc(stamp)}"><head><meta charset="utf-8">
+<html lang="en" class="{esc(html_class)}" data-ed="{esc(BUILD.get("id") or stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
 <body class="{esc(body_class)}">
 {top}
 <div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div></div>
-{_JUMP[0] if top and run_left else ""}
+{nav}
 {foot}
 {js}
 </body></html>
@@ -2706,6 +2824,7 @@ def main(site):
 
     edition = stamp.split(" ", 1)[-1].replace("AM", "am").replace("PM", "pm")
     stamp_txt = html.escape(f"Edition of {edition}")
+    BUILD["id"] = f"{longdate} {edition}"
     seq = []  # reading order of every file
     for i in order:
         seq.append(front[i])
@@ -2715,6 +2834,30 @@ def main(site):
     _TITLES["end.html"] = "The end"
     _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
                 + "".join(f'<a href="{front[i]}">{html.escape(by_id[i]["title"])}</a>' for i in order) + "</nav>")
+    def navigator(sec=None, cur=None):
+        e = html.escape
+        cc = ' class="kjcur"'
+        out_ = ['<nav id="kjump"><div class="kjtop">']
+        if sec in order:
+            k = order.index(sec)
+            nx = order[k + 1] if k + 1 < len(order) else None
+            href, name = (front[nx], by_id[nx]["title"]) if nx else ("end.html", "The end")
+            out_.append(f'<a class="kjskip" href="{href}"><small>Skip {e(by_id[sec]["title"])}</small>{e(name)} &rsaquo;</a>')
+        out_.append('<a class="kjfront" href="index.html"><small>Back to</small>The front</a></div>')
+        if sec in order:
+            sib = [pg for pg in pages if pg["sec"] == sec]
+            if len(sib) > 1:
+                out_.append(f'<p class="kjh">In {e(by_id[sec]["title"])}</p><div class="kjg">')
+                out_ += [f'<a href="{pg["file"]}"{cc if pg["file"] == cur else ""}><i>{pg["k"]}</i>{e(pg["title"])}</a>'
+                         for pg in sib]
+                out_.append("</div>")
+        out_.append('<p class="kjh">Every section</p><div class="kjg">')
+        out_ += [f'<a href="{front[i]}"{cc if i == sec else ""}><i>{n}</i>{e(by_id[i]["title"])}</a>'
+                 for n, i in enumerate(order, 1)]
+        out_.append("</div></nav>")
+        return "".join(out_)
+
+    _JUMP[0] = navigator()
     after = {f: (seq[n + 1] if n + 1 < len(seq) else None) for n, f in enumerate(seq)}
     before = {f: (seq[n - 1] if n else "index.html") for n, f in enumerate(seq)}
     nsec = len(order)
@@ -2735,7 +2878,7 @@ def main(site):
         doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, data["htmlClass"], data["bodyClass"] + " kcard",
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
                    run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
-                   run_href=front[pg["sec"]])
+                   run_href=front[pg["sec"]], jump=navigator(pg["sec"], pg["file"]))
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
 
@@ -2758,7 +2901,7 @@ def main(site):
         with open(os.path.join(out, front[i]), "w") as f:
             f.write(page(sec["title"], body, data["htmlClass"], data["bodyClass"] + " ksecfront",
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links))
+                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links, jump=navigator(i)))
 
     # The end of the edition: where to go from here.
     with open(os.path.join(out, "end.html"), "w") as f:
@@ -2809,12 +2952,14 @@ def main(site):
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
             f' &middot; {html.escape(edition)} edition</p></div>'
             + wx
+            + '<p class="ksaved" id="ksaved"></p>'
             + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
             + f'<h2 class="ktochead kbreak" id="contents">Contents</h2>{"".join(toc)}'
 )
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(page("The Morning Edition", body, "", "kcontents", nxt=(seq[1] if len(seq) > 1 and seq[0] == "today.html" else seq[0]) if seq else None,
                      stamp=stamp_txt, run_left="", run_right="", fonts=font_links))
+    write_offline(out, BUILD["id"])
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.
     with open(os.path.join(site, "kindle.html"), "w") as f:

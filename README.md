@@ -70,7 +70,13 @@ saves "The Morning Edition" in `kindle/`, laid out for the Kindle Paperwhite
   is a little too long is set tighter until it fits; a long one is cut into
   screens at whole items. Tap the right of the screen (or swipe) to keep
   reading, the left to go back; the bar's right link skips to the next
-  page, and tapping the running head opens a list of every section.
+  page. The **Sections** button at the top opens the navigator: skip the
+  whole section in one tap, jump to any page in it, or to any section.
+- **Instant pages, offline too**: the cover has a service worker
+  (`sw.js`) save every file listed in `edition.json`, so later pages open
+  from the Kindle's memory. The cover always asks the network first. A
+  saved page from an earlier day goes to today's front. Browsers without
+  service workers fetch the next and previous pages ahead.
 - **Nothing printed twice**: an item already printed earlier in the edition
   is taken out of the later page, and Alfred only says what no other page
   does.

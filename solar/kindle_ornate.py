@@ -7,12 +7,13 @@ they are:
 
      role       size/leading  why
      display    48/52   the cover nameplate and each section's title page: a part title, seen across the room
-     headline   30/36   the page's question or title: the first thing read ("Is the mountain out?", "Good morning").
-                        Slot for the hand-lettering (solar/lettering.py, branch claude/headline-lettering): every
-                        headline carries class .khl and data-khl="<plain text>"; a lettered headline replaces the
-                        element's content with one <img class="klet"> per line, 36 px high, at most the column wide
-                        (506 px in a panel), leaving the text in alt.
-     lead       24/30   the answer, or the lead figure (53°, ~69 kWh, $32): second, and smaller than the question
+     headline   34/40   the page's question or title: the first thing read ("Is the mountain out?", "Good morning").
+                        The hand-lettering (solar/lettering.py, via kindle_fast.letter) draws each headline at
+                        the size this scale gives its kind (LETTER_SIZES below), the column wide; every headline
+                        also carries class .khl and data-khl="<plain text>". 34 rather than 30: a script's
+                        x-height is half its size, and the question must still out-rank the bold answer under it.
+     lead       24/30   the answer, or the lead figure (53°, ~69 kWh, $32): second, and smaller than the question.
+                        Steps 14-17-20-24 rise by about 1.2 (reading sizes); 24-34-48 by about 1.4 (display sizes)
      section    20/26   a section heading inside a page ("Today", "On the prairie"), under an engraved section mark
      value      20/26   a figure in a tile or fact box (7:05 am, 54): bold lining figures, one step above the text
      body       17/25   running text and table rows: about 60 characters to the line in a panel, leading 1.47
@@ -79,7 +80,7 @@ FAMILIES = {
 # the type size each kind of hand-lettered headline stands in for (solar/lettering.py via kindle_fast.letter):
 # section title pages are display, page and card titles are headline, the cover's top lead is lead, story
 # headlines in lists are bold body
-LETTER_SIZES = {"section": 48, "contents": 30, "title": 30, "poem": 30, "sub": 30, "science": 30,
+LETTER_SIZES = {"section": 48, "contents": 34, "title": 34, "poem": 34, "sub": 34, "science": 34,
                 "lead": 24, "leads": 17, "story": 17}
 
 # the size each family is drawn at in the layout (CSS px); variable ones are measured per element
@@ -101,8 +102,8 @@ M = X + " #kmain"
 
 S = {  # the scale: font shorthand per role
     "display": "700 48px/52px var(--k-serif)",
-    "head":    "700 30px/36px var(--k-serif)",
-    "lead":    "700 24px/30px var(--k-serif)",
+    "head":    "700 34px/40px var(--k-serif)",
+    "lead":    "650 24px/30px var(--k-serif)",
     "sect":    "600 20px/26px var(--k-serif)",
     "value":   "700 20px/26px var(--k-serif)",
     "body":    "430 17px/25px var(--k-serif)",
@@ -342,7 +343,7 @@ TYPESET = r"""
   }
   // sizes the cards set for themselves, off the scale: each element takes the nearest role (the stylesheet is loaded
   // into this page so the computed sizes are the edition's own)
-  const SCALE = [14, 17, 20, 24, 30, 48];
+  const SCALE = [14, 17, 20, 24, 34, 48];
   function snap(d) {
     const todo = [];
     for (const el of d.querySelectorAll('*')) {
@@ -378,7 +379,7 @@ TYPESET = r"""
 """
 
 CSS += f"{M} .kr-lab,{M} .kr-labn{{font-size:17px !important;line-height:22px !important;font-variant-caps:small-caps !important;text-transform:none !important;letter-spacing:.04em !important;font-weight:600 !important;font-style:normal !important}}\n"
-for _k, _v in (("cap", (14, 20)), ("body", (17, 25)), ("val", (20, 26)), ("lead", (24, 30)), ("head", (30, 36))):
+for _k, _v in (("cap", (14, 20)), ("body", (17, 25)), ("val", (20, 26)), ("lead", (24, 30)), ("head", (34, 40))):
     CSS += f"{M} .kr-{_k}{{font-size:{_v[0]}px !important;line-height:{_v[1]}px !important}}{M} .kr-{_k}n{{font-size:{_v[0]}px !important}}\n"
 CSS += (M + " .ksr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}\n")
 
@@ -683,7 +684,7 @@ CHECK_JS = r"""(F) => {
       if ((s || ol || sh || el.tagName === 'HR') && !bi) (own(el) ? theirs : bad).push(name(el) + (ps || '') + ' [' + s + (ol ? 'O' : '') + (sh ? 'S' : '') + ']');
     }
     let txt = false; for (const n of el.childNodes) if (n.nodeType === 3 && n.nodeValue.trim()) { txt = true; break; }
-    if (txt && !el.closest('#kjump')) { const k = parseFloat(cs.fontSize) + '/' + parseFloat(cs.lineHeight || 0);
+    if (txt && !el.closest('#kjump, .kltx, .ksr') && cs.color !== 'rgba(0, 0, 0, 0)') { const k = parseFloat(cs.fontSize) + '/' + parseFloat(cs.lineHeight || 0);
       (sizes[k] = sizes[k] || []).length < 3 && sizes[k].push(name(el) + ': ' + (el.textContent || '').trim().slice(0, 20)); }
   }
   for (const role in F) for (const el of document.querySelectorAll(F[role])) {

@@ -3751,11 +3751,17 @@ function renderSky(o) {
   const iss = o.iss || [];
   const nights = o.nights || [];
   const scale = (v, words) => words[Math.min(words.length - 1, Math.floor((v - 1) / 3))];
+  // A pass is rated with the night's clouds in: a high pass on a clouded-out night is "Clouded out", and
+  // the height words say what they mean ("High in the sky", not a bare "Low").
+  const nightOf = iso => { const t = new Date(iso); if (t.getHours() < 12) t.setDate(t.getDate() - 1); return t.toLocaleDateString('en-CA'); };
+  const passWord = p => { const n = nights.find(x => x.night === nightOf(p.utc));
+    if (n && /clouded out/i.test(n.verdict || '')) return 'Clouded out';
+    return p.max_alt >= 40 ? 'High, easy to see' : p.max_alt >= 25 ? 'Good height' : 'Low in the sky'; };
   $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
   const sats = o.satellites || [];
   $('sat-h').hidden = !sats.length;
   $('sats').innerHTML = sats.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> · ${localDay(p.utc)} at ${tm(p.utc)}<br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
+    <span style="white-space:nowrap;padding-left:12px">${passWord(p)}</span></div>`).join('');
   const neo = o.close_approaches || [];
   $('neo-h').hidden = !neo.length;
   $('neo').innerHTML = neo.slice(0, cap(4)).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a><br><small>${x.size_m ? `about ${x.size_m >= 1000 ? (x.size_m / 1000).toFixed(1) + ' km' : x.size_m + ' m'} across, ` : ''}${x.km_s} km/s</small></span>
@@ -3766,7 +3772,7 @@ function renderSky(o) {
   $('sky-note').innerHTML = `Passes count when the satellite is sunlit, at least 10° up and your sky is dark. ${cite(skySrc)}`;
   $('iss-h').hidden = !iss.length;
   $('iss').innerHTML = iss.map(p => `<div><span><b style="font-weight:700">${localDay(p.utc)} at ${tm(p.utc)}</b><br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high${p.bright ? ' · bright' : ''}</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
+    <span style="white-space:nowrap;padding-left:12px">${passWord(p)}</span></div>`).join('');
 }
 
 // A side view of a ship, drawn from its AIS type and to scale from its length (bow on the right).

@@ -63,13 +63,13 @@ All of it is modelled in deep relief, with dense detail and no empty ground.
 Reference: tools/engrave/ref/book-aeneid-plate.jpg. For the tall plates (h > 260), the scene should be a true copperplate illustration:
 - **Depth:** a receding landscape with an architectural skyline, mid-ground trees modelled in dense hatching, and a foreground that is lit with figures in action.
 - **Burin line:** tone comes from swelling and tapering lines, not from fills.
-- **Arms:** under the scene, a small dedication cartouche carrying a coat of arms. Parker's arms (house style) are a shield quartered with a dog, crossed drumsticks, a heron, and Mt Hood. Use them on the cover, the section fronts and the end page.
+- **Arms:** under the scene, a small dedication cartouche carrying a coat of arms. Parker has real family arms (pending an image). Do NOT invent arms: leave a beaded cartouche with crossed drumsticks over a sun as a placeholder. Use them on the cover, the section fronts and the end page.
 
 ## The binding (Parker sent *Picturesque America*, an 1870s tooled binding)
 Reference: tools/engrave/ref/binding-picturesque.jpg. It sets the look for the COVER (index) and the section fronts:
 - a deep, dense border of blind-tooled scroll and flowers on a black ground
 - an arched central panel
-- the title in ornate Victorian display lettering, drawn as paths, interlaced with a central emblem (for us: drumsticks crossed over a sun, or Parker's arms)
+- the title in ornate Victorian display lettering, drawn as paths, interlaced with a central emblem (for us: drumsticks crossed over a sun, until Parker's real arms arrive)
 - tooled fleurons above and below
 
 ## No white (Parker's exact rule: "No white unless behind text")

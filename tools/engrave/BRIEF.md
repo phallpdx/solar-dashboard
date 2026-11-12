@@ -63,13 +63,18 @@ All of it is modelled in deep relief, with dense detail and no empty ground.
 Reference: tools/engrave/ref/book-aeneid-plate.jpg. For the tall plates (h > 260), the scene should be a true copperplate illustration:
 - **Depth:** a receding landscape with an architectural skyline, mid-ground trees modelled in dense hatching, and a foreground that is lit with figures in action.
 - **Burin line:** tone comes from swelling and tapering lines, not from fills.
-- **Arms:** under the scene, a small dedication cartouche carrying a coat of arms. Parker has real family arms (pending an image). Do NOT invent arms: leave a beaded cartouche with crossed drumsticks over a sun as a placeholder. Use them on the cover, the section fronts and the end page.
+- **Arms:** under the scene, a small dedication cartouche carrying a coat of arms. Parker's arms are **Somaster: *Or, a castle between five fleurs-de-lis sable*** (tools/engrave/ref/arms-somaster.jpg, the left shield).
+- Engrave them in proper heraldic convention, following Petra Sancta: Or is shown as an even field of fine dots, and sable as close cross-hatching or solid black.
+- The castle has two crenellated towers, a crenellated curtain wall, and an arched gate with a portcullis.
+- Place three fleurs-de-lis in chief and one on each flank.
+- Draw it on a heater shield with full mantling (acanthus mantling, per the references), and add a helm and crest only if space allows.
+- Do not use the Speke impalement. Use them on the cover, the section fronts and the end page.
 
 ## The binding (Parker sent *Picturesque America*, an 1870s tooled binding)
 Reference: tools/engrave/ref/binding-picturesque.jpg. It sets the look for the COVER (index) and the section fronts:
 - a deep, dense border of blind-tooled scroll and flowers on a black ground
 - an arched central panel
-- the title in ornate Victorian display lettering, drawn as paths, interlaced with a central emblem (for us: drumsticks crossed over a sun, until Parker's real arms arrive)
+- the title in ornate Victorian display lettering, drawn as paths, interlaced with a central emblem (for us: the Somaster arms)
 - tooled fleurons above and below
 
 ## Tone and the burin (Parker sent Doré, Victorian wood engravings and Goltzius)

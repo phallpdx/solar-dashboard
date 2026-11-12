@@ -136,9 +136,12 @@ def _scene(cv, field, X0, Y0, W, H, ctx, seed, detail=2):
     ring = _circ(sx, sy, sr, 48)
     cv.line(ring + [ring[0]])
     if detail:
-        for k in (.78, .56):
+        # Easter egg: the sun's disc is a ride cymbal - lathe rings, the bell, a stick's ping mark
+        for k in (.9, .82, .74, .66, .58, .5, .42):
             c = _circ(sx, sy, sr * k, 40)
             cv.hair(c + [c[0]])
+        cv.obj([_circ(sx, sy, sr * .24, 24)], 1.)
+        cv.hair(_circ(sx, sy, sr * .1, 12))
         cres = (_circ(sx, sy, sr * .97, 24, -.35 * PI, .85 * PI)
                 + _circ(sx - sr * .28, sy - sr * .28, sr * .86, 24, .85 * PI, -.35 * PI))
         cv.hair(C.hatch_poly(cres, -45, 1.5))
@@ -287,6 +290,36 @@ def _scene(cv, field, X0, Y0, W, H, ctx, seed, detail=2):
                         b = _quad(q0, q1, q2, q3, .5, .92)
                         cv.line([a, b])
         cv.line([p0, p1])
+
+    # --- the big loads waiting for the window: the EV on its charger, the washer by the door ---
+    if detail:
+        ex, ey, el = X0 + W * .56, Y0 + H * .955, W * .15
+        car = [(ex, ey - el * .1), (ex + el * .04, ey - el * .2), (ex + el * .28, ey - el * .22), (ex + el * .42, ey - el * .36),
+               (ex + el * .72, ey - el * .37), (ex + el * .88, ey - el * .22), (ex + el, ey - el * .19), (ex + el, ey - el * .08), (ex, ey - el * .06)]
+        cv.obj([car], 1.)
+        cv.hair(C.hatch_poly(car, 0, 1.5))
+        glass = [(ex + el * .45, ey - el * .33), (ex + el * .7, ey - el * .34), (ex + el * .82, ey - el * .23), (ex + el * .38, ey - el * .23)]
+        cv.obj([glass], .5)
+        cv.hair(C.hatch_poly(glass, 60, 3))
+        cv.line([(ex + el * .6, ey - el * .34), (ex + el * .6, ey - el * .23)])
+        for wx in (.22, .8):
+            wh = _circ(ex + el * wx, ey - el * .06, el * .085, 20)
+            cv.obj([wh], 1.)
+            cv.line(C.hatch_poly(wh, 45, 1.5))
+            cv.obj([_circ(ex + el * wx, ey - el * .06, el * .035, 12)], .5)
+        px = ex - el * .14
+        post = [(px - 1.5, ey), (px + 1.5, ey), (px + 1.5, ey - el * .3), (px - 1.5, ey - el * .3)]
+        cv.obj([post], 1.)
+        cv.obj([], 0)
+        cv.line([(px + 1.5, ey - el * .22), (px + el * .05, ey - el * .05), (ex + el * .02, ey - el * .14)])
+        wx0, ws = X0 + W * .76, W * .05
+        wbox = [(wx0, ey), (wx0 + ws, ey), (wx0 + ws, ey - ws * 1.15), (wx0, ey - ws * 1.15)]
+        cv.obj([wbox], 1.)
+        cv.hair(C.hatch_poly([(wx0 + ws * .75, ey), (wx0 + ws, ey), (wx0 + ws, ey - ws * 1.15), (wx0 + ws * .75, ey - ws * 1.15)], 90, 1.5))
+        dr = _circ(wx0 + ws * .45, ey - ws * .5, ws * .3, 20)
+        cv.obj([dr], 1.)
+        cv.hair(C.hatch_poly(dr, 45, 1.5))
+        cv.line([(wx0 + ws * .1, ey - ws * .98), (wx0 + ws * .4, ey - ws * .98)])
 
     # --- Easter egg: Parker's dog, curled asleep in the sun by the front row --------------
     if detail:
@@ -493,6 +526,22 @@ def _layout_tall(w, h, seed, ctx, density=1.):
         o.append(C.palmette(w / 2, fy + 1, fh * .85, False, rng.randrange(1 << 20)))
         o.append(f'<path d="M0,{C._n(h - 1.5)}h{C._n(w)}" stroke="#000" stroke-width="1"{C._CR}/>')
     return "".join(o)
+
+
+def _sunburst(cx, cy, rx, ry, fld, mode):
+    """Under the vignette: the day's light bursting past the oval's rim, long and short rays
+    cut finer as they run out into the paper."""
+    o = []
+    oy = cy - ry * .15
+    n = 72
+    for i in range(n):
+        a = math.pi + math.pi * (i + .5) / n
+        r0 = 1.
+        k = (i % 4 == 0) and 1.22 or ((i % 2 == 0) and 1.12 or 1.06)
+        x1, y1 = cx + rx * k * math.cos(a), oy + ry * 1.25 * k * math.sin(a)
+        x0, y0 = cx + rx * .7 * math.cos(a), oy + ry * .7 * math.sin(a)
+        o.append(f"M{C._n(x0)},{C._n(y0)}L{C._n(x1)},{C._n(y1)}")
+    return f'<path d="{"".join(o)}" stroke="#000" stroke-width=".5" fill="none"/>'
 
 
 # ==== STUDIO FRAME (batch 2) ====================================================================
@@ -1822,8 +1871,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -1832,7 +1939,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)
@@ -1857,6 +1966,6 @@ def plate(w, h, ctx):
         X0, Y0 = min(xs), min(ys)
         return _vignette(ctx, seed, 0 if mode == "band" else 2)(list(fld), X0, Y0, max(xs) - X0, max(ys) - Y0)
 
-    hk = dict(field=field, egg=egg_cymbal, shape="oval", aspect=2., cw=.25, rmin=9., rmax=30., motto=motto,
+    hk = dict(vignette=True, pad=8., max_aspect=2.4, under=_sunburst, field=field, egg=egg_cymbal, shape="oval", aspect=2., cw=.25, rmin=9., rmax=30., motto=motto,
               tablet=lambda tx, ty, tw, th: _tablet_cells(tx, ty, tw, th))
     return st_plate(w, h, seed, hk)

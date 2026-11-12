@@ -1917,8 +1917,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -1927,7 +1985,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)

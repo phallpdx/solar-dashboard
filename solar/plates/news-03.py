@@ -528,10 +528,26 @@ def _hifi(fld, seed):
     pr = pw * .33
     rec = C._ell_pts(pcx, pcy, pr, pr * .3, 48)[:-1]
     cv.obj([rec], 1.)
-    k = .95
-    while k > .32:
-        cv.hair(C._ell_pts(pcx, pcy, pr * k, pr * .3 * k, 40))
-        k -= .07
+    rim = C._ell_pts(pcx, pcy + 1.5, pr * 1.03, pr * .3 * 1.03 + 1, 60)[:-1]
+    cv.obj([rim], 1.)
+    cv.line(C.hatch_poly(rim, 0, 1.))
+    cv.obj([rec], 1.)
+    k = .97
+    while k > .3:
+        ring = C._ell_pts(pcx, pcy, pr * k, pr * .3 * k, 72)
+        segs, cur = [], []
+        for q in ring:
+            ang = math.atan2((q[1] - pcy) / .3, q[0] - pcx)
+            if -2.4 < ang < -1.7 or .7 < ang < 1.4:
+                if len(cur) > 1:
+                    segs.append(cur)
+                cur = []
+            else:
+                cur.append(q)
+        if len(cur) > 1:
+            segs.append(cur)
+        cv.hair(segs)
+        k -= .045
     cv.hair(C.hatch_poly([q for q in rec if q[0] > pcx + pr * .3] + [(pcx + pr * .3, pcy)], 0, 1.5))
     cv.obj([C._ell_pts(pcx, pcy, pr * .26, pr * .078, 20)[:-1]], 1.)
     cv.line([(pcx + pr * .22, pcy - pr * .3), (pcx + pr * .26, pcy - pr * .3)])
@@ -553,12 +569,38 @@ def _hifi(fld, seed):
     tp = [(sx - sw / 2, st), (sx + sw / 2, st), (sx + sw / 2 + sw * .18, st - sw * .1), (sx - sw / 2 + sw * .18, st - sw * .1)]
     cv.obj([tp], 1.)
     cv.hair(C.hatch_poly(tp, 0, 3))
+    # cabinet front: walnut veneer, grain running down it
+    for k in range(1, int(sw / 2.2)):
+        gx = sx - sw / 2 + k * 2.2
+        cv.hair([(gx + .6 * math.sin(yy * .09 + k), yy) for yy in [st + sh * j / 12 for j in range(13)]])
     wr = sw * .36
     wy = st + sh * .62
-    cv.obj([C._ell_pts(sx, wy, wr + 1.5, wr + 1.5, 40)[:-1]], 1.)
-    for k in range(1, 7):
-        cv.hair(C._ell_pts(sx, wy, wr * (1 - k * .11), wr * (1 - k * .11), 36))
-    cv.hair(C.hatch_poly([(sx + wr * math.cos(t), wy + wr * math.sin(t)) for t in [-.6 + j * .12 for j in range(20)]] + [(sx, wy)], 60, 1.5, .5))
+    # the woofer: a rolled surround lit at upper left, the cone's radial ribs and its shading
+    sur = C._ell_pts(sx, wy, wr + 2.2, wr + 2.2, 72)[:-1]
+    cv.obj([sur], 1.)
+    k = 0
+    while k < 4:
+        rr = wr + 2 - k * .6
+        arc = [(sx + rr * math.cos(t), wy + rr * math.sin(t)) for t in [-.4 + j * .1 for j in range(36)]]
+        cv.hair(arc)
+        k += 1
+    cone = C._ell_pts(sx, wy, wr - .3, wr - .3, 72)[:-1]
+    cv.obj([cone], 1.)
+    for j in range(64):
+        t = math.tau * j / 64
+        shade = .5 + .5 * math.cos(t - .8)            # 1 toward lower right
+        if shade < .25 and j % 2:
+            continue
+        r0 = wr * .3
+        r1 = wr * (.62 + .36 * shade)
+        cv.hair([(sx + r0 * math.cos(t), wy + r0 * math.sin(t)), (sx + r1 * math.cos(t), wy + r1 * math.sin(t))])
+    for rr in (wr * .62, wr * .8):
+        cv.hair(C._ell_pts(sx, wy, rr, rr, 60))
+    cap = C._ell_pts(sx, wy, wr * .3, wr * .3, 40)[:-1]
+    cv.obj([cap], 1.)
+    cres = [(sx + wr * .3 * math.cos(t), wy + wr * .3 * math.sin(t)) for t in [-.6 + j * .12 for j in range(21)]]
+    cres += [(sx + wr * .18 * math.cos(t) + wr * .06, wy + wr * .2 * math.sin(t) + wr * .06) for t in [1.8 - j * .12 for j in range(21)]]
+    cv.hair(C.hatch_poly(cres, -45, 1.5))
     # Easter egg: the kit in the cone - bass drum, two toms, two cymbals
     e = wr * .34
     cv.obj([C._ell_pts(sx, wy + e * .25, e * .55, e * .55, 16)[:-1]], .5)
@@ -567,10 +609,51 @@ def _hifi(fld, seed):
     cv.hair([(sx - e * 1.1, wy - e * .9), (sx - e * .5, wy - e * .75)])
     cv.hair([(sx + e * .5, wy - e * .8), (sx + e * 1.1, wy - e * .95)])
     tw = st + sh * .2
-    cv.obj([C._ell_pts(sx, tw, sw * .1, sw * .1, 16)[:-1]], 1.)
-    cv.hair(C._ell_pts(sx, tw, sw * .05, sw * .05, 10))
+    cv.obj([C._ell_pts(sx, tw, sw * .13, sw * .13, 32)[:-1]], 1.)
+    cv.hair(C.hatch_poly(C._ell_pts(sx, tw, sw * .13, sw * .13, 32)[:-1], 45, 3))
+    dome = C._ell_pts(sx, tw, sw * .07, sw * .07, 24)[:-1]
+    cv.obj([dome], 1.)
+    cv.hair(C.hatch_poly([q for q in dome if q[0] + q[1] > sx + tw], -45, 1.5))
     o.append(cv.svg())
     return "".join(o)
+
+
+def cable_frame(cx, cy, rx, ry, fld, mode, seed):
+    """The frame is the desk's own: a pair of studio headphones set down against the vignette's
+    lower left, their coiled cable running round under the scene to a jack plug at the right."""
+    if ry < 30:
+        return ""
+    cv = C.Canvas()
+    hr = min(ry * .32, rx * .1)
+    hx, hy = cx - rx * .86, cy + ry * .55
+    band = [(hx + hr * 1.05 * math.cos(t), hy + hr * 1.05 * math.sin(t)) for t in [math.pi * (1.05 + .9 * j / 20) for j in range(21)]]
+    inner = [(hx + hr * .85 * math.cos(t), hy + hr * .85 * math.sin(t)) for t in [math.pi * (1.05 + .9 * j / 20) for j in range(21)]]
+    cv.obj([band + inner[::-1]], 1.)
+    cv.hair(C.hatch_poly(band + inner[::-1], 0, 1.5))
+    for sd in (-1, 1):
+        ex, ey = hx + sd * hr * .95, hy + hr * .15
+        cup = C._ell_pts(ex, ey, hr * .32, hr * .45, 24)[:-1]
+        cv.obj([cup], 1.)
+        cv.hair(C.hatch_poly(cup, 80, 1.5))
+        pad = C._ell_pts(ex - sd * hr * .12, ey, hr * .16, hr * .4, 20)[:-1]
+        cv.obj([pad], 1.)
+        cv.hair(C.hatch_poly(pad, 0, 3))
+    pts = []
+    x0, y0 = hx + hr * .95, hy + hr * .6
+    x1, y1 = cx + rx * .88, cy + ry * .78
+    for j in range(121):
+        t = j / 120
+        bx = x0 + (x1 - x0) * t
+        by = y0 + (y1 - y0) * t + ry * .22 * math.sin(math.pi * t)
+        r = 2.2 if .15 < t < .45 else 0.
+        pts.append((bx + r * math.cos(t * 160), by + r * math.sin(t * 160)))
+    cv.obj([], 0)
+    cv.line(pts)
+    plug = [(x1, y1 - 1.6), (x1 + ry * .12, y1 - 1.6), (x1 + ry * .12, y1 + 1.6), (x1, y1 + 1.6)]
+    cv.obj([plug], 1.)
+    cv.hair(C.hatch_poly(plug, 90, 1.5))
+    cv.obj([[(x1 + ry * .12, y1 - .9), (x1 + ry * .2, y1 - .9), (x1 + ry * .21, y1), (x1 + ry * .2, y1 + .9), (x1 + ry * .12, y1 + .9)]], 1.)
+    return cv.svg()
 
 
 # ==== STUDIO FRAME (batch 2) ====================================================================
@@ -1900,8 +1983,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -1910,7 +2051,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)
@@ -1926,6 +2069,7 @@ def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 3
     _MODE["m"] = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    hk = dict(field=lambda fld, mode: _hifi(fld, seed), egg=egg_sticks, shape="oval", aspect=1.9, cw=.25,
+    hk = dict(vignette=True, pad=3., max_aspect=2.2, frame=lambda cx, cy, rx, ry, fld, mode: cable_frame(cx, cy, rx, ry, fld, mode, seed),
+              field=lambda fld, mode: _hifi(fld, seed), egg=egg_sticks, shape="oval", aspect=1.9, cw=.25,
               rmin=9., rmax=30., banner=_waveform, tablet_lines=["STORIES · REVIEWS", "BUY · WAIT · SKIP"])
     return st_plate(w, h, seed, hk)

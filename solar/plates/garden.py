@@ -769,29 +769,54 @@ def _hazel(fld, seed):
     rng = random.Random(seed + 41)
     cv = C.Canvas()
     for sd in (-1, 1):
-        sx = x0 - 2 if sd > 0 else x1 + 2
-        sy = y0 + H * .2
-        a = (0 if sd > 0 else math.pi) - sd * .15
-        L = W * .34
+        sx = x0 + W * .06 if sd > 0 else x1 - W * .06
+        sy = y0 + H * .02
+        a = (0 if sd > 0 else math.pi) + sd * .2
+        L = W * .15
         pts = [(sx, sy)]
         for j in range(24):
             a += sd * .012
             pts.append((pts[-1][0] + math.cos(a) * L / 24, pts[-1][1] + math.sin(a) * L / 24))
-        wd = lambda t: max(.6, 2.2 * (1 - t))
+        wd = lambda t: max(.7, 3.2 * (1 - t))
         Lft = [(p[0], p[1] - wd(k / 24)) for k, p in enumerate(pts)]
         Rgt = [(p[0], p[1] + wd(k / 24)) for k, p in enumerate(pts)]
         cv.obj([Lft + Rgt[::-1]], 1.)
         cv.hair([(p[0], p[1] + wd(k / 24) * .4) for k, p in enumerate(pts)][:-2])
         for k in (7, 14, 21):
             bx, by = pts[k]
-            ba = a - sd * rng.uniform(.4, .9)
-            tw = [(bx, by), (bx + math.cos(ba) * L * .22, by + math.sin(ba) * L * .22 - L * .05)]
+            ba = a + sd * rng.uniform(.5, .9)
+            tw = [(bx, by), (bx + math.cos(ba) * L * .14, by + math.sin(ba) * L * .14)]
             cv.obj([], 0)
             cv.line(tw)
             for q in (pts[k], tw[1], ((bx + tw[1][0]) / 2, (by + tw[1][1]) / 2)):
                 for m in range(rng.choice((1, 2))):
-                    _catkin(cv, q[0] + m * 1.5, q[1] + 1, min(13., H * rng.uniform(.05, .08)), math.pi / 2 + sd * rng.uniform(.0, .3), rng)
+                    _catkin(cv, q[0] + m * 2.5, q[1] + 1, min(18., H * rng.uniform(.08, .12)), math.pi / 2 + sd * rng.uniform(.0, .3), rng)
     return cv.svg()
+
+
+def hedge_shape(cx, cy, rx, ry):
+    """The vignette's silhouette is the food-forest hedge: a skyline of rounded crowns (hazel,
+    elder, serviceberry) along the top, falling to either side, a soft ground curve at the foot."""
+    pts = []
+    rng = random.Random(int(rx * 7 + ry))
+    n = 11
+    xs = [cx - rx * .92 + 2 * rx * .92 * k / n for k in range(n + 1)]
+    for k in range(n):
+        x0, x1 = xs[k], xs[k + 1]
+        top = cy - ry * (.86 + .14 * rng.random()) * (1 - .35 * abs((x0 + x1) / 2 - cx) / rx)
+        for j in range(9):
+            t = j / 8
+            pts.append((x0 + (x1 - x0) * t, top - ry * .07 * math.sin(math.pi * t)))
+    for j in range(1, 9):
+        t = j / 8
+        pts.append((cx + rx * (.92 + .08 * math.sin(math.pi * t)), pts[-1][1] + (cy + ry * .6 - pts[-1][1]) * t * .5))
+    for j in range(25):
+        a = j / 24 * math.pi
+        pts.append((cx + rx * math.cos(a), cy + ry * .55 + ry * .45 * math.sin(a)))
+    for j in range(1, 9):
+        t = 1 - j / 8
+        pts.append((cx - rx * (.92 + .08 * math.sin(math.pi * t)), cy - ry * .2 + ry * .7 * (1 - t)))
+    return pts
 
 
 # ==== STUDIO FRAME (batch 2) ====================================================================
@@ -2121,8 +2146,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -2131,7 +2214,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)
@@ -2154,8 +2239,10 @@ def plate(w, h, ctx):
         fx, fy = min(xs), min(ys)
         sc = scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed,
                    "mini" if mode == "band" else "full")
-        return sc + (_hazel(fld, seed) if mode != "band" else "")
+        return sc
 
-    hk = dict(shape="irregular", dedication=True, frieze=False, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
+    hk = dict(vignette=True, pad=3., max_aspect=2.6, shape_fn=hedge_shape,
+              frame=lambda cx, cy, rx, ry, fld, mode: _hazel(fld, seed) if mode != "band" else "",
+              shape="irregular", dedication=True, frieze=False, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
               tablet_lines=["WALK THE LAND · BURN DAY · BIRDS", "SOW · BLOOMS · MUSHROOMS"])
     return st_plate(w, h, seed, hk)

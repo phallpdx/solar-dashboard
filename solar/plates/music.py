@@ -361,7 +361,10 @@ def upright_bass(cv, x, base, H, rng):
     for k in range(1, 7):
         f = 1 - k * .12
         cv.hair([P_(hw(i / n) * f + W * .02 * k, base - bh * i / n) for i in range(2, n - 2)])
-    cv.hair(C.hatch_poly([P_(hw(i / n) * .55, base - bh * i / n) for i in range(n + 1)] + right[::-1], 75, 1.5, rng.random()))
+    sh = [P_(hw(i / n) * .3, base - bh * i / n) for i in range(n + 1)] + right[::-1]
+    cv.hair(C.hatch_poly(sh, 75, 1.5, rng.random()))
+    cv.hair(C.hatch_poly([P_(hw(i / n) * .62, base - bh * i / n) for i in range(n + 1)] + right[::-1], -30, 2, rng.random()))
+    cv.hair(C.hatch_poly(left[::-1][:n // 2] + [P_(-hw(i / n) * .7, base - bh * i / n) for i in range(n // 2, n + 1)][::-1], 70, 3, rng.random()))
     for sd in (-1, 1):
         fx = x + sd * W * .16
         f = [P_(sd * W * .16 + sd * .8 * math.sin(t * 5), base - bh * (.32 + .22 * t)) for t in [j / 10 for j in range(11)]]
@@ -371,7 +374,10 @@ def upright_bass(cv, x, base, H, rng):
     cv.hair(C.hatch_poly([P_(-W * .06, base - bh * .05), P_(W * .06, base - bh * .05), P_(W * .045, base - bh * .25), P_(-W * .045, base - bh * .25)], 90, 1.5))
     nk = [P_(-W * .05, base - bh), P_(W * .05, base - bh), P_(W * .04, base - H * .95), P_(-W * .04, base - H * .95)]
     cv.obj([nk], 1.)
-    cv.hair(C.hatch_poly(nk, 90, 1.5))
+    cv.line(C.hatch_poly(nk, 90, 1.5))
+    fb = [P_(-W * .035, base - bh * .62), P_(W * .035, base - bh * .62), P_(W * .03, base - bh), P_(-W * .03, base - bh)]
+    cv.obj([fb], 1.)
+    cv.line(C.hatch_poly(fb, 90, 1.5))
     sc = P_(0, base - H * .97)
     cv.obj([C._ell_pts(sc[0], sc[1], W * .07, W * .09, 14)[:-1]], 1.)
     cv.line(C._ell_pts(sc[0] + 1, sc[1], W * .035, W * .045, 10))
@@ -428,19 +434,37 @@ def trio(fld, kind, seed):
     fw, fh = fx1 - fx0, fy1 - fy0
     cx = (fx0 + fx1) / 2
     rng = random.Random(seed)
-    d = C._d(fld, True, 0)
-    o = [f'<path d="{d}" fill="url(#s2m)"/>']
-    floor_y = fy0 + fh * .74
-    # the curtain: white folds cut into the dark, catching the spill of the spot
-    cur = []
-    for k in range(int(fw / 5) + 2):
-        xx = fx0 + k * 5 + 2
-        cur.append(f"M{_n(xx)},{_n(fy0)}C{_n(xx + 1.5)},{_n(fy0 + fh * .3)} {_n(xx - 1.5)},{_n(fy0 + fh * .5)} {_n(xx + .5)},{_n(floor_y)}")
-    o.append(f'<path d="{"".join(cur)}" stroke="#fff" stroke-width="1" fill="none"/>')
+    o = []
+    floor_y = fy0 + fh * .8
+    cv = C.Canvas()
+    # the curtain: folds cut in close vertical lines, each fold rounded by a second set that
+    # crowds into its trough, darkest at the wings and opening toward the spot
+    cv.obj([[(fx0 - 2, fy0 - 2), (fx1 + 2, fy0 - 2), (fx1 + 2, floor_y + 1), (fx0 - 2, floor_y + 1)]], 0)
+    fold = max(7., fw / 40)
+    curtain, trough = [], []
+    xx = fx0 - 2
+    while xx < fx1 + 2:
+        u = (xx - fx0) / fw
+        wing = abs(u - .5) * 2
+        ph = ((xx - fx0) % fold) / fold
+        sway = 1.2 * math.sin(xx * .05)
+        curtain.append([(xx + sway * (yy - fy0) / fh, yy) for yy in (fy0 - 2, (fy0 + floor_y) / 2, floor_y + 1)])
+        if ph > .55 or wing > .7:
+            trough.append([(xx + .75 + sway * (yy - fy0) / fh, yy) for yy in (fy0 - 2, floor_y + 1)])
+        xx += 1.5 if (ph > .45 or wing > .55) else 3.
+    cv.hair(curtain)
+    cv.hair(trough)
+    # the valance: a scalloped pelmet along the top, swags shaded underneath
+    sw_ = fw / 9
+    for k in range(10):
+        bx = fx0 + k * sw_ - sw_ / 2
+        sg = [(bx + sw_ * t, fy0 + fh * .02 + fh * .07 * math.sin(math.pi * t)) for t in [j / 12 for j in range(13)]]
+        cv.obj([[(bx, fy0 - 2)] + sg + [(bx + sw_, fy0 - 2)]], 1.)
+        cv.hair(C.hatch_poly([(bx, fy0 - 2)] + sg + [(bx + sw_, fy0 - 2)], 0, 1.5))
+        cv.line([(q[0], q[1] - 1.2) for q in sg[2:-2]])
     # the spot: a white pool on the boards and a cone of light
     sx = cx + fw * .02
     cone = [(sx - fw * .04, fy0 - 2), (sx + fw * .04, fy0 - 2), (sx + fw * .36, floor_y + fh * .08), (sx - fw * .36, floor_y + fh * .08)]
-    cv = C.Canvas()
     cv.obj([cone], 0)
     cv.hair(C.hatch_poly(cone, 90, 3, .5))
     stage = [(fx0 - 2, floor_y), (fx1 + 2, floor_y), (fx1 + 2, fy1 + 2), (fx0 - 2, fy1 + 2)]
@@ -455,7 +479,7 @@ def trio(fld, kind, seed):
     pool = C._ell_pts(sx, floor_y + (fy1 - floor_y) * .4, fw * .34, (fy1 - floor_y) * .45, 40)[:-1]
     cv.obj([pool], 0)
     cv.hair(C.hatch_poly(pool, 0, 3, .3))
-    H = fh * .78
+    H = fh * .98
     S = min(H, fw * .9)
     ride_cymbal(cv, cx + S * .05, floor_y - S * .52, S * .2, floor_y + 2, rng)
     upright_bass(cv, cx - S * .38, floor_y + S * .02, S * .78, rng)
@@ -657,6 +681,71 @@ def _medium(w, h, seed, fill_fn):
     o.append(fill_fn(ix, iy, iw, ih))
     o.append(C.knurled_bar(0, h - foot, w, foot))
     return "".join(o)
+
+
+def proscenium(cx, cy, rx, ry):
+    """The vignette's silhouette is the bandstand itself: the valance's swags along the top,
+    the curtain falling to either side, the stage apron's curve along the foot."""
+    pts = []
+    n = 9
+    for k in range(n):
+        x0 = cx - rx * .86 + 2 * rx * .86 * k / n
+        for j in range(8):
+            t = j / 8
+            pts.append((x0 + 2 * rx * .86 / n * t, cy - ry + ry * .07 * math.sin(math.pi * t) ** .7))
+    pts.append((cx + rx * .86, cy - ry))
+    for j in range(1, 13):
+        t = j / 12
+        pts.append((cx + rx * (.86 + .14 * math.sin(math.pi / 2 * t)), cy - ry + ry * 1.45 * t))
+    for j in range(25):
+        a = j / 24 * math.pi
+        pts.append((cx + rx * math.cos(a), cy + ry * .45 + ry * .55 * math.sin(a)))
+    for j in range(1, 13):
+        t = 1 - j / 12
+        pts.append((cx - rx * (.86 + .14 * math.sin(math.pi / 2 * t)), cy - ry + ry * 1.45 * t))
+    return pts
+
+
+def tape_frame(cx, cy, rx, ry, fld, mode, seed):
+    """The frame is the music's own: two tape reels at the lower corners, the tape running off
+    one, over the top of the vignette along its rim, and onto the other."""
+    cv = C.Canvas()
+    rr = min(ry * .36, 30.)
+    if rr < 9:
+        return ""
+    reels = [(cx - rx + rr * .9, cy + ry - rr * .95), (cx + rx - rr * .9, cy + ry - rr * .95)]
+    tape = [(reels[0][0], reels[0][1] + rr * .78)] + [(reels[0][0] + (reels[1][0] - reels[0][0]) * t,
+             reels[0][1] + rr * .78 + 2.5 * math.sin(math.pi * t)) for t in [j / 30 for j in range(1, 30)]] + [(reels[1][0], reels[1][1] + rr * .55)]
+    L, R = [], []
+    for i, q in enumerate(tape):
+        a, b = tape[max(0, i - 1)], tape[min(len(tape) - 1, i + 1)]
+        tx, ty = b[0] - a[0], b[1] - a[1]
+        tl = math.hypot(tx, ty) or 1
+        L.append((q[0] - ty / tl * 1.6, q[1] + tx / tl * 1.6))
+        R.append((q[0] + ty / tl * 1.6, q[1] - tx / tl * 1.6))
+    cv.obj([L + R[::-1]], 1.)
+    cv.hair([((l[0] + r[0]) / 2, (l[1] + r[1]) / 2) for l, r in zip(L, R)][1:-1])
+    rng = random.Random(seed)
+    for k, (x, y) in enumerate(reels):
+        cv.obj([_circ(x, y, rr)[:-1]], 1.)
+        pack = rr * (.78 if k == 0 else .55)
+        r = pack
+        while r > rr * .3:
+            cv.hair(_circ(x, y, r))
+            r -= 1.5
+        cv.hair(C.hatch_poly(_circ(x + rr * .2, y + rr * .2, pack * .9)[:-1], 45, 1.5, rng.random()))
+        for j in range(3):
+            a0 = j * TAU / 3 + k
+            win = [(x + rr * .38 * math.cos(a0 + t), y + rr * .38 * math.sin(a0 + t)) for t in [-.5 + i / 8 for i in range(9)]]
+            win += [(x + rr * .9 * math.cos(a0 + t), y + rr * .9 * math.sin(a0 + t)) for t in [.5 - i / 8 for i in range(9)]]
+            cv.obj([win], 1.)
+            cv.hair(C.hatch_poly(win, 30, 3, .5))
+        cv.obj([_circ(x, y, rr * .22)[:-1]], 1.)
+        cv.line(_circ(x, y, rr * .1))
+        for j in range(6):
+            a0 = j * TAU / 6
+            cv.line([(x + rr * .1 * math.cos(a0), y + rr * .1 * math.sin(a0)), (x + rr * .2 * math.cos(a0), y + rr * .2 * math.sin(a0))])
+    return cv.svg()
 
 
 # ==== STUDIO FRAME (batch 2) ====================================================================
@@ -1986,8 +2075,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -1996,7 +2143,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)
@@ -2011,7 +2160,8 @@ def _st_plate(w, h, seed, hk):
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7
-    hk = dict(field=lambda fld, mode: trio(fld, mode, seed), egg=egg_cymbal, shape="irregular", dedication=True, cw=.27,
+    hk = dict(vignette=True, pad=4., shape_fn=proscenium, frame=lambda cx, cy, rx, ry, fld, mode: tape_frame(cx, cy, rx, ry, fld, mode, seed),
+              field=lambda fld, mode: trio(fld, mode, seed), egg=egg_cymbal, shape="irregular", dedication=True, cw=.27,
               aspect=1.9, rmin=9., rmax=30.,
               banner=swing_on_ribbon,
               tablet=lambda tx, ty, tw, th: keyboard(tx + 1, ty + 1, tw - 2, th - 2))

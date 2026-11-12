@@ -649,19 +649,19 @@ def _room(fld, mode, seed, date):
     floor = top + H + legs - (0 if legs else H * .08)
     uid = C._uid("rm", int(rx * 10), int(ry * 10), seed)
     o = [f'<defs><pattern id="{uid}p" width="10" height="10" patternUnits="userSpaceOnUse">'
-         f'<path d="M0,0h10v10h-10z" fill="#000"/>'
+         f'<path d="M0,0h10v10h-10z" fill="#fff"/>'
          f'<path d="M2,.5h1v1h-1zM.5,2h1v1h-1zM3.5,2h1v1h-1zM2,3.5h1v1h-1z'
          f'M7,5.5h1v1h-1zM5.5,7h1v1h-1zM8.5,7h1v1h-1zM7,8.5h1v1h-1z'
-         f'M2.25,2.25h.5v.5h-.5zM7.25,7.25h.5v.5h-.5z" fill="#fff"/>'
-         f'<path d="M7.5,1.2v1.6M6.7,2h1.6M2.5,6.2v1.6M1.7,7h1.6" stroke="#fff" stroke-width=".5"/></pattern></defs>']
+         f'M2.25,2.25h.5v.5h-.5zM7.25,7.25h.5v.5h-.5z" fill="#000"/>'
+         f'<path d="M7.5,1.2v1.6M6.7,2h1.6M2.5,6.2v1.6M1.7,7h1.6" stroke="#000" stroke-width=".5"/></pattern></defs>']
     # wall: diapered paper (quatrefoil sprigs) on black; below the dado the punched matte
     o.append(f'<path d="M{_n(x0)},{_n(y0)}H{_n(x1)}V{_n(floor)}H{_n(x0)}z" fill="url(#{uid}p)"/>')
     dado = floor - (floor - y0) * .22
     if mode != "band":
-        o.append(f'<path d="M{_n(x0)},{_n(dado)}H{_n(x1)}V{_n(floor)}H{_n(x0)}z" fill="url(#s2m)"/>')
-        o.append(f'<path d="M{_n(x0)},{_n(dado)}H{_n(x1)}M{_n(x0)},{_n(dado + 2)}H{_n(x1)}" stroke="#fff" stroke-width="1"/>')
+        o.append(f'<path d="M{_n(x0)},{_n(dado)}H{_n(x1)}V{_n(floor)}H{_n(x0)}z" fill="url(#s2o)"/>')
+        o.append(f'<path d="M{_n(x0)},{_n(dado)}H{_n(x1)}M{_n(x0)},{_n(dado + 2)}H{_n(x1)}" stroke="#000" stroke-width=".5"/>')
     # floor: boards running to the set, white joints on black, lit in a pool under the screen
-    o.append(f'<path d="M{_n(x0)},{_n(floor)}H{_n(x1)}V{_n(y1)}H{_n(x0)}z" fill="#000"/>')
+    o.append(f'<path d="M{_n(x0)},{_n(floor)}H{_n(x1)}V{_n(y1)}H{_n(x0)}z" fill="#fff"/>')
     fl = []
     k = 0
     for i in range(-24, 25):
@@ -673,7 +673,7 @@ def _room(fld, mode, seed, date):
         fl.append(f"M{_n(x0)},{_n(yy)}H{_n(x1)}")
         step *= 1.35
         yy += step
-    o.append(f'<path d="{"".join(fl)}" stroke="#fff" stroke-width="1" fill="none"/>')
+    o.append(f'<path d="{"".join(fl)}" stroke="#000" stroke-width=".5" fill="none"/>')
     if mode != "band":
         pool = C._ell_pts(cx, floor + (y1 - floor) * .45, W * .62, (y1 - floor) * .42, 48)
         o.append(f'<path d="{_d(pool, True, 0)}" fill="#fff" stroke="none"/>')
@@ -697,7 +697,7 @@ def _room(fld, mode, seed, date):
         if py > floor or qy > floor:
             continue
         rays.append(f"M{_n(px)},{_n(py)}L{_n(qx)},{_n(qy)}")
-    o.append(f'<path d="{"".join(rays)}" stroke="#fff" stroke-width="1" fill="none"/>')
+    o.append(f'<path d="{"".join(rays)}" stroke="#fff" stroke-width="1.5" fill="none"/>')
     # window with tonight's moon, upper left (not in the band)
     if mode != "band":
         wx1 = cx - W * .5 - rx * .06
@@ -720,6 +720,68 @@ def _room(fld, mode, seed, date):
             o.append(f'<path d="M{_n(wx - 2)},{_n(wy + wh + 1.5)}h{_n(ww + 4)}" stroke="#fff" stroke-width="1.5"/>')
     tv, _ = tv_set(cx, top, W, H, seed, date, legs, ant, "tv" + mode[0], detail=(mode != "band" or H > 40))
     o.append(tv)
+    return "".join(o)
+
+
+def _tailpiece(w, h, seed, date):
+    """The tailpiece: the set itself, free-standing on a little pool of floor, its glow fanning
+    out sideways in fine rays, and its own flex curling off either side into the closing flourish
+    (the cord ends in a plug at one end, a tiny heron stands on the other)."""
+    o = [f'<path d="M0,0H{_n(w)}V{_n(h)}H0z" fill="#fff"/>']
+    cx = w / 2
+    legs = h * .1
+    ant = h * .18
+    H = h - legs - ant - 4
+    W = H * 1.5
+    top = ant + 1
+    floor = top + H + legs
+    # glow and floor shadow
+    rays = []
+    for i in range(36):
+        a = (i + .5) / 36 * math.pi - math.pi / 2
+        for sd in (-1, 1):
+            r0, r1 = W * .56, W * (.62 + .12 * (i % 3))
+            x0, y0 = cx + sd * r0 * math.cos(a), top + H * .45 + r0 * .45 * math.sin(a)
+            x1, y1 = cx + sd * r1 * math.cos(a), top + H * .45 + r1 * .45 * math.sin(a)
+            if y1 < floor:
+                rays.append(f"M{_n(x0)},{_n(y0)}L{_n(x1)},{_n(y1)}")
+    o.append(f'<path d="{"".join(rays)}" stroke="#000" stroke-width=".5"/>')
+    sh = "".join(f"M{_n(cx - W * (.62 - .07 * k))},{_n(floor + 1 + k * 1.5)}h{_n(W * (1.24 - .14 * k))}" for k in range(3) if floor + 1 + k * 1.5 < h - .5)
+    o.append(f'<path d="{sh}" stroke="#000" stroke-width=".5"/>')
+    # the flex: from the back of the set out to both sides, rolling up into spirals
+    cord = []
+    for sd in (-1, 1):
+        x0, y0 = cx + sd * W * .5, floor - 1
+        L = w / 2 - W * .5 - 6
+        if L < 12:
+            continue
+        pts = [(x0, y0)]
+        for j in range(60):
+            t = j / 59
+            if t < .65:
+                u = t / .65
+                pts.append((x0 + sd * L * .7 * u, y0 - (h * .18) * math.sin(math.pi * u) * .6))
+            else:
+                u = (t - .65) / .35
+                r = L * .15 * (1 - u * .8)
+                ang = u * math.tau * 1.15
+                ccx, ccy = x0 + sd * L * .7 + sd * L * .15, y0 - L * .02
+                pts.append((ccx - sd * r * math.cos(ang), ccy - r * math.sin(ang)))
+        cord.append("M" + "L".join(f"{_n(px)},{_n(py)}" for px, py in pts))
+    o.append(f'<path d="{"".join(cord)}" stroke="#000" stroke-width="1" fill="none"/>')
+    tv, _ = tv_set(cx, top, W, H, seed, date, legs, ant, "tvtp", detail=H > 34)
+    o.append(tv)
+    # Easter egg: a heron, stepped out of the screen, fishing by the set's foot
+    hs = h * .42
+    hx, hy = cx + W * .5 + hs * .55, floor
+    k = hs
+    Q = lambda u, v: (hx + u * k, hy - v * k)
+    body = [Q(-.22, .55), Q(-.05, .66), Q(.15, .62), Q(.22, .52), Q(.05, .47), Q(-.25, .46)]
+    neck = [Q(.15, .6), Q(.2, .75), Q(.12, .86), Q(.18, .95), Q(.26, .96)]
+    o.append(f'<path d="{C._d(body, True, .1)}" fill="#fff" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="{C._d([Q(-.2, .54), Q(.15, .58)], False, .1)}{C._d([Q(-.18, .5), Q(.1, .53)], False, .1)}" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="{C._d(neck, False, .1)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{C._d([Q(.26, .96), Q(.48, .93)], False, .1)}{C._d([Q(-.02, .47), Q(-.03, 0)], False, .1)}{C._d([Q(.04, .47), Q(.06, 0)], False, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
     return "".join(o)
 
 
@@ -2050,8 +2112,66 @@ def st_tall(w, h, seed, hk):
     return "".join(o)
 
 
+def st_dissolve(poly, seed, depth=9., step=1.25):
+    """Bewick's dissolving edge: white broken rings laid over the outer few px of a vignette, the
+    white taking more of each ring toward the rim, so the cut lines crumble out into the paper."""
+    rng = _rnd.Random(seed)
+    n = int(depth / step)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    o = []
+    for k in range(n):
+        f = 1 - k / n                       # 1 at the rim, toward 0 inside
+        g = k * step + .4
+        ring = []
+        for (x, y) in poly:
+            dx, dy = x - cx, y - cy
+            L = _m.hypot(dx, dy) or 1
+            ring.append((x - dx / L * g, y - dy / L * g))
+        segs = []
+        for _ in range(4):
+            on = rng.uniform(1, 5) * (.3 + 1.9 * f * f)
+            off = rng.uniform(3, 9) * (1.3 - f)
+            segs += [on, max(.3, off)]
+        da = " ".join(_C._n(v) for v in segs)
+        o.append(f'<path d="{st_poly_d(ring)}" fill="none" stroke="#fff" stroke-width="{_C._n(step + .25)}" '
+                 f'stroke-dasharray="{da}" stroke-dashoffset="{_C._n(rng.uniform(0, 40))}"/>')
+    o.append(f'<path d="{st_poly_d(poly)}" fill="none" stroke="#fff" stroke-width="2"/>')
+    return "".join(o)
+
+
+def st_vignette(w, h, seed, hk):
+    """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
+    out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
+    shape = hk.get("shape", "oval")
+    pad = hk.get("pad", 2.)
+    cx, cy = w / 2, h / 2
+    rx, ry = w / 2 - pad, h / 2 - pad
+    rx = min(rx, ry * hk.get("max_aspect", 3.2))
+    ph = (seed % 97) * .07
+    fld = hk["shape_fn"](cx, cy, rx, ry) if hk.get("shape_fn") else st_shape_pts(shape, cx, cy, rx, ry, 0., 160, ph)
+    if shape == "irregular" and not hk.get("shape_fn"):
+        s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
+        fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
+    mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
+    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    if hk.get("under"):
+        o.append(hk["under"](cx, cy, rx, ry, fld, mode))
+    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
+    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    if hk.get("frame"):
+        o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
+    if hk.get("dedication") and h >= 110:
+        dh = min(30., h * .16)
+        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
+        o.append(st_dedication(cx, h - 1.5, dh))
+    return "".join(o)
+
+
 def st_plate(w, h, seed, hk):
     base = _C.Canvas
+    if hk.get("vignette"):
+        return _st_plate(w, h, seed, hk)
     _C.Canvas = StCanvas
     try:
         return _st_plate(w, h, seed, hk)
@@ -2060,7 +2180,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h <= 72 and w <= 110 and hk.get("device", True):
+    if hk.get("vignette"):
+        body = st_vignette(w, h, seed, hk)
+    elif h <= 72 and w <= 110 and hk.get("device", True):
         body = st_device(w, h, seed, hk)
     elif h < 110:
         body = st_band(w, h, seed, hk)
@@ -2076,7 +2198,9 @@ def plate(w, h, ctx):
     ctx = ctx or {}
     seed = _seed(ctx)
     date = ctx.get("date", "2026-11-11")
-    hk = dict(field=lambda fld, mode: _room(fld, mode, seed, date), egg=egg_heron, aspect=1.75, cw=.3,
+    if h < 110:
+        return C.svg_doc(w, h, _tailpiece(w, h, seed, date))
+    hk = dict(vignette=True, pad=3., max_aspect=2., field=lambda fld, mode: _room(fld, mode, seed, date), egg=egg_heron, aspect=1.75, cw=.3,
               rmin=9., rmax=30., rim=3., banner=_banner_stars,
               tablet=lambda tx, ty, tw, th: _scrub_bar(tx, ty, tw, th, seed))
     return st_plate(w, h, seed, hk)

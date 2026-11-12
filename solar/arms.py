@@ -9,16 +9,19 @@ The full achievement, engraved in the manner of a Victorian armorial bookplate:
   stone is cut in white line, with a broken bond. The towers carry arrow loops and a lit dexter face,
   and the gate is arched in voussoirs with a riveted portcullis.
 - **Fleurs-de-lis, sable.** Three in chief and one on each flank. Each has a tall pointed centre petal,
-  side petals curling out and down, a banded collar and three short feet, with one white vein.
-- **Helm.** A barred helm in three-quarter view, turned to dexter, resting on the shield: a domed skull
-  modelled in swelling meridian cuts, a dark visor behind six bowed bars in a riveted frame, and a neck
-  flaring into a gorget of three rings.
-- **Torse and crest.** A wreath of six twists, Or and sable, across the crown, with a tower sable
-  issuing from it (the castle's own tower), about three-fifths of the helm's height. No motto.
+  side petals curling out and down, a banded collar and three short feet, with one white vein. Under
+  about 24 px tall the side petals close and the feet merge, so the three lobes stay crisp.
+- **Helm.** A barred helm in three-quarter view, turned to dexter: a domed skull modelled in swelling
+  meridian and latitude cuts, and a face cage, an oval opening on the turned face with seven bars that
+  bow round it and narrow as they turn away. A short gorget of three riveted lames flares straight onto
+  the chief.
+- **Torse and crest.** A cord of six crisp twists, Or (stippled) and sable, across the crown, with a
+  squat tower sable issuing from it, crenellated like the castle's towers. No motto.
 - **Mantling.** Long acanthus ribbons, Or lined sable, flowing from under the torse, sweeping down and
-  out and rolling back into volutes, with open air between them. The Or is modelled in fine parallel
-  cuts that swell into the shadowed side; the sable lining shows only where a ribbon turns over (a flap
-  on its edge and the inside of each roll).
+  out and rolling back into volutes, with open air between them. The Or is modelled in parallel cuts
+  that close up and swell into the shadowed side and into the troughs between lobes. The sable lining
+  shows only where a ribbon turns over: a deep fold as it leaves the torse, a flap on its edge and the
+  inside of each roll.
 
 Under about 100 px of width the helm, crest and mantling are dropped and the shield alone fills the
 box, with the masonry and fleur detail thinned so it still reads.
@@ -164,14 +167,29 @@ def _side_foot(sg):
     return [(sg * x, y) for x, y in out]
 
 
+def _side_petal_small(sg):
+    """The side petal simplified for small sizes: a full lobe with its tip closed, no hook to fill in."""
+    out = [(.11, -.08), (.2, -.3), (.34, -.48), (.52, -.57), (.7, -.55), (.84, -.43), (.9, -.24), (.86, -.04),
+           (.76, .13), (.62, .26), (.5, .26), (.52, .14), (.56, .02), (.52, -.12), (.42, -.18), (.32, -.12),
+           (.26, -.07)]
+    return [(sg * x, y) for x, y in out]
+
+
+_FEET_SMALL = [(-.36, .1), (.36, .1), (.34, .26), (.2, .2), (.06, .3), (0, .42), (-.06, .3), (-.2, .2), (-.34, .26)]
+
+
 def _fleur(M, cx, cy, s):
-    """A fleur-de-lis s design units tall at (cx, cy): solid sable, one white vein. Returns (black d, white d)."""
+    """A fleur-de-lis s design units tall at (cx, cy): solid sable, one white vein. Returns (black d, white d).
+    Under about 24 px tall the silhouette is simplified so its three lobes stay crisp."""
     S = s / 2
     T = lambda pts: [(cx + x * S, cy + y * S) for x, y in pts]
-    parts = [_PETAL_C, _BAND, _FOOT_C, _side_petal(1), _side_petal(-1), _side_foot(1), _side_foot(-1)]
+    if S * M.k < 12:
+        parts = [_PETAL_C, _BAND, _FEET_SMALL, _side_petal_small(1), _side_petal_small(-1)]
+    else:
+        parts = [_PETAL_C, _BAND, _FOOT_C, _side_petal(1), _side_petal(-1), _side_foot(1), _side_foot(-1)]
     blk = "".join(_poly(M, T(_spline(p, 3) if len(p) > 8 else p)) for p in parts)
     wl = ""
-    if S * M.k >= 7:
+    if S * M.k >= 9:
         wl = _poly(M, _lens(T(_resample([(0, -.84), (0, -.5), (0, -.16)], 10)), .5 / M.k, .6))
     return blk, wl
 
@@ -400,8 +418,8 @@ def _ribbon(sp, wmax, lobes, curl, k, fold=True):
     face = [O + I[::-1]]
     lining, hi, lines = [], [], []
     # inside the roll the lining shows: a sable strip on the inner side of the volute, and the eye
-    rb = [(spine[i][0] - s * nr[i][0] * W[i] * .46 * (1 - 2 * min(1, (i - jv + 1) / 30) * .45),
-           spine[i][1] - s * nr[i][1] * W[i] * .46 * (1 - 2 * min(1, (i - jv + 1) / 30) * .45)) for i in range(jv - 1, n)]
+    rb = [(spine[i][0] - s * nr[i][0] * W[i] * .46 * (1 - 2 * min(1, (i - jv + 1) / 30) * .8),
+           spine[i][1] - s * nr[i][1] * W[i] * .46 * (1 - 2 * min(1, (i - jv + 1) / 30) * .8)) for i in range(jv - 1, n)]
     lining.append(I[jv - 1:] + rb[::-1])
     ex, ey = spine[-1]
     er = max(1.1 * lw, rad[-1] * .5)
@@ -413,19 +431,19 @@ def _ribbon(sp, wmax, lobes, curl, k, fold=True):
         for i in range(a, b + 1):
             t = (i - a) / (b - a)
             (x, y), (nx, ny) = spine[i], nr[i]
-            d = W[i] * .26 * math.sin(math.pi * t ** .8) ** .9
+            d = W[i] * .36 * math.sin(math.pi * t ** .8) ** .9
             fo.append(O[i])
             fi.append((O[i][0] - s * nx * d, O[i][1] - s * ny * d))
         lining.append(fo + fi[::-1])
         mid = [((p[0] + q[0]) / 2, (p[1] + q[1]) / 2) for p, q in zip(fo, fi)][2:-2]
-        if len(mid) > 3 and W[(a + b) // 2] * .26 * k > 3.5:
+        if len(mid) > 3 and W[(a + b) // 2] * .36 * k > 3.5:
             hi.append(_lens(mid, .5 * lw, .6))
     # Or modelled in fine parallel cuts along the ribbon: close and swelling on the inner, shadowed
     # side, thinning out toward the lit lobed edge, and carried on round the roll
-    nl = max(3, min(12, int(wmax * .6 * k / 3.4)))
+    nl = max(3, min(14, int(wmax * .7 * k / 2.6)))
     for q in range(nl):
-        f = -.41 + q * (.6 / nl)
-        hw = (.42 - .22 * q / (nl - 1)) * lw
+        f = -.43 + q * (.68 / nl)
+        hw = (.55 - .33 * q / (nl - 1)) * lw
         start = int(jv * (.04 + .1 * q / nl))
         end = min(n - 8, jv + int(40 * (1 - q / nl)))
         pts = []
@@ -442,6 +460,30 @@ def _ribbon(sp, wmax, lobes, curl, k, fold=True):
                         lines.append(_lens(pts[a:b], hw, .7))
             else:
                 lines.append(_lens(pts, hw, .6))
+    # the troughs: the bays between lobes fall into shadow, cut in from the edge
+    for j in range(1, max(1, int(lobes)) + 1):
+        ib = int(min(jv - 2, j / lobes * jv))
+        if ib < jv * .15 or ib >= jv - 2:
+            continue
+        for di, fl, hw in ((-1, .5, .45), (0, .62, .55), (1, .5, .45)):
+            i = max(0, min(jv - 1, ib + di * max(1, int(.012 * jv))))
+            p0 = O[i]
+            p1 = (spine[i][0] + (O[i][0] - spine[i][0]) * (1 - fl * 2), spine[i][1] + (O[i][1] - spine[i][1]) * (1 - fl * 2))
+            lines.append(_lens([p0, ((p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2), p1], hw * lw, .6))
+    # a deeper fold where the ribbon leaves the torse: its inner edge turns over, sable
+    if fold:
+        a, b = 0, int(jv * .22)
+        fo, fi = [], []
+        for i in range(a, b + 1):
+            t = (i - a) / (b - a)
+            (x, y), (nx, ny) = spine[i], nr[i]
+            d = W[i] * .42 * math.sin(math.pi * (.15 + .85 * t)) ** .8
+            fo.append(I[i])
+            fi.append((I[i][0] + s * nx * d, I[i][1] + s * ny * d))
+        lining.append(fo + fi[::-1])
+        mid = [((p[0] + q[0]) / 2, (p[1] + q[1]) / 2) for p, q in zip(fo, fi)][1:-2]
+        if len(mid) > 3 and k >= 1.:
+            hi.append(_lens(mid, .5 * lw, .6))
     # a vein from the midrib into each lobe point
     L = max(1, int(lobes))
     for j in range(L):
@@ -474,7 +516,7 @@ def _mantling(M, seed):
     k = M.k
     o = []
     mir = lambda poly: [(2 * CX - x, y) for x, y in poly]
-    ow = 1 if k >= 2.4 else .5     # the contour: a fine line, heavier only when the plate is large
+    ow = 1
     for p0, p1, p2, p3, cs, wd, lb, fold, R0 in _RIBBONS:
         j = lambda p: (p[0] + rng.uniform(-.8, .8), p[1] + rng.uniform(-.8, .8))
         f = _ribbon(_spine(p0, j(p1), j(p2), j(p3), cs, R0), wd, lb, cs, k, fold)
@@ -482,7 +524,8 @@ def _mantling(M, seed):
         o.append(f'<path d="{"".join(_poly(M, p) for p in both("face"))}" fill="#fff" stroke="#000" '
                  f'stroke-width="{ow}" stroke-linejoin="round"/>')
         o.append(f'<path d="{"".join(_poly(M, p) for p in both("lines"))}" fill="#000"/>')
-        o.append(f'<path d="{"".join(_poly(M, p) for p in both("lining"))}" fill="#000"/>')
+        o.append(f'<path d="{"".join(_poly(M, p) for p in both("lining"))}" fill="#000" stroke="#000" '
+                 f'stroke-width="1" stroke-linejoin="round"/>')
         if f["hi"]:
             o.append(f'<path d="{"".join(_poly(M, p) for p in both("hi"))}" fill="#fff"/>')
     return o
@@ -492,15 +535,15 @@ def _mantling(M, seed):
 # helm, torse and crest
 # ------------------------------------------------------------------------------------------------
 
-HX, HY = 62., 12.            # helm origin: x centre, y at the top of the skull; its gorget rests at y 60
+HX, HY = 62., 14.            # helm origin: x centre, y at the top of the skull; the gorget rests on the chief at y 59
 
-# a barred helm in three-quarter view, turned to dexter
-_HELM = [(0, 0), (8, 1), (14.5, 4.6), (19, 10.5), (20.8, 18), (20, 25.5), (17.5, 30.5), (15, 33.5),
-         (15.6, 36.5), (19.5, 40.5), (24, 44.5), (25.5, 48), (13, 48.6), (0, 48.8), (-13, 48.6), (-25.5, 48),
-         (-24, 44.5), (-19.5, 40.5), (-16, 37), (-15.5, 34), (-18, 31.5), (-20.4, 26), (-21.2, 18),
-         (-19.8, 10.5), (-15.5, 4.6), (-8.5, 1)]
-_WIN = [(-18.4, 12.4), (-10, 10.4), (-1, 10.8), (5, 12.8), (6.6, 18), (6.4, 25), (4.4, 30), (-3, 32.2),
-        (-11, 32.4), (-17, 31), (-19.4, 26), (-19.8, 18)]
+# the skull: an egg, its centre and radii; the face is a sphere turned 40 degrees to dexter
+SKC, SKR = (1.2, 17.), (18.6, 17.4)
+# the helm's silhouette: a round dome, the face cage bulging forward to dexter, the back falling to the nape
+_HELM = [(2, 0), (9, 1.2), (14.6, 4.6), (18.4, 10.4), (19.6, 17.4), (18.8, 24.4), (16.6, 30), (15.4, 35),
+         (0, 36.4), (-15.4, 35), (-17.4, 31.6), (-20.2, 26.6), (-21, 20.4), (-19.8, 13.6), (-16.2, 7.6),
+         (-11, 3), (-5, .6)]
+FC, FR, FRY, FTH = (-4.6, 20.), 16.2, 15.6, math.radians(42)
 
 
 def _spline(pts, m=6, closed=True):
@@ -523,135 +566,140 @@ def _spline(pts, m=6, closed=True):
     return out
 
 
-def _vspan(poly, x):
-    """The lowest and highest y where the vertical line at x crosses a closed polygon."""
-    ys = []
-    for (ax, ay), (bx, by) in zip(poly, poly[1:] + poly[:1]):
-        if (ax - x) * (bx - x) <= 0 and ax != bx:
-            ys.append(ay + (by - ay) * (x - ax) / (bx - ax))
-    return (min(ys), max(ys)) if ys else None
+def _face(lam, phi):
+    """A point on the face sphere at longitude lam (0 = straight ahead) and latitude phi, in view."""
+    return (HX + FC[0] - FR * math.cos(phi) * math.sin(FTH + lam), HY + FC[1] + FRY * math.sin(phi))
 
 
 def _helm(M):
     k = M.k
     lw = 1 / k
-    H = lambda pts: [(HX + x, HY + y) for x, y in pts]
     o = []
-    out = H(_spline(_HELM, 5))
-    o.append(f'<path d="{_poly(M, out)}" fill="#fff"/>')
     sh = ""
-    # the skull: meridian cuts that close up and swell into the shadowed back, a few fine ones in front
-    for a, hw in ((19.6, .55), (18., .5), (16.2, .45), (14.2, .4), (12., .35), (9.6, .3), (7., .25),
-                  (-19.4, .35), (-17.4, .25)):
-        pts = []
-        for i in range(31):
-            t = -1.45 + 2.85 * i / 30
-            pts.append((HX + .2 + a * math.cos(t), HY + 17.6 + 17.4 * math.sin(t)))
-        pts = [p for p in pts if p[1] < HY + 33.6]
-        sh += _poly(M, _lens(pts, hw * lw, .55))
-    # the dome above the visor: arcs following the crown
-    for d, hw in ((2.2, .4), (4.2, .3)):
-        pts = [(HX + x * (1 - d / 22), HY + d + y * (1 - d / 20)) for x, y in _spline(_HELM, 4)[:16]]
-        sh += _poly(M, _lens(pts, hw * lw, .7))
-    # the neck in shadow under the chin
-    sh += _poly(M, _lens([(HX - 15, HY + 34.6), (HX, HY + 35.6), (HX + 15, HY + 34.8)], .9 * lw * 1.4, .5))
-    # the gorget: three rings, each shaded beneath and on the sinister side
-    rings = [(36.4, 15.8), (40.6, 19.8), (44.8, 24.2)]
-    rl = ""
-    for y0, a in rings:
-        pts = [(HX + a * c, HY + y0 + 1.6 * math.sqrt(max(0, 1 - c * c))) for c in [i / 12 - 1 for i in range(25)]]
-        rl += _poly(M, pts, False)
-        under = [(x, y + .9) for x, y in pts[3:-3]]
-        sh += _poly(M, _lens(under, .45 * lw, .5))
-    for (y0, a), (y1, b) in zip([(33.6, 15.)] + rings, rings):
-        x = HX - b + 1.
-        step = 3. / k
-        while x < HX + a - .6:
-            c = (x - HX) / b
-            yb = HY + y1 + 1.6 * math.sqrt(max(0, 1 - c * c)) - .5
-            c0 = (x - HX) / max(a, .1)
-            yt = HY + y0 + 1.6 * math.sqrt(max(0, 1 - min(1, c0) ** 2)) + .6
-            if yb - yt > .8:
-                g = max(0., (x - HX + b) / (a + b))
-                sh += _poly(M, _lens([(x, yt), (x, (yt + yb) / 2), (x, yb)], (.16 + .3 * g * g) * lw, .5))
+    # the gorget: three short lames flaring onto the chief, drawn from the bottom up
+    lames = [(53.4, 59.6, 21., 26.5), (49.4, 55., 17.8, 22.4), (46.2, 51., 15.4, 19.)]
+    gl, gfill = "", ""
+    for y0, y1, a0, a1 in lames:
+        top = [(HX + a0 * c, y0 + 1.6 * math.sqrt(max(0, 1 - c * c))) for c in [i / 12 - 1 for i in range(25)]]
+        bot = [(HX + a1 * c, y1 + 1.9 * math.sqrt(max(0, 1 - c * c))) for c in [1 - i / 12 for i in range(25)]]
+        poly = top + bot
+        o.append(f'<path d="{_poly(M, poly)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
+        hs = ""
+        # vertical cuts round the lame, swelling into the sinister shadow, and a shade under its edge
+        step = 2.6 / k
+        x = HX - a1 + 1.
+        while x < HX + a1 - .8:
+            c0, c1 = (x - HX) / a0, (x - HX) / a1
+            yt = y0 + 1.6 * math.sqrt(max(0, 1 - min(1, c0 * c0))) + .9
+            yb = y1 + 1.9 * math.sqrt(max(0, 1 - c1 * c1)) - .5
+            g = (x - HX + a1) / (2 * a1)
+            if yb - yt > .8 and g > .3:
+                hs += _poly(M, _lens([(x, yt), (x, (yt + yb) / 2), (x, yb)], (.12 + .5 * g * g) * lw, .5))
             x += step
+        hs += _poly(M, _lens([(HX + a0 * c * .96, y0 + 1.6 * math.sqrt(max(0, 1 - c * c)) + .8) for c in [i / 10 - 1 for i in range(1, 20)]],
+                             .5 * lw, .5))
+        o.append(f'<path d="{hs}" fill="#000"/>')
+        if k >= 1.:
+            rv = ""
+            r = .7
+            for c in (-.7, -.25, .25, .7):
+                px_, py_ = M.xy(HX + a0 * c * 1.04, y0 + 1.6 * math.sqrt(1 - c * c) + 2.)
+                rv += f"M{_f(px_ - r)},{_f(py_)}a{r} {r} 0 1 0 {2 * r} 0a{r} {r} 0 1 0-{2 * r} 0"
+            o.append(f'<path d="{rv}" fill="#000"/>')
+    # the skull: an egg, with the face cage bulging out of it to dexter
+    sk = [(HX + x, HY + y) for x, y in _spline(_HELM, 5)]
+    o.append(f'<path d="{_poly(M, sk)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+    # meridian cuts on the skull, closing up and swelling into the shadowed back
+    for a, hw in ((17.6, .6), (16.2, .55), (14.6, .5), (12.8, .44), (10.8, .38), (8.6, .32), (6.2, .26),
+                  (3.8, .22), (1.4, .2)):
+        pts = [(HX + SKC[0] + a * math.cos(t), HY + SKC[1] + SKR[1] * .98 * math.sin(t)) for t in
+               [-1.4 + 2.9 * i / 30 for i in range(31)]]
+        sh += _poly(M, _lens(pts, hw * lw, .55))
+    # latitude cuts under the brow and round the jaw, in the shadow below the visor
+    for d, hw in ((1.6, .45), (3.4, .35)):
+        pts = [(HX + SKC[0] + (SKR[0] - d) * math.cos(t), HY + SKC[1] + (SKR[1] - d) * math.sin(t)) for t in
+               [.25 + 1.5 * i / 16 for i in range(17)]]
+        sh += _poly(M, _lens(pts, hw * lw, .6))
+    # latitude cuts over the crown, closing toward the back
+    for d, hw in ((1.5, .4), (3.1, .32), (4.8, .25)):
+        pts = [(HX + SKC[0] + (SKR[0] - d) * math.cos(t), HY + SKC[1] + (SKR[1] - d) * math.sin(t)) for t in
+               [-2.5 + 2.2 * i / 16 for i in range(17)]]
+        sh += _poly(M, _lens(pts, hw * lw, .6))
     o.append(f'<path d="{sh}" fill="#000"/>')
-    o.append(f'<path d="{rl}" stroke="#000" stroke-width="1" fill="none"/>')
-    # the visor: a dark window behind six bars that bow with the face
-    win = H(_spline(_WIN, 5))
+    # the visor: the face cage, a dark opening on the turned face sphere
+    # an oval on the face sphere, so its rim curves round the face
+    lc, LA, pc, PA = math.radians(-4), math.radians(38), math.radians(10), math.radians(46)
+    oval = lambda e: [_face(lc + (LA + e) * math.cos(t * math.pi / 24), pc + (PA + e) * math.sin(t * math.pi / 24))
+                      for t in range(48) if math.cos(FTH + lc + (LA + e) * math.cos(t * math.pi / 24)) > .05]
+    win, rim = oval(0), oval(.2)
+    o.append(f'<path d="{_poly(M, rim)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
     o.append(f'<path d="{_poly(M, win)}" fill="#000"/>')
-    bars, bsh = "", ""
-    xl, xr = HX - 19.8, HX + 6.6
-    nb = 6
-    bw = max(1.3, 1.6 / k)
-    for i in range(nb):
-        u = (i + .7) / (nb + .4)
-        x = xl + (xr - xl) * u ** 1.15
-        sp = _vspan(win, x)
-        if not sp:
+    # seven bars: meridians of the face, bowing round it and narrowing as they turn away
+    bars, bs = "", ""
+    for i in range(7):
+        lam = lc + LA * (-.66 + .255 * i)
+        vis = math.cos(FTH + lam)
+        if vis < .12:
             continue
-        y0, y1 = sp[0] + .3, sp[1] - .3
-        pts = [(x - 1.1 * math.sin(math.pi * t / 10) * (1 - u) * .8, y0 + (y1 - y0) * t / 10) for t in range(11)]
-        left = [(px - bw / 2, py) for px, py in pts]
-        right = [(px + bw / 2, py) for px, py in pts]
+        q = 1 - ((lam - lc) / LA) ** 2
+        if q <= .05:
+            continue
+        ph = PA * math.sqrt(q)
+        b0, b1 = pc - ph - .02, pc + ph + .02
+        hwid = max(.6 / k, .6 * vis)
+        dl = hwid / FR / max(vis, .25)
+        left = [_face(lam - dl, b0 + (b1 - b0) * j / 14) for j in range(15)]
+        right = [_face(lam + dl, b0 + (b1 - b0) * j / 14) for j in range(15)]
         bars += _poly(M, left + right[::-1])
-        if k >= 2:
-            bsh += _poly(M, _lens([(px + bw * .25, py) for px, py in pts[1:-1]], .25 * lw * 1.2, .6))
+        if k >= 2 and vis > .3:
+            bs += _poly(M, _lens([_face(lam - dl * .1, b0 + (b1 - b0) * j / 14) for j in range(2, 13)], .25 * lw * 1.2, .6))
     o.append(f'<path d="{bars}" fill="#fff" stroke="#000" stroke-width=".5"/>')
-    if bsh:
-        o.append(f'<path d="{bsh}" fill="#000"/>')
-    # the visor's frame: a raised rim round the window
-    rim = H(_spline([(x * 1.06 + .3, (y - 21.4) * 1.08 + 21.4) for x, y in _WIN], 5))
-    o.append(f'<path d="{_poly(M, win)}{_poly(M, rim)}" fill="none" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
-    # rivets on the rim and the rings
-    rv = ""
-    if k >= 1.:
-        r = .75
-        spots = [(HX + 6.9 * 1.0, HY + 15.5), (HX + 7.1, HY + 22), (HX + 5.4, HY + 28.4)]
-        for y0, a in rings[:2]:
-            for c in (-.6, -.2, .2, .6):
-                spots.append((HX + a * c, HY + y0 + 1.6 * math.sqrt(1 - c * c) - 1.2))
-        for x, y in spots:
-            px_, py_ = M.xy(x, y)
-            rv += f"M{_f(px_ - r)},{_f(py_)}a{r} {r} 0 1 0 {2 * r} 0a{r} {r} 0 1 0-{2 * r} 0"
-        o.append(f'<path d="{rv}" fill="#000"/>')
-    o.append(f'<path d="{_poly(M, out)}" fill="none" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
+    if bs:
+        o.append(f'<path d="{bs}" fill="#000"/>')
+    o.append(f'<path d="{_poly(M, win)}" fill="none" stroke="#000" stroke-width="1"/>')
+    # the pivot boss behind the visor
+    bx, by = M.xy(HX + 9.4, HY + 19.)
+    r = 2.3 * k
+    boss = f'<circle cx="{_f(bx)}" cy="{_f(by)}" r="{_f(r)}" fill="#fff" stroke="#000" stroke-width="1"/>'
+    if r >= 4:
+        petals = ""
+        for i in range(8):
+            a = i * math.pi / 4
+            petals += f"M{_f(bx + math.cos(a) * r * .35)},{_f(by + math.sin(a) * r * .35)}L{_f(bx + math.cos(a) * r * .8)},{_f(by + math.sin(a) * r * .8)}"
+        boss += f'<path d="{petals}" stroke="#000" stroke-width=".5" fill="none"/>'
+    boss += f'<circle cx="{_f(bx)}" cy="{_f(by)}" r="{_f(max(.75, r * .3))}" fill="#000"/>'
+    o.append(boss)
     return o
 
 
 def _torse(M, OR):
-    """A wreath of six twists, Or and sable, lying across the crown."""
+    """A wreath of six twists, Or and sable, lying across the crown like a cord."""
     k = M.k
-    half, th = 18.5, 7.
-    yc = lambda x: HY + 2.2 + .011 * (x - HX) ** 2
-    n = 6
+    half, th, n, sk = 19.5, 6.6, 6, 3.4
+    yc = lambda x: HY + 1.6 + .011 * (x - HX) ** 2
     xs = [HX - half + 2 * half * i / n for i in range(n + 1)]
-    sk = 2.6
 
     def bound(i):
+        """The S-curved seam between twists i-1 and i, from the top edge to the bottom."""
         x = xs[i]
-        if i in (0, n):
-            # rounded ends
+        if i == 0 or i == n:
             sg = -1 if i == 0 else 1
-            return [(x + sg * 1.6 * math.sin(math.pi * t / 8) + sk * .5 * (1 - t / 4), yc(x) - th / 2 + th * t / 8)
-                    for t in range(9)]
-        return [(x + sk * .5 - sk * t / 8 + .5 * math.sin(math.pi * t / 8), yc(x) - th / 2 + th * t / 8) for t in range(9)]
+            return [(x + sk * .5 - sk * t / 8 + sg * 1.1 * math.sin(math.pi * t / 8), yc(x) - th / 2 + th * t / 8) for t in range(9)]
+        return [(x + sk * .5 - sk * t / 8 + .7 * math.sin(2 * math.pi * t / 8), yc(x) - th / 2 + th * t / 8) for t in range(9)]
 
     orp, sbp, lines, hl = "", "", "", ""
     for i in range(n):
         A, B = bound(i), bound(i + 1)
-        top = [(A[0][0] + (B[0][0] - A[0][0]) * t / 6, yc(A[0][0] + (B[0][0] - A[0][0]) * t / 6) - th / 2 - .9 * math.sin(math.pi * t / 6))
-               for t in range(7)]
-        bot = [(B[-1][0] + (A[-1][0] - B[-1][0]) * t / 6, yc(B[-1][0] + (A[-1][0] - B[-1][0]) * t / 6) + th / 2 + .9 * math.sin(math.pi * t / 6))
-               for t in range(7)]
+        top = [(A[0][0] + (B[0][0] - A[0][0]) * t / 6, 0) for t in range(7)]
+        top = [(x, yc(x) - th / 2 - .55 * math.sin(math.pi * t / 6)) for t, (x, _) in enumerate(top)]
+        bot = [(B[-1][0] + (A[-1][0] - B[-1][0]) * t / 6, 0) for t in range(7)]
+        bot = [(x, yc(x) + th / 2 + .55 * math.sin(math.pi * t / 6)) for t, (x, _) in enumerate(bot)]
         pts = top + B[1:] + bot[1:] + A[::-1][1:-1]
-        # the twist's shading follows its diagonal
-        g = [((A[t][0] + B[t][0]) / 2, (A[t][1] + B[t][1]) / 2) for t in range(9)]
         if i % 2 == 0:
             orp += _poly(M, pts)
-            for f, hw in ((.62, .55), (.8, .5)):
-                ln = [(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f) for a, b in zip(A, B)][1:-1]
-                lines += _poly(M, _lens(ln, hw / k, .6))
+            # the Or twist rounds into shadow along its lower seam
+            for f, hw in ((.7, .5), (.86, .55)):
+                lines += _poly(M, _lens([(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f) for a, b in zip(A, B)][1:-1], hw / k, .6))
         else:
             sbp += _poly(M, pts)
             hl += _poly(M, _lens([(a[0] + (b[0] - a[0]) * .3, a[1] + (b[1] - a[1]) * .3) for a, b in zip(A, B)][1:-1], .55 / k, .6))
@@ -662,13 +710,13 @@ def _torse(M, OR):
 
 
 def _crest(M):
-    """A tower sable, issuing from the torse: about three-fifths of the helm's height."""
+    """A tower sable issuing from the torse, squat, crenellated like the castle's towers."""
     k = M.k
     cx, foot = HX, HY + 2.
-    x0, x1 = cx - 7.2, cx + 7.2
-    top = HY - 22.6           # the parapet; merlons rise above it to about HY - 28
-    mh = 5.
-    body = [[(x0, top), (x1, top), (x1 + .6, foot), (x0 - .6, foot)],
+    x0, x1 = cx - 8.6, cx + 8.6
+    top = HY - 12.4           # the parapet; merlons rise above it
+    mh = 4.6
+    body = [[(x0, top), (x1, top), (x1 + .5, foot), (x0 - .5, foot)],
             [(x0 - 1., top - .4), (x1 + 1., top - .4), (x1 + 1., top + 2.), (x0 - 1., top + 2.)]]
     u = (x1 - x0 + 2.) / 5
     for j in range(3):
@@ -677,10 +725,10 @@ def _crest(M):
     o = [f'<path d="{"".join(_poly(M, b) for b in body)}" fill="#000"/>']
     d = ""
     course = 3.4 if k >= 1.2 else 4.4
+    lt, lb = top + 3.6, top + 10.
     y = top + 2. + course
     row = 0
-    lt, lb = top + 4.4, top + 12.
-    while y < foot - 2.:
+    while y < foot - 1.:
         if lt - 1 < y < lb + 2.4:
             d += f"M{M.p(x0 + .6, y)}H{_f(M.xy(cx - 2., y)[0])}M{M.p(cx + 2., y)}H{_f(M.xy(x1 - .6, y)[0])}"
         else:
@@ -694,7 +742,6 @@ def _crest(M):
                 x += st
         y += course
         row += 1
-    # the lit dexter face
     if k >= 1.2:
         d += f"M{M.p(x0 + 1.2 / k + .1, top + 2.6)}V{_f(M.xy(0, foot - 2.)[1])}"
     o.append(f'<path d="{d}" stroke="#fff" stroke-width="1" fill="none"/>')
@@ -707,7 +754,7 @@ def _crest(M):
 # the arms
 # ------------------------------------------------------------------------------------------------
 
-FULL_BOX = (-4., -20., 132., 171.)
+FULL_BOX = (-4., -12., 132., 163.)
 
 
 def arms(w, h, seed=0):

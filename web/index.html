@@ -4121,9 +4121,16 @@ async function renderCoast() {
   $('coast-events-card').hidden = !list.length;
   if (list.length) {
     $('cev-meta').textContent = `Updated ${fmtDate(ev.updated)}`;
-    $('coast-events').innerHTML = list.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
-      <small>${[dayLabel(x.date) + (x.end && x.end !== x.date ? ' – ' + dayLabel(x.end) : ''), x.town].filter(Boolean).map(esc).join(' · ')}</small>
-      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
+    // Grouped by day under a date heading (the date can't be lost with the small print); events already
+    // running sit first as "Going on now". Shouting titles are set in title case; "Price not given" is dropped.
+    const today0 = todayIso(), title = t => t === t.toUpperCase() && /[A-Z]{3}/.test(t) ? t.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase()) : t;
+    const dated = list.filter(x => x.date).sort((a, b) => (a.date < today0 ? today0 : a.date).localeCompare(b.date < today0 ? today0 : b.date) || a.date.localeCompare(b.date));
+    let lastHead = '';
+    $('coast-events').innerHTML = dated.map(x => { const on = x.date < today0 ? 'now' : x.date, head = on === 'now' ? 'Going on now' : dayLabel(x.date);
+      const h = head !== lastHead ? `<h3 class="sub">${esc(head)}</h3>` : ''; lastHead = head;
+      return h + `<div class="story"><span><b>${esc(title(x.name))}</b>
+      <small>${[x.end && x.end !== x.date ? (on === 'now' ? 'through ' : dayLabel(x.date) + ' – ') + dayLabel(x.end) : dayLabel(x.date), x.town].filter(Boolean).map(esc).join(' · ')}</small>
+      ${x.summary ? `<p>${esc(x.summary.replace(/\s*Price not given\.?/i, ''))}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`; }).join('');
   }
 }
 

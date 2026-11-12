@@ -1,13 +1,14 @@
 """markets-02 -- How markets look.
-The New York Stock Exchange portico (six fluted columns, carved pediment, the flag on its staff)
-under a ruled sky, with the S&P 500's candlestick climb (up 11% on the year) rising behind it to an
-arrow. Two bull's horns grow out of the cartouche's shoulders into the acanthus. Small gold bars
-and an oil barrel sit on the steps. Easter egg: a "P" monogram cut into the pediment, where the
-NYSE's sculpture group would be, with a tiny pair of crossed drumsticks beneath it.
+
+Per the edition plan: a headpiece of about 8% of the sheet, a BANNER. A bull and a bear square off
+on a meadow under an engraved sky, the S&P 500's year (read from the page: up or down) cut as a
+single burin line climbing between them to an arrowhead.
+Easter egg: the bull wears a Blazers pinwheel on his shoulder.
 """
 import sys
 import math
 import random
+import re
 import engraving_codex as C
 
 # ---- studio helpers (batch 8): engraved grounds, rolled acanthus, rinceau, engraved sky ----
@@ -491,38 +492,31 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
         y += pitch
     cv.hair(lines)
     for poly, tops, cy, bl, x0, x1 in sorted(shapes, key=lambda s: s[2]):
-        cv.obj([poly], .5)
-        # the body rolled in curved cuts that bow with the base, stopping short of each crown so
-        # a lit rim stays white; denser toward the shadowed base
-        cuts = []
-        v = cy - .5
-        while True:
-            seg = []
-            any_ = False
-            for x, tp in tops:
-                u = (x - x0) / max(1., x1 - x0)
-                yy = v + 1.6 * _m.sin(_SPI * u) - 1.2
-                rim = 1.8 + (cy - tp) * .22
-                if yy > tp + rim:
-                    seg.append((x, yy))
-                    any_ = True
-                elif len(seg) > 1:
-                    cuts.append(seg)
-                    seg = []
-                else:
-                    seg = []
-            if len(seg) > 1:
-                cuts.append(seg)
-            if not any_:
-                break
-            v -= 1.5 if cy - v < 5 else 2. if cy - v < 11 else 3.
-        cv.hair(cuts)
-        # the billows' crowns where they fold over one another
-        for bx, by, br in bl:
-            arc = [(bx + br * .92 * _m.cos(a), by + br * .92 * _m.sin(a)) for a in [_SPI * (1.15 + .7 * i / 8) for i in range(9)]]
-            arc = [p for p in arc if (top_of(bl, p[0]) or -1e9) < p[1] - 1.5]
-            if len(arc) > 1:
-                cv.hair(arc)
+        # each billow a modelled dome, painted back to front: its crown left white to the light
+        # (upper left), its body turned in arcs that close toward the shadowed lower right, a
+        # dark seam of close lines at its base
+        for bx, by, br in sorted(bl, key=lambda b: b[2]):
+            circ = [(bx + br * _m.cos(a), min(cy + 1., by + br * _m.sin(a))) for a in [2 * _SPI * i / 40 for i in range(40)]]
+            cv.obj([circ], .5)
+            arcs = []
+            k = 0
+            rr = br * .9
+            while rr > br * .3:
+                a0 = -.35 - .25 * k / 4
+                a1 = _SPI * (.95 - .04 * k)
+                seg = []
+                for i in range(15):
+                    a = a0 + (a1 - a0) * i / 14
+                    px, py = bx + rr * _m.cos(a) + br * .08, by + rr * _m.sin(a) * .9 + br * .1
+                    if py < cy:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                k += 1
+                rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            cv.hair(arcs)
+            sh = [(x, max(y, cy - br * .3)) for x, y in circ]
+            cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
         cv.line([(x0 + 2, cy + .8), (x1 - 2, cy + .8)])
     if sun:
         sx, sy, sr = sun
@@ -1154,6 +1148,8 @@ _KG = {
     "*": [[(2, 1.5), (2, 4.5)], [(.7, 2.2), (3.3, 3.8)], [(3.3, 2.2), (.7, 3.8)]],
     "%": [[(0, 6), (4, 0)], [(.2, .3), (1.4, .3), (1.4, 1.7), (.2, 1.7), (.2, .3)],
           [(2.6, 4.3), (3.8, 4.3), (3.8, 5.7), (2.6, 5.7), (2.6, 4.3)]],
+    "?": [[(.2, 1.2), (1, .1), (2.6, 0), (3.6, .9), (3.4, 2.1), (2, 3), (2, 4.2)], [(2, 5.6), (2, 6)]],
+    "!": [[(1, 0), (1, 4.2)], [(1, 5.6), (1, 6)]],
 }
 _SERIF = set("ABDEFHIKLMNPRTUVWXYZ1")
 
@@ -1222,6 +1218,7 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
         size -= .5
     tw = ktext_width(text, size)
     off = (L[-1] - tw) / 2
+    dn = 0.
 
     def along(px):
         s = off + px
@@ -1229,8 +1226,9 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
             if L[i] >= s:
                 t = (s - L[i - 1]) / max(1e-6, L[i] - L[i - 1])
                 a = _m.atan2(centre[i][1] - centre[i - 1][1], centre[i][0] - centre[i - 1][0])
-                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t,
-                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t, a)
+                # sit the capitals on the face, clear of its shadowed upper hem
+                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t - _m.sin(a) * dn,
+                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t + _m.cos(a) * dn, a)
         return centre[-1][0], centre[-1][1], 0.
 
     return bsvg + letter_svg(kletters(text, 0, 0, size, along), 1.5 if size >= 6 else 1., size >= 6)
@@ -1493,6 +1491,149 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         o[fi] = field(int(maxn * max(.3, (fb - over - 4000) / fb) * .95))
         doc = _C.svg_doc(w, h, "".join(o))
     return doc
+
+
+# ------------------------------------------------------------------------------------------------
+# Planned forms (edition plan 1.6; art direction of Nov 12): every plate is cut to its page's form
+# and shape and stands free on the paper. No black field, no filler: the scene is the plate, its
+# edge either dissolves into white the way Bewick's tailpieces do, or is held by a frame built
+# from the page's own motifs (passed in by the page).
+# ------------------------------------------------------------------------------------------------
+
+def _shape_poly(shape, cx, cy, sw, sh, seed=0):
+    rx, ry = sw / 2, sh / 2
+    if shape in ("oval", "roundel"):
+        return _kell(cx, cy, rx, ry, 120)
+    if shape == "arched":
+        rise = min(rx * .9, sh * .5)
+        spring = cy - ry + rise
+        pts = [(cx - rx, cy + ry), (cx + rx, cy + ry), (cx + rx, spring)]
+        for i in range(1, 60):
+            a = _SPI * i / 60
+            pts.append((cx + rx * _m.cos(a), spring - rise * _m.sin(a)))
+        pts.append((cx - rx, spring))
+        return pts
+    if shape == "banner":
+        # a lunette band: both edges arched, the ends cut square
+        arch = sh * .14
+        n = 48
+        top, bot = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = cx - rx + 2 * rx * t
+            b = arch * _m.sin(_SPI * t)
+            top.append((x, cy - ry + arch - b))
+            bot.append((x, cy + ry - b))
+        return top + bot[::-1]
+    # irregular: a soft, lobed silhouette
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    pts = []
+    for i in range(140):
+        a = 2 * _SPI * i / 140
+        c, s = _m.cos(a), _m.sin(a)
+        k = (abs(c) ** 3.2 + abs(s) ** 3.2) ** (-1 / 3.2)
+        wob = (1 + .04 * _m.sin(3 * a + ph[0]) + .03 * _m.sin(7 * a + ph[1]) + .018 * _m.sin(13 * a + ph[2])
+               + .012 * _m.sin(29 * a + ph[3]))
+        pts.append((cx + rx * c * k * wob, cy + ry * s * k * wob * (.96 if s > 0 else 1.)))
+    return pts
+
+
+def _form_geom(form, shape, w, h):
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh)."""
+    pad = 2.
+    sh = h - 2 * pad
+    if shape == "roundel":
+        sw = min(sh, w * .62)
+        sh = min(sh, sw)
+    elif shape == "oval":
+        frac = .55 if form == "tailpiece" else .62
+        sw = min(sh * (2.3 if form == "tailpiece" else 1.45), w * frac)
+        sh = min(sh, sw * 1.05)
+    elif shape == "arched":
+        sw = min(sh * 1.3, w * .6)
+        sh = min(sh, sw * 1.45)
+    elif shape == "banner":
+        sw = w * (.96 if form == "headpiece" else .6)
+        sh = min(sh, sw * .32)
+    else:
+        sw = {"headpiece": w * .97, "tailpiece": w * .6}.get(form, min(w * .7, sh * 1.8))
+        sh = min(sh, sw * .95)
+    return w / 2, h / 2, sw, sh
+
+
+def dissolve(poly, band, seed=0, sides=None):
+    """The Bewick edge: the scene's lines break up into white flecks toward the shape's edge, many
+    at the rim and fewer inward, so the engraving fades into the paper rather than stopping at a
+    rule. sides(x, y) -> bool limits it to part of the edge. Three white path elements."""
+    rng = _r.Random(seed)
+    cx = sum(p[0] for p in poly) / len(poly)
+    cy = sum(p[1] for p in poly) / len(poly)
+    d1, d2 = [], []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        seg = _m.hypot(b[0] - a[0], b[1] - a[1])
+        steps = max(1, int(seg / 1.4))
+        for k in range(steps):
+            t = k / steps
+            x, y = a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t
+            if sides is not None and not sides(x, y):
+                continue
+            tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
+            nx, ny = -ty, tx
+            if (cx - x) * nx + (cy - y) * ny < 0:
+                nx, ny = -nx, -ny
+            for j in range(3):
+                u = band * rng.random() ** 2.2
+                f = 1 - u / band
+                ln = (1.5 + 5 * rng.random()) * f + .8
+                px, py = x + nx * u, y + ny * u
+                ang = _m.atan2(ty, tx) + rng.uniform(-.25, .25)
+                sd = f"M{_SN(px - _m.cos(ang) * ln / 2)},{_SN(py - _m.sin(ang) * ln / 2)}l{_SN(_m.cos(ang) * ln)},{_SN(_m.sin(ang) * ln)}"
+                (d2 if f > .55 else d1).append(sd)
+    o = f'<path d="{_SD(poly, True, .1)}" fill="none" stroke="#fff" stroke-width="3"/>'
+    if d2:
+        o += f'<path d="{"".join(d2)}" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
+    if d1:
+        o += f'<path d="{"".join(d1)}" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    return o
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False, frame=None, ft=0.,
+               fade=10., fade_sides=None):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form`, standing free on the
+    paper. frame(cx, cy, sw, sh, outer, inner, mode) -> svg draws the page's own frame over the
+    scene's edge (ft: how far it reaches in). fade: the width of the dissolving edge (0 for none).
+    arms=True (section fronts) sets the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+    mode = "s" if h < 110 else ("m" if h <= 260 else "t")
+    cx, cy, sw, sh = _form_geom(form, shape, w, h)
+    ah = 0.
+    if arms:
+        ah = max(24., min(48., h * .17))
+        sh = min(sh, h - 4 - ah * .6)
+        cy = 2 + sh / 2
+    outer = _shape_poly(shape, cx, cy, sw, sh, seed)
+    inner = _shape_poly(shape, cx, cy, sw - 2 * ft, sh - 2 * ft, seed) if ft else outer
+    ixs = [p[0] for p in inner]
+    iys = [p[1] for p in inner]
+    X, Y = min(ixs), min(iys)
+    W, H = max(ixs) - X, max(iys) - Y
+    o = [scene(X, Y, W, H, mode, inner)]
+    if fade:
+        o.append(clip_to(f"fd{seed % 9973}{mode}{int(h)}", inner, dissolve(inner, min(fade, H * .25), seed + 77, fade_sides)))
+    if frame:
+        o.append(frame(cx, cy, sw, sh, outer, inner, mode))
+    if arms:
+        import arms as _A
+        aw = ah * .86
+        ax, ay = cx - aw / 2, h - ah - 1
+        plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
+        o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
+        o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
+    return _C.svg_doc(w, h, "".join(o))
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1951,18 +2092,171 @@ def _letters(s, cx, cy, hgt):
 
 
 # ------------------------------------------------------------------ plate
+def _xf(pts, x, y, L, facing=1):
+    return [(x + facing * u * L, y + v * L) for u, v in pts]
+
+
+# The beasts' outlines (the house's Morning Edition drawings, 22 x 14 units, feet on y = 14),
+# flattened from their curves and engraved here with contour cuts, shadow and fur.
+_BULL_D = ("M1.5,5.5C2,3.5 4,2.6 7,2.8C10,3 12,1.6 14.5,1.4C16.5,1.3 17.6,2.2 18.2,3.6L19.4,3.4C20.6,3.6 21.4,4.6 21.6,6"
+           "C21.8,7 21.8,8 21.2,8.6C20.4,9 19.4,8.8 18.8,8.2C18,8.6 17.4,9.2 17.2,9.8L16.6,14H15L14.6,10.6C13.6,10.8 12.6,10.8 11.8,10.6"
+           "L11.6,14H10.2L10,10.6C8,10.8 6.5,10.6 5.6,10.2L5.2,14H3.8L3.6,10C2.4,9.6 1.6,8.4 1.5,5.5Z")
+_BEAR_D = ("M1,8C1,6.8 2,6 3.4,5.8C4.4,5.2 5,4 6.2,3.6L6.4,2.6C6.8,2 7.8,2.2 7.8,3C9,3 10,3.2 11,2.6C13,1.6 15.6,1.4 17.6,2.2"
+           "C20,3.2 21.6,5.6 21.4,8.6C21.2,10.2 20.6,11 20.4,11.4L20.6,14H18.4L18,11.6C17,11.8 16.4,11.6 16,11.2L15.8,14H13.8L13.6,11.4"
+           "C11.6,11.8 9.6,11.8 8,11.4L7.8,14H5.8L5.8,11C5,10.6 4.6,10 4.4,9.4C3.6,9.4 2.4,9.6 1.6,9.2C1.2,9 1,8.6 1,8Z")
+
+
+def _flatten(d):
+    toks = re.findall(r"[MCLHVZ]|-?[\d.]+", d)
+    out, i, cmd, cur = [], 0, None, (0., 0.)
+    while i < len(toks):
+        t = toks[i]
+        if t in "MCLHVZ":
+            cmd = t
+            i += 1
+            if t == "Z":
+                continue
+        if cmd in ("M", "L"):
+            cur = (float(toks[i]), float(toks[i + 1]))
+            out.append(cur)
+            i += 2
+        elif cmd == "H":
+            cur = (float(toks[i]), cur[1])
+            out.append(cur)
+            i += 1
+        elif cmd == "V":
+            cur = (cur[0], float(toks[i]))
+            out.append(cur)
+            i += 1
+        elif cmd == "C":
+            p1 = (float(toks[i]), float(toks[i + 1]))
+            p2 = (float(toks[i + 2]), float(toks[i + 3]))
+            p3 = (float(toks[i + 4]), float(toks[i + 5]))
+            for k in range(1, 9):
+                t_ = k / 8
+                a = (1 - t_) ** 3
+                b = 3 * (1 - t_) ** 2 * t_
+                c = 3 * (1 - t_) * t_ * t_
+                e = t_ ** 3
+                out.append((a * cur[0] + b * p1[0] + c * p2[0] + e * p3[0], a * cur[1] + b * p1[1] + c * p2[1] + e * p3[1]))
+            cur = p3
+            i += 6
+        else:
+            i += 1
+    return out
+
+
+def _place(d, x, gy, L):
+    """Units -> px: the beast L px long, centred on x, feet on gy."""
+    k = L / 21.
+    return [(x + (u - 11) * k, gy + (v - 14) * k) for u, v in _flatten(d)]
+
+
+def _contours(cv, P, cx, cy, ks, lo):
+    """Cross-contour cuts: the outline shrunk toward its heart, kept only on the shadowed lower side."""
+    for k in ks:
+        q = [(cx + (x - cx) * k, cy + (y - cy) * k) for x, y in P]
+        run = []
+        for p in q + q[:1]:
+            if p[1] > lo:
+                run.append(p)
+            else:
+                if len(run) > 1:
+                    cv.hair(run)
+                run = []
+        if len(run) > 1:
+            cv.hair(run)
+
+
+def bull(cv, x, gy, L, rng):
+    k = L / 21.
+    P = _place(_BULL_D, x, gy, L)
+    cv.obj([P], 1.)
+    # the tail and its tuft
+    cv.line([(x + (1.6 - 11) * k, gy - 8 * k), (x + (.6 - 11) * k, gy - 7 * k), (x + (.4 - 11) * k, gy - 4.5 * k), (x + (.8 - 11) * k, gy - 2.4 * k)])
+    cv.obj([[(x + (.2 - 11) * k, gy - 2.8 * k), (x + (1.4 - 11) * k, gy - 2.6 * k), (x + (.8 - 11) * k, gy - 1.4 * k)]], .5)
+    # modelling: contour cuts round the barrel, the belly and legs in shadow
+    _contours(cv, P, x, gy - 7 * k, (.9, .8, .7), gy - 5.6 * k)
+    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 9.6 * k)) for p in P], 78, 2.))
+    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 5 * k)) for p in P], -10, 1.5))
+    cv.hair([(x + (3 - 11) * k, gy - 6.4 * k), (x + (7 - 11) * k, gy - 7.6 * k), (x + (14 - 11) * k, gy - 8.6 * k)])
+    # the horns, the near one heavy
+    cv.heavy([(x + (18.6 - 11) * k, gy - 10.6 * k), (x + (18 - 11) * k, gy - 12.4 * k), (x + (18.8 - 11) * k, gy - 13.6 * k), (x + (20.4 - 11) * k, gy - 14 * k)])
+    cv.heavy([(x + (19.8 - 11) * k, gy - 10.6 * k), (x + (20.8 - 11) * k, gy - 12 * k), (x + (22.2 - 11) * k, gy - 12.2 * k), (x + (23 - 11) * k, gy - 13.4 * k)])
+    cv.obj([C._ell_pts(x + (19.8 - 11) * k, gy - 8.6 * k, .55 * k + .3, .55 * k + .3, 8)[:-1]], .5)
+    cv.line([(x + (21 - 11) * k, gy - 6.6 * k), (x + (21.4 - 11) * k, gy - 6.8 * k)])
+
+
+def pinwheel(cv, x, y, r):
+    """Easter egg: the Blazers pinwheel the bull wears on his shoulder, two interlocked swirls."""
+    cv.obj([C._ell_pts(x, y, r, r, 24)[:-1]], 1.)
+    for sg in (-1, 1):
+        cx = x + sg * r * .22
+        for k in range(3):
+            rr = r * (.2 + .22 * k)
+            a0 = math.pi / 2 if sg > 0 else -math.pi / 2
+            cv.line([(cx + rr * math.cos(a0 + t * math.pi), y + rr * math.sin(a0 + t * math.pi)) for t in [i / 8 for i in range(9)]])
+
+
+def bear(cv, x, gy, L, rng):
+    k = L / 21.
+    P = _place(_BEAR_D, x, gy, L)
+    cv.obj([P], 1.)
+    _contours(cv, P, x, gy - 7 * k, (.9, .8), gy - 5 * k)
+    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 3.6 * k)) for p in P], 70, 1.5))
+    # fur: short hooked cuts laid back along the coat, closer over the hump
+    for n in range(int(L * 2.4)):
+        u = rng.uniform(6, 20)
+        v = rng.uniform(3.4, 10.4) if u > 9 else rng.uniform(5, 9.5)
+        px, py = x + (u - 11) * k, gy + (v - 14) * k
+        ln = k * rng.uniform(.8, 1.3)
+        cv.hair([(px, py), (px + ln * .5, py + ln * .3), (px + ln, py + ln * .25)])
+    cv.obj([C._ell_pts(x + (4.2 - 11) * k, gy - 7.8 * k, .5 * k + .3, .5 * k + .3, 8)[:-1]], 0)
+    cv.obj([C._ell_pts(x + (1.1 - 11) * k, gy - 6.1 * k, .6 * k + .3, .5 * k + .3, 8)[:-1]], 0)
+    cv.line([(x + (2 - 11) * k, gy - 4.8 * k), (x + (3.6 - 11) * k, gy - 4.7 * k)])
+
+
+def faceoff(X, Y, W, H, seed, mode, up=True):
+    """The headpiece: bull and bear squaring off across the trading floor of a meadow, the S&P's
+    year climbing as a burin line through the sky between them."""
+    rng = random.Random(seed)
+    cv = KCanvas()
+    gy = Y + H * .86
+    engraved_sky(cv, X - 2, Y - 2, W + 4, gy - Y + 3, seed + 2, clouds=2, maxc=3)
+    _hills = [(X - 2, gy)] + [(X + W * t, gy - H * (.12 + .05 * math.sin(t * 9 + seed))) for t in [k / 24 for k in range(25)]] + [(X + W + 2, gy)]
+    cv.obj([_hills + [(X + W + 2, gy + 2), (X - 2, gy + 2)]], .5)
+    cv.hair(C.hatch_poly(_hills + [(X + W + 2, gy + 2), (X - 2, gy + 2)], -35, 2))
+    meadow_tufts(cv, X - 2, gy - 1, W + 4, Y + H + 2, seed + 4, .9)
+    # the year's line, rising (or falling) between them, ending in an arrowhead
+    pts = []
+    n = 26
+    for k in range(n + 1):
+        t = k / n
+        yv = (.75 - .5 * t) if up else (.3 + .45 * t)
+        pts.append((X + W * (.36 + .28 * t), Y + H * (yv + .08 * math.sin(k * 2.1 + seed) * (k % 3 != 0))))
+    cv.line(pts)
+    e = pts[-1]
+    a = math.atan2(pts[-1][1] - pts[-3][1], pts[-1][0] - pts[-3][0])
+    cv.obj([[e, (e[0] - 4 * math.cos(a - .5), e[1] - 4 * math.sin(a - .5)), (e[0] - 4 * math.cos(a + .5), e[1] - 4 * math.sin(a + .5))]], .5)
+    L = min(H * 1.25, W * .26)
+    bull(cv, X + W * .27, gy + 1, L, rng)
+    pinwheel(cv, X + W * .27 + L * .08, gy - L * .4, max(2.5, L * .07))
+    bear(cv, X + W * .74, gy + 1, L * .95, rng)
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7
     import re as _re
     m = _re.search(r"S&amp;P 500 is (up|down) (\d+)%", ctx.get("sample", "") or "")
-    cap = f"S&P 500 {m.group(1).upper()} {m.group(2)}% THIS YEAR" if m else "HOW MARKETS LOOK"
+    up = not (m and m.group(1) == "down")
 
     def sc(X, Y, W, H, mode, inner):
-        body = vignette(inner, (X + W * .1, Y + H * .1, W * .8, H * .8), seed, mode == "s")
-        return clip_to(f"mkt{mode}{int(H)}", inner, body)
+        return clip_to(f"mkt{mode}{int(H)}", inner, faceoff(X, Y, W, H, seed, mode, up))
 
-    return king_plate(w, h, ctx, sc, egg_pinwheel, cap, seed)
+    # the edition plan: a headpiece of about 8% of the sheet, a banner
+    return form_plate(w, h, ctx, sc, "banner", "headpiece", seed)
 
 
 def _roman(n):

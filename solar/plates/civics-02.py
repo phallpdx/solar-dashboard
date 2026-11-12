@@ -492,38 +492,31 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
         y += pitch
     cv.hair(lines)
     for poly, tops, cy, bl, x0, x1 in sorted(shapes, key=lambda s: s[2]):
-        cv.obj([poly], .5)
-        # the body rolled in curved cuts that bow with the base, stopping short of each crown so
-        # a lit rim stays white; denser toward the shadowed base
-        cuts = []
-        v = cy - .5
-        while True:
-            seg = []
-            any_ = False
-            for x, tp in tops:
-                u = (x - x0) / max(1., x1 - x0)
-                yy = v + 1.6 * _m.sin(_SPI * u) - 1.2
-                rim = 1.8 + (cy - tp) * .22
-                if yy > tp + rim:
-                    seg.append((x, yy))
-                    any_ = True
-                elif len(seg) > 1:
-                    cuts.append(seg)
-                    seg = []
-                else:
-                    seg = []
-            if len(seg) > 1:
-                cuts.append(seg)
-            if not any_:
-                break
-            v -= 1.5 if cy - v < 5 else 2. if cy - v < 11 else 3.
-        cv.hair(cuts)
-        # the billows' crowns where they fold over one another
-        for bx, by, br in bl:
-            arc = [(bx + br * .92 * _m.cos(a), by + br * .92 * _m.sin(a)) for a in [_SPI * (1.15 + .7 * i / 8) for i in range(9)]]
-            arc = [p for p in arc if (top_of(bl, p[0]) or -1e9) < p[1] - 1.5]
-            if len(arc) > 1:
-                cv.hair(arc)
+        # each billow a modelled dome, painted back to front: its crown left white to the light
+        # (upper left), its body turned in arcs that close toward the shadowed lower right, a
+        # dark seam of close lines at its base
+        for bx, by, br in sorted(bl, key=lambda b: b[2]):
+            circ = [(bx + br * _m.cos(a), min(cy + 1., by + br * _m.sin(a))) for a in [2 * _SPI * i / 40 for i in range(40)]]
+            cv.obj([circ], .5)
+            arcs = []
+            k = 0
+            rr = br * .9
+            while rr > br * .3:
+                a0 = -.35 - .25 * k / 4
+                a1 = _SPI * (.95 - .04 * k)
+                seg = []
+                for i in range(15):
+                    a = a0 + (a1 - a0) * i / 14
+                    px, py = bx + rr * _m.cos(a) + br * .08, by + rr * _m.sin(a) * .9 + br * .1
+                    if py < cy:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                k += 1
+                rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            cv.hair(arcs)
+            sh = [(x, max(y, cy - br * .3)) for x, y in circ]
+            cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
         cv.line([(x0 + 2, cy + .8), (x1 - 2, cy + .8)])
     if sun:
         sx, sy, sr = sun
@@ -1501,10 +1494,10 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
 
 
 # ------------------------------------------------------------------------------------------------
-# Planned forms (edition plan 1.6): every plate is cut to its page's form and shape, never a
-# generic band. The subject sits in its shape (oval, roundel, arched top, banner or irregular
-# silhouette); fine scroll on punched matte grows out of it in tapering wings that carry the
-# ornament to the edges of the box without boxing it in.
+# Planned forms (edition plan 1.6; art direction of Nov 12): every plate is cut to its page's form
+# and shape and stands free on the paper. No black field, no filler: the scene is the plate, its
+# edge either dissolves into white the way Bewick's tailpieces do, or is held by a frame built
+# from the page's own motifs (passed in by the page).
 # ------------------------------------------------------------------------------------------------
 
 def _shape_poly(shape, cx, cy, sw, sh, seed=0):
@@ -1521,6 +1514,7 @@ def _shape_poly(shape, cx, cy, sw, sh, seed=0):
         pts.append((cx - rx, spring))
         return pts
     if shape == "banner":
+        # a lunette band: both edges arched, the ends cut square
         arch = sh * .14
         n = 48
         top, bot = [], []
@@ -1530,10 +1524,8 @@ def _shape_poly(shape, cx, cy, sw, sh, seed=0):
             b = arch * _m.sin(_SPI * t)
             top.append((x, cy - ry + arch - b))
             bot.append((x, cy + ry - b))
-        nd = min(sh * .3, rx * .12)
-        return (top + [(cx + rx - nd, (top[-1][1] + bot[-1][1]) / 2)] + bot[::-1]
-                + [(cx - rx + nd, (top[0][1] + bot[0][1]) / 2)])
-    # irregular: a soft, lobed silhouette (a vignette that breaks its own edge)
+        return top + bot[::-1]
+    # irregular: a soft, lobed silhouette
     rng = _r.Random(seed)
     ph = [rng.uniform(0, 6.3) for _ in range(4)]
     pts = []
@@ -1548,154 +1540,100 @@ def _shape_poly(shape, cx, cy, sw, sh, seed=0):
 
 
 def _form_geom(form, shape, w, h):
-    """Where the shape sits in the w x h box: (cx, cy, sw, sh, wing half-height at the shape)."""
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh)."""
     pad = 2.
     sh = h - 2 * pad
     if shape == "roundel":
         sw = min(sh, w * .62)
         sh = min(sh, sw)
     elif shape == "oval":
-        frac = .4 if form == "tailpiece" else .5
-        sw = min(sh * (1.8 if form == "tailpiece" else 1.42), w * frac)
+        frac = .55 if form == "tailpiece" else .62
+        sw = min(sh * (2.3 if form == "tailpiece" else 1.45), w * frac)
         sh = min(sh, sw * 1.05)
     elif shape == "arched":
-        sw = min(sh * 1.3, w * .52)
+        sw = min(sh * 1.3, w * .6)
         sh = min(sh, sw * 1.45)
     elif shape == "banner":
-        sw = w * (.9 if form == "headpiece" else .54)
-        sh = min(sh, sw * .3)
+        sw = w * (.96 if form == "headpiece" else .6)
+        sh = min(sh, sw * .32)
     else:
-        sw = {"headpiece": w * .97, "tailpiece": w * .52}.get(form, min(w * .6, sh * 1.7))
+        sw = {"headpiece": w * .97, "tailpiece": w * .6}.get(form, min(w * .7, sh * 1.8))
         sh = min(sh, sw * .95)
-    wing = sh * {"headpiece": .36, "tailpiece": .3}.get(form, .34)
-    return w / 2, h / 2, sw, sh, wing
+    return w / 2, h / 2, sw, sh
 
 
-def _wing(cx, cy, ex, xe, hw0, hw1, s):
-    """A tapering wing from the shape's flank (x = ex) out to the box edge (x = xe): concave top
-    and bottom edges that close to a fine point."""
-    n = 30
-    top, bot = [], []
-    for i in range(n + 1):
-        t = i / n
-        x = ex + (xe - ex) * t
-        hw = hw1 + (hw0 - hw1) * (1 - t) ** 1.7
-        top.append((x, cy - hw))
-        bot.append((x, cy + hw))
-    return top + bot[::-1]
-
-
-def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False):
-    """A planned plate, w x h: the subject in its `shape`, sized for its `form` (vignette, front,
-    headpiece, tailpiece, plate), fine scroll wings on punched matte, a gold-wire and bead frame,
-    and (arms=True, section fronts) the Somaster dedication cartouche at the foot.
-    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+def dissolve(poly, band, seed=0, sides=None):
+    """The Bewick edge: the scene's lines break up into white flecks toward the shape's edge, many
+    at the rim and fewer inward, so the engraving fades into the paper rather than stopping at a
+    rule. sides(x, y) -> bool limits it to part of the edge. Three white path elements."""
     rng = _r.Random(seed)
+    cx = sum(p[0] for p in poly) / len(poly)
+    cy = sum(p[1] for p in poly) / len(poly)
+    d1, d2 = [], []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        seg = _m.hypot(b[0] - a[0], b[1] - a[1])
+        steps = max(1, int(seg / 1.4))
+        for k in range(steps):
+            t = k / steps
+            x, y = a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t
+            if sides is not None and not sides(x, y):
+                continue
+            tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
+            nx, ny = -ty, tx
+            if (cx - x) * nx + (cy - y) * ny < 0:
+                nx, ny = -nx, -ny
+            for j in range(3):
+                u = band * rng.random() ** 2.2
+                f = 1 - u / band
+                ln = (1.5 + 5 * rng.random()) * f + .8
+                px, py = x + nx * u, y + ny * u
+                ang = _m.atan2(ty, tx) + rng.uniform(-.25, .25)
+                sd = f"M{_SN(px - _m.cos(ang) * ln / 2)},{_SN(py - _m.sin(ang) * ln / 2)}l{_SN(_m.cos(ang) * ln)},{_SN(_m.sin(ang) * ln)}"
+                (d2 if f > .55 else d1).append(sd)
+    o = f'<path d="{_SD(poly, True, .1)}" fill="none" stroke="#fff" stroke-width="3"/>'
+    if d2:
+        o += f'<path d="{"".join(d2)}" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
+    if d1:
+        o += f'<path d="{"".join(d1)}" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none"/>'
+    return o
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False, frame=None, ft=0.,
+               fade=10., fade_sides=None):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form`, standing free on the
+    paper. frame(cx, cy, sw, sh, outer, inner, mode) -> svg draws the page's own frame over the
+    scene's edge (ft: how far it reaches in). fade: the width of the dissolving edge (0 for none).
+    arms=True (section fronts) sets the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
     mode = "s" if h < 110 else ("m" if h <= 260 else "t")
-    cx, cy, sw, sh, hw0 = _form_geom(form, shape, w, h)
+    cx, cy, sw, sh = _form_geom(form, shape, w, h)
+    ah = 0.
     if arms:
-        # leave the foot clear for the dedication cartouche
-        ah = max(22., min(46., h * .16))
-        sh = min(sh, h - 4 - ah * .55)
+        ah = max(24., min(48., h * .17))
+        sh = min(sh, h - 4 - ah * .6)
         cy = 2 + sh / 2
-        hw0 = min(hw0, sh * .34)
     outer = _shape_poly(shape, cx, cy, sw, sh, seed)
-    xs = [p[0] for p in outer]
-    rx = (max(xs) - min(xs)) / 2
-    framed = shape != "irregular"
-    bead = 1. if sh < 70 else 1.25 if sh < 160 else 1.5
-    bw = bead * 2 + 4.5 if framed else 0.
-    inner = _shape_poly(shape, cx, cy, sw - 2 * (bw + 1.6), sh - 2 * (bw + 1.6), seed) if framed else outer
+    inner = _shape_poly(shape, cx, cy, sw - 2 * ft, sh - 2 * ft, seed) if ft else outer
     ixs = [p[0] for p in inner]
     iys = [p[1] for p in inner]
     X, Y = min(ixs), min(iys)
     W, H = max(ixs) - X, max(iys) - Y
-    scene_svg = scene(X, Y, W, H, mode, inner)
-    o = []
-    # 1. wings of fine scroll on matte, carried out to both edges
-    hw1 = max(2.5, sh * .05)
-    wings = []
-    ex0 = rx * .86
-    ys_at = []
-    for i in range(len(outer)):
-        (x1, y1), (x2, y2) = outer[i - 1], outer[i]
-        xq = cx + rx * .97
-        if (x1 - xq) * (x2 - xq) <= 0 and x1 != x2:
-            ys_at.append(y1 + (y2 - y1) * (xq - x1) / (x2 - x1))
-    wy = cy
-    if len(ys_at) >= 2:
-        # the wings spring from the flank where the shape is deep enough to take them
-        wy = (min(ys_at) + max(ys_at)) / 2
-        hw0 = min(hw0, (max(ys_at) - min(ys_at)) / 2 - 2)
-    hw0 = max(hw0, 3.)
-    for s in (-1, 1):
-        ex = cx + s * ex0
-        xe = w / 2 + s * (w / 2)
-        if abs(xe - ex) > 30:
-            wings.append(_wing(cx, wy, ex, xe, hw0, hw1, s))
-    rmin = 3.2 if hw0 < 14 else 4. if hw0 < 30 else 4.5
-    rmax = max(rmin * 1.6, min(16., hw0 * .62))
-    budget = 177000 - len(scene_svg) - 12000
-    per = 1400 * (rmax / 19.) ** 1.15
-    maxn = int(max(10, min(150, budget / per)))
-    fseed = rng.randrange(1 << 20)
-
-    def field(nmax):
-        out = []
-        for k, wg in enumerate(wings):
-            sgn = -1 if wg[0][0] < cx else 1
-            root = _wave_root(cx + sgn * rx * .9, wy, wg[len(wg) // 4][0], wy + sgn * 1.5, hw0 * .35, 70, fseed % 7 + k)
-            cv = KCanvas()
-            scroll_field(cv, wg, [outer], [root], fseed + k, rmin=rmin, rmax=rmax, max_n=max(4, nmax // 2),
-                         g=2.5 if hw0 < 20 else 3.)
-            out.append(f'<path d="{_SD(wg, True, 0)}" fill="none" stroke="#000" stroke-width="1"/>')
-            out.append(clip_to(f"fw{seed % 9973}{mode}{k}", wg, cv.svg()))
-        return "".join(out)
-
-    for k, wg in enumerate(wings):
-        o.append(matte(wg, seed + k))
-    fi = len(o)
-    o.append(field(maxn))
-    # 2. the frame of the shape: gold wire, a bead row, a sunk black fillet, a fine inner wire
-    if framed:
-        def ins(d):
-            return _shape_poly(shape, cx, cy, sw - 2 * d, sh - 2 * d, seed)
-        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
-        o.append(f'<path d="{_SD(ins(1.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
-        o.append(bead_ring(ins(2.5 + bead), bead, .8))
-        o.append(f'<path d="{_SD(ins(bw - .2), True, .1)}{_SD(ins(bw + 1.6)[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
-        o.append(f'<path d="{_SD(inner, True, .1)}" fill="#fff" stroke="none"/>')
-    else:
-        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="none"/>')
-    # 3. the subject, darkening toward its rim so it glows out of the frame
-    o.append(scene_svg)
-    if framed:
-        n = 2 if mode == "s" else 4
-        rims = []
-        for k in range(n):
-            rims.append(_SD(_shape_poly(shape, cx, cy, W - 2 * (.5 + 1.5 * k), H - 2 * (.5 + 1.5 * k), seed), True, .1))
-        o.append(f'<path d="{rims[0]}" fill="none" stroke="#000" stroke-width="1"/>')
-        o.append(f'<path d="{"".join(rims[1:])}" fill="none" stroke="#000" stroke-width=".5"/>')
-    else:
-        # an irregular vignette has no frame: its lines simply stop at a lobed, ragged edge
-        pass
-    # 4. section fronts: the Somaster arms in a small beaded cartouche at the foot
+    o = [scene(X, Y, W, H, mode, inner)]
+    if fade:
+        o.append(clip_to(f"fd{seed % 9973}{mode}{int(h)}", inner, dissolve(inner, min(fade, H * .25), seed + 77, fade_sides)))
+    if frame:
+        o.append(frame(cx, cy, sw, sh, outer, inner, mode))
     if arms:
         import arms as _A
-        ah = max(22., min(46., h * .16))
         aw = ah * .86
         ax, ay = cx - aw / 2, h - ah - 1
         plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
         o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
         o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
         o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
-    doc = _C.svg_doc(w, h, "".join(o))
-    over = len(doc.encode()) - 201000
-    if over > 0:
-        fb = len(o[fi])
-        o[fi] = field(int(maxn * max(.25, (fb - over - 4000) / fb) * .95))
-        doc = _C.svg_doc(w, h, "".join(o))
-    return doc
+    return _C.svg_doc(w, h, "".join(o))
 
 
 # ------------------------------------------------------------------------------------------------
@@ -2526,6 +2464,51 @@ def _layout_tall(w, h, seed, ctx):
     return "".join(o)
 
 
+def _grape_wreath(cx, cy, sw, sh, outer, inner, mode, ft=8., seed=0):
+    """The vignette's frame: two sprays of Oregon grape, the state flower, climbing the oval from a
+    bow at its foot and meeting at its crown: spiny leaflets in pairs, berry clusters, a ribbon."""
+    rng = random.Random(seed + 5)
+    cv = KCanvas()
+    rx, ry = sw / 2 - ft * .45, sh / 2 - ft * .45
+    L = ft * 1.55
+    for side in (-1, 1):
+        n = 90
+        stem = []
+        for i in range(n + 1):
+            t = i / n
+            a = math.pi / 2 + side * math.pi * .97 * t
+            stem.append((cx + rx * math.cos(a) * (1 + .02 * math.sin(t * 40)), cy + ry * math.sin(a)))
+        cv.line(stem)
+        k = 3
+        while k < n - 2:
+            p, q = stem[k], stem[k + 1]
+            ta = math.atan2(q[1] - p[1], q[0] - p[0])
+            for sg in (-1, 1):
+                fine_leaf(cv, p[0], p[1], ta + sg * .55, L * rng.uniform(.85, 1.05), L * .36, sg, rng.randrange(1 << 20), 3)
+            if k % 3 == 0:
+                # a cluster of berries tucked in the outside of the spray
+                bxc = p[0] + (p[0] - cx) / max(1., rx) * ft * .2
+                byc = p[1] + (p[1] - cy) / max(1., ry) * ft * .2
+                for j in range(4):
+                    bx_ = bxc + rng.uniform(-1, 1) * ft * .2
+                    by_ = byc + rng.uniform(-1, 1) * ft * .2
+                    br = max(1., ft * .1)
+                    cv.obj([_ell(bx_, by_, br, br, 10)], .5)
+                    cv.hair(C.hatch_poly(_ell(bx_ + br * .3, by_ + br * .3, br * .7, br * .7, 8), 45, 1.))
+            k += max(3, int(L * .8 / (math.pi * (rx + ry) / 2 / n)))
+    # the bow at the foot
+    bx, by = cx, cy + ry - ft * .5
+    for sg in (-1, 1):
+        loop = [(bx + sg * ft * (.2 + .9 * math.sin(t * math.pi)) * 1.2, by - ft * .55 * math.sin(t * 2 * math.pi)) for t in [i / 16 for i in range(17)]]
+        cv.obj([loop], 1.)
+        cv.hair(C.hatch_poly(loop, 30 * sg, 1.5))
+        tail = [(bx, by), (bx + sg * ft * .6, by + ft * .8), (bx + sg * ft * .9, by + ft * 1.3)]
+        R = C._Rib(tail, [ft * .16] * 3, [ft * .16] * 3)
+        cv.obj([R.outline()], 1.)
+    cv.obj([_ell(bx, by, ft * .22, ft * .2, 10)], 1.)
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7
@@ -2534,5 +2517,8 @@ def plate(w, h, ctx):
     def scene(X, Y, W, H, mode, inner):
         return _scene(X, Y, W, H, mode, seed, _d(inner, True, 0))
 
-    # the edition plan: a vignette of about a fifth of the sheet, an oval
-    return form_plate(w, h, ctx, scene, "oval", "vignette", seed)
+    # the edition plan: a vignette of about a fifth of the sheet, an oval, held in a wreath of
+    # Oregon grape (the state flower) tied with a ribbon at its foot
+    ft = max(6., min(16., h * .065))
+    return form_plate(w, h, ctx, scene, "oval", "vignette", seed, frame=lambda *a: _grape_wreath(*a, ft=ft, seed=seed),
+                      ft=ft, fade=8.)

@@ -1731,6 +1731,448 @@ def gm_water(cv, X, Y, W, H, rng, glint_x=None):
             cv.hair([(x + L * i / n, y + amp * math.sin(_GPI * i / n)) for i in range(n + 1)])
             x += L + rng.uniform(1.5, 3.5)
         y += pitch
+# ---------------------------------------------------------------------------------- the vignette
+# (art director, batch 2: the subject is the composition; a shaped scene standing free on the page,
+# its edge ruled or dissolving into white as in Bewick; ornament only from the page's own motifs;
+# no black field: darks come from line work)
+
+def vg_noise(rng, k=4):
+    ph = [(rng.uniform(0, _GTAU), rng.choice((3, 5, 7, 9, 13, 17)), rng.uniform(.3, 1.)) for _ in range(k)]
+    tot = sum(a for _, _, a in ph)
+    return lambda t: sum(a * math.sin(f * t + p) for p, f, a in ph) / tot
+
+
+def vg_dissolve(poly, rng, amp, cx, cy, bottom_only=False):
+    """the scene's edge broken irregularly inward, so its lines end raggedly as in a Bewick
+    tailpiece. amp px deep. bottom_only keeps the top edge clean."""
+    nz = vg_noise(rng, 5)
+    nz2 = vg_noise(rng, 3)
+    out = []
+    n = len(poly)
+    for i, (x, y) in enumerate(poly):
+        t = _GTAU * i / n
+        dx, dy = x - cx, y - cy
+        L = math.hypot(dx, dy) or 1.
+        f = 1.
+        if bottom_only:
+            f = _Gsm(-.2, .5, dy / max(1., L))
+        d = amp * f * (.55 + .45 * nz(t * 1.0) + .25 * nz2(t * 3.1))
+        d = max(0., d)
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
+def vg_leaf(cv, base, ang, L, W, rng, kind="lance", shade=1, dark=1.):
+    """one leaf, modelled: outline, midrib, the shade half cut in fine swelling lines that follow
+    the veins. kind: lance (laurel, olive), ellip (coffee, walnut), blade (reed), spiky (holly),
+    needle (a fir needle tuft), round (a lotus pad seen edge on)."""
+    c, s = math.cos(ang), math.sin(ang)
+
+    def P(u, v):
+        return (base[0] + c * u * L - s * v * W, base[1] + s * u * L + c * v * W)
+    n = 14
+    prof = {"lance": lambda u: math.sin(math.pi * u) ** .8 * (1 - .25 * u),
+            "ellip": lambda u: math.sin(math.pi * u) ** .6,
+            "blade": lambda u: (1 - u) ** .7 * min(1., u * 8),
+            "spiky": lambda u: math.sin(math.pi * u) ** .6,
+            "round": lambda u: math.sin(math.pi * u) ** .5}.get(kind, lambda u: math.sin(math.pi * u) ** .7)
+    bend = rng.uniform(-.12, .12)
+    top, bot = [], []
+    for i in range(n + 1):
+        u = i / n
+        w = prof(u) * .5
+        if kind == "spiky" and 0 < i < n and i % 2 == 0:
+            w *= 1.35
+        if kind == "ellip" and 0 < i < n:
+            w *= 1 + .05 * math.sin(i * 1.7)
+        bv = bend * math.sin(math.pi * u) * 2
+        top.append(P(u, bv + w))
+        bot.append(P(u, bv - w))
+    poly = top + bot[::-1]
+    cv.obj([poly], 1.)
+    mid = [P(i / n, bend * math.sin(math.pi * i / n) * 2) for i in range(n + 1)]
+    cv.line(mid[:-2] if kind != "blade" else mid[:-1])
+    half = (top if shade > 0 else bot)
+    sh = mid + half[::-1]
+    pitch = 1.5 if dark > .6 else 2.
+    cv.hair(_Ghp(sh, math.degrees(ang) + 55 * shade, pitch))
+    if kind in ("lance", "ellip", "spiky") and L > 9:
+        other = bot if shade > 0 else top
+        for i in range(2, n - 1, 3):
+            cv.hair([mid[i], ((mid[i][0] + other[i + 1][0]) / 2, (mid[i][1] + other[i + 1][1]) / 2)])
+    return poly
+
+
+def vg_stem(cv, pts, w0, w1=None):
+    w1 = w0 * .35 if w1 is None else w1
+    n = len(pts)
+    ws = [w0 + (w1 - w0) * i / max(1, n - 1) for i in range(n)]
+    R = _GR(pts, ws, ws)
+    cv.obj([R.outline()], 1.)
+    if w0 > 1.4:
+        cv.hair(R.contour(-.4, 0., .85))
+    return R
+
+
+def vg_spray(cv, pts, kind, rng, size, side=1, fruit=True):
+    """a branch of the page's own plant along the stem pts (root first). kind: laurel, olive,
+    holly, coffee, walnut, reed, fir, lotus, kelp, pine, apple, oak."""
+    n = len(pts)
+    vg_stem(cv, pts, max(.9, size * .05), .6)
+
+    def at(t):
+        i = min(n - 2, int(t * (n - 1)))
+        r = t * (n - 1) - i
+        p = (pts[i][0] + (pts[i + 1][0] - pts[i][0]) * r, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * r)
+        a = math.atan2(pts[i + 1][1] - pts[i][1], pts[i + 1][0] - pts[i][0])
+        return p, a
+    if kind in ("laurel", "olive", "coffee", "walnut", "holly", "apple", "oak"):
+        lk = {"laurel": "lance", "olive": "lance", "coffee": "ellip", "walnut": "ellip", "holly": "spiky",
+              "apple": "ellip", "oak": "ellip"}[kind]
+        Lf = size * {"olive": .32, "laurel": .38, "coffee": .44, "walnut": .4, "holly": .36, "apple": .36, "oak": .38}[kind]
+        Wf = Lf * {"olive": .26, "laurel": .34, "coffee": .48, "walnut": .42, "holly": .55, "apple": .5, "oak": .5}[kind]
+        step = .5 * Lf
+        tot = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
+        k = 0
+        s_ = Lf * .3
+        while s_ < tot - Lf * .2:
+            t = s_ / tot
+            p, a = at(t)
+            sz = 1 - .45 * t
+            for sd in ((-1, 1) if kind in ("coffee", "laurel", "olive") or k % 3 == 0 else ((-1,) if k % 2 else (1,))):
+                vg_leaf(cv, p, a + sd * rng.uniform(.5, .9), Lf * sz * rng.uniform(.85, 1.1), Wf * sz, rng, lk, shade=side * sd)
+            if fruit and kind == "coffee" and k % 2 == 1:
+                for j in range(3):
+                    _g_disc(cv, p[0] + rng.uniform(-1, 1) * Lf * .15, p[1] + rng.uniform(-1, 1) * Lf * .15, max(1.2, Lf * .1), 1.)
+            if fruit and kind == "holly" and k % 3 == 1:
+                for j in range(3):
+                    q = (p[0] + math.cos(j * 2.1) * Lf * .12, p[1] + math.sin(j * 2.1) * Lf * .12)
+                    b = _g_disc(cv, q[0], q[1], max(1.2, Lf * .1), 1.)
+                    cv.line(_Ghp(b, 45, 1.5))
+            if fruit and kind == "laurel" and k % 3 == 2:
+                q = (p[0] + math.cos(a + 1.6 * side) * Lf * .2, p[1] + math.sin(a + 1.6 * side) * Lf * .2)
+                b = _g_disc(cv, q[0], q[1], max(1.1, Lf * .09), 1.)
+                cv.hair(_Ghp(b, 45, 1.5))
+            s_ += step
+            k += 1
+        if fruit and kind in ("walnut", "apple"):
+            p, a = at(.55)
+            r = size * .16
+            q = (p[0] + math.cos(a + 1.57 * side) * r * 1.3, p[1] + math.sin(a + 1.57 * side) * r * 1.3)
+            b = _g_disc(cv, q[0], q[1], r, 1.)
+            # the round modelled by crescent cuts that follow it into the shade
+            for j in range(1, 5):
+                rr = r * (1 - j * .18)
+                cv.hair([(q[0] + rr * math.cos(t) + r * .15, q[1] + rr * math.sin(t) + r * .1) for t in [-.4 + 2.2 * u / 10 for u in range(11)]])
+            cv.line([(q[0], q[1] - r), (q[0] + r * .1, q[1] - r * 1.35)])
+    elif kind == "reed":
+        tot_p = pts
+        # blades from the root fanning up, and the cattail at the tip
+        p0 = pts[0]
+        a0 = math.atan2(pts[-1][1] - pts[0][1], pts[-1][0] - pts[0][0])
+        for j in range(5):
+            aa = a0 + (j - 2) * .22 + rng.uniform(-.08, .08)
+            L = size * rng.uniform(.9, 1.5)
+            bl = _Geu(p0[0], p0[1], aa, L, lambda u, sg=(j - 2): sg * .25 / L * 6 * u, 12)
+            ws = [max(.4, size * .07 * (1 - i / 12) ** .7) for i in range(13)]
+            R = _GR(bl, ws, ws)
+            cv.obj([R.outline()], 1.)
+            cv.hair(R.contour(.3, .05, .9))
+        tip, a = at(1.)
+        hd = [tip]
+        p_, a_ = at(.8)
+        ln = size * .32
+        head = [(p_[0] + math.cos(a_) * ln * u - math.sin(a_) * size * .06 * math.sin(math.pi * u) ** .5 * sg,
+                 p_[1] + math.sin(a_) * ln * u + math.cos(a_) * size * .06 * math.sin(math.pi * u) ** .5 * sg)
+                for sg in (1, -1) for u in ([i / 10 for i in range(11)] if sg > 0 else [1 - i / 10 for i in range(11)])]
+        cv.obj([head], 1.)
+        cv.line(_Ghp(head, math.degrees(a_) + 90, 1.5))
+    elif kind in ("fir", "pine"):
+        tot = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
+        s_ = 1.
+        tufts = []
+        nl = size * (.3 if kind == "fir" else .45)
+        while s_ < tot:
+            p, a = at(s_ / tot)
+            f = 1 - .5 * s_ / tot
+            for sd in (-1, 1):
+                aa = a + sd * (.95 if kind == "fir" else .5)
+                tufts.append([p, (p[0] + math.cos(aa) * nl * f, p[1] + math.sin(aa) * nl * f)])
+            s_ += 1.5
+        cv.hair(tufts)
+        if fruit:
+            p, a = at(.6)
+            cr = size * .12
+            q = (p[0] + math.cos(a + 1.57 * side) * cr * 1.8, p[1] + math.sin(a + 1.57 * side) * cr * 1.8)
+            cone = _Gel(q[0], q[1], cr * .7, cr * 1.3, 18)[:-1]
+            cv.obj([cone], 1.)
+            for j in range(1, 6):
+                yy = q[1] - cr * 1.3 + cr * 2.6 * j / 6
+                cv.hair([(q[0] - cr * .7, yy - cr * .2), (q[0], yy + cr * .15), (q[0] + cr * .7, yy - cr * .2)])
+    elif kind == "lotus":
+        tip, a = at(1.)
+        br = size * .3
+        # the bud: overlapping pointed petals, each modelled
+        for j, (da, sc) in enumerate(((-.5, .8), (.5, .8), (-.2, 1.), (.2, 1.), (0., 1.1))):
+            vg_leaf(cv, tip, a + da, br * 2 * sc, br * 1.1 * sc, rng, "lance", shade=1 if da >= 0 else -1)
+        p, a2 = at(.35)
+        pad = _Gel(p[0] + math.cos(a2 + 1.57 * side) * size * .35, p[1] + math.sin(a2 + 1.57 * side) * size * .35 - size * .05,
+                   size * .38, size * .12, 28)[:-1]
+        cv.obj([pad], 1.)
+        pc = ((pad[0][0] + pad[14][0]) / 2, (pad[0][1] + pad[14][1]) / 2)
+        cv.hair([[pc, q] for q in pad[::3]])
+        cv.line(_Ghp([q for q in pad if q[1] > pc[1]], 0, 1.5))
+    elif kind == "kelp":
+        tot = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
+        for j in range(7):
+            p, a = at(.1 + j * .13)
+            sd = 1 if j % 2 else -1
+            L = size * .7
+            bl = _Geu(p[0], p[1], a + sd * .6, L, lambda u, s=sd: s * 2.5 * math.sin(u * 9) / L, 16)
+            ws = [max(.5, size * .09 * math.sin(math.pi * min(1, (i + 1) / 16)) ** .6) for i in range(17)]
+            R = _GR(bl, ws, ws)
+            cv.obj([R.outline()], 1.)
+            cv.hair(R.contour(-.4, .1, .9))
+            b = _g_disc(cv, p[0], p[1], max(1., size * .06), 1.)
+
+
+def vg_wreath(cv, cx, cy, r, kind, rng, span=2.3, size=None, gap=.5):
+    """two branches of the page's plant rising from a knot at the foot of a roundel and curving
+    up round it, tips not meeting (span radians each side)."""
+    size = size or r * .3
+    for sd in (-1, 1):
+        pts = [(cx + r * math.cos(_GPI / 2 + sd * (gap * .5 + span * i / 30)), cy + r * math.sin(_GPI / 2 + sd * (gap * .5 + span * i / 30)))
+               for i in range(31)]
+        vg_spray(cv, pts, kind, rng, size, side=-sd)
+    # the knot: a ribbon bow tied at the foot
+    k = r * .09
+    for sd in (-1, 1):
+        lp = [(cx, cy + r), (cx + sd * k * 2.4, cy + r - k * 1.2), (cx + sd * k * 2.6, cy + r + k * .9)]
+        vg_leaf(cv, (cx, cy + r), (0. if sd > 0 else _GPI) - sd * .35, k * 2.8, k * 1.6, rng, "ellip", shade=sd)
+    _g_disc(cv, cx, cy + r, k * .7, 1.)
+
+
+def vg_rays(cv, cx, cy, r0, r1, n, rng):
+    """a glory: alternate long and short rays swelling out from the roundel and fading."""
+    for i in range(n):
+        t = _GTAU * (i + .5) / n
+        rr = r1 * (1. if i % 2 else .78) * rng.uniform(.92, 1.05)
+        ww = max(.6, (r0 * _GTAU / n) * (.38 if i % 2 else .26))
+        p0 = (cx + r0 * math.cos(t), cy + r0 * math.sin(t))
+        pts = [(cx + (r0 + (rr - r0) * u) * math.cos(t), cy + (r0 + (rr - r0) * u) * math.sin(t)) for u in [j / 10 for j in range(11)]]
+        ws = [ww * (1 - j / 10) ** .8 + .25 for j in range(11)]
+        R = _GR(pts, ws, ws)
+        cv.obj([R.outline()], .5)
+        cv.hair(R.contour(-.3, 0., .7))
+
+
+def vg_filmstrip(cv, cx, cy, r, w, rng):
+    """a strip of film wound round the roundel: its band, the sprocket holes, frames between."""
+    n = 72
+    out = _Gel(cx, cy, r + w, r + w, n)[:-1]
+    inn = _Gel(cx, cy, r, r, n)[:-1]
+    cv.obj([out + [out[0]] + inn[::-1] + [inn[-1]]], 1.)
+    cv.line(_Gel(cx, cy, r + w * .78, r + w * .78, n))
+    cv.line(_Gel(cx, cy, r + w * .22, r + w * .22, n))
+    nh = int(_GTAU * (r + w * .5) / max(3., w * .55))
+    for i in range(nh):
+        t = _GTAU * i / nh
+        for rr in (r + w * .11, r + w * .89):
+            q = (cx + rr * math.cos(t), cy + rr * math.sin(t))
+            cv.obj([[(q[0] + w * .07 * math.cos(t + a), q[1] + w * .07 * math.sin(t + a)) for a in (0., 1.57, 3.14, 4.71)]], .5)
+        if i % 4 == 0:
+            cv.hair([(cx + (r + w * .22) * math.cos(t), cy + (r + w * .22) * math.sin(t)),
+                     (cx + (r + w * .78) * math.cos(t), cy + (r + w * .78) * math.sin(t))])
+    cv.hair(_Ghp(out[n // 8: n * 5 // 8] + inn[n // 8: n * 5 // 8][::-1], 30, 2.))
+
+
+def vg_rule(poly, double=True, beads=0.):
+    """a fine engraved rule round the shape: a 1 px line, a hair 2.5 px inside, beads between."""
+    o = [f'<path d="{_d(poly, True, .1)}" fill="none" stroke="#000" stroke-width="1"/>']
+    if double:
+        o.append(f'<path d="{_d(gm_offset(poly, -2.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+        o.append(f'<path d="{_d(gm_offset(poly, 3.), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    if beads:
+        bp = _g_resample(gm_offset(poly, 3. + beads + 1.5), beads * 2 + 1.4)
+        o.append(f'<path d="{"".join(f"M{_n(p[0])},{_n(p[1])}h0" for p, _ in bp)}" fill="none" stroke="#000" stroke-width="{_n(beads * 2)}" stroke-linecap="round"/>')
+        o.append(f'<path d="{"".join(f"M{_n(p[0] - beads * .3)},{_n(p[1] - beads * .3)}h0" for p, _ in bp)}" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="round"/>')
+        o.append(f'<path d="{_d(gm_offset(poly, 3. + 2 * beads + 3), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    return "".join(o)
+
+
+def vg_tooled_border(w, h, rng, depth=14.):
+    """the binding's tooled border, cut light: two fillets, a run of small tooled fleurons and
+    dots between them, corner fleurons. For the cover only."""
+    cv = GmCanvas()
+    o = []
+    for d, sw in ((1., 1.5), (3.5, .5), (depth - 1.5, .5), (depth + 1., 1.)):
+        o.append(f'<path d="M{_n(d)},{_n(d)}H{_n(w - d)}V{_n(h - d)}H{_n(d)}z" fill="none" stroke="#000" stroke-width="{sw}"/>')
+    m = (depth + 3.5) / 2 + .5
+    s = (depth - 6) * .5
+    for (x0, y0, x1, y1) in ((m, m, w - m, m), (w - m, m, w - m, h - m), (w - m, h - m, m, h - m), (m, h - m, m, m)):
+        L = math.hypot(x1 - x0, y1 - y0)
+        ang = math.atan2(y1 - y0, x1 - x0)
+        k = int(L / (s * 3.2))
+        for i in range(1, k):
+            t = i / k
+            px, py = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
+            if i % 2:
+                vg_leaf(cv, (px - math.cos(ang) * s * .9, py - math.sin(ang) * s * .9), ang, s * 1.8, s * .9, rng, "lance", 1, .5)
+            else:
+                _g_disc(cv, px, py, max(1., s * .3), .5)
+    for (x, y) in ((m, m), (w - m, m), (w - m, h - m), (m, h - m)):
+        for j in range(4):
+            vg_leaf(cv, (x, y), _GPI / 4 + j * _GPI / 2, s * 2.2, s * 1., rng, "lance", 1, .5)
+        _g_disc(cv, x, y, s * .4, 1.)
+    return "".join(o) + cv.svg()
+
+
+def vg_plate(w, h, ctx, V):
+    """The batch-2 plate: one shaped engraved scene that carries the page, standing free on the
+    white page. V: scene(x, y, w, h, level) -> svg; shape (oval roundel archtop lunette cut
+    irregular); edge ("rule", "beads", "dissolve", "dissolve_foot"); frame: (kind, plant) with
+    kind in wreath/rays/film/sprays/none; banner text; arms (bool); seed; aspect."""
+    seed_ = V.get("seed", 0)
+    rng = random.Random(seed_)
+    o = [gm_defs()]
+    form = (ctx or {}).get("form") or V.get("form", "vignette")
+    shape = V.get("shape", "oval")
+    edge = V.get("edge", "rule")
+    fk, plant = V.get("frame", ("sprays", "laurel"))
+    level = 0 if h < 110 or w < 200 else (1 if h <= 260 else 2)
+    cx = w / 2
+    pad = 3.
+    if h < 46 and w > 3 * h:
+        # the gap frieze: two fine rules, the page's plant running out both ways from a small
+        # beaded roundel that holds the scene
+        rr = h / 2 - 5.
+        cy = h / 2
+        o.append(f'<path d="M0,1H{_n(w)}M0,3H{_n(w)}M0,{_n(h - 1)}H{_n(w)}M0,{_n(h - 3)}H{_n(w)}" stroke="#000" stroke-width=".5" fill="none"/>')
+        fr = GmCanvas()
+        for sd in (-1, 1):
+            x0 = cx + sd * (rr + 7)
+            L = (w - 4 - x0) if sd > 0 else (x0 - 4)
+            n = max(10, int(L / 3))
+            pts = [(x0 + sd * L * i / n, cy + h * .12 * math.sin(L * i / n / (h * .9))) for i in range(n + 1)]
+            vg_spray(fr, pts, plant, rng, min(h * .42, 14.), side=sd)
+        field = gm_shape("roundel", cx, cy, rr, rr)
+        o.append(fr.svg())
+        o.append(f'<path d="{_d(gm_offset(field, 5.), True, 0)}" fill="#fff"/>')
+        o.append(gm_scene_in(field, lambda X, Y, W, H: V["scene"](X, Y, W, H, 0), "vgf%x" % (seed_ & 0xfff)))
+        o.append(vg_rule(field, True, .7))
+        return C.svg_doc(w, h, "".join(o))
+    banner = V.get("banner") if (level >= 1 and h >= 150) else None
+    arms = V.get("arms") and level >= 1 and h >= 150
+    foot = 0.
+    if banner:
+        foot += min(22., h * .09) + 4
+    if arms and not banner:
+        foot += min(30., h * .14)
+    elif arms:
+        foot += min(30., h * .1)
+    # the frame's room round the scene
+    ring = {"wreath": .24, "rays": .24, "film": .16, "sprays": .0, "none": 0.}.get(fk, 0.)
+    if form == "frontispiece" and level == 2:
+        bd = 16.
+        o.append(vg_tooled_border(w, h, rng, bd))
+        top, bot = bd + 10, h - bd - 8 - foot
+        lx0, lx1 = bd + 10, w - bd - 10
+    else:
+        top, bot = pad, h - pad - foot
+        lx0, lx1 = pad, w - pad
+    avail_h = bot - top
+    if shape == "roundel":
+        R = min(avail_h, lx1 - lx0) / 2 / (1 + ring)
+        a = b = R
+    else:
+        asp = V.get("aspect", {"oval": 2.3, "archtop": 2., "lunette": 2.3, "cut": 2.1, "irregular": 2.3}.get(shape, 2.))
+        if level == 0:
+            asp = V.get("band_aspect", asp * 1.6)
+        b = avail_h / 2 / (1 + ring)
+        a = min(b * asp, (lx1 - lx0) / 2 / (1 + ring * .6) - (24 if fk == "sprays" else 0))
+    cy = top + avail_h / 2
+    sz = min(b * .7, 44.) if level else min(b * .9, 16.)
+    if fk == "sprays":
+        a -= sz * .5
+    kind = {"irregular": "oval", "cut": "cut"}.get(shape, shape)
+    if kind == "cut":
+        cc = min(a, b) * .28
+        field = [(cx - a + cc, cy - b), (cx + a - cc, cy - b), (cx + a, cy - b + cc), (cx + a, cy + b - cc),
+                 (cx + a - cc, cy + b), (cx - a + cc, cy + b), (cx - a, cy + b - cc), (cx - a, cy - b + cc)]
+        field = [p for p, _ in _g_resample(field, (a + b) * 4 / 120)]
+    else:
+        field = gm_shape(kind, cx, cy, a, b)
+    # the frame behind / round the scene
+    fr = GmCanvas()
+    if fk == "wreath":
+        vg_wreath(fr, cx, cy, max(a, b) * (1 + ring * .5), plant, rng, 2.4, max(a, b) * .42)
+    elif fk == "rays":
+        vg_rays(fr, cx, cy, max(a, b) + 2, max(a, b) * (1 + ring), 48 if level else 32, rng)
+    elif fk == "film":
+        vg_filmstrip(fr, cx, cy, max(a, b) + 1.5, max(a, b) * ring * .8, rng)
+    elif fk == "sprays":
+        # branches rising from the scene's foot and sweeping up its flanks
+        for sd in (-1, 1):
+            n = 30
+            pts = []
+            for i in range(n + 1):
+                t = i / n
+                ang = _GPI / 2 + sd * (.3 + 1.6 * t)
+                rr = 1.02 + .05 * math.sin(math.pi * t)
+                pts.append((cx + (a * rr + sz * .25) * math.cos(ang), cy + (b * rr + sz * .1) * math.sin(ang)))
+            vg_spray(fr, pts, plant, rng, sz, side=-sd)
+    frame_svg = fr.svg()
+    # the scene, its edge ruled or broken
+    if edge.startswith("dissolve"):
+        clip = vg_dissolve(field, random.Random(seed_ + 3), max(3., min(a, b) * .12), cx, cy, edge == "dissolve_foot")
+    else:
+        clip = field
+    bx0, by0, bx1, by1 = _g_bbox(field)
+    _cd = _d(clip, True, 0)
+    sc = _g_clip("vgc%x" % (seed_ & 0xfff), _cd, V["scene"](bx0, by0, bx1 - bx0, by1 - by0, level))
+    o.append(frame_svg)
+    o.append(f'<path d="{_d(gm_offset(field, 3.5), True, 0)}" fill="#fff"/>')
+    o.append(sc)
+    if edge == "rule":
+        o.append(vg_rule(field, True, 0.))
+    elif edge == "beads":
+        o.append(vg_rule(field, True, 1.1 if level else .8))
+    elif edge == "dissolve_foot":
+        o.append(f'<path d="{_d(field[: len(field) // 2 + 1][::-1], tol=.1)}" fill="none" stroke="none"/>')
+    # caption ribbon and the arms
+    yb = cy + b * (1 + ring * .6) + 4
+    if banner:
+        bh = min(20., h * .08)
+        bsvg, _ = gm_banner(cx, yb + bh * .6, min(w * .7, max(a * 2.2, 200.)), bh, .03, banner, .15)
+        o.append(bsvg)
+        yb += bh * 1.4
+    if arms:
+        ar = min(14., (h - yb) * .4)
+        if ar > 7:
+            acy = min(h - ar - 3, yb + ar + 1)
+            o.append(gm_arms_light(cx, acy, ar, seed_))
+    return C.svg_doc(w, h, "".join(o))
+
+
+def gm_arms_light(cx, cy, r, seed=0):
+    """the Somaster arms in a small oval cartouche, on white: fine rule and a ring of hair rays."""
+    cv = GmCanvas()
+    ov = _Gel(cx, cy, r * 1.3, r * 1.08, 40)[:-1]
+    for i in range(40):
+        t = _GTAU * i / 40
+        cv.hair([(cx + r * 1.36 * math.cos(t), cy + r * 1.14 * math.sin(t)), (cx + r * 1.62 * math.cos(t), cy + r * 1.38 * math.sin(t))])
+    s = cv.svg() + vg_rule(ov, False)
+    try:
+        try:
+            from solar.arms import arms as _arms
+        except ImportError:
+            from arms import arms as _arms
+        ah = r * 1.9
+        aw = ah * 120 / 140
+        s += f'<g transform="translate({_n(cx - aw / 2)},{_n(cy - ah / 2)})">{_arms(aw, ah, seed)}</g>'
+    except Exception:
+        pass
+    return s
 # ==== GM ENGINE END ====
 
 
@@ -2295,6 +2737,6 @@ def plate(w, h, ctx):
         d = f"M{_n(X - 3)},{_n(Y - 3)}h{_n(W + 6)}v{_n(H + 6)}h{_n(-W - 6)}z"
         return scene(X, Y, W, H, d, seed)
     # the edition plan: section front, a roundel of the hoop and ball (Blazers v Thunder), arms
-    P = {"seed": seed, "scene": sc, "form": "vignette", "shape": "roundel", "tall_shape": "roundel",
-         "banner": "RIP CITY", "tablet": None, "arms_foot": True, "eggs": [("pinwheel", {})]}
-    return gm_plate(w, h, ctx, P)
+    # art director, batch 2: a free-standing shaped scene, its frame from the page's own motifs
+    V = {"seed": seed, "scene": sc, "shape": "roundel", "edge": "rule", "frame": ("wreath", "laurel"), "arms": True}
+    return vg_plate(w, h, ctx, V)

@@ -168,20 +168,26 @@ def _clip_runs(pl, mask, x0, y0, W, H, out, step=1.6):
 
 
 def _thin(pts, tol):
-    """O(n) simplification: drop a point while the chord from the last kept point stays within tol
-    of every point it skips (checked against the newest skipped point only)."""
+    """O(n)-ish simplification: extend each chord from the last kept point while the newest
+    skipped point and the middle skipped point both stay within tol of it."""
     n = len(pts)
     if n < 3:
         return pts
     out = [pts[0]]
+    a = 0
     ax, ay = pts[0]
     for i in range(1, n - 1):
         bx, by = pts[i + 1]
-        px, py = pts[i]
         dx, dy = bx - ax, by - ay
-        L = abs(dx) + abs(dy)
-        if L < 1e-9 or abs((px - ax) * dy - (py - ay) * dx) > tol * (dx * dx + dy * dy) ** .5:
+        L = (dx * dx + dy * dy) ** .5
+        if L < 1e-9:
+            continue
+        px, py = pts[i]
+        mx, my = pts[(a + i + 1) // 2]
+        lim = tol * L
+        if abs((px - ax) * dy - (py - ay) * dx) > lim or abs((mx - ax) * dy - (my - ay) * dx) > lim:
             out.append(pts[i])
+            a = i
             ax, ay = px, py
     out.append(pts[-1])
     return out
@@ -281,14 +287,14 @@ class Canvas(C.Canvas):
             pen = _Pen()
             for polys in layers[(dk, ow)]:
                 for poly in polys:
-                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, .3)
+                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, .45)
             sw = f' stroke="#000" stroke-width="{_n(ow * 4)}"' if ow else ' stroke="none"'
             res.append(f'<path{T} d="{pen.d()}" fill="#fff"{sw}/>')
         for w in (.5, 1., 1.5):
             if out[w]:
                 pen = _Pen()
                 for pl in out[w]:
-                    pen.add(pl, False, .3)
+                    pen.add(pl, False, .4)
                 res.append(f'<path{T} d="{pen.d()}" fill="none" stroke="#000" stroke-width="{_n(w * 4)}"/>')
         return "".join(res)
 
@@ -339,7 +345,16 @@ def tendril_ground(x, y, w, h, seed=0, dens=1., avoid=None):
             if avoid and avoid(cx, cy):
                 continue
             k = rng.random()
-            if k < .55:
+            if k < .55 and STYLE[0] == "thai":
+                # a Thai cloud scroll: a curl with two smaller curls budding off it
+                rr = cell * rng.uniform(.18, .26)
+                sg = rng.choice((-1, 1))
+                a0 = rng.uniform(0, TAU)
+                L1.append(k_spiral(cx, cy, rr, a0, 1.3, sg, .25, 18))
+                for j in (-1, 1):
+                    bx_ = cx + j * rr * 1.5
+                    L1.append(k_spiral(bx_, cy + rr * .35, rr * .55, a0 + PI * (j > 0), 1.1, -sg * j, .3, 12))
+            elif k < .55:
                 # a tendril: an arc winding into a curl, with one or two leaflets
                 a = rng.uniform(0, TAU)
                 L = cell * rng.uniform(.55, .9)
@@ -412,7 +427,7 @@ def _flat_leaf(L, W, lobes, rng, inner_lobes=1):
     n_o = lobes + .5
     tab = []
     edge = []
-    M_ = max(28, int(L / 1.2))
+    M_ = max(16, int(L / 1.8))
     for i in range(M_ + 1):
         u = i / M_
         t = (u * n_o + ph) % 1.
@@ -613,9 +628,16 @@ def k_volute(cv, cx, cy, R, a0, turns=1.55, dirn=1, seed=0, leaves=3, wstem=None
 # leaves an earlier scroll (or the source), each carrying its own small shaded leaves
 # ---------------------------------------------------------------------------------------------
 
+STYLE = ["acanthus"]
+
+
 def small_leaf(cv, x, y, ang, L, curl=1, seed=0, lobes=None):
-    """A small acanthus leaf for fine scroll (L about 5-16 px)."""
+    """A small acanthus leaf for fine scroll (L about 5-16 px); in the Thai style (STYLE[0] ==
+    "thai") a kranok flame: narrow, lobed on its back, its tip hooked hard over."""
     lobes = lobes or (2 if L < 9 else 3)
+    if STYLE[0] == "thai":
+        return acanthus_leaf(cv, x, y, ang, L * 1.1, L * .27, bend=curl * .5, curl=curl * 2.4, lobes=lobes + 1,
+                             seed=seed, pitch=1.5 if L < 13 else 2., inner_lobes=1)
     return acanthus_leaf(cv, x, y, ang, L, L * .42, bend=curl * .6, curl=curl * .9, lobes=lobes,
                          seed=seed, pitch=1.5 if L < 13 else 2., inner_lobes=1 + (L > 11))
 
@@ -634,7 +656,7 @@ def fine_volute(cv, cx, cy, r, a0, dirn, rng, tail=None, leaves=True, thin=None,
         p = sp[i]
         a = _m.atan2(cy - p[1], cx - p[0])
         small_leaf(cv, p[0], p[1], a - dirn * .9, r * .75 * leafk, dirn, rng.randrange(1 << 20))
-    sw = with_heading(resample(pts, 1.6))
+    sw = with_heading(resample(pts, 2.2))
     nn = len(sw) - 1
     nt = len(tail) if tail else 0
     ntot = max(1, nn)
@@ -1323,6 +1345,7 @@ def compose(w, h, ctx, spec):
     'arch'|'cut', leafk, rmax)."""
     seed = spec.get("seed", 1)
     rng = _r.Random(seed)
+    STYLE[0] = spec.get("style", "acanthus")
     o = []
     avoid = []
     cv = Canvas()
@@ -1449,7 +1472,7 @@ def compose(w, h, ctx, spec):
             if f(a, b):
                 return False
         return True
-    fixed = [black_ground((0, 0, w, h), seed, dens=.12), border_lines] + fronts
+    fixed = [black_ground((0, 0, w, h), seed, dens=spec.get("ground_dens", .12)), border_lines] + fronts
     budget = spec.get("budget", 191) * 1024 - sum(len(f.encode()) for f in fixed) - 1500
     cv = Canvas()
     marks = []

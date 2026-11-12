@@ -410,14 +410,14 @@ def rinceau(cv, x0, y0, ang, length, breadth, seed=0, mirror=False, r_scale=1., 
 # engraved sky: graded lines that part round modelled cloud banks
 # ------------------------------------------------------------------------------------------------
 
-def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None):
+def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     """Sky for a vignette X..X+W, Y..Y+H: engraved, never merely ruled. Cumulus banks built of
     billows (each a modelled dome: a lit crown left white, its underside rolled in curved cuts
     that close toward the base, a dark seam beneath), lines between them that tighten toward the
     zenith and ripple, parting round every cloud. sun=(x, y, r) cuts a disc with rings."""
     rng = _r.Random(seed)
     cv.obj([[(X - 2, Y - 2), (X + W + 2, Y - 2), (X + W + 2, Y + H + 2), (X - 2, Y + H + 2)]], 0)
-    nb = max(clouds, min(6, int(W * H / 9000)))
+    nb = max(clouds, min(maxc, int(W * H / 9000)))
     rows = max(1, int(H / 50))
     banks = []
     for k in range(nb):
@@ -968,7 +968,7 @@ def bead_ring(poly, r=1.5, gap=1.):
             f'<path d="{sh}" stroke="#000" stroke-width="{_SN(max(1., r * .8))}" {da}/>')
 
 
-def ell(cx, cy, rx, ry, n=72):
+def _kell(cx, cy, rx, ry, n=72):
     return [(cx + rx * _m.cos(2 * _SPI * i / n), cy + ry * _m.sin(2 * _SPI * i / n)) for i in range(n)]
 
 
@@ -976,13 +976,13 @@ def medallion_ring(cx, cy, rx, ry, bead=1.5):
     """An inlaid portrait medallion's frame: gold wire line outside, a beaded ring, a sunk black
     fillet and a fine inner wire. Returns (svg, inner_ellipse_poly) - fill the inner with the scene."""
     o = []
-    outer = ell(cx, cy, rx, ry)
+    outer = _kell(cx, cy, rx, ry)
     bw = bead * 2 + 4.5
     o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="{_SD(ell(cx, cy, rx - 1.5, ry - 1.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(bead_ring(ell(cx, cy, rx - 2.5 - bead, ry - 2.5 - bead, 120), bead, .8))
-    o.append(f'<path d="{_SD(ell(cx, cy, rx - bw + .2, ry - bw + .2), True, .1)}{_SD(ell(cx, cy, rx - bw - 1.6, ry - bw - 1.6)[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
-    inner = ell(cx, cy, rx - bw - 1.6, ry - bw - 1.6)
+    o.append(f'<path d="{_SD(_kell(cx, cy, rx - 1.5, ry - 1.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(bead_ring(_kell(cx, cy, rx - 2.5 - bead, ry - 2.5 - bead, 120), bead, .8))
+    o.append(f'<path d="{_SD(_kell(cx, cy, rx - bw + .2, ry - bw + .2), True, .1)}{_SD(_kell(cx, cy, rx - bw - 1.6, ry - bw - 1.6)[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
+    inner = _kell(cx, cy, rx - bw - 1.6, ry - bw - 1.6)
     o.append(f'<path d="{_SD(inner, True, .1)}" fill="#fff" stroke="none"/>')
     return "".join(o), inner
 
@@ -1151,6 +1151,8 @@ _KG = {
     "&": [[(4, 6), (1, 2), (1, .8), (2, 0), (3, .8), (3, 1.8), (0, 4.4), (0, 5.2), (1, 6), (2.6, 6), (4, 4)]],
     "'": [[(1, 0), (.7, 1.5)]],
     "*": [[(2, 1.5), (2, 4.5)], [(.7, 2.2), (3.3, 3.8)], [(3.3, 2.2), (.7, 3.8)]],
+    "%": [[(0, 6), (4, 0)], [(.2, .3), (1.4, .3), (1.4, 1.7), (.2, 1.7), (.2, .3)],
+          [(2.6, 4.3), (3.8, 4.3), (3.8, 5.7), (2.6, 5.7), (2.6, 4.3)]],
 }
 _SERIF = set("ABDEFHIKLMNPRTUVWXYZ1")
 
@@ -1259,7 +1261,7 @@ def arms_placeholder(cx, cy, rx, ry, seed=0):
     """The dedication cartouche held for Parker's family arms (pending): a beaded oval shield
     with crossed drumsticks over a rayed sun. Not invented arms - a placeholder."""
     cv = KCanvas()
-    sh = ell(cx, cy, rx, ry, 48)
+    sh = _kell(cx, cy, rx, ry, 48)
     cv.obj([sh], 1.)
     # rayed sun
     sr = min(rx, ry) * .42
@@ -1270,9 +1272,9 @@ def arms_placeholder(cx, cy, rx, ry, seed=0):
         r1 = sr * (1.25 if k % 2 else 1.6)
         rays.append([(sx + _m.cos(a) * sr * 1.05, sy + _m.sin(a) * sr * 1.05), (sx + _m.cos(a) * min(r1, rx * .9), sy + _m.sin(a) * min(r1, ry * .85))])
     cv.line(rays)
-    disc = ell(sx, sy, sr, sr, 28)
+    disc = _kell(sx, sy, sr, sr, 28)
     cv.obj([disc], 1.)
-    cv.hair(_C.hatch_poly(ell(sx + sr * .25, sy + sr * .25, sr * .7, sr * .7, 20), 45, 1.5))
+    cv.hair(_C.hatch_poly(_kell(sx + sr * .25, sy + sr * .25, sr * .7, sr * .7, 20), 45, 1.5))
     # crossed drumsticks with ball tips, over the sun
     L = min(rx, ry) * 1.55
     for sg in (-1, 1):
@@ -1286,10 +1288,10 @@ def arms_placeholder(cx, cy, rx, ry, seed=0):
         cv.obj([stick], .5)
         cv.hair([(p0[0] - nx * hw0 * .4, p0[1] - ny * hw0 * .4), (p1[0] - nx * hw1 * .3, p1[1] - ny * hw1 * .3)])
         tip = (p1[0] + _m.cos(a) * 1.2, p1[1] + _m.sin(a) * 1.2)
-        cv.obj([ell(tip[0], tip[1], max(1.2, L * .05), max(1., L * .042), 10)], .5)
-    o = [f'<path d="{_SD(ell(cx, cy, rx + 4.5, ry + 4.5), True, .1)}" fill="#000" stroke="none"/>',
-         bead_ring(ell(cx, cy, rx + 3, ry + 3, 72), 1.2, .7),
-         f'<path d="{_SD(ell(cx, cy, rx + 5, ry + 5), True, .1)}" fill="none" stroke="#000" stroke-width="1"/>',
+        cv.obj([_kell(tip[0], tip[1], max(1.2, L * .05), max(1., L * .042), 10)], .5)
+    o = [f'<path d="{_SD(_kell(cx, cy, rx + 4.5, ry + 4.5), True, .1)}" fill="#000" stroke="none"/>',
+         bead_ring(_kell(cx, cy, rx + 3, ry + 3, 72), 1.2, .7),
+         f'<path d="{_SD(_kell(cx, cy, rx + 5, ry + 5), True, .1)}" fill="none" stroke="#000" stroke-width="1"/>',
          cv.svg()]
     return "".join(o)
 
@@ -1319,8 +1321,8 @@ def _corner_rosette(cv, x, y, r, seed):
     for k in range(4):
         a = k * _SPI / 2 + _SPI / 4
         fine_leaf(cv, x, y, a, r, r * .38, 1 if k % 2 else -1, rng.randrange(1 << 20), 2, ow=.5)
-    cv.obj([ell(x, y, r * .26, r * .26, 14)], .5)
-    cv.hair(_C.hatch_poly(ell(x + r * .06, y + r * .06, r * .17, r * .17, 10), 45, 1.5))
+    cv.obj([_kell(x, y, r * .26, r * .26, 14)], .5)
+    cv.hair(_C.hatch_poly(_kell(x + r * .06, y + r * .06, r * .17, r * .17, 10), 45, 1.5))
 
 
 def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=None):
@@ -1369,13 +1371,13 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         roots = []
         for s in (-1, 1):
             roots.append(_wave_root(mcx + s * rx * .55, fy1 - 4, mcx + s * (w / 2 + 6), fy0 + (fy1 - fy0) * .3, rx * .22, 90, rng.uniform(0, 1)))
-    hole = ell(mcx, mcy, rx + 3, ry + 3, 64)
+    hole = _kell(mcx, mcy, rx + 3, ry + 3, 64)
     holes = [hole]
     if mode == "t":
         holes.append([(mcx - rx * 1.05, mcy + ry - 6), (mcx + rx * 1.05, mcy + ry - 6), (mcx + rx * 1.05, mcy + ry + 20),
                       (mcx - rx * 1.05, mcy + ry + 20)])
         arms_r = min(18., base_h * .45)
-        holes.append(ell(mcx, fy1 - 2, arms_r * 1.5, arms_r + 6, 32))
+        holes.append(_kell(mcx, fy1 - 2, arms_r * 1.5, arms_r + 6, 32))
     # scroll size scales with the free area, so every height carries about the same count of
     # scrolls (fine and dense, within the byte budget)
     def _pa(p):
@@ -1400,7 +1402,7 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         engraved_sky(sk, X, Y, W, top_h, seed + 3, clouds=3)
         for k in range(4):
             bx = X + W * (k + .5) / 4
-            sk.obj([ell(bx, Y + top_h - 3, W * .14, 7.5, 28)], .5)
+            sk.obj([_kell(bx, Y + top_h - 3, W * .14, 7.5, 28)], .5)
             for f in (.7, .4):
                 sk.hair([(bx + W * .14 * f * _m.cos(a), Y + top_h - 3 + 7.5 * f * _m.sin(a)) for a in [_SPI * (1 + i / 10) for i in range(11)]])
         scene_svg = clip_to(f"ks{seed % 9973}", inner, sk.svg()) + scene(X, Y + H - H2, W, H2, mode, inner)
@@ -1467,7 +1469,7 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
             fr = [(0, fr_y), (w, fr_y), (w, fr_y + fr_h), (0, fr_y + fr_h)]
             o.append(matte((0, fr_y, w, fr_h), seed + 5))
             fc = KCanvas()
-            scroll_field(fc, fr, [ell(mcx, fr_y + fr_h / 2, 40, fr_h, 24)],
+            scroll_field(fc, fr, [_kell(mcx, fr_y + fr_h / 2, 40, fr_h, 24)],
                          [_wave_root(mcx + s * 36, fr_y + fr_h / 2, mcx + s * (w / 2 + 4), fr_y + fr_h / 2, fr_h * .2, 60)
                           for s in (-1, 1)], rng.randrange(1 << 20), rmin=6., rmax=min(13., fr_h * .5), max_n=16)
             o.append(clip_to(f"kb{seed % 9973}", fr, fc.svg()))
@@ -1497,8 +1499,8 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
 # ------------------------------------------------------------------------------------------------
 
 def _egg_roundel(cv, x, y, r):
-    cv.obj([ell(x, y, r, r, 40)], 1.)
-    cv.hair(ell(x, y, r - 1.5, r - 1.5, 40) + [(x + r - 1.5, y)])
+    cv.obj([_kell(x, y, r, r, 40)], 1.)
+    cv.hair(_kell(x, y, r - 1.5, r - 1.5, 40) + [(x + r - 1.5, y)])
 
 
 def _P(x, y, r, a, b):
@@ -1509,14 +1511,14 @@ def egg_drumsticks(cv, x, y, r):
     """Crossed drumsticks with ball tips over a tiny ride cymbal."""
     r = min(r, 14.)
     _egg_roundel(cv, x, y, r)
-    cy = ell(x, y + r * .15, r * .62, r * .2, 28)
+    cy = _kell(x, y + r * .15, r * .62, r * .2, 28)
     cv.obj([cy], .5)
     cv.hair([[_P(x, y + r * .15, r, -.5 * f, 0), _P(x, y + r * .15, r, .5 * f, 0)] for f in (.5, 1.)])
-    cv.obj([ell(x, y + r * .08, r * .1, r * .05, 10)], .5)
+    cv.obj([_kell(x, y + r * .08, r * .1, r * .05, 10)], .5)
     for sg in (-1, 1):
         p0, p1 = _P(x, y, r, -.62 * sg, .62), _P(x, y, r, .55 * sg, -.6)
         cv.obj([[(p0[0] - .8, p0[1]), (p1[0] - .4, p1[1]), (p1[0] + .4, p1[1]), (p0[0] + .8, p0[1])]], .5)
-        cv.obj([ell(p1[0], p1[1], 1.2, 1., 8)], .5)
+        cv.obj([_kell(p1[0], p1[1], 1.2, 1., 8)], .5)
 
 
 def egg_notes(cv, x, y, r):
@@ -1525,8 +1527,8 @@ def egg_notes(cv, x, y, r):
     _egg_roundel(cv, x, y, r)
     for k, (a, b) in enumerate(((-.35, .4), (.3, .25))):
         hx, hy = _P(x, y, r, a, b)
-        cv.obj([ell(hx, hy, r * .16, r * .11, 12)], .5)
-        cv.line(_C.hatch_poly(ell(hx, hy, r * .14, r * .09, 10), 0, .8, .4))
+        cv.obj([_kell(hx, hy, r * .16, r * .11, 12)], .5)
+        cv.line(_C.hatch_poly(_kell(hx, hy, r * .14, r * .09, 10), 0, .8, .4))
         cv.line([(hx + r * .14, hy), (hx + r * .14, hy - r * .72)])
     cv.heavy([_P(x, y, r, -.21, -.33), _P(x, y, r, .44, -.48)])
 
@@ -1568,10 +1570,10 @@ def egg_dog(cv, x, y, r):
     """His dog, curled asleep, nose to tail, fur in fine cuts."""
     r = min(r, 14.)
     _egg_roundel(cv, x, y, r)
-    body = ell(x, y + r * .08, r * .62, r * .42, 24)
+    body = _kell(x, y + r * .08, r * .62, r * .42, 24)
     cv.obj([body], .5)
-    cv.hair([ell(x, y + r * .08, r * .62 * f, r * .42 * f, 20, )[:14] for f in (.75, .5)])
-    head = ell(x - r * .32, y - r * .05, r * .24, r * .2, 14)
+    cv.hair([_kell(x, y + r * .08, r * .62 * f, r * .42 * f, 20, )[:14] for f in (.75, .5)])
+    head = _kell(x - r * .32, y - r * .05, r * .24, r * .2, 14)
     cv.obj([head], .5)
     cv.obj([[_P(x, y, r, -.48, -.18), _P(x, y, r, -.4, -.42), _P(x, y, r, -.28, -.2)]], .5)
     cv.line([_P(x, y, r, -.55, .0), _P(x, y, r, -.53, .02)])
@@ -1625,7 +1627,7 @@ def egg_solar(cv, x, y, r):
     """A tiny solar panel tilted to a rayed sun."""
     r = min(r, 13.)
     _egg_roundel(cv, x, y, r)
-    cv.obj([ell(x + r * .35, y - r * .35, r * .18, r * .18, 12)], .5)
+    cv.obj([_kell(x + r * .35, y - r * .35, r * .18, r * .18, 12)], .5)
     cv.hair([[_P(x, y, r, .35 + .26 * _m.cos(a), -.35 + .26 * _m.sin(a)), _P(x, y, r, .35 + .4 * _m.cos(a), -.35 + .4 * _m.sin(a))] for a in [k * _SPI / 4 for k in range(8)]])
     pan = [_P(x, y, r, -.65, .1), _P(x, y, r, .1, -.05), _P(x, y, r, .3, .4), _P(x, y, r, -.45, .55)]
     cv.obj([pan], .5)

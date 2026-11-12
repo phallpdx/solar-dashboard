@@ -2631,15 +2631,15 @@ def turntable(x, y, w, h, facts, seed):
     cv = ST5.Cv()
     cx = x + w / 2
     # the wall of records: spines on two shelves, each turned by its own cuts, a few pulled forward
-    shelf_y = [y + h * .3, y + h * .56]
+    shelf_y = [y + h * .5]
     back = [(x - 2, y - 2), (x + w + 2, y - 2), (x + w + 2, y + h + 2), (x - 2, y + h + 2)]
     cv.obj([back], 0)
     for r_, sy in enumerate(shelf_y):
-        top = (y - 2) if r_ == 0 else shelf_y[r_ - 1] + 3
+        top = y + h * .18
         xx = x - 2
         while xx < x + w + 2:
             sw = rng.uniform(1.5, 4.5)
-            ht = (sy - top) * rng.uniform(.82, .98)
+            ht = (sy - top) * rng.uniform(.6, .95)
             sp = [(xx, sy), (xx, sy - ht), (xx + sw, sy - ht), (xx + sw, sy)]
             cv.obj([sp], .5)
             kind = rng.random()
@@ -2696,6 +2696,13 @@ def turntable(x, y, w, h, facts, seed):
     k = .32
     plat = ST5._ell(pcx, pcy + 1.5, R * 1.03, R * k * 1.03 + 1.5, 64)[:-1]
     cv.obj([plat], 1.)
+    dots = []
+    for i in range(72):
+        a = math.tau * i / 72
+        if math.sin(a) > 0:
+            q = (pcx + math.cos(a) * R * 1.015, pcy + 1.5 + math.sin(a) * (R * k * 1.015 + 1.5))
+            dots.append([q, (q[0], q[1] + 1.)])
+    cv.hair(dots)
     rec = ST5._ell(pcx, pcy, R, R * k, 64)[:-1]
     cv.obj([rec], 1.)
     blk = []

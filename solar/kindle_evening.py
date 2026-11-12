@@ -57,7 +57,11 @@ html.kev #kmain svg text.kmicro{font:600 4.4px var(--k-serif) !important;stroke-
 #kmain .kegg{position:absolute !important;right:66px;bottom:26px}
 #kmain svg.kfr path,#kmain svg.kfr circle{vector-effect:non-scaling-stroke}
 #kmain .kfill{display:block;height:0;overflow:hidden;position:relative}
-#kmain .kfill svg{display:none;position:absolute;left:0;top:50%;width:100%}
+#kmain .kfill svg.kfr,#kmain .kfill svg.kfp{display:none !important}
+#kmain .kfill{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-evenly;justify-content:space-evenly}
+#kmain .kfi{display:none;flex:none;margin:0;text-align:center;line-height:0}
+#kmain .kfi svg{display:inline-block;max-width:100%;vertical-align:top}
+#kmain .kfrow{white-space:nowrap}#kmain .kfrow svg{margin:0 3px}#kmain .kfrow svg:first-child{margin-left:0}#kmain .kfrow svg:last-child{margin-right:0}
 html.kev #kmain svg text.kseal{font:700 17px var(--k-serif) !important;stroke-width:0 !important}
 html.kev #kmain svg text.ksealno{font:italic 600 7.4px var(--k-serif) !important;stroke-width:0 !important}
 #kmain .korn{display:block;margin:0 auto;overflow:visible;max-width:100%}
@@ -708,7 +712,7 @@ def _egg(kind, seed, size):
         return ""
 
 
-def _filler(night, salt, w=528, moon=None):
+def _filler(night, salt, w=528, moon=None, budget=90000):
     """Art for the room a page's words leave: a seeded guilloche ribbon (for a sliver of space) and a
     panel with a rose-engine rosette on a guilloche ground (for more). The script sizes and picks one."""
     rib = (f'<g transform="translate(0,3)">' + engraving.band(engraving.rng_for(night, salt + "r"), f"kfr{salt}", w, 12) + '</g>'
@@ -738,14 +742,134 @@ def _filler(night, salt, w=528, moon=None):
                 "<svg ", '<svg class="kfp" style="height:110px;margin-top:-55px" aria-hidden="true" ', 1)
         except Exception:  # noqa: BLE001
             pass
-    return f'<div class="kfill">{ribbon}{panel}</div>'
+    stack = _fill_stack(night, salt, seed, w, moon, budget)
+    return f'<div class="kfill">{stack}</div>'
+
+
+_MED_ORDER = ("snare", "paw", "vinyl", "fir", "rose", "salmon", "bass", "sticks", "moon", "sun")
+_VIG_ORDER = ("jazz", "dog", "hood", "drums", "record", "firs", "heron", "river", "cranes", "lotus", "solar", "bridge")
+
+
+def _fill_stack(night, salt, seed, w, moon, budget=90000):
+    """Stacked engraved art for big free areas: medallion rows, vignette rows, the river panorama, a rosette
+    panel and Thai ribbons, each a .kfi with its height in data-h; FILL_JS shows them greedily to the exact room.
+    Each engraving is drawn once in a hidden defs block and placed by <use>, so a page can stack many rows cheaply."""
+    defs, items = [], []
+    k = seed % 97
+    spent = [0]
+    if budget < 12000:  # no room in the page's weight for more than a ribbon
+        budget = 0
+    XL = 'xmlns:xlink="http://www.w3.org/1999/xlink"'
+
+    def use(ref, vw, vh, dw, dh, extra=""):
+        return (f'<svg {XL} viewBox="0 0 {vw} {vh}" width="{_n(dw)}" height="{_n(dh)}" aria-hidden="true"{extra}>'
+                f'<use xlink:href="#{ref}" width="{vw}" height="{vh}"/></svg>')
+
+    meds = []
+    try:
+        if engraving_medallions:
+            for i in range(8):
+                key = _MED_ORDER[(k + i) % len(_MED_ORDER)]
+                m = engraving_medallions.MEDALLIONS[key](41, seed=(k * 7 + i) % 50 + 1)
+                if i >= 3 and spent[0] + len(m) > budget * .45:
+                    break
+                mid = f"kmd{salt}{i}"
+                defs.append(m.replace("<svg ", f'<svg id="{mid}" ', 1))
+                spent[0] += len(m)
+                meds.append(mid)
+    except Exception:  # noqa: BLE001
+        meds = []
+    vigs = []
+    try:
+        if VIGNETTES:
+            for i in range(6):
+                key = _VIG_ORDER[(k + i) % len(_VIG_ORDER)]
+                v = VIGNETTES.get(key)
+                if v and i >= 2 and spent[0] + len(v) > budget * .8:
+                    break
+                if v:
+                    spent[0] += len(v)
+                    vid = f"kvg{salt}{i}"
+                    defs.append(v.replace("<svg ", f'<svg id="{vid}" ', 1))
+                    vigs.append(vid)
+    except Exception:  # noqa: BLE001
+        vigs = []
+
+    def medrow(n, off):
+        d = (w - 5 * (n - 1)) / n
+        h = int(d) + 6
+        return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(meds[(off + i) % len(meds)], 100, 100, d, d) for i in range(n)) + '</div>'
+
+    def vigrow(n, off):
+        vw = (w - 5 * (n - 1)) / n
+        h = int(vw * 2 / 3) + 6
+        return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(vigs[(off + i) % len(vigs)], 120, 80, vw, vw * 2 / 3) for i in range(n)) + '</div>'
+
+    pano = rose = ""
+    try:
+        if engraving_panorama and budget - spent[0] > 26000:
+            pv = engraving_panorama.panorama(w, 104, f"{seed}s", moon if moon is not None else .5)
+            pano = f'<div class="kfi" data-h="108">{pv.replace("<svg ", "<svg aria-hidden=" + chr(34) + "true" + chr(34) + " ", 1)}</div>'
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        c = w / 2
+        rid = f"kq{salt}"
+        g = (f'<g id="{rid}"><circle r="39" fill="#fff" {K} stroke-width="{W1}"/>'
+             + engraving.rosette(engraving.rng_for(night, f"{salt}q"), f"kq{salt}p", 36) + '</g>')
+        g = f'<g transform="translate({_n(c)},40)">{g}</g>' + "".join(
+            f'<use {XL} xlink:href="#{rid}" transform="translate({_n(x)},40)"/>' for x in (c - 180, c + 180))
+        g += "".join(_star(x, 40, 6) for x in (c - 180, c, c + 180))
+        g += "".join(_kanok(x, 40, .8, r) for x, r in ((c - 95, 180), (c - 85, 0), (c + 85, 180), (c + 95, 0)))
+        rose = f'<div class="kfi" data-h="84">' + _fix(f'<svg {XL} viewBox="0 0 {w} 80" width="{w}" height="80" aria-hidden="true">{g}</svg>') + '</div>'
+    except Exception:  # noqa: BLE001
+        pass
+    rib = ""
+    try:
+        if engraving_thai:
+            kb = engraving_thai.kranok_band(w, 16, seed * 3 + 11)
+            rib = re.sub(r'<svg ', '<svg aria-hidden="true" preserveAspectRatio="none" style="width:100%;height:16px" ', kb, 1)
+    except Exception:  # noqa: BLE001
+        pass
+
+    # the menu, best first; the script takes what fits, top to bottom
+    if not budget:
+        meds = vigs = []
+        defs = []
+        pano = rose = ""
+    if meds:
+        items.append(medrow(6, 0))
+    if vigs:
+        items.append(vigrow(4, 0))
+    if pano:
+        items.append((108, pano))
+    if rose:
+        items.append((84, rose))
+    if meds:
+        items.append(medrow(8, 3))
+    if vigs:
+        items.append(vigrow(6, 2))
+    if meds:
+        items.append(medrow(10, 5))
+        items.append(medrow(6, 4))
+    if vigs:
+        items.append(vigrow(4, 3))
+    if meds:
+        items.append(medrow(12, 1))
+    if rib:
+        items.append((20, f'<div class="kfi" data-h="20">{rib}</div>'))
+    return (f'<div class="kdefs" aria-hidden="true">{"".join(defs)}</div>' if defs else "") + "".join(x for _, x in items)
 
 
 FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
-           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr');"
-           "k.style.height='0px';p.style.display='none';r.style.display='none';"
+           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr'),"
+           "it=k.querySelectorAll('.kfi'),i;k.style.height='0px';if(p)p.style.display='none';if(r)r.style.display='none';"
+           "for(i=0;i<it.length;i++)it[i].style.display='none';"
            "var free=Math.floor(b.getBoundingClientRect().top-20-fr.getBoundingClientRect().bottom);"
-           "if(free>=124){k.style.height=free+'px';p.style.display='block';}else if(free>=26){k.style.height=free+'px';r.style.display='block';}"
+           "if(free>=20){k.style.height=free+'px';var left=free-4,on=0;"
+           "for(var pass=0;pass<2;pass++)for(i=0;i<it.length;i++){var h=+it[i].getAttribute('data-h');"
+           "if(it[i].style.display!=='none')continue;if(pass===0&&h<=20&&on===0&&left>140)continue;"
+           "if(h<=left){it[i].style.display='block';left-=h;on++;}}}"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
            "window.addEventListener('load',go);})();</script>")
@@ -1351,6 +1475,7 @@ def _moon_plate(lit, waxing, size=120):
     return _svg(size, size, ring + _moon_shape(c, c, r, lit, waxing, "kbm", maria=True, dark="url(#ke-n)"))
 
 
+PAGE_BYTES = 176000  # each page stays under ~180 KB
 SCREEN = 596  # usable height of a text page, px (618 x 714 less the running head and the bar)
 
 
@@ -1554,6 +1679,7 @@ def main(dash_path, ev_path, site):
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
         fill = _filler(night, pg["file"].split(".")[0].replace("-", ""),
+                       budget=PAGE_BYTES - 42000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
                        moon=(phase[0] / 100 if phase and pg["file"] in ("tomorrow.html", "sky.html") else None))
         if not framed:
             pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
@@ -1648,7 +1774,7 @@ def main(dash_path, ev_path, site):
                 + ([f"the moon {phase[0]}% lit"] if phase else [])
                 + ([f"&#8220;{E(poem['title'])}&#8221;"] if poem else [])))
             + f'<p class="kevrest">{rest_txt if leads else rest_txt.replace("Then ", "Inside: ", 1)}About {minutes} minutes.</p>'
-            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W)}</div>' + FILL_JS)
+            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=0)}</div>' + FILL_JS)
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
                      run_right="", fonts=font_links, next_label=_TITLES[files[0]]))

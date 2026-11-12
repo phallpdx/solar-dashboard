@@ -3177,7 +3177,7 @@ function renderYard() {
     : y.rain_ratio < 0.85 ? `Your gauge catches about ${Math.round((1 - y.rain_ratio) * 100)}% less rain than forecast.`
     : 'Your gauge catches about what the forecast says.';
   const rows = y.ahead.map(a => `<div class="yd"><span class="d">${a.date === todayIso() ? 'Today' : DOW[new Date(a.date + 'T12:00').getDay()]}</span>
-    <b>${a.hi}° <span>/ ${a.lo}°</span></b><small>forecast ${a.model_hi}° / ${a.model_lo}°</small>${a.rain_in >= 0.05 ? `<small class="r">~${a.rain_in.toFixed(2)} in</small>` : ''}</div>`).join('');
+    <b><span>Your yard </span>${a.hi}° <span>/ ${a.lo}°</span></b><small>forecast ${a.model_hi}° / ${a.model_lo}°</small>${a.rain_in >= 0.05 ? `<small class="r">~${a.rain_in.toFixed(2)} in</small>` : ''}</div>`).join('');
   $('yard').innerHTML = `<p class="summary">Afternoons here run <b>${warm(y.hi_bias)}</b>, nights <b>${warm(y.lo_bias)}</b>. ${rain}</p>
     ${y.frost ? `<p class="yard-alert">🥶 Frost risk ${y.frost.date === todayIso() ? 'tonight' : DOW[new Date(y.frost.date + 'T12:00').getDay()]}: your yard should hit about ${y.frost.lo}°. Cover tender plants.</p>` : ''}
     <div class="yds">${rows}</div><p class="note">Adjusted for your yard. These numbers sharpen as your station logs more days.</p>`;
@@ -3190,7 +3190,8 @@ function renderShades() {
   $('shade-meta').textContent = sh.indoor_f ? `Inside now ${sh.indoor_f}°` : '';
   const icon = s => s.do === 'open' ? (s.where === 'windows' ? '🪟' : '☀️') : '🌙';
   const modeWord = {heat: 'Heating day: use the sun, then hold the heat', cool: 'Cooling day: block the sun', mild: 'Mild day'};
-  $('shades').innerHTML = sh.plans.map(p => `<div class="shade-day"><span class="shade-k">${p.date === todayIso() ? 'Today' : 'Tomorrow'} · ${modeWord[p.mode]} · high ${p.high}°</span>
+  const mode = p => p.mode === 'heat' && !p.steps.some(s => s.do === 'open') ? 'Heating day: keep the heat in' : modeWord[p.mode];
+  $('shades').innerHTML = sh.plans.map(p => `<div class="shade-day"><span class="shade-k">${p.date === todayIso() ? 'Today' : 'Tomorrow'} · ${mode(p)} · forecast high ${p.forecast_high ?? p.high}°</span>
     ${p.steps.map(s => `<div class="shade-step"><span class="shade-ic" aria-hidden="true">${s.do === 'keep closed' ? '🌥️' : icon(s)}</span>
       <div><b>${s.do === 'keep closed' ? 'Keep shades closed' : `${s.do === 'open' ? 'Open' : 'Close'} ${s.where === 'all' ? 'all shades' : s.where === 'windows' ? 'the windows' : s.where + ' shades'}`} ${s.do === 'keep closed' ? '' : 'at ' + clock(s.time)}</b>
       <small>${esc(s.why)}</small></div></div>`).join('')}</div>`).join('');
@@ -3334,7 +3335,9 @@ function renderWeather() {
   }
   const ago = w.updated_ms ? Math.max(0, Math.round((Date.now() - w.updated_ms) / 60000)) : null;
   $('wx-meta').textContent = esc(w.station) + (ago != null ? ` · ${ago < 60 ? ago + ' min' : Math.round(ago / 60) + ' hr'} ago` : '');
-  const hilo = w.hi_f != null ? `High ${w.hi_f}° · low ${w.lo_f}°` : '';
+  // One "today's high" in the edition: the forecast high, labelled. The station's are readings so far.
+  const fc0 = D.outside && D.outside.days && D.outside.days[0];
+  const hilo = w.hi_f != null ? `So far today: high ${w.hi_f}°, low ${w.lo_f}°${fc0 && fc0.hi != null ? ` · forecast high ${fc0.hi}°` : ''}` : '';
   // Solar panels make less power as they heat up (roughly 0.4% per °C above 25 °C).
   const note = w.heat_loss_pct == null ? 'Solar panels lose some output when they get hot. Too little sun right now for that to matter.'
     : w.heat_loss_pct < 1 ? 'Solar panels lose some output when they get hot. Yours are cool right now, so they’re losing nothing to heat.'
@@ -5069,8 +5072,8 @@ async function renderBriefing() {
   if (an && an.north_pct >= 30) add(64, 'nearby', `NOAA gives a ${an.north_pct}% chance of aurora to the north in the next half hour. ${say('aurora_now', 0, 'The north field is the darkest spot.')}`);
   const sat = (o.satellites || []).find(p => p.max_alt >= 40 && soon(isoLocal(new Date(p.utc)), 1));
   if (sat) add(36, 'nearby', `${esc(sat.name)} passes high overhead ${whenWord(isoLocal(new Date(sat.utc)))} at ${timeOf(sat.utc)}, from the ${esc(sat.from)} to the ${esc(sat.to)}.`);
-  const smk = (o.smoke || []).find(d => d.pm2_5 > 35);
-  if (smk) add(66, 'today', `Smoke is forecast ${smk.date === today ? 'today' : whenWord(smk.date)}: PM2.5 around ${smk.pm2_5} µg/m³, ${esc(smk.word.toLowerCase())}.`);
+  const smk = (o.smoke || []).find(d => d.aqi != null ? d.aqi > 100 : d.pm2_5 > 35.4);
+  if (smk) add(66, 'today', `Smoky air is forecast ${smk.date === today ? 'today' : whenWord(smk.date)}: air quality ${esc(smk.word.toLowerCase())}${smk.aqi != null ? ` (AQI up to ${smk.aqi})` : ` (PM2.5 around ${smk.pm2_5} µg/m³)`}.`);
 
   // Wildlife and the river
   const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];

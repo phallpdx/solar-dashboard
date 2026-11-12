@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 import check
 
 D, OUT = sys.argv[1], sys.argv[2]
+SHEET = sys.argv[3] if len(sys.argv) > 3 else None
 REFS = '/mnt/project-files/kindle/redesign/refs/'
 meta = json.load(open(os.path.join(D, 'meta.json')))
 try:
@@ -54,7 +55,7 @@ try:
 except Exception as e:
     print('refs missing', e)
 kp = byfam['kpanel'][0]
-head += [('engine: panel edge (kpanel, 18 px band), device pixels 1:1, 16 greys', dev(kp['name'], (0, 0, 1040, 300))),
+head += [('engine: a corner of the full sheet (field, panel inlay edge), device pixels 1:1, 16 greys', q16(Image.open(os.path.join(SHEET, 'sheet.png')).convert('RGBA').crop((0, 0, 1040, 300)))),
          ('engine: banner 526x80, device pixels 1:1, 16 greys', dev(byfam['banner'][0]['name'])),
          ('engine: button 200x40 (Prev) and 96x40 (More), chip 96x30, device pixels 1:1, 16 greys', None)]
 row = [dev(byfam['button'][0]['name']), dev(byfam['button'][2]['name']), dev(byfam['chip'][0]['name'])]
@@ -67,16 +68,36 @@ head[-1] = (head[-1][0], strip)
 MAG = 3
 def mag(im, photo):
     return im.resize((im.size[0] * MAG, im.size[1] * MAG), Image.LANCZOS if photo else Image.NEAREST)
+# the sheet: a full 618 x 714 page, three panels in a scroll field (tools/frames/demo_sheet.py), device px
+sheet_rows = []
+if SHEET:
+    sp = Image.open(os.path.join(SHEET, 'sheet.png')).convert('RGBA')
+    sp = q16(sp)
+    vfull = ref('parker-ref-vise.jpg', (40, 330, 760, 680), VISE_PPI)
+    sheet_rows.append(('S1. A full Kindle sheet (618 x 714 CSS px = 1236 x 1428 device px), three panels set in one scroll field, '
+                       '1:1 device pixels, 16 greys; beside it the vise at the same physical scale (300 ppi)', [sp, vfull]))
+    s3 = sp.crop((0, 1150, 1100, 1428))
+    s3 = s3.resize((s3.size[0] * MAG, s3.size[1] * MAG), Image.NEAREST)
+    v3 = ref('parker-ref-vise.jpg', (80, 470, 640, 640), VISE_PPI)
+    v3 = v3.resize((v3.size[0] * MAG, v3.size[1] * MAG), Image.LANCZOS)
+    sheet_rows.append(('S2. The sheet\'s foot field at %dx (nearest neighbour)' % MAG, [s3.crop((0, 0, min(s3.size[0], W - 40), s3.size[1]))]))
+    sheet_rows.append(('S3. The vise band at the same %dx' % MAG, [v3.crop((0, 0, min(v3.size[0], W - 40), v3.size[1]))]))
 for m in meta:
     p6 = Image.open(os.path.join(D, m['name'] + '@6.png')).convert('RGBA')
     p2 = Image.open(os.path.join(D, m['name'] + '.png')).convert('RGBA')
     a = check.audit(os.path.join(D, m['name'] + '.svg'))
     rows.append((m, on_ddd(p6) if p6.size[0] <= W - 40 else on_ddd(p6.crop((0, 0, W - 40, p6.size[1]))), q16(p2), a))
-H = 200 + sum(im.size[1] * (1 + MAG) + 80 for _, im in head) + sum(max(b.size[1], 0) + s.size[1] + 70 for _, b, s, _ in rows)
+H = 400 + sum(sum(0 for _ in ims) + max(i.size[1] for i in ims) + 60 for _, ims in sheet_rows) + sum(im.size[1] * (1 + MAG) + 80 for _, im in head) + sum(max(b.size[1], 0) + s.size[1] + 70 for _, b, s, _ in rows)
 sheet = Image.new('RGB', (W, H), (221, 221, 221))
 dr = ImageDraw.Draw(sheet)
 y = 20
 dr.text((20, y), 'Engraved frames: fine-scroll engine (solar/scroll.py), branch claude/engrave-frames', fill=0, font=font); y += 30
+for label, ims in sheet_rows:
+    dr.text((20, y), label, fill=0, font=small); y += 18
+    xx = 20
+    for im in ims:
+        sheet.paste(im, (xx, y)); xx += im.size[0] + 40
+    y += max(i.size[1] for i in ims) + 30
 dr.text((20, y), 'A. Same physical scale: one pixel = one Kindle device pixel (1/300 in). View this part at 100 %.', fill=0, font=font); y += 28
 for label, im in head:
     dr.text((20, y), label, fill=0, font=small); y += 18

@@ -17,8 +17,7 @@ CASES = [
     ('gauge', 88, 12, {}),
     ('divider', 140, 16, {}),
     ('initial', 74, 74, {}),
-    ('kpanel', 547 + 36, 160 + 36, {'band': 18}), ('kpanel', 547 + 36, 120 + 36, {'band': 18, 'open_bottom': True, 'seed': 2}),
-    ('kpanel', 529 + 36, 560 + 36, {'band': 18, 'seed': 5}),
+    ('kpanel', 547 + 8, 160 + 8, {}), ('kpanel', 547 + 8, 120 + 8, {'open_bottom': True, 'seed': 2}),
 ]
 meta = []
 for i, (fam, w, h, ctx) in enumerate(CASES):

@@ -1923,17 +1923,14 @@ def _studio5():
         if kind == "culdelampe":
             top, bot = cy - B, cy + B
             pts = []
-            m = n // 3
-            for i in range(m + 1):                      # right side down to the point
-                u = i / m
-                pts.append((cx + A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m + 1):                   # left side back up
-                u = 1 - i / m
-                pts.append((cx - A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m):                       # arched top, left to right
-                u = i / m
-                x = cx - A + 2 * A * u
-                pts.append((x, top - B * .12 * _m.sin(_PI * u)))
+            for i in range(n):
+                t = _TAU * i / n
+                c, sn = _m.cos(t), _m.sin(t)
+                if sn >= 0:
+                    y = top + max(7., (bot - top) * (1 - abs(c)) ** 1.45)
+                else:
+                    y = top - (bot - top) * .08 * (1 - c * c)
+                pts.append((cx + A * c, y))
             return pts
         return _shape(kind, cx, cy, A, B, n)
 
@@ -2016,8 +2013,8 @@ def _studio5():
         arches gently, the ends fold under into swallow tails ribbed with silk lines."""
         st = Studio(bw, bh, P.get("seed", 1))
         cv = C.Canvas()
-        tail_w = _clamp(bw * .1, 14., 60.)
-        fw = bw - 2 * tail_w * .9
+        tail_w = _clamp(bw * .07, 12., 40.)
+        fw = bw - 2 * tail_w * .95
         fh = bh * .7
         cx = bw / 2
         x0, x1 = cx - fw / 2, cx + fw / 2
@@ -2032,21 +2029,20 @@ def _studio5():
             ey = yc(ex)
             tx0 = ex - side * tail_w * .3
             tx1 = ex + side * tail_w * .9
-            dy = fh * .28
+            dy = fh * .2
             top0, bot0 = (tx0, ey - fh / 2 + dy), (tx0, ey + fh / 2 + dy)
             top1, bot1 = (tx1, ey - fh / 2 + dy - fh * .12), (tx1 - side * fh * .1, ey + fh / 2 + dy)
             notch = (tx1 - side * fh * .45, ey + dy + fh * .05)
             tail = [top0, top1, notch, bot1, bot0]
             cv.obj([tail], 1.)
-            for k in range(1, 12):
-                f = k / 12.
-                if f < .35 and k % 2:
+            nk = max(8, int(fh / 1.6))
+            for k in range(1, nk):
+                f = k / nk
+                if f < .3 and k % 2:
                     continue
                 a = _lerp(top0, bot0, f)
-                b = _lerp(top1, bot1, f)
-                if f > .4:
-                    b = _lerp(b, notch, (f - .4) * 1.4)
-                cv.hair([a, b])
+                b = _lerp(top1, notch, f / .5) if f < .5 else _lerp(notch, bot1, (f - .5) / .5)
+                (cv.line if f > .8 else cv.hair)([a, b])
             fold = [(ex, ey - fh / 2), (ex, ey + fh / 2), (tx0, ey + fh / 2 + dy), (tx0, ey - fh / 2 + dy)]
             cv.obj([fold], 1.)
             cv.hair(C.hatch_poly(fold, 45 * side, 1.5))
@@ -2097,19 +2093,27 @@ def _studio5():
             kind = P.get("silhouette", "lens")
             cx = bw / 2
             if kind == "culdelampe":
-                sil = silhouette(kind, cx, bh * .55, bw / 2 - .5, bh * .43)
-                mb = bh * .3
-                med = (P.get("shape_tail", "oval"), cx, bh * .34, mb * 1.25, mb)
+                bw = min(w, bh * 2.9)
+                cx = bw / 2
+                sil = silhouette(kind, cx, bh * .54, bw / 2 - .5, bh * .44)
+                mb = bh * .34
+                med = (P.get("shape_tail", "oval"), cx, bh * .4, mb * 1.3, mb)
             else:
                 sil = silhouette(kind, cx, bh / 2, bw / 2 - .5, bh / 2 - .5)
                 mb = bh / 2 - 1.
                 med = (P.get("shape_tail", "oval"), cx, bh / 2, mb * P.get("tail_aspect", 1.45), mb)
             def lens_src(g):
                 L = g["mx"] - g["ma"] - 4
-                R0 = min(bh * .3, L * .32)
-                return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
-                         {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
-            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src if kind == "lens" else None, ring_r=.9)
+                if kind == "lens":
+                    R0 = min(bh * .3, L * .32)
+                    return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
+                             {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
+                R0 = min(bh * .17, L * .3)
+                return [((g["mx"] - g["ma"] * .9, g["my"] - g["mb"] * .45), _PI - .05, R0, -1,
+                         {"lead": max(2., L - R0 * 2.2), "lead_k": .001}),
+                        ((g["mx"] - g["ma"] * .55, g["my"] + g["mb"] * .85), _PI * .8, R0 * .7, 1,
+                         {"lead": max(2., L * .35), "lead_k": .003})]
+            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src, ring_r=.9)
             return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
         if form == "device":
             D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
@@ -2489,7 +2493,7 @@ def plate(w, h, ctx):
     ctx = ctx or {}
     date = ctx.get("date", "2026-11-11")
     seed = sum(map(ord, date)) * 7 + 3
-    P = dict(seed=seed, shape="arch", shape_band="oval", legend="St. Johns · MCMXXXI",
+    P = dict(seed=seed, form="frieze", band_aspect=2.4, shape="arch", shape_band="oval", legend="St. Johns · MCMXXXI",
              tablet="Pier Park · Cathedral Park",
              scene=lambda x, y, fw, fh, lod: bridge_scene(x, y, fw, fh, seed, date, lod))
-    return ST5.compose(w, h, ctx, P)
+    return ST5.compose_form(w, h, ctx, P)

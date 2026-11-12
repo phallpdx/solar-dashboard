@@ -617,6 +617,51 @@ APPLY = ("<script>(function(){try{var d=JSON.parse(document.getElementById('kfrm
          "catch(x){}})();</script>")
 
 
+# run in the page as parsed, scripts off (the same elements, in the same order, as the load-time script would see:
+# the page prep before it only wraps charts and hides links); returns the page with the frames in style attributes
+INLINE_JS = r"""() => { const j = document.getElementById('kfrm'); if (!j) return null; const d = JSON.parse(j.textContent);
+  for (const k in d.r) { const q = document.querySelectorAll(d.s[k]), L = d.r[k];
+    for (let i = 0; i < L.length && i < q.length; i++) { const e = L[i]; if (!e) continue; const s = q[i].style;
+      s.setProperty('background-image', 'url(' + d.u[e[0]] + ')', 'important');
+      if (e.length > 1) { s.setProperty('background-position', -e[1] + 'px ' + (-e[2]) + 'px', 'important');
+        s.setProperty('background-size', e[3] + 'px ' + e[4] + 'px', 'important'); s.setProperty('background-repeat', 'no-repeat', 'important');
+        q[i].setAttribute('data-kf', e[5] + ' ' + e[6]); } } }
+  const n = j.nextElementSibling; j.remove(); if (n && n.tagName === 'SCRIPT' && /kfrm/.test(n.textContent)) n.remove();
+  return '<!doctype html>\n' + document.documentElement.outerHTML; }"""
+
+
+def _inline(out, pages):
+    from playwright.async_api import async_playwright
+    srv, base = _serve(out)
+    done = [0]
+
+    async def go():
+        async with async_playwright() as pw:
+            br = await pw.chromium.launch(executable_path=os.environ.get("KINDLE_CHROMIUM") or None)
+            cx = await br.new_context(java_script_enabled=False)
+            sem = asyncio.Semaphore(4)
+
+            async def one(p):
+                async with sem:
+                    pg = await cx.new_page()
+                    try:
+                        await pg.goto(base + p + ".html", wait_until="domcontentloaded")
+                        h = await pg.evaluate(INLINE_JS)
+                        if h and 'id="kfrm"' not in h:
+                            with open(os.path.join(out, p + ".html"), "w", encoding="utf-8") as f:
+                                f.write(h)
+                            done[0] += 1
+                    finally:
+                        await pg.close()
+            await asyncio.gather(*(one(p) for p in pages))
+            await br.close()
+    try:
+        asyncio.run(go())
+    finally:
+        srv.shutdown()
+    return done[0]
+
+
 class _Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
@@ -854,6 +899,12 @@ def frames(out):
         with open(fp, "w", encoding="utf-8") as f:
             f.write(doc[:at] + block + doc[at:])
         stats["pages"] += 1
+    # bake the frames into the pages: each element's background goes into its own style attribute in the HTML, so
+    # the Kindle parses it with the element (no script, no second style pass); the list and script are dropped
+    try:
+        stats["inlined"] = _inline(out, list(plan))
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_ornate: inline frames skipped ({e!r}); the load-time script applies them", file=sys.stderr)
     # fixed frames the stylesheet sets (what the pager makes after load)
     css = ""
     for k, (role, sel, (w, h), lit) in STATIC.items():
@@ -905,6 +956,7 @@ CHECK_JS = r"""(F) => {
     const bi = getComputedStyle(el).backgroundImage; if (!/url\(/.test(bi)) { unframed.push(role + ': ' + name(el)); return; }
     const e = R && R[i]; let fw = 0, fh = 0;
     if (e && e.length > 5) { fw = e[5]; fh = e[6]; }
+    else if (el.getAttribute('data-kf')) { const z = el.getAttribute('data-kf').split(' '); fw = +z[0]; fh = +z[1]; }
     else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
     if (fw && (Math.abs(fw - b.width) > 1.5 || Math.abs(fh - b.height) > 1.5))
       unframed.push(role + ' size ' + fw + 'x' + fh + ' vs ' + Math.round(b.width) + 'x' + Math.round(b.height) + ': ' + name(el));

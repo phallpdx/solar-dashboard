@@ -363,11 +363,11 @@ def kk_matte(d):
     return f'<path d="{d}" fill="url(#kkM)" stroke="none"/>'
 
 
-def _rect_d(x, y, w, h):
+def kk_rect_d(x, y, w, h):
     return f"M{_kn(x)},{_kn(y)}h{_kn(w)}v{_kn(h)}h{_kn(-w)}z"
 
 
-def _ell_d(cx, cy, rx, ry, n=72):
+def _kk_ell_d(cx, cy, rx, ry, n=72):
     return _C._d(_C._ell_pts(cx, cy, rx, ry, n)[:-1], True, .1)
 
 
@@ -381,7 +381,7 @@ def kk_beads(pts, r=1.5):
             f'<path d="{b}" fill="#000" stroke="none"/>')
 
 
-def _along(poly, pitch, closed=True):
+def _kk_along(poly, pitch, closed=True):
     """Points spaced `pitch` apart along a polyline."""
     P = poly + [poly[0]] if closed else poly
     out = []
@@ -398,7 +398,7 @@ def _along(poly, pitch, closed=True):
 
 # ---- the scroll field -----------------------------------------------------------------------
 
-def _leaf(cv, x, y, ang, L, W, c, teeth=2, seed=0):
+def _kk_leaf(cv, x, y, ang, L, W, c, teeth=2, seed=0):
     """A small acanthus leaf: rolled tip, forward rounded teeth on its outer edge, a vein, fine
     parallel cuts on its shadow side (+c, the side it curls toward), a bright outer edge."""
     n = max(8, int(L / 1.1))
@@ -435,7 +435,7 @@ def _leaf(cv, x, y, ang, L, W, c, teeth=2, seed=0):
     return R
 
 
-class _Spiral:
+class _KKSpiral:
     __slots__ = ("cx", "cy", "r", "w", "par", "kids", "pts", "S", "deg")
 
     def __init__(self, cx, cy, r):
@@ -446,7 +446,7 @@ class _Spiral:
         self.pts = None
 
 
-def _spiral_pts(cx, cy, R, th0, w, turns=1.45, end=.15):
+def _kk_spiral_pts(cx, cy, R, th0, w, turns=1.45, end=.15):
     T = _TAU * turns
     b = -_m.log(end) / T
     n = max(24, int(R * T * .35))
@@ -454,7 +454,7 @@ def _spiral_pts(cx, cy, R, th0, w, turns=1.45, end=.15):
              cy + R * _m.exp(-b * T * i / n) * _m.sin(th0 + w * T * i / n)) for i in range(n + 1)]
 
 
-def _bez(p0, p1, p2, p3, n):
+def _kk_bez(p0, p1, p2, p3, n):
     out = []
     for i in range(n + 1):
         t = i / n
@@ -463,7 +463,7 @@ def _bez(p0, p1, p2, p3, n):
     return out
 
 
-def _resample(pts, step=1.5):
+def _kk_resample(pts, step=1.5):
     out = [pts[0]]
     acc = 0.
     for (ax, ay), (bx, by) in zip(pts, pts[1:]):
@@ -540,7 +540,7 @@ def kk_field(cv, box, obst, roots, seed=0, rmin=6., rmax=16., grid=None, leafy=1
         px, py = x + (i + .5) * gx, y + (j + .5) * gy
         r = min(rmax, m) * rng.uniform(.86, 1.)
         r = max(r, rmin)
-        s = _Spiral(px + rng.uniform(-.4, .4) * gx, py + rng.uniform(-.4, .4) * gy, r)
+        s = _KKSpiral(px + rng.uniform(-.4, .4) * gx, py + rng.uniform(-.4, .4) * gy, r)
         sp.append(s)
         reach = r + rmax + 2
         i0, i1 = max(0, int((px - reach - x) / gx)), min(nx - 1, int((px + reach - x) / gx))
@@ -560,7 +560,7 @@ def kk_field(cv, box, obst, roots, seed=0, rmin=6., rmax=16., grid=None, leafy=1
     todo = list(sp)
     rootn = []
     for (rx_, ry_, ra) in roots:
-        rn = _Spiral(rx_, ry_, 0.)
+        rn = _KKSpiral(rx_, ry_, 0.)
         rn.pts = None
         rn.deg = ra
         rootn.append(rn)
@@ -636,23 +636,23 @@ def kk_field(cv, box, obst, roots, seed=0, rmin=6., rmax=16., grid=None, leafy=1
             nvx, nvy = dy_, -dx_
         # rotate the start a little forward so the stem wraps into the curl
         th0 = _m.atan2(nvy, nvx) - s.w * .35
-        spi = _spiral_pts(s.cx, s.cy, R, th0, s.w, rng.uniform(1.3, 1.6))
+        spi = _kk_spiral_pts(s.cx, s.cy, R, th0, s.w, rng.uniform(1.3, 1.6))
         S0 = spi[0]
         st = (spi[1][0] - S0[0], spi[1][1] - S0[1])
         sl = _m.hypot(*st) or 1.
         st = (st[0] / sl, st[1] / sl)
         L = _m.hypot(S0[0] - P0[0], S0[1] - P0[1])
         k = max(2., L * .42)
-        stem = _bez(P0, (P0[0] + t0[0] * k, P0[1] + t0[1] * k), (S0[0] - st[0] * k, S0[1] - st[1] * k), S0,
+        stem = _kk_bez(P0, (P0[0] + t0[0] * k, P0[1] + t0[1] * k), (S0[0] - st[0] * k, S0[1] - st[1] * k), S0,
                     max(4, int(L / 2)))
-        s.pts = _resample(stem[:-1] + spi, 1.4)
-        s.S = len(_resample(stem[:-1], 1.4)) if len(stem) > 1 else 0
+        s.pts = _kk_resample(stem[:-1] + spi, 1.4)
+        s.S = len(_kk_resample(stem[:-1], 1.4)) if len(stem) > 1 else 0
     # paint: twigs first, root last
     for s in order[::-1]:
-        _scroll(cv, s, rng, leafy)
+        _kk_scroll(cv, s, rng, leafy)
 
 
-def _scroll(cv, s, rng, leafy):
+def _kk_scroll(cv, s, rng, leafy):
     pts = s.pts
     n = len(pts)
     if n < 4:
@@ -704,13 +704,13 @@ def _scroll(cv, s, rng, leafy):
             j += max(5, int(11 / 1.4))
     for (i, ll, rad) in spots[::-1]:
         b = Rb.at(i / (n - 1), -ins * .6)
-        _leaf(cv, b[0], b[1], tang(i) - ins * rng.uniform(.32, .5), ll, ll * .32, ins, 2 if ll > 6 else 1,
+        _kk_leaf(cv, b[0], b[1], tang(i) - ins * rng.uniform(.32, .5), ll, ll * .32, ins, 2 if ll > 6 else 1,
               rng.randrange(97))
     for (j, side) in st:
         b = Rb.at(j / (n - 1), side * .6)
         ll = min(9., s.r * .7) * rng.uniform(.8, 1.)
         if ll > 3:
-            _leaf(cv, b[0], b[1], tang(j) + side * .7, ll, ll * .3, -side, 1, rng.randrange(97))
+            _kk_leaf(cv, b[0], b[1], tang(j) + side * .7, ll, ll * .3, -side, 1, rng.randrange(97))
     # the stem: a bright cut edge outside, a shadow line inside
     cv.obj([Rb.outline()], .5)
     if w0 > 1.2:
@@ -720,7 +720,7 @@ def _scroll(cv, s, rng, leafy):
     if i < n - 2 and s.r > 7:
         b = Rb.at(i / (n - 1), ins * .5)
         ll = s.r * .42
-        _leaf(cv, b[0], b[1], tang(i) + ins * .35, ll, ll * .28, ins, 1, rng.randrange(97))
+        _kk_leaf(cv, b[0], b[1], tang(i) + ins * .35, ll, ll * .28, ins, 1, rng.randrange(97))
     ex, ey = pts[-1]
     rr = max(.9, W[-1] * 1.3)
     cv.obj([_C._ell_pts(ex, ey, rr, rr, 10)[:-1]], .5)
@@ -734,16 +734,16 @@ def kk_frame(x, y, w, h, bead=1.5, rosette=True):
     o = []
     m1 = 1.
     # the gold wire
-    o.append(f'<path d="{_rect_d(x - 3, y - 3, w + 6, h + 6)}" fill="none" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="{_rect_d(x - 1.25, y - 1.25, w + 2.5, h + 2.5)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="{kk_rect_d(x - 3, y - 3, w + 6, h + 6)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{kk_rect_d(x - 1.25, y - 1.25, w + 2.5, h + 2.5)}" fill="none" stroke="#000" stroke-width=".5"/>')
     # bead row in a white channel outside
     g = 3 + bead + 1.5
-    o.append(f'<path d="{_rect_d(x - g - bead - 1.5, y - g - bead - 1.5, w + 2 * (g + bead + 1.5), h + 2 * (g + bead + 1.5))}'
-             f'{_rect_d(x - 3.5, y - 3.5, w + 7, h + 7)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
-    pts = _along([(x - g, y - g), (x + w + g, y - g), (x + w + g, y + h + g), (x - g, y + h + g)], bead * 2 + 1)
+    o.append(f'<path d="{kk_rect_d(x - g - bead - 1.5, y - g - bead - 1.5, w + 2 * (g + bead + 1.5), h + 2 * (g + bead + 1.5))}'
+             f'{kk_rect_d(x - 3.5, y - 3.5, w + 7, h + 7)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
+    pts = _kk_along([(x - g, y - g), (x + w + g, y - g), (x + w + g, y + h + g), (x - g, y + h + g)], bead * 2 + 1)
     o.append(kk_beads(pts, bead))
     e = g + bead + 1.5
-    o.append(f'<path d="{_rect_d(x - e, y - e, w + 2 * e, h + 2 * e)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{kk_rect_d(x - e, y - e, w + 2 * e, h + 2 * e)}" fill="none" stroke="#000" stroke-width="1"/>')
     if rosette:
         for cx, cy in ((x - g, y - g), (x + w + g, y - g), (x + w + g, y + h + g), (x - g, y + h + g)):
             o.append(kk_rosette(cx, cy, bead * 2.6))
@@ -758,9 +758,9 @@ def kk_rosette(cx, cy, r):
                     (cx + r * _m.cos(a), cy + r * _m.sin(a)),
                     (cx + r * .3 * _m.cos(a + .5), cy + r * .3 * _m.sin(a + .5))])
     d = "".join(_C._d(p, True, 0) for p in pet)
-    return (f'<path d="{_ell_d(cx, cy, r + 1, r + 1, 24)}" fill="#000" stroke="none"/>'
+    return (f'<path d="{_kk_ell_d(cx, cy, r + 1, r + 1, 24)}" fill="#000" stroke="none"/>'
             f'<path d="{d}" fill="#fff" stroke="#000" stroke-width=".5"/>'
-            f'<path d="{_ell_d(cx, cy, r * .28, r * .28, 10)}" fill="#fff" stroke="#000" stroke-width=".5"/>')
+            f'<path d="{_kk_ell_d(cx, cy, r * .28, r * .28, 10)}" fill="#fff" stroke="#000" stroke-width=".5"/>')
 
 
 def kk_medallion(cx, cy, rx, ry, bead=1.5):
@@ -770,21 +770,21 @@ def kk_medallion(cx, cy, rx, ry, bead=1.5):
     g = 2.5
     a1, b1 = rx + g + bead, ry + g + bead
     outer = (rx + g + 2 * bead + 3.5, ry + g + 2 * bead + 3.5)
-    o.append(f'<path d="{_ell_d(cx, cy, outer[0], outer[1])}{_ell_d(cx, cy, rx, ry)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
-    o.append(f'<path d="{_ell_d(cx, cy, rx + .75, ry + .75)}" fill="none" stroke="#000" stroke-width="1.5"/>')
-    o.append(f'<path d="{_ell_d(cx, cy, rx + g - .25, ry + g - .25)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, outer[0], outer[1])}{_kk_ell_d(cx, cy, rx, ry)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + .75, ry + .75)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + g - .25, ry + g - .25)}" fill="none" stroke="#000" stroke-width=".5"/>')
     per = _C._ell_pts(cx, cy, a1, b1, 180)[:-1]
-    o.append(kk_beads(_along(per, bead * 2 + 1.1), bead))
-    o.append(f'<path d="{_ell_d(cx, cy, a1 + bead + 1, b1 + bead + 1)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(f'<path d="{_ell_d(cx, cy, outer[0] - .5, outer[1] - .5)}" fill="none" stroke="#000" stroke-width="1"/>')
-    return "".join(o), _ell_d(cx, cy, rx + .5, ry + .5), outer[0], outer[1]
+    o.append(kk_beads(_kk_along(per, bead * 2 + 1.1), bead))
+    o.append(f'<path d="{_kk_ell_d(cx, cy, a1 + bead + 1, b1 + bead + 1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, outer[0] - .5, outer[1] - .5)}" fill="none" stroke="#000" stroke-width="1"/>')
+    return "".join(o), _kk_ell_d(cx, cy, rx + .5, ry + .5), outer[0], outer[1]
 
 
 def kk_clip(cid, d, body):
     return f'<clipPath id="{cid}"><path d="{d}" clip-rule="evenodd"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
 # ---- a leaner emitter: half-px path units, coarser simplification --------------------------
 
-def _pd(pen):
+def _kk_pd(pen):
     o = pen.o
     out = []
     prev_m = False
@@ -798,7 +798,7 @@ def _pd(pen):
     return "".join(out)
 
 
-def _zig(lines):
+def _kk_zig(lines):
     """Join a sweep of hatch segments into boustrophedon polylines (the joins run along the
     region's edges, where an outline or vein is drawn anyway): about half the path data."""
     out = []
@@ -850,13 +850,13 @@ def kk_svg(cv, q=2, tol_fill=.55, tol_line=.42):
             for poly in polys:
                 pen.add(poly if _C._area(poly) >= 0 else poly[::-1], True, tol_fill)
         if pen.o:
-            res.append(f'<path{T} d="{_pd(pen)}" fill="#fff" stroke="none"/>')
+            res.append(f'<path{T} d="{_kk_pd(pen)}" fill="#fff" stroke="none"/>')
         for w in (.5, 1., 1.5):
             if out[w]:
                 pen = _C._Pen()
                 for pl in out[w]:
                     pen.add(pl, False, tol_line if w < 1 else tol_line + .05)
-                res.append(f'<path{T} d="{_pd(pen)}" fill="none" stroke="#000" stroke-width="{_kn(w * q)}"/>')
+                res.append(f'<path{T} d="{_kk_pd(pen)}" fill="none" stroke="#000" stroke-width="{_kn(w * q)}"/>')
     finally:
         _C._Q = oq
     return "".join(res)
@@ -925,7 +925,7 @@ class kk_inside:
         return k % 2 == 1
 
 
-def _pd_poly(poly, close=True):
+def _kk_pd_poly(poly, close=True):
     return _C._d(poly, close, .1)
 
 
@@ -946,11 +946,11 @@ def kk_border(poly, bead=1.5):
     g2 = kk_offset(poly, 2.75)
     gb = kk_offset(poly, 4. + bead)
     ge = kk_offset(poly, 5.5 + 2 * bead)
-    o.append(f'<path d="{_pd_poly(ge)}{_pd_poly(poly[::-1])}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
-    o.append(f'<path d="{_pd_poly(g1)}" fill="none" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="{_pd_poly(g2)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(kk_bead_row(_pd_poly(gb), bead))
-    o.append(f'<path d="{_pd_poly(ge)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{_kk_pd_poly(ge)}{_kk_pd_poly(poly[::-1])}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
+    o.append(f'<path d="{_kk_pd_poly(g1)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{_kk_pd_poly(g2)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(kk_bead_row(_kk_pd_poly(gb), bead))
+    o.append(f'<path d="{_kk_pd_poly(ge)}" fill="none" stroke="#000" stroke-width="1"/>')
     return "".join(o), 5.5 + 2 * bead + .5
 
 
@@ -959,27 +959,27 @@ def kk_ring(cx, cy, rx, ry, bead=1.5):
     Returns (svg, outer rx, outer ry)."""
     o = []
     e = 5.5 + 2 * bead
-    o.append(f'<path d="{_ell_d(cx, cy, rx + e, ry + e)}{_ell_d(cx, cy, rx, ry)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
-    o.append(f'<path d="{_ell_d(cx, cy, rx + .75, ry + .75)}" fill="none" stroke="#000" stroke-width="1.5"/>')
-    o.append(f'<path d="{_ell_d(cx, cy, rx + 2.75, ry + 2.75)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(kk_bead_row(_ell_d(cx, cy, rx + 4 + bead, ry + 4 + bead), bead))
-    o.append(f'<path d="{_ell_d(cx, cy, rx + e - .5, ry + e - .5)}" fill="none" stroke="#000" stroke-width="1"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + e, ry + e)}{_kk_ell_d(cx, cy, rx, ry)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + .75, ry + .75)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 2.75, ry + 2.75)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(kk_bead_row(_kk_ell_d(cx, cy, rx + 4 + bead, ry + 4 + bead), bead))
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + e - .5, ry + e - .5)}" fill="none" stroke="#000" stroke-width="1"/>')
     return "".join(o), rx + e, ry + e
 
 
 # ---- Easter eggs: small figures cut white out of the matte --------------------------------
 
-def _U(cx, cy, r, pts):
+def _kk_U(cx, cy, r, pts):
     return [(cx + px * r, cy + py * r) for px, py in pts]
 
 
-def _cut(cv, poly, ang=45., pitch=1.5):
-    cv.hair(_zig(_C.hatch_poly(poly, ang, pitch)))
+def _kk_cut(cv, poly, ang=45., pitch=1.5):
+    cv.hair(_kk_zig(_C.hatch_poly(poly, ang, pitch)))
 
 
-def _wline(cv, pts, hw):
+def _kk_wline(cv, pts, hw):
     """A white line hw px each side of pts, cut out of the matte."""
-    pts = _resample(pts, 1.5) if len(pts) > 1 else pts
+    pts = _kk_resample(pts, 1.5) if len(pts) > 1 else pts
     if len(pts) < 2:
         return
     R = _C._Rib(pts, [hw] * len(pts), [hw] * len(pts))
@@ -989,7 +989,7 @@ def _wline(cv, pts, hw):
 def kk_egg(kind, cx, cy, r):
     """A small engraved figure filling a disc of radius r (white relief, fine shadow cuts)."""
     cv = _C.Canvas()
-    E = lambda pts: _U(cx, cy, r, pts)
+    E = lambda pts: _kk_U(cx, cy, r, pts)
     if kind == "drumsticks" or kind == "arms":
         if kind == "arms":
             # a sun behind: a disc and rays
@@ -1006,7 +1006,7 @@ def kk_egg(kind, cx, cy, r):
             cv.obj([disc], 1.)
             cv.hair(_C._ell_pts(cx, cy, r * .3, r * .3, 22))
             cut = [p for p in disc if p[0] - cx + p[1] - cy > -r * .1]
-            _cut(cv, _C._ell_pts(cx + r * .08, cy + r * .08, r * .3, r * .3, 18)[:-1], -45, 1.5)
+            _kk_cut(cv, _C._ell_pts(cx + r * .08, cy + r * .08, r * .3, r * .3, 18)[:-1], -45, 1.5)
         for sg in (-1, 1):
             a = _m.radians(45 if sg > 0 else 135)
             ux, uy = _m.cos(a), _m.sin(a)
@@ -1025,15 +1025,21 @@ def kk_egg(kind, cx, cy, r):
         cv.obj([e], .5)
         for k in (.25, .45, .65, .85):
             cv.hair(_C._ell_pts(cx, cy - r * .2, r * .9 * k, r * .28 * k, 28, 0, _PI))
-        _cut(cv, [p for p in e if p[1] > cy - r * .2], 60, 1.5)
+        _kk_cut(cv, [p for p in e if p[1] > cy - r * .2], 60, 1.5)
         cv.obj([_C._ell_pts(cx, cy - r * .25, r * .14, r * .07, 12)[:-1]], .5)
     elif kind == "note":
-        for dx in (-.42, .38):
-            cv.obj([_C._ell_pts(cx + dx * r - r * .05, cy + r * .5, r * .24, r * .16, 16)[:-1]], 1.)
-            cv.line(_C.hatch_poly(_C._ell_pts(cx + dx * r - r * .05, cy + r * .5, r * .2, r * .12, 14)[:-1], 0, 1.))
-            cv.obj([E([(dx + .15, .5), (dx + .2, .5), (dx + .2, -.6), (dx + .15, -.6)])], .5)
-        cv.obj([E([(-.27, -.62), (.58, -.72), (.58, -.5), (-.27, -.4)])], .5)
-        cv.line(_C.hatch_poly(E([(-.27, -.62), (.58, -.72), (.58, -.5), (-.27, -.4)]), 0, 1.))
+        # two swung eighth notes, beamed: white heads cut with a shadow crescent, white stems
+        for dx, dy in ((-.45, .5), (.35, .38)):
+            hd = _C._ell_pts(cx + dx * r, cy + dy * r, r * .26, r * .17, 18)[:-1]
+            hd = [(cx + dx * r + (px - cx - dx * r) * .94 - (py - cy - dy * r) * .35, cy + dy * r + (py - cy - dy * r) + (px - cx - dx * r) * .25) for px, py in hd]
+            cv.obj([hd], .5)
+            _kk_cut(cv, [p for p in hd if p[1] > cy + dy * r - r * .02], 60, 1.5)
+            _kk_wline(cv, E([(dx + .22, dy - .05), (dx + .22, -.62 - (dy - .5) * .3)]), r * .045)
+        beam = E([(-.25, -.66), (.6, -.82), (.6, -.64), (-.25, -.48)])
+        cv.obj([beam], .5)
+        _kk_cut(cv, beam, -10, 1.5)
+        for k in range(3):
+            _kk_wline(cv, E([(-.85 + k * .55, .88), (-.6 + k * .55, .88)]), .5)
     elif kind == "P":
         stem = E([(-.45, -.8), (-.12, -.8), (-.12, .8), (-.45, .8)])
         bowl = [(cx - r * .14 + r * .5 * _m.cos(t) * (1 if _m.cos(t) > 0 else .4), cy - r * .36 + r * .42 * _m.sin(t))
@@ -1041,9 +1047,9 @@ def kk_egg(kind, cx, cy, r):
         inner = [(cx - r * .14 + r * .28 * _m.cos(t) * (1 if _m.cos(t) > 0 else .4), cy - r * .36 + r * .2 * _m.sin(t))
                  for t in [(-_PI / 2) + _PI * i / 16 for i in range(17)]]
         cv.obj([bowl + inner[::-1]], 1.)
-        _cut(cv, bowl + inner[::-1], -45, 1.5)
+        _kk_cut(cv, bowl + inner[::-1], -45, 1.5)
         cv.obj([stem], 1.)
-        _cut(cv, E([(-.25, -.8), (-.12, -.8), (-.12, .8), (-.25, .8)]), 90, 1.5)
+        _kk_cut(cv, E([(-.25, -.8), (-.12, -.8), (-.12, .8), (-.25, .8)]), 90, 1.5)
         cv.obj([E([(-.62, .62), (.05, .62), (.05, .8), (-.62, .8)]), E([(-.62, -.8), (-.05, -.8), (-.05, -.66), (-.62, -.66)])], .5)
     elif kind == "bridge":
         for tx in (-.45, .45):
@@ -1053,16 +1059,16 @@ def kk_egg(kind, cx, cy, r):
         deck = E([(-1, .3), (1, .3), (1, .4), (-1, .4)])
         cv.obj([deck], .5)
         main = [(cx + r * t, cy - r * .72 + r * 1.0 * (1 - (t / .45) ** 2)) for t in [-.45 + .9 * i / 20 for i in range(21)]]
-        _wline(cv, main, .7)
+        _kk_wline(cv, main, .7)
         for sg in (-1, 1):
-            _wline(cv, [(cx + sg * r * (.45 + .53 * k / 8), cy - r * .72 + r * 1.02 * (k / 8) ** 1.6) for k in range(9)], .7)
+            _kk_wline(cv, [(cx + sg * r * (.45 + .53 * k / 8), cy - r * .72 + r * 1.02 * (k / 8) ** 1.6) for k in range(9)], .7)
         for k in range(1, 9):
             t = -.45 + .9 * k / 9
-            _wline(cv, [(cx + r * t, cy - r * .72 + r * 1.0 * (1 - (t / .45) ** 2)), (cx + r * t, cy + r * .3)], .5)
+            _kk_wline(cv, [(cx + r * t, cy - r * .72 + r * 1.0 * (1 - (t / .45) ** 2)), (cx + r * t, cy + r * .3)], .5)
     elif kind == "hood":
         m = E([(-1, .7), (-.55, .1), (-.2, -.55), (0, -.8), (.15, -.62), (.5, -.05), (1, .7)])
         cv.obj([m], .5)
-        _cut(cv, E([(0, -.8), (.15, -.62), (.5, -.05), (1, .7), (.1, .7)]), -60, 1.5)
+        _kk_cut(cv, E([(0, -.8), (.15, -.62), (.5, -.05), (1, .7), (.1, .7)]), -60, 1.5)
         snow = E([(-.35, -.3), (-.2, -.55), (0, -.8), (.15, -.62), (.3, -.35), (.15, -.42), (.02, -.25), (-.12, -.4)])
         cv.obj([snow], .5)
         for k in range(5):
@@ -1073,35 +1079,50 @@ def kk_egg(kind, cx, cy, r):
         # a plume off the crown, long legs, the back feathers cut in fine lines
         body = E([(-.25, -.05), (.05, -.22), (.4, -.18), (.62, .02), (.72, .22), (.45, .18), (.1, .2), (-.18, .12)])
         cv.obj([body], .5)
-        _cut(cv, E([(.05, -.05), (.4, -.1), (.62, .02), (.72, .22), (.45, .18), (.1, .2)]), 20, 1.5)
-        _wline(cv, E([(-.12, -.08), (-.3, -.3), (-.22, -.5), (-.08, -.62), (-.2, -.78)]), r * .05)
+        _kk_cut(cv, E([(.05, -.05), (.4, -.1), (.62, .02), (.72, .22), (.45, .18), (.1, .2)]), 20, 1.5)
+        _kk_wline(cv, E([(-.12, -.08), (-.3, -.3), (-.22, -.5), (-.08, -.62), (-.2, -.78)]), r * .05)
         cv.obj([E([(-.28, -.84), (-.12, -.8), (-.1, -.74), (-.24, -.72)])], .5)
-        _wline(cv, E([(-.25, -.79), (-.72, -.72)]), r * .03)
-        _wline(cv, E([(-.12, -.83), (.12, -.88)]), r * .015)
-        _wline(cv, E([(.15, .18), (.1, .55), (.12, .9)]), r * .025)
-        _wline(cv, E([(.3, .18), (.32, .55), (.4, .9)]), r * .025)
+        _kk_wline(cv, E([(-.25, -.79), (-.72, -.72)]), r * .03)
+        _kk_wline(cv, E([(-.12, -.83), (.12, -.88)]), r * .015)
+        _kk_wline(cv, E([(.15, .18), (.1, .55), (.12, .9)]), r * .025)
+        _kk_wline(cv, E([(.3, .18), (.32, .55), (.4, .9)]), r * .025)
         for k in range(5):
-            _wline(cv, E([(-.85 + k * .1, .93 + (k % 2) * .03), (-.55 + k * .3, .93)]), .5)
+            _kk_wline(cv, E([(-.85 + k * .1, .93 + (k % 2) * .03), (-.55 + k * .3, .93)]), .5)
     elif kind == "kranok":
         # a Thai kranok flame: a tall leaf rising, its back serrated into flame tongues, the tip
         # hooking over, a smaller flame nested inside it and a curl at its foot
-        _leaf(cv, cx - r * .25, cy + r * .9, -_PI / 2 + .25, r * 1.85, r * .5, -1, 4, 3)
-        _leaf(cv, cx - r * .1, cy + r * .7, -_PI / 2 + .35, r * 1.1, r * .3, -1, 2, 5)
-        _wline(cv, [(cx - r * .25 + r * .4 * _m.cos(t), cy + r * .62 + r * .3 * _m.sin(t)) for t in [_PI * (.1 + 1.4 * k / 12) for k in range(13)]], .6)
+        _kk_leaf(cv, cx - r * .25, cy + r * .9, -_PI / 2 + .25, r * 1.85, r * .5, -1, 4, 3)
+        _kk_leaf(cv, cx - r * .1, cy + r * .7, -_PI / 2 + .35, r * 1.1, r * .3, -1, 2, 5)
+        _kk_wline(cv, [(cx - r * .25 + r * .4 * _m.cos(t), cy + r * .62 + r * .3 * _m.sin(t)) for t in [_PI * (.1 + 1.4 * k / 12) for k in range(13)]], .6)
     elif kind == "elephant":
-        b = E([(-.75, .1), (-.6, -.35), (-.1, -.5), (.3, -.45), (.55, -.6), (.8, -.4), (.85, 0), (.78, .4),
-               (.7, .65), (.62, .3), (.55, .15), (.45, .7), (.3, .7), (.28, .25), (-.35, .25), (-.38, .7),
-               (-.55, .7), (-.58, .2)])
-        cv.obj([b], .5)
-        _cut(cv, E([(-.75, .1), (-.35, .25), (.28, .25), (.55, .15), (.5, -.1), (-.6, -.1)]), 20, 1.5)
-        cv.hair(E([(.35, -.4), (.42, -.05), (.25, .05)]))
-        cv.obj([E([(-.3, -.48), (.1, -.48), (.05, -.1), (-.25, -.1)])], .5)
-        for k in range(4):
-            cv.hair(E([(-.27 + k * .1, -.45), (-.25 + k * .1, -.13)]))
+        # a caparisoned Lanna elephant walking left: domed head, ear, a trunk curling down and
+        # out, a tusk, pillar legs, a patterned saddle cloth over the back
+        for lx in (-.42, -.18, .3, .52):
+            leg = E([(lx - .1, .15), (lx + .1, .15), (lx + .11, .82), (lx - .11, .82)])
+            cv.obj([leg], .5)
+            _kk_cut(cv, E([(lx + .02, .2), (lx + .1, .2), (lx + .11, .8), (lx + .02, .8)]), 90, 1.5)
+        body = _C._ell_pts(cx + r * .08, cy - r * .02, r * .62, r * .4, 30)[:-1]
+        cv.obj([body], .5)
+        _kk_cut(cv, [p for p in body if p[1] > cy + r * .08], 10, 1.5)
+        head = _C._ell_pts(cx - r * .55, cy - r * .2, r * .3, r * .32, 20)[:-1]
+        cv.obj([head], .5)
+        trunk = [(cx - r * (.75 + .12 * _m.sin(t * 2.2)), cy - r * .05 + r * .8 * t) for t in [k / 10 for k in range(11)]]
+        trunk += [(cx - r * (.95 - .1 * k / 4), cy + r * (.75 - .08 * k)) for k in range(5)]
+        _kk_wline(cv, trunk, r * .07)
+        _kk_wline(cv, E([(-.62, .05), (-.8, .18), (-.9, .15)]), r * .03)
+        ear = E([(-.5, -.42), (-.22, -.38), (-.18, -.05), (-.3, .12), (-.45, -.05)])
+        cv.obj([ear], .5)
+        _kk_cut(cv, ear, 70, 1.5)
+        cloth = E([(-.12, -.42), (.5, -.42), (.55, .05), (.2, .18), (-.08, .05)])
+        cv.obj([cloth], .5)
+        for k in range(3):
+            cv.hair(E([(-.08 + k * .02, -.3 + k * .12), (.52 - k * .01, -.3 + k * .12)]))
+        _kk_cut(cv, E([(-.1, .0), (.53, .0), (.2, .15), (-.08, .05)]), 45, 1.5)
+        cv.obj([_C._ell_pts(cx - r * .62, cy - r * .26, r * .04, r * .04, 6)[:-1]], .5)
     elif kind == "panel":
         fr = E([(-.85, -.2), (.55, -.75), (.85, .2), (-.55, .75)])
         cv.obj([fr], 1.)
-        _cut(cv, fr, -22, 1.5)
+        _kk_cut(cv, fr, -22, 1.5)
         for k in (1, 2, 3):
             t = k / 4
             a = (-.85 + 1.4 * t, -.2 - .55 * t)
@@ -1117,36 +1138,36 @@ def kk_egg(kind, cx, cy, r):
             poly = arm + arm2
             cv.obj([poly], .5)
             if i % 2 == 0:
-                _cut(cv, poly, a0 * 57 + 30, 1.5)
+                _kk_cut(cv, poly, a0 * 57 + 30, 1.5)
     elif kind == "paw":
         cv.obj([_C._ell_pts(cx, cy + r * .3, r * .38, r * .32, 20)[:-1]], .5)
-        _cut(cv, _C._ell_pts(cx + r * .05, cy + r * .35, r * .3, r * .24, 16)[:-1], -45, 1.5)
+        _kk_cut(cv, _C._ell_pts(cx + r * .05, cy + r * .35, r * .3, r * .24, 16)[:-1], -45, 1.5)
         for a in (-2.4, -1.85, -1.3, -.75):
             px, py = cx + r * .62 * _m.cos(a), cy + r * .1 + r * .62 * _m.sin(a)
             cv.obj([_C._ell_pts(px, py, r * .15, r * .19, 12)[:-1]], .5)
     elif kind == "fleur":
         mid = E([(0, -.98), (.2, -.62), (.22, -.2), (.1, .25), (0, .4), (-.1, .25), (-.22, -.2), (-.2, -.62)])
         cv.obj([mid], .5)
-        _cut(cv, E([(0, -.98), (.2, -.62), (.22, -.2), (.1, .25), (0, .4)]), 70, 1.5)
+        _kk_cut(cv, E([(0, -.98), (.2, -.62), (.22, -.2), (.1, .25), (0, .4)]), 70, 1.5)
         cv.hair(E([(0, -.85), (0, .3)]))
         for sg in (-1, 1):
             pet = E([(sg * .12, .2), (sg * .45, -.25), (sg * .8, -.42), (sg * .95, -.2), (sg * .78, -.05),
                      (sg * .62, -.18), (sg * .45, .05), (sg * .3, .38)])
             cv.obj([pet], .5)
-            _cut(cv, pet, -sg * 50, 1.5)
+            _kk_cut(cv, pet, -sg * 50, 1.5)
             cv.obj([_C._ell_pts(cx + sg * r * .82, cy - r * .28, r * .1, r * .1, 10)[:-1]], .5)
         band = E([(-.42, .32), (.42, .32), (.42, .5), (-.42, .5)])
         cv.obj([band], .5)
-        _cut(cv, band, 90, 1.5)
+        _kk_cut(cv, band, 90, 1.5)
         cv.obj([E([(-.15, .5), (.15, .5), (.1, .95), (0, .82), (-.1, .95)])], .5)
     else:   # "dog": a retriever's head in profile, looking left
         head = E([(.55, .9), (.35, .25), (.1, .05), (-.15, .05), (-.55, .12), (-.82, .05), (-.88, -.12),
                   (-.7, -.22), (-.35, -.3), (-.1, -.55), (.2, -.62), (.45, -.5), (.62, -.2), (.75, .35), (.9, .9)])
         cv.obj([head], .5)
-        _cut(cv, E([(.35, .25), (.62, -.2), (.75, .35), (.9, .9), (.55, .9)]), 75, 1.5)
+        _kk_cut(cv, E([(.35, .25), (.62, -.2), (.75, .35), (.9, .9), (.55, .9)]), 75, 1.5)
         ear = E([(.15, -.55), (.42, -.48), (.5, -.1), (.42, .35), (.3, .4), (.22, .0)])
         cv.obj([ear], .5)
-        _cut(cv, ear, 80, 1.5)
+        _kk_cut(cv, ear, 80, 1.5)
         cv.obj([_C._ell_pts(cx - r * .86, cy - r * .1, r * .07, r * .07, 8)[:-1]], 1.)
         cv.line(_C._ell_pts(cx - r * .12, cy - r * .3, r * .05, r * .05, 8))
         cv.hair(E([(-.82, .05), (-.5, .1)]))
@@ -1156,7 +1177,7 @@ def kk_egg(kind, cx, cy, r):
 def kk_roundel(cx, cy, r, kind, bead=1.2):
     """An egg in a small bead-ringed roundel on the matte."""
     ring, ox, oy = kk_ring(cx, cy, r, r, bead)
-    return (f'<path d="{_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="url(#kkM)" stroke="none"/>'
+    return (f'<path d="{_kk_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="url(#kkM)" stroke="none"/>'
             + kk_egg(kind, cx, cy, r * .86) + ring), ox
 
 
@@ -1240,7 +1261,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
     deferred = []
 
     def run_field(box, obst, roots, rmin, rmax, inside=None, poly=None, sd=0, area=None, cut=None):
-        d = (_pd_poly(poly) if poly else _rect_d(*box)) + (_pd_poly(cut) if cut else "")
+        d = (_kk_pd_poly(poly) if poly else kk_rect_d(*box)) + (_kk_pd_poly(cut) if cut else "")
         o.append(kk_matte(d))
         if area is not None:
             deferred.append((len(o), box, obst, roots, rmin, rmax, inside, d, sd, area))
@@ -1280,8 +1301,8 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
         obst.append(("c", ex, cy, er + 7))
         run_field((0, gy, w, gh), obst, [(cx - rx - 8, cy, 180), (cx + rx + 8, cy, 0)],
                   max(4.5, gh * .1), max(9, gh * .33), sd=1, area=w * gh - _PI * (rx + 9) * (ry + 9) - _PI * (er + 7) ** 2)
-        o.append(f'<path d="{_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-        o.append(kk_clip(_C._uid("kks", w, h, seed), _ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "band")))
+        o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
+        o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "band")))
         ring, _, _ = kk_ring(cx, cy, rx, ry, 1.)
         o.append(ring)
         rr, _ = kk_roundel(ex, cy, er, egg, 1.)
@@ -1307,7 +1328,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
         ex = cx + (rx + 30 + er) * (-1 if seed % 2 else 1)
         obst = [("e", cx, cy, rx + 10, ry + 10), ("c", ex, cy, er + 8)]
         border, bw = kk_border(poly)
-        for q in _along(poly, 3.):
+        for q in _kk_along(poly, 3.):
             obst.append(("c", q[0], q[1], 3.))
         run_field((m, m, w - 2 * m, h - 2 * m), obst,
                   [(cx - rx * .55, cy + ry + 8, 160), (cx + rx * .55, cy + ry + 8, 20), (cx, cy - ry - 9, 0 if seed % 2 else 180)],
@@ -1319,8 +1340,8 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
         for (qx, qy) in ((m * .6 + c * .3, m * .6 + c * .3), (w - m * .6 - c * .3, m * .6 + c * .3),
                          (w - m * .6 - c * .3, h - m * .6 - c * .3), (m * .6 + c * .3, h - m * .6 - c * .3)):
             o.append(kk_rosette(qx, qy, 3.6))
-        o.append(f'<path d="{_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-        o.append(kk_clip(_C._uid("kks", w, h, seed), _ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "medium")))
+        o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
+        o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "medium")))
         ring, _, _ = kk_ring(cx, cy, rx, ry, 1.5)
         o.append(ring)
         rr, _ = kk_roundel(ex, cy, er, egg, 1.)
@@ -1341,18 +1362,18 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
     ph = yb - m
     rr_ = min(24., ph * .07)
     ry = min(ph * .4, 175, (ph - rise * .5 - 18 - 2 * rr_ - 44) / 2)
-    rx = min((w - 2 * m) * .4, ry * 1.12)
+    rx = min((w - 2 * m) * .4, ry * 1.45)
     cy = m + rise * .5 + ry + 18
     ey = min(cy + ry + 14 + rr_ + 6, yb - rr_ - 10)
     obst = [("e", cx, cy, rx + 10, ry + 10), ("c", cx, ey, rr_ + 10)]
-    for q in _along(poly, 3.):
+    for q in _kk_along(poly, 3.):
         obst.append(("c", q[0], q[1], 3.))
     roots = [(cx - rr_ - 10, ey, 180), (cx + rr_ + 10, ey, 0), (cx, cy - ry - 10, 0 if seed % 2 else 180)]
     run_field((m, m, w - 2 * m, ph), obst, roots, max(9, h * .019), max(19, h * .048), kk_inside(poly), poly, 5,
               area=(w - 2 * m) * ph - _PI * (rx + 10) * (ry + 10) - _PI * (rr_ + 10) ** 2 - .43 * rise * (w - 2 * m))
     o.append(border)
-    o.append(f'<path d="{_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-    o.append(kk_clip(_C._uid("kks", w, h, seed), _ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "tall")))
+    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
+    o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "tall")))
     ring, _, _ = kk_ring(cx, cy, rx, ry, 1.5)
     o.append(ring)
     rr, _ = kk_roundel(cx, ey, rr_, "arms" if arms else egg, 1.2)
@@ -1363,7 +1384,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
     fb, _ = kk_border(fp, 1.2)
     pr = (h - fy - 8) / 2 - 1
     pcx, pcy = w / 2, fy + 4 + (h - fy - 8) / 2
-    o.append(kk_matte(_rect_d(0, yb + 4, w, h - yb - 4)))
+    o.append(kk_matte(kk_rect_d(0, yb + 4, w, h - yb - 4)))
     run_field((m + 6, fy + 4, w - 2 * m - 12, h - fy - 8), [("c", pcx, pcy, pr * 1.05)] + ([("c", w * .2, pcy, pr * .8)] if egg2 else []),
               [(pcx - pr, pcy, 180), (pcx + pr, pcy, 0)], max(5.5, pr * .42), pr * 1.05, sd=7)
     o.append(fb)
@@ -1382,5 +1403,5 @@ def plate(w, h, ctx):
 
     def sc(x, y, ww, hh, mode):
         X, Y, W, H = x - 2, y - 2, ww + 4, hh + 4
-        return vignette_clipped("mk%d" % int(hh * 10), X, Y, W, H, _rect_d(X, Y, W, H), seed)
+        return vignette_clipped("mk%d" % int(hh * 10), X, Y, W, H, kk_rect_d(X, Y, W, H), seed)
     return kk_plate(w, h, sc, egg="P", seed=seed)

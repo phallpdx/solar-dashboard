@@ -1306,15 +1306,30 @@ def kk_egg(kind, cx, cy, r):
         _kk_leaf(cv, cx - r * .1, cy + r * .7, -_PI / 2 + .35, r * 1.1, r * .3, -1, 2, 5)
         _kk_wline(cv, [(cx - r * .25 + r * .4 * _m.cos(t), cy + r * .62 + r * .3 * _m.sin(t)) for t in [_PI * (.1 + 1.4 * k / 12) for k in range(13)]], .6)
     elif kind == "elephant":
-        b = E([(-.75, .1), (-.6, -.35), (-.1, -.5), (.3, -.45), (.55, -.6), (.8, -.4), (.85, 0), (.78, .4),
-               (.7, .65), (.62, .3), (.55, .15), (.45, .7), (.3, .7), (.28, .25), (-.35, .25), (-.38, .7),
-               (-.55, .7), (-.58, .2)])
-        cv.obj([b], .5)
-        _kk_cut(cv, E([(-.75, .1), (-.35, .25), (.28, .25), (.55, .15), (.5, -.1), (-.6, -.1)]), 20, 1.5)
-        cv.hair(E([(.35, -.4), (.42, -.05), (.25, .05)]))
-        cv.obj([E([(-.3, -.48), (.1, -.48), (.05, -.1), (-.25, -.1)])], .5)
-        for k in range(4):
-            cv.hair(E([(-.27 + k * .1, -.45), (-.25 + k * .1, -.13)]))
+        # a caparisoned Lanna elephant walking left: domed head, ear, a trunk curling down and
+        # out, a tusk, pillar legs, a patterned saddle cloth over the back
+        for lx in (-.42, -.18, .3, .52):
+            leg = E([(lx - .1, .15), (lx + .1, .15), (lx + .11, .82), (lx - .11, .82)])
+            cv.obj([leg], .5)
+            _kk_cut(cv, E([(lx + .02, .2), (lx + .1, .2), (lx + .11, .8), (lx + .02, .8)]), 90, 1.5)
+        body = _C._ell_pts(cx + r * .08, cy - r * .02, r * .62, r * .4, 30)[:-1]
+        cv.obj([body], .5)
+        _kk_cut(cv, [p for p in body if p[1] > cy + r * .08], 10, 1.5)
+        head = _C._ell_pts(cx - r * .55, cy - r * .2, r * .3, r * .32, 20)[:-1]
+        cv.obj([head], .5)
+        trunk = [(cx - r * (.75 + .12 * _m.sin(t * 2.2)), cy - r * .05 + r * .8 * t) for t in [k / 10 for k in range(11)]]
+        trunk += [(cx - r * (.95 - .1 * k / 4), cy + r * (.75 - .08 * k)) for k in range(5)]
+        _kk_wline(cv, trunk, r * .07)
+        _kk_wline(cv, E([(-.62, .05), (-.8, .18), (-.9, .15)]), r * .03)
+        ear = E([(-.5, -.42), (-.22, -.38), (-.18, -.05), (-.3, .12), (-.45, -.05)])
+        cv.obj([ear], .5)
+        _kk_cut(cv, ear, 70, 1.5)
+        cloth = E([(-.12, -.42), (.5, -.42), (.55, .05), (.2, .18), (-.08, .05)])
+        cv.obj([cloth], .5)
+        for k in range(3):
+            cv.hair(E([(-.08 + k * .02, -.3 + k * .12), (.52 - k * .01, -.3 + k * .12)]))
+        _kk_cut(cv, E([(-.1, .0), (.53, .0), (.2, .15), (-.08, .05)]), 45, 1.5)
+        cv.obj([_C._ell_pts(cx - r * .62, cy - r * .26, r * .04, r * .04, 6)[:-1]], .5)
     elif kind == "panel":
         fr = E([(-.85, -.2), (.55, -.75), (.85, .2), (-.55, .75)])
         cv.obj([fr], 1.)

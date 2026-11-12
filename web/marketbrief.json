@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-12",
-  "updated_at": "2026-11-12T11:15:24Z",
+  "updated_at": "2026-11-12T13:18:44Z",
   "analysis": {
     "headline": "Major indexes finished higher despite Nvidia troubles and oil edging lower.",
     "summary": "Stocks rose as CoreWeave results reignited AI trade. Bonds saw yields rise with the 10-year Treasury up 0.30%. Oil prices fell 0.91% while gold slipped 1.01%. Bitcoin declined 0.90% amid broader market shifts.",
@@ -12,6 +12,14 @@
       {
         "name": "Google News: Business",
         "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPRXA4bkZhVmdEcjlSV0pkenR6MV9iWU95Rk1qY1IySTNnSHUxQ0p2cnNRV0x6bFZwRDA5d0RHZlRicWx1eFBYNnVlODY3Z0x1emFudndSdTg2ZjNsOVVYel80aUg4S0dpTFBCLUozWmFfZ1ByLXo3V01fdHpaTkU5SWRMVkJRZzhINXdlYlJIMUlfODdoUGlwODlpODJNNTl5M2YyUzk3cUpxOHpUbHg3NEppZHc?oc=5"
+      },
+      {
+        "name": "Regards of Wall Street: week ahead, Nov 9, 2026",
+        "url": "https://www.regardsofwallstreet.com/news/stock-market-week-ahead-november-9-2026"
+      },
+      {
+        "name": "TD Economics: upcoming US releases",
+        "url": "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-06/upcoming.htm"
       }
     ],
     "by": "local model",
@@ -19,7 +27,12 @@
       "CoreWeave earnings boosting AI trade",
       "#2 Nvidia troubles causing stock volatility"
     ],
-    "watch": []
+    "watch": [
+      "Thursday 8:30am ET: weekly jobless claims (consensus about 195K vs 189K prior, per TD Economics)",
+      "Thursday: New York Fed President John Williams speaks",
+      "Thursday after the close: Cisco and Applied Materials earnings",
+      "Friday 8:30am ET: October producer prices (PPI)"
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -103,6 +116,18 @@
       {
         "name": "Web search: Portland housing data",
         "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
+      },
+      {
+        "name": "McCreith Team: November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
+      },
+      {
+        "name": "Redfin: Portland housing market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "name": "AP via WCAX: 30-year mortgage rate falls to 7.18%",
+        "url": "https://www.wcax.com/2026/11/05/average-us-30-year-mortgage-rate-falls-718-this-week-its-third-straight-decline/"
       }
     ],
     "by": "local model",
@@ -140,25 +165,39 @@
     ],
     "stats": [
       {
-        "label": "Median sale price (Portland metro, September)",
+        "label": "Median sale price (Portland metro, October, RMLS data)",
         "value": "$545,000",
-        "change": "unchanged from a year ago",
-        "source": "lovejoyrealestate.com",
-        "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
+        "change": "+0.9% vs a year ago",
+        "source": "McCreith Team, November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
       },
       {
-        "label": "Closed sales (Portland metro, September)",
-        "value": "1,752",
-        "change": "-4.0%",
-        "source": "lovejoyrealestate.com",
-        "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
+        "label": "Closed sales (Portland metro, October, RMLS data)",
+        "value": "1,622",
+        "change": "-21.5% vs a year ago (2,066)",
+        "source": "McCreith Team, November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
       },
       {
-        "label": "Median sale price (Portland metro, March)",
-        "value": "$543,800",
-        "change": "+3.6% compared to last month",
-        "source": "greenbuckrealestate.com",
-        "url": "https://greenbuckrealestate.com/blog/portland-metro-real-estate-march-2026-market-action-report"
+        "label": "Median sale price (city of Portland, October)",
+        "value": "$524,635",
+        "change": "3-month median $525K, +0.9% vs a year ago",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "Homes sold (city of Portland, October)",
+        "value": "1,801",
+        "change": "down from 2,079 a year ago",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "30-year mortgage rate (Freddie Mac, week of Nov 5)",
+        "value": "7.18%",
+        "change": "down from 7.24% the week before; 6.22% a year ago",
+        "source": "AP via WCAX",
+        "url": "https://www.wcax.com/2026/11/05/average-us-30-year-mortgage-rate-falls-718-this-week-its-third-straight-decline/"
       }
     ]
   }

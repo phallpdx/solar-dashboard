@@ -13,6 +13,8 @@ import re
 import sys
 import time
 
+from . import plate_slots
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 PLATES = os.path.join(HERE, "plates")
 MIN_H = 40   # below this a sheet gets no plate
@@ -34,6 +36,115 @@ MEASURE = """async (n0) => {
   }
   return { ctx, rooms };
 }"""
+
+
+SHAPES = {
+    "oval": lambda w, h: f"M0,{h / 2:.1f}A{w / 2:.1f},{h / 2:.1f} 0 1 0 {w:.1f},{h / 2:.1f}A{w / 2:.1f},{h / 2:.1f} 0 1 0 0,{h / 2:.1f}Z",
+    "circle": lambda w, h: (lambda r: f"M{w / 2 - r:.1f},{h / 2:.1f}a{r:.1f},{r:.1f} 0 1 0 {2 * r:.1f},0a{r:.1f},{r:.1f} 0 1 0 {-2 * r:.1f},0Z")(min(w, h) / 2),
+    "arch": lambda w, h: (lambda r: f"M0,{h}V{r:.1f}A{w / 2:.1f},{r:.1f} 0 0 1 {w},{r:.1f}V{h}Z")(min(h * .6, w / 2)),
+    "lunette": lambda w, h: (lambda r: f"M0,0H{w}V{h - r:.1f}A{w / 2:.1f},{r:.1f} 0 0 1 0,{h - r:.1f}Z")(min(h * .6, w / 2)),
+    "banner": lambda w, h: (lambda n: f"M0,{h * .12:.1f}H{w}L{w - n:.1f},{h / 2:.1f}L{w},{h * .88:.1f}H0L{n:.1f},{h / 2:.1f}Z")(min(h * .45, w * .08)),
+    "irregular": lambda w, h: _irregular(w, h),
+    "cut": lambda w, h: (lambda c: f"M{c:.1f},0H{w - c:.1f}L{w},{c:.1f}V{h - c:.1f}L{w - c:.1f},{h}H{c:.1f}L0,{h - c:.1f}V{c:.1f}Z")(min(w, h) * .12),
+}
+
+
+def _irregular(w, h, n=14):
+    """A scalloped cartouche: an ellipse whose rim swells into lobes, so the silhouette is never a box."""
+    import math
+    pts = []
+    for i in range(n * 8):
+        a = 2 * math.pi * i / (n * 8)
+        k = 1 - .07 * (1 - abs(math.cos(a * n / 2)))
+        c, s_ = math.cos(a), math.sin(a)
+        e = 3.
+        x = abs(c) ** (2 / e) * (1 if c >= 0 else -1)
+        y = abs(s_) ** (2 / e) * (1 if s_ >= 0 else -1)
+        pts.append((w / 2 + x * w / 2 * k, h / 2 + y * h / 2 * k))
+    return "M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + "Z"
+
+
+def _shape(svg, w, h, shape, arms=False):
+    """Clip a plate to its slot's shape, with a fine black rule round the edge."""
+    inner = re.sub(r"^\s*<\?xml[^>]*>\s*", "", svg)
+    seal = ""
+    if arms:   # the Somaster dedication cartouche at the vignette's foot (plan: section fronts)
+        from .arms import arms as _arms
+        ah = 34
+        aw = int(ah * 120 / 140)
+        seal = f'<g transform="translate({(w - aw) / 2:.1f},{h - ah - 1:.1f})">{_arms(aw, ah, 7)}</g>'
+    if shape not in SHAPES:
+        if not seal:
+            return svg
+        d = f"M0,0H{w}V{h}H0Z"
+    else:
+        d = SHAPES[shape](w, h)
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}">'
+            f'<defs><clipPath id="kshape"><path d="{d}"/></clipPath></defs><g clip-path="url(#kshape)">{inner}</g>'
+            f'<path d="{d}" fill="none" stroke="#000" stroke-width="1.5"/>{seal}</svg>')
+
+
+def _insert_slots(src, slug, slots):
+    """Reserve each in-flow slot in the page: a fixed-size <div class="kslot"> holding the plate's <img>,
+    at the top of #kmain (head) or before/after the element with the given id. Returns the new html."""
+    from html.parser import HTMLParser
+    VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+    lines = src.split("\n")
+    offs = [0]
+    for ln in lines:
+        offs.append(offs[-1] + len(ln) + 1)
+
+    class P(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.stack, self.spans, self.cls = [], {}, {}
+
+        def handle_starttag(self, tag, attrs):
+            pos = offs[self.getpos()[0] - 1] + self.getpos()[1]
+            a = dict(attrs)
+            if tag in VOID:
+                if a.get("id"):
+                    self.spans[a["id"]] = (pos, pos + len(self.get_starttag_text()))
+                return
+            self.stack.append((tag, a.get("id"), pos, (a.get("class") or "").split()))
+
+        def handle_endtag(self, tag):
+            pos = offs[self.getpos()[0] - 1] + self.getpos()[1]
+            for k in range(len(self.stack) - 1, -1, -1):
+                if self.stack[k][0] == tag:
+                    t, i, p0, cl = self.stack[k]
+                    del self.stack[k:]
+                    if i and i not in self.spans:
+                        self.spans[i] = (p0, pos + len(f"</{tag}>"))
+                    for c in cl:
+                        self.cls.setdefault(c, (p0, pos + len(f"</{tag}>")))
+                    break
+
+    pr = P()
+    pr.feed(src)
+    ins = []
+    for k, sl in enumerate(slots):
+        pos = sl["pos"]
+        div = (f'<div class="kslot kslot-{sl["form"]}" data-kslot="{k}" style="width:{sl["w"]}px;height:{sl["h"]}px">'
+               f'<img alt="" src="orn/plate-{slug}-s{k}.svg" width="{sl["w"]}" height="{sl["h"]}"></div>')
+        if pos == "after:.kfhead":   # a front's planned vignette replaces the head's stock plate
+            src = re.sub(r'class="kfhead"', 'class="kfhead khasslot"', src, count=1)
+            pr = P()
+            pr.feed(src)
+        if pos == "head":
+            m = re.search(r'<main id="kmain">', src)
+            if m:
+                ins.append((m.end(), div))
+        elif pos.startswith(("before:", "after:")):
+            ref = pos.split(":", 1)[1]
+            sp = pr.spans.get(ref[1:]) if ref.startswith("#") else pr.cls.get(ref[1:])
+            if sp:
+                ins.append((sp[0] if pos.startswith("before") else sp[1], div))
+            else:
+                print(f"kindle_plates: {slug}: slot anchor {pos} not found", file=sys.stderr)
+    for at, div in sorted(ins, reverse=True):
+        src = src[:at] + div + src[at:]
+    return src
 
 
 def _load(slug):
@@ -73,11 +184,19 @@ def run(out, date_iso, exe=None):
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}/"
+    for f in glob.glob(os.path.join(od, "fill-*.svg")):
+        os.remove(f)
     try:
         made = _pass(pages, out, od, base, date_iso, exe)
+        print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
+        t1 = time.time()
+        try:
+            nf = _fills(pages, out, od, base, date_iso, exe)
+            print(f"kindle_plates: {nf} engraved fills in {time.time() - t1:.1f}s")
+        except Exception as e:  # noqa: BLE001  -- no fills: the light ground and fleurons stay
+            print(f"kindle_plates: fills skipped ({e!r})", file=sys.stderr)
     finally:
         srv.shutdown()
-    print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
     return made
 
 
@@ -98,6 +217,15 @@ def _pass(pages, out, od, base, date_iso, exe):
             cx = br.new_context(viewport={"width": 618, "height": 714}, has_touch=True)
             pg = cx.new_page()
             fp = os.path.join(out, slug + ".html")
+            src = re.sub(r'<div class="kslot[^"]*" data-kslot="\d+"[^>]*><img[^>]*></div>', "", open(fp).read())
+            slots = plate_slots.for_page(slug, src)
+            planned = bool(slots)
+            slots = [sl for sl in slots if sl["form"] != "none"]
+            flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]
+            tails = [sl for sl in slots if sl["pos"] == "tail"]
+            margins = [sl for sl in slots if sl["pos"] == "margin"]
+            with open(fp, "w") as f:
+                f.write(_insert_slots(src, slug, [sl if (k, sl) in flow else dict(sl, pos="none") for k, sl in enumerate(slots)]) if flow else src)
             try:
                 pg.goto(base + slug + ".html", wait_until="load")
                 pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
@@ -114,13 +242,42 @@ def _pass(pages, out, od, base, date_iso, exe):
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_plates: {slug}: plate module failed ({e!r})", file=sys.stderr)
                 continue
+            for k, sl in flow:   # the in-flow slots: drawn to their exact size and shape
+                ctx = dict(res["ctx"], slug=slug, date=date_iso, sheet=-1, form=sl["form"], shape=sl["shape"], egg=sl.get("egg", ""), subject=sl.get("subject", ""))
+                try:
+                    svg = plate(sl["w"], sl["h"], ctx)
+                    with open(os.path.join(od, f"plate-{slug}-s{k}.svg"), "w") as f:
+                        f.write(_snap(_shape(svg, sl["w"], sl["h"], sl["shape"], sl.get("arms"))))
+                    made += 1
+                except Exception as e:  # noqa: BLE001
+                    print(f"kindle_plates: {slug} slot {k}: plate failed ({e!r})", file=sys.stderr)
+            for sl in margins:   # a marginal device: drawn now, set into the fill layer on the frame band
+                ctx = dict(res["ctx"], slug=slug, date=date_iso, sheet=-1, form="device", shape="circle", egg=sl.get("egg", ""), subject=sl.get("subject", ""))
+                try:
+                    with open(os.path.join(od, f"plate-{slug}-m.svg"), "w") as f:
+                        f.write(_snap(_shape(plate(sl["w"], sl["h"], ctx), sl["w"], sl["h"], "circle")))
+                except Exception as e:  # noqa: BLE001
+                    print(f"kindle_plates: {slug}: device failed ({e!r})", file=sys.stderr)
             kmap = []
+            nsh = len(res["rooms"])
             for r in res["rooms"]:
                 if r["h"] < MIN_H:
                     continue
+                spec = None
+                if tails:   # a planned tailpiece, vignette or plate: its own size and shape, on its own sheet
+                    spec = next((t for t in tails if (t.get("sheet", -1) % nsh) == r["sheet"]), None)
+                    if not spec:
+                        continue
+                    r = dict(r, w=min(r["w"], spec["w"]), h=min(r["h"], spec["h"]))
+                elif planned:
+                    continue    # planned art only: never a plate cut to the leftover room
                 ctx = dict(res["ctx"], slug=slug, date=date_iso, sheet=r["sheet"])
+                if spec:
+                    ctx.update(form=spec["form"], shape=spec["shape"], egg=spec.get("egg", ""), subject=spec.get("subject", ""))
                 try:
                     svg = plate(r["w"], r["h"], ctx)
+                    if spec:
+                        svg = _shape(svg, r["w"], r["h"], spec["shape"])
                 except Exception as e:  # noqa: BLE001
                     print(f"kindle_plates: {slug}~{r['sheet'] + 1}: plate({r['w']},{r['h']}) failed ({e!r})", file=sys.stderr)
                     continue
@@ -128,12 +285,157 @@ def _pass(pages, out, od, base, date_iso, exe):
                     continue
                 with open(os.path.join(od, f"plate-{slug}-{r['sheet']}.svg"), "w") as f:
                     f.write(_snap(svg))
-                kmap.append([r["sheet"], r["h"], r["w"]])
+                kmap.append([r["sheet"], r["h"], r["w"]] + ([1] if spec else []))
             s = re.sub(r" data-kplates='[^']*'", "", open(fp).read(), count=1)
             if kmap:
                 s = re.sub(r"<body\b", "<body data-kplates='" + _html.escape(json.dumps(kmap, separators=(",", ":"))) + "'", s, count=1)
             with open(fp, "w") as f:
                 f.write(s)
             made += len(kmap)
+        br.close()
+    return made
+
+
+# ------------------------------------------------------------------------------------------------
+# engraved fills: after the plates are in, measure each sheet's panels (window.KLAB, the pager's own
+# measure: every block of text is one full-width white panel) and cut the paper left between them inside
+# the frame into rectangles: gaps of 14 px and more get a Himmapan frieze, thinner ones beading, slivers
+# plain black. Nothing is ever drawn beside text: the panels span the column. One SVG per
+# sheet, orn/fill-<slug>-<sheet>.svg; <body data-kfills='[[sheet, labels, decor], ...]'> lets the pager
+# show it only when the device lays the sheet out the same way.
+# ------------------------------------------------------------------------------------------------
+
+FX0, FY0, FX1, FY1, FC = 44, 24, 574, 690, 2      # the panel inside the frame, and the grid cell (px)
+
+FILL_MEASURE = """async (P) => {
+  const wait = (f, ms) => new Promise(r => { const t0 = Date.now(); (function k() { if (f() || Date.now() - t0 > ms) r(); else setTimeout(k, 30); })(); });
+  await wait(() => window.KROOM && window.KLAB, 4000);
+  if (!window.KROOM || !window.KLAB || window.innerWidth !== 618 || window.innerHeight !== 714) return null;
+  await new Promise(r => setTimeout(r, 500));
+  const [X0, Y0, X1, Y1, C] = P, gw = Math.floor((X1 - X0) / C), gh = Math.floor((Y1 - Y0) / C);
+  function cut(L) {
+    const occ = new Uint8Array(gw * gh), lab = new Uint8Array(gw * gh);
+    const mark = (r, m, a) => { const i0 = Math.max(0, Math.floor((r[0] - m - X0) / C)), i1 = Math.min(gw, Math.ceil((r[0] + r[2] + m - X0) / C)),
+                                      j0 = Math.max(0, Math.floor((r[1] - m - Y0) / C)), j1 = Math.min(gh, Math.ceil((r[1] + r[3] + m - Y0) / C));
+      for (let j = j0; j < j1; j++) for (let i = i0; i < i1; i++) { occ[j * gw + i] = 1; if (a) a[j * gw + i] = 1; } };
+    L.o.forEach(r => mark(r, 1, lab)); L.p.forEach(r => mark(r, 1, lab)); L.d.forEach(r => mark(r, 2, null));
+    const H = new Int32Array(gw);
+    function best(minS, minL) {   // the largest free rectangle with both sides >= minS cells and one >= minL
+      H.fill(0); let B = null, ba = 0;
+      for (let j = 0; j < gh; j++) {
+        for (let i = 0; i < gw; i++) H[i] = occ[j * gw + i] ? 0 : H[i] + 1;
+        const st = [];
+        for (let i = 0; i <= gw; i++) { const hh = i < gw ? H[i] : 0; let s0 = i;
+          while (st.length && st[st.length - 1][1] >= hh) { const [si, sh] = st.pop(); const w = i - si;
+            if (sh >= minS && w >= minS && Math.max(sh, w) >= minL && w * sh > ba) { ba = w * sh; B = [si, j - sh + 1, w, sh]; } s0 = si; }
+          st.push([s0, hh]); } }
+      return B; }
+    const take = (b) => { for (let j = b[1]; j < b[1] + b[3]; j++) for (let i = b[0]; i < b[0] + b[2]; i++) occ[j * gw + i] = 1; };
+    const px = b => [X0 + b[0] * C, Y0 + b[1] * C, b[2] * C, b[3] * C];
+    const panels = [], strips = [], ground = [];
+    let b;
+    while ((b = best(7, 7)) && panels.length < 60) {   // panels: grown from the side that meets the most label
+      const sc = { l: 0, r: 0, t: 0, b: 0 };
+      for (let j = b[1]; j < b[1] + b[3]; j++) { if (b[0] > 0 && lab[j * gw + b[0] - 1]) sc.l++; if (b[0] + b[2] < gw && lab[j * gw + b[0] + b[2]]) sc.r++; }
+      for (let i = b[0]; i < b[0] + b[2]; i++) { if (b[1] > 0 && lab[(b[1] - 1) * gw + i]) sc.t++; if (b[1] + b[3] < gh && lab[(b[1] + b[3]) * gw + i]) sc.b++; }
+      let g = 'l'; for (const k of ['l', 'r', 't', 'b']) if (sc[k] > sc[g]) g = k;
+      if (b[2] > 3 * b[3]) g = 'l'; else if (b[3] > 3 * b[2]) g = 't';   // a gap between panels runs as a frieze
+      take(b); panels.push(px(b).concat([g])); }
+    while ((b = best(2, 7)) && strips.length < 120) { take(b); strips.push(px(b)); }
+    for (let j = 0; j < gh; j++) { let i = 0;   // the slivers: plain black, run by run
+      while (i < gw) { if (occ[j * gw + i]) { i++; continue; } let e = i; while (e < gw && !occ[j * gw + e]) e++;
+        const last = ground.length && ground[ground.length - 1];
+        if (last && last[0] === X0 + i * C && last[2] === (e - i) * C && last[1] + last[3] === Y0 + j * C) last[3] += C;
+        else ground.push([X0 + i * C, Y0 + j * C, (e - i) * C, C]);
+        i = e; } }
+    // and black under every label's edge, so no paper shows between a label's rule and the fill
+    L.o.forEach(r => { const x0 = Math.max(X0, r[0] - 2), y0 = Math.max(Y0, r[1] - 2), x1 = Math.min(X1, r[0] + r[2] + 2), y1 = Math.min(Y1, r[1] + r[3] + 2);
+      if (x1 > x0 && y1 > y0) ground.push([x0, y0, x1 - x0, y1 - y0]); });
+    const between = r => { const i0 = Math.floor((r[0] - X0) / C), i1 = i0 + Math.floor(r[2] / C), ja = Math.floor((r[1] - Y0) / C) - 1, jb = Math.floor((r[1] + r[3] - Y0) / C);
+      let up = false, dn = false;
+      for (let i = i0; i < i1; i++) { if (ja >= 0 && lab[ja * gw + i]) up = true; if (jb < gh && lab[jb * gw + i]) dn = true; }
+      return up && dn; };
+    panels.forEach(p => p.push(between(p))); strips.forEach(p => p.push(between(p)));
+    return { panels, strips, ground };
+  }
+  const out = [], n = window.KROOM.sheets;
+  for (let i = 0; i < n; i++) {
+    if (i) { const more = document.getElementById('kmore'); if (!more) break; more.click();
+             await wait(() => window.KROOM.sheet === i, 3000); await new Promise(r => setTimeout(r, 400)); }
+    const L = window.KLAB();
+    out.push(Object.assign({ sheet: i, o: L.o, d: L.d, p: L.p }, cut(L)));
+  }
+  return out;
+}"""
+
+
+def _fills(pages, out, od, base, date_iso, exe):
+    from playwright.sync_api import sync_playwright
+    from . import kindle_frame as KF
+    import zlib
+    made = 0
+    with sync_playwright() as pw:
+        br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
+        for slug in pages:
+            cx = br.new_context(viewport={"width": 618, "height": 714}, has_touch=True)
+            pg = cx.new_page()
+            fp = os.path.join(out, slug + ".html")
+            try:
+                pg.goto(base + slug + ".html", wait_until="load")
+                pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+                res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
+            except Exception as e:  # noqa: BLE001
+                print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
+                res = None
+            cx.close()
+            fmap = []
+            for r in res or []:
+                if not r["panels"] and not r["strips"] and not r["ground"]:
+                    continue
+                seed = zlib.crc32(f"{slug}/{r['sheet']}/{date_iso}".encode()) % 100003
+                # the plan's leftover order: one carved frieze (18-36 px) in the largest gap between panels,
+                # beading in the other gaps, and the frame's punched ground everywhere else (margins, the
+                # room below a plate). Never flora beside a plate or out in the margin.
+                fr, beads, matte = [], [], []
+                gaps = sorted([p for p in r["panels"] if p[5]], key=lambda p: -min(p[3], 36) * p[2])
+                for k, p in enumerate(gaps):
+                    x, y, pw, ph = p[:4]
+                    if k == 0 and ph >= 18:
+                        hf = min(ph, 36.)
+                        fr.append((x, y + (ph - hf) / 2, pw, hf, "l"))
+                    else:
+                        hf = min(ph, 10.)
+                        beads.append((x, y + (ph - hf) / 2, pw, hf))
+                    if ph > hf:
+                        matte += [(x, y, pw, (ph - hf) / 2), (x, y + (ph + hf) / 2, pw, (ph - hf) / 2)]
+                matte += [tuple(p[:4]) for p in r["panels"] if not p[5]]
+                matte += [tuple(q) for q in r["p"]]
+                beads += [tuple(p[:4]) for p in r["strips"] if p[4]]
+                matte += [tuple(p[:4]) for p in r["strips"] if not p[4]]
+                dev = ""
+                if r["sheet"] == len(res) - 1 and os.path.exists(os.path.join(od, f"plate-{slug}-m.svg")):
+                    gy = [p for p in r["panels"] if p[5]] + [p for p in r["strips"] if p[4]]
+                    if gy:   # the marginal device: a roundel on the left frame band, beside the largest gap
+                        g0 = max(gy, key=lambda p: p[3])
+                        dsv = open(os.path.join(od, f"plate-{slug}-m.svg")).read()
+                        dsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", dsv)
+                        dev = re.sub(r"<svg\b", f'<svg x="3" y="{g0[1] + g0[3] / 2 - 19:.0f}"', dsv, count=1)
+                sec = slug.split("-")[0]
+                try:
+                    svg = KF.sheet_fill(fr, beads, seed, ground=[tuple(g) for g in r["ground"]], matte=matte,
+                                        motif=sec if sec in KF.MOTIFS else None, extra_svg=dev)
+                except Exception as e:  # noqa: BLE001
+                    print(f"kindle_plates: {slug}~{r['sheet'] + 1}: fill failed ({e!r})", file=sys.stderr)
+                    continue
+                with open(os.path.join(od, f"fill-{slug}-{r['sheet']}.svg"), "w") as f:
+                    f.write(_snap(svg))
+                enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
+                fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
+            s = re.sub(r" data-kfills='[^']*'", "", open(fp).read(), count=1)
+            if fmap:
+                s = re.sub(r"<body\b", "<body data-kfills='" + _html.escape(json.dumps(fmap, separators=(",", ":"))) + "'", s, count=1)
+            with open(fp, "w") as f:
+                f.write(s)
+            made += len(fmap)
         br.close()
     return made

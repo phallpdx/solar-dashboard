@@ -2167,6 +2167,14 @@ html.kme body .krun *,html.kme body .kbar *,html.kme #kcont *{background-color:t
 html.kme body .krun,html.kme body .kbar,html.kme #kcont{position:relative;z-index:1}
 html.kme #kkf{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-events:none}
 html.kme #kkf i{position:absolute;display:block;background:#fff}
+/* the engraved fill: one SVG per sheet, cut at build time to every free rectangle round the labels; the pager
+   shows it only when the sheet lays out as measured, else the light ground and the gap fleurons stay */
+html.kme #kfill{display:none;position:fixed;left:0;top:0;width:618px;height:714px;z-index:-1;pointer-events:none;border:0}
+html.kme.kfilled #kclip .kgap{display:none !important}
+/* a placed plate (solar/plate_slots.py): a fixed-size engraving in the flow, centred between panels */
+html.kme #kmain .kslot{display:block;margin:10px auto;overflow:hidden}
+html.kme #kmain .kslot img{display:block;border:0}
+html.kme .ksecfront #kmain .kfhead.khasslot:after{display:none !important}
 FRAMES
 html.kme body .krun{margin:26px 0 8px !important;padding-left:14px !important;padding-right:14px !important;border-bottom-color:transparent !important}
 html.kme.kpaged body .kbar{margin:0 0 26px !important;padding:0 14px !important;border-top-color:transparent !important}

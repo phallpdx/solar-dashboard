@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,14 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Hometown Tourism Days",
-      "date": "2026-11-07",
-      "end": "2026-11-11",
-      "town": "Seaside",
-      "summary": "Explore local attractions in Pacific and Clatsop counties from 8:00 am to 5:00 pm.",
-      "url": "https://www.seasideor.com/event/hometown-tourism-day-at-seaside-museum-seaside-aquarium/"
     },
     {
       "name": "Justin Curry: Violin Portraits live at The Lyons Den",

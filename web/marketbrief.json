@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-11",
-  "updated_at": "2026-11-12T07:32:45Z",
+  "updated": "2026-11-12",
+  "updated_at": "2026-11-12T09:28:41Z",
   "analysis": {
     "headline": "Major indexes rose as easing AI anxiety drew dip buyers into tech stocks.",
     "summary": "Stocks surged driven by CoreWeave results easing AI spending worries. Bonds saw yields rise with the 10-year Treasury up. Oil prices increased while gold and Bitcoin both declined. The broader trend shows a rally in major indexes despite Nvidia's internal uncertainty.",
@@ -27,7 +27,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. Swift Current could host a $100 million helium liquefier. Global helium supply is tightening.",
+    "summary": "The Stewart Valley plant is producing ~73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. Swift Current may host a $100 million helium liquefier. Global helium supply is tightening.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -50,7 +50,7 @@
         "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
       },
       {
-        "name": "Google News: helium market",
+        "name": "Google News: North American Helium",
         "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNU3ZZdEZSdEowbHpPUUk2N0MwZk9tMWJaVTMxenJGVDZLeXV6aHdmc1hFRnplcld3dWF1ZV9zcmc2c2dEM011Tmc2alBXMUJfZXlkMHNTQ24tUUktMHlFMmlROTVZdmJYdjFsV1NfOVJBaG9hTnB2OE8ydjBsZlVBVGhLYWlFTVZ6TWNlal9oZ3RWM1A1WEZBMG1SQVdTM0VOTW80azc1OFlNZXZvczJ6cFBMZ1lTSGd1bHFPc25FZ3JaZzZ2cDlvRy1LQk5lY2lfQ0cybEh4SGQtdw?oc=5"
       }
     ],
@@ -89,73 +89,65 @@
     ]
   },
   "realestate": {
-    "headline": "Home sales show slight uptick but face mortgage rate threats.",
-    "summary": "Sellers are lowering prices to help buyers in a stagnant market. Renters are being squeezed by the housing market. Mortgage rates have seen sharp declines and recent jumps. Portland homebuyers are backing out of deals.",
+    "headline": "The Portland housing market is slowing as mortgage rates climb and homebuyers back out of deals.",
+    "summary": "Median sale prices held at $545,000 while inventory rose to 4.2 months in September 2026. Pending sales fell 17.9% year-over-year. Mortgage rates have climbed past 7%.",
     "sources": [
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnd1QnhKLU56LXM4S180RkRzTVhzVEFSYWdZX2tEZ2drU1VTVGZqNXJOSnkxQ1l4MlZndE94T1FQYkk2ODVXUGk0RmFLQzhRb18ySFR5aGZlQXloUmxqZWozOU50YTlBZlFiRndTc3kyZ0l5SEtPZXBIclRSazBycEgwNEJjclFJNy00Xzc0UVFUYU53aVVieHFaQ1RBOVhRLUlWQ0Y0bzc5TkQtRWpB?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNRDdRR201dE1lemNSVE0tc2VDd21HbDdVR0Z4VzV2LV9JRU43Y0lMYWpiLXdiNXoyTVFYZC1IMFFBLXNuM256WXlSOHl2c2QxVU43cnRTcW1jZFB5WC04ZjVOZjNyNzlGZWZhc1VRSVhBOG5yX2RNTmRFSUNKX2VBdlVaM2o?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
+      },
+      {
+        "name": "Web search: Portland housing data",
+        "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
       }
     ],
     "by": "local model",
     "items": [
       {
-        "title": "High Housing Costs Keep Homeowners Locked-In",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE01ZGRGS2RpLV8tME5ONEJmQXZiWV9QX2E3TDdfOGlvMmFybmJNMWZyTXF2VzE3OTl5UG5FalVJVW5waVR5Y2tGTGtrQ0hQUE1DRzJKV1BrbUR0Njd6cUdlWHMyYW8wekdrSFFUUUZWOA?oc=5",
-        "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Buying a Median-Priced Home Would Cost Typical Mortgage Holders About $1,100 More a Month",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOTnlmbF9KOExsMDFOaFpiU09SVWVFbFlUa19yRnBoSkVIaG9MeG1jV3N5b1IxcGhOMjkxdFo3cWtfS0ZMY09CY3hqWEQtOW9ibmpCLWthY3FKT0FYZlV3Z2RpZ09DdHhOUkxFLVk1eXp6c3BYNG84bGNOUnlkeDd0Qmg3YXowa29sSWZ0d1lPMS1wNmFGYmc4M3l3Y3lxS19GSVl1NUpQeDN4UUNJd3g2Nkp2X0Vva09WYW5CVnlyUi1uSkYxdklnR3FfcEtsdTNUMW9xaW0xdVhRNzhnS0JsYVpsOA?oc=5",
-        "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Mortgage rates jump sharply higher, after easing for four straight weeks. Here's why",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPdUZxa3hUQnZocTljMEFidmJheXdlMVpXbnc5TEx2M1pBQ2VacWVDQU81REoyV0RjTmhaMFlMdkxPdnpkMVNOeGpfUGRpVUE5ejY3Y18xdFlHdXUtbEIwOXlkTmp2UkFsbTZhYUd4UUFSME93ckFtMkVIUHJfUFc0alhCUzdCbkRndTRfdFk5Y2lUZkpuTmZBLWpHOVV1clFvTzl4eUZFVWo?oc=5",
+        "title": "Mortgage rates today, Nov. 12, 2026",
+        "date": "2026-11-12",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9DNmFsbHEwektZV05FLW50OE9WTUY4cFZIMDNaU0NiaG93a0xmZVBqVS1XR2RmeXlIUmhnek9VSUpxbDFlVVhKN1pjdU9GNkRKNWxRTmJZN3MxSm5ISTRqaXBkYTBqTUhZb244bXRjUQ?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today's Current Mortgage Rates: November 11, 2026",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rdmpsVUwtTnZNcjlIbUQ5a0oyZDlUSV9IV1ZYQy0yOHViOEttMVlsTXlfUVEwcXBibVcycFRJZTY2WEhfM2Voby0xbVpIVUtMZ05j?oc=5",
+        "title": "Current refi mortgage rates report for Nov. 12, 2026",
+        "date": "2026-11-12",
+        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE4taTlsb3VrRU5HY2pFUkdVRTVyZ3hzYjRVaUZxalZ4cjdZSUxXRFpiemZ4Z0NqNkYtV05mUTlCYWdVaVAtMGF4dUw4eGtCdDJhV0gxYi1VWnVoRHMzOXhCNW1UakJqQzVOYWJ0NUdzaVhmbVhzMWc?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage rates today, Nov. 11, 2026: Rates tick up a little after recent dip",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9OWmZZQkpIVjRIMmxzSmdvZW4wRGlPcVFOQ3IyRld3bWFDUGJvNnF5NUVxVjN4NmNPNTl6ZmhoeDZyYmhvb043VG9IZmlvSWdubWpGeFF3cnRaX0w5cjBGYm5IMnloQmV1ZkFtZTgyZw?oc=5",
+        "title": "Current ARM mortgage rates report for Nov. 12, 2026",
+        "date": "2026-11-12",
+        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBXUEo3YmVZM0htTi15WkwtSmZIUWkzUEF3cmRqMHJTZGJSaVVrNm9uRWY2OTNGVm1CUXotMXJsMGZCeUdxbTFlSVhGZlBTS3U3eWtxOHNJQ25lMDdwbUlmTlY3SEFPdm1fdWp2LVo1YWhwZHJj?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Today’s home equity loan and HELOC rates, Nov. 12, 2026",
+        "date": "2026-11-12",
+        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE01WkFwdGxRUEJ1RlIyUHNoNXRDdGNMR0E2M1ZWa3F0Y0pBaUcwQ21ma1lITVdxaGNJZGpDaDlQWDFrTEZZc1ZwTi1PVUtES0JoUU1UN0tNd3lLbS1QMGRrSkhrSGRtS1Aw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Weekly Mortgage Roundup | Latest UK Mortgage Deals",
+        "date": "2026-11-12",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPVW40S2l2TjdMeENFNm1pX0pXejQ4Zi1JUXpyRngzUkpWX1VzOWFISWRxSVJVZXFBVlAwb3QwX3RfMXNCNW9Oa01HcE1jNmN3YmF2RjFqRW84ZzI1bU9lUlcydEV1dGFzZ3JfN3o1ZlFaX2VhVTNyNVhLNkFtVmtaRlhIM0szSWFScjFyYzlsS1YtM1VaXzFz?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
     "stats": [
       {
-        "label": "30-Year mortgage rate (US, November)",
-        "value": "7.20%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNVTgyU3NXLWZTZ3RMWDVPUGg4SjF5cDNRcnRBOVJCQWhSa3o2ajh1UTY1ay1RM0tOa3JYZ2JLZkszSElLdGlxUUhoVzdIdEpJV1h1UHFOZXVvcnlXTlZTM3lMemd1ckNZV1M4UzdWbzlIMHVLTi1PSlBFNkd5anc2TnhhUnY0bVhodi1iTQ?oc=5"
+        "label": "Median sale price (Portland metro, September)",
+        "value": "$545,000",
+        "change": "unchanged from a year ago",
+        "source": "lovejoyrealestate.com",
+        "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
       },
       {
-        "label": "Average US 30-year mortgage rate (US, November)",
-        "value": "7.18%",
-        "change": "third straight decline",
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
+        "label": "Closed sales (Portland metro, September)",
+        "value": "1,752",
+        "change": "-4.0%",
+        "source": "lovejoyrealestate.com",
+        "url": "https://lovejoyrealestate.com/portland-metro-market-update-september-2026"
       }
     ]
   }

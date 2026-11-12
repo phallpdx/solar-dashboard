@@ -1,23 +1,7 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "note": "Toddler-friendly events near North Portland, Vancouver and the coast, soonest first. Many holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
-    {
-      "title": "Veterans Day at the Oregon Zoo",
-      "date": "2026-11-11",
-      "ends": null,
-      "where": "Oregon Zoo, Portland",
-      "detail": "The zoo's Veterans Day page offers free admission on Nov. 10 and 11 for military members, veterans and their families. The page doesn't state a year, so confirm before going.",
-      "url": "https://oregonzoo.org/events/veterans-day"
-    },
-    {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-11",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
     {
       "title": "Chrysanthemum Festival",
       "date": "2026-11-11",
@@ -81,6 +65,30 @@
       "where": "Portland",
       "detail": "A family martial arts experience on a matted space. $15 – $25.",
       "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
+    },
+    {
+      "title": "CHAP Art Club",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Hillsboro",
+      "detail": "Art workshops designed for children with medical challenges. Price: Not specified.",
+      "url": "https://pdxparent.com/series/chap-art-club/"
+    },
+    {
+      "title": "Morning Music with Mr. Ben at ModHaus",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Interactive singalong for babies, toddlers, and preschoolers. Price: Free; tips appreciated.",
+      "url": "https://pdxparent.com/series/morning-music-with-mr-ben-at-modhaus/"
+    },
+    {
+      "title": "Visit Leach Botanical Garden",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Explore gardens with an aerial tree walk and meadow. Price: Free – $8.",
+      "url": "https://pdxparent.com/series/visit-leach-botanical-garden/"
     },
     {
       "title": "Curiosity Kids: Sasquatch Science Team",
@@ -193,14 +201,6 @@
       "where": "Firstenburg Community Center, Vancouver WA",
       "detail": "City of Vancouver event, 6 to 8 p.m.; registration required, $12 for Vancouver residents.",
       "url": "https://www.cityofvancouver.us/?p=74306"
-    },
-    {
-      "title": "The Polar Express",
-      "date": "2026-12-11",
-      "ends": "2026-12-16",
-      "where": "Portland, OR",
-      "detail": "An event featuring The Polar Express experience.",
-      "url": "https://tickets.omsi.edu/oregonmuseumofscienceandindustry/events/5c72a103-d2d0-af25-e935-3afe47a0623c"
     }
   ]
 }

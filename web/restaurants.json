@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "restaurants": [
+    {
+      "name": "New restaurant (former Oven and Shaker space)",
+      "neighborhood": "Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "The Business Journals",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-04",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxORk0tMTZ0ZGh4c0FWM2VzX0VJRF96ZWZ0UUNfcGVfVXByb2RXYnRSZ3hzbktXZEJFYmlDOFk0RGpmNXVrUnRJVklxMU1uOHZYaW5OcjhLQm1hNFpKNnZfSUc5aWRGWXVZWmtfLUk0TUNwSEgzQUVkdVhGNlBUSE1iZ09rUUkzVlh4VV84YTcyWWZuRXkxbWhhc2FINU12UQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "OK Chicken & Khao Soi",
       "neighborhood": "",
@@ -410,23 +427,6 @@
           "verdict": "",
           "date": "2026-10-29",
           "url": "https://www.oregonlive.com/dining/2026/10/esto-siempre-debia-suceder-una-panaderia-mexicana-vegana-abre-un-local-que-finalmente-se-siente-como-en-casa.html"
-        }
-      ]
-    },
-    {
-      "name": "Cobra Dogs",
-      "neighborhood": "Northeast Sandy Boulevard",
-      "cuisine": "Hot dogs",
-      "price": "",
-      "opened": "about to open",
-      "summary": "An action sports destination housing a brick-and-mortar location.",
-      "reviews": [
-        {
-          "outlet": "Willamette Week",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-07",
-          "url": "https://www.wweek.com/food/2026/10/07/mount-hood-food-truck-cobra-dogs-to-open-portland-brick-and-mortar/"
         }
       ]
     }

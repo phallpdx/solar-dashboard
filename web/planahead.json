@@ -1,34 +1,6 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "items": [
-    {
-      "title": "WWE Friday Night SmackDown, Moda Center (Jan 29, 2027)",
-      "kind": "Tickets",
-      "action": "Tickets go on sale Wed, Nov 11 at 10 a.m. local through Ticketmaster.",
-      "starts": "2026-11-11",
-      "by": null,
-      "why": "One of 11 new early-2027 WWE dates announced by WWE.",
-      "sources": [
-        {
-          "name": "WWE announcement",
-          "url": "https://www.wwe.com/article/wwe-announces-11-new-event-dates-to-kick-off-2027"
-        }
-      ]
-    },
-    {
-      "title": "Kathy Griffin tickets",
-      "kind": "Tickets",
-      "action": "Buy Kathy Griffin tickets at Aladdin Theater",
-      "starts": "2026-11-11",
-      "by": null,
-      "why": "On sale in Portland",
-      "sources": [
-        {
-          "name": "Portland on-sale news",
-          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQVThvdC1kYnY3aXE3c3FMVU56SDVKRkhaZnRPMEFiODZNc1FiT3VSRHlXYkF6TzREWFNYTXlBV0k1ZGNrejJIaU9EYVllWFlyX3ZSLVYySmJCcHlWRnFwWW9qeWJsUzh6OFhGLV9PM2R4VXN0ZFlFY1RCR3AtNUdPNmZlLWhBS19sbWdZa2hEdHFxMXBocG1mdHc0NlQ?oc=5"
-        }
-      ]
-    },
     {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",
@@ -144,6 +116,20 @@
         {
           "name": "Yahoo Sports",
           "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
+        }
+      ]
+    },
+    {
+      "title": "Jonah Kagen ticket presale",
+      "kind": "Tickets",
+      "action": "Ticket presale live",
+      "starts": "2026-11-19",
+      "by": null,
+      "why": "Portland tour date",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://www.facebook.com/jonahkagen/posts/alright-i-heard-ya-portland-added-a-date-on-my-tour-just-for-yall-this-march-tic/1442460347887781"
         }
       ]
     },

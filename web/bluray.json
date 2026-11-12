@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "deals": [
     {
       "title": "Buy two 4K UHDs, save 40% (Amazon Italy, via a UK deal site)",
@@ -32,7 +32,7 @@
     {
       "title": "Star Trek: The Original 4-Movie Collection",
       "store": "",
-      "detail": "$21, 4K Ultra HD + Blu-Ray + Digital",
+      "detail": "$21, includes 4K UHD + Blu-Ray + Digital",
       "ends": null,
       "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
     },
@@ -52,10 +52,80 @@
     },
     {
       "title": "KPop Demon Hunters The Criterion Collection",
-      "store": "Amazon",
-      "detail": "$24.98, 4K UHD",
+      "store": "",
+      "detail": "4K UHD",
       "ends": null,
       "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
+    },
+    {
+      "title": "Rambo: 1-5",
+      "store": "Amazon",
+      "detail": "Digital, 4K ULTRA HD -24% $75.58",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "Essential Holiday 4-Film Collection",
+      "store": "Amazon",
+      "detail": "(4K Ultra HD) -6% $61.20",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "Hunger Games, The: Complete 4-Film Collection",
+      "store": "Amazon",
+      "detail": "BLURAY, Digital, 4K ULTRA HD -43% $34.42",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "Scrooged (Limited Edition Steelbook)",
+      "store": "Amazon",
+      "detail": "[4K UHD + Blu-Ray + Digital Copy] -19% $29.99",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "The Frighteners [Limited Edition]",
+      "store": "Amazon",
+      "detail": "[4K Ultra HD] -42% $28.78",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "Frankenstein (The Criterion Collection)",
+      "store": "Amazon",
+      "detail": "[4K UHD] -29% $29.98",
+      "ends": null,
+      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
+    },
+    {
+      "title": "4K Witness",
+      "store": "Arrow Video US",
+      "detail": "$35.00 RRP: $49.99",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/uhd-deals"
+    },
+    {
+      "title": "4K Conan The Destroyer",
+      "store": "Arrow Video US",
+      "detail": "$35.00 RRP: $49.99",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/uhd-deals"
+    },
+    {
+      "title": "4K 12 Monkeys",
+      "store": "Arrow Video US",
+      "detail": "$35.00 RRP: $49.95",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/uhd-deals"
+    },
+    {
+      "title": "Shrek 4-Movie 4K Collection",
+      "store": "r/4KBlurayDeals",
+      "detail": "$23.49",
+      "ends": null,
+      "url": "https://www.reddit.com/r/4KBlurayDeals"
     }
   ],
   "upcoming": [

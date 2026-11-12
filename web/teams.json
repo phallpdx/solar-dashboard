@@ -1,15 +1,12 @@
 {
-  "updated": "2026-11-11",
-  "updated_at": "2026-11-12T07:30:59Z",
+  "updated": "2026-11-12",
+  "updated_at": "2026-11-12T09:26:32Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and celebratory",
-      "pulse": "Fans are celebrating consecutive wins over the Thunder. They feel the team is building strong winning habits.",
+      "pulse": "Fans are celebrating back-to-back wins against Oklahoma City. There is excitement regarding role player contributions.",
       "storylines": [
-        "Back-to-back victories against OKC",
-        "Vit Krejci out at least 8 weeks",
-        "Chris Youngblood has a foot bone bruise",
-        "Damian Lillard passed Clyde Drexler in FGA"
+        "Blazers beat Thunder 118-108"
       ],
       "sources": [
         {
@@ -36,12 +33,11 @@
     },
     "timbers": {
       "mood": "growing confidence",
-      "pulse": "Fans feel momentum building after reaching the highest Western Conference spot in five years. Confidence is rising following a critical win over Austin.",
+      "pulse": "Fans feel momentum building after securing a playoff spot. Confidence is rising following a strong run of wins.",
       "storylines": [
-        "Timbers secured an Audi 2026 MLS Cup Playoff spot",
-        "Playoffs feature a three-game series against Dallas",
-        "#James Pantemis up for 2026 MLS Save of the Year vote",
-        "#T2 lost 1-0 to Ventura County in Western Conference Semifinals"
+        "Timbers secured Audi 2026 MLS Cup Playoffs spot",
+        "Playoff series against Dallas awaits",
+        "#James Pantemis up for 2026 MLS Save of the Year"
       ],
       "sources": [
         {
@@ -67,13 +63,13 @@
       ]
     },
     "f1": {
-      "mood": "Divided and intense",
-      "pulse": "Fans are debating Ferrari's radio strategy and Lewis Hamilton's political activism. Interest is high regarding Kimi Antonelli's profile.",
+      "mood": "Mixed and intense",
+      "pulse": "Fans are celebrating Mercedes' championship win and Lando Norris' victory in Brazil. Discussions also focus on political activism and driver rivalries.",
       "storylines": [
         "Mercedes secured the 2026 Constructors' Championship.",
         "Lando Norris won the Sao Paulo Grand Prix.",
         "Pirelli is revising 2027 wet-weather tyres.",
-        "Umamusume to sponsor Japanese GP corner renaming."
+        "Ferrari radio communication caused concerns in Brazil."
       ],
       "sources": [
         {

@@ -1813,10 +1813,22 @@ def vg_stem(cv, pts, w0, w1=None):
     return R
 
 
-def vg_spray(cv, pts, kind, rng, size, side=1, fruit=True):
-    """a branch of the page's own plant along the stem pts (root first). kind: laurel, olive,
-    holly, coffee, walnut, reed, fir, lotus, kelp, pine, apple, oak."""
+def vg_spray(cv, pts, kind, rng, size, side=1, fruit=True, twigs=True):
+    """a branch of the page's own plant along the stem pts (root first), with side twigs
+    carrying their own leaves. kind: laurel, olive, holly, coffee, walnut, reed, fir, lotus,
+    kelp, pine, apple, oak."""
     n = len(pts)
+    if twigs and kind not in ("reed", "lotus", "kelp") and n > 4:
+        tot_ = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
+        nt = max(1, int(tot_ / (size * 1.3)))
+        for j in range(nt):
+            t = (j + .6) / (nt + .4)
+            i = min(n - 2, int(t * (n - 1)))
+            a = math.atan2(pts[i + 1][1] - pts[i][1], pts[i + 1][0] - pts[i][0])
+            sd = 1 if j % 2 else -1
+            L = size * rng.uniform(.9, 1.4) * (1 - .4 * t)
+            tw = _Geu(pts[i][0], pts[i][1], a + sd * .75, L, lambda u, s_=sd: -s_ * .9 / L, 10)
+            vg_spray(cv, tw, kind, rng, size * .7, side, fruit and j % 2 == 0, False)
     vg_stem(cv, pts, max(.9, size * .05), .6)
 
     def at(t):
@@ -2057,7 +2069,7 @@ def vg_plate(w, h, ctx, V):
             vg_spray(fr, pts, plant, rng, min(h * .42, 14.), side=sd)
         field = gm_shape("roundel", cx, cy, rr, rr)
         o.append(fr.svg())
-        o.append(f'<path d="{_d(gm_offset(field, 5.), True, 0)}" fill="#fff"/>')
+        o.append(f'<path d="{_d(field, True, 0)}" fill="#fff"/>')
         o.append(gm_scene_in(field, lambda X, Y, W, H: V["scene"](X, Y, W, H, 0), "vgf%x" % (seed_ & 0xfff)))
         o.append(vg_rule(field, True, .7))
         return C.svg_doc(w, h, "".join(o))
@@ -2071,6 +2083,8 @@ def vg_plate(w, h, ctx, V):
     elif arms:
         foot += min(30., h * .1)
     # the frame's room round the scene
+    if w < 120 or (level == 0 and shape == "roundel" and w < 3 * h):
+        fk = "none"          # at device size: one bold motif, no wreath
     ring = {"wreath": .24, "rays": .24, "film": .16, "sprays": .0, "none": 0.}.get(fk, 0.)
     if form == "frontispiece" and level == 2:
         bd = 16.
@@ -2089,11 +2103,11 @@ def vg_plate(w, h, ctx, V):
         if level == 0:
             asp = V.get("band_aspect", asp * 1.6)
         b = avail_h / 2 / (1 + ring)
-        a = min(b * asp, (lx1 - lx0) / 2 / (1 + ring * .6) - (24 if fk == "sprays" else 0))
+        sz0 = min(b * .75, 46.) if level else min(b * .9, 16.)
+        room = (lx1 - lx0) / 2 / (1 + ring * .6) - (sz0 * 1.05 if fk == "sprays" else 2)
+        a = min(room, b * max(asp, 3.4 if V.get("fill", True) else asp))
     cy = top + avail_h / 2
-    sz = min(b * .7, 44.) if level else min(b * .9, 16.)
-    if fk == "sprays":
-        a -= sz * .5
+    sz = min(b * .75, 46.) if level else min(b * .9, 16.)
     kind = {"irregular": "oval", "cut": "cut"}.get(shape, shape)
     if kind == "cut":
         cc = min(a, b) * .28
@@ -2121,6 +2135,17 @@ def vg_plate(w, h, ctx, V):
                 rr = 1.02 + .05 * math.sin(math.pi * t)
                 pts.append((cx + (a * rr + sz * .25) * math.cos(ang), cy + (b * rr + sz * .1) * math.sin(ang)))
             vg_spray(fr, pts, plant, rng, sz, side=-sd)
+    side_plant = V.get("side_plant")
+    if shape == "roundel" and side_plant and (lx1 - lx0) > 2.6 * a * (1 + ring):
+        r_out = a * (1 + ring * .8)
+        for sd in (-1, 1):
+            x0 = cx + sd * r_out
+            L = (lx1 - x0) if sd > 0 else (x0 - lx0)
+            n = 30
+            for k_, (dy, amp, ln) in enumerate(((0., .16, 1.), (-.35, .1, .62), (.38, .1, .55))):
+                pts = [(x0 + sd * L * ln * i / n, cy + b * dy * (i / n) ** .7 + b * amp * math.sin(i / n * 3.6 + k_))
+                       for i in range(n + 1)]
+                vg_spray(fr, pts, side_plant, rng, min(b * (.5 if k_ == 0 else .38), 34.), side=sd)
     frame_svg = fr.svg()
     # the scene, its edge ruled or broken
     if edge.startswith("dissolve"):
@@ -2131,7 +2156,9 @@ def vg_plate(w, h, ctx, V):
     _cd = _d(clip, True, 0)
     sc = _g_clip("vgc%x" % (seed_ & 0xfff), _cd, V["scene"](bx0, by0, bx1 - bx0, by1 - by0, level))
     o.append(frame_svg)
-    o.append(f'<path d="{_d(gm_offset(field, 3.5), True, 0)}" fill="#fff"/>')
+    # the cut is white under the scene; outside it the plate stays transparent so the frame
+    # designer's engraved ground shows through (Parker: no white unless behind text)
+    o.append(f'<path d="{_cd}" fill="#fff"/>')
     o.append(sc)
     if edge == "rule":
         o.append(vg_rule(field, True, 0.))

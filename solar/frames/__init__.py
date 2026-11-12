@@ -10,4 +10,4 @@ nine-slice, no stretching.  ctx keys: seed (any hashable), variant ("plain" | "l
 band widths, a number or a (t, r, b, l) tuple).
 """
 FAMILIES = ("chip", "button", "sections", "runhead", "banner", "tile", "tablehead", "barbase", "gauge",
-            "divider", "initial", "kpanel")
+            "divider", "initial", "kpanel", "field")

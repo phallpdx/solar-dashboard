@@ -54,7 +54,8 @@ if (Test-Path $keyFile) {
         $env:OPENWEBUI_API_KEY = [Net.NetworkCredential]::new('', $secure).Password
     } catch { "Couldn't read the Open WebUI key: $_" }
 }
-if ($env:OPENWEBUI_API_KEY -and -not (OpenWebUI-Up)) {
+$eveningOnly = ($args -join ' ') -eq '--only evening'  # the evening stories need no web search
+if ($env:OPENWEBUI_API_KEY -and -not $eveningOnly -and -not (OpenWebUI-Up)) {
     docker info *> $null
     if ($LASTEXITCODE -ne 0) {
         $dd = Join-Path $env:ProgramFiles 'Docker\Docker\Docker Desktop.exe'

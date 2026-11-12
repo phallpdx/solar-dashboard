@@ -96,6 +96,16 @@ jobs:
           python -m solar.kindle data/dashboard.json _site/kindle.html
           if [ -d data/thai ]; then cp -r data/thai _site/; fi
 
+      # The Evening Edition: a short bedtime read for the Kindle (evening.html). Built every run, so
+      # tonight's sky and tomorrow's weather stay current; the stories come from web/evening.json,
+      # which Parker's PC writes at 7 pm.
+      - name: Build the Evening Edition
+        continue-on-error: true
+        timeout-minutes: 3
+        run: |
+          pip install --quiet ephem
+          python -m solar.kindle_evening data/dashboard.json web/evening.json _site
+
       # Paged, e-ink friendly copy of the full dashboard for the Kindle browser.
       # If this fails, kindle.html stays the simple morning page.
       - name: Build Kindle pages

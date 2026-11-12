@@ -55,6 +55,8 @@ Its vocabulary:
 - swirling wave scrolls
 - celestial figures (thep phanom, kinnari) with crowns and jewellery
 
+Also tools/engrave/ref/thai-himmapan.jpg, a Thai engraving of the Himmapan forest: fine light linework on a dark ground. Dense palms, flowers and vines fill it entirely, with birds, a peacock-tailed kinnari and naga creatures hidden in the foliage. This is the model for an all-over fill with no empty ground. It reads like a treasure hunt, which makes it the perfect home for Easter eggs.
+
 All of it is modelled in deep relief, with dense detail and no empty ground.
 
 ## No white (Parker's exact rule: "No white unless behind text")

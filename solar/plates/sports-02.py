@@ -321,7 +321,7 @@ def _stip_tile(seed, T=36):
 def ground_defs(seed=0):
     """Pattern defs for the engraved ground (stipple); put once in the svg."""
     d = _stip_tile(seed)
-    return (f'<defs><pattern id="gkS{seed % 97}" width="36" height="36" patternUnits="userSpaceOnUse">'
+    return (f'<defs><pattern id="gkS" width="36" height="36" patternUnits="userSpaceOnUse">'
             f'<path d="{d}" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></pattern></defs>')
 
 
@@ -397,7 +397,7 @@ def black_ground(shape, seed=0, dens=1., bbox=None, avoid=None):
         ys = [p[1] for p in shape]
         x, y, w, h = min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)
     cid = C._uid("bg", d[:60], seed)
-    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS{seed % 97})" stroke="none"/>'
+    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS)" stroke="none"/>'
             f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">'
             + tendril_ground(x, y, w, h, seed, dens, avoid) + '</g>')
 
@@ -1349,6 +1349,8 @@ def compose(w, h, ctx, spec):
     fronts = []           # svg drawn over the scroll
     mot = spec.get("motif")
     M = 3.
+    if h < 110 and spec.get("form") == "tailpiece":
+        return _tailpiece(w, h, ctx, spec)
     if h < 110:
         level = 0
         my = h / 2
@@ -1378,13 +1380,16 @@ def compose(w, h, ctx, spec):
         border_lines = (f'<path d="M0,1h{_n(w)}M0,{_n(h - 1)}h{_n(w)}" stroke="#000" stroke-width="2"/>'
                         f'<path d="M0,3.25h{_n(w)}M0,{_n(h - 3.25)}h{_n(w)}" stroke="#fff" stroke-width="1.5"/>'
                         f'<path d="M0,5h{_n(w)}M0,{_n(h - 5)}h{_n(w)}" stroke="#fff" stroke-width="1"/>')
-    elif h <= 260:
+    elif h <= spec.get("medium_max", 260):
         level = 1
         mh = h - 26
-        mw = min(w * .44, mh * 1.45)
+        mw = min(w * spec.get("mw", .44), mh * 1.45)
         my = h / 2
         shape = spec.get("shape", "oval")
-        if shape == "arch":
+        if shape == "circle":
+            mh = mw = min(mh, w * .62)
+            med = ellipse_poly(w / 2, my, mw / 2, mh / 2, 120)
+        elif shape == "arch":
             med = arch_poly(w / 2 - mw / 2, my - mh / 2, mw, mh)
         elif shape == "cut":
             med = cut_poly(w / 2 - mw / 2, my - mh / 2, mw, mh, min(mw, mh) * .16)
@@ -1394,6 +1399,11 @@ def compose(w, h, ctx, spec):
         fronts.append(spec["scene"](w / 2 - mw / 2, my - mh / 2, mw, mh, _d(med, True, 0), 1))
         fronts.append(ring)
         avoid.append(_poly_contains_margin(med, 11))
+        if spec.get("ribbon") and spec.get("med_ribbon") and h >= 220:
+            rb_h = min(20., h * .07)
+            ry = my + mh / 2 - rb_h * .9
+            fronts.append(ribbon(w / 2, ry, min(w * .8, mw * 1.6), rb_h, spec["ribbon"], .03, seed))
+            avoid.append(lambda a, b, ry=ry, rw=min(w * .8, mw * 1.6): abs(b - ry) < rb_h * .9 + 4 and abs(a - w / 2) < rw / 2 + 4)
         roots += _roots_on(offset_poly(med, 11), 6)
         if mot:
             for i, sx in enumerate((-1, 1)):
@@ -1490,6 +1500,76 @@ def compose(w, h, ctx, spec):
     o.append(fixed[0])
     o.append(sv)
     o += fixed[1:]
+    return plate_doc(w, h, "".join(o), seed)
+
+
+def _tailpiece(w, h, ctx, spec):
+    """A tailpiece: a small shaped device (arch, oval or banner lozenge) holding the scene, with
+    two sprays of fine scroll on stippled black tapering out to beaded drops; the whole spans
+    about 56% of the width and stands free on the page."""
+    seed = spec.get("seed", 1)
+    STYLE[0] = spec.get("style", "acanthus")
+    cx, cy = w / 2, h / 2
+    tw = min(w * spec.get("tail_w", .58), max(h * 7.5, w * .4))
+    shape = spec.get("tail_shape", "arch")
+    sh = h - 10
+    if shape == "banner":
+        sw = min(tw * .56, h * 4.2)
+        hh = sh / 2
+        med = [(cx - sw / 2, cy)] + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)] \
+            + [(cx + sw / 2, cy)] + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)]
+    elif shape == "oval":
+        sw = min(tw * .4, sh * 1.7)
+        med = ellipse_poly(cx, cy, sw / 2, sh / 2, 72)
+    else:
+        sw = min(tw * .36, sh * 1.25)
+        med = arch_poly(cx - sw / 2, cy - sh / 2, sw, sh, 32)
+    ring, outer = medallion_ring(med, 1.)
+    o = []
+    # the two sprays: lenses of black ground from the device's flanks out to the tips
+    lens = []
+    for sx in (-1, 1):
+        x0 = cx + sx * (sw / 2 - 4)
+        L = tw / 2 - sw / 2 + 4
+        top, bot = [], []
+        for i in range(25):
+            t = i / 24
+            hgt = sh * .4 * (1 - t) ** .85 + .6
+            sweep = -sh * .12 * t * t
+            xx = x0 + sx * L * t
+            top.append((xx, cy - hgt + sweep))
+            bot.append((xx, cy + hgt * .8 + sweep))
+        poly = top + bot[::-1]
+        if sx < 0:
+            poly = poly[::-1]
+        lens.append(poly)
+    for k, poly in enumerate(lens):
+        o.append(black_ground(poly, seed + k, dens=.3))
+        o.append(f'<path d="{_d(poly, True, 0)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+        o.append(f'<path d="{_d(offset_poly(poly, 2.2), True, 0)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    cv = Canvas()
+    roots = []
+    for sx in (-1, 1):
+        roots.append((cx + sx * (sw / 2 + 6), cy, 0. if sx > 0 else PI, -sx))
+
+    keep_out = _poly_contains_margin(med, 7)
+    inner = [offset_poly(p, -2.5) for p in lens]
+
+    def ok(a, b):
+        return any(pt_in(a, b, p) for p in inner) and not keep_out(a, b)
+    marks = []
+    scroll_field(cv, 0, 0, w, h, roots, seed=seed, rmax=min(13., h * .2), rmin=max(4.5, h * .075), inside_fn=ok,
+                 leafk=spec.get("leafk", 1.), marks=marks)
+    o.append(cv.svg())
+    for sx in (-1, 1):
+        tx = cx + sx * (tw / 2 + 3)
+        ty = cy - sh * .12 + .6
+        o.append(f'<path d="{_d(_ell(tx, ty, 3., 3., 14)[:-1], True, 0)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{_d(_ell(tx + sx * 1., ty + .6, 1.2, 1.2, 10)[:-1], True, 0)}" fill="#000"/>')
+    o.append(spec["scene"](cx - sw / 2, cy - sh / 2, sw, sh, _d(med, True, 0), -1))
+    o.append(ring)
     return plate_doc(w, h, "".join(o), seed)
 
 
@@ -1930,11 +2010,122 @@ def motif(cx, cy, r, i, seed):
     return "".join(o)
 
 
+def scarf(x, y, w, h, clip_d, ctx):
+    """The tailpiece: a supporter's scarf waving across the banner - Timbers stripes on the left
+    half, Vikings stripes on the right, knitted (dark stripes cut close along the wool, light
+    stripes in rows of knit stitches), shaded in its folds, fringed at both ends, the names worked
+    in. Easter egg: a chequered flag flying from the knot."""
+    cid = C._uid("s2f", x, y, w, h)
+    o = [f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">']
+    o.append(black_ground((x - 2, y - 2, w + 4, h + 4), 7, dens=.4))
+    cx, cy = x + w / 2, y + h * .56
+    bw = h * .5
+    amp = h * .055
+    x0, x1 = x + h * .12, x + w - h * .12
+
+    def C_(u):
+        xx = x0 + (x1 - x0) * u
+        return xx, cy + amp * math.sin((u - .5) * 3.2 * PI)
+
+    def slope(u):
+        return amp * 3.2 * PI * math.cos((u - .5) * 3.2 * PI) / (x1 - x0)
+
+    def quad(u0, u1, f0=-.5, f1=.5, n=6):
+        top = [(C_(u0 + (u1 - u0) * i / n)[0], C_(u0 + (u1 - u0) * i / n)[1] + bw * f0) for i in range(n + 1)]
+        bot = [(C_(u0 + (u1 - u0) * i / n)[0], C_(u0 + (u1 - u0) * i / n)[1] + bw * f1) for i in range(n + 1)]
+        return top + bot[::-1]
+    # stripes: (length, tone) from the middle outward; L = lettered panel
+    half = [(.035, "k"), (.04, "d"), (.022, "l"), (.04, "d"), (.17, "L"), (.04, "d"), (.022, "l"), (.04, "d"), (.03, "l")]
+    names = {-1: "TIMBERS", 1: "VIKINGS"}
+    cv = Canvas()
+    segs = []
+    for side in (-1, 1):
+        u = .5
+        for ln, tone in half:
+            ln *= 1.
+            a, b = (u - ln, u) if side < 0 else (u, u + ln)
+            segs.append((a, b, tone, side))
+            u = a if side < 0 else b
+    tx = []
+    for a, b, tone, side in segs:
+        poly = quad(a, b)
+        cv.obj([poly], .5)
+        if tone in ("d", "k"):
+            nl = int(bw / 1.5)
+            for f in [(i + .5) / nl - .5 for i in range(nl)]:
+                cv.line([(C_(a + (b - a) * i / 6)[0], C_(a + (b - a) * i / 6)[1] + bw * f) for i in range(7)])
+        else:
+            rows = max(3, int(bw / 3.2))
+            for r in range(rows):
+                f = -.5 + (r + .5) / rows
+                n = max(2, int((C_(b)[0] - C_(a)[0]) / 2.6))
+                for i in range(n):
+                    uu = a + (b - a) * (i + .5) / n
+                    px, py = C_(uu)
+                    py += bw * f
+                    d = bw / rows * .35
+                    if tone == "L":
+                        continue
+                    cv.hair([(px - 1, py - d), (px, py + d), (px + 1, py - d)])
+            if tone == "L":
+                tx.append((a, b, side))
+        # fold shading where the scarf turns away
+        sl = slope((a + b) / 2)
+        if abs(sl) > .12:
+            cv.hair(clip_in(C.hatch_poly(poly, 60 if sl > 0 else 120, 2. if abs(sl) < .2 else 1.5), poly))
+    # the fringe at both ends
+    for u, sg in ((segs[-1 - len(half)][0] if False else min(sg_[0] for sg_ in segs), -1), (max(sg_[1] for sg_ in segs), 1)):
+        px, py = C_(u)
+        for k in range(9):
+            f = -.45 + .9 * k / 8
+            q0 = (px, py + bw * f)
+            ln = h * .1 + (k % 2) * 1.5
+            cv.obj([[(q0[0], q0[1] - .7), (q0[0] + sg * ln, q0[1] - .7 + ln * .3), (q0[0] + sg * ln, q0[1] + .7 + ln * .3), (q0[0], q0[1] + .7)]], .5)
+    # the knot at the middle with the chequered flag
+    kx, ky = C_(.5)
+    knot = E(kx, ky, bw * .32, bw * .62, 16)[:-1]
+    cv.obj([knot], 1.)
+    cv.line(C.hatch_poly(knot, 80, 1.5))
+    fh = h * .26
+    sx0, sy0 = kx + 1, ky - bw * .55
+    sy1 = y + h * .04
+    cv.obj([[(sx0 - .7, sy0), (sx0 + .7, sy0), (sx0 + .7, sy1), (sx0 - .7, sy1)]], .5)
+    fw = fh * 1.3
+    nx_, ny_ = 4, 3
+    for i in range(nx_):
+        for j in range(ny_):
+            q = [(sx0 + .7 + fw * i / nx_, sy1 + fh * j / ny_ + .8 * math.sin(i)), (sx0 + .7 + fw * (i + 1) / nx_, sy1 + fh * j / ny_ + .8 * math.sin(i + 1)),
+                 (sx0 + .7 + fw * (i + 1) / nx_, sy1 + fh * (j + 1) / ny_ + .8 * math.sin(i + 1)), (sx0 + .7 + fw * i / nx_, sy1 + fh * (j + 1) / ny_ + .8 * math.sin(i))]
+            cv.obj([q], .5)
+            if (i + j) % 2:
+                cv.line(C.hatch_poly(q, 0, 1.5))
+    cv.obj([E(sx0, sy1 - .5, 1.3, 1.3, 8)[:-1]], .5)
+    o.append(cv.svg())
+    for a, b, side in tx:
+        txt = names[side]
+        cap = bw * .5
+        ln = C_(b)[0] - C_(a)[0]
+        tw_ = text_width(txt, cap, .1)
+        if tw_ > ln - 3:
+            cap *= (ln - 3) / tw_
+            tw_ = text_width(txt, cap, .1)
+        xs = (C_(a)[0] + C_(b)[0]) / 2 - tw_ / 2
+
+        def warp(px, py, a=a, b=b):
+            u = (px - x0) / (x1 - x0)
+            return px, py + (C_(u)[1] - cy)
+        o.append(letter_svg(txt, xs, cy - cap / 2, cap, .1, warp))
+    o.append("</g>")
+    return "".join(o)
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = (sum(map(ord, ctx.get("date", ""))) + 7) % 9973
     small = h < 110
-    spec = dict(scene=lambda x, y, ww, hh, clip, lv: vignette(x, y, ww, hh, clip, ctx, seed, small),
+    spec = dict(scene=lambda x, y, ww, hh, clip, lv: (scarf(x, y, ww, hh, clip, ctx) if lv < 0 else
+                                                      vignette(x, y, ww, hh, clip, ctx, seed, small)),
+                form="tailpiece", tail_shape="banner", tail_w=.62,
                 motif=lambda cx, cy, r, i: motif(cx, cy, r, i, seed),
                 tablet=lambda tx, ty, tw, th: tablet(tx, ty, tw, th, ctx),
                 ribbon="PORTLAND TIMBERS", seed=seed, shape="oval")

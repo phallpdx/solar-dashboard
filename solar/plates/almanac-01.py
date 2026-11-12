@@ -325,7 +325,7 @@ def _stip_tile(seed, T=36):
 def ground_defs(seed=0):
     """Pattern defs for the engraved ground (stipple); put once in the svg."""
     d = _stip_tile(seed)
-    return (f'<defs><pattern id="gkS{seed % 97}" width="36" height="36" patternUnits="userSpaceOnUse">'
+    return (f'<defs><pattern id="gkS" width="36" height="36" patternUnits="userSpaceOnUse">'
             f'<path d="{d}" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></pattern></defs>')
 
 
@@ -401,7 +401,7 @@ def black_ground(shape, seed=0, dens=1., bbox=None, avoid=None):
         ys = [p[1] for p in shape]
         x, y, w, h = min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)
     cid = C._uid("bg", d[:60], seed)
-    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS{seed % 97})" stroke="none"/>'
+    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS)" stroke="none"/>'
             f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">'
             + tendril_ground(x, y, w, h, seed, dens, avoid) + '</g>')
 
@@ -1353,6 +1353,8 @@ def compose(w, h, ctx, spec):
     fronts = []           # svg drawn over the scroll
     mot = spec.get("motif")
     M = 3.
+    if h < 110 and spec.get("form") == "tailpiece":
+        return _tailpiece(w, h, ctx, spec)
     if h < 110:
         level = 0
         my = h / 2
@@ -1382,13 +1384,16 @@ def compose(w, h, ctx, spec):
         border_lines = (f'<path d="M0,1h{_n(w)}M0,{_n(h - 1)}h{_n(w)}" stroke="#000" stroke-width="2"/>'
                         f'<path d="M0,3.25h{_n(w)}M0,{_n(h - 3.25)}h{_n(w)}" stroke="#fff" stroke-width="1.5"/>'
                         f'<path d="M0,5h{_n(w)}M0,{_n(h - 5)}h{_n(w)}" stroke="#fff" stroke-width="1"/>')
-    elif h <= 260:
+    elif h <= spec.get("medium_max", 260):
         level = 1
         mh = h - 26
-        mw = min(w * .44, mh * 1.45)
+        mw = min(w * spec.get("mw", .44), mh * 1.45)
         my = h / 2
         shape = spec.get("shape", "oval")
-        if shape == "arch":
+        if shape == "circle":
+            mh = mw = min(mh, w * .62)
+            med = ellipse_poly(w / 2, my, mw / 2, mh / 2, 120)
+        elif shape == "arch":
             med = arch_poly(w / 2 - mw / 2, my - mh / 2, mw, mh)
         elif shape == "cut":
             med = cut_poly(w / 2 - mw / 2, my - mh / 2, mw, mh, min(mw, mh) * .16)
@@ -1398,6 +1403,11 @@ def compose(w, h, ctx, spec):
         fronts.append(spec["scene"](w / 2 - mw / 2, my - mh / 2, mw, mh, _d(med, True, 0), 1))
         fronts.append(ring)
         avoid.append(_poly_contains_margin(med, 11))
+        if spec.get("ribbon") and spec.get("med_ribbon") and h >= 220:
+            rb_h = min(20., h * .07)
+            ry = my + mh / 2 - rb_h * .9
+            fronts.append(ribbon(w / 2, ry, min(w * .8, mw * 1.6), rb_h, spec["ribbon"], .03, seed))
+            avoid.append(lambda a, b, ry=ry, rw=min(w * .8, mw * 1.6): abs(b - ry) < rb_h * .9 + 4 and abs(a - w / 2) < rw / 2 + 4)
         roots += _roots_on(offset_poly(med, 11), 6)
         if mot:
             for i, sx in enumerate((-1, 1)):
@@ -1494,6 +1504,76 @@ def compose(w, h, ctx, spec):
     o.append(fixed[0])
     o.append(sv)
     o += fixed[1:]
+    return plate_doc(w, h, "".join(o), seed)
+
+
+def _tailpiece(w, h, ctx, spec):
+    """A tailpiece: a small shaped device (arch, oval or banner lozenge) holding the scene, with
+    two sprays of fine scroll on stippled black tapering out to beaded drops; the whole spans
+    about 56% of the width and stands free on the page."""
+    seed = spec.get("seed", 1)
+    STYLE[0] = spec.get("style", "acanthus")
+    cx, cy = w / 2, h / 2
+    tw = min(w * spec.get("tail_w", .58), max(h * 7.5, w * .4))
+    shape = spec.get("tail_shape", "arch")
+    sh = h - 10
+    if shape == "banner":
+        sw = min(tw * .56, h * 4.2)
+        hh = sh / 2
+        med = [(cx - sw / 2, cy)] + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)] \
+            + [(cx + sw / 2, cy)] + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)]
+    elif shape == "oval":
+        sw = min(tw * .4, sh * 1.7)
+        med = ellipse_poly(cx, cy, sw / 2, sh / 2, 72)
+    else:
+        sw = min(tw * .36, sh * 1.25)
+        med = arch_poly(cx - sw / 2, cy - sh / 2, sw, sh, 32)
+    ring, outer = medallion_ring(med, 1.)
+    o = []
+    # the two sprays: lenses of black ground from the device's flanks out to the tips
+    lens = []
+    for sx in (-1, 1):
+        x0 = cx + sx * (sw / 2 - 4)
+        L = tw / 2 - sw / 2 + 4
+        top, bot = [], []
+        for i in range(25):
+            t = i / 24
+            hgt = sh * .4 * (1 - t) ** .85 + .6
+            sweep = -sh * .12 * t * t
+            xx = x0 + sx * L * t
+            top.append((xx, cy - hgt + sweep))
+            bot.append((xx, cy + hgt * .8 + sweep))
+        poly = top + bot[::-1]
+        if sx < 0:
+            poly = poly[::-1]
+        lens.append(poly)
+    for k, poly in enumerate(lens):
+        o.append(black_ground(poly, seed + k, dens=.3))
+        o.append(f'<path d="{_d(poly, True, 0)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+        o.append(f'<path d="{_d(offset_poly(poly, 2.2), True, 0)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    cv = Canvas()
+    roots = []
+    for sx in (-1, 1):
+        roots.append((cx + sx * (sw / 2 + 6), cy, 0. if sx > 0 else PI, -sx))
+
+    keep_out = _poly_contains_margin(med, 7)
+    inner = [offset_poly(p, -2.5) for p in lens]
+
+    def ok(a, b):
+        return any(pt_in(a, b, p) for p in inner) and not keep_out(a, b)
+    marks = []
+    scroll_field(cv, 0, 0, w, h, roots, seed=seed, rmax=min(13., h * .2), rmin=max(4.5, h * .075), inside_fn=ok,
+                 leafk=spec.get("leafk", 1.), marks=marks)
+    o.append(cv.svg())
+    for sx in (-1, 1):
+        tx = cx + sx * (tw / 2 + 3)
+        ty = cy - sh * .12 + .6
+        o.append(f'<path d="{_d(_ell(tx, ty, 3., 3., 14)[:-1], True, 0)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{_d(_ell(tx + sx * 1., ty + .6, 1.2, 1.2, 10)[:-1], True, 0)}" fill="#000"/>')
+    o.append(spec["scene"](cx - sw / 2, cy - sh / 2, sw, sh, _d(med, True, 0), -1))
+    o.append(ring)
     return plate_doc(w, h, "".join(o), seed)
 
 
@@ -1916,7 +1996,7 @@ def _scene(x, y, w, h, clip_d, ctx, level):
         _far_bank(cv, x - 2, w + 4, hy, s, rng, x + w * .47)
     glows = []
     K = min(w * (.48 if level == 2 else .4), h * (.62 if level else .8))
-    kx, ky = x + w * .56, y + h * (.8 if level else .78)
+    kx, ky = x + w * (.63 if level < 2 else .6), y + h * (.8 if level else .78)
     if level:
         for fx, fy, fk in ((.36, .555, .11), (.84, .6, .12)):
             glows.append((x + w * fx, y + h * fy, K * fk * 1.2))
@@ -1928,14 +2008,100 @@ def _scene(x, y, w, h, clip_d, ctx, level):
     if level == 2 or (level == 1 and w > 150):
         _reeds(cv, x + w * .04, y + h + 2, s * 1.1, 1, rng, 6)
         _reeds(cv, x + w * .96, y + h + 2, s * 1.1, -1, rng, 6)
-        _heron(cv, x + w * (.15 if w < h * 1.3 else .2), y + h * .97, h * .55, 1)
-    else:
-        _heron(cv, x + w * (.2 if level else .18), y + h * (.9 if level else .86), h * (.55 if level else .5), 1)
+    # Easter egg: an elephant on the near bank
+    ex, H_ = x + w * (.25 if level else .24), h * (.22 if level == 2 else .27 if level else .34)
+    _bank(cv, x - 2, x + w * .42, y + h * (.84 if level else .82), y + h + 2, rng)
+    _elephant(cv, ex, y + h * (.86 if level else .85), H_, 1)
     flame = _krathong(cv, kx, ky, K, rng)
     _glow_rays(cv, flame[0], flame[1], flame[2] * .9, flame[2] * 2.3, 20 if level else 14)
     cid = C._uid("lk", x, y, w, h, level)
     return (f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath>'
             f'<g clip-path="url(#{cid})">{cv.svg()}</g>')
+
+
+def _elephant(cv, fx, fy, H, face=1):
+    """An elephant standing on the bank in the lantern light, side on: barrel body and domed head
+    cut in curved lines that follow the form (close on the shadowed belly), the fan ear, a curling
+    trunk ringed with wrinkles, a tusk, four pillar legs, and a Thai saddle cloth with a beaded
+    hem."""
+    f = face
+
+    def P(u, v):
+        return (fx + f * u * H, fy - v * H)
+    body = [P(.62 * math.cos(t) - .05, .58 + .34 * math.sin(t)) for t in [TAU * i / 40 for i in range(40)]]
+    legs = []
+    for lu in (-.48, -.3, .22, .4):
+        lw = .085
+        legs.append([P(lu - lw, .5), P(lu + lw, .5), P(lu + lw * .95, .02), P(lu + lw * 1.15, 0), P(lu - lw * 1.15, 0), P(lu - lw * .95, .02)])
+    for k, lg in enumerate(legs):
+        cv.obj([lg], 1.)
+        cv.hair(C.hatch_poly(lg, 90, 1.5 if k in (0, 2) else 2.))
+        cv.hair([P(-.48 + 0 * k, 0), P(-.48, 0)])
+    cv.obj([body], 1.)
+    # contour lines round the barrel, closing up under the belly
+    for v in (.36, .32, .29, .265, .30, .42):
+        pass
+    for k in range(9):
+        t = k / 8
+        vv = .26 + .3 * t
+        rr = .6 * math.sqrt(max(0., 1 - ((vv - .58) / .34) ** 2))
+        arc = [P(-.05 + rr * (2 * i / 16 - 1), vv - .02 * math.sin(PI * i / 16)) for i in range(17)]
+        (cv.line if t < .3 else cv.hair)(arc)
+    cv.hair(C.hatch_poly(body, 75, 2.))
+    # the saddle cloth
+    cl = [P(-.38, .92), P(.25, .92), P(.3, .62)] + [P(.3 - .68 * i / 8, .58 + (.03 if i % 2 else -.02)) for i in range(9)] + [P(-.4, .6)]
+    cv.obj([cl], 1.)
+    cv.hair(C.hatch_poly(cl, 0, 2.))
+    for i in range(7):
+        cv.obj([E(*P(.27 - .62 * i / 6, .6), max(.8, H * .025), max(.8, H * .025), 8)[:-1]], .5)
+    # head, ear, trunk, tusk, eye
+    head = [P(.55 + .24 * math.cos(t), .76 + .22 * math.sin(t)) for t in [TAU * i / 30 for i in range(30)]]
+    cv.obj([head], 1.)
+    cv.hair(C.hatch_poly(head, 60, 2.))
+    tr = []
+    for i in range(21):
+        t = i / 20
+        tr.append(P(.74 + .12 * math.sin(t * 1.6) + .1 * t * t, .72 - .62 * t + .18 * t ** 3))
+    hd = with_heading(tr)
+    wid = [H * (.07 - .045 * i / 20) for i in range(21)]
+    Lp = [(px - math.sin(a) * wd, py + math.cos(a) * wd) for (px, py, a), wd in zip(hd, wid)]
+    Rp = [(px + math.sin(a) * wd, py - math.cos(a) * wd) for (px, py, a), wd in zip(hd, wid)]
+    cv.obj([Lp + Rp[::-1]], 1.)
+    for i in range(2, 20, 2):
+        cv.hair([Lp[i], Rp[i]])
+    cv.line(Rp if f > 0 else Lp)
+    ear = [P(.42 + .16 * math.cos(t), .74 + .22 * math.sin(t)) for t in [TAU * i / 24 for i in range(24)]]
+    cv.obj([ear], 1.)
+    cv.hair(C.hatch_poly(ear, 100, 1.5))
+    cv.line([P(.5, .9), P(.52, .6)])
+    tu = [P(.7, .6), P(.82, .5), P(.92, .52), P(.82, .55)]
+    cv.obj([tu], .5)
+    cv.obj([E(*P(.62, .8), max(.9, H * .022), max(.9, H * .022), 8)[:-1]], 1.)
+    cv.line(E(*P(.62, .8), max(.4, H * .01), max(.4, H * .01), 6))
+    tail = [P(-.66, .7), P(-.72, .5), P(-.71, .36)]
+    cv.hair(tail)
+
+
+def _bank(cv, x0, x1, y0, y1, rng):
+    """The near bank: a low earth spit cut in wavy strata, grass tufts along its lip."""
+    pts = [(x0, y1)]
+    for i in range(21):
+        t = i / 20
+        pts.append((x0 + (x1 - x0) * t, y0 + (y1 - y0) * t ** 2.2 + 1.2 * math.sin(i * 1.7)))
+    pts.append((x1, y1 + 4))
+    pts.append((x0, y1 + 4))
+    cv.obj([pts], 1.)
+    yy = y0 + 2
+    while yy < y1 + 4:
+        cv.hair([(x0 + (x1 - x0) * u, yy + .8 * math.sin(u * 9 + yy)) for u in [i / 12 for i in range(13)]])
+        yy += 2. if yy < y0 + (y1 - y0) * .5 else 1.5
+    for i in range(14):
+        t = rng.uniform(.0, .8)
+        gx = x0 + (x1 - x0) * t
+        gy = y0 + (y1 - y0) * t ** 2.2
+        for k in range(3):
+            a = -PI / 2 + (k - 1) * .35
+            cv.line([(gx, gy), (gx + 4 * math.cos(a), gy + 4 * math.sin(a))])
 
 
 def _lotus_crest(cx, by, S):

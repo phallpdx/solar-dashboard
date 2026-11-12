@@ -26,7 +26,9 @@ def _studio5():
     # plate stays self-contained; the page's own vignette and figures follow the END marker.
     import math as _m
     import random as _r
+    import zlib
     import zlib as _z
+    import bisect as _bisect
     import engraving_codex as C
 
     _PI = _m.pi
@@ -95,6 +97,29 @@ def _studio5():
     def _shape(kind, cx, cy, a, b, n=120):
         """Closed medallion outlines: oval, round, lozenge-oval (pointed top and bottom), shield,
         arch (round-headed), quatre (four-lobed), octo (canted octagon), cusp (Thai pointed arch)."""
+        if kind == "archtop":
+            # straight sides, a flat foot with eased corners, a round arch springing at 45% height
+            spring = cy - b + min(a, b) * .8
+            ra, rb = a, spring - (cy - b)
+            q = max(2., min(a, b) * .12)
+            pts = []
+            m = n // 4
+            for i in range(m):
+                pts.append((cx + a, spring + (cy + b - q - spring) * i / m))
+            for i in range(7):
+                u = _PI / 2 * i / 6
+                pts.append((cx + a - q + q * _m.cos(u), cy + b - q + q * _m.sin(u)))
+            for i in range(1, m):
+                pts.append((cx + a - q - (2 * a - 2 * q) * i / m, cy + b))
+            for i in range(7):
+                u = _PI / 2 + _PI / 2 * i / 6
+                pts.append((cx - a + q + q * _m.cos(u), cy + b - q + q * _m.sin(u)))
+            for i in range(1, m):
+                pts.append((cx - a, cy + b - q - (cy + b - q - spring) * i / m))
+            for i in range(2 * m + 1):
+                u = _PI + _PI * i / (2 * m)
+                pts.append((cx + ra * _m.cos(u), spring + rb * _m.sin(u)))
+            return pts[:-1]
         pts = []
         for i in range(n):
             t = _TAU * i / n
@@ -112,6 +137,10 @@ def _studio5():
             elif kind == "lozenge":
                 k = 1 - .1 * abs(s) ** 6
                 pts.append((cx + a * c * (1 - .12 * s * s), cy + b * s * (1 + .06 * abs(s))))
+            elif kind == "sun":
+                # a sun-disc of sixteen shallow scallops
+                k = 1 - .018 * (1 - abs(_m.cos(8 * t)))
+                pts.append((cx + a * k * c, cy + b * k * s))
             elif kind == "octo":
                 e = 1.2
                 u = max(abs(c), abs(s), (abs(c) + abs(s)) / 1.32)
@@ -1290,13 +1319,14 @@ def _studio5():
             ix, iy, iw, ih = 0, 0, w, h
             o.append(matte((0, 0, w, h)))
             bo = []
-            ix, iy, iw, ih = border_rect(bo, None, 0, 0, w, h, True, 1.25)
-            mb = ih / 2 - 1.5
+            fr = h < 44
+            ix, iy, iw, ih = border_rect(bo, None, 0, 0, w, h, True, .9 if fr else 1.25)
+            mb = (h / 2 - .5) if fr else (ih / 2 - 1.5)
             ma = min(mb * P.get("band_aspect", 1.9), w * .2)
             my = iy + ih / 2
             st.permit_rect(ix, iy, cx - .5, iy + ih)
             msvg, mo = medallion(st, P.get("shape_band", "oval"), cx, my, ma, mb, lambda x, y, fw, fh: P["scene"](x, y, fw, fh, 0),
-                                 max(5., mb * .2))
+                                 max(3.5, mb * .16) if fr else max(5., mb * .2))
             g.update(mx=cx, my=my, ma=ma, mb=mb, box=(ix, iy, iw, ih), lod=0)
             sc = Scroll(st, rng.randrange(1 << 20), rmin=max(4., ih * .085) * P.get("rmin_k", 1.), leaf_k=P.get("leaf_k", 1.))
             if P.get("figures"):
@@ -1310,8 +1340,12 @@ def _studio5():
             cid = _uidp("bl", w, h, seed)
             redo = (len(o), sc, cid, (ix, iy, iw, ih), None)
             o.append(_scroll_body(st, sc, P, g, cid, (ix, iy, iw, ih), None, 0.))
-            o.append(msvg)
-            o.extend(bo)
+            if fr:
+                o.extend(bo)
+                o.append(msvg)
+            else:
+                o.append(msvg)
+                o.extend(bo)
         elif h <= 260:
             lod = 1
             o.append(matte((0, 0, w, h)))
@@ -1627,59 +1661,99 @@ def _studio5():
 
 
     def mountain(cv, cx, base, peak, hw, seed, snow=.5, lit=-1, skew=0.):
-        """A volcanic peak (Hood): jagged ridges, a lit snow face of broken fall-line strokes, the shadow
-        face in fall-line hachures with a 45-degree cross-hatch layered in its depth, forested skirts."""
+        """Mt. Hood: a sharp summit set off-centre, concave flanks with a shoulder on the long ridge,
+        the lit face left nearly white with broken glacier strokes, the shadow face cut in fall-line
+        hachures crossed in its depth, a jagged snowline with tongues running down the gullies, and
+        dark timber below."""
         rng = _r.Random(seed)
         H = base - peak
-        px = cx + skew * hw
-        left = _ridge(cx - hw, base, px - hw * .03, peak, .05, rng)
-        right = _ridge(px + hw * .03, peak, cx + hw, base, .05, rng)
-        poly = left + [(px, peak - 1.2)] + right
-        cv.obj([poly], .5)
-        # the central ridge splitting light from shade
-        ridge = _ridge(px, peak, cx + hw * .12 * -lit, base, .06, rng, 4)
-        sh_side = right if lit < 0 else left[::-1]
-        shade = ridge + sh_side[::-1] if lit < 0 else ridge + sh_side[::-1]
-        # fall-line hachures on the shadow face (each from the ridge outward and down)
-        hs = []
-        for i in range(1, 60):
-            t = i / 60
-            a = _lerp(ridge[0], ridge[-1], t)
-            bx = cx + (-lit) * hw * t ** .9
-            by = peak + H * t
-            # follow the slope down-out
-            n = 6
-            line = [(a[0] + (bx - a[0]) * k / n, a[1] + (by - a[1]) * k / n + H * .06 * _m.sin(_PI * k / n)) for k in range(n + 1)]
-            hs.append(line)
-        cv.hair(hs)
-        # cross-hatch deepening the lower shadow
-        lowsh = [(px, peak + H * .45)] + [(cx + (-lit) * hw * u, peak + H * (.45 + .55 * u)) for u in (.4, .8, 1.)] + [(px + (-lit) * hw * .1, base)]
-        cv.hair(C.hatch_poly(lowsh, 45 * lit, 3.))
-        # the snow face: broken strokes down the fall line, thinning to bare rock below the snowline
-        sn = []
-        for i in range(1, 40):
+        f = -lit                                    # +1: shadow face on the right
+        px = cx + (skew - .08 * f) * hw
+        # long (lit) flank with a shoulder; short steep (shadow) flank
+        lf, rf = [], []
+        for i in range(41):
             t = i / 40
-            x_top = px + lit * hw * .9 * t * .3
-            for j in range(5):
-                u0 = t * .3 + j * .14 + rng.uniform(0, .06)
-                u1 = u0 + rng.uniform(.04, .09)
-                if u1 > snow + rng.uniform(-.05, .08):
+            x = (cx - f * hw) + (px - (cx - f * hw)) * t
+            y = base - H * min(1., t ** 1.55 + .05 * _m.exp(-((t - .74) / .06) ** 2))
+            lf.append((x + rng.uniform(-.3, .3), y + rng.uniform(-.25, .25)))
+        for i in range(1, 41):
+            t = i / 40
+            x = px + ((cx + f * hw) - px) * t
+            y = peak + H * (1 - (1 - t) ** 1.35)
+            rf.append((x + rng.uniform(-.3, .3), y + rng.uniform(-.25, .25)))
+        poly = lf + [(px, peak - .6)] + rf
+        if f < 0:
+            poly = poly[::-1]
+        cv.obj([poly], .5)
+        srt = sorted(poly)
+        xs_ = [q[0] for q in srt]
+
+        def top(x):
+            i = min(len(srt) - 1, max(1, _bisect.bisect_left(xs_, x)))
+            (xa, ya), (xb, yb) = srt[i - 1], srt[i]
+            return ya + (yb - ya) * (x - xa) / ((xb - xa) or 1)
+        # the dividing ridge, wandering down from the summit
+        ridge = [(px + f * hw * .22 * u ** 1.3 + _m.sin(u * 9 + seed) * hw * .015, peak + H * u) for u in [k / 20 for k in range(21)]]
+        shade = ridge + rf[::-1]
+        sang = 90 - f * 24
+        cv.hair(C.hatch_poly(shade, sang, 1.5))
+        deep = [(x, y) for x, y in shade if y > peak + H * .35] or shade
+        cv.hair(C.hatch_poly([(px + f * hw * .1, peak + H * .35)] + [p for p in rf if p[1] > peak + H * .35] + [(ridge[-1][0], base)], 90 + f * 40, 3.))
+        cv.line(ridge[:16])
+        # snowline with tongues down the gullies
+        def sline(x):
+            u = (x - px) / hw
+            return peak + H * (snow + .1 * abs(u) + .05 * _m.sin(x * .9 + seed) + .04 * _m.sin(x * 2.3))
+        # glaciers on the lit face: broken strokes down the fall line, gathering into the gullies
+        gl = []
+        for k in range(1, 9):
+            u = k / 9
+            x0 = px - f * hw * .02 * k
+            x1 = (cx - f * hw) + (px - (cx - f * hw)) * (1 - u) * .55 + (px - f * hw * .9 * u) * .45
+            pts = [(x0 + (x1 - x0) * t + _m.sin(t * 5 + k) * 1.2, peak + H * (.05 + .9 * t) * (.4 + .6 * u)) for t in [j / 14 for j in range(15)]]
+            seg = []
+            for j, q in enumerate(pts):
+                if q[1] > sline(q[0]) + 3 * rng.random():
                     break
-                pa = (px + lit * hw * t * u0 * 2.2, peak + H * u0)
-                pb = (px + lit * hw * t * u1 * 2.2, peak + H * u1)
-                sn.append([pa, pb])
-        cv.hair(sn)
-        # forested skirts: a dark band of short vertical strokes below the snowline
-        sk = []
-        for i in range(int(hw * 2 / 3.)):
-            x = cx - hw + i * 3.
-            u = abs(x - px) / hw
-            ytop = peak + H * (snow + .12 + .2 * u) + rng.uniform(-1.5, 1.5)
-            yb = base - .5
-            if yb - ytop > 1:
-                sk.append([(x, ytop), (x, yb)])
-        cv.hair(sk)
+                if q[1] < top(q[0]) + 1:
+                    if len(seg) > 1:
+                        gl.append(seg)
+                    seg = []
+                    continue
+                if (j + k) % 5 == 4:
+                    if len(seg) > 1:
+                        gl.append(seg)
+                    seg = []
+                else:
+                    seg.append(q)
+            if len(seg) > 1:
+                gl.append(seg)
+        cv.hair(gl)
+        # crevasse ticks across the upper snowfields
+        tk = []
+        for k in range(int(H / 3)):
+            y = peak + H * rng.uniform(.12, snow * .9)
+            span = (y - peak) / H * hw * .7
+            x = px - f * rng.uniform(.1, 1.) * span
+            if y < top(x) + 1.5 or y < top(x + 2.6) + 1.5:
+                continue
+            tk.append([(x, y), (x + rng.uniform(1.2, 2.6), y + .4)])
+        cv.hair(tk)
+        # timber: below the snowline, ruled close and stroked vertically, the snow tongues left white
+        tb = []
+        for i in range(int(hw * 2 / 1.5)):
+            x = cx - hw + i * 1.5 + .25
+            y0 = max(sline(x), top(x) + .5)
+            if i % 7 == 3:
+                y0 += H * .08 * rng.random()
+            if base - y0 > 1:
+                tb.append([(x, y0), (x, base)])
+        cv.hair(tb)
         return poly
+
+
+    def _clip_y(segs, ymin):
+        return [s for s in segs if min(p[1] for p in s) > ymin]
 
 
     def water(cv, x0, y0, x1, y1, seed, refl=(), calm=1.):
@@ -1813,6 +1887,261 @@ def _studio5():
         cv.hair([P(17, 42.5), P(26, 42.2)])
         cv.obj([_ell(*P(15, 42.8), .9 * s / 1.2 + .3, .9 * s / 1.2 + .3, 8)[:-1]], 0)
         cv.line(_ell(*P(15, 42.8), .45, .45, 6))
+
+
+    # ----------------------------------------------------------------------------------------------
+    # bespoke forms (edition plan 1.6): the plate is planned for its page, never stretched to fill.
+    # frieze 18-36 px, headpiece 60-85 px band, tailpiece 40-70 px at 40-60% width, marginal device
+    # 40-60 px roundel, vignette 18-30% of the sheet, full-width plate 35-50%.
+    # ----------------------------------------------------------------------------------------------
+
+    SHEET_H = 714.
+
+
+    def _strip_doc(doc):
+        a = doc.index("</defs>") + 7
+        return doc[a:-6]
+
+
+    def _clamp(v, lo, hi):
+        return max(lo, min(hi, v))
+
+
+    def silhouette(kind, cx, cy, A, B, n=160):
+        """Outer outlines for shaped plates, in the same winding as _shape: lens (pointed at both
+        ends), culdelampe (an inverted, concave-sided triangle under an arched top), or any _shape."""
+        if kind == "lens":
+            pts = []
+            for i in range(n):
+                t = _TAU * i / n
+                c, s = _m.cos(t), _m.sin(t)
+                pts.append((cx + A * c, cy + s * max(B * (1 - abs(c) ** 2.4) ** .85, 7.)))
+            return pts
+        if kind == "culdelampe":
+            top, bot = cy - B, cy + B
+            pts = []
+            m = n // 3
+            for i in range(m + 1):                      # right side down to the point
+                u = i / m
+                pts.append((cx + A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
+            for i in range(1, m + 1):                   # left side back up
+                u = 1 - i / m
+                pts.append((cx - A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
+            for i in range(1, m):                       # arched top, left to right
+                u = i / m
+                x = cx - A + 2 * A * u
+                pts.append((x, top - B * .12 * _m.sin(_PI * u)))
+            return pts
+        return _shape(kind, cx, cy, A, B, n)
+
+
+    def shaped_border(o, sil, r=1.2):
+        """Gold line, black channel of beads, fine inner rule, following any outline."""
+        bw = 2 * r + 3
+        inner = _offset(sil, -bw)
+        o.append(f'<path d="{C._d(sil, True, .1)}{C._d(inner[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
+        o.append(bead_row(_offset(sil, -bw / 2), r, max(.9, r * .7)))
+        o.append(f'<path d="{C._d(_offset(sil, -.5), True, .1)}" fill="none" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{C._d(inner, True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+        return inner
+
+
+    def _ring_sources(cx, cy, a, b, A, B, k=1.):
+        """Two main stems for the left half of a ring between a medallion (a, b) and its plate
+        (A, B): one from the foot sweeping out and up, one from the crown sweeping out and down."""
+        rx, ry = (a + A) / 2, (b + B) / 2
+        side = A - a
+        r1 = max(3., min(side * .3, B * .5) * k)
+        r2 = r1 * .8
+        E = lambda deg, sx=1., sy=1.: (cx + rx * sx * _m.cos(_m.radians(deg)), cy + ry * sy * _m.sin(_m.radians(deg)))
+        return [((cx - 1, cy + ry * .98), _PI, r1, 1, {"via": [E(112), E(140), E(168, .9)], "turns": 1.6}),
+                ((cx - 1, cy - ry * .98), _PI, r2, -1, {"via": [E(-115), E(-150, .85)], "turns": 1.5})]
+
+
+    def _shaped_plate(bw, bh, P, sil, med, lod, sources=None, legend=None, extra=None, ring_r=1.2):
+        """A plate cut to an outline: punched matte, fine scroll grown in the left half and mirrored,
+        an inlaid medallion with the scene, the outline's gold line and beads. Returns body svg in a
+        bw x bh box."""
+        seed = P.get("seed", 1)
+        rng = _r.Random(seed + lod)
+        st = Studio(bw, bh, seed)
+        cx = bw / 2
+        o = [matte(sil)]
+        bo = []
+        inner = shaped_border(bo, sil, ring_r)
+        st.permit(_offset(inner, -1.))
+        st.permit_rect(cx - .5, -2, bw + 6, bh + 6, 0)
+        kind, mx, my, ma, mb = med
+        msvg, mo = medallion(st, kind, mx, my, ma, mb, lambda x, y, fw, fh: P["scene"](x, y, fw, fh, lod),
+                             _clamp(min(ma, mb) * .16, 3.5, 9.))
+        g = {"w": bw, "h": bh, "cx": cx, "mx": mx, "my": my, "ma": ma, "mb": mb, "lod": lod, "box": (0, 0, bw, bh), "sil": sil}
+        ban = ""
+        if legend:
+            bwid = min(ma * 2.6, bw * .7)
+            bhh = _clamp(bh * .075, 9., 15.)
+            ban = banner(st, mx, my + mb * .93, bwid, bhh, legend, .04)
+        if P.get("figures"):
+            P["figures"](st, None, g)
+        xs = [p[0] for p in sil]
+        ys = [p[1] for p in sil]
+        A, B = (max(xs) - min(xs)) / 2, (max(ys) - min(ys)) / 2
+        scy = (max(ys) + min(ys)) / 2
+        rmin = _clamp(min(A, B) * .05, 3.2, 7.) * P.get("rmin_k", 1.)
+        sc = Scroll(st, rng.randrange(1 << 20), rmin=rmin, leaf_k=P.get("leaf_k", 1.))
+        srcs = sources(g) if sources else _ring_sources(mx, scy, ma, mb, A, B)
+        sc.grow(srcs, 7)
+        sc.infill(10)
+        sc.clothe()
+        sc.leaf_fill(lmax=_clamp(B * .12, 6., 12.))
+        cv = Cv()
+        if P.get("figures"):
+            P["figures"](st, cv, g)
+        sc.paint(cv)
+        cid = _uidp("sh", bw, bh, seed, lod)
+        o.append(f'<clipPath id="{cid}"><path d="{C._d(inner, True, 0)}"/></clipPath><g clip-path="url(#{cid})">'
+                 f'<g id="{cid}g">{cv.svg()}</g><use href="#{cid}g" transform="translate({_N(bw)},0) scale(-1,1)"/></g>')
+        o.extend(bo)
+        o.append(msvg)
+        o.append(ban)
+        if extra:
+            o.append(extra(g))
+        return "".join(o)
+
+
+    def ribbon_plate(bw, bh, P, lod, arch=.035):
+        """A ribbon banner whose face carries the scene (river waves, a ridge, a scarf): the face
+        arches gently, the ends fold under into swallow tails ribbed with silk lines."""
+        st = Studio(bw, bh, P.get("seed", 1))
+        cv = C.Canvas()
+        tail_w = _clamp(bw * .1, 14., 60.)
+        fw = bw - 2 * tail_w * .9
+        fh = bh * .7
+        cx = bw / 2
+        x0, x1 = cx - fw / 2, cx + fw / 2
+        rise = arch * fw
+        cy = bh * .38 + rise * .5
+
+        def yc(x):
+            t = (x - x0) / fw
+            return cy - rise * _m.sin(_PI * min(1, max(0, t)))
+        for side in (-1, 1):
+            ex = x1 if side > 0 else x0
+            ey = yc(ex)
+            tx0 = ex - side * tail_w * .3
+            tx1 = ex + side * tail_w * .9
+            dy = fh * .28
+            top0, bot0 = (tx0, ey - fh / 2 + dy), (tx0, ey + fh / 2 + dy)
+            top1, bot1 = (tx1, ey - fh / 2 + dy - fh * .12), (tx1 - side * fh * .1, ey + fh / 2 + dy)
+            notch = (tx1 - side * fh * .45, ey + dy + fh * .05)
+            tail = [top0, top1, notch, bot1, bot0]
+            cv.obj([tail], 1.)
+            for k in range(1, 12):
+                f = k / 12.
+                if f < .35 and k % 2:
+                    continue
+                a = _lerp(top0, bot0, f)
+                b = _lerp(top1, bot1, f)
+                if f > .4:
+                    b = _lerp(b, notch, (f - .4) * 1.4)
+                cv.hair([a, b])
+            fold = [(ex, ey - fh / 2), (ex, ey + fh / 2), (tx0, ey + fh / 2 + dy), (tx0, ey - fh / 2 + dy)]
+            cv.obj([fold], 1.)
+            cv.hair(C.hatch_poly(fold, 45 * side, 1.5))
+            cv.line(C.hatch_poly(fold, -45 * side, 3.))
+        n = 60
+        top = [(x0 + fw * i / n, yc(x0 + fw * i / n) - fh / 2) for i in range(n + 1)]
+        bot = [(x0 + fw * i / n, yc(x0 + fw * i / n) + fh / 2) for i in range(n + 1)]
+        face = top + bot[::-1]
+        cv.obj([face], 1.)
+        o = [cv.svg()]
+        cid = _uidp("rb", bw, bh, P.get("seed", 1), lod)
+        inner = [(x, y + 2.2) for x, y in top] + [(x, y - 2.2) for x, y in bot[::-1]]
+        fy0 = min(p[1] for p in top)
+        o.append(f'<clipPath id="{cid}"><path d="{C._d(inner, True, 0)}"/></clipPath>'
+                 f'<g clip-path="url(#{cid})">{P["scene"](x0, fy0, fw, fh + rise, lod, yc)}</g>')
+        o.append(f'<path d="{C._d(top, False, .1)}{C._d(bot, False, .1)}" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{C._d([(x, y + 1.6) for x, y in top], False, .1)}{C._d([(x, y - 1.6) for x, y in bot], False, .1)}" stroke="#000" stroke-width=".5"/>')
+        return "".join(o)
+
+
+    def compose_form(w, h, ctx, P):
+        """Lay the page's planned form into the w x h box the page asks for; the art keeps its own
+        size and shape (never enlarged to fill), centred."""
+        form = P.get("form", "auto")
+        seed = P.get("seed", 1)
+        if form in ("frieze", "headpiece") and not P.get("ribbon"):
+            lo, hi = (18., 36.) if form == "frieze" else (60., 85.)
+            bh = _clamp(h, lo, hi) if h >= lo else h
+            body = _strip_doc(compose(w, bh, ctx, P))
+            y = (h - bh) / 2 if form == "frieze" else 0.
+            return plate_doc(w, h, f'<g transform="translate(0,{_N(y)})">{body}</g>')
+        if form == "plate":
+            bh = _clamp(h, 120., SHEET_H * .5)
+            body = _strip_doc(compose(w, bh, ctx, P))
+            return plate_doc(w, h, f'<g transform="translate(0,{_N((h - bh) / 2)})">{body}</g>')
+        if form in ("headpiece", "tailpiece") and P.get("ribbon"):
+            lo, hi = (60., 85.) if form == "headpiece" else (40., 70.)
+            bh = _clamp(h, lo, hi) if h >= lo else h
+            bw = w if form == "headpiece" else _clamp(w * .58, min(w, 200.), min(w, 340.))
+            lod = 0
+            body = ribbon_plate(bw, bh, P, lod)
+            if P.get("egg"):
+                body += P["egg"]({"w": bw, "h": bh, "form": form})
+            return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2 if form != "headpiece" else 0)})">{body}</g>')
+        if form == "tailpiece":
+            bh = _clamp(h, 40., 70.) if h >= 40 else h
+            bw = _clamp(w * .55, min(w, 200.), min(w, 330.))
+            kind = P.get("silhouette", "lens")
+            cx = bw / 2
+            if kind == "culdelampe":
+                sil = silhouette(kind, cx, bh * .55, bw / 2 - .5, bh * .43)
+                mb = bh * .3
+                med = (P.get("shape_tail", "oval"), cx, bh * .34, mb * 1.25, mb)
+            else:
+                sil = silhouette(kind, cx, bh / 2, bw / 2 - .5, bh / 2 - .5)
+                mb = bh / 2 - 1.
+                med = (P.get("shape_tail", "oval"), cx, bh / 2, mb * P.get("tail_aspect", 1.45), mb)
+            def lens_src(g):
+                L = g["mx"] - g["ma"] - 4
+                R0 = min(bh * .3, L * .32)
+                return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
+                         {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
+            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src if kind == "lens" else None, ring_r=.9)
+            return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
+        if form == "device":
+            D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
+            st = Studio(w, h, seed)
+            cx, cy = w / 2, h / 2
+            o = []
+            msvg, mo = medallion(st, P.get("shape", "round"), cx, cy, D / 2 - .5, D / 2 - .5,
+                                 lambda x, y, fw, fh: P["scene"](x, y, fw, fh, 0), _clamp(D * .1, 4., 6.))
+            if w >= D * 1.7:
+                cv = Cv()
+                crest_leaves(Studio(w, h, seed), cv, cx - D / 2 + 2, cy + D * .1, D * .32, True, seed)
+                cid = _uidp("dv", w, h, seed)
+                sp = cv.svg()
+                # sprays at the roundel's flanks: the left one cut, the right its mirror
+                o.append(f'<g id="{cid}">{sp}</g><use href="#{cid}" transform="translate({_N(w)},0) scale(-1,1)"/>')
+            o.append(msvg)
+            if P.get("egg"):
+                o.append(P["egg"]({"w": w, "h": h, "D": D, "cx": cx, "cy": cy}))
+            return plate_doc(w, h, "".join(o))
+        if form == "vignette":
+            share = P.get("share", .25)
+            bh = _clamp(h, 110., SHEET_H * share * 1.08) if h >= 110 else h
+            bw = min(w, bh * P.get("vig_aspect", 2.3))
+            kind = P.get("shape", "oval")
+            cx = bw / 2
+            A, B = bw / 2 - .5, bh / 2 - .5
+            sil = silhouette(kind, cx, bh / 2, A, B)
+            ma = A * P.get("vig_med_a", .5)
+            mb = B * P.get("vig_med_b", .74)
+            my = bh / 2 - B * .04
+            med = (P.get("shape_med", kind), cx, my, ma, mb)
+            legend = P.get("legend") if bh >= 140 else None
+            body = _shaped_plate(bw, bh, P, sil, med, 1, legend=legend, extra=P.get("extra"))
+            return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
+        return compose(w, h, ctx, P)
     return _types.SimpleNamespace(**{k: v for k, v in locals().items() if not k.startswith('__')})
 
 

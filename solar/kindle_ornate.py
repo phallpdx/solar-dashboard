@@ -163,7 +163,7 @@ def _css():
     c += _r(".kanswer .kans, .kanswer .kans.klong, .kpanel .kverdict, .kscore b",
             f"font:{S['lead']} !important;letter-spacing:0 !important;{LIN}")
     # ---- figure: the one key number on a page or tile (the temperature now, the solar kWh, the dollars)
-    c += _r(".kdeg, .tile .big, .tiles[data-n] .tile .big, .tiles .tile .big",
+    c += _r(".kdeg, .tile .big, .tiles[data-n] .tile .big, .tiles .tile .big, .kpanel span.big",
             f"font:{S['figure']} !important;letter-spacing:-.01em !important;display:block;{LIN}")
     c += _r(".kdeg small", "display:block;margin-top:2px")
     c += _r(".kdeg small, .tile .u, .tile .s", f"font:{S['caption']} !important;{OLD}")
@@ -195,7 +195,7 @@ def _css():
     # ---- captions: italic asides
     cap = (".kpanel small, small, .meta, .cite, .src-line, figcaption, .muted, .s, .u, .kunit, .kcredit, .kpanel .kcredit, .ksources, "
            ".kfoot-note, .kpanel .kfoot-note, .kcell small, .kmile-k, .kfc .kth em, .kfl .kc, .kfl .kt small, .head .meta, .kpanel .head .meta, "
-           ".kmeta, .brief-intro, .kfc .kday small, .kkwh sup, .kendsrc, .kcolophon p")
+           ".kmeta, .brief-intro, .kfc .kday small, .kkwh sup, .kendsrc, .kcolophon p, .ktoc .kc, span.kc")
     c += _r(cap, f"font:{S['caption']} !important;letter-spacing:0 !important;text-transform:none !important;font-variant-caps:normal !important;{OLD}")
     c += _r(".kpanel .kcredit", "margin:10px 0 0 !important;padding:0 !important")
     # tables: lining tabular figures, whitespace instead of rules

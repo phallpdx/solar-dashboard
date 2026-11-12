@@ -1,11 +1,11 @@
 """garden-06 (Mushroom forecast) plate.
 
 Today's mushroom is the matsutake: white, a thick shaggy ring on the stem, in sandy soil under
-lodgepole pine in the Cascades, with two weeks of rain on the way; golden chanterelles do well too.
-The vignette: a mature matsutake and its buttons pushing out of cracked sand under two lodgepole
-pines, a golden chanterelle beside them, Mt. Hood behind a band of rain clouds. The crest is a
-matsutake rising out of an acanthus calyx, the banner reads MATSUTAKE, the pedestal tablet reads
-PRO AMORE FUNGORUM. Easter egg: Parker's dog has left a paw print in the sand by the mushrooms.
+Douglas fir in the Cascades, with two weeks of rain on the way; golden chanterelles do well too.
+Per the edition plan: a vignette of about a quarter sheet, ARCHED, the matsutake and its buttons
+pushing through fir duff under two Douglas firs, a golden chanterelle beside them, Mt. Hood behind
+a band of rain clouds. Easter egg: a stump sawn level and laced like a drum (and the dog's paw
+print in the duff).
 """
 import sys
 import math
@@ -1156,6 +1156,8 @@ _KG = {
     "*": [[(2, 1.5), (2, 4.5)], [(.7, 2.2), (3.3, 3.8)], [(3.3, 2.2), (.7, 3.8)]],
     "%": [[(0, 6), (4, 0)], [(.2, .3), (1.4, .3), (1.4, 1.7), (.2, 1.7), (.2, .3)],
           [(2.6, 4.3), (3.8, 4.3), (3.8, 5.7), (2.6, 5.7), (2.6, 4.3)]],
+    "?": [[(.2, 1.2), (1, .1), (2.6, 0), (3.6, .9), (3.4, 2.1), (2, 3), (2, 4.2)], [(2, 5.6), (2, 6)]],
+    "!": [[(1, 0), (1, 4.2)], [(1, 5.6), (1, 6)]],
 }
 _SERIF = set("ABDEFHIKLMNPRTUVWXYZ1")
 
@@ -1224,6 +1226,7 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
         size -= .5
     tw = ktext_width(text, size)
     off = (L[-1] - tw) / 2
+    dn = 0.
 
     def along(px):
         s = off + px
@@ -1231,8 +1234,9 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
             if L[i] >= s:
                 t = (s - L[i - 1]) / max(1e-6, L[i] - L[i - 1])
                 a = _m.atan2(centre[i][1] - centre[i - 1][1], centre[i][0] - centre[i - 1][0])
-                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t,
-                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t, a)
+                # sit the capitals on the face, clear of its shadowed upper hem
+                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t - _m.sin(a) * dn,
+                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t + _m.cos(a) * dn, a)
         return centre[-1][0], centre[-1][1], 0.
 
     return bsvg + letter_svg(kletters(text, 0, 0, size, along), 1.5 if size >= 6 else 1., size >= 6)
@@ -1493,6 +1497,191 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
     if over > 0:
         fb = len(o[fi])
         o[fi] = field(int(maxn * max(.3, (fb - over - 4000) / fb) * .95))
+        doc = _C.svg_doc(w, h, "".join(o))
+    return doc
+
+
+# ------------------------------------------------------------------------------------------------
+# Planned forms (edition plan 1.6): every plate is cut to its page's form and shape, never a
+# generic band. The subject sits in its shape (oval, roundel, arched top, banner or irregular
+# silhouette); fine scroll on punched matte grows out of it in tapering wings that carry the
+# ornament to the edges of the box without boxing it in.
+# ------------------------------------------------------------------------------------------------
+
+def _shape_poly(shape, cx, cy, sw, sh, seed=0):
+    rx, ry = sw / 2, sh / 2
+    if shape in ("oval", "roundel"):
+        return _kell(cx, cy, rx, ry, 120)
+    if shape == "arched":
+        rise = min(rx * .9, sh * .5)
+        spring = cy - ry + rise
+        pts = [(cx - rx, cy + ry), (cx + rx, cy + ry), (cx + rx, spring)]
+        for i in range(1, 60):
+            a = _SPI * i / 60
+            pts.append((cx + rx * _m.cos(a), spring - rise * _m.sin(a)))
+        pts.append((cx - rx, spring))
+        return pts
+    if shape == "banner":
+        arch = sh * .14
+        n = 48
+        top, bot = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = cx - rx + 2 * rx * t
+            b = arch * _m.sin(_SPI * t)
+            top.append((x, cy - ry + arch - b))
+            bot.append((x, cy + ry - b))
+        nd = min(sh * .3, rx * .12)
+        return (top + [(cx + rx - nd, (top[-1][1] + bot[-1][1]) / 2)] + bot[::-1]
+                + [(cx - rx + nd, (top[0][1] + bot[0][1]) / 2)])
+    # irregular: a soft, lobed silhouette (a vignette that breaks its own edge)
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    pts = []
+    for i in range(140):
+        a = 2 * _SPI * i / 140
+        c, s = _m.cos(a), _m.sin(a)
+        k = (abs(c) ** 3.2 + abs(s) ** 3.2) ** (-1 / 3.2)
+        wob = 1 + .05 * _m.sin(3 * a + ph[0]) + .035 * _m.sin(7 * a + ph[1]) + .02 * _m.sin(13 * a + ph[2])
+        pts.append((cx + rx * c * k * wob, cy + ry * s * k * wob * (.96 if s > 0 else 1.)))
+    return pts
+
+
+def _form_geom(form, shape, w, h):
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh, wing half-height at the shape)."""
+    pad = 2.
+    sh = h - 2 * pad
+    if shape == "roundel":
+        sw = min(sh, w * .62)
+        sh = min(sh, sw)
+    elif shape == "oval":
+        frac = .4 if form == "tailpiece" else .5
+        sw = min(sh * (1.8 if form == "tailpiece" else 1.42), w * frac)
+        sh = min(sh, sw * 1.05)
+    elif shape == "arched":
+        sw = min(sh * 1.3, w * .52)
+        sh = min(sh, sw * 1.45)
+    elif shape == "banner":
+        sw = w * (.9 if form == "headpiece" else .54)
+        sh = min(sh, sw * .3)
+    else:
+        sw = {"headpiece": w * .92, "tailpiece": w * .52}.get(form, min(w * .6, sh * 1.7))
+        sh = min(sh, sw * .95)
+    wing = sh * {"headpiece": .36, "tailpiece": .3}.get(form, .34)
+    return w / 2, h / 2, sw, sh, wing
+
+
+def _wing(cx, cy, ex, xe, hw0, hw1, s):
+    """A tapering wing from the shape's flank (x = ex) out to the box edge (x = xe): concave top
+    and bottom edges that close to a fine point."""
+    n = 30
+    top, bot = [], []
+    for i in range(n + 1):
+        t = i / n
+        x = ex + (xe - ex) * t
+        hw = hw1 + (hw0 - hw1) * (1 - t) ** 1.7
+        top.append((x, cy - hw))
+        bot.append((x, cy + hw))
+    return top + bot[::-1]
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form` (vignette, front,
+    headpiece, tailpiece, plate), fine scroll wings on punched matte, a gold-wire and bead frame,
+    and (arms=True, section fronts) the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+    rng = _r.Random(seed)
+    mode = "s" if h < 110 else ("m" if h <= 260 else "t")
+    cx, cy, sw, sh, hw0 = _form_geom(form, shape, w, h)
+    if arms:
+        # leave the foot clear for the dedication cartouche
+        ah = max(22., min(46., h * .16))
+        sh = min(sh, h - 4 - ah * .55)
+        cy = 2 + sh / 2
+        hw0 = min(hw0, sh * .34)
+    outer = _shape_poly(shape, cx, cy, sw, sh, seed)
+    xs = [p[0] for p in outer]
+    rx = (max(xs) - min(xs)) / 2
+    framed = shape != "irregular"
+    bead = 1. if sh < 70 else 1.25 if sh < 160 else 1.5
+    bw = bead * 2 + 4.5 if framed else 0.
+    inner = _shape_poly(shape, cx, cy, sw - 2 * (bw + 1.6), sh - 2 * (bw + 1.6), seed) if framed else outer
+    ixs = [p[0] for p in inner]
+    iys = [p[1] for p in inner]
+    X, Y = min(ixs), min(iys)
+    W, H = max(ixs) - X, max(iys) - Y
+    scene_svg = scene(X, Y, W, H, mode, inner)
+    o = []
+    # 1. wings of fine scroll on matte, carried out to both edges
+    hw1 = max(2.5, sh * .05)
+    wings = []
+    for s in (-1, 1):
+        ex = cx + s * rx * .82
+        xe = w / 2 + s * (w / 2)
+        if abs(xe - ex) > 8:
+            wings.append(_wing(cx, cy, ex, xe, hw0, hw1, s))
+    rmin = 3.2 if hw0 < 14 else 4. if hw0 < 30 else 4.5
+    rmax = max(rmin * 1.6, min(16., hw0 * .62))
+    budget = 177000 - len(scene_svg) - 12000
+    per = 1400 * (rmax / 19.) ** 1.15
+    maxn = int(max(10, min(150, budget / per)))
+    fseed = rng.randrange(1 << 20)
+
+    def field(nmax):
+        out = []
+        for k, wg in enumerate(wings):
+            sgn = -1 if wg[0][0] < cx else 1
+            root = _wave_root(cx + sgn * rx * .9, cy, wg[len(wg) // 4][0], cy + sgn * 1.5, hw0 * .35, 70, fseed % 7 + k)
+            cv = KCanvas()
+            scroll_field(cv, wg, [outer], [root], fseed + k, rmin=rmin, rmax=rmax, max_n=max(4, nmax // 2),
+                         g=2.5 if hw0 < 20 else 3.)
+            out.append(f'<path d="{_SD(wg, True, 0)}" fill="none" stroke="#000" stroke-width="1"/>')
+            out.append(clip_to(f"fw{seed % 9973}{mode}{k}", wg, cv.svg()))
+        return "".join(out)
+
+    for k, wg in enumerate(wings):
+        o.append(matte(wg, seed + k))
+    fi = len(o)
+    o.append(field(maxn))
+    # 2. the frame of the shape: gold wire, a bead row, a sunk black fillet, a fine inner wire
+    if framed:
+        def ins(d):
+            return _shape_poly(shape, cx, cy, sw - 2 * d, sh - 2 * d, seed)
+        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{_SD(ins(1.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+        o.append(bead_ring(ins(2.5 + bead), bead, .8))
+        o.append(f'<path d="{_SD(ins(bw - .2), True, .1)}{_SD(ins(bw + 1.6)[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
+        o.append(f'<path d="{_SD(inner, True, .1)}" fill="#fff" stroke="none"/>')
+    else:
+        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="none"/>')
+    # 3. the subject, darkening toward its rim so it glows out of the frame
+    o.append(scene_svg)
+    if framed:
+        n = 2 if mode == "s" else 4
+        rims = []
+        for k in range(n):
+            rims.append(_SD(_shape_poly(shape, cx, cy, W - 2 * (.5 + 1.5 * k), H - 2 * (.5 + 1.5 * k), seed), True, .1))
+        o.append(f'<path d="{rims[0]}" fill="none" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{"".join(rims[1:])}" fill="none" stroke="#000" stroke-width=".5"/>')
+    else:
+        # an irregular vignette ends in a broken burin line, not a frame
+        o.append(f'<path d="{_SD(outer, True, .1)}" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="9 2 3 2"/>')
+        o.append(f'<path d="{_SD(_shape_poly(shape, cx, cy, sw - 3, sh - 3, seed), True, .1)}" fill="none" stroke="#000" stroke-width=".5" stroke-dasharray="2 3"/>')
+    # 4. section fronts: the Somaster arms in a small beaded cartouche at the foot
+    if arms:
+        import arms as _A
+        ah = max(22., min(46., h * .16))
+        aw = ah * .86
+        ax, ay = cx - aw / 2, h - ah - 1
+        plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
+        o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
+        o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
+    doc = _C.svg_doc(w, h, "".join(o))
+    over = len(doc.encode()) - 201000
+    if over > 0:
+        fb = len(o[fi])
+        o[fi] = field(int(maxn * max(.25, (fb - over - 4000) / fb) * .95))
         doc = _C.svg_doc(w, h, "".join(o))
     return doc
 
@@ -1975,6 +2164,51 @@ def ridge_y(ridge, x):
     return ridge[-1][1]
 
 
+def forest_floor(cv, X, y0, W, y1, seed, dens=1.):
+    """Douglas-fir duff engraved, not patterned: fallen needles in little crossed drifts, small
+    near the horizon and long in front, with a shadow stroke under each drift and a scatter of
+    punched dots of sand."""
+    rng = random.Random(seed)
+    cv.obj([[(X - 3, y0), (X + W + 3, y0), (X + W + 3, y1 + 3), (X - 3, y1 + 3)]], 0)
+    y = y0 + 1.5
+    while y < y1 + 2:
+        f = (y - y0) / max(1., y1 - y0)
+        L = 2.5 + 6 * f
+        x = X - 3 + rng.uniform(0, L)
+        while x < X + W + 3:
+            a = rng.uniform(-.5, .5)
+            for k in range(rng.randint(1, 3)):
+                b = a + rng.uniform(-.9, .9)
+                ll = L * rng.uniform(.6, 1.)
+                cv.hair([(x, y), (x + ll * math.cos(b), y + ll * math.sin(b) * .45)])
+            if rng.random() < .35:
+                cv.line([(x - L * .3, y + 1.2), (x + L * .5, y + 1.2)])
+            x += L * rng.uniform(1.1, 2.) / dens
+        y += 2.2 + 3.5 * f
+
+
+def drum_stump(cv, x, gy, s):
+    """Easter egg: a fir stump sawn level and cut like a snare drum: rings for a head, two hoops,
+    the lugs and the zig-zag of the tension rope round its bark."""
+    rx, ry, hh = s, s * .3, s * 1.1
+    body = [(x - rx, gy - hh)] + [(x + rx * math.cos(a), gy + ry * math.sin(a)) for a in [PI - PI * i / 16 for i in range(17)][::-1]][::-1] + [(x + rx, gy - hh)]
+    body = [(x - rx, gy - hh), (x - rx, gy)] + [(x - rx * math.cos(PI * i / 16), gy + ry * math.sin(PI * i / 16)) for i in range(17)] + [(x + rx, gy - hh)]
+    cv.obj([body], 1.)
+    cv.hair(C.hatch_poly([(x + rx * .25, gy - hh), (x + rx, gy - hh), (x + rx, gy + ry * .6), (x + rx * .25, gy + ry * .9)], 90, 1.5))
+    for yy in (gy - hh + ry * .9, gy - ry * .2):
+        cv.line([(x - rx * math.cos(PI * i / 16), yy + ry * math.sin(PI * i / 16)) for i in range(17)])
+    n = 6
+    zz = []
+    for i in range(n + 1):
+        t = i / n
+        zz.append((x - rx * math.cos(PI * t), (gy - hh + ry * .9 if i % 2 == 0 else gy - ry * .2) + ry * math.sin(PI * t)))
+    cv.hair(zz)
+    head = [(x + rx * math.cos(a), gy - hh + ry * math.sin(a)) for a in [2 * PI * i / 24 for i in range(24)]]
+    cv.obj([head], .5)
+    for k in (.66, .33):
+        cv.hair([(x + rx * k * math.cos(a), gy - hh + ry * k * math.sin(a)) for a in [2 * PI * i / 16 for i in range(17)]])
+
+
 def scene(X, Y, W, H, seed, detail=1.):
     """The vignette into the box (X, Y, W, H): an SVG fragment (the caller clips it)."""
     rng = random.Random(seed)
@@ -2037,9 +2271,10 @@ def scene(X, Y, W, H, seed, detail=1.):
     gy0 = yh + H * .06
     soil = [(X - 4 + (W + 8) * i / 30, gy0 + H * .025 * math.sin(i * .9 + seed)) for i in range(31)]
     soil += [(X + W + 4, Y + H + 4), (X - 4, Y + H + 4)]
-    o.append(f'<path d="{_d(soil, True, 0)}" fill="{C.pat("S")}" stroke="none"/>')
     fr = KCanvas()
-    fr.obj([], 0)
+    forest_floor(fr, X, gy0, W, Y + H, seed + 9, .8 * detail + .2)
+    fr.obj([soil], .5)
+    forest_floor(fr, X, gy0 + 2, W, Y + H, seed + 9, .8 * detail + .2)
     fr.line(soil[:31])
     for i in range(int(18 * detail)):
         sx_, sy_ = rng.uniform(X, X + W), rng.uniform(gy0 + 4, Y + H)
@@ -2060,6 +2295,7 @@ def scene(X, Y, W, H, seed, detail=1.):
         fr.obj([shp], 0)
         fr.line(C.hatch_poly(shp, 0, 2., 0))
     pine_cone(fr, X + W * .34, Y + H * .955, W * .04)
+    drum_stump(fr, X + W * .87, Y + H * .97, W * .05)
     paw_print(fr, X + W * .6, Y + H * .94, W * .036)
     chanterelle(fr, X + W * .8, Y + H * .86, R1 * .48, rng)
     matsutake(fr, X + W * .24, Y + H * .9, R1 * .42, rng, .3)
@@ -2081,11 +2317,10 @@ def small_scene(X, Y, W, H, seed):
     engraved_sky(sk, X - 2, Y - 2, W + 4, H * .75, seed + 1, clouds=0, maxc=0)
     o.append(sk.svg())
     gy = Y + H * .72
-    o.append(f'<path d="M{_n(X - 2)},{_n(gy)}h{_n(W + 4)}v{_n(H)}h{_n(-W - 4)}z" fill="{C.pat("S")}" stroke="none"/>')
-    cv = C.Canvas()
-    cv.obj([], 0)
-    for xx in range(int(X), int(X + W), 3):
-        cv.hair([(xx, Y), (xx + 3, Y + H * .3)])
+    cv = KCanvas()
+    forest_floor(cv, X, gy, W, Y + H, seed + 9, .7)
+    cv.line([(X - 2, gy), (X + W + 2, gy)])
+    fir(cv, X + W * .1, Y + H * .05, gy + 2, W * .3, rng)
     R = min(W * .2, H * .34)
     chanterelle(cv, X + W * .72, gy + 2, R * .55, rng)
     matsutake(cv, X + W * .4, gy + 2, R, rng, 1.)
@@ -2277,4 +2512,4 @@ def plate(w, h, ctx):
         body = small_scene(X, Y, W, H, seed) if mode == "s" else scene(X, Y, W, H, seed, 1. if mode == "t" else .8)
         return clip_to(f"gdn{mode}{int(H)}", inner, body)
 
-    return king_plate(w, h, ctx, sc, egg_heron, "MATSUTAKE", seed)
+    return form_plate(w, h, ctx, sc, "arched", "vignette", seed)

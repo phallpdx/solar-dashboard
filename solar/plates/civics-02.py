@@ -1,15 +1,9 @@
 """civics-02 "Election coming up": an engraved Oregon vote-by-mail plate.
 
-Subject (from the page): the next special district election (school boards, local measures), the
-ballots that go out by mail, the countdown in days, the Oregon primary and general to follow.
-  short  : a carved scroll frieze round a medallion holding a sealed ballot envelope.
-  medium : a cartouche between big volutes; in it an Oregon ballot drop box takes a ballot under
-           Mt. Hood, fields ruled in perspective, a heron crossing the sky.
-  tall   : the Oregon State Capitol (fluted drum, Golden Pioneer) with Mt. Hood behind and the drop
-           box in the foreground, in a scroll frame; a ribbon banner carries the election date and
-           the pedestal tablet carries today's countdown ("188 DAYS"), all lettered as paths.
-Easter egg: the X on the ballot is a pair of crossed drumsticks (ball tips), and a Sauvie Island
-heron flies over the valley.
+Per the edition plan: a vignette of about a fifth of the sheet, an OVAL. In it an Oregon official
+ballot drop box takes a ballot at the edge of the valley fields, the river and Mt. Hood beyond,
+under an engraved sky; fine scroll wings carry the ornament out to the margins.
+Easter egg: a heron weathervane turns on the drop box's hood.
 """
 import sys
 import math
@@ -1161,6 +1155,8 @@ _KG = {
     "*": [[(2, 1.5), (2, 4.5)], [(.7, 2.2), (3.3, 3.8)], [(3.3, 2.2), (.7, 3.8)]],
     "%": [[(0, 6), (4, 0)], [(.2, .3), (1.4, .3), (1.4, 1.7), (.2, 1.7), (.2, .3)],
           [(2.6, 4.3), (3.8, 4.3), (3.8, 5.7), (2.6, 5.7), (2.6, 4.3)]],
+    "?": [[(.2, 1.2), (1, .1), (2.6, 0), (3.6, .9), (3.4, 2.1), (2, 3), (2, 4.2)], [(2, 5.6), (2, 6)]],
+    "!": [[(1, 0), (1, 4.2)], [(1, 5.6), (1, 6)]],
 }
 _SERIF = set("ABDEFHIKLMNPRTUVWXYZ1")
 
@@ -1229,6 +1225,7 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
         size -= .5
     tw = ktext_width(text, size)
     off = (L[-1] - tw) / 2
+    dn = 0.
 
     def along(px):
         s = off + px
@@ -1236,8 +1233,9 @@ def ribbon_text(cx, cy, w, h, text, arch=.05, seed=0):
             if L[i] >= s:
                 t = (s - L[i - 1]) / max(1e-6, L[i] - L[i - 1])
                 a = _m.atan2(centre[i][1] - centre[i - 1][1], centre[i][0] - centre[i - 1][0])
-                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t,
-                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t, a)
+                # sit the capitals on the face, clear of its shadowed upper hem
+                return (centre[i - 1][0] + (centre[i][0] - centre[i - 1][0]) * t - _m.sin(a) * dn,
+                        centre[i - 1][1] + (centre[i][1] - centre[i - 1][1]) * t + _m.cos(a) * dn, a)
         return centre[-1][0], centre[-1][1], 0.
 
     return bsvg + letter_svg(kletters(text, 0, 0, size, along), 1.5 if size >= 6 else 1., size >= 6)
@@ -1498,6 +1496,204 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
     if over > 0:
         fb = len(o[fi])
         o[fi] = field(int(maxn * max(.3, (fb - over - 4000) / fb) * .95))
+        doc = _C.svg_doc(w, h, "".join(o))
+    return doc
+
+
+# ------------------------------------------------------------------------------------------------
+# Planned forms (edition plan 1.6): every plate is cut to its page's form and shape, never a
+# generic band. The subject sits in its shape (oval, roundel, arched top, banner or irregular
+# silhouette); fine scroll on punched matte grows out of it in tapering wings that carry the
+# ornament to the edges of the box without boxing it in.
+# ------------------------------------------------------------------------------------------------
+
+def _shape_poly(shape, cx, cy, sw, sh, seed=0):
+    rx, ry = sw / 2, sh / 2
+    if shape in ("oval", "roundel"):
+        return _kell(cx, cy, rx, ry, 120)
+    if shape == "arched":
+        rise = min(rx * .9, sh * .5)
+        spring = cy - ry + rise
+        pts = [(cx - rx, cy + ry), (cx + rx, cy + ry), (cx + rx, spring)]
+        for i in range(1, 60):
+            a = _SPI * i / 60
+            pts.append((cx + rx * _m.cos(a), spring - rise * _m.sin(a)))
+        pts.append((cx - rx, spring))
+        return pts
+    if shape == "banner":
+        arch = sh * .14
+        n = 48
+        top, bot = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = cx - rx + 2 * rx * t
+            b = arch * _m.sin(_SPI * t)
+            top.append((x, cy - ry + arch - b))
+            bot.append((x, cy + ry - b))
+        nd = min(sh * .3, rx * .12)
+        return (top + [(cx + rx - nd, (top[-1][1] + bot[-1][1]) / 2)] + bot[::-1]
+                + [(cx - rx + nd, (top[0][1] + bot[0][1]) / 2)])
+    # irregular: a soft, lobed silhouette (a vignette that breaks its own edge)
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    pts = []
+    for i in range(140):
+        a = 2 * _SPI * i / 140
+        c, s = _m.cos(a), _m.sin(a)
+        k = (abs(c) ** 3.2 + abs(s) ** 3.2) ** (-1 / 3.2)
+        wob = (1 + .04 * _m.sin(3 * a + ph[0]) + .03 * _m.sin(7 * a + ph[1]) + .018 * _m.sin(13 * a + ph[2])
+               + .012 * _m.sin(29 * a + ph[3]))
+        pts.append((cx + rx * c * k * wob, cy + ry * s * k * wob * (.96 if s > 0 else 1.)))
+    return pts
+
+
+def _form_geom(form, shape, w, h):
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh, wing half-height at the shape)."""
+    pad = 2.
+    sh = h - 2 * pad
+    if shape == "roundel":
+        sw = min(sh, w * .62)
+        sh = min(sh, sw)
+    elif shape == "oval":
+        frac = .4 if form == "tailpiece" else .5
+        sw = min(sh * (1.8 if form == "tailpiece" else 1.42), w * frac)
+        sh = min(sh, sw * 1.05)
+    elif shape == "arched":
+        sw = min(sh * 1.3, w * .52)
+        sh = min(sh, sw * 1.45)
+    elif shape == "banner":
+        sw = w * (.9 if form == "headpiece" else .54)
+        sh = min(sh, sw * .3)
+    else:
+        sw = {"headpiece": w * .97, "tailpiece": w * .52}.get(form, min(w * .6, sh * 1.7))
+        sh = min(sh, sw * .95)
+    wing = sh * {"headpiece": .36, "tailpiece": .3}.get(form, .34)
+    return w / 2, h / 2, sw, sh, wing
+
+
+def _wing(cx, cy, ex, xe, hw0, hw1, s):
+    """A tapering wing from the shape's flank (x = ex) out to the box edge (x = xe): concave top
+    and bottom edges that close to a fine point."""
+    n = 30
+    top, bot = [], []
+    for i in range(n + 1):
+        t = i / n
+        x = ex + (xe - ex) * t
+        hw = hw1 + (hw0 - hw1) * (1 - t) ** 1.7
+        top.append((x, cy - hw))
+        bot.append((x, cy + hw))
+    return top + bot[::-1]
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form` (vignette, front,
+    headpiece, tailpiece, plate), fine scroll wings on punched matte, a gold-wire and bead frame,
+    and (arms=True, section fronts) the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+    rng = _r.Random(seed)
+    mode = "s" if h < 110 else ("m" if h <= 260 else "t")
+    cx, cy, sw, sh, hw0 = _form_geom(form, shape, w, h)
+    if arms:
+        # leave the foot clear for the dedication cartouche
+        ah = max(22., min(46., h * .16))
+        sh = min(sh, h - 4 - ah * .55)
+        cy = 2 + sh / 2
+        hw0 = min(hw0, sh * .34)
+    outer = _shape_poly(shape, cx, cy, sw, sh, seed)
+    xs = [p[0] for p in outer]
+    rx = (max(xs) - min(xs)) / 2
+    framed = shape != "irregular"
+    bead = 1. if sh < 70 else 1.25 if sh < 160 else 1.5
+    bw = bead * 2 + 4.5 if framed else 0.
+    inner = _shape_poly(shape, cx, cy, sw - 2 * (bw + 1.6), sh - 2 * (bw + 1.6), seed) if framed else outer
+    ixs = [p[0] for p in inner]
+    iys = [p[1] for p in inner]
+    X, Y = min(ixs), min(iys)
+    W, H = max(ixs) - X, max(iys) - Y
+    scene_svg = scene(X, Y, W, H, mode, inner)
+    o = []
+    # 1. wings of fine scroll on matte, carried out to both edges
+    hw1 = max(2.5, sh * .05)
+    wings = []
+    ex0 = rx * .86
+    ys_at = []
+    for i in range(len(outer)):
+        (x1, y1), (x2, y2) = outer[i - 1], outer[i]
+        xq = cx + rx * .97
+        if (x1 - xq) * (x2 - xq) <= 0 and x1 != x2:
+            ys_at.append(y1 + (y2 - y1) * (xq - x1) / (x2 - x1))
+    wy = cy
+    if len(ys_at) >= 2:
+        # the wings spring from the flank where the shape is deep enough to take them
+        wy = (min(ys_at) + max(ys_at)) / 2
+        hw0 = min(hw0, (max(ys_at) - min(ys_at)) / 2 - 2)
+    hw0 = max(hw0, 3.)
+    for s in (-1, 1):
+        ex = cx + s * ex0
+        xe = w / 2 + s * (w / 2)
+        if abs(xe - ex) > 30:
+            wings.append(_wing(cx, wy, ex, xe, hw0, hw1, s))
+    rmin = 3.2 if hw0 < 14 else 4. if hw0 < 30 else 4.5
+    rmax = max(rmin * 1.6, min(16., hw0 * .62))
+    budget = 177000 - len(scene_svg) - 12000
+    per = 1400 * (rmax / 19.) ** 1.15
+    maxn = int(max(10, min(150, budget / per)))
+    fseed = rng.randrange(1 << 20)
+
+    def field(nmax):
+        out = []
+        for k, wg in enumerate(wings):
+            sgn = -1 if wg[0][0] < cx else 1
+            root = _wave_root(cx + sgn * rx * .9, wy, wg[len(wg) // 4][0], wy + sgn * 1.5, hw0 * .35, 70, fseed % 7 + k)
+            cv = KCanvas()
+            scroll_field(cv, wg, [outer], [root], fseed + k, rmin=rmin, rmax=rmax, max_n=max(4, nmax // 2),
+                         g=2.5 if hw0 < 20 else 3.)
+            out.append(f'<path d="{_SD(wg, True, 0)}" fill="none" stroke="#000" stroke-width="1"/>')
+            out.append(clip_to(f"fw{seed % 9973}{mode}{k}", wg, cv.svg()))
+        return "".join(out)
+
+    for k, wg in enumerate(wings):
+        o.append(matte(wg, seed + k))
+    fi = len(o)
+    o.append(field(maxn))
+    # 2. the frame of the shape: gold wire, a bead row, a sunk black fillet, a fine inner wire
+    if framed:
+        def ins(d):
+            return _shape_poly(shape, cx, cy, sw - 2 * d, sh - 2 * d, seed)
+        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{_SD(ins(1.5), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+        o.append(bead_ring(ins(2.5 + bead), bead, .8))
+        o.append(f'<path d="{_SD(ins(bw - .2), True, .1)}{_SD(ins(bw + 1.6)[::-1], True, .1)}" fill="#000" fill-rule="evenodd" stroke="none"/>')
+        o.append(f'<path d="{_SD(inner, True, .1)}" fill="#fff" stroke="none"/>')
+    else:
+        o.append(f'<path d="{_SD(outer, True, .1)}" fill="#fff" stroke="none"/>')
+    # 3. the subject, darkening toward its rim so it glows out of the frame
+    o.append(scene_svg)
+    if framed:
+        n = 2 if mode == "s" else 4
+        rims = []
+        for k in range(n):
+            rims.append(_SD(_shape_poly(shape, cx, cy, W - 2 * (.5 + 1.5 * k), H - 2 * (.5 + 1.5 * k), seed), True, .1))
+        o.append(f'<path d="{rims[0]}" fill="none" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{"".join(rims[1:])}" fill="none" stroke="#000" stroke-width=".5"/>')
+    else:
+        # an irregular vignette has no frame: its lines simply stop at a lobed, ragged edge
+        pass
+    # 4. section fronts: the Somaster arms in a small beaded cartouche at the foot
+    if arms:
+        import arms as _A
+        ah = max(22., min(46., h * .16))
+        aw = ah * .86
+        ax, ay = cx - aw / 2, h - ah - 1
+        plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
+        o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
+        o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
+    doc = _C.svg_doc(w, h, "".join(o))
+    over = len(doc.encode()) - 201000
+    if over > 0:
+        fb = len(o[fi])
+        o[fi] = field(int(maxn * max(.25, (fb - over - 4000) / fb) * .95))
         doc = _C.svg_doc(w, h, "".join(o))
     return doc
 
@@ -2041,14 +2237,11 @@ def _dropbox(cv, bx, base, s, rng, label=True):
     cv.obj([env], 1.)
     _H(cv, [E(-ew / 2, 0), E(ew / 2, 0), E(ew / 2, -eh * .35), E(-ew / 2, -eh * .35)], 0, 3, inset=.4)
     cv.hair([E(-ew / 2, -eh), E(0, -eh * .45), E(ew / 2, -eh)])
-    # Easter egg: the X on the ballot is a pair of crossed drumsticks with ball tips
+    # the voter's X
     bxc, byc = E(-ew * .2, -eh * .55)
     k = eh * .28
     for sg in (-1, 1):
-        p0 = (bxc - k, byc + sg * k)
-        p1 = (bxc + k, byc - sg * k)
-        cv.line([p0, p1])
-        cv.obj([_ell(p1[0], p1[1], .8, .8, 8)], .5)
+        cv.line([(bxc - k, byc + sg * k), (bxc + k, byc - sg * k)])
     # a second ballot already falling in, its edge showing in the slot
     cv.hair([(bx + s * .2, top + s * .085), (bx + s * .45, top + s * .085)])
     return top - s * .3 - dy
@@ -2137,63 +2330,39 @@ def _capitol(cv, cx, base, s, rng):
     return dt
 
 
+def _heron_vane(cv, x, y, s):
+    """Easter egg: a heron weathervane on the drop box's hood, bill into the wind."""
+    cv.line([(x, y), (x, y - s * 1.1)])
+    cv.hair([(x - s * .32, y - s * .45), (x + s * .32, y - s * .45)])
+    cv.obj([_ell(x, y - s * .45, s * .05 + .6, s * .05 + .6, 8)], 1.)
+    hy = y - s * 1.1
+    k = s * .5
+    body = [(x - k * .7, hy - k * .1), (x - k * .2, hy - k * .45), (x + k * .35, hy - k * .4), (x + k * .5, hy - k * .2),
+            (x + k * .25, hy + k * .05), (x - k * .3, hy + k * .05)]
+    cv.obj([body], 1.)
+    _H(cv, body, 30, 1.5)
+    cv.line([(x + k * .35, hy - k * .4), (x + k * .2, hy - k * .8), (x + k * .45, hy - k * 1.05), (x + k * .6, hy - k * 1.05)])
+    cv.line([(x + k * .6, hy - k * 1.05), (x + k * 1.15, hy - k * .95)])
+    cv.hair([(x - k * .05, hy + k * .05), (x - k * .05, hy + k * .35)])
+    cv.hair([(x + k * .12, hy + k * .05), (x + k * .12, hy + k * .35)])
+
+
 def _scene(X, Y, W, H, mode, seed, field_d):
-    """Engrave the full field (no white left). mode: 'm' medium, 't' tall, 's' short."""
+    """The oval vignette: an Oregon ballot drop box taking a ballot on the edge of the valley
+    fields, Mt. Hood beyond, a heron weathervane on the box's hood. Every surface engraved."""
     rng = random.Random(seed)
     cv = KCanvas()
-    if mode == "s":
-        # a sealed ballot envelope, crossed-drumstick X, on a ruled ground
-        cv.obj([_rect(X - 4, Y - 4, W + 8, H + 8)], 0)
-        _H(cv, _rect(X - 4, Y - 4, W + 8, H + 8), 0, 2, .5)
-        ew, eh = W * .8, H * .72
-        ex, ey = X + (W - ew) / 2, Y + (H - eh) / 2
-        env = _rect(ex, ey, ew, eh)
-        sh = _rect(ex + 2, ey + 2, ew, eh)
-        cv.obj([sh], 0)
-        _solid(cv, sh)
-        cv.obj([env], 1.)
-        _H(cv, env, 0, 3, 1., inset=.5)
-        flap = [(ex, ey), (ex + ew / 2, ey + eh * .55), (ex + ew, ey)]
-        cv.obj([flap + [(ex + ew, ey)]], 1.)
-        cv.hair(C.hatch_poly(flap, 45, 2))
-        sr = eh * .2
-        scx, scy = ex + ew / 2, ey + eh * .55
-        ring = _ell(scx, scy, sr + 1.2, sr + 1.2, 18)
-        cv.obj([ring], 1.)
-        _solid(cv, ring)
-        seal = _ell(scx, scy, sr, sr, 18)
-        cv.obj([seal], .5)
-        # Easter egg: the seal's X is a pair of crossed drumsticks with ball tips
-        k = sr * .62
-        for sg in (-1, 1):
-            p1 = (scx + k, scy - sg * k)
-            cv.line([(scx - k, scy + sg * k), p1])
-            cv.obj([_ell(p1[0], p1[1], .9, .9, 8)], .5)
-            _solid(cv, _ell(p1[0], p1[1], .9, .9, 8))
-        cid = C._uid("civfield", X, Y, W, H, mode)
-        return f'<clipPath id="{cid}"><path d="{field_d}"/></clipPath><g clip-path="url(#{cid})">{cv.svg()}</g>'
-    hy = Y + H * (.6 if mode == "m" else .68)
+    hy = Y + H * (.56 if mode != "t" else .6)
     _sky(cv, X, Y, W, H, hy, seed)
-    _heron(cv, X + W * (.68 if mode == "m" else .26), Y + (hy - Y) * (.34 if mode == "m" else .3),
-           max(1.8, W / 46.), flip=False)
-    if mode == "m":
-        _hood(cv, X + W * .36, hy + 1, W * .36, Y + H * .17, seed, light_left=False)
-    else:
-        _hood(cv, X + W * .72, hy - H * .06, W * .34, Y + H * .3, seed, light_left=False)
+    _hood(cv, X + W * .3, hy + 1, W * .36, Y + H * (.2 if mode != "s" else .25), seed, light_left=False)
     _trees(cv, X - 2, X + W + 2, hy - H * .04, H * .045, rng)
-    vx = X + W * (.36 if mode == "m" else .44)
+    vx = X + W * .3
     _fields(cv, X, Y, W, H, hy, vx)
     _river(cv, X, Y, W, H, hy)
-    if mode == "t":
-        s = W * .25
-        _capitol(cv, X + W * .42, hy + H * .03, s, rng)
-        # the plaza in front
-        pz = [(X - 2, hy + H * .03), (X + W + 2, hy + H * .03), (X + W + 2, hy + H * .06), (X - 2, hy + H * .06)]
-        cv.obj([pz], .5)
-        _H(cv, pz, 0, 3)
-        _dropbox(cv, X + W * .64, Y + H * .96, W * .2, rng)
-    else:
-        _dropbox(cv, X + W * .6, Y + H * .95, min(W * .22, H * .42), rng)
+    s = min(W * .22, H * .33)
+    bx = X + W * .56 - s / 2
+    vy = _dropbox(cv, bx, Y + H * .95, s, rng, label=mode != "s")
+    _heron_vane(cv, bx + s * 1.1, vy + s * .1, s * .4)
     body = cv.svg()
     cid = C._uid("civfield", X, Y, W, H, mode)
     return f'<clipPath id="{cid}"><path d="{field_d}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
@@ -2365,5 +2534,5 @@ def plate(w, h, ctx):
     def scene(X, Y, W, H, mode, inner):
         return _scene(X, Y, W, H, mode, seed, _d(inner, True, 0))
 
-    cap = (f"{days} DAYS TO {date}" if days and date else "VOTE BY MAIL")
-    return king_plate(w, h, ctx, scene, egg_P, cap, seed)
+    # the edition plan: a vignette of about a fifth of the sheet, an oval
+    return form_plate(w, h, ctx, scene, "oval", "vignette", seed)

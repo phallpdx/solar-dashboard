@@ -3,7 +3,7 @@ rising from the middle of the head, a shell hanging at the foot, volutes turning
 by the sheet edge gets no band; its corners end in small scrolled terminals instead."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (9, 9, 9, 9)
+DEFAULT = (18, 18, 18, 18)
 
 
 def insets(w, h, ctx=None):
@@ -14,12 +14,21 @@ def frame(w, h, ctx=None):
     """The whole box w x h, band inside it (slot = w - l - r by h - t - b)."""
     ctx = ctx_of(ctx)
     ins = insets(w, h, ctx)
-    cv = canvas(w, h)
     open_sides = tuple(s for s in ("top", "bottom") if ctx.get("open_" + s))
-    scroll.band_rect(cv, 0, 0, w, h, ins, seed_of("kpanel", w, h, ctx),
-                     centre=("fleuron", "rosette" if h > 200 else None, "shell", "rosette" if h > 200 else None),
-                     open_sides=open_sides, density=(1.3 if w + h > 1000 else 1.6 if w + h > 900 else None))
-    return cv.svg()
+    # the biggest panels: coarser path fit and fewer pocket leaflets until the file is inside 200 KB
+    tol, gmin = (0.2, 2.4) if w + h > 900 else (None, None)
+    for _ in range(4):
+        cv = canvas(w, h)
+        if tol:
+            cv.tol, cv.gap_min = tol, gmin
+        scroll.band_rect(cv, 0, 0, w, h, ins, seed_of("kpanel", w, h, ctx),
+                         centre=("fleuron", "rosette" if h > 200 else None, "shell", "rosette" if h > 200 else None),
+                         open_sides=open_sides)
+        svg = cv.svg()
+        if len(svg) <= 196 * 1024:
+            break
+        tol, gmin = (tol or 0.1) + 0.06, (gmin or 1.4) + 0.8
+    return svg
 
 
 def panel_edge(w, h, open_top=False, open_bottom=False, seed=0, b=None):

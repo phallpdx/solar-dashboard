@@ -1,8 +1,7 @@
-"""The SECTIONS menu button: compact sibling of the button, a scrolled plaque whose foot carries a small
-downward fleuron (the menu opens downward)."""
+"""SECTIONS menu button: compact ears with twin lobes and a waist, each a volute and counter scroll."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (5, 12, 6, 12)
+DEFAULT = (3, 14, 3, 14)
 
 
 def insets(w, h, ctx=None):
@@ -11,8 +10,7 @@ def insets(w, h, ctx=None):
 
 def frame(w, h, ctx=None):
     ctx = ctx_of(ctx)
-    ins = insets(w, h, ctx)
+    t, r, b, l = insets(w, h, ctx)
     cv = canvas(w, h)
-    scroll.band_rect(cv, 0, 0, w, h, ins, seed_of("sections", w, h, ctx), centre=(None, None, "fleuron", None),
-                     ends="roll", raised=True, motif_min=2.2)
+    scroll.plaque(cv, 0, 0, w, h, (l, r), t, seed_of("sections", w, h, ctx), kind="scroll")
     return cv.svg()

@@ -1,9 +1,10 @@
-"""Status chip (HIDDEN, OUT NOW, CLOSED ...): a tabula ansata.  Dovetail ears, each holding a volute that
-rolls toward the word; a running fine scroll above and below.  'lit' (status ON): the ears are cut solid
-and carry a pearl boss, and a second bright inlay runs round the slot, so the chip reads heavier."""
+"""Status chip (HIDDEN, OUT NOW, CLOSED ...): a tabula ansata.  The scroll lives in pointed ogee ears, each
+holding a volute rolling toward the word with a smaller scroll winding against it and acanthus in the pockets;
+the head and foot are a fine double inlay only (3 px).  'lit' (status ON): a pearl boss in each ear tip and a
+second fine rule round the slot."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (6, 11, 6, 11)
+DEFAULT = (3, 18, 3, 18)
 
 
 def insets(w, h, ctx=None):
@@ -12,8 +13,8 @@ def insets(w, h, ctx=None):
 
 def frame(w, h, ctx=None):
     ctx = ctx_of(ctx)
-    ins = insets(w, h, ctx)
+    t, r, b, l = insets(w, h, ctx)
     cv = canvas(w, h)
-    scroll.band_rect(cv, 0, 0, w, h, ins, seed_of("chip", w, h, ctx), centre=(None,) * 4, ends="point",
-                     lit=ctx.get("variant") == "lit")
+    scroll.plaque(cv, 0, 0, w, h, (l, r), t, seed_of("chip", w, h, ctx), kind="point",
+                  lit=ctx.get("variant") == "lit")
     return cv.svg()

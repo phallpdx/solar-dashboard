@@ -2,7 +2,7 @@
 for one Literata capital set by the page."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (7, 7, 7, 7)
+DEFAULT = (14, 14, 14, 14)
 
 
 def insets(w, h, ctx=None):

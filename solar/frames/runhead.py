@@ -1,8 +1,8 @@
-"""Running-head label (TODAY, ROADS AND MOUNTAINS, SHEET 1 OF 3): a label cartouche whose ends are twin
-acanthus volutes meeting in a bud, fine scroll running along the head and foot."""
+"""Running head (section name, "Sheet 1 of 3"): small swallow-tail ears, each a volute and counter scroll
+with acanthus; head and foot a fine double inlay."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (5, 14, 5, 14)
+DEFAULT = (3, 16, 3, 16)
 
 
 def insets(w, h, ctx=None):
@@ -11,7 +11,7 @@ def insets(w, h, ctx=None):
 
 def frame(w, h, ctx=None):
     ctx = ctx_of(ctx)
-    ins = insets(w, h, ctx)
+    t, r, b, l = insets(w, h, ctx)
     cv = canvas(w, h)
-    scroll.band_rect(cv, 0, 0, w, h, ins, seed_of("runhead", w, h, ctx), centre=(None,) * 4, ends="scroll")
+    scroll.plaque(cv, 0, 0, w, h, (l, r), t, seed_of("runhead", w, h, ctx), kind="tail")
     return cv.svg()

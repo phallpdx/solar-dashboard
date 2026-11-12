@@ -1928,43 +1928,47 @@ FORM = {"form": "vignette", "share": .18, "shape": "oval", "egg": "a kestrel on 
 
 
 def _kestrel(cv, x, y, s):
-    """An American kestrel perched upright on (x, y), facing left: the moustache stripes, the
-    long barred tail, the folded wings."""
+    """An American kestrel perched upright on (x, y), facing left: the rufous back and breast
+    modelled round and lit from the left, the moustache stripes, the barred tail, the blue-grey
+    folded wing cut in feather rows."""
     P = lambda u, v: (x + u * s, y - v * s)
     tail = [P(.02, .45), P(.14, .45), P(.16, -.08), P(.0, -.08)]
-    cv.obj([tail], .5)
+    bu_form(cv, tail, lambda px, py: .35, 90., 1.5, 0, None, .5)
+    cv.obj([], 0)
     for k in range(4):
-        cv.hair([P(.01, .32 - k * .1), P(.15, .32 - k * .1)])
+        cv.line([P(.01, .32 - k * .1), P(.15, .32 - k * .1)])
     body = [P(-.12, .9), P(.06, 1.0), P(.2, .82), P(.22, .5), P(.12, .38), P(-.06, .4), P(-.16, .62)]
-    cv.obj([body], 1.)
+    bc = P(.03, .66)
+    bu_form(cv, body, bu_sph(bc[0] - s * .05, bc[1] - s * .05, s * .2, s * .32, .1, .6), 80., 1.5, s * .05, None, 1.)
     wing = [P(.04, .88), P(.22, .8), P(.2, .4), P(.08, .3)]
-    cv.obj([wing], .5)
-    cv.hair(C.hatch_poly(wing, 75, 1.5))
+    bu_form(cv, wing, lambda px, py: .5 + .25 * (px - P(.04, 0)[0]) / (s * .18), 75., 1.5, 0, None, .5)
     head = C._ell_pts(*P(-.04, 1.08), s * .14, s * .13, 14)[:-1]
-    cv.obj([head], 1.)
-    cv.line([P(-.1, 1.06), P(-.12, .96)])           # the moustache stripe
+    hc = P(-.04, 1.08)
+    bu_form(cv, head, bu_sph(hc[0] - s * .03, hc[1] - s * .03, s * .14, s * .13, .05, .55), 60., 1.5, 0, None, 1.)
+    cv.obj([], 0)
+    cv.heavy([P(-.1, 1.06), P(-.12, .96)])
     cv.line([P(.06, 1.08), P(.06, .98)])
-    cv.heavy([P(-.07, 1.11), P(-.06, 1.12)])
-    cv.line([P(-.18, 1.07), P(-.24, 1.03)])          # beak
+    cv.obj([C._ell_pts(*P(-.065, 1.11), .8, .8, 6)], 1.5)
+    cv.line([P(-.18, 1.07), P(-.24, 1.03)])
     cv.hair([P(-.02, .4), P(-.02, .34)])
 
 
 def _brush_pile(cv, cx, by, w, h, rng):
-    """The heap of yard debris: a mound of crossing limbs and twigs, dark in its hollows."""
+    """The heap of yard debris: a mound of crossing limbs, each a round stick lit on top, the
+    hollows between them cut dark, the darkest at the foot."""
     mound = [(cx - w / 2 + w * i / 20, by - h * math.sin(math.pi * i / 20) ** .8 * (1 + .12 * math.sin(i * 1.9))) for i in range(21)]
-    cv.obj([mound], 0)
-    cv.hair(C.hatch_poly(mound, 0, 1.5))
-    cv.hair(C.hatch_poly(mound, 60, 2))
-    for i in range(int(w / 2.2)):
+    bu_form(cv, mound, lambda px, py: .5 + .35 * (py - by + h) / h, 0., 1.5, 0, 60., 0, cross_at=.65)
+    for i in range(int(w / 2.)):
         a = rng.uniform(-.7, .7) + (math.pi if rng.random() < .5 else 0)
         L = rng.uniform(.25, .6) * w
         px = cx + rng.uniform(-.38, .38) * w
-        top = by - h * math.sin(math.pi * (px - cx + w / 2) / w) ** .8
+        top = by - h * math.sin(math.pi * max(0., min(1., (px - cx + w / 2) / w))) ** .8
         py = rng.uniform(top + 1, by)
         x0, y0 = px - L / 2 * math.cos(a), py - L / 2 * math.sin(a) * .5
         x1, y1 = px + L / 2 * math.cos(a), py + L / 2 * math.sin(a) * .5
-        rib = C._Rib([(x0, y0), (x1, y1)], [.9, .5], [.9, .5])
+        rib = C._Rib([(x0, y0), (x1, y1)], [1.2, .7], [1.2, .7])
         cv.obj([rib.outline()], .5)
+        cv.hair(rib.contour(.5 if math.cos(a) > 0 else -.5, 0, 1))
         if i % 3 == 0:
             cv.line([(x0 + 2, y0 + 1), (x0 - 1, y0 - 2.5)])
 
@@ -1982,32 +1986,65 @@ def _smoke(cv, x, y, hgt, rng):
 
 
 def prairie_scene(X, Y, W, H, mode, seed, burn_ok):
+    """The prairie edge of the land. Background: sky and a modelled cloud, Mt. Hood, the island's
+    cottonwoods as one modelled mass. Middle: the fence running off with the kestrel on a post.
+    Foreground, the richest: tall grass in blades that swell to their roots, darkening toward
+    us, and the brush pile."""
     rng = random.Random(seed)
     cv = C.Canvas()
     band = mode == "band"
     hz = Y + H * (.5 if band else .52)
-    kk_sky(cv, X, Y, W, hz + 2, seed, 0 if band else 1)
+    bu_sky(cv, X, Y, W, hz + 2 - Y, lambda px, py: .6 - .4 * max(0., (py - Y) / (hz - Y)), None, seed, 2.)
     if not band:
-        mh = H * .3
-        mt_hood(cv, X + W * .62, hz - H * .03, mh * 2.3, mh)
-    treeline(cv, X - 2, X + W + 2, hz - H * .1, hz + 1, seed + 3)
-    # the prairie: a white field cut in tall grass, denser and taller toward us
+        bu_cloud(cv, X + W * .12, X + W * .45, Y + (hz - Y) * .45, (hz - Y) * .22, random.Random(seed + 1))
+        bu_hood(cv, X + W * .66, hz - H * .03, H * .3, seed)
+    # cottonwoods along the island: one silhouette, each crown lit on its upper left
+    trng = random.Random(seed + 3)
+    crowns = []
+    xx = X - 4
+    while xx < X + W + 4:
+        r = trng.uniform(3.5, 7.) * max(1., H / 120)
+        crowns.append((xx, hz - r * .6, r))
+        xx += r * 1.3
+    prof = []
+    xx = X - 4
+    while xx <= X + W + 4:
+        top = hz
+        for cx_, cy_, r in crowns:
+            if abs(xx - cx_) < r:
+                top = min(top, cy_ - math.sqrt(r * r - (xx - cx_) ** 2) * .85)
+        prof.append((xx, top))
+        xx += 1.
+    tpoly = prof + [(X + W + 4, hz + 1.5), (X - 4, hz + 1.5)]
+
+    def tree_t(px, py):
+        t = .8
+        for cx_, cy_, r in crowns:
+            if abs(px - cx_) < r:
+                t = min(t, .35 + .3 * ((px - cx_) / r + 1) / 2 + .25 * max(0., (py - cy_) / r))
+        return t
+    bu_form(cv, tpoly, tree_t, 90., 1.5, 0, None, .5)
+    # the prairie
     fld = [(X - 2, hz), (X + W + 2, hz), (X + W + 2, Y + H + 2), (X - 2, Y + H + 2)]
     cv.obj([fld], 0)
+    nz = bu_noise(seed + 4, 16.)
     y, row = hz + 2, 0
     while y < Y + H + 2:
         f = (y - hz) / max(1., Y + H - hz)
         x = X - 2 + rng.uniform(0, 2)
-        blades = []
         while x < X + W + 2:
             hh = (1.5 + 9 * f * f) * rng.uniform(.6, 1.2) * (H / 120 if not band else .5)
             lean = rng.uniform(-.5, .9) * hh * .5
-            blades.append([(x, y), (x + lean * .4, y - hh * .6), (x + lean, y - hh)])
+            bl = [(x, y), (x + lean * .4, y - hh * .6), (x + lean, y - hh)]
+            if f > .55 and hh > 5:
+                cv.obj([], 0)
+                bu_cut(cv, bl, lambda px, py, y=y, hh=hh: .35 + .5 * (py - y + hh) / hh + .15 * nz(px, py))
+            else:
+                bu_cut(cv, bl, lambda px, py, f=f: .25 + .35 * f + .15 * nz(px, py))
             x += rng.uniform(2., 3.5) / (.6 + f)
-        (cv.line if f > .7 and row % 2 else cv.hair)(blades)
         y += (2. + 3. * (1 - f)) * max(1., H / 160)
         row += 1
-    # the fence: posts in perspective along the edge, two rails
+    # the fence: posts in perspective along the edge, two round rails
     fy0, fy1 = hz + H * .05, Y + H * (.82 if not band else .9)
     xa, xb = X + W * .02, X + W * (.55 if not band else .5)
     posts = []
@@ -2019,19 +2056,14 @@ def prairie_scene(X, Y, W, H, mode, seed, burn_ok):
         pw = max(1.2, ph * .12)
         posts.append((px, py, ph, pw))
     for k in (.35, .7):
-        cv.obj([], 0)
         rail = [(p[0], p[1] - p[2] * k) for p in posts]
-        rib = C._Rib(rail, [max(.5, p[3] * .35) for p in posts], [max(.5, p[3] * .35) for p in posts])
-        cv.obj([rib.outline()], .5)
-        cv.hair(rib.contour(.4, 0, 1))
+        rib = C._Rib(rail, [max(.6, p[3] * .4) for p in posts], [max(.6, p[3] * .4) for p in posts])
+        bu_rib(cv, rib, .2, .6, 1.5, -1, .5)
     for px, py, ph, pw in posts:
         post = [(px - pw, py), (px - pw * .9, py - ph), (px + pw * .9, py - ph), (px + pw, py)]
-        cv.obj([post], .5)
-        cv.hair(C.hatch_poly([(px, py), (px, py - ph), (px + pw * .9, py - ph), (px + pw, py)], 90, 1.5))
-    # Easter egg: the kestrel on the nearest-but-one post
+        bu_form(cv, post, lambda qx, qy, px=px, pw=pw: .15 + .65 * max(0., (qx - px + pw) / (2 * pw)) ** 1.2, 90., 1.5, 0, None, .5)
     kp = posts[-2]
     _kestrel(cv, kp[0], kp[1] - kp[2], max(7., H * (.16 if not band else .3)))
-    # the brush pile, smoking only on a burn day
     bx, bw = X + W * (.74 if not band else .76), W * (.3 if not band else .3)
     bby = Y + H * (.84 if not band else .9)
     bh = H * (.17 if not band else .26)
@@ -2039,10 +2071,9 @@ def prairie_scene(X, Y, W, H, mode, seed, burn_ok):
         for k in range(2 if band else 3):
             _smoke(cv, bx - bw * .1 + k * bw * .12, bby - bh * .8, H * (.55 if not band else .5) * (1 - .2 * k), rng)
     _brush_pile(cv, bx, bby, bw, bh, rng)
-    out = cv.svg()
+    out = kk_svg(cv)
     if not band:
         out += paw_print(bx - bw * .62, bby + H * .05, max(4., H * .04))
-        # the natives in flower this month, in the near grass at the left
     return out
 
 
@@ -2062,8 +2093,8 @@ def _meadow_frame(box, poly, w, h, mode, seed):
             t = i / n
             x = cx + sg * reach * t * rng.uniform(.6, 1.) - sg * bw * .08
             hg = bh * (.62 - .5 * t) * rng.uniform(.5, 1.05)
-            a = -math.pi / 2 + sg * rng.uniform(.0, .45) * (1 if i % 2 else -.5)
-            vg_leaf(cv, x, gy, a, hg, max(.9, hg * .025), sg * rng.uniform(.1, .5), sg, False)
+            a = sg * rng.uniform(.0, .45) * (1 if i % 2 else -.5)
+            bu_blade(cv, x, gy, hg, a, sg * rng.uniform(.05, .25), max(1., hg * .03), sg)
     k = bh / 120.
     if mode != "band":
         sneezeweed(cv, bx + bw * .06, by + bh * .55, bh * .1, .5, .55, seed + 3)
@@ -2476,7 +2507,9 @@ def bu_blade(cv, x, yb, L, ang, bend, wd, shade=1, outline=.5):
     ws = [max(.35, wd * (1 - t) ** .8) for t in [i / 8 for i in range(9)]]
     R = _C._Rib(pts, ws, ws)
     cv.obj([R.outline()], outline)
-    if wd > 1.1:
+    if wd <= 1.1:
+        cv.line(R.contour(shade * .2, 0., .55))
+    else:
         cv.hair(R.contour(shade * .35, 0., .8))
         if wd > 1.8:
             cv.line(R.contour(shade * .7, 0., .45))

@@ -2408,7 +2408,9 @@ def bu_blade(cv, x, yb, L, ang, bend, wd, shade=1, outline=.5):
     ws = [max(.35, wd * (1 - t) ** .8) for t in [i / 8 for i in range(9)]]
     R = _C._Rib(pts, ws, ws)
     cv.obj([R.outline()], outline)
-    if wd > 1.1:
+    if wd <= 1.1:
+        cv.line(R.contour(shade * .2, 0., .55))
+    else:
         cv.hair(R.contour(shade * .35, 0., .8))
         if wd > 1.8:
             cv.line(R.contour(shade * .7, 0., .45))

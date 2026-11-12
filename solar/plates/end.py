@@ -2776,6 +2776,57 @@ def bu_reeds(cv, x0, x1, yb, hmax, rng, grow=1, n=None, heads=.35, wd=1.4):
         bu_blade(cv, x, yb + 1, hmax * rng.uniform(.08, .2), rng.uniform(-.7, .7), rng.uniform(-.2, .2), wd * .8, 1)
 
 
+def bu_hood(cv, hx, yh, H, seed=7, skirt=True, outline=.5):
+    """Mt. Hood standing on the horizon yh, its summit H above it at x = hx: the west face lit in
+    snow and touched only by its gullies, the east face cut down the fall line and darkening to
+    its foot, the timbered skirt below the snow line. Returns its outline."""
+    L = [(hx - H * 1.45, yh), (hx - H * 1.0, yh - H * .22), (hx - H * .62, yh - H * .45),
+         (hx - H * .34, yh - H * .68), (hx - H * .18, yh - H * .83), (hx - H * .07, yh - H * .94), (hx, yh - H)]
+    R = [(hx + H * .05, yh - H * .97), (hx + H * .12, yh - H * .9), (hx + H * .2, yh - H * .8),
+         (hx + H * .28, yh - H * .74), (hx + H * .45, yh - H * .58), (hx + H * .8, yh - H * .32),
+         (hx + H * 1.2, yh - H * .12), (hx + H * 1.6, yh)]
+
+    def spl(P):
+        out = []
+        for i in range(len(P) - 1):
+            p0, p1, p2 = P[max(0, i - 1)], P[i], P[i + 1]
+            p3 = P[min(len(P) - 1, i + 2)]
+            for k in range(3):
+                t = k / 3
+                t2, t3 = t * t, t * t * t
+                out.append(tuple(.5 * (2 * p1[j] + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t2
+                                       + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t3) for j in (0, 1)))
+        out.append(P[-1])
+        return out
+    prof = spl(L) + spl(R)[1:]
+    hpk = yh - H
+    poly = prof + [(hx + H * 1.6, yh + 2), (hx - H * 1.45, yh + 2)]
+    cv.obj([poly], outline)
+    ins = kk_inside(poly)
+    wedge = [(hx, hpk), (hx + H * .02, hpk + H * .3), (hx - H * .05, yh - H * .3), (hx + H * .1, yh),
+             (hx + H * 1.7, yh), (hx + H * 1.7, hpk - 2)]
+    for pl in bu_hatch(wedge, 64., 1.5, 1.):
+        pl = [p for p in pl if ins(p[0], p[1])]
+        if len(pl) > 1:
+            bu_cut(cv, pl, lambda px, py: .3 + .45 * (py - hpk) / H + .12 * (px - hx) / H)
+    rng = _br.Random(seed)
+    for k in range(9):
+        t = (k + 1) / 10
+        x0, y0 = hx - H * .05 * t, hpk + H * (.1 + .1 * t)
+        gx = hx - H * (.25 + 1.05 * t)
+        g = [(x0 + (gx - x0) * u + _bm.sin(u * 5 + k) * .8, y0 + (yh - H * (.2 + .1 * rng.random()) - y0) * u ** .9)
+             for u in [i / 12 for i in range(13)]]
+        g = [p for p in g if ins(p[0], p[1] - 1)]
+        if len(g) > 1:
+            bu_cut(cv, g, lambda px, py: .1 + .5 * (py - hpk) / H)
+    if skirt:
+        sk = [(hx - H * 1.5, yh), (hx - H * .9, yh - H * .25), (hx - H * .5, yh - H * .3), (hx, yh - H * .36),
+              (hx + H * .5, yh - H * .33), (hx + H * 1.0, yh - H * .2), (hx + H * 1.65, yh),
+              (hx + H * 1.65, yh + 2), (hx - H * 1.5, yh + 2)]
+        bu_form(cv, sk, lambda px, py: .4 + .3 * (px - hx + H) / (2.6 * H) + .2 * (py - yh + H * .3) / (H * .3), 30., 1.5, 1., None, 0)
+    return poly
+
+
 def bu_arms(x, y, w, h, seed=0):
     """Parker's arms (Somaster: Or, a castle between five fleurs-de-lis sable) set in the box
     (x, y, w, h); under about 100 px wide it is the shield alone. Placed on whole pixels so the

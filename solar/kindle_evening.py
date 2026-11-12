@@ -193,7 +193,7 @@ html.kev,html.kev #kmain{background:transparent !important}
 html.kev #kmain h2.khed,html.kev #kmain h2.khed *,html.kev #kmain .kfname,html.kev #kmain .kdeg,html.kev #kmain .kname,html.kev #kmain .poem-title{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px -1.5px #fff,1.5px -1.5px #fff,-1.5px 1.5px #fff !important}
 /* on the soft ground the leading is clear, so a light 8-offset halo is enough (cheap to paint on the Kindle) */
 html.kev #kmain .kbody p,html.kev #kmain .kbody p *,html.kev #kmain .kbox p,html.kev #kmain .kbox p *,html.kev #kmain .kalm-lead,html.kev #kmain .kalm-lead *,html.kev #kmain .kplan,html.kev #kmain .kplan *,html.kev #kmain .kchoice,html.kev #kmain .kchoice *,html.kev #kmain .klater,html.kev #kmain .klater *,html.kev #kmain .kmoon p,html.kev #kmain .kmoon p *,html.kev #kmain .ksky li,html.kev #kmain .ksky li *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}
-html.kev .kendpage #kmain .kfill{margin:0 26px}
+html.kev .kendpage #kmain .kfill,html.kev .kcontents #kmain .kfill{margin:0 26px}
 /* body copy sits on a soft ground: one hairline wave per line of type, laid in the leading, so the letters stay clean */
 html.kev #kmain .kbody p,html.kev #kmain .kbox p.knextstep{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 24px repeat !important}
 html.kev #kmain .kbox p.ksources{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 20px repeat !important}
@@ -832,10 +832,16 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
         return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(meds[(off + i) % len(meds)], 100, 100, d, d) for i in range(n)) + '</div>'
 
     def vigrow(n, off):
-        n = min(n, len(vigs))  # never the same scene twice in a row
-        vw = int((w - 8 * n - 6) / n)
-        h = int(vw * 2 / 3) + 6
-        return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(vigs[(off + i) % len(vigs)], 120, 80, vw, vw * 2 / 3) for i in range(n)) + '</div>'
+        vw = int((w - 8 * n - 6) / n)  # the size stays fixed (one scale on the page)
+        vh = vw * 2 / 3
+        h = int(vh) + 6
+        k = min(n, len(vigs))  # never the same scene twice in a row; medallions take any spare places
+        pieces = [use(vigs[(off + i) % len(vigs)], 120, 80, vw, vh) for i in range(k)]
+        if k < n and meds:
+            m = int((w - 6 - k * (vw + 8)) / (vh + 8))
+            md = [use(meds[(off + j) % len(meds)], 100, 100, vh, vh) for j in range(m)]
+            pieces = md[:m // 2] + pieces + md[m // 2:]
+        return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(pieces) + '</div>'
 
     pano = rose = ""
     try:

@@ -1138,8 +1138,8 @@ def _tall(w, h, ctx, scene, opts, pid, seed, egg):
     panel = rrect(m, m, w - 2 * m, py0 - m + 2, 12)
     cx = w / 2
     ph = py0 - m
-    mry = min(ph * .36, 150.)
-    mrx = min(w * .3, mry * 1.18)
+    mry = min(ph * (.4 if ph < 300 else .36), 150.)
+    mrx = min(w * .32, mry * (1.18 + .3 * max(0., min(1., (330 - ph) / 120))))
     mcy = m + ph * .44
     r0 = min(w * .06, ph * .08, 28.)
     rmin = max(5., w * .011)
@@ -1295,13 +1295,20 @@ def cloud(cv, cx, cy, w, h, rng, lit=(0., -1.)):
         lr = h * (.38 + .32 * math.sin(PI * t)) * rng.uniform(.85, 1.1)
         lobes.append((lx, ly, lr))
     lobes.sort(key=lambda q: q[1])
+    a0 = math.atan2(-lit[1], -lit[0])
     for lx, ly, lr in lobes:
-        pts = ell(lx, ly, lr, lr * .82, 22)[:-1]
+        pts = ell(lx, ly, lr, lr * .82, 26)[:-1]
         cv.obj([pts], .5)
-        for f in (.82, .64, .46):
-            a0 = math.atan2(-lit[1], -lit[0])
-            cv.hair([(lx + lr * f * math.cos(a0 + t), ly + lr * .82 * f * math.sin(a0 + t)) for t in
-                     [(-1.1 + 2.2 * k / 10) * (1.2 - f * .5) for k in range(11)]])
+        # the belly turned from the light: arcs that close up and swell toward the shadowed edge
+        f = .94
+        k = 0
+        while f > .3:
+            span = 1.25 * (1.25 - f)
+            arc = [(lx + lr * f * math.cos(a0 + t), ly + lr * .82 * f * math.sin(a0 + t)) for t in
+                   [-span + 2 * span * j / 12 for j in range(13)]]
+            (cv.line if k < 2 and lr > 8 else cv.hair)(arc)
+            f -= 1.6 / max(lr, 4)
+            k += 1
     base = [(cx - w / 2 - h * .2, cy + h * .1), (cx + w / 2 + h * .2, cy + h * .1), (cx + w / 2, cy + h * .34), (cx - w / 2, cy + h * .34)]
     cv.obj([base], 0)
     for k in range(3):

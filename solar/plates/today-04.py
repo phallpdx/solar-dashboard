@@ -325,7 +325,7 @@ def _stip_tile(seed, T=36):
 def ground_defs(seed=0):
     """Pattern defs for the engraved ground (stipple); put once in the svg."""
     d = _stip_tile(seed)
-    return (f'<defs><pattern id="gkS{seed % 97}" width="36" height="36" patternUnits="userSpaceOnUse">'
+    return (f'<defs><pattern id="gkS" width="36" height="36" patternUnits="userSpaceOnUse">'
             f'<path d="{d}" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></pattern></defs>')
 
 
@@ -401,7 +401,7 @@ def black_ground(shape, seed=0, dens=1., bbox=None, avoid=None):
         ys = [p[1] for p in shape]
         x, y, w, h = min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)
     cid = C._uid("bg", d[:60], seed)
-    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS{seed % 97})" stroke="none"/>'
+    return (f'<path d="{d}" fill="#000" stroke="none"/><path d="{d}" fill="url(#gkS)" stroke="none"/>'
             f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">'
             + tendril_ground(x, y, w, h, seed, dens, avoid) + '</g>')
 
@@ -1353,6 +1353,8 @@ def compose(w, h, ctx, spec):
     fronts = []           # svg drawn over the scroll
     mot = spec.get("motif")
     M = 3.
+    if h < 110 and spec.get("form") == "tailpiece":
+        return _tailpiece(w, h, ctx, spec)
     if h < 110:
         level = 0
         my = h / 2
@@ -1382,13 +1384,16 @@ def compose(w, h, ctx, spec):
         border_lines = (f'<path d="M0,1h{_n(w)}M0,{_n(h - 1)}h{_n(w)}" stroke="#000" stroke-width="2"/>'
                         f'<path d="M0,3.25h{_n(w)}M0,{_n(h - 3.25)}h{_n(w)}" stroke="#fff" stroke-width="1.5"/>'
                         f'<path d="M0,5h{_n(w)}M0,{_n(h - 5)}h{_n(w)}" stroke="#fff" stroke-width="1"/>')
-    elif h <= 260:
+    elif h <= spec.get("medium_max", 260):
         level = 1
         mh = h - 26
-        mw = min(w * .44, mh * 1.45)
+        mw = min(w * spec.get("mw", .44), mh * 1.45)
         my = h / 2
         shape = spec.get("shape", "oval")
-        if shape == "arch":
+        if shape == "circle":
+            mh = mw = min(mh, w * .62)
+            med = ellipse_poly(w / 2, my, mw / 2, mh / 2, 120)
+        elif shape == "arch":
             med = arch_poly(w / 2 - mw / 2, my - mh / 2, mw, mh)
         elif shape == "cut":
             med = cut_poly(w / 2 - mw / 2, my - mh / 2, mw, mh, min(mw, mh) * .16)
@@ -1398,6 +1403,11 @@ def compose(w, h, ctx, spec):
         fronts.append(spec["scene"](w / 2 - mw / 2, my - mh / 2, mw, mh, _d(med, True, 0), 1))
         fronts.append(ring)
         avoid.append(_poly_contains_margin(med, 11))
+        if spec.get("ribbon") and spec.get("med_ribbon") and h >= 220:
+            rb_h = min(20., h * .07)
+            ry = my + mh / 2 - rb_h * .1
+            fronts.append(ribbon(w / 2, ry, min(w * .8, mw * 1.6), rb_h, spec["ribbon"], .03, seed))
+            avoid.append(lambda a, b, ry=ry, rw=min(w * .8, mw * 1.6): abs(b - ry) < rb_h * .9 + 4 and abs(a - w / 2) < rw / 2 + 4)
         roots += _roots_on(offset_poly(med, 11), 6)
         if mot:
             for i, sx in enumerate((-1, 1)):
@@ -1494,6 +1504,76 @@ def compose(w, h, ctx, spec):
     o.append(fixed[0])
     o.append(sv)
     o += fixed[1:]
+    return plate_doc(w, h, "".join(o), seed)
+
+
+def _tailpiece(w, h, ctx, spec):
+    """A tailpiece: a small shaped device (arch, oval or banner lozenge) holding the scene, with
+    two sprays of fine scroll on stippled black tapering out to beaded drops; the whole spans
+    about 56% of the width and stands free on the page."""
+    seed = spec.get("seed", 1)
+    STYLE[0] = spec.get("style", "acanthus")
+    cx, cy = w / 2, h / 2
+    tw = min(w * spec.get("tail_w", .58), max(h * 7.5, w * .4))
+    shape = spec.get("tail_shape", "arch")
+    sh = h - 10
+    if shape == "banner":
+        sw = min(tw * .56, h * 4.2)
+        hh = sh / 2
+        med = [(cx - sw / 2, cy)] + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy - hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)] \
+            + [(cx + sw / 2, cy)] + [(cx + sw / 2 - hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(1, 9)] \
+            + [(cx - sw / 2 + hh * .9 * (1 - _m.cos(PI / 2 * i / 8)), cy + hh * _m.sin(PI / 2 * i / 8)) for i in range(8, 0, -1)]
+    elif shape == "oval":
+        sw = min(tw * .4, sh * 1.7)
+        med = ellipse_poly(cx, cy, sw / 2, sh / 2, 72)
+    else:
+        sw = min(tw * .36, sh * 1.25)
+        med = arch_poly(cx - sw / 2, cy - sh / 2, sw, sh, 32)
+    ring, outer = medallion_ring(med, 1.)
+    o = []
+    # the two sprays: lenses of black ground from the device's flanks out to the tips
+    lens = []
+    for sx in (-1, 1):
+        x0 = cx + sx * (sw / 2 - 4)
+        L = tw / 2 - sw / 2 + 4
+        top, bot = [], []
+        for i in range(25):
+            t = i / 24
+            hgt = sh * .4 * (1 - t) ** .85 + .6
+            sweep = -sh * .12 * t * t
+            xx = x0 + sx * L * t
+            top.append((xx, cy - hgt + sweep))
+            bot.append((xx, cy + hgt * .8 + sweep))
+        poly = top + bot[::-1]
+        if sx < 0:
+            poly = poly[::-1]
+        lens.append(poly)
+    for k, poly in enumerate(lens):
+        o.append(black_ground(poly, seed + k, dens=.3))
+        o.append(f'<path d="{_d(poly, True, 0)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+        o.append(f'<path d="{_d(offset_poly(poly, 2.2), True, 0)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    cv = Canvas()
+    roots = []
+    for sx in (-1, 1):
+        roots.append((cx + sx * (sw / 2 + 6), cy, 0. if sx > 0 else PI, -sx))
+
+    keep_out = _poly_contains_margin(med, 7)
+    inner = [offset_poly(p, -2.5) for p in lens]
+
+    def ok(a, b):
+        return any(pt_in(a, b, p) for p in inner) and not keep_out(a, b)
+    marks = []
+    scroll_field(cv, 0, 0, w, h, roots, seed=seed, rmax=min(13., h * .2), rmin=max(4.5, h * .075), inside_fn=ok,
+                 leafk=spec.get("leafk", 1.), marks=marks)
+    o.append(cv.svg())
+    for sx in (-1, 1):
+        tx = cx + sx * (tw / 2 + 3)
+        ty = cy - sh * .12 + .6
+        o.append(f'<path d="{_d(_ell(tx, ty, 3., 3., 14)[:-1], True, 0)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(f'<path d="{_d(_ell(tx + sx * 1., ty + .6, 1.2, 1.2, 10)[:-1], True, 0)}" fill="#000"/>')
+    o.append(spec["scene"](cx - sw / 2, cy - sh / 2, sw, sh, _d(med, True, 0), -1))
+    o.append(ring)
     return plate_doc(w, h, "".join(o), seed)
 
 
@@ -1975,11 +2055,83 @@ def motif(cx, cy, r, i):
     return "".join(o)
 
 
+def calendar_leaf(x, y, w, h, clip_d, ctx):
+    """The tailpiece: a desk calendar's top leaf, today's date in Roman capitals and figures,
+    hung on its rings against the stippled ground, its lower corner lifting; a pair of crossed
+    drumsticks is tucked in as the bookmark."""
+    d0, games = _week(ctx)
+    cid = C._uid("t4c", x, y, w, h)
+    o = [f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">']
+    o.append(black_ground((x - 2, y - 2, w + 4, h + 4), 5, dens=.5))
+    cv = Canvas()
+    lw, lh = w * .54, h * .64
+    lx, ly = x + w * .2, y + h * .26
+    # the leaves underneath, stepped back
+    for k in (2, 1):
+        q = [(lx + k * 1.5, ly + k * 1.5), (lx + lw + k * 1.5, ly + k * 1.5), (lx + lw + k * 1.5, ly + lh + k * 1.5), (lx + k * 1.5, ly + lh + k * 1.5)]
+        cv.obj([q], .5)
+    # Easter egg: a crossed-drumsticks bookmark tucked behind the leaf, tips standing above it
+    for p0, p1 in (((lx + lw * .5, ly + lh * .7), (lx + lw + w * .2, ly - h * .12)),
+                   ((lx + lw + w * .1, ly + lh * .9), (lx + lw * .55, ly - h * .16))):
+        L = math.hypot(p1[0] - p0[0], p1[1] - p0[1])
+        wdt = max(1.5, h * .045)
+        nx, ny = -(p1[1] - p0[1]) / L, (p1[0] - p0[0]) / L
+        poly = [(p0[0] + nx * wdt, p0[1] + ny * wdt), (p1[0] + nx * wdt * .45, p1[1] + ny * wdt * .45),
+                (p1[0] - nx * wdt * .45, p1[1] - ny * wdt * .45), (p0[0] - nx * wdt, p0[1] - ny * wdt)]
+        cv.obj([poly], 1.)
+        cv.hair([((poly[0][0] + poly[3][0]) / 2 + nx * wdt * .4, (poly[0][1] + poly[3][1]) / 2 + ny * wdt * .4),
+                 ((poly[1][0] + poly[2][0]) / 2 + nx * wdt * .2, (poly[1][1] + poly[2][1]) / 2 + ny * wdt * .2)])
+        cv.obj([E(p1[0], p1[1], wdt * .8, wdt * .8, 10)[:-1]], 1.)
+    curl = min(lw, lh) * .22
+    leaf = [(lx, ly), (lx + lw, ly), (lx + lw, ly + lh - curl), (lx + lw - curl, ly + lh), (lx, ly + lh)]
+    cv.obj([leaf], 1.)
+    # the lifted corner: its underside cut in lines that follow the curl
+    cr = [(lx + lw, ly + lh - curl), (lx + lw - curl * .25, ly + lh - curl * .2), (lx + lw - curl, ly + lh)]
+    cv.obj([cr], 1.)
+    for f in (.3, .55, .8):
+        cv.hair([(lx + lw - curl * (1 - f) * .2, ly + lh - curl * (1 - f)), (lx + lw - curl * .25 * f - curl * (1 - f) * .1, ly + lh - curl * .2 - curl * .05 * (1 - f)),
+                 (lx + lw - curl * f, ly + lh - curl * .02)])
+    # header band: month in reverse
+    hb = lh * .26
+    band = [(lx + 1, ly + 1), (lx + lw - 1, ly + 1), (lx + lw - 1, ly + hb), (lx + 1, ly + hb)]
+    cv.obj([band], 0)
+    cv.line(C.hatch_poly(band, 0, 1.5))
+    o.append(cv.svg())
+    mon = d0.strftime("%b").upper()
+    cap = hb * .55
+    tw_ = text_width(mon, cap, .2)
+    o.append(f'<path d="M{_n(lx + lw / 2 - tw_ / 2 - 2)},{_n(ly + hb / 2 - cap / 2 - 1.5)}h{_n(tw_ + 4)}v{_n(cap + 3)}h{_n(-tw_ - 4)}z" fill="#fff"/>')
+    o.append(letter_svg(mon, lx + lw / 2 - tw_ / 2, ly + hb / 2 - cap / 2, cap, .2))
+    day = str(d0.day)
+    cap = (lh - hb) * .5
+    tw_ = text_width(day, cap, .1)
+    o.append(letter_svg(day, lx + lw / 2 - tw_ / 2, ly + hb + (lh - hb) * .14, cap, .1))
+    wd = d0.strftime("%a").upper()
+    cap2 = (lh - hb) * .14
+    if cap2 >= 3.5:
+        cap = (lh - hb) * .44
+        tw2 = text_width(wd, cap2, .25)
+        o[-1] = letter_svg(day, lx + lw / 2 - text_width(day, cap, .1) / 2, ly + hb + (lh - hb) * .1, cap, .1)
+        o.append(letter_svg(wd, lx + lw / 2 - tw2 / 2, ly + hb + (lh - hb) * .66, cap2, .25))
+    cv = Canvas()
+    # binding rings over the top edge
+    n = max(3, int(lw / 9))
+    for i in range(n):
+        rx = lx + lw * (i + .5) / n
+        cv.obj([E(rx, ly - .5, 1.6, 3.2, 14)[:-1]], 1.)
+        cv.hair(E(rx + .5, ly - .5, .6, 2.2, 10, -PI / 2, PI / 2))
+    o.append(cv.svg())
+    o.append("</g>")
+    return "".join(o)
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = (sum(map(ord, ctx.get("date", ""))) + 4) % 9973
     mode = "short" if h < 110 else ("medium" if h <= 260 else "tall")
-    spec = dict(scene=lambda x, y, ww, hh, clip, lv: scene(x, y, ww, hh, clip, ctx, mode),
+    spec = dict(scene=lambda x, y, ww, hh, clip, lv: (calendar_leaf(x, y, ww, hh, clip, ctx) if lv < 0 else
+                                                      scene(x, y, ww, hh, clip, ctx, mode)),
+                form="tailpiece", tail_shape="arch",
                 motif=motif, tablet=lambda tx, ty, tw, th: week_tablet(tx, ty, tw, th, ctx),
                 ribbon="RIP CITY", seed=seed, shape="cut")
     return compose(w, h, ctx, spec)

@@ -1155,13 +1155,47 @@ def _kk_pd_poly(poly, close=True):
     return _C._d(poly, close, .1)
 
 
-def kk_bead_row(d, r=1.5, closed=True):
-    """A row of beads along any path d: a black channel, white beads with round caps on a dash
-    pattern, and a black speck in each bead's shadow. 3 elements, whatever the length."""
+def kk_bead_row(pts, r=1.5, closed=True):
+    """A row of beads along a polyline: a black channel 2r+2 wide cut as a filled band, white
+    beads as filled discs spaced 2r+1 apart, and a black speck in each bead's shadow. Every
+    part is a fill, so no stroke is wider than the 0.5/1/1.5 burin. 3 elements."""
     p = r * 2 + 1.
-    return (f'<path d="{d}" fill="none" stroke="#000" stroke-width="{_kn(2 * r + 2)}" stroke-linejoin="round"/>'
-            f'<path d="{d}" fill="none" stroke="#fff" stroke-width="{_kn(2 * r)}" stroke-dasharray="0 {_kn(p)}" stroke-linecap="round"/>'
-            f'<path d="{d}" transform="translate(.5,.5)" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="0 {_kn(p)}" stroke-linecap="round"/>')
+    h = r + 1.
+    P = []
+    for q in pts:
+        if not P or abs(q[0] - P[-1][0]) + abs(q[1] - P[-1][1]) > 1e-6:
+            P.append(q)
+    if closed and len(P) > 2 and abs(P[0][0] - P[-1][0]) + abs(P[0][1] - P[-1][1]) < 1e-6:
+        P.pop()
+    n = len(P)
+    L, Rr = [], []
+    for i in range(n):
+        a = P[i - 1] if (closed or i > 0) else None
+        b = P[(i + 1) % n] if (closed or i < n - 1) else None
+        ns = []
+        for u, v in ((a, P[i]), (P[i], b)):
+            if u is not None and v is not None:
+                dx, dy = v[0] - u[0], v[1] - u[1]
+                ln = _m.hypot(dx, dy) or 1.
+                ns.append((-dy / ln, dx / ln))
+        nx, ny = sum(q[0] for q in ns), sum(q[1] for q in ns)
+        ln = _m.hypot(nx, ny) or 1.
+        nx, ny = nx / ln, ny / ln
+        s = h / max(.6, nx * ns[0][0] + ny * ns[0][1])
+        L.append((P[i][0] + nx * s, P[i][1] + ny * s))
+        Rr.append((P[i][0] - nx * s, P[i][1] - ny * s))
+    if closed:
+        band = _kk_pd_poly(L) + _kk_pd_poly(Rr)
+    else:
+        band = _kk_pd_poly(L + Rr[::-1])
+    B = _kk_along(P, p, closed)
+
+    def discs(cs, rr):
+        k = _kn(rr)
+        return "".join(f"M{_kn(x - rr)},{_kn(y)}a{k},{k} 0 1,0 {_kn(2 * rr)},0a{k},{k} 0 1,0 {_kn(-2 * rr)},0z" for x, y in cs)
+    return (f'<path d="{band}" fill="#000" fill-rule="evenodd" stroke="none"/>'
+            f'<path d="{discs(B, r)}" fill="#fff" stroke="none"/>'
+            f'<path d="{discs([(x + .5, y + .5) for x, y in B], .5)}" fill="#000" stroke="none"/>')
 
 
 def kk_border(poly, bead=1.5):
@@ -1175,7 +1209,7 @@ def kk_border(poly, bead=1.5):
     o.append(f'<path d="{_kk_pd_poly(ge)}{_kk_pd_poly(poly[::-1])}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
     o.append(f'<path d="{_kk_pd_poly(g1)}" fill="none" stroke="#000" stroke-width="1"/>')
     o.append(f'<path d="{_kk_pd_poly(g2)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(kk_bead_row(_kk_pd_poly(gb), bead))
+    o.append(kk_bead_row(gb, bead))
     o.append(f'<path d="{_kk_pd_poly(ge)}" fill="none" stroke="#000" stroke-width="1"/>')
     return "".join(o), 5.5 + 2 * bead + .5
 
@@ -1188,7 +1222,7 @@ def kk_ring(cx, cy, rx, ry, bead=1.5):
     o.append(f'<path d="{_kk_ell_d(cx, cy, rx + e, ry + e)}{_kk_ell_d(cx, cy, rx, ry)}" fill="#fff" fill-rule="evenodd" stroke="none"/>')
     o.append(f'<path d="{_kk_ell_d(cx, cy, rx + .75, ry + .75)}" fill="none" stroke="#000" stroke-width="1.5"/>')
     o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 2.75, ry + 2.75)}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(kk_bead_row(_kk_ell_d(cx, cy, rx + 4 + bead, ry + 4 + bead), bead))
+    o.append(kk_bead_row(_C._ell_pts(cx, cy, rx + 4 + bead, ry + 4 + bead, 72)[:-1], bead))
     o.append(f'<path d="{_kk_ell_d(cx, cy, rx + e - .5, ry + e - .5)}" fill="none" stroke="#000" stroke-width="1"/>')
     return "".join(o), rx + e, ry + e
 
@@ -1693,7 +1727,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
             rr, _ = kk_roundel(ex, cy, er, egg, 1.)
             o.append(rr)
         o.append(f'<path d="M0,1.5H{_kn(w)}M0,{_kn(top - .5)}H{_kn(w)}" stroke="#000" stroke-width="1"{_C._CR}/>')
-        o.append(kk_bead_row(f"M0,{_kn(top / 2 + .25)}H{_kn(w)}", 1., False))
+        o.append(kk_bead_row([(0., top / 2 + .25), (w, top / 2 + .25)], 1., False))
         o.append(f'<path d="M0,{_kn(h - 1.5)}H{_kn(w)}" stroke="#000" stroke-width="1"{_C._CR}/>')
         o.append(f'<path d="M0,{_kn(h - 2.75)}H{_kn(w)}" stroke="#000" stroke-width=".5"{_C._CR}/>')
         return finish()
@@ -2910,3 +2944,50 @@ def bu_cartouche(cx, cy, r, seed=0):
     aw = r * 1.5
     return s + bg + bu_arms(cx - aw / 2, cy - r * .98, aw, r * 1.96, seed) + ring
 # ==== BURIN KIT (end) ============================================================================
+
+
+# ==== FLAT STROKES (batch 7 fix pass) ===========================================================
+# The canvas writes its cuts in quarter- or half-px integers under transform="scale(...)", so the
+# literal stroke-width was 2, 3, 4 or 6 though it renders 0.5, 1 or 1.5 px. bu_flat rescales those
+# paths' data (M/m/l/z only) to px and drops the transform, so every stroke-width in the plate
+# reads as what the burin cuts: 0.5, 1 or 1.5.
+import re as _bre
+_BU_SCALED = _bre.compile(r'<path transform="scale\(([\d.]+)\)" d="([^"]*)"([^>]*?) stroke-width="([\d.]+)"')
+_BU_NUM = _bre.compile(r'-?(?:\d+\.?\d*|\.\d+)')
+
+
+def _bu_fmt(v):
+    s = f"{v:.3f}".rstrip("0").rstrip(".")
+    if s.startswith("0."):
+        s = s[1:]
+    elif s.startswith("-0."):
+        s = "-" + s[2:]
+    return "0" if s in ("", "-0") else s
+
+
+def bu_flat(svg):
+    def sub(m):
+        k = float(m.group(1))
+        d = m.group(2)
+        if _bre.search(r"[^MmLlHhVvZz\d\s,.\-]", d):
+            return m.group(0)
+        out, last, prev = [], 0, ""
+        for n in _BU_NUM.finditer(d):
+            sep = d[last:n.start()]
+            v = _bu_fmt(float(n.group()) * k)
+            # "1.5 .5" may be written "1.5.5": a number already holding a point ends at the next
+            if sep == " " and v[0] == "." and "." in prev:
+                sep = ""
+            out.append(sep + v)
+            prev = v
+            last = n.end()
+        out.append(d[last:])
+        return f'<path d="{"".join(out)}"{m.group(3)} stroke-width="{_bu_fmt(float(m.group(4)) * k)}"'
+    return _BU_SCALED.sub(sub, svg)
+
+
+_bu_plate_raw = plate
+
+
+def plate(w, h, ctx):
+    return bu_flat(_bu_plate_raw(w, h, ctx))

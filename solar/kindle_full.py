@@ -2236,24 +2236,32 @@ PAGER_JS = r"""
     o.sort(by); d.sort(by); p.sort(by);
     return { o: o, d: d, p: p };
   };
-  function kfill(i) {   /* the engraved fill: shown only when this sheet lays out as it did at build time (within 3 px) */
-    var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill'), ok = false;
-    if (fm && window.innerWidth === 618 && window.innerHeight === 714 && i === sheet) {
-      try { fm = JSON.parse(fm); } catch (e) { fm = []; }
-      var want = null, L = window.KLAB();
-      for (var k = 0; k < fm.length; k++) if (fm[k][0] === i) want = fm[k];
-      var same = function (a, s) { var b = s ? s.split(' ') : []; if (a.length !== b.length) return false;
-        for (var j = 0; j < a.length; j++) { var v = b[j].split(','); for (var c = 0; c < 4; c++) if (Math.abs(a[j][c] - v[c]) > 4) return false; }
-        return true; };
-      ok = !!want && same(L.o, want[1]) && same(L.d, want[2]) && same(L.p, want[3] || ''); }
+  var kfillSeen = {};
+  function kfill(i) {   /* the engraved fill: measured once per sheet (and layout); shown only if that one measure matches the
+                           build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
+    var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
+    if (!fm || !fi || i !== sheet) return;
+    var key = i + '|' + cuts.join(','), ok = kfillSeen[key];
+    if (ok === undefined) {
+      ok = false;
+      if (window.innerWidth === 618 && window.innerHeight === 714) {
+        try { fm = JSON.parse(fm); } catch (e) { fm = []; }
+        var want = null;
+        for (var k = 0; k < fm.length; k++) if (fm[k][0] === i) want = fm[k];
+        if (want) { var L = window.KLAB(), same = function (a, s) { var b = s ? s.split(' ') : []; if (a.length !== b.length) return false;
+            for (var j = 0; j < a.length; j++) { var v = b[j].split(','); for (var c = 0; c < 4; c++) if (Math.abs(a[j][c] - v[c]) > 4) return false; }
+            return true; };
+          ok = same(L.o, want[1]) && same(L.d, want[2]) && same(L.p, want[3] || ''); } }
+      kfillSeen[key] = ok; }
     if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + '.svg';
-      if (!fi) { fi = document.createElement('img'); fi.id = 'kfill'; fi.alt = ''; fi.setAttribute('aria-hidden', 'true'); document.body.insertBefore(fi, document.body.firstChild); }
-      if (fi.getAttribute('src') !== src) fi.setAttribute('src', src);
-      if (fi.style.display !== 'block') fi.style.display = 'block'; }
-    else if (fi && fi.style.display !== 'none') fi.style.display = 'none';
-    var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside (no class on the root: no restyle of the page) */
-    for (var g = 0; g < gq.length; g++) gq[g].style.display = ok ? 'none' : '';
+      if (fi.getAttribute('src') !== src) fi.setAttribute('src', src); }
+    fi.style.visibility = ok ? 'visible' : 'hidden';
+    var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside */
+    for (var g = 0; g < gq.length; g++) gq[g].style.visibility = ok ? 'hidden' : '';
   }
+  if (document.body.getAttribute('data-kfills') && !document.getElementById('kfill')) {   /* made once, before the first layout */
+    var kfi = document.createElement('img'); kfi.id = 'kfill'; kfi.alt = ''; kfi.setAttribute('aria-hidden', 'true'); kfi.style.visibility = 'hidden';
+    document.body.insertBefore(kfi, document.body.firstChild); }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
     if (busy) return;
     if (++turns % FLASH_EVERY && !root.hasAttribute('data-flash')) { show(i); return; }

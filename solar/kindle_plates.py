@@ -34,7 +34,7 @@ MEASURE = """async (n0) => {
              await wait(() => window.KROOM.sheet === i, 3000); await new Promise(r => setTimeout(r, 300)); }
     rooms.push(Object.assign({}, window.KROOM));
   }
-  return { ctx, rooms };
+  return { ctx, rooms, fit: document.documentElement.getAttribute('data-kfit-now') || '' };
 }"""
 
 
@@ -127,7 +127,7 @@ def _insert_slots(src, slug, slots):
         pos = sl["pos"]
         div = (f'<div class="kslot kslot-{sl["form"]}" data-kslot="{k}" style="width:{sl["w"]}px;height:{sl["h"]}px">'
                f'<img alt="" src="orn/plate-{slug}-s{k}.svg" width="{sl["w"]}" height="{sl["h"]}"></div>')
-        if pos == "after:.kfhead":   # a front's planned vignette replaces the head's stock plate
+        if pos == "after:.kfhead" and "kfhead khasslot" not in src:   # a front's planned vignette replaces the head's stock plate
             src = re.sub(r'class="kfhead"', 'class="kfhead khasslot"', src, count=1)
             pr = P()
             pr.feed(src)
@@ -224,17 +224,42 @@ def _pass(pages, out, od, base, date_iso, exe):
             flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]
             tails = [sl for sl in slots if sl["pos"] == "tail"]
             margins = [sl for sl in slots if sl["pos"] == "margin"]
-            with open(fp, "w") as f:
-                f.write(_insert_slots(src, slug, [sl if (k, sl) in flow else dict(sl, pos="none") for k, sl in enumerate(slots)]) if flow else src)
+            cx.close()
+
+            def meas(html):
+                with open(fp, "w") as f:
+                    f.write(html)
+                c2 = br.new_context(viewport={"width": 618, "height": 714}, has_touch=True)
+                p2 = c2.new_page()
+                try:
+                    p2.goto(base + slug + ".html", wait_until="load")
+                    p2.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+                    return p2.evaluate(MEASURE, 0)
+                finally:
+                    c2.close()
+            rung = lambda r: len(re.findall(r"kfit\d", (r or {}).get("fit", "")))
+            src_orig = src
+            if any(sl["pos"] == "after:.kfhead" for _, sl in flow):   # the base a front is judged against: no stock head plate
+                src = re.sub(r'class="kfhead"', 'class="kfhead khasslot"', src, count=1)
             try:
-                pg.goto(base + slug + ".html", wait_until="load")
-                pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
-                res = pg.evaluate(MEASURE, 0)
+                res = meas(src)
+                if flow and res:
+                    # in-flow art never reflows the data: no extra sheet and no tighter type than the page had
+                    # without it; else the slot steps down (100, 80, 65 %) and is dropped if it still does not fit
+                    base0, n0, ok = res, len(res["rooms"]), False
+                    for sc in (1., .8, .65):
+                        trial = [dict(sl, w=int(sl["w"] * (sc if sl["form"] == "front" else 1)), h=int(sl["h"] * sc)) for sl in slots]
+                        r2 = meas(_insert_slots(src, slug, [sl if (k, sl0) in flow else dict(sl, pos="none") for k, (sl, sl0) in enumerate(zip(trial, slots))]))
+                        if r2 and len(r2["rooms"]) <= n0 and rung(r2) <= max(rung(base0), 1):
+                            slots, res, ok = trial, r2, True
+                            flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]
+                            break
+                    if not ok:
+                        print(f"kindle_plates: {slug}: no room for its {flow[0][1]['form']} without reflowing the page; dropped", file=sys.stderr)
+                        flow, res = [], meas(src_orig)
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_plates: {slug}: measure failed ({e!r})", file=sys.stderr)
-                cx.close()
                 continue
-            cx.close()
             if not res:
                 continue
             try:

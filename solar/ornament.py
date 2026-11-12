@@ -2100,6 +2100,15 @@ html.kme #kmain .sec-body>.card:first-child>.head,html.kme #kmain>.head:first-ch
     linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) calc(100% - 30px)/1.6px calc(50% - 47px),
     linear-gradient(#000,#000) no-repeat 30px 1.5px/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px 5px/calc(100% - 60px) 1px,
     linear-gradient(#000,#000) no-repeat 30px calc(100% - 1.5px)/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px calc(100% - 5px)/calc(100% - 60px) 1px}
+/* note 5: the page's title cartouche on the first panel's head (over the panel rule that clears heads in panels) */
+html.kme #kview #kmain .kpanel:first-child>.head{position:relative !important;padding:12px 22px 12px !important;margin:0 0 8px !important;
+  background:var(--orn-h-tl) no-repeat 0 0/30px 30px,var(--orn-h-tr) no-repeat 100% 0/30px 30px,
+    var(--orn-h-bl) no-repeat 0 100%/30px 30px,var(--orn-h-br) no-repeat 100% 100%/30px 30px,
+    var(--orn-terml) no-repeat 0 50%/18px 34px,var(--orn-term) no-repeat 100% 50%/18px 34px,
+    linear-gradient(#000,#000) no-repeat 1.5px 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat 1.5px calc(100% - 30px)/1.6px calc(50% - 47px),
+    linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) calc(100% - 30px)/1.6px calc(50% - 47px),
+    linear-gradient(#000,#000) no-repeat 30px 1.5px/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px 5px/calc(100% - 60px) 1px,
+    linear-gradient(#000,#000) no-repeat 30px calc(100% - 1.5px)/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px calc(100% - 5px)/calc(100% - 60px) 1px !important}
 html.kme #kmain .sec-body>.card:first-child>.head:after,html.kme #kmain>.head:first-child:after,html.kme #kmain .sec-body>.card:first-child>.team-top:after,html.kme #kmain .kpanel:first-child>.head:after{content:'';display:block;clear:both}
 
 /* Dividers: dots and diamonds; the lists that lead somewhere carry a small fleuron at the centre */
@@ -2169,7 +2178,7 @@ html.kme #kkf{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-
 html.kme #kkf i{position:absolute;display:block;background:#fff}
 /* the engraved fill: one SVG per sheet, cut at build time to every free rectangle round the labels; the pager
    shows it only when the sheet lays out as measured, else the light ground and the gap fleurons stay */
-html.kme #kfill{display:none;position:fixed;left:0;top:0;width:618px;height:714px;z-index:-1;pointer-events:none;border:0}
+html.kme #kfill{display:block;position:fixed;left:0;top:0;width:618px;height:714px;z-index:-1;pointer-events:none;border:0}
 /* a placed plate (solar/plate_slots.py): a fixed-size engraving in the flow, centred between panels */
 html.kme #kmain .kslot{display:block;margin:10px auto;overflow:hidden}
 html.kme #kmain .kslot img{display:block;border:0}

@@ -478,7 +478,12 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None):
                     lines.append(run)
                 run = []
             else:
-                run.append((x, yy))
+                if not run or (x - run[-1][0]) >= 6 or inside(x + 2, yy):
+                    run.append((x, yy))
+                elif len(run) > 1 and x - run[-2][0] < 6:
+                    run[-1] = (x, yy)
+                else:
+                    run.append((x, yy))
             x += 2.
         if len(run) > 1:
             lines.append(run)
@@ -890,9 +895,9 @@ def scroll_field(cv, region, holes=(), roots=(), seed=0, rmin=6., rmax=22., max_
             continue
         qx, qy, qt = bp
         a = _m.atan2(cy - qy, cx - qx)
-        L = dq + cur * .9
+        L = min(dq + cur * .9, rmax * 1.25)
         sg = 1 if _m.sin(a - qt) > 0 else -1
-        fill.append((qx, qy, a - sg * .35, L, max(1.4, min(L * .36, cur * .8)), sg, rng.randrange(1 << 20)))
+        fill.append((qx, qy, a - sg * .35, L, max(1.4, min(L * .36, cur * .8, rmax * .4)), sg, rng.randrange(1 << 20)))
         G.stamp(cx, cy, cur * 1.1, reach)
         G.stamp((qx + cx) / 2, (qy + cy) / 2, dq * .35, reach)
     for qx, qy, a, L, W, sg, sd in fill:
@@ -1039,6 +1044,22 @@ def _kclip(pl, mask, x0, y0, W, H, out):
         out.append(run)
 
 
+def _radial(pts, d):
+    """Drop points closer than d to the last kept one (keeps the ends): a cheap pre-thinning so
+    the Douglas-Peucker pass has little left to do."""
+    if len(pts) < 4:
+        return pts
+    out = [pts[0]]
+    lx, ly = pts[0]
+    d2 = d * d
+    for p in pts[1:-1]:
+        if (p[0] - lx) ** 2 + (p[1] - ly) ** 2 >= d2:
+            out.append(p)
+            lx, ly = p
+    out.append(pts[-1])
+    return out
+
+
 class KCanvas(_C.Canvas):
     """The house Canvas, emitting path data in half-px units (one device pixel): the same
     occlusion, about a quarter fewer bytes, so the fine field fits the budget."""
@@ -1070,14 +1091,14 @@ class KCanvas(_C.Canvas):
             pen = C._Pen()
             for polys, _, _ in self.objs:
                 for poly in polys:
-                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, .7)
+                    pen.add(_radial(poly if C._area(poly) >= 0 else poly[::-1], 1.1), True, .7)
             if pen.o:
                 res.append(f'<path{T} d="{pen.d()}" fill="#fff" stroke="none"/>')
             for w in (.5, 1., 1.5):
                 if out[w]:
                     pen = C._Pen()
                     for pl in out[w]:
-                        pen.add(pl, False, .6 if w < 1 else .6)
+                        pen.add(_radial(pl, 1.1), False, .6)
                     res.append(f'<path{T} d="{pen.d()}" fill="none" stroke="#000" stroke-width="{_SN(w * 2)}"/>')
         finally:
             C._Q = q
@@ -1344,7 +1365,7 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         region = _cut_rect(fx0, fy0, fx1 - fx0, fy1 - fy0 + 8, c)
         area = (fx1 - fx0) * (fy1 - fy0)
         rmin, rmax = 5., 19.
-        rmin, rmax = 6.5, 23.
+        rmin, rmax = 5., 18.
         roots = []
         for s in (-1, 1):
             roots.append(_wave_root(mcx + s * rx * .55, fy1 - 4, mcx + s * (w / 2 + 6), fy0 + (fy1 - fy0) * .3, rx * .22, 90, rng.uniform(0, 1)))
@@ -1361,7 +1382,7 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         return abs(sum(p[i][0] * p[i - 1][1] - p[i - 1][0] * p[i][1] for i in range(len(p)))) / 2
     free = _pa(region) - sum(_pa(hp) for hp in holes)
     kk = max(1., min(1.7, (max(1., free) / 60000.) ** .5))
-    if mode != "s":
+    if mode == "m":
         rmin, rmax = rmin * kk, rmax * kk
     # the subject first, so the field can be sized to the bytes that remain (the field costs
     # about 1.45 bytes per px^2 of free ground at rmax 20.5, falling as 1/rmax^2)
@@ -1385,9 +1406,9 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         scene_svg = clip_to(f"ks{seed % 9973}", inner, sk.svg()) + scene(X, Y + H - H2, W, H2, mode, inner)
     else:
         scene_svg = scene(X, Y, W, H, mode, inner)
-    budget = 186000 - len(scene_svg) - (34000 if mode == "t" else 9000)
+    budget = 177000 - len(scene_svg) - (34000 if mode == "t" else 9000)
     # what a scroll costs (with its leaves and the leaves grown round it) at this scale
-    per = 870 * (rmax / 19.) ** 1.15
+    per = 1400 * (rmax / 19.) ** 1.15
     # 1. the matte ground across the whole plate, then the field of fine scroll grown from the roots
     o.append(matte((0, 0, w, h), seed))
     fseed = rng.randrange(1 << 20)
@@ -1463,8 +1484,10 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
         o.append(f'<path d="M{_SN(mcx - tw / 2 - 3)},{_SN(ty - 2)}h{_SN(tw + 6)}v{_SN(size + 4)}h{_SN(-tw - 6)}z" fill="none" stroke="#000" stroke-width=".5"/>')
         o.append(letter_svg(kletters(front, mcx - tw / 2, ty, size), 1.5, True))
     doc = _C.svg_doc(w, h, "".join(o))
-    if len(doc.encode()) > 202000:
-        o[fi] = field(int(maxn * .7))
+    over = len(doc.encode()) - 201000
+    if over > 0:
+        fb = len(o[fi])
+        o[fi] = field(int(maxn * max(.3, (fb - over - 4000) / fb) * .95))
         doc = _C.svg_doc(w, h, "".join(o))
     return doc
 

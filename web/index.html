@@ -4230,8 +4230,12 @@ function renderLive() {
   if (q) {
     $('quake-meta').textContent = `${q.count} within 190 miles · USGS`;
     const v = Object.entries(q.volcano_counts || {}).filter(([, n]) => n > 0);
-    $('volc').textContent = v.length ? 'Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : 'Quiet under the Cascade volcanoes this week.';
-    $('quakes').innerHTML = q.biggest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${x.mag}</a> ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · felt by ${x.felt}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
+    const rows = q.biggest || [], top = [...rows].sort((a, b) => b.mag - a.mag)[0], m1 = x => Number(x.mag).toFixed(1);
+    const feel = rows.some(x => x.mag >= 3.5 || (x.mag >= 2.5 && x.miles <= 50) || x.felt >= 10);
+    // Verdict first, about these rows; the volcano tally follows as its own fact.
+    $('volc').textContent = (top ? `${feel ? 'One you may have felt.' : 'Nothing you’d feel.'} ${q.count} small quakes within 190 miles this week; the largest was M${m1(top)}, ${top.place.replace(/^\d+ km [NSEW]+ of /, 'near ')}, ${top.miles} miles away.` : 'No quakes nearby this week.') +
+      (v.length ? ' Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : ' Quiet under the Cascade volcanoes.');
+    $('quakes').innerHTML = [...rows].sort((a, b) => b.utc.localeCompare(a.utc)).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${m1(x)}</a> · ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · ${x.felt} felt report${x.felt > 1 ? 's' : ''}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
   }
   if (p) {
     $('plane-meta').textContent = `${p.count} planes within about 25 miles`;
@@ -4459,8 +4463,11 @@ function renderHealth() {
     <small>${arrow(x.trend)}</small></div>`).join('');
   const high = it.filter(x => (x.rank ?? 0) >= 3).map(x => x.name);
   const up = it.filter(x => x.trend === 'rising' && (x.rank ?? 0) >= 2).map(x => x.name);
-  $('bug-note').textContent = high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
-    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.';
+  const asOf = ` (CDC, week ending ${fmtDate(it[0].week_end)}${(h.stale_days || 0) > 3 ? ', the latest posted' : ''}.)`;
+  const byLevel = [...it].sort((a, b) => (b.rank ?? 0) - (a.rank ?? 0)), lead = byLevel[0];
+  const verdict = lead && (lead.rank ?? 0) >= 2 ? `${lead.name} is ${String(lead.level).toLowerCase()} in ${h.area} wastewater; ${byLevel.slice(1).map(x => `${x.name} ${String(x.level).toLowerCase()}`).join(', ')}.` : '';
+  $('bug-note').textContent = verdict ? verdict + asOf : high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
+    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.' + asOf;
 }
 
 function renderShellfish() {
@@ -4468,7 +4475,8 @@ function renderShellfish() {
   const items = (s && s.items) || [];
   $('shell-card').hidden = !items.length && !(s && s.crab_season);
   if ($('shell-card').hidden) return;
-  $('shell-meta').innerHTML = (s.updated ? `ODA biotoxin status, ${esc(s.updated)} · ` : '') + `<a href="${esc(s.url || '#')}" target="_blank" rel="noopener">Details</a>`;
+  // The ODA page's own date, printed plainly: a status posted days ago is still the latest, but it says so.
+  $('shell-meta').innerHTML = (s.updated ? `ODA biotoxin status as of ${s.as_of ? fmtDate(s.as_of) : esc(s.updated)}${(s.stale_days || 0) > 3 ? ' (its latest update)' : ''} · ` : '') + `<a href="${esc(s.url || '#')}" target="_blank" rel="noopener">Details</a>`;
   $('shells').innerHTML = items.map(x => `<div class="shell ${x.status === 'Open' ? 'ok' : 'no'}"><b>${esc(x.kind)}</b><span>${x.status === 'Open' ? 'Open, safe to eat' : 'Closed'}</span>${x.detail ? `<small>${esc(x.detail.charAt(0).toUpperCase() + x.detail.slice(1))}</small>` : ''}</div>`).join('');
   $('shell-note').textContent = [s.crab_season, 'Always gut crab and skip the butter. Call the hotline (1-800-448-2474) before you dig.'].filter(Boolean).join(' ');
 }

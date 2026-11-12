@@ -184,8 +184,11 @@ def run(out, date_iso, exe=None):
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}/"
-    for f in glob.glob(os.path.join(od, "fill-*.svg")):
+    for f in glob.glob(os.path.join(od, "fill-*.svg")) + glob.glob(os.path.join(od, "fill-*.png")):
         os.remove(f)
+    for f in glob.glob(os.path.join(od, "plate-*.png")):
+        if re.search(r"-s\d+\.png$", f):
+            os.remove(f)
     try:
         made = _pass(pages, out, od, base, date_iso, exe)
         print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
@@ -195,6 +198,11 @@ def run(out, date_iso, exe=None):
             print(f"kindle_plates: {nf} engraved fills in {time.time() - t1:.1f}s")
         except Exception as e:  # noqa: BLE001  -- no fills: the light ground and fleurons stay
             print(f"kindle_plates: fills skipped ({e!r})", file=sys.stderr)
+        try:
+            t2 = time.time()
+            print(f"kindle_plates: {_raster(pages, out, od, base, exe)} slot plates and fills as 16-grey PNG in {time.time() - t2:.1f}s")
+        except Exception as e:  # noqa: BLE001  -- the SVGs stay
+            print(f"kindle_plates: PNG pass skipped ({e!r})", file=sys.stderr)
     finally:
         srv.shutdown()
     return made
@@ -399,6 +407,44 @@ FILL_MEASURE = """async (P) => {
   }
   return out;
 }"""
+
+
+def _raster(pages, out, od, base, exe):
+    """The slot plates and the sheet fills as 16-grey PNGs at the Kindle's 2x: an <img> of an SVG is a whole
+    document to parse and lay out on the page's own thread (as the next page is warmed, too); a PNG is a decode."""
+    from playwright.sync_api import sync_playwright
+    from .kindle_fast import _png16
+    n = 0
+    with sync_playwright() as pw:
+        br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
+        pg = br.new_context(device_scale_factor=2).new_page()
+
+        def shot(name, w, h):
+            pg.set_viewport_size({"width": w, "height": h})
+            pg.set_content(f'<!doctype html><html style="background:transparent"><body style="margin:0;background:transparent">'
+                           f'<img src="{base}orn/{name}.svg" width="{w}" height="{h}" style="display:block"></body></html>', wait_until="load")
+            _png16(pg.screenshot(omit_background=True, clip={"x": 0, "y": 0, "width": w, "height": h}), os.path.join(od, name + ".png"), False)
+        for slug in pages:
+            fp = os.path.join(out, slug + ".html")
+            s = open(fp).read()
+            slots = re.findall(r'<img alt="" src="orn/(plate-[\w-]+-s\d+)\.svg" width="(\d+)" height="(\d+)">', s)
+            for name, w, h in slots:
+                shot(name, int(w), int(h))
+                s = s.replace(f'src="orn/{name}.svg"', f'src="orn/{name}.png"')
+                n += 1
+            m = re.search(r" data-kfills='([^']*)'", s)
+            if m:
+                for sh in json.loads(_html.unescape(m.group(1))):
+                    shot(f"fill-{slug}-{sh[0]}", 618, 714)
+                    n += 1
+                s = re.sub(r"<body\b", '<body data-kfx=".png"', s, count=1) if " data-kfx=" not in s else s
+            with open(fp, "w") as f:
+                f.write(s)
+        br.close()
+    for f in glob.glob(os.path.join(od, "plate-*.svg")):   # stand-ins of slots that were dropped
+        if re.search(r"-s\d+\.svg$", f) and not os.path.exists(f[:-4] + ".png"):
+            os.remove(f)
+    return n
 
 
 def _fills(pages, out, od, base, date_iso, exe):

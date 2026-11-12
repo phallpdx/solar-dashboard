@@ -2313,7 +2313,7 @@ PAGER_JS = r"""
             return true; };
           ok = same(L.o, want[1]) && same(L.d, want[2]) && same(L.p, want[3] || ''); } }
       kfillSeen[key] = ok; }
-    if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + '.svg';
+    if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + (document.body.getAttribute('data-kfx') || '.svg');
       if (fi.getAttribute('src') !== src) fi.setAttribute('src', src); }
     fi.style.visibility = ok ? 'visible' : 'hidden';
     var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside */
@@ -2426,7 +2426,7 @@ PAGER_JS = r"""
       if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); }
       var kp = t.match(/data-kplates='([^']*)'/), slug = u.split('#')[0].split('/').pop().replace(/\.html$/, '');   // its plates too
       if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {}
-      if (/ data-kfills='\[\[0,/.test(t)) { var iff = new Image(); iff.src = 'orn/fill-' + slug + '-0.svg'; } };   // and its first sheet's fill
+      if (/ data-kfills='\[\[0,/.test(t) && / data-kfx="\.png"/.test(t)) { var iff = new Image(); iff.src = 'orn/fill-' + slug + '-0.png'; } };   // and its first sheet's fill
     x.send(); } catch (e) {} }
   setTimeout(function(){
     try { var sw = navigator.serviceWorker;

@@ -1585,6 +1585,190 @@ def _spandrel(cx, cy, r, seed):
         small_leaf(cv, cx + sx * 2, cy + sy * 2, a, r * rng.uniform(.75, .95), 1 if k % 2 else -1, rng.randrange(1 << 20))
     cv.obj([_ell(cx + sx * 3, cy + sy * 3, 3, 3, 10)[:-1]], 1.)
     return cv.svg()
+
+
+# ---------------------------------------------------------------------------------------------
+# landscape pieces shared by the plates: Mt. Hood and the Douglas fir
+# ---------------------------------------------------------------------------------------------
+
+def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
+    """Mt. Hood seen from the south-west: the steep cone with Illumination Rock on the west
+    shoulder; the lit face left almost white, cut only by glacier ribs with their shadow ticks;
+    the shadowed east face cut in fall lines that swell from hair to 1 px below the snow line;
+    rock strata under the snow; a dark fir apron along the foot. Returns the outline polygon."""
+    rng = _r.Random(seed)
+    py = base - ph
+    wl, wr = ph * 1.35, ph * 1.55
+
+    def lp(t):
+        return (px - wl * t ** 1.7, py + ph * t - ph * .05 * _m.exp(-((t - .38) / .06) ** 2))
+
+    def rp(t):
+        return (px + wr * t ** 1.55, py + ph * t - ph * .035 * _m.exp(-((t - .5) / .07) ** 2))
+    L = [lp(i / 30) for i in range(31)]
+    R = [rp(i / 30) for i in range(31)]
+    poly = L[::-1] + R[1:]
+    cv.obj([poly], 1.)
+    ys = py + ph * snow
+    # east face: fall lines from the summit ridge, crowding toward the shadowed foot
+    n = max(10, int(wr * .75 / 2.)) if ph >= 70 else max(5, int(wr * .7 / 3.))
+    for k in range(1, n + 1):
+        f = k / n
+        t0 = (.02 if k % 4 == 0 else (.1 if k % 2 == 0 else .22)) if ph >= 70 else (.12 if k % 2 else .3)
+        pts = []
+        for i in range(17):
+            t = t0 + (1 - t0) * i / 16
+            xr = rp(t)[0]
+            xm = px + wr * .06 * t
+            pts.append((xm + (xr - xm) * f * (.98 if f < 1 else .96) + _m.sin(t * 6 + k) * .5, py + ph * t))
+        up = [p for p in pts if p[1] < ys]
+        dn = [p for p in pts if p[1] >= ys - 3]
+        if len(up) > 1:
+            cv.hair(up)
+        if len(dn) > 1:
+            (cv.line if k % 3 == 0 else cv.hair)(dn)
+    # the ridge between the faces
+    cv.line([(px + wr * .06 * t + _m.sin(t * 9) * .5, py + ph * t) for t in [i / 12 for i in range(13)]])
+    # west face: glacier ribs with short shadow ticks on their east side
+    for k, f in enumerate((.18, .36, .55, .74)):
+        a = lp(.04 + .12 * f)
+        b = lp(1.)
+        b = (px - wl * .78 * f, base)
+        rib = [(a[0] + (b[0] - a[0]) * t + _m.sin(t * 7 + k) * ph * .012, a[1] + (b[1] - a[1]) * t) for t in [i / 14 for i in range(15)]]
+        cv.hair(rib)
+        for i in range(2, 14, (1 if k % 2 else 2) if ph >= 70 else 3):
+            q = rib[i]
+            ln = 1.5 + 2.5 * (i / 14)
+            cv.hair([q, (q[0] + ln, q[1] + ln * .5)])
+    # wind-scoured snow on the lit face: broken lines parallel to the west skyline
+    for k in range(1, 7 if ph >= 70 else 1):
+        d = k * ph * .06
+        seg = []
+        for i in range(25):
+            t = .06 + .9 * i / 24
+            q = lp(t)
+            qx = q[0] + d * (1.2 - t * .4)
+            if qx > px + wr * .06 * t - 2 or q[1] > ys:
+                if len(seg) > 1:
+                    cv.hair(seg)
+                seg = []
+                continue
+            if (i + k) % 5 == 0:
+                if len(seg) > 1:
+                    cv.hair(seg)
+                seg = []
+            seg.append((qx, q[1]))
+        if len(seg) > 1:
+            cv.hair(seg)
+    # rock strata below the snow line on the lit face
+    yy = ys + 2
+    while yy < base - 1:
+        t = (yy - py) / ph
+        xa, xb = lp(min(1., t))[0], px + wr * .06 * t
+        xx = xa + 1
+        while xx < xb - 2:
+            ln = rng.uniform(3, 9)
+            cv.hair([(xx, yy + rng.uniform(-.4, .4)), (min(xb, xx + ln), yy + rng.uniform(-.6, .6))])
+            xx += ln + rng.uniform(2, 6)
+        yy += 2.5
+    if forest:
+        fy = base - ph * .1
+        fp = [(x0, fy + 2)]
+        x = x0
+        while x < x1:
+            hh = rng.uniform(2.5, 5.5)
+            fp += [(x + 1.3, fy - hh), (x + 2.6, fy + rng.uniform(-.5, 1.))]
+            x += 2.6
+        fp += [(x1, base + 1), (x0, base + 1)]
+        cv.obj([fp], .5)
+        cv.hair(C.hatch_poly(fp, 70, 2.))
+        cv.hair(C.hatch_poly(fp, -60, 3.))
+        cv.line([p for p in fp[1:-2]])
+    return poly
+
+
+def fir(cv, x, base, h, rng, wfac=.36, snow=False):
+    """A Douglas fir carved in relief: drooping tiers lit on the upper left (open cuts),
+    shadowed on the lower right (close cuts, a heavy shade line under each bough); with snow,
+    each bough carries a white cap."""
+    tiers = max(4, int(h / 11))
+    top = base - h * .93
+    trunk = [(x - h * .025, base - h * .1), (x + h * .025, base - h * .1), (x + h * .035, base), (x - h * .035, base)]
+    cv.obj([trunk], .5)
+    cv.line(C.hatch_poly(trunk, 90, 1.5))
+    for k in range(tiers):
+        t1 = (k + 1) / tiers
+        ya = top + (base - h * .07 - top) * max(0, k / tiers - .08)
+        yb = top + (base - h * .07 - top) * t1
+        hw = h * wfac * (t1 ** .9) * rng.uniform(.9, 1.08) + 1
+        droop = (yb - ya) * .35
+        Lf = [(x, ya), (x - hw * .55, yb - droop * .6), (x - hw, yb + droop * .3), (x - hw * .55, yb + droop * .05), (x, yb + droop * .25)]
+        Rf = [(x + hw * .55, yb + droop * .05), (x + hw, yb + droop * .3), (x + hw * .55, yb - droop * .6)]
+        cv.obj([Lf + Rf], .5)
+        if snow:
+            cv.hair(C.hatch_poly([(x, ya + (yb - ya) * .45)] + Lf[2:], 25, 3.))
+            cv.line(C.hatch_poly([(x, ya + (yb - ya) * .4), (x, yb + droop * .25)] + Rf, -25, 2.))
+        else:
+            cv.hair(C.hatch_poly(Lf, 25, 3.))
+            cv.hair(C.hatch_poly([(x, ya), (x, yb + droop * .25)] + Rf, -25, 2.))
+        cv.heavy([(x - hw * .9, yb + droop * .2), (x - hw * .55, yb + droop * .05), (x, yb + droop * .25),
+                  (x + hw * .55, yb + droop * .05), (x + hw * .9, yb + droop * .2)])
+
+
+# ---------------------------------------------------------------------------------------------
+# the free-standing vignette: a shaped scene whose edge dissolves (Bewick), framed only by
+# devices built from the page's own subject
+# ---------------------------------------------------------------------------------------------
+
+def ragged(poly, amp=3., seed=0):
+    """Wobble a closed shape's edge in and out so line work ends raggedly, the way a vignette's
+    tone dissolves into the paper."""
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, TAU) for _ in range(4)]
+    pts = resample(poly + [poly[0]], 2.)[:-1]
+    cx = sum(p[0] for p in pts) / len(pts)
+    cy = sum(p[1] for p in pts) / len(pts)
+    out = []
+    n = len(pts)
+    for i, (x, y) in enumerate(pts):
+        a = TAU * i / n
+        d = amp * (.45 * _m.sin(5 * a + ph[0]) + .3 * _m.sin(13 * a + ph[1]) + .25 * _m.sin(29 * a + ph[2])
+                   + .35 * _m.sin(61 * a + ph[3]) * rng.uniform(.3, 1.))
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1.
+        out.append((x + dx / L * d, y + dy / L * d))
+    return out
+
+
+def shape_poly(shape, x, y, w, h):
+    if shape in ("oval", "roundel"):
+        return ellipse_poly(x + w / 2, y + h / 2, w / 2, h / 2, 120)
+    if shape == "arch":
+        return arch_poly(x, y, w, h, 48)
+    if shape == "lunette":
+        return [(x + w / 2 - w / 2 * _m.cos(PI * i / 48), y + h - h * _m.sin(PI * i / 48)) for i in range(49)]
+    if shape == "cut":
+        return cut_poly(x, y, w, h, min(w, h) * .14)
+    return ellipse_poly(x + w / 2, y + h / 2, w / 2, h / 2, 120)
+
+
+def vignette_plate(w, h, ctx, spec):
+    """spec: shape, aspect (w/h of the shape), scene(x, y, w, h, clip_d, level) -> svg, frame(poly,
+    (x, y, w, h)) -> (back_svg, front_svg), seed, rag (edge amplitude), margins (l, t, r, b)."""
+    seed = spec.get("seed", 1)
+    STYLE[0] = spec.get("style", "acanthus")
+    ml, mt, mr, mb = spec.get("margins", (4, 4, 4, 4))
+    sh = h - mt - mb
+    sw = min(w - ml - mr, sh * spec.get("aspect", 1.6))
+    x = ml + (w - ml - mr - sw) / 2
+    y = mt
+    poly = shape_poly(spec.get("shape", "oval"), x, y, sw, sh)
+    rag = ragged(poly, spec.get("rag", 3.), seed)
+    back, front = ("", "")
+    if spec.get("frame"):
+        back, front = spec["frame"](poly, (x, y, sw, sh))
+    body = spec["scene"](x, y, sw, sh, _d(rag, True, 0), spec.get("level", 1))
+    return plate_doc(w, h, back + body + front, seed)
 # ==== end of studio kit ====
 
 import re
@@ -2017,11 +2201,13 @@ def scarf(x, y, w, h, clip_d, ctx):
     in. Easter egg: a chequered flag flying from the knot."""
     cid = C._uid("s2f", x, y, w, h)
     o = [f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">']
-    o.append(black_ground((x - 2, y - 2, w + 4, h + 4), 7, dens=.4))
     cx, cy = x + w / 2, y + h * .56
     bw = h * .5
-    amp = h * .055
+    amp = h * .11
     x0, x1 = x + h * .12, x + w - h * .12
+
+    def W_(u):
+        return bw * (.6 + .4 * min(1., abs(u - .5) * 7))
 
     def C_(u):
         xx = x0 + (x1 - x0) * u
@@ -2031,8 +2217,9 @@ def scarf(x, y, w, h, clip_d, ctx):
         return amp * 3.2 * PI * math.cos((u - .5) * 3.2 * PI) / (x1 - x0)
 
     def quad(u0, u1, f0=-.5, f1=.5, n=6):
-        top = [(C_(u0 + (u1 - u0) * i / n)[0], C_(u0 + (u1 - u0) * i / n)[1] + bw * f0) for i in range(n + 1)]
-        bot = [(C_(u0 + (u1 - u0) * i / n)[0], C_(u0 + (u1 - u0) * i / n)[1] + bw * f1) for i in range(n + 1)]
+        us = [u0 + (u1 - u0) * i / n for i in range(n + 1)]
+        top = [(C_(u)[0], C_(u)[1] + W_(u) * f0) for u in us]
+        bot = [(C_(u)[0], C_(u)[1] + W_(u) * f1) for u in us]
         return top + bot[::-1]
     # stripes: (length, tone) from the middle outward; L = lettered panel
     half = [(.035, "k"), (.04, "d"), (.022, "l"), (.04, "d"), (.17, "L"), (.04, "d"), (.022, "l"), (.04, "d"), (.03, "l")]
@@ -2053,7 +2240,7 @@ def scarf(x, y, w, h, clip_d, ctx):
         if tone in ("d", "k"):
             nl = int(bw / 1.5)
             for f in [(i + .5) / nl - .5 for i in range(nl)]:
-                cv.line([(C_(a + (b - a) * i / 6)[0], C_(a + (b - a) * i / 6)[1] + bw * f) for i in range(7)])
+                cv.line([(C_(a + (b - a) * i / 6)[0], C_(a + (b - a) * i / 6)[1] + W_(a + (b - a) * i / 6) * f) for i in range(7)])
         else:
             rows = max(3, int(bw / 3.2))
             for r in range(rows):
@@ -2062,7 +2249,7 @@ def scarf(x, y, w, h, clip_d, ctx):
                 for i in range(n):
                     uu = a + (b - a) * (i + .5) / n
                     px, py = C_(uu)
-                    py += bw * f
+                    py += W_(uu) * f
                     d = bw / rows * .35
                     if tone == "L":
                         continue
@@ -2083,9 +2270,9 @@ def scarf(x, y, w, h, clip_d, ctx):
             cv.obj([[(q0[0], q0[1] - .7), (q0[0] + sg * ln, q0[1] - .7 + ln * .3), (q0[0] + sg * ln, q0[1] + .7 + ln * .3), (q0[0], q0[1] + .7)]], .5)
     # the knot at the middle with the chequered flag
     kx, ky = C_(.5)
-    knot = E(kx, ky, bw * .32, bw * .62, 16)[:-1]
-    cv.obj([knot], 1.)
-    cv.line(C.hatch_poly(knot, 80, 1.5))
+    for k in range(5):
+        f = -.6 + 1.2 * k / 4
+        cv.hair([(kx - bw * .5 + bw * .1 * abs(f), ky + bw * .3 * f * 1.6), (kx, ky + bw * .3 * f), (kx + bw * .5 - bw * .1 * abs(f), ky + bw * .3 * f * 1.6)])
     fh = h * .26
     sx0, sy0 = kx + 1, ky - bw * .55
     sy1 = y + h * .04
@@ -2100,6 +2287,7 @@ def scarf(x, y, w, h, clip_d, ctx):
             if (i + j) % 2:
                 cv.line(C.hatch_poly(q, 0, 1.5))
     cv.obj([E(sx0, sy1 - .5, 1.3, 1.3, 8)[:-1]], .5)
+    cv.obj([[(sx0 - .9, ky), (sx0 + .9, ky), (sx0 + .9, sy1), (sx0 - .9, sy1)]], 1.)
     o.append(cv.svg())
     for a, b, side in tx:
         txt = names[side]
@@ -2122,10 +2310,14 @@ def scarf(x, y, w, h, clip_d, ctx):
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = (sum(map(ord, ctx.get("date", ""))) + 7) % 9973
+    if h < 110:
+        sw = min(w * .62, h * 6.5)
+        x0 = w / 2 - sw / 2
+        clip = f"M{_n(x0 - 30)},0h{_n(sw + 60)}v{_n(h)}h{_n(-sw - 60)}z"
+        return plate_doc(w, h, scarf(x0, 2, sw, h - 4, clip, ctx), seed)
     small = h < 110
     spec = dict(scene=lambda x, y, ww, hh, clip, lv: (scarf(x, y, ww, hh, clip, ctx) if lv < 0 else
                                                       vignette(x, y, ww, hh, clip, ctx, seed, small)),
-                form="tailpiece", tail_shape="banner", tail_w=.62,
                 motif=lambda cx, cy, r, i: motif(cx, cy, r, i, seed),
                 tablet=lambda tx, ty, tw, th: tablet(tx, ty, tw, th, ctx),
                 ribbon="PORTLAND TIMBERS", seed=seed, shape="oval")

@@ -767,6 +767,11 @@ LETTER_JS = r"""(sel) => {
 # keeps to the height its type had, so the plates and fills below it keep theirs)
 LETTER_KINDS = {"section": (44, False), "contents": (38, True), "title": (31, False), "poem": (30, True),
                 "sub": (26, False), "science": (27, False), "lead": (29, False), "leads": (24, False), "story": (24, False)}
+try:  # the edition's one type scale (solar/kindle_ornate.py) sets the size each kind of headline is lettered at
+    from .kindle_ornate import LETTER_SIZES as _LS
+    LETTER_KINDS = {k: (_LS.get(k, v[0]), v[1]) for k, v in LETTER_KINDS.items()}
+except Exception:  # noqa: BLE001
+    pass
 
 
 def _letter_fit(h, mt, hh, fs):

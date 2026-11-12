@@ -141,12 +141,13 @@ def _css():
     # ---- no bare boxes: every CSS border, outline and ring shadow goes (frames are pictures). The frame-detail
     # layer's own panels, knock-out labels, fills and plate slots are theirs and left alone.
     nb = "*:not(.kl):not(.kpanel):not(.kslot):not(#kfill)"
-    c += (f"{X} body {nb},{X} body {nb}::before,{X} body {nb}::after,{X} body {nb}::first-letter"
+    # (no ::first-letter here: a universal first-letter rule makes every block build a first-letter style, ~30 ms a load)
+    c += (f"{X} body {nb},{X} body {nb}::before,{X} body {nb}::after"
           "{border-style:none !important;outline-style:none !important;box-shadow:none !important}\n")
     c += f"{X} body hr{{display:none !important}}\n"
     # ---- the base: body text, figures, features
     c += (f"{X} body{{font-feature-settings:normal !important;font-variant-ligatures:common-ligatures !important;"
-          f"font-kerning:normal;text-rendering:optimizeLegibility}}\n")
+          f"font-kerning:normal}}\n")
     c += _r("p, .summary, .note, li, .kansd, .story, .lines>div, .idea>span, .kmile li, .brief-top>li, .brief-rest>li, .ksum, "
             ".kfsub, .kpanel .klong, .rec, .recap p", f"font:{S['body']} !important;{OLD}")
     c += _r(".story b, .lines>div>span:first-child>b, .lines>div>span:first-child>a>b, .kcell b, .idea>b, .kpanel .recap>b, "
@@ -304,10 +305,12 @@ def _css():
     c += _r("#kjump .kjtop a", f"font:{S['bodyb']} !important", C)
     t, r, b, l = bands("runhead")
     c += _r("#kjump .kjg", "-webkit-box-pack:justify;justify-content:space-between", C)
-    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:{22 + t + b + 2}px !important;"
-            f"line-height:22px !important;padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;margin:0 0 2px !important;"
-            f"white-space:nowrap;overflow:hidden;{BG}", C)
-    c += _r("#kjump .kjg a i", "line-height:22px !important;width:24px !important", C)
+    # a long page name takes a second line in its plaque rather than trailing off
+    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:auto !important;min-height:{22 + t + b + 2}px !important;"
+            "display:-webkit-box !important;display:flex !important;-webkit-box-align:center;align-items:center;"
+            f"line-height:20px !important;padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;margin:0 0 2px !important;"
+            f"white-space:normal !important;overflow:visible !important;text-overflow:clip !important;{BG}", C)
+    c += _r("#kjump .kjg a i", "line-height:22px !important;width:24px !important;-webkit-box-flex:0;flex:none", C)
     c += _r("#kjump .kjh", "margin:8px 0 2px !important", C)
     c += _r("#kjump .kjg a.kjcur", "color:#fff !important;-webkit-text-fill-color:#fff !important;position:relative;z-index:0", C)
     c += _r("#kjump .kjg a.kjcur i", "color:#fff !important", C)
@@ -630,7 +633,21 @@ def _serve(out):
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
 
 
-async def _measure_all(br, base, pages, F):
+# the bottom bar's labels never trail off: each label the pager may show is tried in its button at build time;
+# one that does not fit in two lines gives way to "Previous page" / "Next page"
+FIT_JS = r"""(L) => {
+  const fits = (el, html) => { const keep = el.innerHTML; el.innerHTML = html; const cs = getComputedStyle(el), b = el.getBoundingClientRect();
+    const g = document.createRange(); g.selectNodeContents(el); const t = g.getBoundingClientRect();
+    const ok = t.top >= b.top + parseFloat(cs.paddingTop) - 1 && t.bottom <= b.bottom - parseFloat(cs.paddingBottom) + 1 &&
+               t.left >= b.left + parseFloat(cs.paddingLeft) - 1 && t.right <= b.right - parseFloat(cs.paddingRight) + 1;
+    el.innerHTML = keep; return ok; };
+  const pv = document.querySelector('.kbar a.kprev'), nx = document.querySelector('.kbar .knx');
+  return { prev: pv && L.prev ? fits(pv, L.prev) : true,
+           skip: nx && L.next ? fits(nx, 'Skip to ' + L.next) : true, last: nx && L.next ? fits(nx, L.next) : true };
+}"""
+
+
+async def _measure_all(br, base, pages, F, fit=None):
     sem = asyncio.Semaphore(4)
     res = {}
 
@@ -643,6 +660,11 @@ async def _measure_all(br, base, pages, F):
                 await pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
                 await pg.wait_for_timeout(150)
                 res[p] = await pg.evaluate(MEASURE_JS, F)
+                if fit is not None:
+                    doc = open(os.path.join(fit["out"], p + ".html"), encoding="utf-8").read()
+                    pv = re.search(r'<a class="kprev"[^>]*>(.*?)</a>', doc)
+                    nx = re.search(r'<a class="knx"[^>]*>(?:Next: )?(.*?)</a>', doc)
+                    fit["res"][p] = await pg.evaluate(FIT_JS, {"prev": pv.group(1) if pv else "", "next": nx.group(1) if nx else ""})
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_ornate: measure {p}: {e!r}", file=sys.stderr)
             finally:
@@ -719,12 +741,13 @@ def frames(out):
     odir = os.path.join(out, "orn", "kf")
     os.makedirs(odir, exist_ok=True)
     srv, base = _serve(out)
-    stats = {"pages": 0, "frames": 0, "pictures": 0, "sprites": 0, "missing": 0}
+    stats = {"pages": 0, "frames": 0, "pictures": 0, "sprites": 0, "missing": 0, "labels_replaced": 0}
+    fitd = {"out": out, "res": {}}
     try:
         async def go():
             async with async_playwright() as pw:
                 br = await pw.chromium.launch(executable_path=os.environ.get("KINDLE_CHROMIUM") or None)
-                meas = await _measure_all(br, base, pages, F)
+                meas = await _measure_all(br, base, pages, F, fitd)
                 keys, plan = {}, {}
                 for p, slots in meas.items():
                     plan[p] = {}
@@ -814,6 +837,12 @@ def frames(out):
         data = json.dumps({"u": urls, "s": {s: sels[s] for s in R}, "r": R}, separators=(",", ":")).replace("</", "<\\/")
         fp = os.path.join(out, p + ".html")
         doc = open(fp, encoding="utf-8").read()
+        ft = fitd["res"].get(p)
+        if ft:
+            if not ft["prev"]:
+                doc, k = re.subn(r'(<a class="kprev"[^>]*>).*?</a>', r'\1&lsaquo;&nbsp;Previous page</a>', doc, count=1)
+                stats["labels_replaced"] += k
+            doc = re.sub(r'<a class="knx"', f'<a data-klab="{int(ft["skip"])}{int(ft["last"])}" class="knx"', doc, count=1)
         doc = re.sub(r'<script type="application/json" id="kfrm">.*?</script><script>\(function\(\)\{try\{var d=JSON\.parse\(document\.getElementById\(\'kfrm\'\).*?</script>',
                      "", doc, flags=re.S)
         block = f'<script type="application/json" id="kfrm">{data}</script>{APPLY}'

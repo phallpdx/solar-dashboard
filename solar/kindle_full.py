@@ -2272,7 +2272,9 @@ PAGER_JS = r"""
     var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
     if (ksh) ksh.innerHTML = n > 1 ? (i + 1) + ' of ' + n : '';   /* the folio: the running head names the section, this the sheet */
     if (knx && knxLabel && NEXT_URL) { var kl0 = knxLabel.replace(/^Next: /, ''), kl1 = kl0.replace(/<[^>]+>|&\w+;/g, '');
-      knx.innerHTML = i < n - 1 ? (kl1.length > 16 ? 'Next page &rsaquo;' : 'Skip to ' + kl0) : (kl1.length > 26 ? 'Next page &rsaquo;' : kl0); }
+      var kf = knx.getAttribute('data-klab');   /* set at build: which labels fit their button (kindle_ornate) */
+      knx.innerHTML = i < n - 1 ? ((kf ? kf.charAt(0) !== '1' : kl1.length > 16) ? 'Next page &rsaquo;' : 'Skip to ' + kl0)
+                                : ((kf ? kf.charAt(1) !== '1' : kl1.length > 26) ? 'Next page &rsaquo;' : kl0); }
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }

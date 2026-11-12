@@ -211,7 +211,10 @@ def _studio5():
 
     class Cv(C.Canvas):
         """The house canvas with a faster emitter: lines are clipped by the objects painted over them
-        without resampling, so no simplification pass is needed."""
+        without resampling, so no simplification pass is needed. Occlusion is geometric, so by default
+        no white is laid down at all (PAPER False): every light passage is the frame's own ground
+        showing through ("no white unless behind text")."""
+        PAPER = False
 
         def svg(self):
             if not self.objs:
@@ -238,7 +241,7 @@ def _studio5():
             for polys, _, _ in self.objs:
                 for poly in polys:
                     pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, .5 if len(poly) > 40 else .25)
-            if pen.o:
+            if pen.o and self.PAPER:
                 res.append(f'<path{T} d="{pen.d()}" fill="#fff" stroke="none"/>')
             for w in (.5, 1., 1.5):
                 if out[w]:
@@ -1618,10 +1621,15 @@ def _studio5():
                     L = rng.uniform(8, 40) * (keep + .15)
                     a_, b_ = max(x, p), min(x + L, q)
                     if b_ - a_ > .8 and (keep >= 1. or rng.random() < keep + .1):
-                        thin.append(f"M{_N(a_)},{_N(y)}H{_N(b_)}")
+                        thin.append([(a_, y), (b_, y)])
                     x += L + rng.uniform(1., 3.) + (1 - keep) * rng.uniform(4, 22)
             y = _gy(y - pitch)
-        out = ruled(thin, thick)
+        out = ""
+        if cv is not None:
+            cv.obj([], 0)
+            cv.hair(thin)
+        else:
+            out = ruled([f"M{_N(p[0][0])},{_N(p[0][1])}H{_N(p[1][0])}" for p in thin])
         if sun:
             sx, sy, sr = sun
             # the sun: rays in alternating lengths, the disc engraved with fine concentric cuts
@@ -1756,7 +1764,7 @@ def _studio5():
         return [s for s in segs if min(p[1] for p in s) > ymin]
 
 
-    def water(cv, x0, y0, x1, y1, seed, refl=(), calm=1.):
+    def water(cv, x0, y0, x1, y1, seed, refl=(), calm=1., rings=()):
         """Water from the far shore y0 to y1: ruled ripples on the device grid, tight and long near
         the shore, opening and breaking into short strokes toward the viewer; reflections (x, half
         width) darken as broken stacks of 1 px dashes."""
@@ -1773,14 +1781,40 @@ def _studio5():
             while x < x1:
                 L = rng.uniform(*dash) * calm
                 a, b = max(x, x0), min(x + L, x1)
+                for (qx, qy, qr) in rings:
+                    # the ruling parts round a ring of ripples
+                    dy = (y - qy) / (qr * .32)
+                    if abs(dy) < 1:
+                        dx = qr * _m.sqrt(1 - dy * dy)
+                        if a < qx + dx and b > qx - dx:
+                            if a < qx - dx and b - a > .8:
+                                thin.append([(a, y), (qx - dx, y)])
+                            a = max(a, qx + dx)
                 if b - a > .8:
-                    thin.append(f"M{_N(a)},{_N(y)}H{_N(b)}")
+                    if t > .45 and b - a > 4:
+                        # near water: each cut swells into a low ripple
+                        m_ = (a + b) / 2
+                        thin.append([(a, y), (m_, y - .45 * (1 if (int(m_) // 7) % 2 else -1)), (b, y)])
+                    else:
+                        thin.append([(a, y), (b, y)])
                 x += L + rng.uniform(*gap)
             for (rx, rw) in refl:
                 j = rng.uniform(-1.5, 1.5) * (1 + t * 2)
-                thick.append(f"M{_N(rx - rw + j)},{_N(_gy(y, 1.))}H{_N(rx + rw + j)}")
+                thick.append([(rx - rw + j, _gy(y, 1.)), (rx + rw + j, _gy(y, 1.))])
             y += pitch
-        return ruled(thin, thick)
+        for (qx, qy, qr) in rings:
+            # rings spreading from where something stands in the water: broken ellipses, fore arcs heavier
+            for j, rr in enumerate((qr * .35, qr * .65, qr * .95)):
+                for a0, a1, wt in ((.15, 2.95, 1.), (3.45, 6.0, .5)):
+                    arc = _ell(qx, qy, rr, rr * .3, 16, a0 + j * .2, a1 - j * .15)
+                    (thick if wt > .5 and j < 2 else thin).append(arc)
+        if cv is not None:
+            cv.obj([], 0)
+            cv.hair(thin)
+            cv.line(thick)
+            return ""
+        return ruled([f"M{_N(p[0][0])},{_N(p[0][1])}H{_N(p[1][0])}" for p in thin],
+                     [f"M{_N(p[0][0])},{_N(p[0][1])}H{_N(p[1][0])}" for p in thick])
 
 
     def firline(cv, x0, x1, base, h, seed, step=3.2):
@@ -1789,9 +1823,17 @@ def _studio5():
         pts = [(x0 - 2, base + 1)]
         x = x0 - 2
         while x < x1 + 2:
-            th = h * rng.uniform(.55, 1.)
-            pts += [(x, base - th * .35), (x + step * .5, base - th), (x + step, base - th * .35)]
-            x += step * rng.uniform(.8, 1.2)
+            if rng.random() < .18:
+                # a round-headed cottonwood among the firs
+                cw = step * rng.uniform(2., 3.4)
+                ch = h * rng.uniform(.5, .8)
+                pts += [(x + cw * u, base - ch * (.3 + .7 * _m.sin(_PI * u) ** .6) - rng.uniform(0, .5)) for u in [k / 8 for k in range(9)]]
+                x += cw
+                continue
+            th = h * rng.uniform(.4, 1.) * (1.25 if rng.random() < .12 else 1.)
+            sw = step * rng.uniform(.6, 1.5)
+            pts += [(x, base - th * .3), (x + sw * .3, base - th * .65), (x + sw * .5, base - th), (x + sw * .7, base - th * .62), (x + sw, base - th * .3)]
+            x += sw * rng.uniform(.7, 1.1)
         pts += [(x1 + 2, base + 1)]
         cv.obj([pts], .5)
         yy = _gy(base - h * .3)
@@ -2260,7 +2302,13 @@ def _studio5():
             for xa, xb in ((1, cx - R - gap), (cx + R + gap, w - 1)):
                 cv.hair([(xa, yy), (xb, yy)]) if sw < 1 else cv.line([(xa, yy), (xb, yy)])
         beads = []
-        for side in (-1, 1):
+        run = P.get("run")
+        if run:
+            # the page's own motif runs along the band, built outward from the roundel
+            for side in (-1, 1):
+                xi = cx + side * (R + gap + 2)
+                run(cv, xi, 6 if side < 0 else w - 6, oy + 3.4, oy + bh - 3.4, side)
+        for side in (() if run else (-1, 1)):
             x = cx + side * (R + gap + 2)
             k = 0
             while (side < 0 and x > 6) or (side > 0 and x < w - 6):
@@ -2289,6 +2337,126 @@ def _studio5():
         o.append(f'<path d="{C._d(_offset(clip, .5), True, .1)}" stroke="#000" stroke-width="1" fill="none"/>')
         o.append(f'<path d="{C._d(_offset(clip, 2.), True, .1)}" stroke="#000" stroke-width=".5" fill="none"/>')
         return plate_doc(w, h, "".join(o))
+
+
+    def _blade(x, y, L, lean, curl, w0):
+        """One grass blade as a tapering lens from its root (x, y) up and over: (outline poly)."""
+        pts_l, pts_r = [], []
+        n = 8
+        for i in range(n + 1):
+            u = i / n
+            px = x + lean * L * u + curl * L * u * u
+            py = y - L * u * (1 - .25 * u * abs(curl))
+            hw = w0 * (1 - u) ** .9 * .5
+            pts_l.append((px - hw, py))
+            pts_r.append((px + hw, py))
+        return pts_l + pts_r[::-1]
+
+
+    def stone(cv, cx, cy, rx, ry, rng, lit=-1):
+        """A river stone: an irregular rounded body, lit upper left; its shade side turned by contour
+        cuts that follow the form and close up toward the ground, a dark cast shadow at its foot."""
+        n = 22
+        body = []
+        for i in range(n):
+            t = _TAU * i / n
+            k = 1 + rng.uniform(-.08, .08) + .06 * _m.sin(3 * t + rx)
+            body.append((cx + rx * k * _m.cos(t), cy + ry * k * _m.sin(t) * (1.05 if _m.sin(t) > 0 else .95)))
+        sh = [(cx - rx * .8, cy + ry * .75), (cx + rx * 1.35, cy + ry * .8), (cx + rx * 1.1, cy + ry * 1.12), (cx - rx * .6, cy + ry * 1.05)]
+        cv.obj([sh], 0)
+        cv.hair(C.hatch_poly(sh, 0, 1.5))
+        cv.obj([body], 1.)
+        q = 1.
+        cuts = []
+        while q < min(rx, ry) * .9:
+            f = q / max(rx, ry)
+            a0, a1 = -.6 + f * .8, _PI * .95 - f * .3
+            cuts.append(_ell(cx - rx * .12 * f, cy - ry * .1 * f, rx - q, ry - q * ry / rx, 18, a0, a1))
+            q += 2. if f < .3 else 3.
+        cv.hair(cuts)
+        cv.hair(C.hatch_poly([(cx, cy + ry * .2), (cx + rx, cy), (cx + rx * .9, cy + ry * .8), (cx, cy + ry)], 60, 3.))
+
+
+    def tuft(cv, x, y, h, rng, n=7, dark=False):
+        """A tuft of grass: blades fanning from one root, the back ones cut dark, the front ones white
+        with a single vein, the tips curling over."""
+        blades = []
+        for i in range(n):
+            f = (i + .5) / n - .5
+            L = h * rng.uniform(.55, 1.)
+            blades.append((abs(f), _blade(x + f * h * .25, y, L, f * 1.1 + rng.uniform(-.1, .1), f * .6 + rng.uniform(-.25, .25), max(1.1, h * .07))))
+        blades.sort(key=lambda b: -b[0])
+        for k, (_, b) in enumerate(blades):
+            cv.obj([b], .5)
+            if dark or k < n // 3:
+                cv.hair(C.hatch_poly(b, 80, 1.5))
+
+
+    def reed(cv, x, y, h, rng, lean=0., head=False):
+        """A reed: a fine stem with two or three long leaves peeling away and bending, a cattail head
+        (dark, a white lit edge) on some."""
+        stem = [(x + lean * h * u * u, y - h * u) for u in [i / 10 for i in range(11)]]
+        cv.line(stem)
+        for j in range(rng.randrange(2, 4)):
+            u0 = rng.uniform(.1, .5)
+            bx, by = x + lean * h * u0 * u0, y - h * u0
+            sd = 1 if j % 2 else -1
+            L = h * rng.uniform(.22, .38)
+            cv.obj([_blade(bx, by, L, sd * .3, sd * .45, max(1.2, h * .03))], .5)
+        if head:
+            tx, ty = stem[-2]
+            hd = _ell(tx, ty + h * .08, max(1.3, h * .025), h * .07, 12)[:-1]
+            cv.obj([hd], 1.)
+            cv.hair(C.hatch_poly(hd, 90, 1.5))
+            cv.line([(tx, ty + h * .01), (tx + lean * .1, ty - h * .06)])
+
+
+    def foreground(cv, x0, x1, ytop, ybot, seed, stones=3, tufts=6, reeds=0, side=0, lit=-1):
+        """A Bewick foreground: a bank whose lip catches the light and whose face is cut in contour
+        lines that close up into shade, with stones half sunk, grass tufts along the lip and reeds
+        rising at one side (side: -1 left, 1 right, 0 both)."""
+        rng = _r.Random(seed)
+        W = x1 - x0
+        H = ybot - ytop
+        taper = lambda u: (max(0., abs(u - .5) * 2 - .55) / .45) ** 1.6
+        lip = [(x0 + W * i / 40, ytop + H * (.12 * _m.sin(i / 40 * 4.2 + seed % 5) + .08 * _m.sin(i / 40 * 11 + 1.)) + H * .95 * taper(i / 40)) for i in range(41)]
+        bank = lip + [(x1 + 2, ybot + 2), (x0 - 2, ybot + 2)]
+        cv.obj([bank], 1.)
+        cont = []
+        k = 1
+        while True:
+            off = 1.5 * k if k < 5 else 7.5 + (k - 5) * 2.5
+            pl = [(px, py + off) for px, py in lip]
+            if min(p[1] for p in pl) > ybot + 2:
+                break
+            # break the contours on the lit side so the bank turns toward the light
+            seg = []
+            for (px, py) in pl:
+                u = (px - x0) / W
+                if (lit < 0 and u < .35 and k % 2) or py > ybot + 2:
+                    if len(seg) > 1:
+                        cont.append(seg)
+                    seg = []
+                else:
+                    seg.append((px, py))
+            if len(seg) > 1:
+                cont.append(seg)
+            k += 1
+            if k > 60:
+                break
+        cv.hair(cont)
+        ly = lambda xx: lip[min(40, max(0, int((xx - x0) / W * 40)))][1]
+        for i in range(stones):
+            sx = x0 + W * (.12 + .76 * (i + rng.uniform(.1, .9)) / stones)
+            r = H * rng.uniform(.18, .32)
+            stone(cv, sx, ly(sx) + H * rng.uniform(.25, .6), r * 1.4, r, rng)
+        for i in range(tufts):
+            tx = x0 + W * rng.uniform(.02, .98)
+            tuft(cv, tx, ly(tx) + 1.5, H * rng.uniform(.5, .9), rng, rng.randrange(5, 9))
+        for i in range(reeds):
+            sd = side or (-1 if i % 2 else 1)
+            rx = (x0 + W * rng.uniform(.0, .14)) if sd < 0 else (x1 - W * rng.uniform(.0, .14))
+            reed(cv, rx, ybot + 2, H * rng.uniform(2.2, 3.6), rng, -sd * rng.uniform(.05, .25), head=i % 3 == 0)
     return _types.SimpleNamespace(**{k: v for k, v in locals().items() if not k.startswith('__')})
 
 
@@ -2841,7 +3009,7 @@ def _kranok(cv, x, y, ang, L, sg=1, wd=None):
 def _scene(field, X, Y, W, H, seed, small=False):
     """Paint the floating market into the field polygon (bbox X, Y, W, H). Returns SVG."""
     rnd = random.Random(seed)
-    cv = Canvas()
+    cv = ST5.Cv()
     blk, wht = [], []
     tall = W / H < 1.25
     yh = Y + H * (.62 if small else (.6 if tall else .6))
@@ -2938,27 +3106,32 @@ def _prang(cv, blk, cx, yb, ht, wb, rnd, lit=-1, detail=1.):
         y0, y1 = base - H * u0, base - H * u1
         a0, a1 = r(u0), r(u1)
         tier = [(cx - a0, y0), (cx + a0, y0), (cx + a1 * 1.08, y1 + (y0 - y1) * .3), (cx + a1, y1), (cx - a1, y1), (cx - a1 * 1.08, y1 + (y0 - y1) * .3)]
-        cv.obj([tier], .5 if i % 2 else 1.)
+        cv.obj([tier], .5)
         th = y0 - y1
-        # repoussé: a row of beaten petals (small upturned arcs) across the tier
-        np_ = max(3, int(2 * a0 / max(1.8, th * .7)))
-        for j in range(np_):
-            px = cx - a0 * .9 + 1.8 * a0 * .9 * (j + .5) / np_
-            s_ = (px - cx) / a0
-            pr = min(th * .3, a0 / np_ * .7)
-            arc = [(px + pr * math.cos(t), y0 - th * .45 + pr * .9 * math.sin(t)) for t in [math.pi * (1 + q / 6) for q in range(7)]]
-            (cv.hair if s_ < .35 else cv.line)(arc)
-        # shade on the right flank: strokes that follow the swell of the tower
-        for j in range(int(a0 / 1.5)):
-            px = cx + a0 * .35 + j * 1.5
-            if px > cx + a0 - .5:
-                break
-            f = (px - cx) / a0
-            cv.hair([(px, y0 - .5), (px - (a0 - a1) * f * .9, y1 + .5)])
-        if i % 3 == 1 and th > 4:
-            # a niche with a guardian figure: a dark arched recess
-            nw, nh = min(a0 * .22, th * .5), th * .8
-            blk.append([(cx - nw, y0 - .8), (cx - nw, y0 - nh * .55), (cx, y0 - nh), (cx + nw, y0 - nh * .55), (cx + nw, y0 - .8)])
+        # turned in tone: cuts along the tower's taper, close on the shadow flank, a lit band left
+        # open toward the light, the turned-away limb on the left half-tone
+        q = cx - a0 + .75
+        j = 0
+        while q < cx + a0 - .5:
+            sn = (q - cx) / a0
+            keep = sn > .32 or (sn > .02 and j % 2 == 0) or (sn < -.78 and j % 2 == 0)
+            if keep:
+                f = (q - cx) / a0
+                (cv.line if sn > .7 else cv.hair)([(q, y0 - .6), (cx + f * a1, y1 + th * .35)])
+            q += 1.5 if H > 80 else 2.1         # small towers cut more openly
+            j += 1
+        # the ledge: a lit lip, then a line of shadow tucked under it
+        if th > 4.5:
+            cv.hair([(cx - a1 * 1.08, y1 + th * .3 + 1.2), (cx + a1 * 1.08, y1 + th * .3 + 1.2)])
+        # repoussé: beaten bosses on the lit face, a row of tiny cups catching the light
+        if th > 3.5 and detail > .5:
+            nb = max(2, int(a0 * .9 / 2.6))
+            for jj in range(nb):
+                bx = cx - a0 * .7 + a0 * .75 * (jj + .5) / nb
+                cv.hair(_arc(bx, y0 - th * .55, th * .16, th * .16, 3.5, 5.9, 4))
+        if i % 3 == 1 and th > 5 and detail > .5:
+            nw, nh = min(a0 * .14, th * .32), th * .62
+            blk.append([(cx - nw, y0 - 1.2), (cx - nw, y0 - nh * .55), (cx, y0 - nh), (cx + nw, y0 - nh * .55), (cx + nw, y0 - 1.2)])
     # spire and trident
     ys = base - H * .72
     sp = [(cx - r(.72), ys), (cx + r(.72), ys), (cx + .5, base - H), (cx - .5, base - H)]
@@ -2981,7 +3154,7 @@ def wat_arun(x, y, w, h, seed, lod):
     cv = ST5.Cv()
     blk = []
     yh = y + h * .74
-    skysvg = ST5.sky(cv, x - 2, y - 2, x + w + 2, yh, seed, clouds=2 if lod else 1)
+    skysvg = ST5.sky(cv, x - 2, y - 2, x + w + 2, yh, seed, clouds=2 if lod else 1, dense=1. if h > 110 else .55)
     _treeline(cv, x - 5, x + w + 5, yh, h * .05, rnd)
     cx = x + w * .5
     big = h * .6
@@ -2995,9 +3168,9 @@ def wat_arun(x, y, w, h, seed, lod):
     water = [(x - 5, yh + 1), (x + w + 5, yh + 1), (x + w + 5, y + h + 5), (x - 5, y + h + 5)]
     cv.obj([water], 0)
     cv.line([(x - 5, yh + 1), (x + w + 5, yh + 1)])
-    wsvg = ST5.water(None, x - 2, yh + 1.5, x + w + 2, y + h + 2, seed + 4, [(cx, big * .14), (cx - w * .2, big * .06), (cx + w * .2, big * .06)])
-    out = skysvg + cv.svg() + f'<path d="{_blk(blk)}" fill="#000" stroke="none"/>' + wsvg
+    out = skysvg + cv.svg() + f'<path d="{_blk(blk)}" fill="#000" stroke="none"/>'
     cv2 = ST5.Cv()
+    ST5.water(cv2, x - 2, yh + 1.5, x + w + 2, y + h + 2, seed + 4, [(cx, big * .14), (cx - w * .2, big * .06), (cx + w * .2, big * .06)] if h > 150 else [(cx, big * .09)])
     blk2 = []
     if lod:
         _longtail(cv2, blk2, x + w * .3, yh + (y + h - yh) * .55, w * .16, rnd)
@@ -3018,10 +3191,10 @@ def thai_arch(g, seed):
         x = cx + side * (A - pw * .6)
         post = [(x - pw / 2, sh - 2), (x + pw / 2, sh - 2), (x + pw / 2, top_y), (x - pw / 2, top_y)]
         cv.obj([post], 1.)
-        cv.hair(C.hatch_poly([(x + side * pw * .05, sh - 2), (x + pw / 2 * side, sh - 2), (x + pw / 2 * side, top_y), (x + side * pw * .05, top_y)], 90, 1.5))
+        cv.hair(C.hatch_poly([(x + side * pw * .05, sh - 2), (x + pw / 2 * side, sh - 2), (x + pw / 2 * side, top_y), (x + side * pw * .05, top_y)], 90, 1.5 if pw > 5 else 2.4))
         # gilt stencil bands up the post
-        for k in range(4):
-            yy = top_y + (sh - top_y) * (.15 + .22 * k)
+        for k in range(4 if pw > 5 else 2):
+            yy = top_y + (sh - top_y) * (.15 + (.22 if pw > 5 else .5) * k)
             cv.line([(x - pw / 2, yy), (x + pw / 2, yy)])
             cv.hair([(x - pw / 2, yy + 1.5), (x + pw / 2, yy + 1.5)])
         # lotus capital: three petals under a square abacus
@@ -3038,7 +3211,7 @@ def thai_arch(g, seed):
         cv.obj([board], 1.)
         cv.hair([(x0 - side * pw * .15, y0 + pw * .55), (apex[0], apex[1] + pw * .55)])
         # kranok teeth along the board's upper edge
-        n = 13
+        n = max(5, min(13, int(A / 10)))         # fewer, larger teeth as the plate shrinks
         for i in range(1, n):
             t = i / n
             px, py = x0 + (apex[0] - x0) * t, y0 + (apex[1] - y0) * t
@@ -3053,10 +3226,10 @@ def thai_arch(g, seed):
 def dedication(g):
     """The Somaster dedication cartouche, about 30 px, at the vignette's foot."""
     import arms as _arms
-    s = 30.
+    s = max(16., min(30., g["sh"] * .19))      # 30 px at the plan size, smaller on short plates
     x0, y0 = g["cx"] - s * .5, g["sh"] - s * 1.12
     pad = ST5._ell(g["cx"], y0 + s * .5, s * .62, s * .58, 40)[:-1]
-    o = [f'<path d="{_d(pad, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>',
+    o = [f'<path d="{_d(pad, True, .1)}" fill="none" stroke="#000" stroke-width="1"/>',
          f'<path d="{_d(ST5._offset(pad, -1.8), True, .1)}" fill="none" stroke="#000" stroke-width=".5"/>']
     o.append(f'<g transform="translate({_n(x0 + s * .1)},{_n(y0 + s * .08)})">{_arms.arms(s * .8, s * .84, 3)}</g>')
     return "".join(o)

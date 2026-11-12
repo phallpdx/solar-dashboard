@@ -1761,7 +1761,7 @@ def _studio5():
         return [s for s in segs if min(p[1] for p in s) > ymin]
 
 
-    def water(cv, x0, y0, x1, y1, seed, refl=(), calm=1.):
+    def water(cv, x0, y0, x1, y1, seed, refl=(), calm=1., rings=()):
         """Water from the far shore y0 to y1: ruled ripples on the device grid, tight and long near
         the shore, opening and breaking into short strokes toward the viewer; reflections (x, half
         width) darken as broken stacks of 1 px dashes."""
@@ -1778,13 +1778,33 @@ def _studio5():
             while x < x1:
                 L = rng.uniform(*dash) * calm
                 a, b = max(x, x0), min(x + L, x1)
+                for (qx, qy, qr) in rings:
+                    # the ruling parts round a ring of ripples
+                    dy = (y - qy) / (qr * .32)
+                    if abs(dy) < 1:
+                        dx = qr * _m.sqrt(1 - dy * dy)
+                        if a < qx + dx and b > qx - dx:
+                            if a < qx - dx and b - a > .8:
+                                thin.append([(a, y), (qx - dx, y)])
+                            a = max(a, qx + dx)
                 if b - a > .8:
-                    thin.append([(a, y), (b, y)])
+                    if t > .45 and b - a > 4:
+                        # near water: each cut swells into a low ripple
+                        m_ = (a + b) / 2
+                        thin.append([(a, y), (m_, y - .45 * (1 if (int(m_) // 7) % 2 else -1)), (b, y)])
+                    else:
+                        thin.append([(a, y), (b, y)])
                 x += L + rng.uniform(*gap)
             for (rx, rw) in refl:
                 j = rng.uniform(-1.5, 1.5) * (1 + t * 2)
                 thick.append([(rx - rw + j, _gy(y, 1.)), (rx + rw + j, _gy(y, 1.))])
             y += pitch
+        for (qx, qy, qr) in rings:
+            # rings spreading from where something stands in the water: broken ellipses, fore arcs heavier
+            for j, rr in enumerate((qr * .35, qr * .65, qr * .95)):
+                for a0, a1, wt in ((.15, 2.95, 1.), (3.45, 6.0, .5)):
+                    arc = _ell(qx, qy, rr, rr * .3, 16, a0 + j * .2, a1 - j * .15)
+                    (thick if wt > .5 and j < 2 else thin).append(arc)
         if cv is not None:
             cv.obj([], 0)
             cv.hair(thin)
@@ -1800,9 +1820,17 @@ def _studio5():
         pts = [(x0 - 2, base + 1)]
         x = x0 - 2
         while x < x1 + 2:
-            th = h * rng.uniform(.55, 1.)
-            pts += [(x, base - th * .35), (x + step * .5, base - th), (x + step, base - th * .35)]
-            x += step * rng.uniform(.8, 1.2)
+            if rng.random() < .18:
+                # a round-headed cottonwood among the firs
+                cw = step * rng.uniform(2., 3.4)
+                ch = h * rng.uniform(.5, .8)
+                pts += [(x + cw * u, base - ch * (.3 + .7 * _m.sin(_PI * u) ** .6) - rng.uniform(0, .5)) for u in [k / 8 for k in range(9)]]
+                x += cw
+                continue
+            th = h * rng.uniform(.4, 1.) * (1.25 if rng.random() < .12 else 1.)
+            sw = step * rng.uniform(.6, 1.5)
+            pts += [(x, base - th * .3), (x + sw * .3, base - th * .65), (x + sw * .5, base - th), (x + sw * .7, base - th * .62), (x + sw, base - th * .3)]
+            x += sw * rng.uniform(.7, 1.1)
         pts += [(x1 + 2, base + 1)]
         cv.obj([pts], .5)
         yy = _gy(base - h * .3)

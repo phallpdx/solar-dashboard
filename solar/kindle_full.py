@@ -2158,11 +2158,16 @@ PAGER_JS = r"""
       if (i === n - 1) { var bx = (typeof lastBoxes !== 'undefined' && lastBoxes) || boxes(); if (bx.lb) used = Math.min(h, bx.lb - top + 6); }
       var y0 = (i && !FLOW ? C : 0) + used + 6, room = H - y0 - 6;
       tl.style.display = t2.style.display = 'none';
+      if (kme && room >= 40) {   /* never print a plate over a line of type: start below the last text visible on this sheet */
+        var vt = view.getBoundingClientRect().top, cb = document.getElementById('kclip').getBoundingClientRect(), tw = document.createTreeWalker(main, 4, null, false), tn, tb = 0;
+        while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
+          for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom); } }
+        if (tb && tb - vt + 6 > y0) { y0 = tb - vt + 6; room = H - y0 - 6; } }
       var vr = view.getBoundingClientRect();
       window.KROOM = { sheet: i, sheets: n, x: Math.round(vr.left), y: Math.round(vr.top + y0), w: Math.round(vr.width), h: Math.round(room) };
       var kp = kme && room >= 40 && document.body.getAttribute('data-kplates'), pk = null;
       if (kp) { try { kp = JSON.parse(kp); } catch (e) { kp = []; }   /* this page's plates: [sheet, h, w], cut to this morning's rooms */
-        for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && Math.abs(kp[pi][1] - room) <= 16) pk = kp[pi];
+        for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && kp[pi][1] <= room + 2 && kp[pi][1] >= room - 16) pk = kp[pi];
         if (!pk) for (pi = 0; pi < kp.length; pi++) if (kp[pi][1] <= room && (!pk || kp[pi][1] > pk[1])) pk = kp[pi]; }
       if (pk) {   /* ONE bespoke engraved plate fills the free space: a fixed-size <img>, outside #kmain, so it never adds a sheet */
         var slug = location.pathname.split('/').pop().replace(/\.html$/, ''), im = t2.firstChild;
@@ -2170,7 +2175,14 @@ PAGER_JS = r"""
         var src = 'orn/plate-' + slug + '-' + pk[0] + '.svg';
         if (im.getAttribute('src') !== src) im.setAttribute('src', src);
         im.width = pk[2]; im.height = pk[1]; t2.className = 'kplate';
-        t2.style.top = (y0 + (room - pk[1]) / 2) + 'px'; t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; }
+        t2.style.top = (y0 + Math.max(0, room - pk[1]) / 2) + 'px'; t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; 
+        setTimeout(function () {   /* after the sheet settles: if any visible line of type reaches under the plate, move the plate below it, or drop it */
+          var tr = t2.getBoundingClientRect(), vr2 = view.getBoundingClientRect(), cb = document.getElementById('kclip').getBoundingClientRect(), tw = document.createTreeWalker(main, 4, null, false), tn, tb = 0;
+          while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
+            for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.height && q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.top < vr2.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom, vr2.bottom); } }
+          if (tb > tr.top - 4) { var d = tb + 6 - tr.top, lim = vr2.top + H - 6;
+            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none'; }
+        }, 60); }
     }
     var gq = view.querySelectorAll('.kgap');   /* and the gaps between blocks: a fleuron in each, never over print */
     for (var g = 0; g < gq.length; g++) view.removeChild(gq[g]);

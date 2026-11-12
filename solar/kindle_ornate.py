@@ -87,6 +87,7 @@ SLOTS = {
     "divider":   ("divider", "#kmain .kpanel h3:not(.kfold), #kmain .kpanel .sub, #kmain .kpanel .day-h, #kmain .kpanel .shelf-h",
                   (140, 16), "", False, "solo"),
     "initial":   ("initial", "#kmain .kdropcap", (74, 74), "", False, "solo"),
+    "best":      ("divider", "#kmain table.kmatrix td.q4", (72, 14), "", False, "solo"),
 }
 # drawn once per edition and set by the stylesheet: things the pager makes after the page loads
 STATIC = {"resume": ("button", "body.kcontents #kmain .kresume", (526, 64), "")}
@@ -167,6 +168,9 @@ def _css():
     c += _r(".kdeg, .tile .big, .tiles[data-n] .tile .big, .tiles .tile .big, .kpanel span.big",
             f"font:{S['figure']} !important;letter-spacing:-.01em !important;display:block;{LIN}")
     c += _r(".kdeg small", "display:block;margin-top:2px")
+    # leftovers that set their own sizes: the sunset verdict and the moon line are answers; record titles are headings
+    c += _r(".sun-label, .moon-row b, .moon-cap b", f"font:{S['lead']} !important;letter-spacing:0 !important;color:#000 !important;{LIN}")
+    c += _r(".rec b, .recs .rec b", f"display:block;font:{S['sect']} !important;letter-spacing:0 !important;{OLD}")
     c += _r(".kdeg small, .tile .u, .tile .s", f"font:{S['caption']} !important;{OLD}")
     # ---- section headings: under an engraved section mark, no rule
     c += _r(".kpanel h3:not(.kfold), .kpanel .sub, .kpanel .day-h, .kpanel .cal-day, .kpanel details>summary, .kpanel h4, .kpanel .shelf-h, "
@@ -184,7 +188,7 @@ def _css():
            ".aside, .brief-rest .aside, .pill, .tag, .badge, .rt2, .rt3, .rt4, .kfl .kn, .kidea-k, .kpanel .kidea-k, .kmast .kear span, .kfhead .kkick")
     c += _r(lab, f"font:{S['label']} !important;{SC};{OLD};color:#000 !important")
     chips = (".kst, .kchip, .kpanel .kchip, .kpanel .st, .kpanel .lvl, .vote, .kpanel .vote b, .kpanel .sp .pill, .ktm .kst, .ktrail .ktags .kst, "
-             ".kcell b.kst, .kcell b.kval, .kcell .ktm b.kst, b.kval")
+             ".kcell b.kst, .kcell b.kval, .kcell .ktm b.kst, b.kval, .sun-clouds>span, .sun-clouds>span *")
     c += _r(chips, f"font:{S['labelb']} !important;{SC};{LIN};color:#000 !important;-webkit-text-fill-color:#000 !important;background-color:transparent !important")
     # the lit chip (the one notable state): a solid black ground inside the same engraved frame, white letters
     t, r, b, l = bands("chip")
@@ -340,6 +344,11 @@ def _css():
     c += _r("table.kmatrix thead th", f"padding-top:{t + 4}px !important;padding-bottom:{b + 4}px !important;font:{S['label']} !important;{SC};{OLD}")
     c += _r("table.kmatrix thead th:first-child", f"padding-left:{l + 2}px !important;width:{104 + l}px !important")
     c += _r("table.kmatrix thead th:last-child", f"padding-right:{r + 2}px !important")
+    # the best surf of the week: its rating reversed out of black, and an engraved fleuron under the cell
+    c += _r("table.kmatrix td.q4", "padding-bottom:20px !important;background-repeat:no-repeat !important;"
+            "background-position:50% 100% !important;background-size:72px 14px !important")
+    c += _r("table.kmatrix td.q4 b", "display:table !important;background:#000 !important;color:#fff !important;"
+            "-webkit-text-fill-color:#fff !important;padding:0 4px !important;margin-left:-4px")
     # today's facts: compact tiles, label and figure on one line, two by two and the tide across
     t, r, b, l = bands("tile")
     c += _r("#out-facts>.mini, #out-facts[data-n]>.mini, #out-facts>.mini:nth-child(even), #out-facts[data-n]>.mini:not(:nth-child(3n+1))",
@@ -349,7 +358,10 @@ def _css():
     c += _r("#out-facts>.mini>.k, #out-facts>.mini>span:first-child", "margin:0 8px 0 0 !important")
     c += _r("#out-facts>.mini>.v", "text-align:right;white-space:nowrap")
     c += _r("#out-facts>.mini:nth-child(5):last-child, #out-facts>.mini:nth-child(odd):last-child", "grid-column:1 / span 2 !important")
-    c += _r("#out-facts", "margin:4px 0 6px !important")
+    c += _r("#out-facts", "margin:0 0 4px !important;grid-gap:4px 6px !important")
+    # today-01 keeps its hourly bars as close to the first sheet as the frames allow: no slack round the weather line
+    c += _r(".kfrontwx", "padding-bottom:0 !important;margin-bottom:6px !important")
+    c += _r("#out-facts+.khr, #today-card .khr", "margin-top:4px !important;padding-top:2px !important")
     # the fit ladder may tighten space, never the type: the roles above are fixed and outrank it
     return c
 
@@ -415,11 +427,11 @@ TYPESET = r"""
   }
   // sizes the cards set for themselves, off the scale: each element takes the nearest role (the stylesheet is loaded
   // into this page so the computed sizes are the edition's own)
-  const SCALE = [14, 17, 20, 24, 34, 48];
+  const SCALE = [14, 17, 20, 24, 34, 44, 48];
   function snap(d) {
     const todo = [];
     for (const el of d.querySelectorAll('*')) {
-      if (el.closest('svg, .kdropcap, .khl, .kst, .kchip, .vote, .kfnum, .kanswer, .kkick, .kkicker, .kth, .k, .head .meta, script, style')) continue;
+      if (el.closest('svg, .kdropcap, .khl, .kdeg, .tile .big, .kpanel span.big, .kst, .kchip, .vote, .kfnum, .kanswer, .kkick, .kkicker, .kth, .k, .head .meta, script, style')) continue;
       let own = false; for (const n of el.childNodes) if (n.nodeType === 3 && n.nodeValue.trim()) { own = true; break; }
       if (!own) continue;
       const cs = getComputedStyle(el), fs = parseFloat(cs.fontSize); if (!fs || SCALE.indexOf(fs) >= 0) continue;
@@ -834,6 +846,21 @@ def _sprite(odir, names, sizes, dst):
     return pos, (W, H)
 
 
+# a number keeps its unit: "11,249 ft" never breaks before "ft" (text only, never inside tags, scripts or styles)
+UNITS = (r"ft|mi|km|m|cm|mm|in|kWh|kW|W|MW|mph|kph|kt|kts|knots|min|mins|hr|hrs|h|s|sec|am|pm|a\.m\.|p\.m\.|°F|°C|°|%|¢|lb|lbs|oz|"
+         r"gal|ppm|AQI|days?|hours?|minutes?|miles?|feet|inches|weeks?|months?|years?|yrs?|points?|pts|sightings?|pages?|books?|"
+         r"seen|reports?|percent|degrees?")
+_UNIT_RE = re.compile(r"(\d) +(?=(?:" + UNITS + r")(?![\w]))")
+
+
+def units(doc):
+    parts = re.split(r"(<script\b.*?</script>|<style\b.*?</style>|<[^>]*>)", doc, flags=re.S | re.I)
+    for i in range(0, len(parts), 2):
+        if parts[i] and any(ch.isdigit() for ch in parts[i]):
+            parts[i] = _UNIT_RE.sub("\\1&nbsp;", parts[i])
+    return "".join(parts)
+
+
 def frames(out):
     """Measure every framed element on every page at the Kindle's size; compose each distinct frame (the studio's
     solar/frames) and rasterise it; pack the chrome's frames into one sprite for the edition and each page's own
@@ -846,6 +873,13 @@ def frames(out):
     except ImportError:
         return None
     pages = sorted(p[:-5] for p in os.listdir(out) if p.endswith(".html"))
+    for p in pages:   # before measuring: a kept unit changes where lines break
+        fp = os.path.join(out, p + ".html")
+        d0 = open(fp, encoding="utf-8").read()
+        d1 = units(d0)
+        if d1 != d0:
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write(d1)
     F = {k: [v[1], list(v[2]) if isinstance(v[2], tuple) else v[2], v[3], NOMINAL["barbase"][1]] for k, v in SLOTS.items()}
     odir = os.path.join(out, "orn", "kf")
     os.makedirs(odir, exist_ok=True)
@@ -1019,7 +1053,7 @@ CHECK_JS = r"""(F) => {
     const e = R && R[i]; let fw = 0, fh = 0;
     if (e && e.length > 5) { fw = e[5]; fh = e[6]; }
     else if (el.getAttribute('data-kf')) { const z = el.getAttribute('data-kf').split(' '); fw = +z[0]; fh = +z[1]; }
-    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
+    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead|best)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
     if (fw && (Math.abs(fw - b.width) > 1.5 || Math.abs(fh - b.height) > 1.5))
       unframed.push(role + ' size ' + fw + 'x' + fh + ' vs ' + Math.round(b.width) + 'x' + Math.round(b.height) + ': ' + name(el));
   }); }

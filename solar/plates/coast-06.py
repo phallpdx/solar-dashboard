@@ -1114,13 +1114,11 @@ def kk_egg(kind, cx, cy, r):
         cv.line(E([(.15, .2), (.25, .95)]))
         cv.line(E([(-.75, .97), (.8, .97)]))
     elif kind == "kranok":
-        f = E([(-.35, .9), (-.5, .3), (-.3, -.1), (-.45, -.4), (-.15, -.55), (-.05, -.95), (.2, -.5), (.45, -.35),
-               (.3, -.05), (.5, .3), (.3, .9)])
-        cv.obj([f], 1.)
-        inner = E([(-.15, .7), (-.25, .3), (-.08, 0), (0, -.45), (.12, -.1), (.25, .25), (.12, .7)])
-        cv.obj([inner], .5)
-        _cut(cv, inner, 70, 1.5)
-        cv.hair(E([(0, .65), (0, -.2)]))
+        # a Thai kranok flame: a tall leaf rising, its back serrated into flame tongues, the tip
+        # hooking over, a smaller flame nested inside it and a curl at its foot
+        _leaf(cv, cx - r * .25, cy + r * .9, -_PI / 2 + .25, r * 1.85, r * .5, -1, 4, 3)
+        _leaf(cv, cx - r * .1, cy + r * .7, -_PI / 2 + .35, r * 1.1, r * .3, -1, 2, 5)
+        _wline(cv, [(cx - r * .25 + r * .4 * _m.cos(t), cy + r * .62 + r * .3 * _m.sin(t)) for t in [_PI * (.1 + 1.4 * k / 12) for k in range(13)]], .6)
     elif kind == "elephant":
         b = E([(-.75, .1), (-.6, -.35), (-.1, -.5), (.3, -.45), (.55, -.6), (.8, -.4), (.85, 0), (.78, .4),
                (.7, .65), (.62, .3), (.55, .15), (.45, .7), (.3, .7), (.28, .25), (-.35, .25), (-.38, .7),
@@ -1289,7 +1287,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
         for (k, box, obst, roots, rmin, rmax, inside, d, sd, area) in deferred:
             used = sum(len(t) for t in o) + 1800
             room = max(30000., limit - used)
-            need = (18. * area / room) ** (1 / 1.2)
+            need = (20. * area / room) ** (1 / 1.2)
             f = max(dens, need / rmin)
             for tries in range(3):
                 cv = _C.Canvas()

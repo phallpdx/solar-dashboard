@@ -182,6 +182,10 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 #kmain .kplate.klong .poem-text .gap{height:9px}
 #kmain .kplate.klong .poem-title{font-size:22px !important;line-height:26px !important;margin-top:0 !important}
 #kmain .kplate.klong .poem-by{margin-bottom:8px !important}
+
+/* no white page: a fine engraved ground under everything, banknote style; type knocked out in white */
+html.kev,html.kev body,html.kev #kmain,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.4%22/%3E%3C/svg%3E") repeat !important}
+html.kev #kmain h1,html.kev #kmain h2,html.kev #kmain h3,html.kev #kmain p,html.kev #kmain li,html.kev #kmain span,html.kev #kmain td,html.kev #kmain th,html.kev #kmain div,html.kev .kbar,html.kev .kbar *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff}
 /* the close */
 html.kev .kendpage #kmain .kend{text-align:center}
 html.kev .kendpage #kmain .kframe{min-height:578px;-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-flex;display:flex;

@@ -338,6 +338,139 @@ def vignette(fld, kind, seed):
 # lettering-free inscriptions for the tall plate: a bar of swing on the ribbon, a keyboard on the tablet
 # ----------------------------------------------------------------------------------------------
 
+def upright_bass(cv, x, base, H, rng):
+    """The upright bass leaning on its rib: a waisted body in contour lines, f-holes, bridge,
+    tailpiece, the long neck and the scroll at the head."""
+    W = H * .36
+    ks = ((0, .62), (.08, .92), (.26, 1.), (.46, .8), (.56, .66), (.66, .74), (.8, .76), (.92, .5), (1., .16))
+
+    def hw(t):
+        for (t0, v0), (t1, v1) in zip(ks, ks[1:]):
+            if t <= t1:
+                u = (t - t0) / (t1 - t0)
+                return W * .5 * (v0 + (v1 - v0) * u * u * (3 - 2 * u))
+        return W * .5 * ks[-1][1]
+    n = 30
+    bh = H * .58
+    lean = .1
+    P_ = lambda u, v: (x + u + (base - v) * lean, v)
+    right = [P_(hw(i / n), base - bh * i / n) for i in range(n + 1)]
+    left = [P_(-hw(i / n), base - bh * i / n) for i in range(n + 1)]
+    body = right + left[::-1]
+    cv.obj([body], 1.)
+    for k in range(1, 7):
+        f = 1 - k * .12
+        cv.hair([P_(hw(i / n) * f + W * .02 * k, base - bh * i / n) for i in range(2, n - 2)])
+    cv.hair(C.hatch_poly([P_(hw(i / n) * .55, base - bh * i / n) for i in range(n + 1)] + right[::-1], 75, 1.5, rng.random()))
+    for sd in (-1, 1):
+        fx = x + sd * W * .16
+        f = [P_(sd * W * .16 + sd * .8 * math.sin(t * 5), base - bh * (.32 + .22 * t)) for t in [j / 10 for j in range(11)]]
+        cv.line(f)
+    cv.line([P_(-W * .2, base - bh * .3), P_(W * .2, base - bh * .3)])
+    cv.obj([[P_(-W * .06, base - bh * .05), P_(W * .06, base - bh * .05), P_(W * .045, base - bh * .25), P_(-W * .045, base - bh * .25)]], 1.)
+    cv.hair(C.hatch_poly([P_(-W * .06, base - bh * .05), P_(W * .06, base - bh * .05), P_(W * .045, base - bh * .25), P_(-W * .045, base - bh * .25)], 90, 1.5))
+    nk = [P_(-W * .05, base - bh), P_(W * .05, base - bh), P_(W * .04, base - H * .95), P_(-W * .04, base - H * .95)]
+    cv.obj([nk], 1.)
+    cv.hair(C.hatch_poly(nk, 90, 1.5))
+    sc = P_(0, base - H * .97)
+    cv.obj([C._ell_pts(sc[0], sc[1], W * .07, W * .09, 14)[:-1]], 1.)
+    cv.line(C._ell_pts(sc[0] + 1, sc[1], W * .035, W * .045, 10))
+    for k in range(4):
+        cv.hair([P_(-W * .015 * (k - 1.5), base - bh * .3), P_(-W * .01 * (k - 1.5), base - H * .93)])
+    cv.line([P_(0, base), P_(0, base + H * .04)])
+
+
+def ride_cymbal(cv, cx, cy, r, stand_to, rng):
+    """A ride on its stand, tipped toward us: lathe rings, the bell, a lit crescent."""
+    cv.obj([], 0)
+    cv.line([(cx, cy), (cx, stand_to)])
+    cv.hair([[(cx, stand_to), (cx + sd * r * .45, stand_to + r * .1)] for sd in (-1, 1)])
+    e = C._ell_pts(cx, cy, r, r * .28, 48)[:-1]
+    cv.obj([e], 1.)
+    k = .9
+    while k > .2:
+        cv.hair(C._ell_pts(cx, cy, r * k, r * .28 * k, 40))
+        k -= .09
+    cv.hair(C.hatch_poly([q for q in e if q[0] > cx + r * .2] + [(cx + r * .2, cy)], 80, 1.5, rng.random()))
+    cv.obj([C._ell_pts(cx, cy - r * .03, r * .17, r * .08, 16)[:-1]], 1.)
+
+
+def trumpet(cv, x, y, L, rng):
+    """A trumpet lying on its side: bell, valves, the wrapped leadpipe and mouthpiece."""
+    br = L * .14
+    bell = [(x + L, y - br), (x + L * .82, y - br * .25), (x + L * .35, y - br * .15), (x + L * .35, y + br * .15),
+            (x + L * .82, y + br * .25), (x + L, y + br)]
+    cv.obj([bell], 1.)
+    cv.hair(C.hatch_poly([(x + L * .35, y + .2), (x + L * .82, y + br * .25), (x + L, y + br), (x + L, y + .2)], 0, 1.5))
+    cv.line(C._ell_pts(x + L, y, br * .3, br, 18))
+    loop = [(x + L * .35, y - br * .15), (x + L * .1, y - br * .15), (x + L * .02, y + br * .6), (x + L * .1, y + br * 1.3),
+            (x + L * .6, y + br * 1.3), (x + L * .6, y + br * 1.0), (x + L * .12, y + br * 1.0), (x + L * .08, y + br * .6),
+            (x + L * .12, y + br * .15), (x + L * .35, y + br * .15)]
+    cv.obj([loop], 1.)
+    for k in range(3):
+        vx = x + L * (.4 + .07 * k)
+        v = [(vx - L * .022, y - br * .9), (vx + L * .022, y - br * .9), (vx + L * .022, y + br * 1.5), (vx - L * .022, y + br * 1.5)]
+        cv.obj([v], 1.)
+        cv.hair(C.hatch_poly(v, 90, 1.5))
+        cv.obj([C._ell_pts(vx, y - br * 1.05, L * .03, L * .012, 10)[:-1]], 1.)
+    cv.obj([[(x - L * .12, y - br * .1), (x + L * .1, y - br * .06), (x + L * .1, y + br * .06), (x - L * .12, y + br * .1)]], 1.)
+
+
+def trio(fld, kind, seed):
+    """Music and shows front: the jazz trio's bandstand between sets, lit by one spot on a dark
+    stage. The upright bass leans at the left, the kit (snare and the ride) sits behind, the
+    trumpet rests on a stool at the right. Parker's own sticks lie across the snare."""
+    if kind in ("band", "device"):
+        return vignette(fld, "band", seed)
+    xs = [p[0] for p in fld]
+    ys = [p[1] for p in fld]
+    fx0, fx1, fy0, fy1 = min(xs), max(xs), min(ys), max(ys)
+    fw, fh = fx1 - fx0, fy1 - fy0
+    cx = (fx0 + fx1) / 2
+    rng = random.Random(seed)
+    d = C._d(fld, True, 0)
+    o = [f'<path d="{d}" fill="url(#s2m)"/>']
+    floor_y = fy0 + fh * .74
+    # the curtain: white folds cut into the dark, catching the spill of the spot
+    cur = []
+    for k in range(int(fw / 5) + 2):
+        xx = fx0 + k * 5 + 2
+        cur.append(f"M{_n(xx)},{_n(fy0)}C{_n(xx + 1.5)},{_n(fy0 + fh * .3)} {_n(xx - 1.5)},{_n(fy0 + fh * .5)} {_n(xx + .5)},{_n(floor_y)}")
+    o.append(f'<path d="{"".join(cur)}" stroke="#fff" stroke-width="1" fill="none"/>')
+    # the spot: a white pool on the boards and a cone of light
+    sx = cx + fw * .02
+    cone = [(sx - fw * .04, fy0 - 2), (sx + fw * .04, fy0 - 2), (sx + fw * .36, floor_y + fh * .08), (sx - fw * .36, floor_y + fh * .08)]
+    cv = C.Canvas()
+    cv.obj([cone], 0)
+    cv.hair(C.hatch_poly(cone, 90, 3, .5))
+    stage = [(fx0 - 2, floor_y), (fx1 + 2, floor_y), (fx1 + 2, fy1 + 2), (fx0 - 2, fy1 + 2)]
+    cv.obj([stage], .5)
+    yy, g = floor_y + 1.5, 1.5
+    while yy < fy1 + 2:
+        cv.hair([(fx0 - 2, yy), (fx1 + 2, yy)])
+        g = min(3., g * 1.18)
+        yy += g
+    for k in range(-12, 13):
+        cv.hair([(cx + k * fw * .02, floor_y), (cx + k * fw * .07, fy1 + 2)])
+    pool = C._ell_pts(sx, floor_y + (fy1 - floor_y) * .4, fw * .34, (fy1 - floor_y) * .45, 40)[:-1]
+    cv.obj([pool], 0)
+    cv.hair(C.hatch_poly(pool, 0, 3, .3))
+    H = fh * .78
+    S = min(H, fw * .9)
+    ride_cymbal(cv, cx + S * .05, floor_y - S * .52, S * .2, floor_y + 2, rng)
+    upright_bass(cv, cx - S * .38, floor_y + S * .02, S * .78, rng)
+    stx = cx + S * .42
+    cv.obj([[(stx - S * .12, floor_y - S * .2), (stx + S * .12, floor_y - S * .2), (stx + S * .12, floor_y - S * .17), (stx - S * .12, floor_y - S * .17)]], 1.)
+    for sd in (-1, 1):
+        cv.line([(stx + sd * S * .1, floor_y - S * .17), (stx + sd * S * .13, floor_y + S * .03)])
+    trumpet(cv, stx - S * .16, floor_y - S * .25, S * .36, rng)
+    snare(cv, cx + S * .08, floor_y - S * .14, S * .16, S * .1)
+    for sd in (-1, 1):
+        drumstick(cv, cx + S * .08 - sd * S * .15, floor_y - S * .1, cx + S * .08 + sd * S * .1, floor_y - S * .2, max(3., S * .02))
+    o.append(cv.svg())
+    return "".join(o)
+
+
 def swing_on_ribbon(centre, h):
     """A five-line percussion staff along the ribbon face carrying the ride-cymbal swing pattern
     (x heads: ding, ding-a ding, ding-a) with a percussion clef, common time and bar lines."""
@@ -990,6 +1123,76 @@ def st_arch_medallion(cx, top, bot, half):
     return "".join(o), st_arch(cx, top + 1.2, bot - 1.2, half - 1.2, 72)
 
 
+def st_shape_pts(shape, cx, cy, rx, ry, g=0., n=120, ph=0.):
+    """The outline of a shaped panel grown outward by g: oval, roundel, arch or irregular."""
+    if shape == "arch":
+        return st_arch(cx, cy - ry - g, cy + ry + g, rx + g, max(24, n // 2))
+    if shape == "roundel":
+        rx = ry = min(rx, ry)
+    pts = []
+    for i in range(n):
+        t = _TAU * i / n
+        k = 1.
+        if shape == "irregular":
+            k = 1 + .07 * _m.sin(5 * t + ph) + .035 * _m.sin(9 * t + 2 * ph) + .02 * _m.cos(13 * t)
+        pts.append((cx + (rx * k + g) * _m.cos(t), cy + (ry * k + g) * _m.sin(t)))
+    return pts
+
+
+def st_shape_in(shape, x, y, cx, cy, rx, ry, g=0., ph=0.):
+    if shape == "arch":
+        if y >= cy - ry + rx:
+            return abs(x - cx) < rx + g and y < cy + ry + g
+        return _m.hypot(x - cx, y - (cy - ry + rx)) < rx + g
+    if shape == "roundel":
+        rx = ry = min(rx, ry)
+    t = _m.atan2((y - cy) / max(ry, 1), (x - cx) / max(rx, 1))
+    k = 1.
+    if shape == "irregular":
+        k = 1 + .07 * _m.sin(5 * t + ph) + .035 * _m.sin(9 * t + 2 * ph) + .02 * _m.cos(13 * t)
+    return ((x - cx) / (rx * k + g)) ** 2 + ((y - cy) / (ry * k + g)) ** 2 < 1
+
+
+def st_shaped_medallion(shape, cx, cy, rx, ry, ph=0.):
+    """A shaped inlaid panel: black bed, wire, beads, white fillet. -> (svg, field polygon)."""
+    if shape == "oval":
+        return st_medallion(cx, cy, rx, ry)
+    P = lambda g, n=120: st_poly_d(st_shape_pts(shape, cx, cy, rx, ry, g, n, ph))
+    o = [f'<path d="{P(7)}" fill="#000" stroke="none"/>', st_wire(P(5.5)), st_beads(P(1.5, 180), 3.5, 1.),
+         f'<path d="{P(-.5)}" fill="none" stroke="#fff" stroke-width="1"/>']
+    return "".join(o), st_shape_pts(shape, cx, cy, rx, ry, -1.2, 120, ph)
+
+
+def st_dedication(cx, foot, hh):
+    """The small Somaster dedication cartouche at a front vignette's foot (about 30 px)."""
+    return st_arms(cx, foot - hh / 2, hh * .5, hh * .5, mantling=True)
+
+
+def st_device(w, h, seed, hk):
+    """A marginal device (a 40-60 px roundel): the subject in a beaded roundel, the corners of
+    the block cut away to the matte with a leaf in each spandrel."""
+    o = [st_matte(st_rect_d(0, 0, w, h))]
+    cx, cy = w / 2, h / 2
+    r = min(w, h) / 2 - (4.5 if min(w, h) < 64 else 7.5)
+    cv = StCanvas()
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            px, py = cx + sx * (w / 2 - 3), cy + sy * (h / 2 - 3)
+            a = _m.atan2(cy - py, cx - px)
+            if _m.hypot(px - cx, py - cy) > r + 9:
+                L = max(4., (_m.hypot(px - cx, py - cy) - r - 6) * 1.1)
+                _leaf(cv, px, py, a, L, L * .42, .5 * sx * sy, .35, _rnd.Random(seed + sx * 3 + sy))
+    o.append(cv.svg())
+    o.append(st_wire(st_rect_d(1.5, 1.5, w - 3, h - 3)))
+    o.append(f'<path d="{st_ell_d(cx, cy, r + 3.5, r + 3.5)}" fill="#000"/>'
+             f'<path d="{st_ell_d(cx, cy, r + 2, r + 2)}" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="1 1.5"/>'
+             f'<path d="{st_ell_d(cx, cy, r - .2, r - .2)}" fill="none" stroke="#fff" stroke-width="1"/>')
+    fld = _C._ell_pts(cx, cy, r - .9, r - .9, 72)[:-1]
+    o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
+    o.append(st_clip_poly(f"s2d{w}x{h}v", fld, hk["field"](fld, "device") + st_rim(fld, 2.5)))
+    return "".join(o)
+
+
 def st_clip_poly(cid, poly, body):
     return f'<clipPath id="{cid}"><path d="{_C._d(list(poly), True, 0)}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
 
@@ -1575,14 +1778,16 @@ def st_band(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2 + hk.get("dx", 0.), h / 2
-    ry = h / 2 - ins - 4
+    ry = max(4., h / 2 - 8.5)
     rx = min(w * .2, max(ry * 1.5, ry * hk.get("aspect", 1.7)))
+    if h < 40:
+        ins = 5.
     fx0, fy0, fx1, fy1 = ins, ins, w - ins, h - ins
 
     def inside(x, y):
         return fx0 - 4 < x < fx1 + 4 and fy0 - 2 < y < fy1 + 2 and not _in_ell(x, y, cx, cy, rx + 12, ry + 12)
     gh = fy1 - fy0
-    F = ScrollField(inside, rmin=max(4.5, gh * .16), rmax=gh * .42, seed=seed, slack=.9)
+    F = ScrollField(inside, rmin=max(3.5 if h < 40 else 4.5, gh * .12), rmax=max(4.6, gh * .32), seed=seed, slack=.9)
     rng = _rnd.Random(seed)
     for sd in (-1, 1):
         L = (w / 2 - rx - 14) * 1.05
@@ -1597,7 +1802,7 @@ def st_band(w, h, seed, hk):
     F.grow(8)
     F.fill(fx0 - 4, fy0 - 2, fx1 - fx0 + 8, fy1 - fy0 + 4, 3., hk.get("max_items", 160))
     o.append(_scroll_layer(F, f"s2b{w}x{h}", 0, 0, w, h, hk.get("egg"), 1))
-    o.append(st_border(w, h))
+    o.append(st_border(w, h, 1.5 if h < 40 else 3.))
     m, fld = st_medallion(cx, cy, rx, ry)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
@@ -1611,12 +1816,19 @@ def st_medium(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2, h / 2
+    shape = hk.get("shape", "oval")
+    ded = 15. if hk.get("dedication") else 0.
     ry = h / 2 - ins - 6
     rx = min(w * hk.get("cw", .21), ry * hk.get("aspect", 1.45))
+    if shape == "roundel":
+        rx = ry
+    if shape == "arch":
+        rx = min(rx, ry * 1.1)
+    ph = (seed % 97) * .07
     fx0, fy0, fx1, fy1 = ins, ins, w - ins, h - ins
 
     def inside(x, y):
-        return fx0 - 4 < x < fx1 + 4 and fy0 - 3 < y < fy1 + 3 and not _in_ell(x, y, cx, cy, rx + 13, ry + 13)
+        return fx0 - 4 < x < fx1 + 4 and fy0 - 3 < y < fy1 + 3 and not st_shape_in(shape, x, y, cx, cy, rx, ry, 13, ph) and not (ded and abs(x - cx) < 34 and y > h - ins - 2 * ded - 6)
     gh = fy1 - fy0
     F = ScrollField(inside, rmin=max(6., gh * .055), rmax=min(26., gh * .2), seed=seed, slack=.88)
     rng = _rnd.Random(seed)
@@ -1633,10 +1845,12 @@ def st_medium(w, h, seed, hk):
     F.fill(fx0 - 4, fy0 - 3, fx1 - fx0 + 8, fy1 - fy0 + 6, 4., hk.get("max_items", 260))
     o.append(_scroll_layer(F, f"s2m{w}x{h}", 0, 0, w, h, hk.get("egg"), 2))
     o.append(st_border(w, h))
-    m, fld = st_medallion(cx, cy, rx, ry)
+    m, fld = st_shaped_medallion(shape, cx, cy, rx, ry, ph)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
     o.append(st_clip_poly(f"s2m{w}x{h}v", fld, hk["field"](fld, "medium") + st_rim(fld, hk.get("rim", 9.))))
+    if ded:
+        o.append(st_dedication(cx, h - 3, 2 * ded))
     if hk.get("crest"):
         o.append(hk["crest"](cx, cy - ry - 2, min(14., ins + 4), "medium"))
     return "".join(o)
@@ -1690,12 +1904,17 @@ def st_tall(w, h, seed, hk):
     ped_h = min(max(h * .13, 40), 62.)
     fz = min(max(h * .09, 30), 50.) if (h >= 440 and hk.get("frieze", True)) else 0.
     py = h - ped_h - fz - ins * (1 if fz else .6)
-    arch = hk.get("arch", False)
+    shape = hk.get("shape") or ("arch" if hk.get("arch") else "oval")
+    arch = shape == "arch"
     rx = w * hk.get("cw", .3)
     top = ins + 12
     bot = py - (62 if py > 300 else 46)
     ry = (bot - top) / 2
+    if shape == "roundel":
+        rx = ry = min(rx * 1.25, ry)
+        top = bot - 2 * ry
     cx, cy = w / 2, top + ry
+    ph = (seed % 97) * .07
     ay = bot + 4
     ary = min(26., (py - ay) * .4)
     arx = ary * 1.25
@@ -1704,12 +1923,7 @@ def st_tall(w, h, seed, hk):
     def inside(x, y):
         if not (ins - 4 < x < w - ins + 4 and ins - 3 < y < py - 3):
             return False
-        if arch:
-            if abs(x - cx) < rx + 13 and y > top - 13 + rx and y < bot + 13:
-                return False
-            if _in_ell(x, y, cx, top + rx, rx + 13, rx + 13) and y <= top + rx:
-                return False
-        elif _in_ell(x, y, cx, cy, rx + 13, ry + 13):
+        if st_shape_in(shape, x, y, cx, cy, rx, ry, 13, ph):
             return False
         if abs(x - cx) < rx * 1.05 + 10 and bot - 4 < y < bot + 16:
             return False
@@ -1744,10 +1958,7 @@ def st_tall(w, h, seed, hk):
         _C.palmette(w / 2, fy0 + 1, fh * .8, False, seed, cv=cvp)
         o.append(cvp.svg())
     o.append(st_border(w, h))
-    if arch:
-        m, fld = st_arch_medallion(cx, top, bot, rx)
-    else:
-        m, fld = st_medallion(cx, cy, rx, ry)
+    m, fld = st_shaped_medallion(shape, cx, cy, rx, ry, ph)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
     o.append(st_clip_poly(uid + "v", fld, hk["field"](fld, "tall") + st_rim(fld, hk.get("rim", 14.))))
@@ -1760,7 +1971,17 @@ def st_tall(w, h, seed, hk):
         o.append(hk["banner"](centre, bh))
     elif hk.get("motto"):
         o.append(st_letter(hk["motto"], bh * .55, centre=centre[4:-4], fit=_m.dist(centre[4], centre[-5]) * .92))
-    o.append(st_arms(cx, aby, arx, ary))
+    if hk.get("dedication"):
+        o.append(st_arms(cx, aby, arx, ary))
+    else:
+        # not a front: a small inlaid cartouche carries the page's own device instead of the arms
+        em, efl = st_medallion(cx, aby, arx * .78, ary * .78)
+        o.append(em)
+        o.append(f'<path d="{st_poly_d(efl)}" fill="url(#s2o)" stroke="none"/>')
+        if hk.get("egg"):
+            ecv = StCanvas()
+            hk["egg"](ecv, cx, aby, ary * .62)
+            o.append(ecv.svg())
     o.append(st_pedestal(0, py, w, ped_h, seed, hk, uid))
     return "".join(o)
 
@@ -1775,7 +1996,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h < 110:
+    if h <= 72 and w <= 110 and hk.get("device", True):
+        body = st_device(w, h, seed, hk)
+    elif h < 110:
         body = st_band(w, h, seed, hk)
     elif h <= 260:
         body = st_medium(w, h, seed, hk)
@@ -1788,7 +2011,7 @@ def _st_plate(w, h, seed, hk):
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7
-    hk = dict(field=lambda fld, mode: vignette(fld, mode, seed), egg=egg_cymbal, arch=True, cw=.27,
+    hk = dict(field=lambda fld, mode: trio(fld, mode, seed), egg=egg_cymbal, shape="irregular", dedication=True, cw=.27,
               aspect=1.9, rmin=9., rmax=30.,
               banner=swing_on_ribbon,
               tablet=lambda tx, ty, tw, th: keyboard(tx + 1, ty + 1, tw - 2, th - 2))

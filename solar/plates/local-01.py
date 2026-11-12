@@ -1468,6 +1468,76 @@ def st_arch_medallion(cx, top, bot, half):
     return "".join(o), st_arch(cx, top + 1.2, bot - 1.2, half - 1.2, 72)
 
 
+def st_shape_pts(shape, cx, cy, rx, ry, g=0., n=120, ph=0.):
+    """The outline of a shaped panel grown outward by g: oval, roundel, arch or irregular."""
+    if shape == "arch":
+        return st_arch(cx, cy - ry - g, cy + ry + g, rx + g, max(24, n // 2))
+    if shape == "roundel":
+        rx = ry = min(rx, ry)
+    pts = []
+    for i in range(n):
+        t = _TAU * i / n
+        k = 1.
+        if shape == "irregular":
+            k = 1 + .07 * _m.sin(5 * t + ph) + .035 * _m.sin(9 * t + 2 * ph) + .02 * _m.cos(13 * t)
+        pts.append((cx + (rx * k + g) * _m.cos(t), cy + (ry * k + g) * _m.sin(t)))
+    return pts
+
+
+def st_shape_in(shape, x, y, cx, cy, rx, ry, g=0., ph=0.):
+    if shape == "arch":
+        if y >= cy - ry + rx:
+            return abs(x - cx) < rx + g and y < cy + ry + g
+        return _m.hypot(x - cx, y - (cy - ry + rx)) < rx + g
+    if shape == "roundel":
+        rx = ry = min(rx, ry)
+    t = _m.atan2((y - cy) / max(ry, 1), (x - cx) / max(rx, 1))
+    k = 1.
+    if shape == "irregular":
+        k = 1 + .07 * _m.sin(5 * t + ph) + .035 * _m.sin(9 * t + 2 * ph) + .02 * _m.cos(13 * t)
+    return ((x - cx) / (rx * k + g)) ** 2 + ((y - cy) / (ry * k + g)) ** 2 < 1
+
+
+def st_shaped_medallion(shape, cx, cy, rx, ry, ph=0.):
+    """A shaped inlaid panel: black bed, wire, beads, white fillet. -> (svg, field polygon)."""
+    if shape == "oval":
+        return st_medallion(cx, cy, rx, ry)
+    P = lambda g, n=120: st_poly_d(st_shape_pts(shape, cx, cy, rx, ry, g, n, ph))
+    o = [f'<path d="{P(7)}" fill="#000" stroke="none"/>', st_wire(P(5.5)), st_beads(P(1.5, 180), 3.5, 1.),
+         f'<path d="{P(-.5)}" fill="none" stroke="#fff" stroke-width="1"/>']
+    return "".join(o), st_shape_pts(shape, cx, cy, rx, ry, -1.2, 120, ph)
+
+
+def st_dedication(cx, foot, hh):
+    """The small Somaster dedication cartouche at a front vignette's foot (about 30 px)."""
+    return st_arms(cx, foot - hh / 2, hh * .5, hh * .5, mantling=True)
+
+
+def st_device(w, h, seed, hk):
+    """A marginal device (a 40-60 px roundel): the subject in a beaded roundel, the corners of
+    the block cut away to the matte with a leaf in each spandrel."""
+    o = [st_matte(st_rect_d(0, 0, w, h))]
+    cx, cy = w / 2, h / 2
+    r = min(w, h) / 2 - (4.5 if min(w, h) < 64 else 7.5)
+    cv = StCanvas()
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            px, py = cx + sx * (w / 2 - 3), cy + sy * (h / 2 - 3)
+            a = _m.atan2(cy - py, cx - px)
+            if _m.hypot(px - cx, py - cy) > r + 9:
+                L = max(4., (_m.hypot(px - cx, py - cy) - r - 6) * 1.1)
+                _leaf(cv, px, py, a, L, L * .42, .5 * sx * sy, .35, _rnd.Random(seed + sx * 3 + sy))
+    o.append(cv.svg())
+    o.append(st_wire(st_rect_d(1.5, 1.5, w - 3, h - 3)))
+    o.append(f'<path d="{st_ell_d(cx, cy, r + 3.5, r + 3.5)}" fill="#000"/>'
+             f'<path d="{st_ell_d(cx, cy, r + 2, r + 2)}" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="1 1.5"/>'
+             f'<path d="{st_ell_d(cx, cy, r - .2, r - .2)}" fill="none" stroke="#fff" stroke-width="1"/>')
+    fld = _C._ell_pts(cx, cy, r - .9, r - .9, 72)[:-1]
+    o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
+    o.append(st_clip_poly(f"s2d{w}x{h}v", fld, hk["field"](fld, "device") + st_rim(fld, 2.5)))
+    return "".join(o)
+
+
 def st_clip_poly(cid, poly, body):
     return f'<clipPath id="{cid}"><path d="{_C._d(list(poly), True, 0)}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
 
@@ -2053,14 +2123,16 @@ def st_band(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2 + hk.get("dx", 0.), h / 2
-    ry = h / 2 - 8.5
+    ry = max(4., h / 2 - 8.5)
     rx = min(w * .2, max(ry * 1.5, ry * hk.get("aspect", 1.7)))
+    if h < 40:
+        ins = 5.
     fx0, fy0, fx1, fy1 = ins, ins, w - ins, h - ins
 
     def inside(x, y):
         return fx0 - 4 < x < fx1 + 4 and fy0 - 2 < y < fy1 + 2 and not _in_ell(x, y, cx, cy, rx + 12, ry + 12)
     gh = fy1 - fy0
-    F = ScrollField(inside, rmin=max(4.5, gh * .12), rmax=gh * .32, seed=seed, slack=.9)
+    F = ScrollField(inside, rmin=max(3.5 if h < 40 else 4.5, gh * .12), rmax=max(4.6, gh * .32), seed=seed, slack=.9)
     rng = _rnd.Random(seed)
     for sd in (-1, 1):
         L = (w / 2 - rx - 14) * 1.05
@@ -2075,7 +2147,7 @@ def st_band(w, h, seed, hk):
     F.grow(8)
     F.fill(fx0 - 4, fy0 - 2, fx1 - fx0 + 8, fy1 - fy0 + 4, 3., hk.get("max_items", 160))
     o.append(_scroll_layer(F, f"s2b{w}x{h}", 0, 0, w, h, hk.get("egg"), 1))
-    o.append(st_border(w, h))
+    o.append(st_border(w, h, 1.5 if h < 40 else 3.))
     m, fld = st_medallion(cx, cy, rx, ry)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
@@ -2089,12 +2161,19 @@ def st_medium(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2, h / 2
+    shape = hk.get("shape", "oval")
+    ded = 15. if hk.get("dedication") else 0.
     ry = h / 2 - ins - 6
     rx = min(w * hk.get("cw", .21), ry * hk.get("aspect", 1.45))
+    if shape == "roundel":
+        rx = ry
+    if shape == "arch":
+        rx = min(rx, ry * 1.1)
+    ph = (seed % 97) * .07
     fx0, fy0, fx1, fy1 = ins, ins, w - ins, h - ins
 
     def inside(x, y):
-        return fx0 - 4 < x < fx1 + 4 and fy0 - 3 < y < fy1 + 3 and not _in_ell(x, y, cx, cy, rx + 13, ry + 13)
+        return fx0 - 4 < x < fx1 + 4 and fy0 - 3 < y < fy1 + 3 and not st_shape_in(shape, x, y, cx, cy, rx, ry, 13, ph) and not (ded and abs(x - cx) < 34 and y > h - ins - 2 * ded - 6)
     gh = fy1 - fy0
     F = ScrollField(inside, rmin=max(6., gh * .055), rmax=min(26., gh * .2), seed=seed, slack=.88)
     rng = _rnd.Random(seed)
@@ -2111,10 +2190,12 @@ def st_medium(w, h, seed, hk):
     F.fill(fx0 - 4, fy0 - 3, fx1 - fx0 + 8, fy1 - fy0 + 6, 4., hk.get("max_items", 260))
     o.append(_scroll_layer(F, f"s2m{w}x{h}", 0, 0, w, h, hk.get("egg"), 2))
     o.append(st_border(w, h))
-    m, fld = st_medallion(cx, cy, rx, ry)
+    m, fld = st_shaped_medallion(shape, cx, cy, rx, ry, ph)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
     o.append(st_clip_poly(f"s2m{w}x{h}v", fld, hk["field"](fld, "medium") + st_rim(fld, hk.get("rim", 9.))))
+    if ded:
+        o.append(st_dedication(cx, h - 3, 2 * ded))
     if hk.get("crest"):
         o.append(hk["crest"](cx, cy - ry - 2, min(14., ins + 4), "medium"))
     return "".join(o)
@@ -2168,12 +2249,17 @@ def st_tall(w, h, seed, hk):
     ped_h = min(max(h * .13, 40), 62.)
     fz = min(max(h * .09, 30), 50.) if (h >= 440 and hk.get("frieze", True)) else 0.
     py = h - ped_h - fz - ins * (1 if fz else .6)
-    arch = hk.get("arch", False)
+    shape = hk.get("shape") or ("arch" if hk.get("arch") else "oval")
+    arch = shape == "arch"
     rx = w * hk.get("cw", .3)
     top = ins + 12
     bot = py - (62 if py > 300 else 46)
     ry = (bot - top) / 2
+    if shape == "roundel":
+        rx = ry = min(rx * 1.25, ry)
+        top = bot - 2 * ry
     cx, cy = w / 2, top + ry
+    ph = (seed % 97) * .07
     ay = bot + 4
     ary = min(26., (py - ay) * .4)
     arx = ary * 1.25
@@ -2182,12 +2268,7 @@ def st_tall(w, h, seed, hk):
     def inside(x, y):
         if not (ins - 4 < x < w - ins + 4 and ins - 3 < y < py - 3):
             return False
-        if arch:
-            if abs(x - cx) < rx + 13 and y > top - 13 + rx and y < bot + 13:
-                return False
-            if _in_ell(x, y, cx, top + rx, rx + 13, rx + 13) and y <= top + rx:
-                return False
-        elif _in_ell(x, y, cx, cy, rx + 13, ry + 13):
+        if st_shape_in(shape, x, y, cx, cy, rx, ry, 13, ph):
             return False
         if abs(x - cx) < rx * 1.05 + 10 and bot - 4 < y < bot + 16:
             return False
@@ -2222,10 +2303,7 @@ def st_tall(w, h, seed, hk):
         _C.palmette(w / 2, fy0 + 1, fh * .8, False, seed, cv=cvp)
         o.append(cvp.svg())
     o.append(st_border(w, h))
-    if arch:
-        m, fld = st_arch_medallion(cx, top, bot, rx)
-    else:
-        m, fld = st_medallion(cx, cy, rx, ry)
+    m, fld = st_shaped_medallion(shape, cx, cy, rx, ry, ph)
     o.append(m)
     o.append(f'<path d="{st_poly_d(fld)}" fill="#fff" stroke="none"/>')
     o.append(st_clip_poly(uid + "v", fld, hk["field"](fld, "tall") + st_rim(fld, hk.get("rim", 14.))))
@@ -2238,7 +2316,17 @@ def st_tall(w, h, seed, hk):
         o.append(hk["banner"](centre, bh))
     elif hk.get("motto"):
         o.append(st_letter(hk["motto"], bh * .55, centre=centre[4:-4], fit=_m.dist(centre[4], centre[-5]) * .92))
-    o.append(st_arms(cx, aby, arx, ary))
+    if hk.get("dedication"):
+        o.append(st_arms(cx, aby, arx, ary))
+    else:
+        # not a front: a small inlaid cartouche carries the page's own device instead of the arms
+        em, efl = st_medallion(cx, aby, arx * .78, ary * .78)
+        o.append(em)
+        o.append(f'<path d="{st_poly_d(efl)}" fill="url(#s2o)" stroke="none"/>')
+        if hk.get("egg"):
+            ecv = StCanvas()
+            hk["egg"](ecv, cx, aby, ary * .62)
+            o.append(ecv.svg())
     o.append(st_pedestal(0, py, w, ped_h, seed, hk, uid))
     return "".join(o)
 
@@ -2253,7 +2341,9 @@ def st_plate(w, h, seed, hk):
 
 
 def _st_plate(w, h, seed, hk):
-    if h < 110:
+    if h <= 72 and w <= 110 and hk.get("device", True):
+        body = st_device(w, h, seed, hk)
+    elif h < 110:
         body = st_band(w, h, seed, hk)
     elif h <= 260:
         body = st_medium(w, h, seed, hk)
@@ -2267,7 +2357,7 @@ def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 31 * int(ctx.get("sheet", 0) or 0)
     subj = _subject(ctx)
-    hk = dict(field=lambda fld, mode: _field(fld, mode, seed, subj), egg=egg_sticks,
+    hk = dict(field=lambda fld, mode: _field(fld, mode, seed, subj), egg=egg_sticks, shape="oval",
               aspect=(1.5 if subj == "nocino" else 1.8), cw=.27, rmin=9., rmax=30.,
               motto=("NOCINO · NEW DEAL · 2026" if subj == "nocino" else "PELICAN · PUBLIC COAST · CANNON BEACH"),
               tablet_lines=(["GREEN-WALNUT LIQUEUR", "SMALL BATCH · PORTLAND"] if subj == "nocino"

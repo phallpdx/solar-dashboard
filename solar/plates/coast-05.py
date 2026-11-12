@@ -11,8 +11,8 @@ import random
 import engraving_codex as C
 
 # ==== VIGNETTE KIT BEGIN (batch 6) ====
-# Shared by the batch-6 plates: a free-standing engraved vignette on a light stippled ground (no
-# black field, no generic scrollwork). The scene is clipped to a shaped silhouette (oval, roundel,
+# Shared by the batch-6 plates: a free-standing engraved vignette on a transparent ground (no
+# black field, no generic scrollwork; the frame's engraved ground shows through). The scene is clipped to a shaped silhouette (oval, roundel,
 # arch, lunette, banner or a ragged Bewick edge), optionally ringed by a fine double rule; the page's
 # own motifs make any frame. House Canvas emitted at half-px precision; drawn capitals for mottoes;
 # Parker's figures for Easter eggs; Parker's arms (solar/arms.py) for section fronts.
@@ -570,21 +570,6 @@ def _hash(*a):
     return sum((i + 1) * ord(c) for i, c in enumerate("|".join(map(str, a)))) % 99991
 
 
-def vk_ground(w, h, uid, dense=False):
-    """the light ground the vignette stands on: a fine random stipple, never bare paper"""
-    T = 30
-    rng = _r.Random(_hash(uid))
-    g = 4 if dense else 5
-    pts = [(int(i * g + rng.uniform(0, g - 1)), int(j * g + rng.uniform(0, g - 1)))
-           for i in range(T // g) for j in range(T // g) if rng.random() < .82]
-    d = "".join(f"M{x},{y}h1v1h-1z" for x, y in pts)
-    pid = f"vkL{uid}"
-    return (f'<defs><pattern id="{pid}" width="{T}" height="{T}" patternUnits="userSpaceOnUse">'
-            f'<path d="{d}" fill="#000"{_CRS}/></pattern></defs>'
-            f'<path d="M0,0h{_nn(w)}v{_nn(h)}h-{_nn(w)}z" fill="#fff"/>'
-            f'<path d="M0,0h{_nn(w)}v{_nn(h)}h-{_nn(w)}z" fill="url(#{pid})"/>')
-
-
 def ragged(poly, amp, seed, cut=None):
     """roughen a silhouette the way a Bewick vignette frays: low-frequency wander plus short
     breaks; cut(x, y) -> bool keeps chosen stretches of the edge clean (e.g. a ruled top)"""
@@ -608,12 +593,14 @@ def ragged(poly, amp, seed, cut=None):
 
 
 def vignette(w, h, uid, sil, body, rule=None, extra="", dense=False):
-    """assemble: light ground over the whole w x h, the scene clipped to the silhouette, a fine
-    double rule round it if asked (rule = the clean silhouette), then any over-laid ornament"""
-    o = [vk_ground(w, h, uid, dense)]
-    d = _dd(sil, True, .1)
-    o.append(f'<path d="{d}" fill="#fff" stroke="none"/>')
-    o.append(clip(f"vkC{uid}", d, _slim(body)))
+    """assemble: the scene clipped to the silhouette (outside it the plate is transparent, so the
+    frame's own engraved ground shows through and the vignette dissolves into it), a fine double
+    rule round it if asked (rule = the clean silhouette), then any over-laid ornament"""
+    o = []
+    if sil:
+        d = _dd(sil, True, .1)
+        o.append(f'<path d="{d}" fill="#fff" stroke="none"/>')
+        o.append(clip(f"vkC{uid}", d, _slim(body)))
     if rule:
         r1 = _dd(rule + [rule[0]], tol=.1)
         o.append(f'<path d="{r1}" fill="none" stroke="#000" stroke-width="1.5"/>')

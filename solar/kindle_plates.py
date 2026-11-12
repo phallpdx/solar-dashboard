@@ -12,6 +12,7 @@ import os
 import re
 import sys
 import time
+import zlib
 
 from . import plate_slots
 
@@ -519,9 +520,27 @@ def _fills(pages, out, od, base, date_iso, exe):
 
 
 def MOTIF_OF(slug):
-    """The centre motif of a section's field (the studio's set until each section has its own)."""
-    import zlib
-    return ("fleuron", "shell", "rosette")[zlib.crc32(slug.split("-")[0].encode()) % 3]
+    """The centre motif of a section's field, by name (resolved in the worker by _motif): the section's own
+    when the studio's field module carries it (SECTION_MOTIFS[section], a callable(cv, x, y, size)), else
+    one of its stock set, fixed per section."""
+    sec = slug.split("-")[0]
+    if _section_motif(sec):
+        return "sec:" + sec
+    return ("fleuron", "shell", "rosette")[zlib.crc32(sec.encode()) % 3]
+
+
+def _section_motif(sec):
+    try:
+        from .frames import field as FF
+    except Exception:  # noqa: BLE001
+        return None
+    m = getattr(FF, "SECTION_MOTIFS", None) or getattr(FF.scroll, "SECTION_MOTIFS", None) or {}
+    f = m.get(sec)
+    return f if callable(f) else None
+
+
+def _motif(name):
+    return (_section_motif(name[4:]) or "fleuron") if name.startswith("sec:") else name
 
 
 _WPG = []
@@ -548,6 +567,46 @@ def _worker_page(exe):
     return _WPG[0]
 
 
+FIELD_MAX = 100 * 1024
+FIELD_GREYS = ((0, 136, 204, 255), (0, 204, 255), (0, 255))   # tried in turn until the sheet fits FIELD_MAX
+
+
+def _field_png(im):
+    """The field as the smallest-level PNG that fits: 4 greys (2-bit), else 3 greys (2-bit), else 1 bit. Studio
+    greys map to #ccc/#bbb -> light, #aaa/#888 -> mid. Rows unfiltered with Z_FILTERED deflate: on this art that
+    beats PIL's adaptive filters by ~12%."""
+    import numpy as np
+    import struct
+    v = np.asarray(im.convert("L"))
+    h, w = v.shape
+    out = b""
+    for pal in FIELD_GREYS:
+        if len(pal) == 4:
+            idx = np.select([v < 68, v <= 170, v < 230], [0, 1, 2], 3)
+        elif len(pal) == 3:
+            idx = np.select([v < 102, v < 230], [0, 1], 2)
+        else:
+            idx = (v >= 128).astype(np.uint8)
+        idx = idx.astype(np.uint8)
+        bits = 1 if len(pal) == 2 else 2
+        per = 8 // bits
+        a = np.pad(idx, ((0, 0), (0, (-w) % per)))
+        packed = np.zeros((h, a.shape[1] // per), np.uint8)
+        for k in range(per):
+            packed |= a[:, k::per] << (8 - bits * (k + 1))
+        raw = np.concatenate([np.zeros((h, 1), np.uint8), packed], axis=1).tobytes()
+        c = zlib.compressobj(9, zlib.DEFLATED, 15, 9, zlib.Z_FILTERED)
+        z = c.compress(raw) + c.flush()
+
+        def chunk(t, d):
+            return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+        out = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, bits, 3, 0, 0, 0))
+               + chunk(b"PLTE", b"".join(bytes((g, g, g)) for g in pal)) + chunk(b"IDAT", z) + chunk(b"IEND", b""))
+        if len(out) <= FIELD_MAX:
+            break
+    return out
+
+
 def _field_svg(job):
     """One sheet's ground: the studio's scroll field with a hole round every white box (its box plus the 4 px
     inlay), and the bright double inlay edge of each box. Rasterised later; the SVG is never shipped."""
@@ -557,22 +616,25 @@ def _field_svg(job):
         B = 4
         holes = [(max(0, x - B), max(0, y - B), min(618, x + w + B) - max(0, x - B), min(714, y + h + B) - max(0, y - B))
                  for x, y, w, h, ot, ob in edges]
-        fsv = FF.field(618, 714, holes, seed, motif=motif, border=True)
+        fsv = FF.field(618, 714, holes, seed, motif=_motif(motif), border=True)
         parts = []
         for k, (x, y, w, h, ot, ob) in enumerate(edges):
             esv = KP.panel_edge(w, h, ot, ob, seed + k, b=B)
             esv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", esv)
             parts.append(re.sub(r"<svg\b", f'<svg x="{x - B}" y="{y - B}"', esv, count=1))
         fsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", fsv)
-        svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714">' + fsv + "".join(parts) + "</svg>")
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714" shape-rendering="crispEdges">'
+               + fsv + "".join(parts) + "</svg>")   # crisp: no anti-alias greys, so the four levels below are exact
         import io
         from PIL import Image
         pg = _worker_page(exe)
         pg.set_content('<!doctype html><html style="background:transparent"><body style="margin:0;background:#fff">' + svg + "</body></html>")
-        # one bit at 2x, like the Evening's art: the field is pure line and punch, and a sheet comes to 60-90 KB
-        # (16 greys cost 300 KB). Opaque: the holes print white under the white panels anyway.
+        # four greys at 2x (white, light, mid, black): the studio's silver modelling survives, in a 2-bit PNG.
+        # A sheet over FIELD_MAX falls back to three greys, then to one bit. Opaque: the holes print white under
+        # the white panels anyway.
         im = Image.open(io.BytesIO(pg.screenshot(clip={"x": 0, "y": 0, "width": 618, "height": 714}))).convert("L")
-        im.point(lambda v: 255 if v >= 128 else 0).convert("1").save(os.path.join(od, f"fill-{slug}-{sheet}.png"), optimize=True)
+        with open(os.path.join(od, f"fill-{slug}-{sheet}.png"), "wb") as f:
+            f.write(_field_png(im))
         return True
     except Exception as e:  # noqa: BLE001
         print(f"kindle_plates: {slug}~{sheet + 1}: field failed ({e!r})", file=sys.stderr)

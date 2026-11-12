@@ -2182,10 +2182,11 @@ PAGER_JS = r"""
             if (Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t) > (hasP ? 0 : -10)) {   /* overlapping (or, before .kpanel, nearly touching): one panel */
               A.t = Math.min(A.t, Bq.t); A.d = Math.max(A.d, Bq.d); kr.splice(m2, 1); merged = true; break; } } }
         var mw = main.offsetWidth, kl = [];
-        for (var rb = 0; rb < kr.length; rb++) { var L0 = kr[rb], t0 = L0.t;   /* never across a sheet cut: each sheet's part is its own label */
+        for (var rb = 0; rb < kr.length; rb++) { var L0 = kr[rb], t0 = L0.t, kend = 0;   /* never across a sheet cut: each sheet's part is its own label */
           L0.l = Math.max(L0.l, -1.5); L0.r = Math.min(L0.r, mw + 1.5);
-          for (var cq = 1; cq < cuts.length - 1; cq++) if (t0 < cuts[cq] - 4 && L0.d > cuts[cq] + 4) { kl.push([L0.l, t0, L0.r, cuts[cq] - 2]); t0 = Math.max(tops[cq] + 2, t0); }
-          kl.push([L0.l, t0, L0.r, L0.d]); }
+          for (var cq = 1; cq < cuts.length - 1; cq++) if (t0 < cuts[cq] - 4 && L0.d > cuts[cq] + 4) { kl.push([L0.l, t0, L0.r, cuts[cq] - 2]); t0 = Math.max(tops[cq] + 2, t0);
+            if (L0.d - t0 < 10) { kend = 1; break; } }   /* only the panel's foot padding is past the cut: no sliver atop the next sheet */
+          if (!kend) kl.push([L0.l, t0, L0.r, L0.d]); }
         var kh = '';
         for (var ri = 0; ri < kl.length; ri++) kh += '<i class="kl" style="left:' + Math.floor(kl[ri][0]) + 'px;top:' + Math.floor(kl[ri][1]) + 'px;width:' + Math.ceil(kl[ri][2] - kl[ri][0]) + 'px;height:' + Math.ceil(kl[ri][3] - kl[ri][1]) + 'px"></i>';
         var kq = main.querySelectorAll('img,.kchart,.bars,.rain,.mix,table,figure,svg');
@@ -2419,7 +2420,7 @@ PAGER_JS = r"""
   layout();
   // The next page is fetched ahead into the browser cache. An offline copy
   // from an earlier version is removed.
-  var KART = ['orn/ground-%s.svg', 'orn/motif-%s' + (document.body.getAttribute('data-kbg') ? '.png' : '.svg')];   // a section's CSS-background art, warmed before entry
+  var KART = ['orn/motif-%s' + (document.body.getAttribute('data-kbg') ? '.png' : '.svg')];   // a section's CSS-background art, warmed before entry
   function warm(u) { if (!u) return; try { var x = new XMLHttpRequest(); x.open('GET', u, true);
     x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
       for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); }

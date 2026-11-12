@@ -375,6 +375,10 @@ async def _run(out, base, exe):
             stats["plates"] = await _plates(br, out, base)
         except Exception as e:  # noqa: BLE001
             print(f"kindle_fast: plates left as SVG ({e!r})", file=sys.stderr)
+        try:
+            stats["letters"] = await _letters(br, out, base)
+        except Exception as e:  # noqa: BLE001
+            print(f"LETTERING FALLBACK: headlines left as SVG, not PNG ({e!r})", file=sys.stderr)
         css_path = os.path.join(out, "kindle.css")
         css = open(css_path, encoding="utf-8").read()
         sels = [_test_selector(_strip_comments(pre)) for pre, body, text in _split_rules(css)
@@ -699,3 +703,236 @@ def subset_fonts(out):
 
 if __name__ == "__main__":
     run(sys.argv[1])
+
+
+# ---------------------------------------------------------------- 5. hand-lettered headlines
+
+# Which elements are headlines: page and section titles, the titles inside a page, and story headlines (the news
+# pages, good news, science, the front page's leads). Lists of events, shows and records keep their type.
+LETTER_SEL = ("#kmain h2, #kmain h3.kfold, #kmain .sci-title, #kmain .poem-title, #kmain .story.headline b,"
+              " body[data-ksec=news] #kmain .story b, #kmain #good .story b, #kmain .kleads b")
+# Tags that may hold one (each is tagged for the measuring pass, then untagged unless it is one).
+_LET_TAG = re.compile(r'<(h2|h3|b)\b([^>]*)>')
+
+LETTER_CSS = """
+/* Hand-lettered headlines (solar/lettering.py): the drawing is the headline; the words stay in the page as plain
+   text, unseen, for the pager, search and a screen reader, and come back in type if the drawing does not load.
+   (No descendant rules here: a trailing * would cost every element on every page a style check.) */
+#kmain .klet{position:relative !important;overflow:visible !important}
+#kmain b.klet{display:block !important}
+#kmain .klet>.kltx{position:absolute !important;left:0;top:0;width:100%;height:100%;overflow:hidden;white-space:nowrap;text-align:left;margin:0 !important;padding:0 !important}
+#kmain .klet>.kltx{color:transparent !important;-webkit-text-fill-color:transparent !important}
+#kmain .klet>img.kli{display:block !important;float:none !important;position:static !important;margin:0 !important;padding:0 !important;
+  border:0 !important;max-width:none !important;max-height:none !important;min-width:0 !important;min-height:0 !important;
+  background:none !important;box-shadow:none !important;filter:none !important;vertical-align:top !important}
+#kmain .klet.kletx>.kltx{position:static !important;overflow:visible;width:auto !important;height:auto !important;white-space:normal !important;
+  font-size:inherit !important;line-height:inherit !important;letter-spacing:normal !important}
+#kmain .klet.kletx>.kltx{color:#000 !important;-webkit-text-fill-color:#000 !important}
+#kmain .klet.kletx>.kli{display:none !important}
+"""
+
+LETTER_JS = r"""(sel) => {
+  const out = {};
+  const want = new Set(Array.from(document.querySelectorAll(sel)));
+  for (const el of document.querySelectorAll('[data-kl]')) {
+    if (!want.has(el)) continue;
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!t) continue;
+    const cs = getComputedStyle(el), d0 = el.style.display;
+    el.style.display = 'block';
+    const w = el.getBoundingClientRect().width - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    el.style.display = d0;
+    let kind = 'title';
+    if (el.matches('.kfname')) kind = 'section';
+    else if (el.matches('.ktochead')) kind = 'contents';
+    else if (el.matches('h3.kfold')) kind = 'sub';
+    else if (el.matches('.sci-title')) kind = 'science';
+    else if (el.matches('.poem-title')) kind = 'poem';
+    else if (el.matches('b')) kind = el.closest('.kleads') ? (el.parentNode === el.closest('.kleads').firstElementChild ? 'lead' : 'leads') : 'story';
+    out[el.getAttribute('data-kl')] = { t: t, w: Math.floor(w), fs: parseFloat(cs.fontSize), center: cs.textAlign === 'center', kind: kind };
+  }
+  return out;
+}"""
+
+# kind: (size the lettering is drawn at, flourish under it)
+LETTER_KINDS = {"section": (44, True), "contents": (38, True), "title": (31, True), "poem": (30, True),
+                "sub": (26, False), "science": (27, False), "lead": (29, False), "leads": (21, False), "story": (21, False)}
+
+
+def letter(out, exe=None):
+    """Hand-letter every headline of the Morning pages in <out>. Run after the pages are written and before the
+    plates are cut (the lettering changes the page heights the plates are fitted to). Never fatal: a page, or a
+    headline, that cannot be lettered keeps its type."""
+    t0 = time.time()
+    try:
+        from . import lettering
+        import asyncio
+        from playwright.async_api import async_playwright  # noqa: F401  -- only to know it is there
+    except Exception as e:  # noqa: BLE001
+        print(f"LETTERING FALLBACK: every headline left in Literata ({e!r})", file=sys.stderr)
+        return
+    tagged = {}
+    for p in _pages(out):   # tag every candidate, so the browser's answer can be found again in the source
+        fp = os.path.join(out, p + ".html")
+        s = open(fp, encoding="utf-8").read()
+        m = re.search(r'<main id="kmain">', s)
+        if not m:
+            continue
+        n = [0]
+
+        def tag(mm, n=n):
+            n[0] += 1
+            return f'<{mm.group(1)}{mm.group(2)} data-kl="{n[0]}">'
+        tagged[p] = (s, s[:m.end()] + _LET_TAG.sub(tag, s[m.end():]))
+        with open(fp, "w", encoding="utf-8") as f:
+            f.write(tagged[p][1])
+    css_path = os.path.join(out, "kindle.css")
+    css0 = open(css_path, encoding="utf-8").read()
+    with open(css_path, "w", encoding="utf-8") as f:
+        f.write(css0 + LETTER_CSS)
+    srv, base = _serve(out)
+    try:
+        found = asyncio.run(_letter_measure(base, list(tagged), exe))
+    except Exception as e:  # noqa: BLE001
+        found = {}
+        print(f"LETTERING FALLBACK: every headline left in Literata, the measuring pass failed ({e!r})", file=sys.stderr)
+    finally:
+        srv.shutdown()
+    od = os.path.join(out, "orn")
+    os.makedirs(od, exist_ok=True)
+    done, kept, made = 0, 0, set()
+    untag = re.compile(r' data-kl="\d+"')
+    for p, (orig, s) in tagged.items():
+        heads = found.get(p) or {}
+        res, pos = [], 0
+        for m in re.finditer(r'<(h2|h3|b)\b([^>]*) data-kl="(\d+)">', s):
+            if m.start() < pos:
+                continue
+            res.append(untag.sub("", s[pos:m.start()]))
+            pos = m.end()
+            h = heads.get(m.group(3))
+            close = s.find(f"</{m.group(1)}>", m.end()) if h and h["w"] >= 150 else -1
+            if h and 0 < h["w"] < 150:   # (0: not shown on this page at all)
+                kept += 1
+                print(f"LETTERING FALLBACK: {p}: {h['t']!r} left in Literata (only {h['w']}px wide)", file=sys.stderr)
+            if close < 0:
+                res.append(f"<{m.group(1)}{m.group(2)}>")
+                continue
+            size, fl = LETTER_KINDS.get(h["kind"], (30, False))
+            try:
+                svg = lettering.headline(h["t"], h["w"], size, align="center" if h["center"] else "left",
+                                         flourish=None if fl else False, tight=True)
+            except Exception as e:  # noqa: BLE001  -- a character the hand has no letter for: keep the type
+                kept += 1
+                print(f"LETTERING FALLBACK: {p}: {h['t']!r} left in Literata ({e})", file=sys.stderr)
+                res.append(f"<{m.group(1)}{m.group(2)}>")
+                continue
+            import hashlib
+            name = "let-" + hashlib.sha1(svg.encode()).hexdigest()[:12] + ".svg"
+            if name not in made:
+                with open(os.path.join(od, name), "w", encoding="utf-8") as f:
+                    f.write(svg)
+                made.add(name)
+            w, hh = (int(v) for v in _intrinsic(svg))
+            attrs = m.group(2)
+            if re.search(r'\sclass="', attrs):
+                attrs = re.sub(r'\sclass="([^"]*)"', lambda c: f' class="{c.group(1)} klet"', attrs, count=1)
+            else:
+                attrs += ' class="klet"'
+            # The unseen words sit in a box exactly over the drawing, set large and spaced wide so their line fills
+            # it: the page lays its white label behind text by the words' line boxes, so the label hugs the
+            # letters (and joins the kicker and dek beside them) instead of spanning the whole column.
+            ml = "margin-left:auto !important;margin-right:auto !important;" if h["center"] else ""
+            kx = f"left:calc(50% - {w / 2:g}px);" if h["center"] else ""
+            res.append(f'<{m.group(1)}{attrs}><span class="kltx" style="{kx}width:{w}px;font-size:{max(8, round(hh / 1.3))}px;'
+                       f'line-height:{hh}px;letter-spacing:{w}px">{_html.escape(h["t"], quote=False)}</span>'
+                       f'<img class="kli" src="orn/{name}" width="{w}" height="{hh}" style="{ml}width:{w}px !important;height:{hh}px !important" alt=""'
+                       f' onerror="this.parentNode.className+=\' kletx\'"></{m.group(1)}>')
+            pos = close + len(m.group(1)) + 3
+            done += 1
+        res.append(untag.sub("", s[pos:]))
+        new = "".join(res)
+        with open(os.path.join(out, p + ".html"), "w", encoding="utf-8") as f:
+            f.write(new if heads or new != s else orig)
+    print(f"kindle_fast: lettered {done} headlines ({len(made)} drawings, {kept} kept in type) in {time.time() - t0:.1f}s")
+
+
+async def _letter_measure(base, pages, exe):
+    from playwright.async_api import async_playwright
+    async with async_playwright() as pw:
+        br = await pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
+
+        async def one(p):
+            cx = await br.new_context(viewport={"width": VW, "height": VH}, device_scale_factor=DPR, has_touch=True)
+            try:
+                pg = await cx.new_page()
+                await pg.goto(base + p + ".html", wait_until="load")
+                await pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+                return await pg.evaluate(LETTER_JS, LETTER_SEL)
+            finally:
+                await cx.close()
+        got = await _pool(list(pages), one)
+        await br.close()
+    return got
+
+
+async def _letters(br, out, base):
+    """A page's lettered headlines as one 16-grey PNG at exactly their shown sizes x2, stacked: one request and one
+    decode per page however many headlines it has (seven separate pictures made a news page turn measurably
+    slower). Each <img> shows its own band of the sheet (srcset 2x, object-fit:none, object-position). The sheet
+    is ink on a 16-step alpha, not on white, so a band wider than its letters never covers what is under it
+    (the section-front cartouche, its rules and hatching). A page whose sheet cannot be made keeps its SVGs."""
+    import io
+    from PIL import Image
+    IMG = re.compile(r'<img class="kli" src="orn/(let-[0-9a-f]+)\.svg" width="(\d+)" height="(\d+)" style="([^"]*)"')
+    per_page, jobs = {}, {}
+    for p in _pages(out):
+        got = IMG.findall(open(os.path.join(out, p + ".html"), encoding="utf-8").read())
+        if got:
+            per_page[p] = [(n, int(w), int(h)) for n, w, h, _ in got]
+            for n, w, h in per_page[p]:
+                jobs[n] = (w, h)
+    if not jobs:
+        return 0
+    cx = await br.new_context(device_scale_factor=DPR)
+    free = [await cx.new_page() for _ in range(WORKERS)]
+
+    async def one(name):
+        w, h = jobs[name]
+        pg = free.pop()
+        try:
+            await pg.set_viewport_size({"width": max(w, 16), "height": max(h, 16)})
+            await pg.set_content(f'<!doctype html><html style="background:transparent"><body style="margin:0;background:transparent">'
+                                 f'<img src="{base}orn/{name}.svg" width="{w}" height="{h}" style="display:block"></body></html>',
+                                 wait_until="load")
+            await pg.evaluate("() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))")
+            im = Image.open(io.BytesIO(await pg.screenshot(omit_background=True,
+                                                           clip={"x": 0, "y": 0, "width": w, "height": h}))).convert("RGBA")
+            return im if im.size == (w * DPR, h * DPR) else None
+        finally:
+            free.append(pg)
+    shots = await _pool(list(jobs), one)
+    await cx.close()
+    done = 0
+    for p, items in per_page.items():
+        if not all(shots.get(n) for n, _, _ in items):
+            continue
+        W = max(w for _, w, _ in items) * DPR
+        sheet = Image.new("RGBA", (W, sum(h for _, _, h in items) * DPR), (0, 0, 0, 0))
+        offs, y = [], 0
+        for n, w, h in items:
+            sheet.paste(shots[n], (0, y))
+            offs.append(y // DPR)
+            y += h * DPR
+        name = f"orn/lets-{p}.png"
+        buf = io.BytesIO()
+        sheet.save(buf, "PNG")
+        _png16(buf.getvalue(), os.path.join(out, name), opaque=False)
+        k = iter(offs)
+
+        def swap(m):
+            return (f'<img class="kli" src="{name}" srcset="{name} 2x" width="{m.group(2)}" height="{m.group(3)}"'
+                    f' style="{m.group(4)};object-fit:none;object-position:0 -{next(k)}px"')
+        _rewrite(os.path.join(out, p + ".html"), lambda s: IMG.sub(swap, s))
+        done += len(items)
+    return done

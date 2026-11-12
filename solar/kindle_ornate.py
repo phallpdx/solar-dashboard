@@ -92,10 +92,11 @@ SLOTS = {
 STATIC = {"resume": ("button", "body.kcontents #kmain .kresume", (526, 64), "")}
 
 # the type size each kind of hand-lettered headline stands in for (solar/lettering.py via kindle_fast.letter):
-# section title pages are display, page and card titles are headline, the cover's top lead is lead, story
-# headlines in lists are bold body
+# section title pages are display, page and card titles are headline, the cover's top lead is lead; story
+# headlines in lists stand in for bold body (17/25) and are drawn at 24, since a script's x-height is about half
+# its size: at 24 it matches the 17 px type's x-height and keeps to its 25 px line
 LETTER_SIZES = {"section": 48, "contents": 34, "title": 34, "poem": 34, "sub": 34, "science": 34,
-                "lead": 24, "leads": 17, "story": 17}
+                "lead": 24, "leads": 24, "story": 24}
 
 # the size each family is drawn at in the layout (CSS px); variable ones are measured per element
 NOMINAL = {"chip": (96, 26), "button": (200, 48), "sections": (120, 26), "runhead": (200, 26), "banner": (526, 80),

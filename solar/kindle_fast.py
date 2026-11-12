@@ -718,8 +718,7 @@ LETTER_CSS = """
 /* Hand-lettered headlines (solar/lettering.py): the drawing is the headline; the words stay in the page as plain
    text, unseen, for the pager, search and a screen reader, and come back in type if the drawing does not load.
    (No descendant rules here: a trailing * would cost every element on every page a style check.) */
-#kmain .klet{position:relative !important;overflow:visible !important}
-#kmain b.klet{display:block !important}
+#kmain .klet{position:relative !important;overflow:visible !important;display:flow-root !important}
 #kmain .klet>.kltx{position:absolute !important;left:0;top:0;width:100%;height:100%;overflow:hidden;white-space:nowrap;text-align:left;margin:0 !important;padding:0 !important}
 #kmain .klet>.kltx{color:transparent !important;-webkit-text-fill-color:transparent !important}
 #kmain .klet>img.kli{display:block !important;float:none !important;position:static !important;margin:0 !important;padding:0 !important;
@@ -739,6 +738,13 @@ LETTER_JS = r"""(sel) => {
     const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
     if (!t) continue;
     const cs = getComputedStyle(el), d0 = el.style.display;
+    // the type's own box: content height and where its first and last baselines fall in it
+    const r0 = el.getBoundingClientRect(), pt = parseFloat(cs.paddingTop) || 0, bt = parseFloat(cs.borderTopWidth) || 0;
+    const h0 = r0.height - pt - (parseFloat(cs.paddingBottom) || 0) - bt - (parseFloat(cs.borderBottomWidth) || 0);
+    const mk = () => { const m = document.createElement('span'); m.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;margin:0;padding:0'; return m; };
+    const m1 = mk(), m2 = mk(); el.insertBefore(m1, el.firstChild); el.appendChild(m2);
+    const top0 = r0.top + bt + pt, b0 = m1.getBoundingClientRect().top - top0, b1 = m2.getBoundingClientRect().top - top0;
+    m1.remove(); m2.remove();
     el.style.display = 'block';
     const w = el.getBoundingClientRect().width - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
     el.style.display = d0;
@@ -749,19 +755,38 @@ LETTER_JS = r"""(sel) => {
     else if (el.matches('.sci-title')) kind = 'science';
     else if (el.matches('.poem-title')) kind = 'poem';
     else if (el.matches('b')) kind = el.closest('.kleads') ? (el.parentNode === el.closest('.kleads').firstElementChild ? 'lead' : 'leads') : 'story';
-    out[el.getAttribute('data-kl')] = { t: t, w: Math.floor(w), fs: parseFloat(cs.fontSize), center: cs.textAlign === 'center', kind: kind };
+    out[el.getAttribute('data-kl')] = { t: t, w: Math.floor(w), fs: parseFloat(cs.fontSize), center: cs.textAlign === 'center', kind: kind,
+                                   h0: Math.round(h0 * 10) / 10, b0: Math.round(b0 * 10) / 10, b1: Math.round(b1 * 10) / 10 };
   }
   return out;
 }"""
 
 # kind: (size the lettering is drawn at, flourish under it)
-LETTER_KINDS = {"section": (44, True), "contents": (38, True), "title": (31, True), "poem": (30, True),
-                "sub": (26, False), "science": (27, False), "lead": (29, False), "leads": (21, False), "story": (21, False)}
+# (a flourish only where the page has room for one: the contents and the poem; a section front has its cartouche
+# and its emblem, and a page title
+# keeps to the height its type had, so the plates and fills below it keep theirs)
+LETTER_KINDS = {"section": (44, False), "contents": (38, True), "title": (31, False), "poem": (30, True),
+                "sub": (26, False), "science": (27, False), "lead": (29, False), "leads": (24, False), "story": (24, False)}
 try:  # the edition's one type scale (solar/kindle_ornate.py) sets the size each kind of headline is lettered at
     from .kindle_ornate import LETTER_SIZES as _LS
     LETTER_KINDS = {k: (_LS.get(k, v[0]), v[1]) for k, v in LETTER_KINDS.items()}
 except Exception:  # noqa: BLE001
     pass
+
+
+def _letter_fit(h, mt, hh, fs):
+    """Margins that set a drawing in the box its type had: its first baseline on the type's first baseline, its
+    ascenders free to rise a little above the box and its descenders to hang a little below it (as the type's own
+    do into the leading), so a lettered headline takes the room its type took and the page keeps its fit. A
+    flourish is always given its own room. Returns (margin_top, margin_bottom) in CSS px."""
+    off = h["b0"] - mt["b0"]
+    top = max(off, -0.15 * fs)
+    if mt["fl"] is not None:
+        keep = top + hh
+    else:
+        keep = top + min(hh, mt["b1"] + 0.22 * fs)
+    bottom = max(h["h0"] - 1, keep)   # (a pixel to spare: the drawing's own height is rounded up)
+    return round(top, 1), round(bottom - (top + hh), 1)
 
 
 def letter(out, exe=None):
@@ -825,8 +850,8 @@ def letter(out, exe=None):
                 continue
             size, fl = LETTER_KINDS.get(h["kind"], (30, False))
             try:
-                svg = lettering.headline(h["t"], h["w"], size, align="center" if h["center"] else "left",
-                                         flourish=None if fl else False, tight=True)
+                svg, mt = lettering.headline(h["t"], h["w"], size, align="center" if h["center"] else "left",
+                                             flourish=None if fl else False, tight=True, metrics=True)
             except Exception as e:  # noqa: BLE001  -- a character the hand has no letter for: keep the type
                 kept += 1
                 print(f"LETTERING FALLBACK: {p}: {h['t']!r} left in Literata ({e})", file=sys.stderr)
@@ -849,7 +874,9 @@ def letter(out, exe=None):
             # letters (and joins the kicker and dek beside them) instead of spanning the whole column.
             ml = "margin-left:auto !important;margin-right:auto !important;" if h["center"] else ""
             kx = f"left:calc(50% - {w / 2:g}px);" if h["center"] else ""
-            res.append(f'<{m.group(1)}{attrs}><span class="kltx" style="{kx}width:{w}px;font-size:{max(8, round(hh / 1.3))}px;'
+            m_top, m_bot = _letter_fit(h, mt, hh, h["fs"]) if "h0" in h else (0, 0)
+            ml += f"margin-top:{m_top:g}px !important;margin-bottom:{m_bot:g}px !important;"
+            res.append(f'<{m.group(1)}{attrs}><span class="kltx" style="{kx}top:{m_top:g}px;width:{w}px;height:{hh}px;font-size:{max(8, round(hh / 1.3))}px;'
                        f'line-height:{hh}px;letter-spacing:{w}px">{_html.escape(h["t"], quote=False)}</span>'
                        f'<img class="kli" src="orn/{name}" width="{w}" height="{hh}" style="{ml}width:{w}px !important;height:{hh}px !important" alt=""'
                        f' onerror="this.parentNode.className+=\' kletx\'"></{m.group(1)}>')

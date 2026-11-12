@@ -110,9 +110,20 @@ jobs:
 
       # Paged, e-ink friendly copy of the full dashboard for the Kindle browser.
       # If this fails, kindle.html stays the simple morning page.
+      # The Morning's engraved sheet grounds (solar/scroll.py field) are cached by layout: a sheet whose panels
+      # did not move since the last run reuses its field instead of composing it again (about 1-2 s a sheet).
+      - name: Restore the engraved field cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/solar-field
+          key: solar-field-${{ hashFiles('solar/scroll.py') }}-${{ github.run_id }}
+          restore-keys: |
+            solar-field-${{ hashFiles('solar/scroll.py') }}-
+            solar-field-
+
       - name: Build Kindle pages
         continue-on-error: true
-        timeout-minutes: 8
+        timeout-minutes: 14
         run: |
           pip install --quiet playwright pillow numpy fonttools brotli
           python -m playwright install --with-deps chromium >/dev/null

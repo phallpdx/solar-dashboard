@@ -2168,7 +2168,7 @@ PAGER_JS = r"""
           if (!bk || !main.contains(bk)) { bk = pe; while (bk.parentNode !== main && bk.parentNode && !/\b(sec-body|kbrief|group)\b/.test(bk.parentNode.className || '')) bk = bk.parentNode; }
           return bk; }
         function grow(bk, t, d) {   /* a panel spans what is printed in its block: its lines, charts and pictures, never its empty margins */
-          if (hasP) { var pr = bk.getBoundingClientRect(); t = pr.top; d = pr.bottom; }
+          if (hasP) { var pr = bk.getBoundingClientRect(); t = pr.top + PY; d = pr.bottom - PY; }   /* a panel's white is its own box: the gap between two stays the layout's */
           for (var rj = 0; rj < kr.length; rj++) if (kr[rj].b === bk) { kr[rj].t = Math.min(kr[rj].t, t - mr.top - PY); kr[rj].d = Math.max(kr[rj].d, d - mr.top + PY); return; }
           kr.push({ b: bk, l: -1.5, t: t - mr.top - PY, r: mw0 + 1.5, d: d - mr.top + PY }); }
         var rg = document.createRange();
@@ -2207,6 +2207,7 @@ PAGER_JS = r"""
             var fb = fq[fi].getBoundingClientRect(), vb = view.getBoundingClientRect(); if (fb.height < 1) continue;
             fh += '<i class="kl" style="left:' + Math.floor(vb.left - 1.5) + 'px;top:' + Math.floor(fb.top - 2) + 'px;width:' + Math.ceil(vb.width + 3) + 'px;height:' + Math.ceil(fb.height + 4) + 'px"></i>'; }
           kf.innerHTML = fh; }
+        if (!PRE && kfillDue === sheet) { kfillDue = -1; kfill(sheet); }   /* the fill's one check, with the labels: no later repaint */
       }, 0); }
     if (tl) {   /* fill what this sheet leaves empty: art beside #kmain, never in it, so it never adds a sheet */
       var t2 = document.getElementById('ktail2');
@@ -2241,7 +2242,8 @@ PAGER_JS = r"""
           while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
             for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.height && q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.top < vr2.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom, vr2.bottom); } }
           if (tb > tr.top - 4) { var d = tb + 6 - tr.top, lim = vr2.top + H - 6;
-            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none'; }
+            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none';
+            if (!PRE && kme) { kfillSeen = {}; kfill(sheet); } }   /* the plate moved: the fill is checked again */
         }, 60); }
     }
     var gq = view.querySelectorAll('.kgap');   /* and the gaps between blocks: a fleuron in each, never over print */
@@ -2261,7 +2263,7 @@ PAGER_JS = r"""
         if (mb === null || gi.bottom > mb) mb = gi.bottom; } }
     }
     if (PRE) { if (PRE.s[i] && PRE.s[i].fill !== undefined) kfillPre(PRE.s[i].fill); }   /* the build's answer: no measure */
-    else if (kme) setTimeout(function () { kfill(i); }, 100);   /* after the labels (0 ms) and the plate's check (60 ms) */
+    else if (kme) kfillDue = i;   /* checked in the labels' 0 ms pass */
     if (!PRE || pre0) unscroll();   // a fresh page is not scrolled: never force a layout just to say so
     pre0 = 1;
     if (more) {
@@ -2296,7 +2298,7 @@ PAGER_JS = r"""
     o.sort(by); d.sort(by); p.sort(by);
     return { o: o, d: d, p: p };
   };
-  var kfillSeen = {};
+  var kfillSeen = {}, kfillDue = -1;
   function kfillPre(src) {   /* the fast path: the build recorded this sheet's fill (or none); the gaps' fleurons came with the sheet */
     var fi = document.getElementById('kfill'); if (!fi) return;
     if (src && fi.getAttribute('src') !== src) fi.setAttribute('src', src);
@@ -2306,7 +2308,7 @@ PAGER_JS = r"""
                            build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
     var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
     if (!fm || !fi || i !== sheet) return;
-    var key = i + '|' + cuts.join(','), ok = kfillSeen[key];
+    var key = i + '|' + cuts.join(',') + '|' + main.offsetHeight + '|' + (document.fonts ? document.fonts.status : ''), ok = kfillSeen[key];   /* a check made before the fonts were in is not kept */
     if (ok === undefined) {
       ok = false;
       if (window.innerWidth === 618 && window.innerHeight === 714) {

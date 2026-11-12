@@ -638,7 +638,9 @@ def _serve(out):
 FIT_JS = r"""(L) => {
   const fits = (el, html) => { const keep = el.innerHTML; el.innerHTML = html; const cs = getComputedStyle(el), b = el.getBoundingClientRect();
     const g = document.createRange(); g.selectNodeContents(el); const t = g.getBoundingClientRect();
-    const ok = t.top >= b.top + parseFloat(cs.paddingTop) - 1 && t.bottom <= b.bottom - parseFloat(cs.paddingBottom) + 1 &&
+    // at most two lines (glyph boxes overhang the 18 px lines by a few px), and nothing past the slot's sides
+    const lh = parseFloat(cs.lineHeight) || 18;
+    const ok = t.height <= 2 * lh + 10 && t.top >= b.top - 1 && t.bottom <= b.bottom + 1 &&
                t.left >= b.left + parseFloat(cs.paddingLeft) - 1 && t.right <= b.right - parseFloat(cs.paddingRight) + 1;
     el.innerHTML = keep; return ok; };
   const pv = document.querySelector('.kbar a.kprev'), nx = document.querySelector('.kbar .knx');

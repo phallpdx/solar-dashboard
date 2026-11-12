@@ -40,6 +40,23 @@ These set the bar. What they share, and what our plates have lacked:
 
 On e-ink at 618 px wide, use 0.5 px black lines for the fine cuts and at least 1 px for white lines in black. Use the -eink renders to find the finest density that still reads, then work at that density.
 
+## Thai tier (Parker sent Lanna silver work as well)
+References:
+- tools/engrave/ref/thai-lanna-elephant.jpg: Lanna Thai silver repoussé, an elephant with nagas
+- tools/engrave/ref/thai-silver-temple.jpg: Wat Sri Suphan, the Silver Temple in Chiang Mai
+
+This is Parker's Thai engraving. Use it on every Thai page (Thailand, Bangkok, "Say it in Thai", Thai holidays) and as a recurring accent anywhere else.
+
+Its vocabulary:
+- curling cloud scrolls, round and packed, which also make a perfect engraved GROUND in place of hatching
+- nagas with every scale drawn, and fins that curl into kranok flames
+- caparisoned elephants with patterned saddle cloths
+- lotus buds and blooms
+- swirling wave scrolls
+- celestial figures (thep phanom, kinnari) with crowns and jewellery
+
+All of it is modelled in deep relief, with dense detail and no empty ground.
+
 ## No white (Parker's exact rule: "No white unless behind text")
 A plate has no text behind it, so it has NO blank white areas at all. Cartouche interiors, the sky in a scene, the space between scrolls: everything is engraved, with cut-away grounds, sky hatching, water lines and stipple. Plain white survives only as the highlight on a leaf edge or a hatch gap. The art director measures this: any blank white region larger than about 12×12 px is a rejection.
 

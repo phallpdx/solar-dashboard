@@ -181,7 +181,7 @@ def run(out, date_iso, exe=None):
     import http.server
     import threading
     # served over http, not file://, so the self-hosted fonts load and the sheets cut exactly as on the Kindle
-    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
+    srv = _QuietServer(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{srv.server_address[1]}/"
     for f in glob.glob(os.path.join(od, "fill-*.svg")) + glob.glob(os.path.join(od, "fill-*.png")):
@@ -213,6 +213,11 @@ def run(out, date_iso, exe=None):
 
 
 import http.server as _hs  # noqa: E402
+
+
+class _QuietServer(_hs.ThreadingHTTPServer):
+    def handle_error(self, request, client_address):   # a browser hanging up early is not news
+        pass
 
 
 class _Quiet(_hs.SimpleHTTPRequestHandler):
@@ -259,7 +264,7 @@ def _pass(pages, out, od, base, date_iso, exe):
                     # in-flow art never reflows the data: no extra sheet and no tighter type than the page had
                     # without it; else the slot steps down (100, 80, 65 %) and is dropped if it still does not fit
                     base0, n0, ok = res, len(res["rooms"]), False
-                    for sc in (1., .8, .65):
+                    for sc in ((1., .8, .65, .5) if any(sl["form"] == "front" for _, sl in flow) else (1., .8, .65)):
                         trial = [dict(sl, w=int(sl["w"] * (sc if sl["form"] == "front" else 1)), h=int(sl["h"] * sc)) for sl in slots]
                         if any(sl["form"] == "headpiece" and sl["h"] < 60 for sl in trial):   # a headpiece band is 60px or none
                             continue
@@ -437,13 +442,6 @@ def _raster(pages, out, od, base, exe):
                 shot(name, int(w), int(h))
                 s = s.replace(f'src="orn/{name}.svg"', f'src="orn/{name}.png"')
                 n += 1
-            m = re.search(r" data-kfills='([^']*)'", s)
-            if m:
-                for sh in json.loads(_html.unescape(m.group(1))):
-                    shot(f"fill-{slug}-{sh[0]}", 618, 714)
-                    os.remove(os.path.join(od, f"fill-{slug}-{sh[0]}.svg"))   # the field is 0.4-0.6 MB of SVG: never shipped
-                    n += 1
-                s = re.sub(r"<body\b", '<body data-kfx=".png"', s, count=1) if " data-kfx=" not in s else s
             with open(fp, "w") as f:
                 f.write(s)
         br.close()
@@ -459,7 +457,11 @@ SPACE = []   # filled by _fills; written to orn/space-map.json
 def _fills(pages, out, od, base, date_iso, exe):
     from playwright.sync_api import sync_playwright
     import zlib
+    from concurrent.futures import ProcessPoolExecutor
     made, jobs, fmaps = 0, [], {}
+    nw = int(os.environ.get("KINDLE_FIELD_WORKERS") or (4 if os.environ.get("CI") else min(8, os.cpu_count() or 1)))
+    import multiprocessing as _mp
+    pool = ProcessPoolExecutor(max_workers=max(1, nw), mp_context=_mp.get_context("spawn"))   # a field is 1-3 s a sheet: drawn in parallel processes
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
         for slug in pages:
@@ -495,24 +497,21 @@ def _fills(pages, out, od, base, date_iso, exe):
                     ot = white and r["sheet"] > 0 and y <= vt + 1
                     ob = white and r["sheet"] < r["n"] - 1 and y + h >= vb - 1
                     edges.append((x, y, w, h, ot, ob))
-                seed = zlib.crc32(f"{slug}/{r['sheet']}/{date_iso}".encode()) % 100003
-                jobs.append((slug, r["sheet"], edges, seed, MOTIF_OF(slug)))
+                seed = zlib.crc32(f"{slug}/{r['sheet']}".encode()) % 100003   # no date: an unchanged sheet reuses its cached field
+                jobs.append(((slug, r["sheet"]), pool.submit(_field_svg, (slug, r["sheet"], edges, seed, MOTIF_OF(slug), od, exe))))   # drawn while the browser measures on
                 enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
                 fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
             fmaps[slug] = fmap
         br.close()
-    from concurrent.futures import ProcessPoolExecutor
-    with ProcessPoolExecutor(max_workers=max(1, min(8, os.cpu_count() or 1))) as ex:
-        done = dict(zip([(j[0], j[1]) for j in jobs], ex.map(_field_svg, jobs)))
+    done = {k: f.result() for k, f in jobs}
+    pool.shutdown()
     for slug, fmap in fmaps.items():
         fmap = [e for e in fmap if done.get((slug, e[0]))]
-        for e in fmap:
-            with open(os.path.join(od, f"fill-{slug}-{e[0]}.svg"), "w") as f:
-                f.write(done[(slug, e[0])])
         fp = os.path.join(out, slug + ".html")
         s = re.sub(r" data-kfills='[^']*'", "", open(fp).read(), count=1)
-        if fmap:
+        if fmap:   # the fields are PNG already (drawn and rasterised in the workers; no SVG written)
             s = re.sub(r"<body\b", "<body data-kfills='" + _html.escape(json.dumps(fmap, separators=(",", ":"))) + "'", s, count=1)
+            s = re.sub(r"<body\b", '<body data-kfx=".png"', s, count=1) if " data-kfx=" not in s else s
         with open(fp, "w") as f:
             f.write(s)
         made += len(fmap)
@@ -525,10 +524,34 @@ def MOTIF_OF(slug):
     return ("fleuron", "shell", "rosette")[zlib.crc32(slug.split("-")[0].encode()) % 3]
 
 
+_WPG = []
+
+
+def _worker_page(exe):
+    """One browser per worker process, kept for all its sheets: the field is drawn and rasterised in the worker."""
+    if not _WPG:
+        from playwright.sync_api import sync_playwright
+        pw = sync_playwright().start()
+        br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
+        _WPG.append(br.new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
+        import atexit
+        from multiprocessing import util as _mu
+
+        def _close():
+            try:
+                br.close()
+                pw.stop()
+            except Exception:  # noqa: BLE001
+                pass
+        atexit.register(_close)
+        _mu.Finalize(None, _close, exitpriority=10)
+    return _WPG[0]
+
+
 def _field_svg(job):
     """One sheet's ground: the studio's scroll field with a hole round every white box (its box plus the 4 px
     inlay), and the bright double inlay edge of each box. Rasterised later; the SVG is never shipped."""
-    slug, sheet, edges, seed, motif = job
+    slug, sheet, edges, seed, motif, od, exe = job
     try:
         from .frames import field as FF, kpanel as KP
         B = 4
@@ -541,7 +564,16 @@ def _field_svg(job):
             esv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", esv)
             parts.append(re.sub(r"<svg\b", f'<svg x="{x - B}" y="{y - B}"', esv, count=1))
         fsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", fsv)
-        return ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714">' + fsv + "".join(parts) + "</svg>")
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714">' + fsv + "".join(parts) + "</svg>")
+        import io
+        from PIL import Image
+        pg = _worker_page(exe)
+        pg.set_content('<!doctype html><html style="background:transparent"><body style="margin:0;background:#fff">' + svg + "</body></html>")
+        # one bit at 2x, like the Evening's art: the field is pure line and punch, and a sheet comes to 60-90 KB
+        # (16 greys cost 300 KB). Opaque: the holes print white under the white panels anyway.
+        im = Image.open(io.BytesIO(pg.screenshot(clip={"x": 0, "y": 0, "width": 618, "height": 714}))).convert("L")
+        im.point(lambda v: 255 if v >= 128 else 0).convert("1").save(os.path.join(od, f"fill-{slug}-{sheet}.png"), optimize=True)
+        return True
     except Exception as e:  # noqa: BLE001
         print(f"kindle_plates: {slug}~{sheet + 1}: field failed ({e!r})", file=sys.stderr)
         return None

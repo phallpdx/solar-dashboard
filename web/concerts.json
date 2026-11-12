@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-12",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {
@@ -131,6 +131,14 @@
       "score": 88,
       "score_url": "https://www.metacritic.com/music/cry-baby/vince-staples",
       "why": "Played Pioneer Courthouse Square Aug 20; tour skips Portland"
+    },
+    {
+      "artist": "Django Django",
+      "album": "Doveland",
+      "score": 88,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/doveland/django-django/",
+      "why": "Doveland tour is UK and Europe only so far"
     },
     {
       "artist": "Mitski",

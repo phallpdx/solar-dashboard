@@ -22,6 +22,7 @@ import engraving_codex as C
 # Self-contained apart from the house library (engraving_codex); deterministic; standard library.
 import math as _m
 import random as _r
+import re as _re
 import engraving_codex as _C
 
 _Rib, _eul, _sm, _ell, _dd, _nn = _C._Rib, _C._euler, _C._smooth, _C._ell_pts, _C._d, _C._n
@@ -153,7 +154,7 @@ class _Pen2:
 class Canvas(_C.Canvas):
     """the house Canvas, emitted at half-px precision with coarser simplification (smaller)"""
 
-    def svg(self, tol_w=.5, tol_l=.5):
+    def svg(self, tol_w=.7, tol_l=.7):
         if not self.objs:
             return ""
         xs = [p[0] for o in self.objs for poly in o[0] for p in poly] or [0.]
@@ -1029,7 +1030,7 @@ def arms_somaster(cx, cy, s, seed=0):
         return arms_placeholder(cx, cy, s)
     w = s * 120. / 140.
     return (f'<svg x="{_nn(cx - w / 2)}" y="{_nn(cy - s / 2)}" width="{_nn(w)}" height="{_nn(s)}" overflow="visible">'
-            + __import__("re").sub(r"(\d\.\d)\d+", r"\1", _AR.arms(w, s, seed)) + "</svg>")
+            + _slim(_AR.arms(w, s, seed)) + "</svg>")
 
 
 def panel_pts(kind, x0, y0, x1, y1, d=0., c=None):
@@ -1099,6 +1100,29 @@ def _extras(fn, occ, g):
                 occ.poly(poly)
             out.append(svg)
     return out
+
+
+def _slim(sv):
+    """one decimal, no 0. or .0 padding inside path data"""
+    def dd(m):
+        d = _re.sub(r"(\d\.\d)\d+", r"\1", m.group(1))
+        d = _re.sub(r"(\d)\.0(?!\d)", r"\1", d)
+        d = _re.sub(r"(?<![\d.])0\.(\d)", r".\1", d)
+        return ' d="' + d + '"'
+    return _re.sub(r' d="([^"]*)"', dd, sv)
+
+
+def _rel_h(m):
+    """d of absolute M x,y h l runs -> one relative path (same marks, fewer bytes)"""
+    o, px, py = [], None, None
+    for x, y, l in _re.findall(r"M([-\d.]+),([-\d.]+)h([-\d.]+)", m.group(1)):
+        x, y, l = round(float(x), 1), round(float(y), 1), round(float(l), 1)
+        if px is None:
+            o.append(f"M{_nn(x)} {_nn(y)}h{_nn(l)}")
+        else:
+            o.append(f"m{_nn(round(x - px, 1))} {_nn(round(y - py, 1))}h{_nn(l)}")
+        px, py = round(x + l, 1), y
+    return 'd="' + "".join(o) + '"'
 
 
 def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False, k=None,
@@ -1288,7 +1312,9 @@ def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False,
     fx = [p[0] for p in field]
     fy = [p[1] for p in field]
     o.append(f'<path d="{fd}" fill="#fff" stroke="none"/>')
-    o.append(clip(f"gmF{seed % 997}{int(h)}", fd, scene(min(fx), min(fy), max(fx) - min(fx), max(fy) - min(fy), mode)))
+    sv = scene(min(fx), min(fy), max(fx) - min(fx), max(fy) - min(fy), mode)
+    sv = _slim(_re.sub(r'd="((?:M[-\d.]+,[-\d.]+h[-\d.]+)+)"', _rel_h, sv))
+    o.append(clip(f"gmF{seed % 997}{int(h)}", fd, sv))
     o.extend(top)
     return _C.svg_doc(w, h, "".join(o))
 

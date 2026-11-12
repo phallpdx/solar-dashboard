@@ -12,6 +12,10 @@ import sys
 import math
 import random
 import engraving_codex as C
+try:
+    from solar.arms import arms
+except ImportError:          # run from solar/ (the plate studio's own path)
+    from arms import arms
 
 _n, _d = C._n, C._d
 PI = math.pi
@@ -711,7 +715,11 @@ def _layout_tall(w, h, seed, doy, ctx):
     a, b = _cart_field(cx, cy, cw, ch)
     o.append(_clip_to(C._uid("itf", w, h), field_d, _scene(cx - a, cy - b, 2 * a, 2 * b, seed, doy, 2)))
     o.append(f'<path d="{field_d}" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(C.palmette(cx, cy - ch / 2 + 7, min(ch * .18 + top_free, 52), True, rng.randrange(1 << 20)))
+    # the escutcheon: Parker's arms (Somaster) breaking the cartouche's crown, in place of the palmette
+    rng.randrange(1 << 20)
+    ah = min(ch * .36, 96.)
+    aw = ah * 120 / 140
+    o.append(f'<g transform="translate({_n(cx - aw / 2)},{_n(py0 + 1)})">{arms(aw, ah, seed)}</g>')
     bh = min(18., max(13., ph * .05))
     bsvg, centre = C.ribbon_banner(cx, cy + ch * .47, cw * 1.45, bh, .04, rng.randrange(1 << 20))
     o.append(bsvg)

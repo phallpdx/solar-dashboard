@@ -10,6 +10,10 @@ import sys
 import math
 import random
 import engraving_codex as C
+try:
+    from solar.arms import arms
+except ImportError:          # run from solar/ (the plate studio's own path)
+    from arms import arms
 
 PI = math.pi
 _n = C._n
@@ -467,15 +471,20 @@ def _layout_medium(w, h, seed, ctx):
     r = min(gh * .46, (w - cw) / 4.1)
     cv = C.Canvas()
     main = C.Canvas()
-    for side in (-1, 1):
-        vx = cx + side * (cw / 2 + r)
+    # Parker's arms (Somaster) either side of the press, in place of the flanking scroll pairs
+    ah = gh - 6
+    aw = ah * 120 / 140
+    shields = []
+    for k, side in enumerate((-1, 1)):
+        vx = cx + side * (cw / 2 + (w / 2 - cw / 2) / 2)
         vy = gy0 + gh * .5
-        C._pair_unit(main, vx, vy, r, side, random.Random(seed * 3 + side), 0, 1.4, .9, True)
-        occ.append(("c", vx + side * r * .1, vy, r * .95))
+        shields.append(f'<g transform="translate({_n(vx - aw / 2)},{_n(vy - ah / 2)})">{arms(aw, ah, seed * 2 + k)}</g>')
+        occ.append(("r", vx - aw / 2 - 2, gy0, vx + aw / 2 + 2, gy1))
     C.fill_scrolls(0, gy0, w, gh, occ, rng.randrange(1 << 20), rmin=max(9, gh * .08), rmax=r * .8,
                    max_n=8, edge=.7, cv=cv)
     cv.extend(main)
     o.append(C._clip(C._uid("em", w, h, seed), 0, gy0, w, gh, cv.svg()))
+    o += shields
     c, _, fd = C.cartouche(cx, cy, cw, gh + 4, rng.randrange(1 << 20))
     o.append(c)
     a, b = _field(cx, cy, cw, gh + 4)

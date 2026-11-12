@@ -86,8 +86,9 @@ def _scene(X, Y, W, H, seed, detail=1.):
     cv.hair(_sk)
     # rain sweeping off to the east under the storm
     rain = []
-    for i in range(int(W * .42 / 2.2)):
-        x = u(.58) + i * 2.2 + rng.uniform(-.4, .4)
+    _rp = 2.2 if H < 250 else 3.
+    for i in range(int(W * .42 / _rp)):
+        x = u(.58) + i * _rp + rng.uniform(-.4, .4)
         y0 = v(.36) + rng.uniform(0, H * .05)
         y = y0
         while y < hz - 2:
@@ -1821,7 +1822,7 @@ def plate(w, h, ctx):
     seed = sum(map(ord, ctx.get("date", ""))) + 3
     storm, month, _ = _amounts(ctx)
     uid = C._uid("v3x", w, h, seed)
-    hk = dict(field=lambda fld, mode: _field_vignette(list(fld), seed, uid), egg=egg_sticks, aspect=2., cw=.27, frieze=False,
-              rmin=9., rmax=30., motto=f"BEAR DEN · {storm:.2f} IN THIS STORM",
+    hk = dict(field=lambda fld, mode: _field_vignette(list(fld), seed, uid), egg=egg_sticks, aspect=2., cw=.27, frieze=False, rmin=12., rmax=34.,
+              motto=f"BEAR DEN · {storm:.2f} IN THIS STORM",
               tablet=lambda tx, ty, tw, th: _gauge_tablet(tx, ty, tw, th, storm, month))
     return st_plate(w, h, seed, hk)

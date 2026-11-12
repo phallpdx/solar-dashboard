@@ -720,12 +720,13 @@ LETTER_CSS = """
    (No descendant rules here: a trailing * would cost every element on every page a style check.) */
 #kmain .klet{position:relative !important;overflow:visible !important}
 #kmain b.klet{display:block !important}
-#kmain .klet>.kltx{position:absolute !important;left:0;top:0;width:100%;height:100%;overflow:hidden;margin:0 !important;padding:0 !important}
+#kmain .klet>.kltx{position:absolute !important;left:0;top:0;width:100%;height:100%;overflow:hidden;white-space:nowrap;text-align:left;margin:0 !important;padding:0 !important}
 #kmain .klet>.kltx{color:transparent !important;-webkit-text-fill-color:transparent !important}
 #kmain .klet>img.kli{display:block !important;float:none !important;position:static !important;margin:0 !important;padding:0 !important;
   border:0 !important;max-width:none !important;max-height:none !important;min-width:0 !important;min-height:0 !important;
   background:none !important;box-shadow:none !important;filter:none !important;vertical-align:top !important}
-#kmain .klet.kletx>.kltx{position:static !important;overflow:visible}
+#kmain .klet.kletx>.kltx{position:static !important;overflow:visible;width:auto !important;height:auto !important;white-space:normal !important;
+  font-size:inherit !important;line-height:inherit !important;letter-spacing:normal !important}
 #kmain .klet.kletx>.kltx{color:#000 !important;-webkit-text-fill-color:#000 !important}
 #kmain .klet.kletx>.kli{display:none !important}
 """
@@ -820,7 +821,7 @@ def letter(out, exe=None):
             size, fl = LETTER_KINDS.get(h["kind"], (30, False))
             try:
                 svg = lettering.headline(h["t"], h["w"], size, align="center" if h["center"] else "left",
-                                         flourish=None if fl else False)
+                                         flourish=None if fl else False, tight=True)
             except Exception as e:  # noqa: BLE001  -- a character the hand has no letter for: keep the type
                 kept += 1
                 print(f"LETTERING FALLBACK: {p}: {h['t']!r} left in Literata ({e})", file=sys.stderr)
@@ -838,8 +839,14 @@ def letter(out, exe=None):
                 attrs = re.sub(r'\sclass="([^"]*)"', lambda c: f' class="{c.group(1)} klet"', attrs, count=1)
             else:
                 attrs += ' class="klet"'
-            res.append(f'<{m.group(1)}{attrs}><span class="kltx">{_html.escape(h["t"], quote=False)}</span>'
-                       f'<img class="kli" src="orn/{name}" width="{w}" height="{hh}" style="width:{w}px !important;height:{hh}px !important" alt=""'
+            # The unseen words sit in a box exactly over the drawing, set large and spaced wide so their line fills
+            # it: the page lays its white label behind text by the words' line boxes, so the label hugs the
+            # letters (and joins the kicker and dek beside them) instead of spanning the whole column.
+            ml = "margin-left:auto !important;margin-right:auto !important;" if h["center"] else ""
+            kx = f"left:calc(50% - {w / 2:g}px);" if h["center"] else ""
+            res.append(f'<{m.group(1)}{attrs}><span class="kltx" style="{kx}width:{w}px;font-size:{max(8, round(hh / 1.3))}px;'
+                       f'line-height:{hh}px;letter-spacing:{w}px">{_html.escape(h["t"], quote=False)}</span>'
+                       f'<img class="kli" src="orn/{name}" width="{w}" height="{hh}" style="{ml}width:{w}px !important;height:{hh}px !important" alt=""'
                        f' onerror="this.parentNode.className+=\' kletx\'"></{m.group(1)}>')
             pos = close + len(m.group(1)) + 3
             done += 1
@@ -872,16 +879,17 @@ async def _letter_measure(base, pages, exe):
 async def _letters(br, out, base):
     """A page's lettered headlines as one 16-grey PNG at exactly their shown sizes x2, stacked: one request and one
     decode per page however many headlines it has (seven separate pictures made a news page turn measurably
-    slower). Each <img> shows its own band of the sheet (srcset 2x, object-fit:none, object-position), on white:
-    headlines sit on white. A page whose sheet cannot be made keeps its SVGs."""
+    slower). Each <img> shows its own band of the sheet (srcset 2x, object-fit:none, object-position). The sheet
+    is ink on a 16-step alpha, not on white, so a band wider than its letters never covers what is under it
+    (the section-front cartouche, its rules and hatching). A page whose sheet cannot be made keeps its SVGs."""
     import io
     from PIL import Image
-    IMG = re.compile(r'<img class="kli" src="orn/(let-[0-9a-f]+)\.svg" width="(\d+)" height="(\d+)" style="[^"]*"')
+    IMG = re.compile(r'<img class="kli" src="orn/(let-[0-9a-f]+)\.svg" width="(\d+)" height="(\d+)" style="([^"]*)"')
     per_page, jobs = {}, {}
     for p in _pages(out):
         got = IMG.findall(open(os.path.join(out, p + ".html"), encoding="utf-8").read())
         if got:
-            per_page[p] = [(n, int(w), int(h)) for n, w, h in got]
+            per_page[p] = [(n, int(w), int(h)) for n, w, h, _ in got]
             for n, w, h in per_page[p]:
                 jobs[n] = (w, h)
     if not jobs:
@@ -894,42 +902,37 @@ async def _letters(br, out, base):
         pg = free.pop()
         try:
             await pg.set_viewport_size({"width": max(w, 16), "height": max(h, 16)})
-            await pg.set_content(f'<!doctype html><html style="background:#fff"><body style="margin:0;background:#fff">'
+            await pg.set_content(f'<!doctype html><html style="background:transparent"><body style="margin:0;background:transparent">'
                                  f'<img src="{base}orn/{name}.svg" width="{w}" height="{h}" style="display:block"></body></html>',
                                  wait_until="load")
             await pg.evaluate("() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))")
-            im = Image.open(io.BytesIO(await pg.screenshot(clip={"x": 0, "y": 0, "width": w, "height": h}))).convert("L")
+            im = Image.open(io.BytesIO(await pg.screenshot(omit_background=True,
+                                                           clip={"x": 0, "y": 0, "width": w, "height": h}))).convert("RGBA")
             return im if im.size == (w * DPR, h * DPR) else None
         finally:
             free.append(pg)
     shots = await _pool(list(jobs), one)
     await cx.close()
-    pal = []
-    for k in range(LEVELS):
-        c = round(k * 255 / (LEVELS - 1))
-        pal += [c, c, c]
     done = 0
     for p, items in per_page.items():
         if not all(shots.get(n) for n, _, _ in items):
             continue
         W = max(w for _, w, _ in items) * DPR
-        sheet = Image.new("L", (W, sum(h for _, _, h in items) * DPR), 255)
+        sheet = Image.new("RGBA", (W, sum(h for _, _, h in items) * DPR), (0, 0, 0, 0))
         offs, y = [], 0
         for n, w, h in items:
             sheet.paste(shots[n], (0, y))
             offs.append(y // DPR)
             y += h * DPR
-        g = sheet.point(lambda v: (v * (LEVELS - 1) + 127) // 255)
-        q = Image.frombytes("P", g.size, g.tobytes())
-        q.putpalette(pal)
         name = f"orn/lets-{p}.png"
-        q.save(os.path.join(out, name), "PNG", optimize=True, bits=4)
+        buf = io.BytesIO()
+        sheet.save(buf, "PNG")
+        _png16(buf.getvalue(), os.path.join(out, name), opaque=False)
         k = iter(offs)
 
         def swap(m):
             return (f'<img class="kli" src="{name}" srcset="{name} 2x" width="{m.group(2)}" height="{m.group(3)}"'
-                    f' style="width:{m.group(2)}px !important;height:{m.group(3)}px !important;object-fit:none;'
-                    f'object-position:0 -{next(k)}px"')
+                    f' style="{m.group(4)};object-fit:none;object-position:0 -{next(k)}px"')
         _rewrite(os.path.join(out, p + ".html"), lambda s: IMG.sub(swap, s))
         done += len(items)
     return done

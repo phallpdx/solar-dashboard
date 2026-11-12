@@ -679,16 +679,18 @@ def _flourish(rng, x0, x1, y, xh, style, heavy, hair):
 
 # ---------------------------------------------------------------- the SVG
 
-def headline(text, width, size, seed=0, align="left", flourish=None, lines_max=2, min_scale=0.72, ink="#000"):
+def headline(text, width, size, seed=0, align="left", flourish=None, lines_max=2, min_scale=0.72, ink="#000",
+             tight=False):
     """`text` hand-lettered as one SVG (str), at most `width` CSS px wide, for type of `size` CSS px.
 
     align: "left" or "center" (where the lines sit inside the drawing; the drawing is as wide as its widest line
-    unless centred, when it is `width` wide). flourish: None (the headline's own choice), False, or one of
+    unless centred, when it is `width` wide; tight=True keeps a centred drawing as narrow as its ink, for a page
+    that centres the picture itself and must not lay a box wider than the letters). flourish: None (the headline's own choice), False, or one of
     "rule", "lozenge", "sweep". Raises Unsupported when a character has no letter."""
-    return _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink)[0]
+    return _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, tight)[0]
 
 
-def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink):
+def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, tight=False):
     st = _Set(text, size, seed)
     hand, rng = st.hand, st.rng
     xh0 = size * 0.47
@@ -793,7 +795,7 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink):
     pad = 1.0
     left, top = min(xs) - pad, min(ys) - pad
     vw, vh = max(xs) + pad - left, max(ys) + pad - top
-    if align == "center" and vw < width:   # centred: the drawing is the full width, the words in its middle
+    if align == "center" and vw < width and not tight:   # centred: the drawing is the full width, the words in its middle
         left -= (width - vw) / 2
         vw = width
     # never wider than asked: a flourish or a flick that runs over is drawn a hair smaller, not cut off

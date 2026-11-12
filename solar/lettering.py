@@ -156,7 +156,8 @@ g("R", ["h:0.00,1.42 0.16,1.68 0.38,1.74", "0.38,1.72 0.32,0.80 0.26,0.0",
         "h:0.38,1.72 0.66,1.74 0.86,1.56 0.84,1.22 0.62,0.96 0.34,0.88",
         "0.36,0.88 0.56,0.82 0.66,0.46 0.70,0.14 0.80,0.00 0.94,0.08"], lead=False)
 g("S", ["0.76,1.48 0.70,1.68 0.50,1.74 0.28,1.62 0.22,1.36 0.38,1.04 0.58,0.74 0.64,0.40 0.54,0.10 0.30,0.00 0.10,0.06 0.04,0.22"], j=False, lead=False)
-g("T", ["0.54,1.66 0.46,0.80 0.38,0.14 0.24,0.00 0.10,0.06"], x=["h:0.00,1.50 0.20,1.68 0.50,1.66 0.80,1.70 0.98,1.80"], j=False, lead=False, a=0.68)
+g("T", ["0.56,1.68 0.50,0.90 0.46,0.0"], x=["m:-0.02,1.58 0.10,1.68 0.50,1.70 1.02,1.76"], j=False, lead=False, a=0.74)
+g("T", ["0.58,1.66 0.52,0.90 0.47,0.06 0.52,0.00 0.62,0.04"], x=["m:0.00,1.52 0.12,1.70 0.54,1.68 1.00,1.74"], j=False, lead=False, a=0.74)
 g("U", ["h:-0.04,1.42 0.12,1.66 0.30,1.72", "0.30,1.72 0.24,0.80 0.22,0.30 0.32,0.04 0.50,0.00 0.66,0.14 0.80,0.60 0.88,1.72",
         "0.88,1.72 0.82,0.60 0.80,0.20 0.85,0.02 0.96,0.00 1.06,0.10"], lead=False)
 g("V", ["h:-0.04,1.42 0.12,1.66 0.28,1.72", "0.28,1.72 0.36,0.90 0.44,0.0", "h:0.44,0.0 0.70,0.90 0.88,1.60 0.96,1.74 1.04,1.70"],
@@ -167,7 +168,6 @@ g("X", ["0.08,1.70 0.20,1.72 0.30,1.50 0.50,0.60 0.62,0.10 0.72,0.00 0.86,0.08"]
 g("Y", ["0.06,1.70 0.18,1.72 0.30,1.40 0.46,0.88", "0.46,0.88 0.40,0.0"], x=["h:0.94,1.72 0.70,1.30 0.46,0.88"], j=False, lead=False)
 g("Z", ["h:0.10,1.50 0.26,1.70 0.84,1.72", "0.84,1.72 0.42,0.84 0.02,0.0", "h:0.02,0.0 0.40,0.06 0.80,0.00 0.96,0.10"], lead=False)
 # second hands of the capitals that open headlines most
-g("T", ["0.58,1.64 0.50,0.80 0.42,0.14 0.30,0.00 0.16,0.04 0.10,0.16"], x=["h:-0.06,1.38 0.06,1.62 0.30,1.70 0.62,1.64 0.98,1.72"], j=False, lead=False, a=0.70)
 g("S", ["0.74,1.52 0.72,1.70 0.52,1.74 0.30,1.64 0.24,1.40 0.40,1.08 0.60,0.76 0.66,0.40 0.56,0.10 0.32,0.00 0.10,0.08 0.06,0.26 0.18,0.30"], j=False, lead=False)
 g("A", ["h:-0.04,0.10 0.08,0.02 0.20,0.20 0.42,1.10 0.56,1.72", "0.56,1.72 0.64,0.80 0.68,0.24 0.72,0.04 0.83,0.00 0.95,0.10"],
   x=["h:0.20,0.70 0.46,0.64 0.74,0.70"], e=(1, 0.3), lead=False)
@@ -411,7 +411,7 @@ class _Hand:
         self.asc = rng.uniform(0.86, 1.0)      # ascender / cap scale above the x-height
         self.desc = rng.uniform(0.86, 1.0)
         self.track = rng.uniform(0.09, 0.14)
-        self.space = rng.uniform(0.46, 0.56)
+        self.space = rng.uniform(0.66, 0.76)
         self.tremor = rng.uniform(0.006, 0.013)
         self.wave = (rng.uniform(0.008, 0.02), rng.uniform(2.2, 4.5), rng.uniform(0, 6.28))
         self.lead = rng.choice(["short", "short", "long"])
@@ -565,6 +565,8 @@ class _Set:
         self.set = []
         for i, w in enumerate(self.words):
             strokes, end = _set_word(self.hand, w, 0.0, i == len(self.words) - 1)
+            if G[w[-1][0]][0]["j"]:
+                end += 0.12   # an exit stroke reaches into the gap: give the next word that much more room
             ink = [(x + y * math.tan(self.hand.slant)) for P, _, _ in strokes for x, y in P]
             self.set.append((strokes, end, min(ink), max(ink)))
 
@@ -573,8 +575,8 @@ class _Set:
         out, x = [], 0.0
         for n, i in enumerate(idx):
             strokes, end, a, b = self.set[i]
-            if n:
-                x += self.hand.space
+            if n:   # a word's lead-in reaches back into the gap: the gap grows by most of it
+                x += self.hand.space + 1.0 * max(0.0, -a)
             for P, pr, main in strokes:
                 out.append(([(p[0] + x, p[1]) for p in P], pr, main))
             x += end

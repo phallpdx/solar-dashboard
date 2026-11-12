@@ -1,28 +1,643 @@
-"""garden-04 "Sow and plant": garlic going in now (rows 18 in apart, cloves 3 in apart, soil 53F at
-2 in, a few dry days from Wed). The plate engraves the garlic bed itself: a cartouche holds a
-perspective of mounded rows of young garlic running back to the cottonwood line and Mt. Hood under
-a dry low sun, cut away in front to show the cloves planted point-up in the soil with a soil
-thermometer at 2 in; whole garlic bulbs flank it, their strap leaves sweeping out as the acanthus.
-Easter egg: a trail of dog paw prints across the bed."""
+"""garden-04 "Sow and plant", merged into Walk the land (edition plan: vignette, about 18%, an oval).
+
+An oval vignette of the prairie edge: oatgrass and camas in the lit foreground, a brush pile of crossed
+limbs at the wood's edge (it smokes only when the page says burning is OK), the fence line running
+back, Douglas fir and Garry oak massed in burin tone behind, cumulus over them. The top of the oval is
+ruled; its foot frays out, and grass grows up over it out of the ground beyond. Easter egg (the
+plan's): a kestrel on a fence post. At tall sizes the garlic-bed scene stays available to the code."""
 import sys
 import math
 import random
+import re
 import zlib
 import engraving_codex as C
+
+# ==== VIGNETTE KIT BEGIN (batch 6) ====
+# Shared by the batch-6 plates: a free-standing engraved vignette on a transparent ground (no
+# black field, no generic scrollwork; the frame's engraved ground shows through). The scene is clipped to a shaped silhouette (oval, roundel,
+# arch, lunette, banner or a ragged Bewick edge), optionally ringed by a fine double rule; the page's
+# own motifs make any frame. House Canvas emitted at half-px precision; drawn capitals for mottoes;
+# Parker's figures for Easter eggs; Parker's arms (solar/arms.py) for section fronts.
+import math as _m
+import random as _r
+import re as _re
+import engraving_codex as _C
+
+_Rib, _eul, _sm, _ell, _dd, _nn = _C._Rib, _C._euler, _C._smooth, _C._ell_pts, _C._d, _C._n
+_PI, _TAU = _m.pi, 2 * _m.pi
+_CRS = ' shape-rendering="crispEdges"'
+
+
+class _Pen2:
+    """path data in integer half-px (for transform="scale(.5)"), relative after the first point"""
+
+    def __init__(self):
+        self.o = []
+        self.cur = None
+
+    def add(self, pts, close=False, tol=.3):
+        if len(pts) < 2:
+            return
+        if tol:
+            pts = _C._dp(pts, tol)
+        X = [int(round(p[0] * 2)) for p in pts]
+        Y = [int(round(p[1] * 2)) for p in pts]
+        o = self.o
+        if self.cur is None:
+            o.append(f"M{X[0]} {Y[0]}")
+        else:
+            dx, dy = X[0] - self.cur[0], Y[0] - self.cur[1]
+            o.append(f"m{dx}{'' if dy < 0 else ' '}{dy}")
+        seg = []
+        for i in range(1, len(X)):
+            dx, dy = X[i] - X[i - 1], Y[i] - Y[i - 1]
+            if dx or dy:
+                seg.append(f"{dx}{'' if dy < 0 else ' '}{dy}")
+        if not seg:
+            seg = ["0 0"]
+        o.append("l" + " ".join(seg).replace(" -", "-"))
+        if close:
+            o.append("z")
+            self.cur = (X[0], Y[0])
+        else:
+            self.cur = (X[-1], Y[-1])
+
+    def d(self):
+        return "".join(self.o)
+
+
+class Canvas(_C.Canvas):
+    """the house Canvas, emitted at half-px precision with coarser simplification (smaller)"""
+
+    def svg(self, tol_w=.7, tol_l=.7):
+        if not self.objs:
+            return ""
+        xs = [p[0] for o in self.objs for poly in o[0] for p in poly] or [0.]
+        ys = [p[1] for o in self.objs for poly in o[0] for p in poly] or [0.]
+        x0, y0 = int(_m.floor(min(xs))) - 2, int(_m.floor(min(ys))) - 2
+        W, H = int(max(xs)) - x0 + 3, int(max(ys)) - y0 + 3
+        mask = [bytearray(W) for _ in range(H)]
+        out = {.5: [], 1.: [], 1.5: []}
+        for polys, ow, strokes in reversed(self.objs):
+            for w, lines in strokes.items():
+                for pl in lines:
+                    _C._clip_runs(pl, mask, x0, y0, W, H, out[w])
+            for poly in polys:
+                _C._fill_mask(poly, mask, x0, y0, W, H)
+        T = ' transform="scale(.5)"'
+        res = []
+        # white shapes go out in runs of equal outline weight, each run one path filled white and
+        # stroked with its own outline: later runs cover earlier runs' outlines (painter's order)
+        runs = []
+        for polys, ow, _ in self.objs:
+            if not polys:
+                continue
+            if not runs or runs[-1][0] != ow:
+                runs.append((ow, []))
+            runs[-1][1].extend(polys)
+        for ow, polys in runs:
+            pen = _Pen2()
+            for poly in polys:
+                pen.add(poly if _C._area(poly) >= 0 else poly[::-1], True, tol_w)
+            if pen.o:
+                st = f'stroke="#000" stroke-width="{_nn(ow * 2)}"' if ow else 'stroke="none"'
+                res.append(f'<path{T} d="{pen.d()}" fill="#fff" {st}/>')
+        for w in (.5, 1., 1.5):
+            if out[w]:
+                pen = _Pen2()
+                for pl in out[w]:
+                    if len(pl) > 1 and (len(pl) > 2 or abs(pl[0][0] - pl[-1][0]) + abs(pl[0][1] - pl[-1][1]) > .7):
+                        pen.add(pl, False, tol_l)
+                res.append(f'<path{T} d="{pen.d()}" fill="none" stroke="#000" stroke-width="{_nn(w * 2)}"/>')
+        return "".join(res)
+
+
+# ---------------------------------------------------------------------------------------------
+# growth: stems that curl into spirals and branch, with leaves
+# ---------------------------------------------------------------------------------------------
+
+
+def _stipple_tile(seed, T, n):
+    rng = _r.Random(seed)
+    out = []
+    tries = 0
+    while len(out) < n and tries < 6000:
+        tries += 1
+        x, y = rng.randrange(T), rng.randrange(T)
+        if any(min((x - a) % T, (a - x) % T) < 2 and min((y - b) % T, (b - y) % T) < 2 for a, b in out):
+            continue
+        out.append((x, y))
+    return out
+
+
+def bead_line(pts, r=1.5, closed=False):
+    """beads strung along a polyline, drawn as round dashes: a black ring, a white bead, and a
+    small dark crescent offset to the lower right (three strokes on one path)"""
+    seq = pts + ([pts[0]] if closed else [])
+    L = sum(_m.hypot(seq[i][0] - seq[i - 1][0], seq[i][1] - seq[i - 1][1]) for i in range(1, len(seq)))
+    p = 2 * r + 1.
+    n = max(1, int(L / p))
+    p = L / n
+    d = _dd(seq, tol=.1)
+    da = f'stroke-dasharray="0 {_nn(p)}" stroke-linecap="round" fill="none"'
+    return (f'<path d="{d}" stroke="#000" stroke-width="{_nn(2 * r + 1)}" {da}/>'
+            f'<path d="{d}" stroke="#fff" stroke-width="{_nn(2 * r)}" {da}/>'
+            f'<path d="{d}" stroke="#000" stroke-width="{_nn(max(.8, r * .7))}" {da} transform="translate({_nn(r * .45)},{_nn(r * .45)})"/>'
+            f'<path d="{d}" stroke="#fff" stroke-width="{_nn(max(.8, r * .7))}" {da} transform="translate({_nn(r * .2)},{_nn(r * .2)})"/>')
+
+
+def shape_pts(cx, cy, a, b, kind="oval", n=120):
+    pts = []
+    for i in range(n):
+        t = _TAU * i / n
+        c_, s_ = _m.cos(t), _m.sin(t)
+        e = {"oval": 2., "squircle": 2.8, "cushion": 3.6, "round": 2., "banner": 5., "lunette": 2.}.get(kind, 2.)
+        x = cx + a * _m.copysign(abs(c_) ** (2 / e), c_)
+        y = cy + b * _m.copysign(abs(s_) ** (2 / e), s_)
+        if kind == "shield":
+            if s_ > 0:
+                x = cx + a * _m.copysign(abs(c_) ** .7, c_) * (1 - .6 * s_ ** 2.2)
+                y = cy + b * s_ ** .8
+            else:
+                x = cx + a * _m.copysign(abs(c_) ** .35, c_)
+                y = cy + b * .9 * _m.copysign(abs(s_) ** .35, s_)
+        elif kind == "arch":
+            if s_ > 0:
+                x = cx + a * _m.copysign(abs(c_) ** .3, c_)
+                y = cy + b * _m.copysign(abs(s_) ** .3, s_)
+        elif kind == "banner":
+            # a ribbon cartouche: long and square-shouldered, a swallowtail notch cut into each end
+            x = cx + a * _m.copysign(abs(c_) ** (2 / e), c_) * (1 - .1 * _m.exp(-(s_ / .22) ** 2))
+        elif kind == "lunette":
+            if s_ > 0:
+                x = cx + a * _m.copysign(abs(c_) ** .25, c_)
+                y = cy + b * _m.copysign(abs(s_) ** .2, s_)
+        elif kind == "quatre":
+            rr = 1 + .07 * _m.cos(4 * t)
+            x, y = cx + a * c_ * rr, cy + b * s_ * rr
+        elif kind == "ogee":
+            # pointed top (Thai temple window)
+            if s_ < 0:
+                y = cy + b * s_ * (1 + .25 * (1 - abs(c_)) ** 3)
+                x = cx + a * c_ * (1 - .2 * abs(s_) ** 3)
+        pts.append((x, y))
+    return pts
+
+
+def clip(cid, d, body):
+    return f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
+
+
+# ---------------------------------------------------------------------------------------------
+# small figural terminals and eggs that can be carved into the scroll (drawn into a Canvas)
+# ---------------------------------------------------------------------------------------------
+
+
+def fig_drumsticks(cv, cx, cy, s, ang=0.):
+    for sd in (-1, 1):
+        a = ang + sd * .62 - _PI / 2
+        x0, y0 = cx - _m.cos(a) * s * .5, cy - _m.sin(a) * s * .5
+        P = [(x0 + _m.cos(a) * s * t, y0 + _m.sin(a) * s * t) for t in (0, .5, 1)]
+        R = _Rib(P, [s * .05, s * .045, s * .02], [s * .05, s * .045, s * .02])
+        cv.obj([R.outline()], .5)
+        cv.hair(R.contour(.5, 0, 1))
+        tx, ty = P[-1]
+        cv.obj([_ell(tx, ty, s * .05, s * .05, 10)[:-1]], .5)
+
+
+def fig_heron(cv, x, y, s, flip=False):
+    """a standing great blue heron, s tall"""
+    f = -1 if flip else 1
+
+    def T(u, v):
+        return (x + f * u * s, y - v * s)
+    body = [T(-.18, .5), T(.05, .62), T(.2, .58), T(.26, .5), T(.12, .36), T(-.1, .34), T(-.3, .38)]
+    neck = [T(.12, .58), T(.2, .74), T(.12, .84), T(.17, .95), T(.25, .97), T(.27, .92), T(.18, .86), T(.25, .76), T(.18, .58)]
+    bill = [T(.25, .97), T(.46, .93), T(.26, .92)]
+    cv.obj([body], .5)
+    cv.hair(_C.hatch_poly(body, 30 * f, 1.5))
+    cv.obj([neck], .5)
+    cv.hair([T(.16, .62), T(.21, .74)])
+    cv.obj([bill], .5)
+    cv.line([T(.0, .35), T(.02, .0)])
+    cv.line([T(.06, .35), T(.1, .0)])
+    cv.hair([T(.22, .96), T(.05, .99)])
+
+
+def fig_mthood(cv, cx, by, w, hgt):
+    """Mt Hood: the asymmetric cone with its notched summit, glaciers in the gullies, the shadow
+    flank cut in 45-degree bulino, foothills of fir at the foot"""
+    sil = [(-.5, 0), (-.36, .18), (-.22, .46), (-.12, .74), (-.05, .92), (-.01, 1.), (.03, .96), (.06, .99),
+           (.12, .8), (.2, .58), (.3, .36), (.42, .14), (.5, 0)]
+    P = [(cx + u * w, by - v * hgt) for u, v in sil]
+    cv.obj([P], .5)
+    # shadow flank (right of the ridge): diagonal cuts
+    sh = [(cx + .03 * w, by - .96 * hgt), (cx + .06 * w, by - .99 * hgt), (cx + .12 * w, by - .8 * hgt),
+          (cx + .2 * w, by - .58 * hgt), (cx + .3 * w, by - .36 * hgt), (cx + .42 * w, by - .14 * hgt),
+          (cx + .5 * w, by), (cx + .1 * w, by), (cx + .04 * w, by - .5 * hgt)]
+    cv.hair(_C.hatch_poly(sh, 45, 1.5))
+    # glaciers: white tongues reaching down the gullies, edged with rock
+    for g0, g1, L in ((-.08, -.02, .45), (.0, .07, .5), (-.18, -.12, .3), (.12, .18, .28)):
+        tongue = [(cx + g0 * w, by - (.98 - .2) * hgt), (cx + g1 * w, by - .9 * hgt),
+                  (cx + (g1 + g0) / 2 * w * 1.6, by - (.9 - L) * hgt)]
+        cv.obj([tongue], .5)
+    # foothills of fir across the base
+    n = max(5, int(w / 5))
+    for i in range(n):
+        tx = cx - w * .5 + w * (i + .5) / n
+        th = hgt * (.12 + .06 * ((i * 7) % 3))
+        cv.obj([[(tx - th * .3, by), (tx, by - th), (tx + th * .3, by)]], .5)
+        cv.hair([(tx, by - th), (tx + th * .22, by - th * .2)])
+
+
+def fig_dog(cv, cx, cy, s, flip=False):
+    """Parker's dog, curled asleep (s across)"""
+    f = -1 if flip else 1
+    body = _ell(cx, cy, s * .5, s * .3, 24)[:-1]
+    cv.obj([body], .5)
+    for k in range(4):
+        rr = s * (.42 - .08 * k)
+        cv.hair([(cx + f * rr * _m.cos(t), cy + s * .24 * (rr / (s * .42)) * _m.sin(t)) for t in [_PI * (.1 + .8 * i / 10) for i in range(11)]])
+    hx, hy = cx + f * s * .34, cy - s * .12
+    head = _ell(hx, hy, s * .18, s * .14, 14)[:-1]
+    cv.obj([head], .5)
+    cv.obj([[(hx - f * s * .05, hy - s * .1), (hx + f * s * .02, hy - s * .26), (hx + f * s * .1, hy - s * .08)]], .5)
+    cv.line(_ell(hx + f * s * .14, hy + s * .02, .5, .5, 6))
+    cv.hair([(hx - f * s * .02, hy + s * .02), (hx + f * s * .06, hy + s * .03)])
+
+
+def _keep_disc(segs, cx, cy, r):
+    """clip polylines (lists of points) to a disc: the shadow side of a form"""
+    out = []
+    for pl in segs:
+        cur = []
+        for i in range(len(pl) - 1):
+            (ax, ay), (bx, by) = pl[i], pl[i + 1]
+            n = max(1, int(_m.hypot(bx - ax, by - ay) / 1.5))
+            for j in range(n + 1):
+                px, py = ax + (bx - ax) * j / n, ay + (by - ay) * j / n
+                if (px - cx) ** 2 + (py - cy) ** 2 <= r * r:
+                    cur.append((px, py))
+                elif cur:
+                    if len(cur) > 1:
+                        out.append(cur)
+                    cur = []
+        if len(cur) > 1:
+            out.append(cur)
+    return out
+
+
+def fig_dogface(cv, cx, cy, r):
+    """Parker's dog looking straight out, the head filling a circle of radius r (the O of a word)"""
+    for sd in (-1, 1):   # floppy ears, hatched dark on the inside
+        ear = [(cx + sd * r * .45, cy - r * .75), (cx + sd * r * 1.02, cy - r * .55), (cx + sd * r * 1.08, cy + r * .1),
+               (cx + sd * r * .9, cy + r * .45), (cx + sd * r * .62, cy + r * .1)]
+        cv.obj([ear], 1.)
+        cv.hair(_C.hatch_poly(ear, 70 * sd, 1.5))
+    head = _ell(cx, cy, r * .72, r * .82, 24)[:-1]
+    cv.obj([head], 1.)
+    for k in range(3):   # the brow and the coat over the skull
+        cv.hair([(cx - r * (.35 - k * .05), cy - r * (.62 - k * .1)), (cx, cy - r * (.5 - k * .1)), (cx + r * (.35 - k * .05), cy - r * (.62 - k * .1))])
+    for sd in (-1, 1):
+        cv.obj([_ell(cx + sd * r * .28, cy - r * .12, r * .11, r * .11, 10)[:-1]], 1.)
+        cv.hair(_ell(cx + sd * r * .28, cy - r * .12, r * .18, r * .15, 10))
+    muz = _ell(cx, cy + r * .32, r * .4, r * .32, 18)[:-1]
+    cv.obj([muz], .5)
+    cv.hair(_C.hatch_poly(_ell(cx + r * .12, cy + r * .4, r * .25, r * .2, 12)[:-1], 45, 1.5))
+    cv.obj([[(cx - r * .14, cy + r * .12), (cx + r * .14, cy + r * .12), (cx, cy + r * .28)]], 1.)
+    cv.line([(cx, cy + r * .28), (cx, cy + r * .4), (cx - r * .14, cy + r * .48)])
+    cv.line([(cx, cy + r * .4), (cx + r * .14, cy + r * .48)])
+
+
+def fig_p(cv, cx, cy, s):
+    """a P monogram cut as a ribbon"""
+    st = [(cx - s * .2, cy + s * .5), (cx - s * .2, cy - s * .5)]
+    bowl = [(cx - s * .2 + s * .36 * _m.sin(t) * 1.1, cy - s * .22 - s * .28 * _m.cos(t)) for t in [_PI * i / 12 for i in range(13)]]
+    for pl in (st, bowl):
+        R = _Rib(pl, [s * .08] * len(pl), [s * .08] * len(pl))
+        cv.obj([R.outline()], .5)
+        cv.hair(R.contour(.4, 0, 1))
+
+
+def fig_sun(cv, cx, cy, r, rays=16):
+    """a sun: a modelled disc with a face-less boss and alternating straight and waved rays"""
+    for k in range(rays):
+        t = _TAU * k / rays
+        L = r * (1.75 if k % 2 == 0 else 1.45)
+        wv = k % 2
+        pts = []
+        for i in range(9):
+            u = i / 8
+            rr = r * 1.02 + (L - r) * u
+            off = (.08 * _m.sin(u * _PI * 2) if wv else 0.)
+            pts.append((cx + _m.cos(t + off) * rr, cy + _m.sin(t + off) * rr))
+        R = _Rib(pts, [r * .16 * (1 - i / 8) + .4 for i in range(9)], [r * .16 * (1 - i / 8) + .4 for i in range(9)])
+        cv.obj([R.outline()], .5)
+        cv.hair(R.contour(.45, 0, .85, minw=.9))
+    disc = _ell(cx, cy, r, r, 36)[:-1]
+    cv.obj([disc], 1.)
+    for q in (.78, .55):
+        cv.hair(_ell(cx, cy, r * q, r * q, 28))
+    cv.hair(_C.hatch_poly(_ell(cx + r * .25, cy + r * .25, r * .62, r * .62, 20)[:-1], 45, 1.5))
+
+
+def arms_placeholder(cx, cy, s):
+    """Parker's arms are pending: a beaded cartouche with crossed drumsticks over a sun. s tall."""
+    w = s * .86
+    fr, field, outer = medallion(cx, cy, w, s, "shield", True)
+    cv = Canvas()
+    fig_sun(cv, cx, cy - s * .04, s * .17)
+    fig_drumsticks(cv, cx, cy + s * .02, s * .62)
+    body = fr + f'<path d="{_dd(field, True, .1)}" fill="#fff" stroke="none"/>'
+    gr = Canvas()
+    gr.obj([field], 0)
+    gr.hair(_C.hatch_poly(field, 0, 1.5, .25))
+    return body + clip(f"gmA{int(cx)}{int(cy)}", _dd(field, True, .1), gr.svg() + cv.svg())
+
+
+# ---------------------------------------------------------------------------------------------
+# shaped panels and the gold line
+# ---------------------------------------------------------------------------------------------
+
+
+def arms_somaster(cx, cy, s, seed=0):
+    """Parker's arms (Somaster) from the shared solar/arms.py, s tall; the placeholder if it is missing."""
+    try:
+        import arms as _AR
+    except Exception:
+        return arms_placeholder(cx, cy, s)
+    w = s * 120. / 140.
+    return (f'<svg x="{_nn(cx - w / 2)}" y="{_nn(cy - s / 2)}" width="{_nn(w)}" height="{_nn(s)}" overflow="visible">'
+            + _slim(_simp(_AR.arms(w, s, seed), .25)) + "</svg>")
+
+
+def _garc(cx, cy, rx, ry, a0, a1, n=8):
+    return [(cx + rx * _m.cos(_m.radians(a0 + (a1 - a0) * i / n)),
+             cy + ry * _m.sin(_m.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
+
+
+_GF = {
+    "A": (.72, [[(0, 1), (.36, 0), (.72, 1)], [(.15, .64), (.57, .64)]]),
+    "B": (.6, [[(0, 0), (0, 1), (.38, 1)] + _garc(.38, .76, .22, .24, 90, -90, 6) + [(0, .52)],
+               [(0, 0), (.33, 0)] + _garc(.33, .26, .2, .26, -90, 90, 6)[1:] + [(0, .52)]]),
+    "C": (.66, [_garc(.36, .5, .34, .5, -45, -315, 12)]),
+    "D": (.68, [[(0, 0), (0, 1), (.3, 1)] + _garc(.3, .5, .36, .5, 90, -90, 10) + [(0, 0)]]),
+    "E": (.56, [[(.54, 0), (0, 0), (0, 1), (.54, 1)], [(0, .5), (.42, .5)]]),
+    "F": (.54, [[(.54, 0), (0, 0), (0, 1)], [(0, .5), (.42, .5)]]),
+    "G": (.7, [_garc(.36, .5, .34, .5, -45, -315, 12) + [(.7, .58), (.42, .58)]]),
+    "H": (.66, [[(0, 0), (0, 1)], [(.66, 0), (.66, 1)], [(0, .5), (.66, .5)]]),
+    "I": (.08, [[(.04, 0), (.04, 1)]]),
+    "J": (.46, [[(.44, 0), (.44, .74)] + _garc(.22, .74, .22, .26, 0, 180, 6)[1:]]),
+    "K": (.62, [[(0, 0), (0, 1)], [(.6, 0), (0, .6)], [(.2, .45), (.62, 1)]]),
+    "L": (.52, [[(0, 0), (0, 1), (.52, 1)]]),
+    "M": (.84, [[(0, 1), (0, 0), (.42, .8), (.84, 0), (.84, 1)]]),
+    "N": (.68, [[(0, 1), (0, 0), (.68, 1), (.68, 0)]]),
+    "O": (.76, [_garc(.38, .5, .38, .5, 0, 360, 16)]),
+    "P": (.58, [[(0, 1), (0, 0), (.32, 0)] + _garc(.32, .27, .26, .27, -90, 90, 6)[1:] + [(0, .54)]]),
+    "Q": (.76, [_garc(.38, .5, .38, .5, 0, 360, 16), [(.45, .7), (.78, 1.04)]]),
+    "R": (.62, [[(0, 1), (0, 0), (.32, 0)] + _garc(.32, .27, .26, .27, -90, 90, 6)[1:] + [(0, .54)],
+                [(.28, .54), (.62, 1)]]),
+    "S": (.56, [_garc(.28, .25, .26, .25, -20, -270, 7) + _garc(.28, .75, .28, .25, -90, 160, 7)[1:]]),
+    "T": (.66, [[(0, 0), (.66, 0)], [(.33, 0), (.33, 1)]]),
+    "U": (.66, [[(0, 0), (0, .66)] + _garc(.33, .66, .33, .34, 180, 0, 8)[1:] + [(.66, 0)]]),
+    "V": (.7, [[(0, 0), (.35, 1), (.7, 0)]]),
+    "W": (.96, [[(0, 0), (.24, 1), (.48, .2), (.72, 1), (.96, 0)]]),
+    "X": (.64, [[(0, 0), (.64, 1)], [(.64, 0), (0, 1)]]),
+    "Y": (.66, [[(0, 0), (.33, .5), (.66, 0)], [(.33, .5), (.33, 1)]]),
+    "Z": (.6, [[(0, 0), (.6, 0), (0, 1), (.6, 1)]]),
+    "0": (.54, [_garc(.27, .5, .27, .5, 0, 360, 14)]),
+    "1": (.36, [[(.04, .2), (.26, 0), (.26, 1)], [(.04, 1), (.48, 1)]]),
+    "2": (.54, [_garc(.27, .27, .26, .27, -170, 10, 6) + [(0, 1), (.54, 1)]]),
+    "3": (.52, [_garc(.25, .25, .25, .25, -160, 90, 6), _garc(.25, .74, .27, .26, -90, 160, 6)]),
+    "4": (.58, [[(.42, 1), (.42, 0), (0, .7), (.58, .7)]]),
+    "5": (.54, [[(.5, 0), (.08, 0), (.04, .44)] + _garc(.26, .7, .28, .3, -120, 150, 8)]),
+    "6": (.56, [[(.46, .02), (.2, .2), (.02, .65)] + _garc(.28, .7, .26, .3, 180, 540, 12)]),
+    "7": (.54, [[(0, 0), (.54, 0), (.2, 1)]]),
+    "8": (.54, [_garc(.27, .25, .22, .25, 90, 450, 10), _garc(.27, .74, .27, .26, -90, 270, 12)]),
+    "9": (.56, [_garc(.28, .3, .26, .3, 0, 360, 12) + [(.54, .35), (.36, .8), (.1, .98)]]),
+    "-": (.4, [[(.04, .55), (.36, .55)]]),
+    ".": (.2, [[(.1, .92), (.1, .96)]]),
+    "·": (.36, [[(.18, .4), (.26, .51), (.18, .62), (.1, .51), (.18, .4), (.18, .62)]]),
+}
+
+
+def motto(centre, txt, rh, w=1., holes=None, fill=.86):
+    """txt lettered in drawn capitals along the ribbon centre line, cap = half the ribbon height"""
+    cap = rh * .5
+    L = sum(_m.dist(centre[i - 1], centre[i]) for i in range(1, len(centre)))
+    tw = sum((_GF.get(ch, (.5, []))[0] + .32) * cap if ch != " " else .5 * cap for ch in txt) - .32 * cap
+    _GF.setdefault("@", (.76, []))
+    while tw > L * fill and cap > 3:
+        cap *= .92
+        tw = sum((_GF.get(ch, (.5, []))[0] + .32) * cap if ch != " " else .5 * cap for ch in txt) - .32 * cap
+
+    def along(s, off):
+        acc = 0.
+        for i in range(1, len(centre)):
+            p, q = centre[i - 1], centre[i]
+            Lq = _m.dist(p, q)
+            if acc + Lq >= s or i == len(centre) - 1:
+                t = (s - acc) / Lq if Lq else 0
+                nx, ny = (-(q[1] - p[1]) / Lq, (q[0] - p[0]) / Lq) if Lq else (0, 1)
+                return (p[0] + (q[0] - p[0]) * t + nx * off, p[1] + (q[1] - p[1]) * t + ny * off)
+            acc += Lq
+        return centre[-1]
+    out, cur = [], (L - tw) / 2
+    for ch in txt.upper():
+        if ch == " ":
+            cur += .5 * cap
+            continue
+        gw, strokes = _GF.get(ch, _GF["·"])
+        if ch == "@" and holes is not None:
+            holes.append(along(cur + gw * cap / 2, 0.) + (cap,))
+        for st in strokes:
+            out.append([along(cur + px * cap, -cap / 2 + py * cap) for px, py in st])
+        cur += (gw + .32) * cap
+    return f'<path d="{"".join(_dd(p, False, .05) for p in out)}" fill="none" stroke="#000" stroke-width="{_nn(w)}"/>'
+
+
+def _rdp(P, tol):
+    if len(P) < 3:
+        return P
+    (ax, ay), (bx, by) = P[0], P[-1]
+    dx, dy = bx - ax, by - ay
+    L = _m.hypot(dx, dy) or 1e-9
+    i, dm = 0, -1.
+    for j in range(1, len(P) - 1):
+        dd = abs((P[j][0] - ax) * dy - (P[j][1] - ay) * dx) / L
+        if dd > dm:
+            i, dm = j, dd
+    if dm <= tol:
+        return [P[0], P[-1]]
+    return _rdp(P[:i + 1], tol)[:-1] + _rdp(P[i:], tol)
+
+
+def _simp(sv, tol=.3):
+    """path data of absolute M/L/Z polylines -> simplified, relative, one decimal"""
+    def one(m):
+        d = m.group(1)
+        if not _re.fullmatch(r"(?:[MLZz][-\d., ]*)+", d):
+            return m.group(0)
+        o, cx, cy = [], 0., 0.
+        for sub in _re.findall(r"M[^M]*", d):
+            closed = sub.rstrip().endswith(("Z", "z"))
+            nums = [float(v) for v in _re.findall(r"-?\d*\.?\d+", sub)]
+            P = _rdp(list(zip(nums[0::2], nums[1::2])), tol)
+            q = []
+            for k, (x, y) in enumerate(P):
+                x, y = round(x, 1), round(y, 1)
+                if k == 0:
+                    q.append(f"M{_nn(x)} {_nn(y)}" if not o else f"m{_nn(round(x - cx, 1))} {_nn(round(y - cy, 1))}")
+                else:
+                    q.append(f"l{_nn(round(x - cx, 1))} {_nn(round(y - cy, 1))}")
+                cx, cy = x, y
+            if closed:
+                q.append("z")
+                cx, cy = round(P[0][0], 1), round(P[0][1], 1)
+            o.append("".join(q))
+        return ' d="' + "".join(o) + '"'
+    return _re.sub(r' d="([^"]*)"', one, sv)
+
+
+def _slim(sv):
+    """one decimal, no 0. or .0 padding inside path data"""
+    def dd(m):
+        d = _re.sub(r"(\d\.\d)\d+", r"\1", m.group(1))
+        d = _re.sub(r"(\d)\.0(?!\d)", r"\1", d)
+        d = _re.sub(r"(?<![\d.])0\.(\d)", r".\1", d)
+        return ' d="' + d + '"'
+    return _re.sub(r' d="([^"]*)"', dd, sv)
+
+
+def _rel_h(m):
+    """d of absolute M x,y h l runs -> one relative path (same marks, fewer bytes)"""
+    o, px, py = [], None, None
+    for x, y, l in _re.findall(r"M([-\d.]+),([-\d.]+)h([-\d.]+)", m.group(1)):
+        x, y, l = round(float(x), 1), round(float(y), 1), round(float(l), 1)
+        if px is None:
+            o.append(f"M{_nn(x)} {_nn(y)}h{_nn(l)}")
+        else:
+            o.append(f"m{_nn(round(x - px, 1))} {_nn(round(y - py, 1))}h{_nn(l)}")
+        px, py = round(x + l, 1), y
+    return 'd="' + "".join(o) + '"'
+
+
+def tone_hatch(cv, poly, tone, ang=45., pitch=1.5, cross=.7, cross_ang=None, step=1.2, phase=0.):
+    """burin tone: hatch the shape, each line swelling and tapering with tone(x, y) in 0..1 (0 =
+    lit paper, 1 = deepest shadow): gaps in the light, 0.5 px, 1 px, then 1.5 px lines, and a
+    second set of cuts laid across wherever the tone passes `cross`"""
+    def run(segs, tf, lo):
+        for a_, b_ in segs:
+            L = _m.hypot(b_[0] - a_[0], b_[1] - a_[1])
+            n = max(1, int(L / step))
+            cur, cw = [], None
+            for j in range(n + 1):
+                x = a_[0] + (b_[0] - a_[0]) * j / n
+                y = a_[1] + (b_[1] - a_[1]) * j / n
+                t = tf(x, y)
+                wv = 0 if t < lo else (.5 if t < lo + .3 else (1. if (t < lo + .6 or pitch < 2.5) else 1.5))
+                if wv != cw:
+                    if cw and len(cur) > 1:
+                        {.5: cv.hair, 1.: cv.line, 1.5: cv.heavy}[cw](cur)
+                    cur = [cur[-1]] if (cur and wv and cw) else []
+                    cw = wv
+                cur.append((x, y))
+            if cw and len(cur) > 1:
+                {.5: cv.hair, 1.: cv.line, 1.5: cv.heavy}[cw](cur)
+    run(_C.hatch_poly(poly, ang, pitch, phase), tone, .14)
+    if cross is not None and cross < 1:
+        ca = ang + 72 if cross_ang is None else cross_ang
+        run(_C.hatch_poly(poly, ca, max(1.5, pitch * 1.34), phase + .5), lambda x, y: (tone(x, y) - cross) / (1 - cross) * .9, .12)
+
+
+def lit(cx, cy, a, b, base=.25, depth=.7, lx=-.6, ly=-.8, rim=.25):
+    """a tone function for a rounded form centred (cx, cy), half-sizes a, b, lit from (lx, ly):
+    lit side near base, the terminator swinging into depth, a little reflected light at the rim"""
+    ln = _m.hypot(lx, ly)
+    lx, ly = lx / ln, ly / ln
+
+    def t(x, y):
+        u, v = (x - cx) / a, (y - cy) / b
+        r = min(1., _m.hypot(u, v))
+        nz = _m.sqrt(max(0., 1 - r * r))
+        d = u * lx + v * ly + nz * .55
+        tv = base + depth * (1 - d) * .62
+        if r > .8:
+            tv -= rim * (r - .8) / .2 * (1 if d < 0 else 0)
+        return max(0., min(1., tv))
+    return t
+
+
+def _hash(*a):
+    return sum((i + 1) * ord(c) for i, c in enumerate("|".join(map(str, a)))) % 99991
+
+
+def ragged(poly, amp, seed, cut=None):
+    """roughen a silhouette the way a Bewick vignette frays: low-frequency wander plus short
+    breaks; cut(x, y) -> bool keeps chosen stretches of the edge clean (e.g. a ruled top)"""
+    rng = _r.Random(seed)
+    n = len(poly)
+    cx = sum(p[0] for p in poly) / n
+    cy = sum(p[1] for p in poly) / n
+    ph = [rng.uniform(0, _TAU) for _ in range(3)]
+    out = []
+    for i, (x, y) in enumerate(poly):
+        if cut and cut(x, y):
+            out.append((x, y))
+            continue
+        t = _TAU * i / n
+        k = (.55 * _m.sin(3 * t + ph[0]) + .3 * _m.sin(11 * t + ph[1]) + .15 * _m.sin(29 * t + ph[2]))
+        k = k * amp + rng.uniform(-amp * .35, amp * .35)
+        dx, dy = x - cx, y - cy
+        r = _m.hypot(dx, dy) or 1
+        out.append((x - dx / r * (amp - k), y - dy / r * (amp - k)))
+    return out
+
+
+def vignette(w, h, uid, sil, body, rule=None, extra="", dense=False):
+    """assemble: the scene clipped to the silhouette (outside it the plate is transparent, so the
+    frame's own engraved ground shows through and the vignette dissolves into it), a fine double
+    rule round it if asked (rule = the clean silhouette), then any over-laid ornament"""
+    o = []
+    if sil:
+        d = _dd(sil, True, .1)
+        o.append(f'<path d="{d}" fill="#fff" stroke="none"/>')
+        o.append(clip(f"vkC{uid}", d, _slim(body)))
+    if rule:
+        r1 = _dd(rule + [rule[0]], tol=.1)
+        o.append(f'<path d="{r1}" fill="none" stroke="#000" stroke-width="1.5"/>')
+        cx = sum(p[0] for p in rule) / len(rule)
+        cy = sum(p[1] for p in rule) / len(rule)
+        out = []
+        for x, y in rule:
+            dx, dy = x - cx, y - cy
+            r = _m.hypot(dx, dy) or 1
+            out.append((x + dx / r * 2.5, y + dy / r * 2.5))
+        o.append(f'<path d="{_dd(out + [out[0]], tol=.1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(extra)
+    return _C.svg_doc(w, h, "".join(o))
+
+
+def box_fit(w, h, aspect, maxw=None, pad=2.):
+    """centre a device of width/height `aspect` in the w x h box; returns (cx, cy, a, b) half-axes"""
+    W, H = w - 2 * pad, h - 2 * pad
+    if maxw:
+        W = min(W, maxw)
+    if W / H > aspect:
+        W = H * aspect
+    else:
+        H = W / aspect
+    return w / 2, h / 2, W / 2, H / 2
+
+
+# ==== VIGNETTE KIT END ====
+
 
 PI = math.pi
 TAU = 2 * PI
 _n = C._n
 _d = C._d
 _ell = C._ell_pts
-
-
-def _cid(*a):
-    return "g4" + format(zlib.crc32(repr(a).encode()) & 0xffffff, "x")
-
-
-def _clip_d(cid, d, body):
-    return f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
 
 
 def _seed(ctx):
@@ -79,105 +694,6 @@ class Bulb:
         return segs
 
 
-def garlic_bulb(cv, cx, cy, a, b, seed=0, roots=True, neck=True, leaves=None, light=-1):
-    """A whole garlic bulb into cv: cloves as carved segments shaded along their form, papery
-    skin, a ruff of roots, the neck. leaves: list of (ang_deg, length, bend, curl) fingers from the
-    neck top (drawn behind the bulb). light -1: light from the left."""
-    rng = random.Random(seed)
-    B = Bulb(cx, cy, a, b)
-    top = (cx, cy - b)
-    nh = b * .55
-    # leaves first (behind), springing from the neck top
-    if neck:
-        ntop = (cx, cy - b - nh)
-        for ang, ln, bend, curl in (leaves or []):
-            C._finger(cv, ntop[0] + math.cos(math.radians(ang)) * 1.5, ntop[1] + 2, math.radians(ang), ln,
-                      ln * .085, bend, curl, 1.)
-        nw0, nw1 = a * .2, a * .1
-        neckp = [(cx - nw0, cy - b + 3), (cx - nw1, cy - b - nh), (cx + nw1, cy - b - nh), (cx + nw0, cy - b + 3)]
-        cv.obj([neckp], 1.)
-        for f in (.25, .5, .75):
-            cv.hair([(cx + nw0 * f * -light * -1, cy - b + 2), (cx + nw1 * f * -light * -1, cy - b - nh + 1)])
-        cv.hair(C.hatch_poly(neckp, 90, 1.5, cx + nw0 * .3))
-        # a wrapped collar where the neck meets the bulb
-        cv.line([(cx - nw0 * 1.3, cy - b + 4), (cx, cy - b + 5.2), (cx + nw0 * 1.3, cy - b + 4)])
-        cv.hair([(cx - nw0 * .9, cy - b - nh * .45), (cx + nw0 * .9, cy - b - nh * .4)])
-    if roots:
-        bx, by = cx, B.y(PI) - .5
-        cv.obj([], 0)
-        nr = int(9 + a * .35)
-        for i in range(nr):
-            t = (i + .5) / nr - .5
-            ln = b * rng.uniform(.35, .6) * (1 - abs(t) * .6)
-            ang = PI / 2 + t * 2.4
-            pts = []
-            x, y = bx + t * a * .5, by
-            aa = ang
-            for k in range(10):
-                aa += rng.uniform(-.25, .25)
-                x += math.cos(aa) * ln / 10
-                y += math.sin(aa) * ln / 10
-                pts.append((x, y))
-            cv.hair([(bx + t * a * .5, by)] + pts)
-    ol = B.outline()
-    cv.obj([ol], 1.)
-    # cloves: boundaries at fixed longitudes, each clove bulging; shading on its shadow side
-    ncl = 7
-    bounds = [-PI / 2 + PI * i / ncl for i in range(ncl + 1)]
-    for th in bounds[1:-1]:
-        for s in B.meridian(th, .25, .04, .975, .8):
-            cv.heavy(s)
-        for s in B.meridian(th + .05 * -light, .25, .12, .9, 1.2):
-            cv.line(s)
-    dth = .055
-    for k in range(ncl):
-        t0, t1 = bounds[k], bounds[k + 1]
-        mid = (t0 + t1) / 2
-        # how much of the clove is in shadow: more toward the shadow side of the bulb
-        sh = .38 + .45 * (math.sin(mid) * -light + 1) / 2
-        th = t1 - dth * .5 if light < 0 else t0 + dth * .5
-        stop = t1 - (t1 - t0) * sh if light < 0 else t0 + (t1 - t0) * sh
-        j = 0
-        while (th > stop) if light < 0 else (th < stop):
-            p0 = .08 + .05 * (j % 2)
-            for s in B.meridian(th, dth, p0, .95 - .04 * (j % 3), 1.5):
-                cv.hair(s)
-            th += dth * light
-            j += 1
-        # a highlight-side hairline that runs only part way
-        hl = t0 + (t1 - t0) * .25 if light < 0 else t1 - (t1 - t0) * .25
-        for s in B.meridian(hl, .4, .3, .7, 1.):
-            cv.hair(s)
-    # cross contours (latitudes) on the shadow flank and the underside: crosshatch
-    for i in range(1, 28):
-        phi = PI * (.35 + .62 * i / 28)
-        hw = B.hw(phi)
-        yy = B.y(phi)
-        lam0 = .1 if phi > PI * .72 else .38
-        line = []
-        for q in range(15):
-            lam = (lam0 + (.98 - lam0) * q / 14) * -light
-            line.append((cx + hw * lam, yy + hw * .16 * math.cos(math.asin(min(1, abs(lam))))))
-        if i % 2 == 0 or phi > PI * .8:
-            cv.hair(line)
-    # black core shadow hugging the shadow edge
-    shp = [B.pt(PI * (.3 + .66 * i / 40), -light * (.9 - .06 * math.sin(PI * i / 40))) for i in range(41)]
-    shp += [B.pt(PI * (.3 + .66 * i / 40), -light * 1.0) for i in range(40, -1, -1)]
-    cv.obj([shp], 0)
-    cv.line(C.hatch_poly(shp, 80, 1.))
-    # basal plate
-    bp = _ell(cx, B.y(PI) - 1.2, a * .22, 1.6, 16)[:-1]
-    cv.obj([bp], 1.)
-    cv.line(C.hatch_poly(bp, 0, 1.))
-    # papery skin: a few torn flakes
-    for i in range(3):
-        phi = PI * rng.uniform(.25, .55)
-        lam = rng.uniform(-.85, -.4) * -light * -1
-        p = B.pt(phi, lam)
-        cv.hair([p, (p[0] + rng.uniform(-3, 3), p[1] + rng.uniform(4, 8))])
-    return B
-
-
 # ----------------------------------------------------------------------------------------------
 # small subjects
 # ----------------------------------------------------------------------------------------------
@@ -209,25 +725,6 @@ def clove(cv, cx, cy, s, tilt=0., rng=None):
     cv.line([P(-w * .4, -s * .02), P(w * .5, -s * .02)])
 
 
-def sprout(cv, x, y, hgt, wt=1., rng=None):
-    """A young garlic shoot: two or three strap leaves fanning from the soil."""
-    rng = rng or random.Random(0)
-    n = 3 if hgt > 6 else 2
-    for i in range(n):
-        t = (i - (n - 1) / 2)
-        ang = -PI / 2 + t * .38 + rng.uniform(-.08, .08)
-        ln = hgt * (1 - .2 * abs(t))
-        k = t * .9 / max(ln, 1)
-        pts = C._euler(x, y, ang, ln, lambda u, k=k: k * (.3 + u), 8)
-        if hgt > 9:
-            w0 = max(.9, hgt * .06)
-            R = C._Rib(pts, [w0 * (1 - j / 8) + .2 for j in range(9)], [w0 * (1 - j / 8) + .2 for j in range(9)])
-            cv.obj([R.outline()], .5)
-            cv.hair(R.contour(-.3 if t >= 0 else .3, 0, .85))
-        else:
-            (cv.line if wt >= 1 else cv.hair)(pts)
-
-
 def paw(x, y, s, ang):
     """A dog's paw print (filled black): pad and four toes."""
     ca, sa = math.cos(ang), math.sin(ang)
@@ -240,407 +737,210 @@ def paw(x, y, s, ang):
     return "".join(o)
 
 
-def soil_thermometer(cv, x, y_surf, depth, r, temp_f=53):
-    """Dial soil thermometer: dial r above the soil on a short stem, probe down to `depth`."""
-    dy = y_surf - r * 2.6
-    cv.obj([[(x - .9, dy + r), (x + .9, dy + r), (x + .9, y_surf + depth), (x, y_surf + depth + 2.5),
-             (x - .9, y_surf + depth)]], 1.)
-    disc = _ell(x, dy, r, r, 32)[:-1]
-    cv.obj([_ell(x + .8, dy + .8, r + 1.4, r + 1.4, 32)[:-1]], 0)
-    cv.line(C.hatch_poly(_ell(x + .8, dy + .8, r + 1.4, r + 1.4, 32)[:-1], 45, 1.))
-    cv.obj([disc], 1.5)
-    # ticks 0..120 F over 270 degrees
-    for i in range(13):
-        a = math.radians(135 + 270 * i / 12)
-        r0 = r * (.62 if i % 3 == 0 else .74)
-        cv.hair([(x + r0 * math.cos(a), dy + r0 * math.sin(a)), (x + r * .86 * math.cos(a), dy + r * .86 * math.sin(a))])
-    a = math.radians(135 + 270 * temp_f / 120)
-    cv.line([(x - r * .18 * math.cos(a), dy - r * .18 * math.sin(a)), (x + r * .66 * math.cos(a), dy + r * .66 * math.sin(a))])
-    cv.line(_ell(x, dy, .6, .6, 6))
-
-
-def mt_hood(cv, cx, base, hgt, wid):
-    """Mt. Hood: snow on the summit, the lit west face ruled lightly, the east face dark."""
-    pk = (cx, base - hgt)
-    L = [(cx - wid / 2, base), (cx - wid * .2, base - hgt * .55), (cx - wid * .08, base - hgt * .86), pk]
-    R = [pk, (cx + wid * .06, base - hgt * .9), (cx + wid * .14, base - hgt * .7), (cx + wid * .3, base - hgt * .35),
-         (cx + wid / 2, base)]
-    poly = L + R[1:]
-    cv.obj([poly], .5)
-    east = [pk] + R[1:] + [(cx + wid * .02, base), (cx - wid * .02, base - hgt * .5)]
-    cv.hair(C.hatch_poly(east, 70, 1.5))
-    west = L + [(cx - wid * .02, base - hgt * .5), (cx + wid * .02, base)]
-    cv.hair(C.hatch_poly(west, -15, 3, inset=.5))
-    # glacier ribs on the snow
-    for f in (-.12, -.04, .05):
-        cv.hair([(cx + wid * f * .3, base - hgt * .92), (cx + wid * f, base - hgt * .55)])
-
-
 # ----------------------------------------------------------------------------------------------
 # the scene in the cartouche field
 # ----------------------------------------------------------------------------------------------
-
-def garden_scene(fx, fy, fw, fh, clip_d, seed=0, big=False):
-    """The garlic bed: sky with a low dry sun, Mt. Hood, cottonwood line, mounded rows of shoots in
-    perspective, a cut-away soil section with cloves planted point-up and a soil thermometer."""
-    rng = random.Random(seed)
-    cv = C.Canvas()
-    cx = fx + fw / 2
-    hy = fy + fh * (.36 if not big else .34)          # horizon
-    ys = fy + fh * (.66 if not big else .64)          # front cut of the bed
-    yb = fy + fh + 2
-    # sky: ruled, closing up toward the horizon
-    cv.obj([], 0)
-    y = fy - 1
-    while y < hy:
-        cv.hair([(fx - 3, y), (fx + fw + 3, y)])
-        y += 2. if y < fy + (hy - fy) * .55 else 1.5
-    # sun, low on the right: halo with rays, disc ruled on its lower half
-    sr = min(fw, fh) * .055 + 2
-    sx = fx + fw * (.72 + .08 * rng.random())
-    sy = fy + (hy - fy) * .42
-    halo = _ell(sx, sy, sr * 2., sr * 2., 40)[:-1]
-    cv.obj([halo], 0)
-    for i in range(32):
-        a = TAU * i / 32
-        r1 = sr * (2. if i % 2 else 1.6)
-        cv.hair([(sx + sr * 1.25 * math.cos(a), sy + sr * 1.25 * math.sin(a)), (sx + r1 * math.cos(a), sy + r1 * math.sin(a))])
-    disc = _ell(sx, sy, sr, sr, 32)[:-1]
-    cv.obj([disc], 1.)
-    cv.hair([q for q in C.hatch_poly(disc, 0, 2., sy) if q[0][1] > sy - sr * .3])
-    # Mt. Hood on the horizon, left of centre
-    mt_hood(cv, fx + fw * .3, hy - 3, fh * .2, fw * .3)
-    # cottonwood line along the horizon (Sauvie Island)
-    tl = [(fx - 4, hy + 1)]
-    x = fx - 4
-    while x < fx + fw + 4:
-        bw = rng.uniform(4, 9)
-        th = rng.uniform(3, 7.5)
-        for k in range(1, 6):
-            tl.append((x + bw * k / 5, hy - th * math.sin(PI * k / 5) ** .6 - 1.5))
-        x += bw
-    tl += [(fx + fw + 4, hy + 1.5)]
-    cv.obj([tl], .5)
-    cv.hair(C.hatch_poly(tl, 90, 1.5))
-    cv.line([(fx - 4, hy + 1), (fx + fw + 4, hy + 1)])
-    # the bed: furrow floor ruled across, closing up into the distance
-    vx, vy = cx + fw * .04, hy - fh * .02
-    cv.obj([[(fx - 4, hy + 1.5), (fx + fw + 4, hy + 1.5), (fx + fw + 4, ys), (fx - 4, ys)]], 0)
-    lines = []
-    z = 1.
-    while True:
-        y = vy + (ys - vy) / z
-        if y < hy + 2:
-            break
-        lines.append(y)
-        z += .14
-    y = lines[-1] if lines else ys
-    k = 0
-    for yy in lines:
-        cv.hair([(fx - 4, yy), (fx + fw + 4, yy)])
-    yy = (lines[-1] if lines else ys) - 1.5
-    while yy > hy + 1.5:
-        cv.hair([(fx - 4, yy), (fx + fw + 4, yy)])
-        yy -= 1.5
-    # mounded rows, back to front so the near mounds overlap; each one a white crown, ruled shadow flank
-    sp = fw * .2
-    rows = [cx + sp * (i - 2.5) + fw * .02 for i in range(6)]
-    mw = sp * .3
-    zmax = (ys - vy) / max(1., (hy + 3 - vy))
-    order = sorted(rows, key=lambda r: -abs(r - vx))
-    plants = []
-    for xb in order:
-        def at(zz, off):
-            return (vx + (xb + off - vx) / zz, vy + (ys - vy) / zz)
-        zs = [1 + (zmax * .5 - 1) * (i / 30) ** 1.5 for i in range(31)]
-        L = [at(zz, -mw) for zz in zs]
-        Rr = [at(zz, mw) for zz in zs]
-        crest = [at(zz, 0) for zz in zs]
-        # mound rises a little above the floor line
-        Lr = [(p[0], p[1] - 2.2 / zz) for p, zz in zip(crest, zs)]
-        mound = L + Lr[::-1]
-        mound2 = Rr + Lr[::-1]
-        cv.obj([], 0)
-        cv.hair(L)
-        cv.line(Rr)
-        cv.hair(Lr)
-        # shadow flank on the side away from the light (light from the upper left)
-        dark_side = 1
-        for f in (.2, .35, .5, .65, .8, .92):
-            seg = []
-            for zz in zs:
-                p = at(zz, mw * f * dark_side)
-                c = at(zz, 0)
-                q = (p[0], p[1] - 2.2 / zz * (1 - f))
-                if mw * (1 - f) / zz < .7 and f < .9:
-                    break
-                seg.append(q)
-            if len(seg) > 1:
-                cv.hair(seg)
-        # light flank: a few cross strokes (clods)
-        zz = 1.
-        while zz < zmax * .7:
-            p = at(zz, -mw * .7)
-            q = at(zz, -mw * .2)
-            cv.hair([(p[0], p[1] - .3 / zz), (q[0], q[1] - 1.6 / zz)])
-            zz *= 1.12
-        # plants along the crest, 18 in rows / about 6 in apart along the row
-        zz = 1.08 + rng.random() * .1
-        while zz < zmax * .62:
-            c = at(zz, 0)
-            plants.append((zz, c[0], c[1] - 2.2 / zz, rng.randrange(1 << 20)))
-            zz += .32 * zz ** .9
-    plants.sort(key=lambda p: -p[0])
-    for zz, px, py, s in plants:
-        hgt = fh * .1 / zz
-        if hgt < 2.2:
-            continue
-        sprout(cv, px, py, hgt, 1. if hgt > 4 else .5, random.Random(s))
-    # the cut-away: the soil section in front
-    cv.obj([], 0)
-    # strata: wavy hairlines, denser deeper
-    y = ys + 3
-    i = 0
-    while y < yb + 2:
-        pts = [(fx - 4 + fw * j / 40 * 1.05, y + .8 * math.sin(j * .9 + i * 1.7) + .5 * math.sin(j * 2.3 + i)) for j in range(41)]
-        cv.hair(pts)
-        y += 3. if y < ys + (yb - ys) * .4 else 2.
-        i += 1
-    # pebbles
-    for k in range(int(fw / 14)):
-        px = fx + rng.uniform(.03, .97) * fw
-        py = ys + rng.uniform(.25, .95) * (yb - ys)
-        r = rng.uniform(1.2, 2.6)
-        pb = _ell(px, py, r * 1.3, r, 12)[:-1]
-        cv.obj([pb], .5)
-        cv.hair([q for q in C.hatch_poly(pb, 0, 1.5) if q[0][1] > py])
-    # cloves at 2 in deep, 3 in apart, the near row; each sending a pale shoot to the surface
-    depth = (yb - ys) * .5
-    cs = (yb - ys) * .32
-    step = fw * .135
-    x = cx - step * 3
-    j = 0
-    while x <= cx + step * 3 + 1:
-        if abs(x - (cx - step * 2)) > 1:
-            base = ys + depth + cs * .5
-            tilt = (rng.random() - .5) * .25
-            clove(cv, x, base, cs, tilt, random.Random(j + seed))
-            # shoot from the tip up through the soil and out
-            tip = (x + math.sin(tilt) * cs, base - cs * math.cos(tilt))
-            cv.obj([[(tip[0] - .8, tip[1]), (tip[0] - .6, ys), (tip[0] + .6, ys), (tip[0] + .8, tip[1])]], .5)
-            sprout(cv, tip[0], ys, fh * .085, 1., random.Random(seed + j * 7))
-        j += 1
-        x += step
-    # soil thermometer at 2 in, where the second clove would go
-    tx = cx - step * 2
-    soil_thermometer(cv, tx, ys, depth, max(4.5, fh * .045))
-    # the cut edge of the bed
-    cv.obj([], 0)
-    cv.heavy([(fx - 4, ys), (fx + fw + 4, ys)])
-    body = [C.dark_ground((fx - 4, ys, fw + 8, yb - ys + 6), "S"), cv.svg()]
-    # Easter egg: a dog's paw prints trotting across the near furrow
-    pp = []
-    ty = ys - (ys - hy) * .1
-    for i in range(4):
-        z = 1.05 + i * .09
-        px = fx + fw * (.2 + .18 * i) + (2 if i % 2 else -2)
-        py = vy + (ys - vy) / z - (1.2 if i % 2 else 2.6)
-        pp.append(paw(px, py, max(2.2, fh * .026) / z, .5 + .1 * i))
-    body.append(f'<path d="{"".join(pp)}" fill="#000" stroke="none"/>')
-    return _clip_d(_cid("scene", fx, fy, fw, fh), clip_d, "".join(body))
-
-
-def _field(cx, cy, w, h):
-    """The cartouche's field: its superellipse (same maths as C.cartouche)."""
-    bw = max(5., min(w, h) * .07)
-    a, b = w / 2 - bw * 1.6, h / 2 - bw * 1.6
-    return a, b
-
 
 # ----------------------------------------------------------------------------------------------
 # layouts
 # ----------------------------------------------------------------------------------------------
 
-def _flank_bulb(cv, x, ybot, a, side, seed, reach):
-    """A garlic bulb standing at a plate end, leaves sweeping inward (side -1 left end) as acanthus."""
-    b = a * .92
-    cy = ybot - b * .78
-    L = [(-28, 1.0, .9, 4.6), (-56, 1.15, .6, 5.), (-96, .8, -.3, -4.2), (-142, .6, -1.0, -4.4)]
-    if side > 0:
-        L = [(180 - g, l, -bb, -c) for g, l, bb, c in L]
-    leaves = [(g, reach * l, bb, c) for g, l, bb, c in L]
-    garlic_bulb(cv, x, cy, a, b, seed, True, True, leaves, -1)
-    # loose cloves broken off at its foot
+def kestrel(cv, x, y, s, f=1):
+    """an American kestrel perched upright, feet at (x, y), s tall, facing f (+1 right)"""
+    def P(u, v):
+        return (x + f * u * s, y - v * s)
+    tail = [P(-.08, .02), P(.04, .02), P(.02, -.3), P(-.06, -.3)]
+    cv.obj([tail], .5)
+    cv.hair([P(-.06, -.24), P(.02, -.24)])
+    body = [P(-.12, .05), P(-.16, .3), P(-.12, .55), P(.0, .7), P(.12, .62), P(.15, .4), P(.1, .15), P(.0, .02)]
+    cv.obj([body], 1.)
+    wing = [P(-.14, .55), P(-.16, .3), P(-.1, .0), P(-.02, .1), P(-.04, .45)]
+    cv.obj([wing], .5)
+    cv.hair(_keep_disc(_C.hatch_poly(wing, 30, 1.5), x - f * .12 * s, y - .25 * s, s * .2))
+    for k in range(4):   # spotted breast
+        cv.hair([P(.05 + .02 * (k % 2), .45 - k * .08), P(.07 + .02 * (k % 2), .43 - k * .08)])
+    head = _ell(x + f * .04 * s, y - .76 * s, .1 * s, .1 * s, 12)[:-1]
+    cv.obj([head], 1.)
+    cv.hair([P(.0, .72), P(.02, .64)])          # the moustache stripe
+    cv.obj([[P(.13, .78), P(.19, .75), P(.13, .72)]], .5)
+    cv.line([P(.07, .79), P(.08, .79)])
+
+
+def prairie_scene(x, y, W, H, seed, smoke=False):
+    """the prairie edge: oatgrass and camas in the lit foreground, a brush pile at the wood's edge
+    (smoking only on a burn-OK day), the fence line, Douglas fir and Garry oak in dense hatching
+    behind, a sky of cumulus, and a kestrel on a post"""
     rng = random.Random(seed)
-    for k, (dx, tl) in enumerate(((-side * 1.15, -side * .5), (-side * 1.55, -side * .9))):
-        clove(cv, x + dx * a, ybot + a * .25, a * (.6 - .1 * k), tl, rng)
-
-
-def _layout_medium(w, h, seed):
-    rng = random.Random(seed)
-    o = []
-    em = min(12., 6 + h * .025)
-    o.append(C.egg_and_dart(0, 0, w, em))
-    foot = 7.
-    gy0, gy1 = em + 1, h - foot
-    gh = gy1 - gy0
-    o.append(C.dark_ground((0, gy0, w, gh), "G"))
-    cw = min(w * .4, gh * 1.45)
-    cx, cy = w / 2, (gy0 + gy1) / 2
-    ba = min(gh * .22, 40.)
-    bx = ba + 6
-    occ = [("r", cx - cw / 2 + 4, gy0, cx + cw / 2 - 4, gy1)]
-    for side in (-1, 1):
-        occ.append(("c", w / 2 + side * (w / 2 - bx), gy1 - ba * 1.2, ba * 1.3))
-    room = (w - cw) / 2 - 2 * bx
-    r = min(gh * .4, room * .5)
     cv = C.Canvas()
-    main = C.Canvas()
-    for side in (-1, 1):
-        vx = cx + side * (cw / 2 + r * .95)
-        vy = gy0 + gh * .44
-        C._pair_unit(main, vx, vy, r, side, random.Random(seed * 3 + side), 0, 1.4, .9, True)
-        occ.append(("c", vx + side * r * .1, vy, r * .95))
-    C.fill_scrolls(0, gy0, w, gh, occ, rng.randrange(1 << 20), rmin=max(8, gh * .055), rmax=r * .75,
-                   max_n=11, edge=.7, cv=cv)
-    cv.extend(main)
-    figs = C.Canvas()
-    for side in (-1, 1):
-        _flank_bulb(figs, w / 2 + side * (w / 2 - bx), gy1 - ba * .38, ba, side, seed + side, gh * .48)
-    cv.extend(figs)
-    o.append(C._clip(_cid("m", w, h, seed), 0, gy0, w, gh, cv.svg()))
-    c, _, inner = C.cartouche(cx, cy, cw, gh + 4, rng.randrange(1 << 20))
-    o.append(c)
-    a, b = _field(cx, cy, cw, gh + 4)
-    o.append(garden_scene(cx - a, cy - b, 2 * a, 2 * b, inner, seed))
-    o.append(C.knurled_bar(0, h - foot, w, foot))
-    return "".join(o)
+    cv.obj([[(x - 2, y - 2), (x + W + 2, y - 2), (x + W + 2, y + H + 2), (x - 2, y + H + 2)]], 0)
+    hz = y + H * .5
+    # the sky: cumulus built in contour lines, the clear sky between them in fine broken strokes
+    yy = y
+    while yy < hz:
+        xx = x - 2 + rng.uniform(0, 6)
+        while xx < x + W:
+            L = rng.uniform(6, 20) * (1.6 if H > 180 else 1.)
+            cv.hair([(xx, yy), (xx + L, yy + rng.uniform(-.3, .3))])
+            xx += L + rng.uniform(2, 5) * (1 + (yy - y) / H * 3)
+        yy += 2.
+    for j in range(3):
+        ccx, ccy = x + W * (.15 + .35 * j + rng.uniform(-.05, .05)), y + H * rng.uniform(.12, .3)
+        cw = W * rng.uniform(.16, .24)
+        top = []
+        for i in range(25):
+            t = i / 24
+            bump = max(math.sqrt(max(0., 1 - ((t - c) / sw) ** 2)) * hv for c, hv, sw in ((.3, 1., .25), (.6, .8, .22), (.8, .5, .15), (.15, .5, .14)))
+            top.append((ccx - cw / 2 + cw * t, ccy - cw * .22 * bump))
+        cl = top + [(ccx + cw / 2, ccy + 1), (ccx - cw / 2, ccy + 1)]
+        cv.obj([cl], .5)
+        for q in (.3, .55, .78):
+            cv.hair([(px, ccy - (ccy - py) * (1 - q) + 1) for px, py in top[2:-2]])
+    # the wood's edge: firs and oaks massed dark, a lit rim on the crowns
+    trees = []
+    xx = x - 6
+    while xx < x + W + 6:
+        if rng.random() < .65:
+            th = H * rng.uniform(.16, .42)
+            tw = th * .42
+            trees.append(("fir", xx, th, tw))
+            xx += tw * rng.uniform(.6, 1.3)
+        else:
+            th = H * rng.uniform(.18, .26)
+            tw = th * 1.1
+            trees.append(("oak", xx, th, tw))
+            xx += tw * .6
+    for kind, tx, th, tw in trees:
+        base = hz + 2
+        if kind == "fir":
+            pts = [(tx, base - th)]
+            n = 7
+            for i in range(1, n + 1):
+                t = i / n
+                pts.append((tx + tw / 2 * t * 1.05, base - th + th * t - (th / n * .4 if i < n else 0)))
+                if i < n:
+                    pts.append((tx + tw / 2 * t * .55, base - th + th * t))
+            pts = pts + [(tx - px + tx, py) for px, py in pts[::-1]][:-1]
+        else:
+            pts = []
+            for i in range(19):
+                a = math.pi + math.pi * i / 18
+                r = 1 + .12 * math.sin(i * 2.1 + tx)
+                pts.append((tx + tw / 2 * math.cos(a) * r, base - th * .55 + th * .45 * math.sin(a) * r))
+            pts += [(tx + tw * .35, base), (tx - tw * .35, base)]
+        cv.obj([pts], .5)
+        tone_hatch(cv, pts, lit(tx, base - th * .5, tw * .55, th * .5, .3, .75), 80. if kind == "fir" else 30., 1.5, .7)
+    # the ground plane: rough meadow receding in short flicks
+    meadow = [(x - 2, hz), (x + W + 2, hz), (x + W + 2, y + H + 2), (x - 2, y + H + 2)]
+    cv.obj([meadow], 0)
+    cv.line([(x - 2, hz), (x + W + 2, hz)])
+    yy = hz + 2
+    while yy < y + H:
+        k = (yy - hz) / (y + H - hz)
+        xx = x + rng.uniform(0, 4)
+        while xx < x + W:
+            L = 1.5 + 3.5 * k
+            cv.hair([(xx, yy), (xx + L * .2, yy - L)])
+            xx += (3.5 - 1.5 * k + rng.uniform(0, 2)) * (1.4 if H > 180 else 1.)
+        yy += (2 + 2 * k) * (1.3 if H > 180 else 1.)
+    # the fence line and its posts, the kestrel on the nearest
+    fy = hz + (y + H - hz) * .28
+    posts = []
+    for i in range(9):
+        px = x + W * (.54 + i * .065)
+        ph = H * (.1 + .012 * i)
+        posts.append((px, ph))
+    for i in range(len(posts) - 1):
+        (a, ha), (b, hb) = posts[i], posts[i + 1]
+        for q in (.35, .7):
+            cv.hair([(a, fy - ha * q), (b, fy + (i + 1) * .9 - hb * q)])
+    for i, (px, ph) in enumerate(posts):
+        pb = fy + i * .9
+        post = [(px - 1.3, pb), (px + 1.3, pb), (px + 1.3, pb - ph), (px - 1.3, pb - ph - .8)]
+        cv.obj([post], .5)
+        cv.hair([(px + .4, pb - ph + 1), (px + .4, pb - .5)])
+    kp, kh = posts[1]
+    kestrel(cv, kp, fy + .9 - kh - .5, H * .2, -1)
+    # the brush pile at the wood's edge: a mound of crossed limbs, the gaps dark
+    bx, bw, bh = x + W * .3, W * .26, H * .2
+    mound = [(bx - bw / 2 + bw * i / 20, fy + 3 - bh * math.sin(math.pi * i / 20) ** .7 * (1 + .1 * math.sin(i * 1.7)))
+             for i in range(21)]
+    cv.obj([mound], 1.)
+    cv.hair(C.hatch_poly(mound, 0, 1.5))
+    cv.hair(_keep_disc(C.hatch_poly(mound, 90, 1.5), bx + bw * .2, fy, bw * .4))
+    for i in range(18):
+        a0 = rng.uniform(-.9, .9)
+        cxl = bx + rng.uniform(-.4, .4) * bw
+        cyl = fy + 2 - rng.uniform(.1, .7) * bh
+        L = rng.uniform(.2, .45) * bw
+        limb = [(cxl - math.cos(a0) * L / 2, cyl - math.sin(a0) * L / 2), (cxl + math.cos(a0) * L / 2, cyl + math.sin(a0) * L / 2)]
+        R = _Rib(limb, [1.2, .6], [1.2, .6])
+        cv.obj([R.outline()], .5)
+        if rng.random() < .5:
+            tx, ty = limb[1]
+            cv.hair([(tx, ty), (tx + 3 * math.cos(a0 - .7), ty + 3 * math.sin(a0 - .7))])
+    if smoke:
+        # a burn-OK morning: smoke curls up off the pile and leans with the breeze
+        for j in range(3):
+            pts = []
+            for i in range(30):
+                t = i / 29
+                pts.append((bx + bw * (-.05 + .1 * j) + t * W * .12 + math.sin(t * 7 + j) * 4 * t,
+                            fy - bh * .8 - t * (fy - y) * .9))
+            R = _Rib(pts, [1. + 5 * (i / 29) for i in range(30)], [1. + 5 * (i / 29) for i in range(30)])
+            cv.obj([R.outline()], .5)
+            cv.hair(R.contour(.3, .5, .9))
+    # the lit foreground: oatgrass and camas, tall, swelling and tapering
+    for i in range(int(W / 4)):
+        gx = x + rng.uniform(-2, W + 2)
+        gb = y + H + 2
+        gh = H * rng.uniform(.12, .3)
+        lean = rng.uniform(-.25, .25)
+        stem = [(gx, gb), (gx + lean * gh * .5, gb - gh * .5), (gx + lean * gh, gb - gh)]
+        R = _Rib(stem, [1., .6, .25], [1., .6, .25])
+        cv.obj([R.outline()], .5)
+        if rng.random() < .3:
+            hx, hy = stem[-1]
+            for k in range(4):   # a camas spike
+                cv.obj([_ell(hx + (k % 2 - .5) * 2, hy + k * 2, 1.4, .9, 8)[:-1]], .5)
+    return cv.svg()
 
 
-def _layout_band(w, h, seed):
-    o = []
-    top = 7.
-    o.append(C.bead_moulding(0, 3.5, w, 1.5))
-    gh = h - top - 2
-    o.append(C.dark_ground((0, top, w, gh), "G"))
-    gap = min(gh * 2.2, 150)
-    o.append(C._clip(_cid("b", w, h, seed), 0, top, w, gh,
-                     C.scroll_band(0, top, w, gh, seed, gap * .8, r_scale=1.15 * max(1., 62. / gh))))
-    cx, cy = w / 2, top + gh / 2
-    rx, ry = gap / 2, gh / 2 - 1
-    o.append(C._medallion(cx, cy, rx, ry))
-    # inside: a garlic bulb lying on the ruled sky over its bed, cloves either side
-    fi = _ell(cx, cy, rx - 2.5, ry - 2.5, 64)[:-1]
+def _tufts(w, h, cx, cy, a, b, seed):
+    """oatgrass and camas growing up over the foot of the oval, out of the ground beyond it"""
+    rng = random.Random(seed + 9)
     cv = C.Canvas()
-    cv.obj([], 0)
-    y = cy - ry
-    while y < cy + ry:
-        cv.hair([(cx - rx, y), (cx + rx, y)])
-        y += 2. if y < cy + ry * .35 else 1.5
-    a = min(ry * .48, 20)
-    gy = cy + ry * .5
-    cv.obj([], 0)
-    cv.heavy([(cx - rx, gy), (cx + rx, gy)])
-    for side in (-1, 1):
-        for k in (1, 2):
-            x = cx + side * (a * 1.5 + k * rx * .2)
-            if abs(x - cx) < rx * .85:
-                clove(cv, x, gy + .5, a * .9, side * .15, random.Random(k + side))
-    garlic_bulb(cv, cx, gy - a * 1.08 * .78, a, a * 1.08, seed, True, True,
-                [(-128, a * 1.5, -.9, -4.4), (-52, a * 1.5, .9, 4.4), (-160, a * 1.3, -.6, -4.), (-20, a * 1.3, .6, 4.)], -1)
-    body = C.dark_ground((cx - rx, gy, 2 * rx, ry * 2), "S") + cv.svg()
-    o.append(_clip_d(_cid("bm", w, h), _d(fi, True, 0), body))
-    o.append(f'<path d="{_d(_ell(cx, cy, rx - 2.5, ry - 2.5, 64), True)}" fill="none" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="M0,{_n(h - .5)}h{_n(w)}" stroke="#000" stroke-width="1" shape-rendering="crispEdges"/>')
-    return "".join(o)
-
-
-def _layout_tall(w, h, seed):
-    rng = random.Random(seed)
-    o = []
-    ped_h = min(max(h * .17, 48), 86.)
-    frieze = min(max(h * .1, 28), 56.) if h >= 440 else 0.
-    top_free = min(h * .055, 26.)
-    px0, py0 = 6., top_free
-    pw = w - 12
-    ph = h - top_free - ped_h - frieze + ped_h * .3
-    o.append(f'<path d="M{_n(px0 - 3.5)},{_n(py0 - 3.5)}h{_n(pw + 7)}v{_n(ph + 7)}h{_n(-pw - 7)}z" fill="#fff" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="M{_n(px0 - 1.5)},{_n(py0 - 1.5)}h{_n(pw + 3)}v{_n(ph + 3)}h{_n(-pw - 3)}z" fill="none" stroke="#000" stroke-width=".5"/>')
-    o.append(C.dark_ground((px0, py0, pw, ph), "G"))
-    cw, ch = pw * .5, ph * .6
-    cx, cy = w / 2, py0 + ph * .45
-    occ = [("r", cx - cw / 2 + 6, cy - ch / 2 + 6, cx + cw / 2 - 6, cy + ch / 2 - 6)]
-    cv = C.Canvas()
-    main = C.Canvas()
-    ba = min(pw * .075, ph * .1)
-    ybulb = py0 + ph - ped_h * .3 + 2 - ba * .45
-    for side in (-1, 1):
-        occ.append(("c", cx + side * (cw / 2 + ba * 1.6), ybulb - ba, ba * 1.5))
-    r2 = min(pw * .13, ph * .2)
-    for side in (-1, 1):
-        vx = cx + side * (cw * .5 + r2 * .55)
-        vy = py0 + r2 * 1.1
-        C._pair_unit(main, vx, vy, r2, side, random.Random(seed * 7 + side), -10, 1.4, .8, False)
-        occ.append(("c", vx, vy, r2))
-    r1 = min(pw * .12, ph * .17)
-    for side in (-1, 1):
-        vx = w / 2 + side * (pw / 2 - r1 * 1.1)
-        vy = py0 + ph * .62
-        C._pair_unit(main, vx, vy, r1, -side, random.Random(seed * 5 + side), 10, 1.45, .8, True)
-        occ.append(("c", vx, vy, r1))
-    C.fill_scrolls(px0, py0, pw, ph, occ, rng.randrange(1 << 20), rmin=max(14, ph * .05), rmax=r1 * .9,
-                   max_n=7, edge=.6, cv=cv)
-    cv.extend(main)
-    figs = C.Canvas()
-    for side in (-1, 1):
-        _flank_bulb(figs, cx + side * (cw / 2 + ba * 1.6), ybulb, ba, side, seed + side, ph * .33)
-    cv.extend(figs)
-    o.append(C._clip(_cid("t", w, h, seed), px0, py0 - top_free, pw, ph + top_free, cv.svg()))
-    c, _, inner = C.cartouche(cx, cy, cw, ch, rng.randrange(1 << 20))
-    o.append(c)
-    a, b = _field(cx, cy, cw, ch)
-    o.append(garden_scene(cx - a, cy - b, 2 * a, 2 * b, inner, seed, True))
-    o.append(C.palmette(cx, cy - ch / 2 + 7, min(ch * .18 + top_free, 56), True, rng.randrange(1 << 20)))
-    bh = min(16, ph * .05)
-    bsvg, face = C.ribbon_banner(cx, cy + ch * .47, cw * 1.3, bh, .04, rng.randrange(1 << 20))
-    o.append(bsvg)
-    # ribbon face lettered with a running row of garlic cloves instead of words
-    bc = C.Canvas()
-    nn = 9
-    for i in range(nn):
-        p = face[int(len(face) * (i + 1) / (nn + 1))]
-        clove(bc, p[0], p[1] + bh * .32, bh * .62, 0, random.Random(i))
-    o.append(bc.svg())
-    py = py0 + ph - ped_h * .3 + 4 if frieze else h - ped_h
-    p, (tx, ty, tw, th) = C.pedestal(0, py, w, ped_h, rng.randrange(1 << 20))
-    o.append(p)
-    # tablet: a garlic braid lying along it, on a stipple ground
-    o.append(C.dark_ground((tx + 2, ty + 2, tw - 3, th - 3), "S"))
-    tc = C.Canvas()
-    k = int(tw / (th * 1.5))
-    for i in range(k):
-        bx = tx + tw * (i + .5) / k
-        garlic_bulb(tc, bx, ty + th * .55, th * .36, th * .33, i, False, False, None, -1)
-    tc.obj([], 0)
-    o.append(tc.svg())
-    fy = py + ped_h
-    fh = h - fy
-    if fh > 14:
-        o.append(C.dark_ground((w * .06, fy, w * .88, fh - 2), "G"))
-        o.append(C._clip(_cid("f", w, h, seed), w * .06, fy, w * .88, fh - 2,
-                         C.scroll_band(w * .06, fy, w * .88, fh - 2, rng.randrange(1 << 20), fh * 1.2,
-                                       r_scale=1.15, n=2)))
-        o.append(C.palmette(w / 2, fy + 1, fh * .85, False, rng.randrange(1 << 20)))
-        o.append(f'<path d="M{_n(w * .06)},{_n(h - 1.5)}h{_n(w * .88)}" stroke="#000" stroke-width="1" shape-rendering="crispEdges"/>')
-    return "".join(o)
+    for sd in (-1, 1):
+        bx = cx + sd * a * .78
+        for i in range(16):
+            gx = bx + rng.uniform(-a * .22, a * .22)
+            gb = cy + b * rng.uniform(.82, 1.0)
+            gh = b * rng.uniform(.35, .75)
+            lean = sd * rng.uniform(0, .45) + rng.uniform(-.1, .1)
+            stem = [(gx + lean * gh * (t ** 1.6), gb - gh * t) for t in [k / 8 for k in range(9)]]
+            cv.obj([], 0)
+            cv.line(stem[:5])
+            cv.hair(stem[4:])
+            if rng.random() < .35:
+                hx, hy = stem[-1]
+                for k in range(5):
+                    cv.obj([_ell(hx + (k % 2 - .5) * 2.2, hy + k * 2.2, 1.6, 1., 8)[:-1]], .5)
+            elif rng.random() < .5:
+                hx, hy = stem[-1]
+                for k in range(4):
+                    cv.hair([(hx, hy + k * 2), (hx + sd * 2.5, hy + k * 2 - 1.5)])
+    return cv.svg()
 
 
 def plate(w, h, ctx):
     seed = _seed(ctx)
-    if h < 110:
-        body = _layout_band(w, h, seed)
-    elif h <= 260:
-        body = _layout_medium(w, h, seed)
-    else:
-        body = _layout_tall(w, h, seed)
-    return C.svg_doc(w, h, body)
+    uid = f"wl{int(w)}x{int(h)}"
+    sample = (ctx or {}).get("sample", "")
+    burn_ok = bool(re.search(r"\\bburn\\w*[^.|]{0,30}\\b(ok|open|allowed)\\b", sample, re.I))
+    cx, cy, a, b = box_fit(w, h, 2.1 if h < 260 else 1.3, pad=3)
+    clean = shape_pts(cx, cy, a, b, "oval", 180)
+    sil = ragged(clean, max(2., b * .05), seed, cut=lambda x, y: y < cy + b * .4)
+    body = prairie_scene(cx - a, cy - b, 2 * a, 2 * b, seed, burn_ok)
+    top = [p for p in clean if p[1] < cy + b * .4]
+    top.sort(key=lambda p: (_m.atan2(p[1] - cy, p[0] - cx) - _PI / 2) % _TAU)
+    ex = f'<path d="{_dd(top, tol=.1)}" fill="none" stroke="#000" stroke-width="1.5"/>' + _tufts(w, h, cx, cy, a, b, seed)
+    return vignette(w, h, uid, sil, body, None, ex)

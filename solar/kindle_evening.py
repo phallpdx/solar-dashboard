@@ -58,10 +58,10 @@ html.kev #kmain svg text.kmicro{font:600 4.4px var(--k-serif) !important;stroke-
 #kmain svg.kfr path,#kmain svg.kfr circle{vector-effect:non-scaling-stroke}
 #kmain .kfill{display:block;height:0;overflow:hidden;position:relative}
 #kmain .kfill svg.kfr,#kmain .kfill svg.kfp{display:none !important}
-#kmain .kfill{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-evenly;justify-content:space-evenly}
+#kmain .kfill{-webkit-flex:none;flex:none;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-evenly;justify-content:space-evenly}
 #kmain .kfi{display:none;flex:none;margin:0;text-align:center;line-height:0}
 #kmain .kfi svg{display:inline-block;max-width:100%;vertical-align:top}
-#kmain .kfrow{white-space:nowrap}#kmain .kfrow svg{margin:0 3px}#kmain .kfrow svg:first-child{margin-left:0}#kmain .kfrow svg:last-child{margin-right:0}
+#kmain .kfi.kfrow{-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center}#kmain .kfrow svg{margin:0 4px;-webkit-flex:0 1 auto;flex:0 1 auto;min-width:0}
 html.kev #kmain svg text.kseal{font:700 17px var(--k-serif) !important;stroke-width:0 !important}
 html.kev #kmain svg text.ksealno{font:italic 600 7.4px var(--k-serif) !important;stroke-width:0 !important}
 #kmain .korn{display:block;margin:0 auto;overflow:visible;max-width:100%}
@@ -188,11 +188,23 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 #kmain .kplate.klong .poem-by{margin-bottom:8px !important}
 
 /* no white page: a fine engraved ground under everything, banknote style; type knocked out in white */
-html.kev,html.kev body,html.kev #kmain,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.4%22/%3E%3C/svg%3E") repeat !important}
-html.kev #kmain h1,html.kev #kmain h2,html.kev #kmain h3,html.kev #kmain p,html.kev #kmain li,html.kev #kmain span,html.kev #kmain td,html.kev #kmain th,html.kev #kmain div,html.kev .kbar,html.kev .kbar *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff}
+html.kev body,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") repeat !important}
+html.kev,html.kev #kmain{background:transparent !important}
+/* kindle_full sets html body *{text-shadow:none !important}; the knockout must out-rank it, on text-bearing elements and their children */
+html.kev #kmain h1,html.kev #kmain h1 *,html.kev #kmain h2,html.kev #kmain h2 *,html.kev #kmain h3,html.kev #kmain h3 *,html.kev #kmain p,html.kev #kmain p *,html.kev #kmain li,html.kev #kmain li *,html.kev #kmain td,html.kev #kmain td *,html.kev #kmain th,html.kev #kmain th *,html.kev #kmain .kkick,html.kev #kmain .kkick *,html.kev #kmain .kdeg,html.kev #kmain .kdeg *,html.kev #kmain .ksun3 div,html.kev #kmain .ksun3 div *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *,html.kev #kmain .poem-title,html.kev #kmain .poem-title *,html.kev #kmain .poem-by,html.kev #kmain .poem-by *,html.kev #kmain .kleads a,html.kev #kmain .kleads a *,html.kev .kbar,html.kev .kbar *,html.kev .krun,html.kev .krun *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}
+
+/* margins dressed in engraving: medallion flanks and columns, by reference to the page's filler set */
+#kmain .kflank{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center}
+#kmain .kflank svg.kmu,#kmain .kflank svg.kvu{flex:none;margin:0 5px}
+#kmain .kflank.khv{-webkit-justify-content:space-around;justify-content:space-around}#kmain .kflank svg.korn{margin:0 6px !important;flex:none}
+#kmain .kft{margin:var(--s3) auto 0}#kmain .kft .ktail{margin:0 8px !important}
+#kmain .kcol{position:absolute;top:150px;bottom:70px;width:48px;overflow:hidden;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-around;justify-content:space-around;-webkit-align-items:center;align-items:center}
+#kmain .kcol svg{flex:none}
+#kmain .kgcol{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-around;justify-content:space-around;height:150px;margin:0 14px}
+#kmain .kcol-l{left:34px}#kmain .kcol-r{right:34px}
 /* the close */
 html.kev .kendpage #kmain .kend{text-align:center}
-html.kev .kendpage #kmain .kframe{min-height:578px;-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-flex;display:flex;
+html.kev .kendpage #kmain .kframe{-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-flex;display:flex;
   -webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center}
 html.kev .kendpage #kmain .kend .kgn{width:330px;height:auto}
 html.kev .kendpage #kmain .kend .kkick{margin:12px 0 2px !important;letter-spacing:.2em !important}
@@ -291,20 +303,20 @@ def _defs():
     pat = ('<pattern id="{id}" width="{w}" height="{h}" patternUnits="userSpaceOnUse"{t}>{c}</pattern>')
     out = [
         pat.format(id="ke-s2", w=4, h=4, t="", c='<circle cx="1" cy="1" r=".42"/><circle cx="3" cy="3" r=".42"/>'),
-        pat.format(id="ke-s", w=2.6, h=2.6, t="", c='<circle cx=".65" cy=".65" r=".5"/><circle cx="1.95" cy="1.95" r=".5"/>'),
-        pat.format(id="ke-h", w=3.4, h=3.4, t="", c=f'<path d="{_diag(3.4)}" {K} stroke-width=".6"/>'),
-        pat.format(id="ke-hv", w=6, h=2.2, t="", c=f'<path d="M0,1.1H4.2" {K} stroke-width=".5"/>'),
-        pat.format(id="ke-rule", w=8, h=2.1, t="", c=f'<path d="M0,1.05H8" {K} stroke-width=".55"/>'),
-        pat.format(id="ke-x", w=3.4, h=3.4, t="", c=f'<path d="{_diag(3.4)}{_diag(3.4, True)}" {K} stroke-width=".55"/>'),
+        pat.format(id="ke-s", w=2.5, h=2.5, t="", c='<circle cx=".625" cy=".625" r=".5"/><circle cx="1.875" cy="1.875" r=".5"/>'),
+        pat.format(id="ke-h", w=3.5, h=3.5, t="", c=f'<path d="{_diag(3.5)}" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-hv", w=6, h=2.5, t="", c=f'<path d="M0,1.25H4.2" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-rule", w=8, h=2, t="", c=f'<path d="M0,1H8" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-x", w=3.5, h=3.5, t="", c=f'<path d="{_diag(3.5)}{_diag(3.5, True)}" {K} stroke-width=".5"/>'),
         pat.format(id="ke-rope", w=4, h=6, t="", c=f'<path d="M-1,6.5C.6,4 2.4,1.6 3.4,-.5M3,6.5C4.6,4 6.4,1.6 7.4,-.5" fill="none" {K} stroke-width=".7"/>'),
         pat.format(id="ke-rope-v", w=6, h=4, t="", c=f'<path d="M6.5,-1C4,.6 1.6,2.4 -.5,3.4M6.5,3C4,4.6 1.6,6.4 -.5,7.4" fill="none" {K} stroke-width=".7"/>'),
-        pat.format(id="ke-hb", w=6, h=6, t="", c=f'<path d="M0,0L3,3L0,6M3,0L6,3L3,6" fill="none" {K} stroke-width=".55"/>'),
-        pat.format(id="ke-hb-v", w=6, h=6, t="", c=f'<path d="M0,0L3,3L6,0M0,3L3,6L6,3" fill="none" {K} stroke-width=".55"/>'),
-        pat.format(id="ke-n", w=1.8, h=1.8, t="", c=f'<path d="M0,.9H1.8" {K} stroke-width="1.05"/>'),
-        pat.format(id="ke-d", w=2.2, h=2.2, t="", c=f'<path d="{_diag(2.2)}" {K} stroke-width=".6"/>'),
-        pat.format(id="ke-p", w=6, h=3, t="", c=f'<path d="M0,1.5Q1.5,0 3,1.5T6,1.5" fill="none" {K} stroke-width=".45"/>'),
-        pat.format(id="ke-gh", w=12, h=7, t=' y="3.5"', c=f'<g fill="none" {K} stroke-width=".45">{_guilloche_tile()}</g>'),
-        pat.format(id="ke-gv", w=7, h=12, t=' x="3.5"', c=f'<g fill="none" {K} stroke-width=".45">{_guilloche_tile(True)}</g>'),
+        pat.format(id="ke-hb", w=6, h=6, t="", c=f'<path d="M0,0L3,3L0,6M3,0L6,3L3,6" fill="none" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-hb-v", w=6, h=6, t="", c=f'<path d="M0,0L3,3L6,0M0,3L3,6L6,3" fill="none" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-n", w=2, h=2, t="", c=f'<path d="M0,1H2" {K} stroke-width="1"/>'),
+        pat.format(id="ke-d", w=2.5, h=2.5, t="", c=f'<path d="{_diag(2.5)}" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-p", w=6, h=3, t="", c=f'<path d="M0,1.5Q1.5,0 3,1.5T6,1.5" fill="none" {K} stroke-width=".5"/>'),
+        pat.format(id="ke-gh", w=12, h=7, t=' y="3.5"', c=f'<g fill="none" {K} stroke-width=".5">{_guilloche_tile()}</g>'),
+        pat.format(id="ke-gv", w=7, h=12, t=' x="3.5"', c=f'<g fill="none" {K} stroke-width=".5">{_guilloche_tile(True)}</g>'),
     ]
     return ('<svg class="kdefs" width="0" height="0" aria-hidden="true" style="position:absolute"><defs>'
             + "".join(out) + "</defs></svg>")
@@ -770,10 +782,12 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
         if engraving_medallions:
             for i in range(8):
                 key = _MED_ORDER[(k + i) % len(_MED_ORDER)]
-                m = engraving_medallions.MEDALLIONS[key](41, seed=(k * 7 + i) % 50 + 1)
+                m = engraving_medallions.MEDALLIONS[key](40, seed=(k * 7 + i) % 50 + 1)
                 if i >= 3 and spent[0] + len(m) > budget * .45:
                     break
                 mid = f"kmd{salt}{i}"
+                # the medallion's field takes a fine stipple, so it reads as engraved, not as a white hole
+                m = re.sub(r'(<path d="[^"]*") fill="#fff"/>', lambda q: q.group(1) + ' fill="#fff"/>' + q.group(1) + f' fill="url(#kst{salt})"/>', m, 1)
                 defs.append(m.replace("<svg ", f'<svg id="{mid}" ', 1))
                 spent[0] += len(m)
                 meds.append(mid)
@@ -796,12 +810,13 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
         vigs = []
 
     def medrow(n, off):
-        d = (w - 5 * (n - 1)) / n
-        h = int(d) + 6
+        d = int((w - 8 * n - 6) / n)  # whole medallions, 4 px either side, centred: never cut at the frame
+        h = d + 6
         return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(meds[(off + i) % len(meds)], 100, 100, d, d) for i in range(n)) + '</div>'
 
     def vigrow(n, off):
-        vw = (w - 5 * (n - 1)) / n
+        n = min(n, len(vigs))  # never the same scene twice in a row
+        vw = int((w - 8 * n - 6) / n)
         h = int(vw * 2 / 3) + 6
         return h, f'<div class="kfi kfrow" data-h="{h}">' + "".join(use(vigs[(off + i) % len(vigs)], 120, 80, vw, vw * 2 / 3) for i in range(n)) + '</div>'
 
@@ -858,6 +873,9 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
         items.append(medrow(12, 1))
     if rib:
         items.append((20, f'<div class="kfi" data-h="20">{rib}</div>'))
+    if defs:
+        defs.insert(0, f'<svg width="0" height="0"><defs><pattern id="kst{salt}" width="3" height="3" patternUnits="userSpaceOnUse">'
+                       '<circle cx=".75" cy=".75" r=".42"/><circle cx="2.25" cy="2.25" r=".42"/></pattern></defs></svg>')
     return (f'<div class="kdefs" aria-hidden="true">{"".join(defs)}</div>' if defs else "") + "".join(x for _, x in items)
 
 
@@ -865,11 +883,13 @@ FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySele
            "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr'),"
            "it=k.querySelectorAll('.kfi'),i;k.style.height='0px';if(p)p.style.display='none';if(r)r.style.display='none';"
            "for(i=0;i<it.length;i++)it[i].style.display='none';"
+           "var cs=document.querySelectorAll('#kmain .kcol'),pt=document.querySelector('#kmain .poem-text, #kmain .kend');for(i=0;i<cs.length;i++){cs[i].style.display='';"
+           "if(pt){var a=cs[i].getBoundingClientRect(),q=pt.getBoundingClientRect();if(a.right>q.left-6&&a.left<q.right+6&&q.width<600&&(a.left<q.left?a.right>q.left-6:a.left<q.right+6))cs[i].style.display='none';}}"
            "var free=Math.floor(b.getBoundingClientRect().top-20-fr.getBoundingClientRect().bottom);"
            "if(free>=20){k.style.height=free+'px';var left=free-4,on=0;"
            "for(var pass=0;pass<2;pass++)for(i=0;i<it.length;i++){var h=+it[i].getAttribute('data-h');"
            "if(it[i].style.display!=='none')continue;if(pass===0&&h<=20&&on===0&&left>140)continue;"
-           "if(h<=left){it[i].style.display='block';left-=h;on++;}}}"
+           "if(h<=left){it[i].style.display=it[i].className.indexOf('kfrow')>=0?'-webkit-flex':'block';if(it[i].style.display!=='-webkit-flex'&&it[i].className.indexOf('kfrow')>=0)it[i].style.display='flex';left-=h;on++;}}}"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
            "window.addEventListener('load',go);})();</script>")
@@ -886,7 +906,7 @@ def _drop_style(night, salt):
            f'preserveAspectRatio="xMidYMid slice">{g}</svg>')
     url = quote(svg, safe=" =:/,.-")
     return ('<style>#kmain .kbody p.kdrop:first-letter{background:#fff url("data:image/svg+xml,' + url
-            + '") center/cover no-repeat !important;text-shadow:0 0 2px #fff,0 0 2px #fff}</style>')
+            + '") center/cover no-repeat !important;text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}</style>')
 
 
 def _night_ribbon(w, night, text):
@@ -1475,7 +1495,7 @@ def _moon_plate(lit, waxing, size=120):
     return _svg(size, size, ring + _moon_shape(c, c, r, lit, waxing, "kbm", maria=True, dark="url(#ke-n)"))
 
 
-PAGE_BYTES = 176000  # each page stays under ~180 KB
+PAGE_BYTES = 172000  # each page stays under ~180 KB
 SCREEN = 596  # usable height of a text page, px (618 x 714 less the running head and the bar)
 
 
@@ -1514,6 +1534,84 @@ def daylight(rise, sets):
     if a is None or b is None or b <= a:
         return None
     return f"{(b - a) // 60} h {(b - a) % 60:02d} m"
+
+
+_SNAP_RE = re.compile(r'<svg\b[^>]*>|</svg>|stroke-width(=")([0-9.]+)"|stroke-width(:)([0-9.]+)')
+
+
+def _snap_strokes(doc):
+    """Kindle Paperwhite pass: every engraved line lands on the device pixel grid. A stroke's on-screen width
+    (stroke-width x the drawing's viewBox scale) is rounded up to a whole multiple of 0.5 CSS px, at least 0.5."""
+    try:
+        stack = [1.0]
+
+        def sub(m):
+            t = m.group(0)
+            if t.startswith("<svg"):
+                sc = stack[-1]
+                vb = re.search(r'viewBox="\s*[-0-9.]+[ ,]+[-0-9.]+[ ,]+([0-9.]+)', t)
+                wd = re.search(r'\swidth="([0-9.]+)(?:px)?"', t)
+                if vb and wd and float(vb.group(1)) > 0:
+                    sc = float(wd.group(1)) / float(vb.group(1))
+                elif vb:
+                    hs = re.search(r'height:\s*([0-9.]+)px', t)
+                    vh = re.search(r'viewBox="\s*[-0-9.]+[ ,]+[-0-9.]+[ ,]+[0-9.]+[ ,]+([0-9.]+)', t)
+                    if hs and vh and float(vh.group(1)) > 0:
+                        sc = float(hs.group(1)) / float(vh.group(1))
+                if not t.endswith("/>"):
+                    stack.append(sc)
+                return t
+            if t == "</svg>":
+                if len(stack) > 1:
+                    stack.pop()
+                return t
+            v = float(m.group(2) or m.group(4))
+            if v <= 0:
+                return t
+            sc = stack[-1] or 1.0
+            px = max(.5, math.ceil(v * sc * 2 - 1e-6) / 2)
+            nv = f"{px / sc:.3f}".rstrip("0").rstrip(".")
+            return f'stroke-width="{nv}"' if m.group(1) else f"stroke-width:{nv}"
+
+        return _SNAP_RE.sub(sub, doc)
+    except Exception:  # noqa: BLE001
+        return doc
+
+
+def _muse(salt, i, size, cls=""):
+    """A medallion from this page's filler set (drawn once in its hidden defs), placed by reference."""
+    return (f'<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="kmu{cls}" viewBox="0 0 100 100" width="{size}" height="{size}" aria-hidden="true">'
+            f'<use xlink:href="#kmd{salt}{i % 4}" width="100" height="100"/></svg>')
+
+
+def _vuse(salt, i, h, cls=""):
+    """A vignette from this page's filler set, by reference, h px tall."""
+    return (f'<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="kvu{cls}" viewBox="0 0 120 80" width="{_n(h * 1.5)}" height="{h}" aria-hidden="true">'
+            f'<use xlink:href="#kvg{salt}{i % 2}" width="120" height="80"/></svg>')
+
+
+def _dress(body, salt, close=False):
+    """Fill a page's margins with engraving: medallions flank the head vignette, vignettes and medallions flank
+    the tailpiece, and a framed plate (poem, close) gets medallion columns down its sides."""
+    try:
+        tail = ORNAMENTS["tail"]
+        if tail in body:
+            row = (f'<div class="kflank kft">{_vuse(salt, 0, 28)}{_muse(salt, 2, 28)}{_muse(salt, 3, 28)}{tail}'
+                   f'{_muse(salt, 0, 28)}{_muse(salt, 1, 28)}{_vuse(salt, 1, 28)}</div>')
+            body = body[::-1].replace(tail[::-1], row[::-1], 1)[::-1]
+        m = re.search(r'<div class="khv">', body)
+        if m:
+            e = body.index("</div>", m.end())
+            n = 2 if "kplate" in body else 3
+            body = (body[:m.start()] + '<div class="khv kflank">' + "".join(_muse(salt, i, 44) for i in range(n)) + body[m.end():e]
+                    + "".join(_muse(salt, i + 2, 44) for i in range(n)) + '</div>' + body[e + 6:])
+        if "kplate kframe" in body or close:
+            col = lambda off: "".join(_muse(salt, off + i, 46) for i in range(8))
+            cols = f'<div class="kcol kcol-l">{col(0)}</div><div class="kcol kcol-r">{col(2)}</div>'
+            body = body.replace(_corner_blocks(), _corner_blocks() + cols, 1) if not close else body
+    except Exception:  # noqa: BLE001
+        pass
+    return body
 
 
 def main(dash_path, ev_path, site):
@@ -1636,7 +1734,9 @@ def main(dash_path, ev_path, site):
                       "body": poem_html(poem), "notail": True})
     pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True,
                   "body": f'<div class="kframe">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["rosettes"].values())}'
-                          f'<div class="kend">{_vig_goodnight(*phase[:2]) if phase else ORNAMENTS["goodnight"]}<p class="kkick">The Evening Edition</p>'
+                          f'<div class="kend"><div class="kflank kgnrow"><div class="kgcol">{_muse("goodnight", 0, 62)}{_muse("goodnight", 1, 62)}</div>'
+                          f'{_vig_goodnight(*phase[:2]) if phase else ORNAMENTS["goodnight"]}'
+                          f'<div class="kgcol">{_muse("goodnight", 2, 62)}{_muse("goodnight", 3, 62)}</div></div><p class="kkick">The Evening Edition</p>'
                           '<h2 class="kfname">That&rsquo;s the day.</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
                           f'{ORNAMENTS["divider"]}<p class="kquiet">Think of one good thing from today, then let it go.</p>'
@@ -1678,12 +1778,13 @@ def main(dash_path, ev_path, site):
             pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
+        pg["body"] = _dress(pg["body"], pg["file"].split(".")[0].replace("-", ""))
         fill = _filler(night, pg["file"].split(".")[0].replace("-", ""),
-                       budget=PAGE_BYTES - 42000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
+                       budget=PAGE_BYTES - 50000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
                        moon=(phase[0] / 100 if phase and pg["file"] in ("tomorrow.html", "sky.html") else None))
         if not framed:
             pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
-        elif 'kplate kframe' in pg["body"] and pg["body"].endswith("</div>"):
+        elif ('kplate kframe' in pg["body"] or pg.get("close")) and pg["body"].endswith("</div>"):
             pg["body"] = pg["body"][:-6] + fill + "</div>"
         pg["body"] = ORNAMENTS["defs"] + pg["body"] + FILL_JS
 
@@ -1737,7 +1838,7 @@ def main(dash_path, ev_path, site):
             doc = re.sub(r'<a class="knext"[^>]*>.*?</a>', "", doc, flags=re.S)
             doc = doc.replace("else go(NEXT_URL); }", "else if (NEXT_URL) go(NEXT_URL); }")
         with open(os.path.join(out, pg["file"]), "w") as f:
-            f.write(doc)
+            f.write(_snap_strokes(doc))
 
     # ---- the cover: a framed nameplate, the scrollwork centrepiece, tomorrow, the day's stories
     leads = "".join(f'<a href="{pg["file"]}"><i>{ROMAN[k]}</i><b>{E(pg["title"])}</b></a>'
@@ -1774,10 +1875,10 @@ def main(dash_path, ev_path, site):
                 + ([f"the moon {phase[0]}% lit"] if phase else [])
                 + ([f"&#8220;{E(poem['title'])}&#8221;"] if poem else [])))
             + f'<p class="kevrest">{rest_txt if leads else rest_txt.replace("Then ", "Inside: ", 1)}About {minutes} minutes.</p>'
-            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=0)}</div>' + FILL_JS)
+            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=55000)}</div>' + FILL_JS)
     with open(os.path.join(out, "index.html"), "w") as f:
-        f.write(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
-                     run_right="", fonts=font_links, next_label=_TITLES[files[0]]))
+        f.write(_snap_strokes(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
+                     run_right="", fonts=font_links, next_label=_TITLES[files[0]])))
     with open(os.path.join(site, "evening.html"), "w") as f:
         f.write('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=evening/index.html">'
                 '<a href="evening/index.html">Open the Evening Edition</a>')

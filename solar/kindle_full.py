@@ -1912,7 +1912,7 @@ PAGER_JS = r"""
     var all = main.getElementsByTagName('*'), ls = [], us = [], hs = [], lb = 0, base = main.getBoundingClientRect().top;
     for (var i = 0; i < all.length; i++) {
       var el = all[i];
-      if (!blockish(el)) continue;
+      if (el.ownerSVGElement || !blockish(el)) continue;
       var r = el.getBoundingClientRect();
       if (r.height <= 0) continue;
       var top = r.top - base, bottom = r.bottom - base, tag = el.tagName.toUpperCase();

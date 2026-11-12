@@ -59,6 +59,12 @@ Also tools/engrave/ref/thai-himmapan.jpg, a Thai engraving of the Himmapan fores
 
 All of it is modelled in deep relief, with dense detail and no empty ground.
 
+## The book itself (Parker sent an 18th-century Aeneid with its engraved plate)
+Reference: tools/engrave/ref/book-aeneid-plate.jpg. For the tall plates (h > 260), the scene should be a true copperplate illustration:
+- **Depth:** a receding landscape with an architectural skyline, mid-ground trees modelled in dense hatching, and a foreground that is lit with figures in action.
+- **Burin line:** tone comes from swelling and tapering lines, not from fills.
+- **Arms:** under the scene, a small dedication cartouche carrying a coat of arms. Parker's arms (house style) are a shield quartered with a dog, crossed drumsticks, a heron, and Mt Hood. Use them on the cover, the section fronts and the end page.
+
 ## No white (Parker's exact rule: "No white unless behind text")
 A plate has no text behind it, so it has NO blank white areas at all. Cartouche interiors, the sky in a scene, the space between scrolls: everything is engraved, with cut-away grounds, sky hatching, water lines and stipple. Plain white survives only as the highlight on a leaf edge or a hatch gap. The art director measures this: any blank white region larger than about 12×12 px is a rejection.
 

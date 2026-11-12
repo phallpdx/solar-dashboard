@@ -357,6 +357,19 @@ def fresh(d, feeds, now):
         if len(keep) != len(gn):
             log(f"fresh: good news, {len(gn) - len(keep)} grim or dated items dropped")
             d["good_news"] = keep
+    # Smoke days cached before the AQI field existed: put them on the AQI scale the air line uses.
+    o = d.get("outside") or {}
+    air = (o.get("air") or {}).get("aqi")
+    for x in o.get("smoke") or []:
+        if x.get("aqi") is None and x.get("pm2_5") is not None:
+            from .outside import aqi_word, _pm_to_aqi
+            x["aqi"] = air if (x.get("date") == today.isoformat() and air is not None) else _pm_to_aqi(x["pm2_5"])
+            x["word"] = aqi_word(x["aqi"])
+    # Shade plans cached before forecast_high existed print the forecast's high, the edition's one high.
+    hi = {x.get("date"): x.get("hi") for x in o.get("days") or []}
+    for p in ((d.get("shades") or {}).get("plans")) or []:
+        if p.get("forecast_high") is None and hi.get(p.get("date")) is not None:
+            p["forecast_high"] = hi[p["date"]]
     # Data that is days old says so: pages print "as of" from these.
     sh = d.get("shellfish")
     if sh and _date(sh.get("updated")):
@@ -472,7 +485,7 @@ def _plain(v):
     # "Motion to Invoke Cloture on the Motion to Proceed to H.R. 9340; A bill to …" -> "amend …"
     t = re.sub(r"^(?:(?:Motion to Invoke Cloture|Cloture Motion|Cloture|Motion to Proceed|Motion to Table)\b(?: on)?(?: the)?\s*:?\s*(?:to\s*)?)+", "", t, flags=re.I)
     t = re.sub(r"^(?:Motion to Proceed\s*(?:to|:)\s*)?[HS]\.?\s?(?:R|J|RES|Res)?\.?\s?(?:Res\.?\s?)?\d+\s*[;:]\s*", "", t)
-    t = re.sub(r"^A (bill|joint resolution|resolution) to\s+", "", t, flags=re.I)
+    t = re.sub(r"^A (bill|joint resolution|resolution) to\s+", r"a \1 to ", t, flags=re.I)
     t = re.sub(r"\bthe Internal Revenue Code of 1986 to\s+", "the tax code to ", t)
     t = re.sub(r"^Confirmation:\s*", "confirming ", t)
     t = t.strip().rstrip(".")

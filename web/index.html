@@ -4096,7 +4096,7 @@ async function renderCoast() {
   const windy = days.filter(d => d.gust >= 40);
   if (windy.length) parts.push(`Strong wind ${windy.map(d => DOW[new Date(d.date + 'T12:00').getDay()]).join(', ')} with gusts to ${Math.max(...windy.map(d => d.gust))} mph; good storm watching, and power outages are possible.`);
   const big = days.filter(d => (d.waves_ft || 0) >= 12);
-  if (big.length) parts.push(`Big surf this week${days[0] && days[0].surf_src === 'NWS' ? `, ${ftRange(days[0].surf_ft)} today by the NWS surf forecast` : ''}. Watch for sneaker waves and stay off logs.`);
+  if (big.length) parts.push(`Big surf this week${days[0] && days[0].surf_src === 'NWS' ? `, ${ftRange(days[0].surf_ft)} ft today by the NWS surf forecast` : ''}. Watch for sneaker waves and stay off logs.`);
   const wet = days.reduce((a, d) => a + (d.rain_in || 0), 0);
   parts.push(wet >= 0.5 ? `About ${wet.toFixed(1)} in of rain this week.` : 'Mostly dry week.');
   // A beach day is dry, calm and under no warning.
@@ -4114,7 +4114,7 @@ async function renderCoast() {
   $('coast-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('coast-fc').innerHTML = days.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
     <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.rain_pct != null ? d.rain_pct + '% rain' : ''}</span>
-    <span class="meta">${d.surf_ft || d.waves_ft != null ? ftRange(d.surf_ft || String(d.waves_ft)) + ' ft surf' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust + ' mph' : ''}${d.warning ? '<br>' + esc(d.warning) : ''}</span></div>`).join('');
+    <span class="meta">${d.surf_src === 'NWS' ? ftRange(d.surf_ft) + ' ft surf (NWS)' : d.waves_ft != null ? d.waves_ft + ' ft seas' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust + ' mph' : ''}${d.warning ? '<br>' + esc(d.warning) : ''}</span></div>`).join('');
   $('coast-tide').innerHTML = tideDoodle(c.tides, 43);
   $('minus').innerHTML = (c.minus_tides || []).map(t => `<div><span>${coastWhen(t.t)}</span><span>${t.ft} ft</span></div>`).join('')
     || '<div><span>No minus tides in the next two weeks</span><span></span></div>';
@@ -5358,7 +5358,7 @@ function renderCivics() {
   }
   const said = v => ({ yea: 'YES', yes: 'YES', aye: 'YES', nay: 'NO', no: 'NO' })[(v.vote || '').toLowerCase()] || (v.vote || '').toUpperCase();
   const outcome = v => v.outcome === 'passed' ? (/confirm/i.test(v.result || '') ? 'confirmed' : 'passed') : v.outcome === 'failed' ? 'failed' : (v.result || '').toLowerCase();
-  const voteLine = (p, v) => `<div><span><b style="font-weight:700">${esc(p.name.split(' ').slice(-1)[0])} voted ${esc(said(v))}</b> on ${esc(v.plain || v.desc || v.question || '')}${v.bill && !/^PN/.test(v.bill) ? ` (${esc(v.bill.replace(/^H\.?\s?R\.?\s?/, 'H.R. ').replace(/^S\.?\s?(\d)/, 'S. $1'))})` : ''}. ${outcome(v) ? `It ${esc(outcome(v))}${v.date && /^\d{4}-/.test(v.date) ? ', ' + fmtDate(v.date) : ''}.` : ''}${(v.steps || []).length ? ` <small>(${v.steps.length} procedural vote${v.steps.length > 1 ? 's' : ''} folded in)</small>` : ''} <small><a href="${esc(v.url)}" target="_blank" rel="noopener">Roll call</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(said(v))}</span></div>`;
+  const voteLine = (p, v) => `<div><span><b style="font-weight:700">${esc(p.name.split(' ').slice(-1)[0])} voted ${esc(said(v))}</b> on ${esc(v.plain || v.desc || v.question || '')}${v.bill && !/^PN/.test(v.bill) ? ` (${esc(v.bill.replace(/^H\.?\s?R\.?\s?/, 'H.R. ').replace(/^S\.?\s?(\d)/, 'S. $1'))})` : ''}. ${outcome(v) ? `${outcome(v) === 'confirmed' ? 'Confirmed' : 'It ' + esc(outcome(v))}${v.date && /^\d{4}-/.test(v.date) ? ', ' + fmtDate(v.date) : ''}.` : ''}${(v.steps || []).length ? ` <small>(${v.steps.length} procedural vote${v.steps.length > 1 ? 's' : ''} folded in)</small>` : ''} <small><a href="${esc(v.url)}" target="_blank" rel="noopener">Roll call</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(said(v))}</span></div>`;
   const voteRow = v => `<div><span>${v.bill ? `<b style="font-weight:700">${esc(v.bill)}</b> ` : ''}${esc(v.desc || v.question || '')}<br><small>${esc(v.question || '')}${v.result ? ' · ' + esc(v.result) : ''} · <a href="${esc(v.url)}" target="_blank" rel="noopener">${v.date && /^\d{4}-/.test(v.date) ? fmtDate(v.date) : esc(v.date || 'Details')}</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(v.vote)}</span></div>`;
   $('reps').innerHTML = c.people.map(p => `<div class="rep">
       <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>

@@ -3153,8 +3153,11 @@ def _scene(X, Y, W, H, seed, doy, level=2):
         px = hx - hw * .8 + hw * 1.6 * (i + rng.uniform(.2, .8)) / ft
         ty = snowy + rng.uniform(-3, 5) + abs(px - hx) / hw * hh * .12
         if ty < hb - 2:
-            (cv.line if px < hx + hw * .1 else cv.hair)([(px, hb), (px, ty)])
-            cv.hair([(px - 1.3, ty + 2.6), (px, ty), (px + 1.3, ty + 2.6)])
+            # a little fir: its tip, its shaded west flank, a short stem; the stand closes
+            # into a dark band low down
+            (cv.line if px < hx + hw * .1 else cv.hair)([(px, ty), (px - 1.4, ty + 3.4), (px + .2, ty + 3.4)])
+            cv.hair([(px + 1.3, ty + 3.2), (px, ty)])
+            cv.hair([(px, ty + 3.4), (px, min(hb, ty + 6))])
     # --- the far shore: the West Hills, dark with timber, a crest of fir tips
     sh_top = yw - H * .085
 

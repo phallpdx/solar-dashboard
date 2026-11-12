@@ -105,7 +105,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 6
         run: |
-          pip install --quiet ephem
+          pip install --quiet ephem numpy  # numpy: the engraver (solar/engraving_hand.py) needs it, or the pages build without their scrollwork
           python -m solar.kindle_evening data/dashboard.json web/evening.json _site
 
       # Paged, e-ink friendly copy of the full dashboard for the Kindle browser.

@@ -42,10 +42,16 @@ def data_uri(svg):
     return 'url("data:image/svg+xml,%s")' % quote(svg.replace('"', "'"), safe=" =:/,.-'()<>;!*+@?&_~")
 
 
+_MISSING = set()
+
+
 def _mod(name):
     try:
         return importlib.import_module(f".{name}", __package__)
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
+        if name not in _MISSING:   # say so once: a page without its engraver still builds, but it is not the page
+            _MISSING.add(name)
+            print(f"atelier: {name} could not be loaded ({e!r}); its art is left out")
         return None
 
 

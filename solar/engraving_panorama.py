@@ -63,9 +63,9 @@ def _moon(cx, cy, r, phase, pid):
         rx = abs(k) * r
         # terminator bulges into dark side if gibbous (k<0)
         if waxing:
-            sweep_t = 1 if k > 0 else 0
-        else:
             sweep_t = 0 if k > 0 else 1
+        else:
+            sweep_t = 1 if k > 0 else 0
         dark = 'M%s %sA%s %s 0 0 %d %s %sA%s %s 0 0 %d %s %sZ' % (
             _f(cx), _f(cy - r), _f(r), _f(r), sweep_limb, _f(cx), _f(cy + r),
             _f(max(rx, 0.01)), _f(r), sweep_t, _f(cx), _f(cy - r))
@@ -83,10 +83,10 @@ def panorama(width=600, height=110, seed='p', moon_phase=None):
     hz = H * 0.66          # river line / horizon
     p = lambda n: _id(seed, n)
     defs = [
-        _hp(p('mt'), 35, 2.8, 0.5),
-        _hp(p('mt2'), -35, 3.0, 0.45),
-        _hp(p('hill'), 60, 1.6, 0.6),
-        _hp(p('moon'), 90, 1.2, 0.5),
+        _hp(p('mt'), 35, 3.0, 0.5),
+        _hp(p('mt2'), -35, 3.0, 0.5),
+        _hp(p('hill'), 60, 2.0, 0.5),
+        _hp(p('moon'), 90, 1.5, 0.5),
         '<clipPath id="%s"><rect x="3" y="3" width="%s" height="%s"/></clipPath>'
         % (p('clip'), _f(W - 6), _f(H - 6)),
     ]
@@ -102,7 +102,7 @@ def panorama(width=600, height=110, seed='p', moon_phase=None):
     # few cloud streaks (white breaks drawn as heavier short strokes)
     d = []
     for _ in range(int(5 * sx)):
-        cx = rng.uniform(20, W - 20)
+        cx = rng.uniform(W * 0.3, W - 30)
         cy = rng.uniform(H * 0.12, H * 0.32)
         ln = rng.uniform(25, 60)
         d.append('M%s %sH%s' % (_f(cx - ln / 2), _f(cy), _f(cx + ln / 2)))
@@ -253,7 +253,7 @@ def panorama(width=600, height=110, seed='p', moon_phase=None):
         xx = 3 + u * W * 0.24 + rng.uniform(-2, 2)
         k = min(20, int(u * 20))
         yb = hill[k][1] + 2
-        h = rng.uniform(H * 0.09, H * 0.17) * (1.15 - u * 0.6)
+        h = rng.uniform(H * 0.12, H * 0.22) * (1.15 - u * 0.6)
         b.append('<path d="M%s %sL%s %sL%s %sZ" fill="#fff"/>'
                  % (_f(xx - h * 0.2), _f(yb), _f(xx), _f(yb - h), _f(xx + h * 0.2), _f(yb)))
         d.append(_fir(xx, yb, h, h * 0.2))

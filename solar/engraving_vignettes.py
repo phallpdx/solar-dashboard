@@ -42,7 +42,8 @@ def _svg(defs, body):
 
 
 def _g(d, w=0.6, extra=''):
-    return '<path d="%s" fill="none" stroke="#000" stroke-width="%s"%s/>' % (d, w, extra)
+    st = '' if 'stroke="' in extra else ' stroke="#000"'
+    return '<path d="%s" fill="none"%s stroke-width="%s"%s/>' % (d, st, w, extra)
 
 
 def _water(rng, y0, y1, x0=4.5, x1=115.5, step=1.6, dense=0.55):
@@ -211,7 +212,8 @@ def _cranes():
          'M17 38H43M15.5 45H44.5'                     # leg ties
          'M8 22H86M8 25H70'                           # boom chords
          'M38 22L40 10L42 22M40 10L86 22M40 10L8 22') # A-frame + stays
-    b.append(_g(g + 'M8 23.5H86M100 14V52M102 14V52M104 14V52M76 15.2H114', 3, ' stroke="#fff"'))
+    b.append('<path d="%s" fill="none" stroke="#fff" stroke-width="3"/>'
+             % (g + 'M8 23.5H86M100 14V52M102 14V52M104 14V52M76 15.2H114'))
     b.append(_g(g, 1))
     tr = ''.join('M%s 22L%s 25' % (_f(x), _f(x + 2)) for x in range(10, 68, 4))
     b.append(_g(tr, 0.5))
@@ -659,8 +661,8 @@ def _solar():
                                                  _f(px(y1, u1)), _f(y1), _f(px(y1, u0)), _f(y1))
             b.append('<path d="%s" fill="url(#%sR)" stroke="#000" stroke-width="0.8"/>' % (cell, k))
             mx = (px(y0, u0) + px(y0, u1)) / 2
-            b.append(_g('M%s %sL%s %s' % (_f(mx - 1.5), _f(y1 - 0.4), _f(mx + 2.5), _f(y0 + 0.4)),
-                        0.6, ' stroke="#fff"'))
+            b.append('<path d="M%s %sL%s %s" stroke="#fff" stroke-width="0.9"/>' % (
+                _f(mx - 1.5), _f(y1 - 0.4), _f(mx + 2.5), _f(y0 + 0.4)))
     # chimney
     b.append('<rect x="88" y="30" width="5" height="6" fill="#fff" stroke="#000" stroke-width="0.8"/>')
     # firs either side

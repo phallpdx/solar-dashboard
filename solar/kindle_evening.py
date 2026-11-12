@@ -21,6 +21,22 @@ import re
 import sys
 
 from . import bedtime_poems, engraving, evening
+try:  # the engravers' optional pieces: every page renders without them
+    from . import engraving_thai
+except Exception:  # noqa: BLE001
+    engraving_thai = None
+try:
+    from .engraving_vignettes import VIGNETTES
+except Exception:  # noqa: BLE001
+    VIGNETTES = {}
+try:
+    from . import engraving_medallions
+except Exception:  # noqa: BLE001
+    engraving_medallions = None
+try:
+    from . import engraving_panorama
+except Exception:  # noqa: BLE001
+    engraving_panorama = None
 from .kindle_full import EINK_CSS, page, self_host_fonts, _JUMP, _TITLES, BUILD
 
 TZ = evening.TZ
@@ -38,6 +54,8 @@ html.kev #kmain svg text.kribt{font:italic 600 10px var(--k-serif) !important;st
 html.kev .kcontents #kmain .kribbon{margin:4px auto 0}
 html.kev .kcontents #kmain .kribbon+.kevrest{border-top:0 !important;padding-top:4px !important}
 html.kev #kmain svg text.kmicro{font:600 4.4px var(--k-serif) !important;stroke-width:0 !important;letter-spacing:.06em}
+#kmain .kegg{position:absolute !important;right:66px;bottom:26px}
+#kmain svg.kfr path,#kmain svg.kfr circle{vector-effect:non-scaling-stroke}
 #kmain .kfill{display:block;height:0;overflow:hidden;position:relative}
 #kmain .kfill svg{display:none;position:absolute;left:0;top:50%;width:100%}
 html.kev #kmain svg text.kseal{font:700 17px var(--k-serif) !important;stroke-width:0 !important}
@@ -92,6 +110,7 @@ html.kev #kmain .kcolo{text-align:center;font:600 12px/15px var(--k-serif) !impo
 /* story pages: clean text, ornament at the head and tail */
 #kmain .khv{margin:0 0 6px}
 #kmain .khv svg.kvig{width:auto;height:46px}
+#kmain .khv svg.kvig2{width:84px !important;height:56px !important}
 #kmain h2.khed{font:700 var(--t2)/var(--l2) var(--k-serif) !important;letter-spacing:-.01em;margin:0 0 var(--s2) !important}
 #kmain .kbody p{margin:0 0 var(--s2) !important}
 #kmain .kbody p.kdrop:first-letter{float:left;font:700 60px/50px var(--k-serif);margin:3px 7px 0 -1px;padding:0}
@@ -122,7 +141,7 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 #kmain .kbody p.kdrop:first-letter{border:3px double #000;padding:4px 7px 0 !important;margin:2px 9px 0 0 !important;
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='.45'/%3E%3Ccircle cx='3' cy='3' r='.45'/%3E%3C/svg%3E")}
 #kmain .kbody p.kdrop3:first-letter{padding:6px 9px 2px !important}
-#kmain .kmed{position:absolute;margin:0 !important;top:64%;margin-top:-16px !important}
+#kmain .kmed{position:absolute;margin:0 !important;top:13%;margin-top:-16px !important}
 #kmain .kmed-l{left:-9px}#kmain .kmed-r{right:-9px}
 /* tomorrow: an almanac entry */
 #kmain .kalm{display:flex;align-items:center;border-top:3px double #000;border-bottom:1px solid #000;padding:10px 0 !important;margin:0 0 var(--s2) !important}
@@ -628,7 +647,7 @@ def _night_plate(w, night, mo, phase, pl, micro=""):
     ring_txt = ""
     if micro:  # banknote microtext round the seal: discoverable on a second look
         ring_txt = (f'<path id="kpsr" d="M0,-44.4A44.4,44.4 0 1 1 -.1,-44.4" fill="none"/>'
-                    f'<text class="kmicro" textLength="276" lengthAdjust="spacing"><textPath href="#kpsr" xlink:href="#kpsr">{(micro + " &#183; ") * 2}</textPath></text>')
+                    f'<text class="kmicro" textLength="276" lengthAdjust="spacing"><textPath href="#kpsr" xlink:href="#kpsr">{micro} &#183; </textPath></text>')
     seal = (f'<g transform="translate({R + 5},{_n(cy)})">'
             f'<circle r="{R + 5}" fill="#fff" {K} stroke-width="{W1}"/><circle r="{R + 3.6}" fill="none" {K} stroke-width="{W0}"/>' + ring_txt
             + engraving.rosette(engraving.rng_for(night, "seal"), "kps", 42.5)
@@ -642,6 +661,15 @@ def _night_plate(w, night, mo, phase, pl, micro=""):
             + engraving.ring(engraving.rng_for(night, "moon"), "kpm", 29.6, R - 4.4)
             + f'<circle r="29.4" fill="#fff" {K} stroke-width="{W0}"/></g>'
             + _moon_shape(mx, cy, 26, lit, waxing, "kpmc", maria=True, dark="url(#ke-rule)"))
+    try:  # the bulino portrait moon (e-ink safe hatch, phase-correct); sized so its bezel sits inside the boss
+        import math as _m
+        from .engraving_eink import engraved_portrait_moon
+        _ph = _m.acos(max(-1.0, min(1.0, 1 - 2 * lit / 100.0))) / (2 * _m.pi)
+        _pm = engraved_portrait_moon(_ph if waxing else 1 - _ph, 19, cx=mx, cy=cy, seed=7,
+                                     standalone=False, label=False)
+        moon = moon.rsplit(_moon_shape(mx, cy, 26, lit, waxing, "kpmc", maria=True, dark="url(#ke-rule)"), 1)[0] + _pm
+    except Exception:
+        pass
     ow = 236
     ox = (w - ow) / 2
     rib_y = cy - 8
@@ -655,10 +683,28 @@ def _night_plate(w, night, mo, phase, pl, micro=""):
     flourish = (_kanok(2 * R + 12, rib_y - 6, .55, 0) + _kanok(w - 2 * R - 12, rib_y - 6, .55, flip=True)
                 + _leaf(2 * R + 12, rib_y + 23, .5, 6) + f'<g transform="translate({_n(w)},0) scale(-1,1)">{_leaf(2 * R + 12, rib_y + 23, .5, 6)}</g>')
     oval = f'<g transform="translate({_n(ox)},4)">{_tonight_oval(night, mo, phase, pl, ow, 96)}</g>'
-    return _svg(w, h, rib + flourish + oval + seal + moon, "kcentre kplate2")
+    paw = _egg("paw", night.toordinal(), 8)
+    paw = f'<g transform="translate({2 * R + 22},{_n(rib_y + 22)})">{paw}</g>' if paw else ""
+    return _svg(w, h, rib + flourish + paw + oval + seal + moon, "kcentre kplate2")
 
 
-def _filler(night, salt, w=528):
+def _vig(key, fallback):
+    """A vignette from the engravers' set, sized for the story head, or the house ornament without it."""
+    v = VIGNETTES.get(key)
+    if not v:
+        return fallback
+    return _fix(v.replace("<svg ", '<svg class="korn kvig kvig2" aria-hidden="true" ', 1))
+
+
+def _egg(kind, seed, size):
+    """One of the engravers' hidden marks (a paw, the butler's A), or nothing without the module."""
+    try:
+        return engraving_medallions.easter_egg(kind, seed, size) if engraving_medallions else ""
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _filler(night, salt, w=528, moon=None):
     """Art for the room a page's words leave: a seeded guilloche ribbon (for a sliver of space) and a
     panel with a rose-engine rosette on a guilloche ground (for more). The script sizes and picks one."""
     rib = (f'<g transform="translate(0,3)">' + engraving.band(engraving.rng_for(night, salt + "r"), f"kfr{salt}", w, 12) + '</g>'
@@ -666,6 +712,13 @@ def _filler(night, salt, w=528):
            f'<path d="M0,1.6H{w}M0,16.4H{w}" {K} stroke-width="{W1}"/>'
            f'<path d="M{w / 2 - 12},9L{w / 2},2.4L{w / 2 + 12},9L{w / 2},15.6Z" fill="#fff" {K} stroke-width="{W1}"/>' + _star(w / 2, 9, 3))
     ribbon = _fix(f'<svg class="kfr" viewBox="0 0 {w} 18" style="height:18px;margin-top:-9px" preserveAspectRatio="none" aria-hidden="true">{rib}</svg>')
+    seed = sum(ord(ch) * (i + 1) for i, ch in enumerate(salt)) + night.toordinal() % 1000
+    if engraving_thai:
+        try:
+            ribbon = engraving_thai.kranok_band(w, 16, seed).replace(
+                "<svg ", '<svg class="kfr" style="height:16px;margin-top:-8px" preserveAspectRatio="none" aria-hidden="true" ', 1)
+        except Exception:  # noqa: BLE001
+            pass
     c = w / 2
     pan = (f'<clipPath id="kfc{salt}"><rect x="0" y="40" width="{w}" height="30"/></clipPath><g clip-path="url(#kfc{salt})"><g transform="translate(0,40)">'
            + engraving.band(engraving.rng_for(night, salt + "p"), f"kfb{salt}", w, 30) + '</g></g>'
@@ -675,13 +728,19 @@ def _filler(night, salt, w=528):
            + engraving.rosette(engraving.rng_for(night, salt + "s"), f"kfs{salt}", 50)
            + '</g>' + _star(c, 55, 9) + f'<circle cx="{_n(c)}" cy="55" r="2.2" fill="#fff" {K} stroke-width="{W0}"/>')
     panel = _fix(f'<svg class="kfp" viewBox="0 0 {w} 110" style="height:110px;margin-top:-55px" aria-hidden="true">{pan}</svg>')
+    if engraving_panorama and moon is not None:
+        try:
+            panel = engraving_panorama.panorama(w, 110, seed, moon).replace(
+                "<svg ", '<svg class="kfp" style="height:110px;margin-top:-55px" aria-hidden="true" ', 1)
+        except Exception:  # noqa: BLE001
+            pass
     return f'<div class="kfill">{ribbon}{panel}</div>'
 
 
 FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
            "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr');"
            "k.style.height='0px';p.style.display='none';r.style.display='none';"
-           "var free=Math.floor(b.getBoundingClientRect().top-24-fr.getBoundingClientRect().bottom);"
+           "var free=Math.floor(b.getBoundingClientRect().top-20-fr.getBoundingClientRect().bottom);"
            "if(free>=124){k.style.height=free+'px';p.style.display='block';}else if(free>=26){k.style.height=free+'px';r.style.display='block';}"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
@@ -1277,6 +1336,14 @@ def _moon_plate(lit, waxing, size=120):
     ring = "".join(_star(c + (r + 8) * _m.cos(a), c + (r + 8) * _m.sin(a), 2.6) if i % 3 == 0 else
                    f'<circle cx="{_n(c + (r + 8) * _m.cos(a))}" cy="{_n(c + (r + 8) * _m.sin(a))}" r=".7"/>'
                    for i, a in ((i, 2 * _m.pi * i / 36 - _m.pi / 2) for i in range(36)))
+    try:  # bulino portrait moon (phase-correct, e-ink safe hatch), its bezel inside the star ring
+        from .engraving_eink import engraved_portrait_moon
+        ph = _m.acos(max(-1.0, min(1.0, 1 - 2 * lit / 100.0))) / (2 * _m.pi)
+        pm = engraved_portrait_moon(ph if waxing else 1 - ph, r - 11, cx=c, cy=c, seed=3,
+                                    standalone=False, label=False)
+        return _svg(size, size, ring + pm)
+    except Exception:
+        pass
     return _svg(size, size, ring + _moon_shape(c, c, r, lit, waxing, "kbm", maria=True, dark="url(#ke-n)"))
 
 
@@ -1356,7 +1423,7 @@ def main(dash_path, ev_path, site):
     pages = []
     for k, st in enumerate(big, 1):
         pages.append({"file": f"day-{k}.html", "title": st["headline"], "part": "The day", "kick": "",
-                      "run": f"The day &middot; {k} of {len(big)}", "story": st, "head": ORNAMENTS[("news", "drums", "marsh")[(k - 1) % 3]],
+                      "run": f"The day &middot; {k} of {len(big)}", "story": st, "head": _vig(("news", "drums", "marsh")[(k - 1) % 3], ORNAMENTS[("news", "drums", "marsh")[(k - 1) % 3]]),
                       "band": f"The Day &middot; {ROMAN[k - 1]} of {ROMAN[len(big) - 1]}"})
     if not big:
         pages.append({"file": "day-1.html", "title": "Tonight’s news didn’t come through", "part": "The day", "kick": "",
@@ -1365,7 +1432,7 @@ def main(dash_path, ev_path, site):
                               '<p>The day&rsquo;s stories will be in your Morning Edition.</p>'})
     if loc:
         pages.append({"file": "local.html", "title": loc["headline"], "part": "Close to home", "kick": "",
-                      "run": "Close to home", "story": loc, "head": ORNAMENTS["bridge"],
+                      "run": "Close to home", "story": loc, "head": _vig("bridge", ORNAMENTS["bridge"]),
                       "band": "Close to Home &middot; Portland"})
     over = '<p class="kover">Anything that changes overnight will be in your Morning Edition.</p>'
     if big or loc:
@@ -1444,7 +1511,8 @@ def main(dash_path, ev_path, site):
                           '<h2 class="kfname">That&rsquo;s the day.</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
                           f'{ORNAMENTS["divider"]}<p class="kquiet">Think of one good thing from today, then let it go.</p>'
-                          f'{ORNAMENTS["tail"]}</div></div>'})
+                          f'{ORNAMENTS["tail"]}</div>' + (_svg(12, 12, _egg("A", night.toordinal(), 12), "kegg") if engraving_medallions else "")
+                          + '</div>'})
 
     for pg in pages:
         st = pg.get("story")
@@ -1481,7 +1549,8 @@ def main(dash_path, ev_path, site):
             pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
-        fill = _filler(night, pg["file"].split(".")[0].replace("-", ""))
+        fill = _filler(night, pg["file"].split(".")[0].replace("-", ""),
+                       moon=(phase[0] / 100 if phase and pg["file"] in ("tomorrow.html", "sky.html") else None))
         if not framed:
             pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
         elif 'kplate kframe' in pg["body"] and pg["body"].endswith("</div>"):

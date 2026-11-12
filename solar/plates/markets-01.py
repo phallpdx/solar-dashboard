@@ -105,7 +105,8 @@ def scene(X, Y, W, H, seed=0):
     tiny = S < 60
     hz = Y + H * (.66 if tiny else .64)
     # sky: ruled, darkest at the zenith
-    kk_sky(cv, X - 2, Y - 2, W + 4, hz + 1, seed, 0 if tiny else 1)
+    hs = max(1., hz - Y)
+    bu_sky(cv, X - 2, Y - 2, W + 4, hz - Y + 3, lambda x, y: .4 - .42 * (y - Y) / hs, seed=seed, pitch=2.)
     # radiant helium atom in the upper right, standing for the sun
     ax, ay = X + W * .7, Y + H * (.2 if not tiny else .28)
     ar = S * (.12 if not tiny else .2)
@@ -324,10 +325,11 @@ def scene(X, Y, W, H, seed=0):
     cv.obj([_ell_pts(tip[0], tip[1], 1.4, 1.4, 10)], .5)
     ball = [(bx + br * math.cos(a) * (1 - .1 * max(0, math.sin(a))), by + br * math.sin(a) * (1.08 if math.sin(a) > 0 else 1)) for a in [TAU * i / 48 for i in range(48)]]
     knot = [(tie[0] - 2, tie[1] + 1.5), (tie[0], tie[1] - 2), (tie[0] + 2, tie[1] + 1.5)]
-    cv.obj([ball, knot], 1.)
-    shade_round(cv, ball, bx, by, br)
+    # the balloon as a lit ball: cuts curving round it, paper at the upper left, swelling into
+    # the shadow at the lower right; its gores as fine meridians
+    cv.obj([knot], 1.)
+    bu_form(cv, ball, bu_sph(bx, by, br, br, .08, .72), -35., 1.5, br * .5, None, 1.)
     cv.hair([_ell_pts(bx, by, br * f, br, 30, -PI / 2, PI / 2) for f in (.35, .75)])
-    cv.obj([_ell_pts(bx - br * .45, by - br * .45, br * .13, br * .2, 12)], 0)
     if not tiny:
         # a P monogram reflected in the balloon's highlight band
         pass

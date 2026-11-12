@@ -1563,7 +1563,9 @@ def write_frames(out, seed, sun_text=""):
     open(os.path.join(d, "frame.svg"), "w").write(HF.page_frame(None, 0))
     for s in SECS + ["edition", "end"]:
         open(os.path.join(d, f"motif-{s}.svg"), "w").write(HF.motif_tablet(s if s in HF.MOTIFS else "edition"))
-        open(os.path.join(d, f"ground-{s}.svg"), "w").write(HF.paper_tint(seed=zlib.crc32(s.encode()) % 997))   # engraved banknote paper
+        # no hatched paper behind the panels (Parker: no cross hatching for backgrounds); the studio's scroll
+        # ground (solar/scroll.py) takes this place per sheet
+        open(os.path.join(d, f"ground-{s}.svg"), "w").write('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714"/>')
     open(os.path.join(d, "gap.svg"), "w").write(HF.gap_bar(232, 20, 1))
     snap_dir(d)
 

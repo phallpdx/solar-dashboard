@@ -483,8 +483,7 @@ def _fills(pages, out, od, base, date_iso, exe):
                     else:
                         hf = min(ph, 10.)
                         beads.append((x, y + (ph - hf) / 2, pw, hf))
-                    if ph > hf:
-                        matte += [(x, y, pw, (ph - hf) / 2), (x, y + (ph + hf) / 2, pw, (ph - hf) / 2)]
+                    # no punched matte above and below it: that room waits for the studio's scroll ground
                 # margins, the tailpiece room and the ground behind every plate keep the frame's light engraved
                 # ground (the plates are free-standing vignettes that dissolve into it): nothing drawn there
                 beads += [tuple(p[:4]) for p in r["strips"] if p[4]]

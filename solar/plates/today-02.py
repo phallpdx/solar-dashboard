@@ -104,19 +104,49 @@ def _g_clip_runs(pl, mask, x0, y0, W, H, out, step=1.4):
 
 class GmCanvas(C.Canvas):
     """engraving_codex.Canvas emitting half-px path data with a coarser simplification (about
-    40 % smaller), same occlusion rules. clip=(x0, y0, x1, y1) drops everything outside."""
+    40 % smaller), same occlusion rules. clip=(x0, y0, x1, y1) drops everything outside.
+    Modelling pass: obj(..., fill="#000") paints a solid black shape (a burin's cleared black,
+    the deepest shade), and white(pl) cuts a 1 px white line (only over black)."""
     fill_tol, line_tol = .7, .5
     shadow = None
+
+    def obj(self, polys=(), outline=1., fill="#fff"):
+        o = C.Canvas.obj(self, polys, outline)
+        o[2]["w"] = []
+        if not hasattr(self, "fills"):
+            self.fills = []
+        self.fills.append(fill)
+        return o
+
+    def extend(self, other):
+        mf = getattr(self, "fills", [])
+        mf += ["#fff"] * (len(self.objs) - len(mf))
+        of = getattr(other, "fills", [])
+        self.fills = mf + of + ["#fff"] * (len(other.objs) - len(of))
+        self.objs.extend(other.objs)
+
+    def white(self, pl):
+        if not pl:
+            return
+        if not self.objs:
+            self.obj()
+        if isinstance(pl[0][0], (int, float)):
+            if len(pl) > 1:
+                self.objs[-1][2]["w"].append(pl)
+        else:
+            self.objs[-1][2]["w"].extend(q for q in pl if len(q) > 1)
 
     def svg(self, clip=None):
         if not self.objs:
             return ""
+        fills = getattr(self, "fills", [])
+        fills = fills + ["#fff"] * (len(self.objs) - len(fills))
         xs = [p[0] for o in self.objs for poly in o[0] for p in poly] or [0.]
         ys = [p[1] for o in self.objs for poly in o[0] for p in poly] or [0.]
         x0, y0 = int(math.floor(min(xs))) - 2, int(math.floor(min(ys))) - 2
         W, H = int(max(xs)) - x0 + 3, int(max(ys)) - y0 + 3
         mask = [bytearray(W) for _ in range(H)]
-        out = {.5: [], 1.: [], 1.5: []}
+        out = {.5: [], 1.: [], 1.5: [], "w": []}
         for polys, ow, strokes in reversed(self.objs):
             for w, lines in strokes.items():
                 for pl in lines:
@@ -135,21 +165,35 @@ class GmCanvas(C.Canvas):
             def keep(pl):
                 return True
         res = []
-        pen = _GPen()
-        for polys, _, _ in self.objs:
+        T = ' transform="scale(.5)"'
+        # fills in paint order, one path per run of a colour
+        runs = []
+        for (polys, _, _), f in zip(self.objs, fills):
+            if not polys:
+                continue
+            if not runs or runs[-1][0] != f:
+                runs.append((f, _GPen()))
             for poly in polys:
                 if keep(poly):
-                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, self.fill_tol)
-        T = ' transform="scale(.5)"'
-        if pen.o:
-            if self.shadow:
+                    runs[-1][1].add(poly if C._area(poly) >= 0 else poly[::-1], True, self.fill_tol)
+        for f, pen in runs:
+            if not pen.o:
+                continue
+            if self.shadow and f == "#fff":
                 pid = "gmF%x" % (zlib.crc32(pen.d()[:400].encode()) & 0xffffff)
                 dx, dy = self.shadow
                 res.append(f'<defs><path id="{pid}"{T} d="{pen.d()}"/></defs>'
                            f'<use href="#{pid}" transform="translate({_n(dx)},{_n(dy)})" fill="#000"/>'
                            f'<use href="#{pid}" fill="#fff"/>')
             else:
-                res.append(f'<path{T} d="{pen.d()}" fill="#fff" stroke="none"/>')
+                res.append(f'<path{T} d="{pen.d()}" fill="{f}" stroke="none"/>')
+        if out["w"]:
+            pen = _GPen()
+            for pl in out["w"]:
+                if keep(pl):
+                    pen.add(pl, False, self.line_tol)
+            if pen.o:
+                res.append(f'<path{T} d="{pen.d()}" fill="none" stroke="#fff" stroke-width="2"/>')
         for w in (.5, 1., 1.5):
             if out[w]:
                 pen = _GPen()
@@ -1606,54 +1650,8 @@ def gm_emblem(name, **kw):
 # ---------------------------------------------------------------------------------- sky and water
 
 def gm_cloud(cv, cx, cy, w, h, rng, lit=(-1, -1)):
-    """a cumulus bank: billows painted back to front, each lit on its upper side and modelled by
-    arcs that follow its round into the shade, over a flat, ruled-dark base."""
-    h = min(h, 22.)
-    nb = max(3, int(w / max(5., h * .8)))
-    bills = []
-    for k in range(nb):
-        t = (k + rng.uniform(.25, .75)) / nb
-        r = h * (.42 + .62 * math.sin(_GPI * t) ** .8) * rng.uniform(.8, 1.12)
-        bills.append((cx - w / 2 + w * t, cy - r * .35, r))
-    for k in range(max(1, nb // 3)):
-        t = rng.uniform(.3, .7)
-        r = h * rng.uniform(.6, .85)
-        bills.append((cx - w / 2 + w * t, cy - h * .55 - r * .2, r))
-    base = cy + h * .3
-    order = bills[nb:] + sorted(bills[:nb], key=lambda b: -abs(b[0] - cx))
-    for bx, by, r in order:
-        p = [q for q in _Gel(bx, by, r, r * .9, 30)[:-1]]
-        p = [(q[0], min(q[1], base)) for q in p]
-        cv.obj([p], .5)
-        # the billow's round: arcs that follow it, close in the shade (lower right), opening
-        # to a thin lit rim on the upper left
-        j = 1
-        while True:
-            rr = r - 1.5 * j
-            if rr < 1.2:
-                break
-            a0 = math.radians(-60 + 25 * (rr / r))
-            a1 = math.radians(150 + 40 * (1 - rr / r))
-            arc = [(bx + (r - rr) * .25 + rr * math.cos(t), by + (r - rr) * .2 + rr * .9 * math.sin(t))
-                   for t in [a0 + (a1 - a0) * i / 18 for i in range(19)]]
-            arc = [q for q in arc if q[1] < base - .5]
-            if len(arc) > 1:
-                (cv.line if j == 1 and r > 7 else cv.hair)(arc)
-            j += 1 if rr > r * .5 else 2
-        # a light tone of gently waved lines over the whole billow, leaving a lit rim
-        if r > 5:
-            yy = by - r * .9 + 2.5
-            while yy < min(base, by + r * .9) - 1:
-                hw = r * math.sqrt(max(0., 1 - ((yy - by) / (r * .9)) ** 2)) - 2.2
-                if hw > 1.5:
-                    cv.hair([(bx - hw + i * hw / 4, yy + .3 * math.sin(i * 1.3)) for i in range(9)])
-                yy += 3.
-    und = [(cx - w * .5, base - h * .25), (cx + w * .5, base - h * .25), (cx + w * .44, base + .5), (cx - w * .44, base + .5)]
-    cv.obj([und], 0)
-    yy = base - h * .2
-    while yy < base:
-        cv.hair([(cx - w * .46, yy), (cx + w * .46, yy)])
-        yy += 1.5
+    """a cumulus bank (modelling pass: see mk_cloud)"""
+    mk_cloud(cv, cx, cy, w, h * 1.25, rng, _mk_unit(lit))
 
 
 def gm_sky(cv, X, Y, W, H, rng, sun=None, clouds=3, dark=1.):
@@ -1666,7 +1664,7 @@ def gm_sky(cv, X, Y, W, H, rng, sun=None, clouds=3, dark=1.):
     k = 0
     while y < Y + H:
         f = (y - Y) / max(1., H)
-        pitch = 1.5 if f < .22 * dark else 2. if f < .55 else 3.
+        pitch = 2. if f < .62 else 3.
         ph = rng.uniform(0, _GTAU)
         per = rng.uniform(70, 140)
         amp = .35 + .25 * f
@@ -1685,9 +1683,9 @@ def gm_sky(cv, X, Y, W, H, rng, sun=None, clouds=3, dark=1.):
             if len(sg) < 2:
                 continue
             # the swell: the middle of each run at 1 px where the sky is deep
-            if f < .45 and len(sg) > 8:
-                a = int(len(sg) * rng.uniform(.15, .3))
-                b = int(len(sg) * rng.uniform(.7, .85))
+            if f < .34 * dark + .06 and len(sg) > 8:
+                a = int(len(sg) * rng.uniform(.04, .2))
+                b = int(len(sg) * rng.uniform(.8, .96))
                 cv.hair(sg[:a + 1])
                 cv.line(sg[a:b + 1])
                 cv.hair(sg[b:])
@@ -1710,32 +1708,53 @@ def gm_sky(cv, X, Y, W, H, rng, sun=None, clouds=3, dark=1.):
             q -= 2.
     for i in range(clouds):
         t = (i + rng.uniform(.2, .8)) / clouds
-        cw = W * rng.uniform(.22, .38)
-        ch = H * rng.uniform(.1, .16)
+        cw = W * rng.uniform(.24, .4)
+        ch = H * rng.uniform(.16, .24)
         cx = X + W * t
         cy = Y + H * rng.uniform(.18, .62)
         if sun and math.hypot(cx - sun[0], cy - sun[1]) < sun[2] * 2:
             cy += sun[2] * 2.5
-        gm_cloud(cv, cx, cy, cw, ch, rng)
+        mk_cloud(cv, cx, cy, cw, ch, rng, _mk_unit((sun[0] - cx, sun[1] - cy)) if sun else _MKL)
 
 
-def gm_water(cv, X, Y, W, H, rng, glint_x=None):
-    """water in broken, gently waved lines, closer toward the viewer, a glitter path left open
-    under glint_x."""
+def gm_water(cv, X, Y, W, H, rng, glint_x=None, refl=()):
+    """water in broken, rippled lines, long and fine toward the far shore, closing up and
+    darkening toward the viewer, each ripple a dash that dips and kicks; a glitter path broken
+    into sparkles under glint_x; refl=[(x, half_width, y_end)] lays a dark reflection, 1 px
+    dashes broken by the ripples, under each object."""
     y = round((Y + .25) * 2) / 2 + .25
+    k = 0
     while y < Y + H + 2:
         f = (y - Y) / max(1., H)
-        pitch = 3. if f < .25 else 2. if f < .6 else 1.5
+        pitch = 3. if f < .2 else 2. if f < .55 else 1.5
         x = X - 6 - rng.uniform(0, 12)
         while x < X + W + 6:
-            L = rng.uniform(8, 26) * (1.3 - f * .5)
-            if glint_x is not None and abs(x + L / 2 - glint_x) < 6 + 14 * f:
-                L *= .35
+            L = rng.uniform(10, 30) * (1.35 - f * .7)
+            gap = rng.uniform(1.5, 3.5) * (1 + f)
+            if glint_x is not None and abs(x + L / 2 - glint_x) < 5 + 18 * f:
+                L *= .3
+                gap += 2 + 3 * f
             n = max(2, int(L / 3))
-            amp = rng.uniform(.2, .5)
-            cv.hair([(x + L * i / n, y + amp * math.sin(_GPI * i / n)) for i in range(n + 1)])
-            x += L + rng.uniform(1.5, 3.5)
+            amp = rng.uniform(.2, .45) * (.6 + f)
+            seg = [(x + L * i / n, y + amp * math.sin(_GPI * i / n)) for i in range(n + 1)]
+            heavy = False
+            for (rx, rh, ry) in refl:
+                if y < ry and abs(x + L / 2 - rx) < rh * (1 - .3 * (y - Y) / max(1., ry - Y)) + rng.uniform(-2, 2):
+                    heavy = True
+            if heavy and pitch >= 2:
+                cv.line(seg)
+            elif f > .6 and rng.random() < (f - .6) * 1.1:
+                # the near ripples: their shaded troughs cut 1 px
+                m = len(seg) // 2
+                cv.hair(seg[:m + 1])
+                cv.line(seg[m:])
+            else:
+                cv.hair(seg)
+            x += L + gap
         y += pitch
+        k += 1
+
+
 # ---------------------------------------------------------------------------------- the vignette
 # (art director, batch 2: the subject is the composition; a shaped scene standing free on the page,
 # its edge ruled or dissolving into white as in Bewick; ornament only from the page's own motifs;
@@ -2206,6 +2225,536 @@ def gm_arms_light(cx, cy, r, seed=0):
     except Exception:
         pass
     return s
+# ---------------------------------------------------------------------------------- modelling kit
+# (batch-1 modelling pass: light from dark. Every round form is cut in crescents of line that
+# follow it, closest and heaviest at the shadow edge, opening to bare paper where the light
+# strikes; foliage in flicked masses; water broken by ripples; a rich near ground.)
+
+_MKL = (-.6, -.8)       # the light: from the upper left
+
+
+def _mk_bez(p0, p1, p2, p3, n=10):
+    out = []
+    for i in range(n + 1):
+        t = i / n
+        a, b, c, d = (1 - t) ** 3, 3 * t * (1 - t) ** 2, 3 * t * t * (1 - t), t ** 3
+        out.append((a * p0[0] + b * p1[0] + c * p2[0] + d * p3[0], a * p0[1] + b * p1[1] + c * p2[1] + d * p3[1]))
+    return out
+
+
+def _mk_runs(pts, pred):
+    """split a closed point ring into contiguous runs by pred, joining the wrap-around"""
+    runs = []
+    for q in pts:
+        v = pred(q)
+        if runs and runs[-1][1] == v:
+            runs[-1][0].append(q)
+        else:
+            runs.append(([q], v))
+    if len(runs) > 1 and runs[0][1] == runs[-1][1]:
+        runs[0] = (runs[-1][0] + runs[0][0], runs[0][1])
+        runs.pop()
+    return runs
+
+
+def _mk_unit(v):
+    l = math.hypot(v[0], v[1]) or 1.
+    return (v[0] / l, v[1] / l)
+
+
+def mk_blob(cx, cy, rx, ry, rng=None, lobes=0, amp=.0, n=40, rot=0.):
+    """an ellipse, optionally scalloped into `lobes` leafy bumps (amp of the radius)"""
+    out = []
+    ph = rng.uniform(0, _GTAU) if rng else 0.
+    for i in range(n):
+        t = _GTAU * i / n
+        k = 1.
+        if lobes:
+            k = 1 - amp + amp * abs(math.sin(lobes * t / 2 + ph)) ** .55
+            if rng:
+                k *= 1 + rng.uniform(-amp, amp) * .25
+        x, y = rx * k * math.cos(t), ry * k * math.sin(t)
+        if rot:
+            x, y = x * math.cos(rot) - y * math.sin(rot), x * math.sin(rot) + y * math.cos(rot)
+        out.append((cx + x, cy + y))
+    return out
+
+
+def _mk_inside(px, py, cx, cy, rx, ry):
+    return ((px - cx) / rx) ** 2 + ((py - cy) / ry) ** 2
+
+
+def mk_crescent(cv, cx, cy, rx, ry, light=_MKL, depth=.7, pitch=2., heavy=.3, trim=.1, flick=None,
+                rng=None, ycut=None, hair_pitch=None, deep=0., rot=0.):
+    """Form shading for a round: copies of the outline slid toward the light; the part of each
+    inside the round is one crescent line on the shade side. They lie closest at the shadow edge
+    (1 px there, to `heavy` of the depth), thin to hairlines and stop at `depth` of the diameter,
+    so the lit side is bare paper. flick=(dash, gap) breaks them into flicked leaf texture.
+    deep>0 crosses the darkest band with a second set of short strokes."""
+    if rot:
+        # work in the round's own frame, then turn the lines back
+        cr, sr_ = math.cos(rot), math.sin(rot)
+        L = _mk_unit(light)
+        sub = GmCanvas()
+        sub.obj([], 0)
+        mk_crescent(sub, 0., 0., rx, ry, (L[0] * cr + L[1] * sr_, -L[0] * sr_ + L[1] * cr), depth, pitch, heavy, trim,
+                    flick, rng, None, hair_pitch, deep, 0.)
+        for w, lines in sub.objs[-1][2].items():
+            if w == "w":
+                continue
+            for pl in lines:
+                cv._add(w, [(cx + x * cr - y * sr_, cy + x * sr_ + y * cr) for x, y in pl])
+        return
+    lx, ly = _mk_unit(light)
+    D = 2 * min(rx, ry) * depth
+    d = pitch * .75
+    k = 0
+    hp = hair_pitch or pitch * .75
+    while d < D:
+        f = d / D
+        n = max(16, int((rx + ry) * 1.2))
+        ox, oy = cx + lx * d * (rx / max(rx, ry)), cy + ly * d * (ry / max(rx, ry))
+        pts = []
+        for i in range(n + 1):
+            t = _GTAU * i / n
+            p = (ox + rx * math.cos(t), oy + ry * math.sin(t))
+            pts.append((p, _mk_inside(p[0], p[1], cx, cy, rx, ry) < .985))
+        # rotate so the run of inside points is contiguous
+        st = next((i for i in range(n + 1) if not pts[i][1]), None)
+        if st is None:
+            break
+        seq = pts[st:] + pts[:st]
+        arc = [p for p, ins in seq if ins]
+        if len(arc) > 3:
+            m = int(len(arc) * (trim + f * .18))
+            arc = arc[m: len(arc) - m] if len(arc) - 2 * m > 2 else []
+        if ycut is not None:
+            arc = [p for p in arc if p[1] < ycut]
+        if len(arc) > 1:
+            w = cv.line if f < heavy else cv.hair
+            if flick and rng:
+                dash, gap = flick
+                i = 0
+                while i < len(arc) - 1:
+                    L = max(2, int(rng.uniform(dash * .6, dash * 1.3)))
+                    seg = arc[i: i + L]
+                    if len(seg) > 1:
+                        a, b = seg[0], seg[-1]
+                        # a flick: the stroke kicks out a little at its tail
+                        seg = seg + [(b[0] + (b[0] - a[0]) * .25 - lx * .8, b[1] + (b[1] - a[1]) * .25 - ly * .8)]
+                        w(seg)
+                    i += L + max(1, int(rng.uniform(gap * .5, gap * 1.4) * (1 + f)))
+            else:
+                w(arc)
+            if deep and f < deep and k % 2 == 0:
+                # cross strokes, short, across the darkest band
+                for j in range(2, len(arc) - 2, 3):
+                    p = arc[j]
+                    cv.hair([(p[0] - ly * 1.6, p[1] + lx * 1.6), (p[0] + ly * 1.6, p[1] - lx * 1.6)])
+        d += pitch if f < heavy else hp
+        k += 1
+
+
+def mk_rim(cv, cx, cy, rx, ry, light=_MKL, a=.55, heavy=True):
+    """the outline's shadow side only, swelling to 1.5 px at the darkest point"""
+    lx, ly = _mk_unit(light)
+    ang = math.atan2(-ly, -lx)
+    pts = [(cx + rx * math.cos(ang + t), cy + ry * math.sin(ang + t)) for t in [(-a + 2 * a * i / 16) * _GPI for i in range(17)]]
+    cv.line(pts)
+    if heavy:
+        cv.heavy(pts[5:12])
+
+
+def mk_cloud(cv, cx, cy, w, h, rng, light=_MKL, dark=1.):
+    """a cumulus bank modelled light from dark: billows lit on top, each turned in crescents of
+    line to a dark, flat, ruled underside; the tops left as clean paper with a broken rim."""
+    h = min(h, 30.)
+    nb = max(3, min(7, int(w / max(7., h * .9))))
+    bills = []
+    for k in range(nb):
+        t = (k + rng.uniform(.3, .7)) / nb
+        r = h * (.3 + .5 * math.sin(_GPI * t) ** 1.3) * rng.uniform(.85, 1.1)
+        bills.append((cx - w / 2 + w * t, cy - r * .3, r))
+    nu = max(2, nb // 2 + 1)
+    for k in range(nu):
+        t = .22 + .56 * (k + rng.uniform(.3, .7)) / nu
+        r = h * (.42 + .3 * math.sin(_GPI * t)) * rng.uniform(.85, 1.1)
+        bills.append((cx - w / 2 + w * t, cy - h * .42 - r * .25, r))
+    for k in range(1 if w < 4 * h else 2):
+        t = rng.uniform(.38, .62) if w < 4 * h else (.36 + .28 * k)
+        r = h * rng.uniform(.42, .55)
+        bills.append((cx - w / 2 + w * t, cy - h * .82, r))
+    nb = len(bills) - nu - (1 if w < 4 * h else 2)
+    base = cy + h * .32
+    order = bills[nb + nu:] + bills[nb:nb + nu] + sorted(bills[:nb], key=lambda b: -abs(b[0] - cx))
+    for bx, by, r in order:
+        p = [(q[0], min(q[1], base)) for q in mk_blob(bx, by, r, r * .86, rng, int(r / 3) + 3, .06, 36)]
+        cv.obj([p], 0)
+        rim = [q for q in _Gel(bx, by, r, r * .86, 28) if q[1] < base - .3]
+        # the rim: a hairline on the lit top, broken, heavier into the shade
+        lx, ly = _mk_unit(light)
+        for run, lit in _mk_runs(rim, lambda q: ((q[0] - bx) * lx + (q[1] - by) * ly) > r * .2):
+            if lit:
+                for i in range(0, len(run) - 2, 5):
+                    cv.hair(run[i: i + 3])
+            elif len(run) > 1:
+                cv.line(run)
+        mk_crescent(cv, bx, by, r, r * .86, light, .52 * dark, 2., .2, .14, ycut=base - .5, hair_pitch=2.)
+    # the shadowed underside: flat, ruled dark, fading at the ends
+    y = base - h * .22
+    k = 0
+    while y < base + .6:
+        f = (y - base + h * .22) / (h * .22 + .6)
+        hw = w * (.38 + .1 * f)
+        (cv.line if k % 2 == 0 and f > .3 else cv.hair)([(cx - hw, y), (cx - hw * .3, y + .2), (cx + hw * .3, y - .2), (cx + hw, y)])
+        y += 1.5
+        k += 1
+
+
+def mk_foliage(cv, cx, cy, w, h, rng, light=_MKL, n=None, dark=1., outline=.5, deep=True, leaf=None):
+    """a mass of leafage in the engraver's leaf-touch: rows of small cupped leaf strokes laid over
+    the crown, each clump of the crown turned light to dark, so the touches thin to broken
+    hairlines where the light strikes the bosses and swell to 1 and 1.5 px, close-set, in the
+    shade, in the hollows between clumps and under the mass; a leafy broken edge."""
+    n = n or max(4, int(w * h / 220) + 3)
+    n = min(n, 14)
+    clumps = []
+    for i in range(n):
+        a = _GTAU * (i + rng.uniform(.1, .9)) / n
+        rr = math.sqrt((i % 3 + rng.uniform(.2, 1.)) / 3)
+        x = cx + math.cos(a) * rr * w * .3
+        y = cy + math.sin(a) * rr * h * .28
+        r = min(w, h) * rng.uniform(.2, .3)
+        clumps.append((x, y, r * rng.uniform(1., 1.2), r * rng.uniform(.8, .92)))
+    clumps.sort(key=lambda c: c[1] - c[0] * .15)
+    lx, ly = _mk_unit(light)
+    polys = []
+    for x, y, rx, ry in clumps:
+        nl = max(6, int((rx + ry) / 2.4))
+        polys.append(mk_blob(x, y, rx, ry, rng, nl, .15, nl * 4))
+    cv.obj(polys, 0)
+    x0 = min(p[0] for q in polys for p in q)
+    x1 = max(p[0] for q in polys for p in q)
+    y0 = min(p[1] for q in polys for p in q)
+    y1 = max(p[1] for q in polys for p in q)
+    sx = leaf or (3.2 if w > 30 else 2.6)
+    sy = sx * .72
+    row = 0
+    y = y0 + sy * .5
+    while y < y1:
+        x = x0 + (sx * .5 if row % 2 else 0) + rng.uniform(-.4, .4)
+        while x < x1:
+            # the front-most clump holding this touch decides its tone
+            top = -1
+            for i in range(len(clumps) - 1, -1, -1):
+                X_, Y_, rx, ry = clumps[i]
+                if _mk_inside(x, y, X_, Y_, rx * .97, ry * .97) < 1:
+                    top = i
+                    break
+            if top >= 0:
+                X_, Y_, rx, ry = clumps[top]
+                u = ((x - X_) * -lx / rx + (y - Y_) * -ly / ry)        # -1 lit .. +1 shade
+                t = .5 + .45 * u
+                # the hollow under a clump that lies in front
+                for j in range(top + 1, len(clumps)):
+                    Xj, Yj, rj, sj = clumps[j]
+                    if _mk_inside(x + lx * 2.5, y + ly * 2.5, Xj, Yj, rj, sj) < 1:
+                        t += .2
+                        break
+                t += .3 * (y - y0) / max(1., y1 - y0) - .02
+                t *= dark
+                t += rng.uniform(-.08, .08)
+                if t > .22:
+                    c = sx * (.3 if t < .66 else .36)
+                    d = sy * (.5 if t < .55 else .7)
+                    cup = [(x - c, y - d * .6), (x, y + d * .35), (x + c, y - d * .6)]
+                    if t < .42:
+                        if rng.random() < .55:
+                            cv.hair(cup[1:] if rng.random() < .5 else cup[:2])
+                    elif t < .66:
+                        cv.hair(cup)
+                    elif t < .86:
+                        cv.line(cup)
+                    else:
+                        cv.heavy([(x - c * 1.1, y - d * .2), (x + c * 1.1, y + d * .2)])
+            x += sx
+        y += sy
+        row += 1
+    # the leafy edge: broken on the lit side, firm in the shade
+    for i, q in enumerate(polys):
+        cxq = sum(p[0] for p in q) / len(q)
+        cyq = sum(p[1] for p in q) / len(q)
+        later = clumps[i + 1:]
+
+        def kind(p):
+            if any(_mk_inside(p[0], p[1], X_, Y_, rx, ry) < 1 for X_, Y_, rx, ry in later):
+                return 2
+            return 1 if ((p[0] - cxq) * lx + (p[1] - cyq) * ly) > 0 else 0
+        for run, k in _mk_runs(q, kind):
+            if k == 1:
+                for j in range(0, len(run) - 2, 4):
+                    cv.hair(run[j: j + 3])
+            elif k == 0 and len(run) > 1:
+                cv.line(run)
+
+
+def mk_trunk(cv, x, yb, yt, wb, wt, rng, light=_MKL, lean=0.):
+    """a tapering trunk with bark cut in long lines along it, black on the shade side"""
+    L = [(x - wb / 2, yb), (x - wt / 2 + lean, yt), (x + wt / 2 + lean, yt), (x + wb / 2, yb)]
+    cv.obj([L], 1.)
+    n = 7
+    for k in range(1, n):
+        s = k / n
+        pts = []
+        for i in range(9):
+            t = i / 8
+            xx = (x - wb / 2 + wb * s) * (1 - t) + (x - wt / 2 + lean + wt * s) * t
+            pts.append((xx + rng.uniform(-.3, .3), yb + (yt - yb) * t))
+        (cv.line if s > .62 else cv.hair)(pts if s > .3 else pts[::2])
+
+
+def mk_tree(cv, x, yb, hh, rng, kind="oak", light=_MKL, wd=None, dark=1.):
+    """a modelled tree, base at (x, yb), hh tall: oak/round crowns in flicked clumps on a barked
+    trunk; fir in drooping tiers each dark beneath."""
+    wd = wd or hh * (.75 if kind == "oak" else .38)
+    if kind == "fir":
+        cv.obj([], 0)
+        cv.line([(x, yb), (x, yb - hh)])
+        tiers = max(4, int(hh / 5))
+        for i in range(tiers):
+            t = (i + 1) / tiers
+            yy = yb - hh + hh * t * .92
+            half = wd / 2 * (.18 + .82 * t) * rng.uniform(.85, 1.1)
+            top = yb - hh + hh * (t - 1.25 / tiers) * .92
+            P = [(x, top), (x + half * .55, yy - (yy - top) * .35), (x + half, yy + 1.2)]
+            # a ragged bough hem
+            m = max(3, int(half / 2))
+            for j in range(m + 1):
+                u = 1 - j / m
+                P.append((x + half * (2 * u - 1) * (1 if True else 1), yy + (1.6 if j % 2 else 0) + rng.uniform(-.3, .3)))
+            P += [(x - half * .55, yy - (yy - top) * .35)]
+            cv.obj([P], .5)
+            # needles: strokes falling out from the stem, close and heavy on the shade side and
+            # under the hem
+            q = max(5, int(half / 1.3))
+            for j in range(q + 1):
+                u = j / q
+                sx = x + half * (2 * u - 1) * .95
+                if abs(sx - x) < .6:
+                    continue
+                sy = yy + 1.2 - abs(2 * u - 1) * .3
+                ty = top + (yy - top) * .25 + (yy - top) * .5 * abs(2 * u - 1)
+                tx = x + (sx - x) * .2
+                (cv.line if u > .55 else cv.hair)([(tx, ty), (sx, sy)])
+            cv.line([(x - half * .8, yy + 1), (x + half, yy + 1.4)])
+        return
+    trunk_h = hh * .42
+    mk_trunk(cv, x, yb, yb - trunk_h, wd * .1, wd * .06, rng, light)
+    # limbs into the crown
+    cv.obj([], 0)
+    for sd in (-1, 1):
+        cv.line([(x, yb - trunk_h * .8), (x + sd * wd * .18, yb - trunk_h * 1.25), (x + sd * wd * .26, yb - trunk_h * 1.45)])
+    mk_foliage(cv, x, yb - hh + (hh - trunk_h) * .52, wd, (hh - trunk_h) * 1.05, rng, light, dark=dark)
+
+
+def mk_stone(cv, cx, cy, rx, ry, rng, light=_MKL, shadow=True):
+    """a modelled stone with its cast shadow on the ground"""
+    if shadow:
+        sh = mk_blob(cx + rx * .35, cy + ry * .55, rx * 1.15, ry * .45, None, 0, 0, 24)
+        cv.obj([sh], 0)
+        y = cy + ry * .2
+        while y < cy + ry * 1.05:
+            cv.line([(cx - rx * .4, y), (cx + rx * 1.4, y)])
+            y += 2.
+    poly = mk_blob(cx, cy, rx, ry, rng, 4, .12, 28)
+    cv.obj([poly], 1.)
+    mk_crescent(cv, cx, cy, rx, ry, light, .75, 2., .45, .05, hair_pitch=1.5, deep=.3)
+    # a crack or two
+    if rx > 4:
+        a = (cx - rx * .2, cy - ry * .6)
+        cv.hair([a, (a[0] + rx * .2, a[1] + ry * .5), (a[0] + rx * .1, a[1] + ry * .9)])
+
+
+def mk_tuft(cv, x, yb, hh, rng, n=None, spread=.6, light_blades=True):
+    """a tuft of grass: dark swept blades, a few lit blades over them, a dark root"""
+    n = n or rng.randint(5, 9)
+    cv.obj([], 0)
+    for i in range(n):
+        t = (i + .5) / n - .5
+        L = hh * rng.uniform(.55, 1.)
+        ang = -_GPI / 2 + t * spread * 2 + rng.uniform(-.15, .15)
+        bend = rng.uniform(.15, .45) * (1 if t > 0 else -1)
+        bx = x + t * hh * .25
+        p0 = (bx, yb)
+        p1 = (bx + math.cos(ang) * L * .45, yb + math.sin(ang) * L * .45)
+        p2 = (bx + math.cos(ang + bend) * L, yb + math.sin(ang + bend) * L)
+        pts = _mk_bez(p0, p1, ((p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2), p2, 7)
+        if L > 6:
+            cv.line(pts[:5])
+            cv.hair(pts[4:])
+        else:
+            cv.hair(pts)
+    if light_blades and hh > 8:
+        for i in range(2):
+            L = hh * rng.uniform(.6, .9)
+            sd = rng.choice((-1, 1))
+            bx = x + rng.uniform(-2, 2)
+            tip = (bx + sd * L * .4, yb - L)
+            bl = [(bx - 1., yb), (bx + sd * L * .15 - .6, yb - L * .55), tip, (bx + sd * L * .15 + 1., yb - L * .5), (bx + 1., yb)]
+            cv.obj([bl], .5)
+            cv.hair([(bx + sd * .2, yb - 1), (bx + sd * L * .18, yb - L * .5)])
+    # the root shadow
+    cv.obj([], 0)
+    for k in range(3):
+        y = yb - k * 1.5
+        cv.line([(x - hh * .2 + k, y), (x + hh * .2 - k, y)])
+
+
+def mk_ground(cv, X, y0, W, y1, rng, light=_MKL, stones=2, tufts=6, pebbles=True, top=None):
+    """a near bank: earth worked in short broken strokes that close up and darken toward the
+    viewer, with modelled stones, pebbles and grass tufts. top(x) gives the bank's crest."""
+    if top is None:
+        ph = rng.uniform(0, 9)
+
+        def top(x):
+            return y0 + 2.5 * math.sin((x - X) / 37. + ph) + 1.5 * math.sin((x - X) / 13. + ph * 2)
+    xs = [X - 6 + (W + 12) * i / 60 for i in range(61)]
+    poly = [(x, top(x)) for x in xs] + [(X + W + 6, y1 + 6), (X - 6, y1 + 6)]
+    cv.obj([poly], 0)
+    cv.line([(x, top(x)) for x in xs])
+    H = y1 - y0
+    k = 0
+    y = 1.5
+    while y < H + 6:
+        f = min(1., y / max(1., H))
+        x = X - 6 + rng.uniform(0, 8)
+        while x < X + W + 6:
+            L = rng.uniform(4, 13) * (1.2 - f * .5)
+            yy = top(x) + y
+            seg = [(x, yy), (x + L * .5, yy + rng.uniform(-.4, .4)), (x + L, yy + rng.uniform(-.3, .5))]
+            (cv.line if f > .3 and rng.random() < .25 + f * .7 else cv.hair)(seg)
+            x += L + rng.uniform(1.5, 4.) * (1.3 - f * .6)
+        y += 3. if f < .15 else 2.
+        k += 1
+    if pebbles:
+        for i in range(int(W / 14)):
+            px = X + rng.uniform(0, W)
+            py = top(px) + rng.uniform(.3, .9) * H
+            r = rng.uniform(.9, 1.8)
+            cv.obj([mk_blob(px, py, r * 1.3, r, None, 0, 0, 10)], .5)
+            cv.line([(px - r * .4, py + r * .9), (px + r * 1.3, py + r * .6)])
+    for i in range(stones):
+        sx = X + W * (i + rng.uniform(.2, .8)) / max(1, stones)
+        r = min(H * .35, rng.uniform(4, 8))
+        mk_stone(cv, sx, top(sx) + H * rng.uniform(.35, .6), r * 1.4, r, rng, light)
+    for i in range(tufts):
+        tx = X + W * (i + rng.uniform(.1, .9)) / max(1, tufts)
+        mk_tuft(cv, tx, top(tx) + rng.uniform(.5, 3), min(H * 1.3, rng.uniform(9, 18)), rng)
+
+
+def mk_hill(cv, top_pts, ybot, rng, light=_MKL, pitch=2., outline=.5, dark=1., fade=1.):
+    """a hill or headland modelled by lines draped parallel to its crest, close and 1 px where
+    the slope turns from the light, opening on the lit slope; crossed where deepest."""
+    top_pts = sorted(top_pts)
+    poly = top_pts + [(top_pts[-1][0], ybot), (top_pts[0][0], ybot)]
+    cv.obj([poly], outline)
+    lx = _mk_unit(light)[0]
+
+    def T(x):
+        for i in range(len(top_pts) - 1):
+            (a, b), (c, d) = top_pts[i], top_pts[i + 1]
+            if a <= x <= c:
+                return b + (d - b) * (x - a) / ((c - a) or 1), (d - b) / ((c - a) or 1)
+        return top_pts[-1][1], 0.
+    x0, x1 = top_pts[0][0], top_pts[-1][0]
+    H = ybot - min(p[1] for p in top_pts)
+    k = 1
+    off = pitch
+    while off < H:
+        run, wt = [], None
+        x = x0
+        while x <= x1:
+            y, sl = T(x)
+            yy = y + off + .4 * math.sin(x * .2 + k)
+            if yy < ybot - .3:
+                shade = sl * (-lx) * 1.  # slope descending away from the light
+                w = 1 if (shade > .18 * fade and off < H * .7 * dark) else 0
+                if w != wt and run:
+                    (cv.line if wt else cv.hair)(run + [(x, yy)])
+                    run = []
+                wt = w
+                run.append((x, yy))
+                if w and shade > .5 and k % 2 == 0:
+                    cv.hair([(x, yy), (x + 1.5, yy + 1.5)])
+            elif run:
+                (cv.line if wt else cv.hair)(run)
+                run = []
+            x += 2.
+        if len(run) > 1:
+            (cv.line if wt else cv.hair)(run)
+        off += pitch * (1 + .5 * (off / H)) if fade else pitch
+        k += 1
+
+
+def mk_reflect(cv, x, ytop, ybot, half, rng, weight=1., pitch=1.5):
+    """a reflection laid in the water: short 1 px strokes under the object, wobbling sideways
+    and breaking more as the ripples carry it toward the viewer"""
+    y = round((ytop + .25) * 2) / 2 + .25
+    while y < ybot:
+        f = (y - ytop) / max(1., ybot - ytop)
+        hw = half * (1 - .35 * f) * rng.uniform(.75, 1.1)
+        sh = rng.uniform(-1, 1) * (1 + 3 * f)
+        segs = 1 + int(f * 3)
+        a = x - hw + sh
+        L = 2 * hw / segs
+        for s_ in range(segs):
+            g = rng.uniform(.5, 1.5) * f * 2
+            (cv.line if weight >= 1 and rng.random() > f * .6 else cv.hair)([(a + s_ * L, y), (a + (s_ + 1) * L - g, y)])
+        y += pitch if f < .5 else pitch * 1.34
+
+
+def mk_drape(cv, top, poly, rng, pitch=2., heavy_from=.45, depth=None, dash=(6, 2.), step=1.5, dy=None):
+    """form lines draped under a curve: copies of `top` (a polyline along the form's lit crest)
+    stepped down by `pitch`, kept inside `poly`, broken into short burin strokes; hairlines
+    under the crest, 1 px from `heavy_from` of the depth down into the shade (a belly, a hull,
+    the underside of a bough). dy(x) can bend the offsets."""
+    ys = [p[1] for p in poly]
+    depth = depth or (max(ys) - min(ys))
+    # resample the crest
+    pts = []
+    for i in range(len(top) - 1):
+        (ax, ay), (bx, by) = top[i], top[i + 1]
+        n = max(1, int(math.hypot(bx - ax, by - ay) / step))
+        pts += [(ax + (bx - ax) * j / n, ay + (by - ay) * j / n) for j in range(n)]
+    pts.append(top[-1])
+    off = pitch * .75
+    while off < depth:
+        f = off / depth
+        run = []
+        for (x, y) in pts:
+            yy = y + off * (dy(x) if dy else 1.)
+            if _g_pip(x, yy, poly):
+                run.append((x, yy))
+            elif run:
+                run.append(None)
+        segs, cur = [], []
+        for q in run:
+            if q is None:
+                if len(cur) > 1:
+                    segs.append(cur)
+                cur = []
+            else:
+                cur.append(q)
+        if len(cur) > 1:
+            segs.append(cur)
+        w = cv.line if f >= heavy_from else cv.hair
+        for sg in segs:
+            i = int(rng.uniform(0, dash[0]))
+            while i < len(sg) - 1:
+                L = max(2, int(rng.uniform(dash[0] * .6, dash[0] * 1.4)))
+                w(sg[i: i + L])
+                i += L + max(1, int(rng.uniform(dash[1] * .5, dash[1] * 1.5) * (1.4 - f)))
+        off += pitch
 # ==== GM ENGINE END ====
 
 
@@ -2666,7 +3215,7 @@ def salver_scene(X, Y, W, H, level, seed=0):
     n = max(60, int(W * .8))
     for i in range(n):
         t = _GTAU * (i + .5) / n
-        r0 = 4 + (3 if i % 2 else 0)
+        r0 = 9 + (4 if i % 2 else 0)
         (cv.line if i % 4 == 0 else cv.hair)([(cx + r0 * math.cos(t), gy + r0 * math.sin(t)), (cx + W * math.cos(t), gy + W * math.sin(t))])
     # the salver: gadrooned rim, the well in concentric reflections broken by two lit flashes
     rim = _Gel(cx, sy, sa, sb, 72)[:-1]
@@ -2690,7 +3239,11 @@ def salver_scene(X, Y, W, H, level, seed=0):
     ux = cx - (sa * .28 if level else 0)
     sau = _Gel(ux, sy - sb * .1, cs * .6, cs * .16, 40)[:-1]
     cv.obj([sau], 1.)
-    cv.hair(_Ghp([(x, y) for x, y in sau if y > sy - sb * .1], 0, 1.5))
+    # the saucer turned: crescents on its far rim, and the cup's shadow lying across it
+    mk_crescent(cv, ux, sy - sb * .1, cs * .58, cs * .15, (-.8, -.6), .6, 1.5, .4, .08)
+    shd = _Gel(ux + cs * .14, sy - sb * .1 + cs * .02, cs * .34, cs * .08, 24)[:-1]
+    cv.obj([shd], 0)
+    cv.line(_Ghp(shd, 0, 1.5))
     top = sy - sb * .1 - cs * .62
     body = [(ux - cs * .36, top)] + [(ux - cs * .36 + cs * .72 * j / 16, top + cs * .5 * math.sin(math.pi * j / 16) ** .6 + cs * .0) for j in range(17)]
     body = [(ux - cs * .36, top), (ux - cs * .33, top + cs * .3), (ux - cs * .22, top + cs * .5), (ux, top + cs * .56),
@@ -2701,12 +3254,17 @@ def salver_scene(X, Y, W, H, level, seed=0):
     cv.obj([handle], 1.)
     cv.obj([body], 1.)
     # the bowl modelled: cuts that follow its round, close on the shade side, a band of gilt lines
-    for j in range(1, 12):
-        u = j / 12
+    # the porcelain bowl: cuts that follow its round, absent in the light, 1 px into the shade
+    nj = max(12, int(cs * .72 / 1.5))
+    for j in range(1, nj):
+        u = j / nj
         x0 = ux - cs * .36 + cs * .72 * u
         dep = cs * .5 * math.sin(math.pi * u) ** .5
-        if u > .55 or j % 3 == 0:
-            cv.hair([(x0, top + 1), (x0 + (u - .5) * cs * .1, top + dep * .95)])
+        if u < .3 and j % 3:
+            continue
+        if .3 <= u < .5:
+            continue
+        (cv.line if u > .78 else cv.hair)([(x0, top + 1), (x0 + (u - .5) * cs * .1, top + dep * .95)])
     cv.line([(ux - cs * .35, top + cs * .08), (ux + cs * .35, top + cs * .08)])
     lip = _Gel(ux, top, cs * .36, cs * .07, 32)[:-1]
     cv.obj([lip], 1.)

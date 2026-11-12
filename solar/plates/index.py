@@ -2370,18 +2370,24 @@ def mk_cloud(cv, cx, cy, w, h, rng, light=_MKL, dark=1.):
     """a cumulus bank modelled light from dark: billows lit on top, each turned in crescents of
     line to a dark, flat, ruled underside; the tops left as clean paper with a broken rim."""
     h = min(h, 30.)
-    nb = max(3, int(w / max(6., h * .8)))
+    nb = max(3, min(7, int(w / max(7., h * .9))))
     bills = []
     for k in range(nb):
-        t = (k + rng.uniform(.25, .75)) / nb
-        r = h * (.42 + .6 * math.sin(_GPI * t) ** .8) * rng.uniform(.82, 1.12)
+        t = (k + rng.uniform(.3, .7)) / nb
+        r = h * (.3 + .5 * math.sin(_GPI * t) ** 1.3) * rng.uniform(.85, 1.1)
         bills.append((cx - w / 2 + w * t, cy - r * .3, r))
-    for k in range(max(1, nb // 2)):
-        t = rng.uniform(.25, .75)
-        r = h * rng.uniform(.55, .85)
-        bills.append((cx - w / 2 + w * t, cy - h * .55 - r * .25, r))
+    nu = max(2, nb // 2 + 1)
+    for k in range(nu):
+        t = .22 + .56 * (k + rng.uniform(.3, .7)) / nu
+        r = h * (.42 + .3 * math.sin(_GPI * t)) * rng.uniform(.85, 1.1)
+        bills.append((cx - w / 2 + w * t, cy - h * .42 - r * .25, r))
+    for k in range(1 if w < 4 * h else 2):
+        t = rng.uniform(.38, .62) if w < 4 * h else (.36 + .28 * k)
+        r = h * rng.uniform(.42, .55)
+        bills.append((cx - w / 2 + w * t, cy - h * .82, r))
+    nb = len(bills) - nu - (1 if w < 4 * h else 2)
     base = cy + h * .32
-    order = bills[nb:] + sorted(bills[:nb], key=lambda b: -abs(b[0] - cx))
+    order = bills[nb + nu:] + bills[nb:nb + nu] + sorted(bills[:nb], key=lambda b: -abs(b[0] - cx))
     for bx, by, r in order:
         p = [(q[0], min(q[1], base)) for q in mk_blob(bx, by, r, r * .86, rng, int(r / 3) + 3, .06, 36)]
         cv.obj([p], 0)
@@ -2394,7 +2400,7 @@ def mk_cloud(cv, cx, cy, w, h, rng, light=_MKL, dark=1.):
                     cv.hair(run[i: i + 3])
             elif len(run) > 1:
                 cv.line(run)
-        mk_crescent(cv, bx, by, r, r * .86, light, .62 * dark, 2., .22, .12, ycut=base - .5, hair_pitch=1.5)
+        mk_crescent(cv, bx, by, r, r * .86, light, .52 * dark, 2., .2, .14, ycut=base - .5, hair_pitch=2.)
     # the shadowed underside: flat, ruled dark, fading at the ends
     y = base - h * .22
     k = 0

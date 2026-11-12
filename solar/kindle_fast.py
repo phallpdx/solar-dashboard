@@ -757,6 +757,11 @@ LETTER_JS = r"""(sel) => {
 # kind: (size the lettering is drawn at, flourish under it)
 LETTER_KINDS = {"section": (44, True), "contents": (38, True), "title": (31, True), "poem": (30, True),
                 "sub": (26, False), "science": (27, False), "lead": (29, False), "leads": (21, False), "story": (21, False)}
+try:  # the edition's one type scale (solar/kindle_ornate.py) sets the size each kind of headline is lettered at
+    from .kindle_ornate import LETTER_SIZES as _LS
+    LETTER_KINDS = {k: (_LS.get(k, v[0]), v[1]) for k, v in LETTER_KINDS.items()}
+except Exception:  # noqa: BLE001
+    pass
 
 
 def letter(out, exe=None):

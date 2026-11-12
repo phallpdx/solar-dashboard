@@ -76,6 +76,12 @@ FAMILIES = {
 }
 # where each family's picture sits in its element (CSS background-position / size)
 
+# the type size each kind of hand-lettered headline stands in for (solar/lettering.py via kindle_fast.letter):
+# section title pages are display, page and card titles are headline, the cover's top lead is lead, story
+# headlines in lists are bold body
+LETTER_SIZES = {"section": 48, "contents": 30, "title": 30, "poem": 30, "sub": 30, "science": 30,
+                "lead": 24, "leads": 17, "story": 17}
+
 # the size each family is drawn at in the layout (CSS px); variable ones are measured per element
 NOMINAL = {"chip": (96, 26), "button": (200, 40), "sections": (120, 26), "runhead": (200, 26), "banner": (526, 80),
            "tile": (250, 96), "tablehead": (506, 34), "gauge": (88, 12), "initial": (74, 74), "divider": (140, 16), "barbase": (506, 14)}

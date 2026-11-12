@@ -274,8 +274,12 @@ try:
         # the plates become full rectangular engravings: sky ruling (0.5 px at 2 px) runs to a ruled edge
         "html.kev #kmain .khv svg.khp.khp,html.kev #kmain svg.kpv.kpv{background:#fff url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='48'%3E%3Cpath d='M0 0.75H4M0 3.75H4M0 6.75H4M0 9.75H4M0 12.75H4M0 15.75H4M0 18.75H4M0 21.75H4M0 24.75H4M0 27.75H4M0 30.75H4M0 33.75H4M0 36.75H4M0 39.75H4M0 42.75H4M0 45.75H4' stroke='%23000' stroke-width='.5'/%3E%3C/svg%3E\") 0 4px/4px 48px repeat-x !important;"
         "box-shadow:0 0 0 1px #000,0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
-        "html.kev #kmain svg.kplate2,html.kev #kmain svg.kvig{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
-        "html.kev #kmain svg.kast,html.kev #kmain svg.kdiv,html.kev #kmain svg.ktail,html.kev #kmain svg.kegg{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
+        "html.kev #kmain svg.kplate2,html.kev #kmain svg.kvig.kgn{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
+        "html.kev #kmain svg.kast,html.kev #kmain svg.kdiv,html.kev #kmain svg.ktail,html.kev #kmain svg.kegg{visibility:hidden !important}\n"
+        # centred display lines stack into one white cartouche: no rule on each, so their edges never collide
+        "html.kev body #kmain .kfsub.kfsub.kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kfname.kfname.kfname.kfname.kfname.kfname,html.kev body #kmain .kkick.kkick.kkick.kkick.kkick.kkick,"
+        "html.kev body #kmain .poem-title.poem-title.poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by.poem-by.poem-by,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet.kquiet.kquiet{"
+        "box-shadow:0 0 0 5px #fff !important}\n"
         "html.kev #kmain .kfill{-webkit-justify-content:flex-end !important;justify-content:flex-end !important}\n")
     EVENING_CSS += ("html.kev body.kcontents{background:" + (_CV + " 0 0/618px 644px no-repeat" if _CV else _V + " 0 0/24px 88px repeat-y," + _V + " 100% 0/24px 88px repeat-y") + ",#fff !important}\n"
                     # the running head and the foot bar sit on clean paper: the margin scroll stops at them

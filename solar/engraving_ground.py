@@ -36,7 +36,7 @@ def _leaf(base, ang, L, Wd, lobes, curl, light):
     """An acanthus leaf from base along angle ang: white body, lobed edge, 1px outline, a 1.5px
     heavier edge on the shadow side, and 0.5px shade cuts across the shadow half only."""
     bx, by = base
-    n = 16
+    n = 11
     mid = []
     for i in range(n + 1):
         t = i / n
@@ -51,7 +51,7 @@ def _leaf(base, ang, L, Wd, lobes, curl, light):
         t = i / n
         a = ang + curl * t * t
         nx, ny = -math.sin(a), math.cos(a)
-        h = Wd * math.sin(math.pi * min(1, t * 1.08)) ** .7 * (1 - .3 * t) * (.75 + .25 * abs(math.cos(t * math.pi * lobes)))
+        h = Wd * math.sin(math.pi * min(1, t * 1.08)) ** .7 * (1 - .3 * t) * (.5 + .5 * abs(math.cos(t * math.pi * lobes)) ** .6) * (1 - .12 * (int(t * 40) % 2))
         left.append((x + nx * h, y + ny * h))
         right.append((x - nx * h, y - ny * h))
     body = left + right[::-1]
@@ -59,10 +59,16 @@ def _leaf(base, ang, L, Wd, lobes, curl, light):
     lx, ly = light
     sx = left if (left[n // 2][0] - mid[n // 2][0]) * lx + (left[n // 2][1] - mid[n // 2][1]) * ly < 0 else right
     shade = []
+    lt = right if sx is left else left
     for i in range(2, n - 1):
         mx, my = mid[i]
         ex, ey = sx[i]
-        shade.append("M%s %sL%s %s" % (_f(mx + (ex - mx) * .25), _f(my + (ey - my) * .25), _f(ex), _f(ey)))
+        # shade cuts from near the midrib to the shadow edge, curving with the leaf
+        cx_, cy_ = (mx + ex) / 2 + (ey - my) * .12, (my + ey) / 2 - (ex - mx) * .12
+        shade.append("M%s %sQ%s %s %s %s" % (_f(mx + (ex - mx) * .1), _f(my + (ey - my) * .1), _f(cx_), _f(cy_), _f(ex), _f(ey)))
+        if i % 3 == 0 and 3 < i < n - 3:  # a few veins on the lit side, short, so the lit half stays light
+            lx_, ly_ = lt[i]
+            shade.append("M%s %sL%s %s" % (_f(mx + (lx_ - mx) * .2), _f(my + (ly_ - my) * .2), _f(mx + (lx_ - mx) * .6), _f(my + (ly_ - my) * .6)))
     return (_pl(body) + "Z", _pl(sx[1:]), "".join(shade), _pl(mid[1:-2]))
 
 
@@ -95,9 +101,9 @@ def page_ground(seed=0, W=618, H=720):
             ex, ey = sp[-1][0], sp[-1][1]
             eggs.append((ex, ey, k))
             # leaves along the outside of the curve, overlapping
-            nl = rng.randint(8, 11)
+            nl = rng.randint(13, 16)
             for i in range(nl):
-                j = int(2 + i * (len(sp) * .7) / nl)
+                j = int(2 + i * (len(sp) * .82) / nl)
                 x, y, a, rr = sp[j]
                 tang = a + sg * math.pi / 2
                 out_ang = tang - sg * .35 + rng.uniform(-.2, .2)
@@ -109,6 +115,17 @@ def page_ground(seed=0, W=618, H=720):
                 out15.append(heavy)
                 hair.append(sh)
                 hair.append(rib)
+            # daughter scrolls springing from the outside of the main one, each with a leaf
+            for jd in (int(len(sp) * .18), int(len(sp) * .42)):
+                x, y, a, rr = sp[jd]
+                dx_, dy_ = x + math.cos(a) * rr * .38, y + math.sin(a) * rr * .38
+                dsp = _spiral(dx_, dy_, rr * .3, a + math.pi, 1.2, -sg, .3, 40)
+                for j2 in range(0, len(dsp) - 1, 6):
+                    stems.append((_pl([(p[0], p[1]) for p in dsp[j2:j2 + 7]]), max(1.5, 5 * (1 - j2 / len(dsp)))))
+                for i2 in range(3):
+                    x2, y2, a2, r2 = dsp[2 + i2 * 6]
+                    b, heavy, sh, rib = _leaf((x2, y2), a2 - sg * 1.2 + rng.uniform(-.2, .2), max(9, r2 * .9), max(9, r2 * .9) * .32, 2.5, sg * .8, light)
+                    white.append(b); out1.append(b); out15.append(heavy); hair.append(sh); hair.append(rib)
             k += 1
     # eggs: a P in one spiral eye, a paw in another, crossed drumsticks by a third
     egg = []
@@ -142,6 +159,8 @@ def page_ground(seed=0, W=618, H=720):
                    % (_f(x), _f(y), _f(x - 5), _f(y + 1), _f(x - .2), _f(y - 2.2), _f(x - 2.5), _f(y - 3.4)))
     st = "".join('<path d="%s" stroke="#000" stroke-width="%s"/>' % (d, _f(w + 3)) for d, w in stems)
     st += "".join('<path d="%s" stroke="#fff" stroke-width="%s"/>' % (d, _f(w)) for d, w in stems)
+    # a second inner line, set toward the shadow side, so the stem reads as rounded
+    st += "".join('<path d="%s" stroke="#000" stroke-width=".5" transform="translate(%s,%s)"/>' % (d, _f(w * .22), _f(w * .22)) for d, w in stems if w >= 4)
     return ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d">'
             '<defs><pattern id="g" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">'
             '<path d="M0 .5H2" stroke="#000" stroke-width=".5"/></pattern></defs>'

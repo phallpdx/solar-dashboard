@@ -919,23 +919,26 @@ def egg_bridge(cv, cx, cy, r):
 
 
 def egg_kranok(cv, cx, cy, r):
-    """A Thai kranok flame rising from a lotus calyx."""
+    """A Thai kranok flame rising from a lotus calyx, its tip flicking over; cut bold on a white
+    disc so it reads in a small eye."""
     s = r / 10.
+    cv.obj([ell(cx, cy, r * .98, r * .98, 32)[:-1]], 0)
     fl = []
     for i in range(25):
         t = i / 24
         a = PI * t
-        fl.append((cx + (4.6 * math.sin(a) * (1 - t * .3)) * s - 2.3 * s, cy + 6 * s - 13 * t * s))
+        fl.append((cx + (4.6 * math.sin(a) * (1 - t * .3)) * s - 2.3 * s, cy + 5 * s - 12 * t * s))
     for i in range(10):
         t = i / 9
         fl.append((cx + (2.3 * s) * math.cos(PI * t) * .9 - 1.4 * s, cy - 7 * s + 2.6 * t * s))
-    cv.obj([fl], 1.)
-    cv.hair(_offset_pl(fl[2:22], 1.5 * s))
-    cv.hair(_offset_pl(fl[4:20], 3 * s))
-    cal = [(cx - 5 * s, cy + 5 * s), (cx - 2.4 * s, cy + 8 * s), (cx + 2.4 * s, cy + 8 * s), (cx + 5 * s, cy + 5 * s),
-           (cx + 2 * s, cy + 6 * s), (cx, cy + 4.6 * s), (cx - 2 * s, cy + 6 * s)]
-    cv.obj([cal], 1.)
-    cv.hair(C.hatch_poly(cal, 90, 1.5))
+    cv.obj([fl], 1.5)
+    cv.line(_offset_pl(fl[3:21], 1.8 * s))
+    cv.heavy([(cx - .2 * s, cy + 4.4 * s), (cx + .4 * s, cy), (cx - .2 * s, cy - 3.6 * s), (cx - 1.6 * s, cy - 5.4 * s)])
+    cal = [(cx - 5.5 * s, cy + 4.6 * s), (cx - 2.8 * s, cy + 8 * s), (cx + 2.8 * s, cy + 8 * s), (cx + 5.5 * s, cy + 4.6 * s),
+           (cx + 2.2 * s, cy + 5.8 * s), (cx, cy + 4.2 * s), (cx - 2.2 * s, cy + 5.8 * s)]
+    cv.obj([cal], 1.5)
+    cv.line([(cx - 2.4 * s, cy + 6.2 * s), (cx - 1.4 * s, cy + 7.6 * s)])
+    cv.line([(cx + 2.4 * s, cy + 6.2 * s), (cx + 1.4 * s, cy + 7.6 * s)])
 
 
 def _offset_pl(pl, d):
@@ -1391,6 +1394,262 @@ def dots_d(pts):
         px, py = X + 5, Y
     d = "".join(out)
     return "M" + d[1:] if d else ""
+
+
+# ----------------------------------------------------------------------------------------------
+# planned forms (edition plan 1.6): the plate takes the page's own shape - roundel, oval, arched
+# top, banner (ribbon with swallowtails), lunette or frieze - and leaves the page ground showing
+# outside it. The medallion carries the scene; scroll grows from stems placed in the widest parts
+# of the ground between the medallion and the border.
+# ----------------------------------------------------------------------------------------------
+
+def egg_castle(cv, cx, cy, r):
+    """The Somaster castle as a sandcastle: two crenellated towers, a crenellated wall, an arched
+    gate, a pennant, on a mound of sand."""
+    s = r / 10.
+    cv.obj([ell(cx, cy, r * .98, r * .98, 32)[:-1]], 0)
+    base = cy + 5.5 * s
+
+    def crenel(x0, x1, y):
+        n = max(2, int((x1 - x0) / (1.6 * s)))
+        pts = [(x0, y)]
+        for i in range(n):
+            a = x0 + (x1 - x0) * i / n
+            b = x0 + (x1 - x0) * (i + .5) / n
+            pts += [(a, y - 1.3 * s), (b, y - 1.3 * s), (b, y)]
+        return pts + [(x1, y)]
+    for tx in (-5.2, 2.4):
+        t = [(cx + tx * s, base)] + crenel(cx + tx * s, cx + (tx + 2.8) * s, cy - 6 * s) + [(cx + (tx + 2.8) * s, base)]
+        cv.obj([t], 1.5)
+        cv.line([(cx + (tx + 1.4) * s, cy - 3.6 * s), (cx + (tx + 1.4) * s, cy - 2 * s)])
+    wall = [(cx - 2.4 * s, base)] + crenel(cx - 2.4 * s, cx + 2.4 * s, cy - 2 * s) + [(cx + 2.4 * s, base)]
+    cv.obj([wall], 1.5)
+    gate = [(cx - 1.2 * s, base)] + [(cx + 1.2 * s * math.cos(PI - PI * i / 8), cy + 1.6 * s - 1.4 * s * math.sin(PI * i / 8)) for i in range(9)] + [(cx + 1.2 * s, base)]
+    cv.obj([gate], 1.)
+    cv.line([(cx - .4 * s, base), (cx - .4 * s, cy + .6 * s)])
+    cv.line([(cx + .4 * s, base), (cx + .4 * s, cy + .6 * s)])
+    cv.line([(cx + 3.8 * s, cy - 7.4 * s), (cx + 3.8 * s, cy - 10 * s)])
+    cv.obj([[(cx + 3.8 * s, cy - 10 * s), (cx + 6.4 * s, cy - 9.2 * s), (cx + 3.8 * s, cy - 8.4 * s)]], 1.)
+    cv.obj([[(cx - 8 * s, base + 2 * s), (cx - 6.5 * s, base), (cx + 6.5 * s, base), (cx + 8 * s, base + 2 * s)]], 1.)
+    for k in range(5):
+        cv.hair([(cx - 6 * s + k * 3 * s, base + 1.2 * s), (cx - 5 * s + k * 3 * s, base + 1.2 * s)])
+
+
+def egg_flag(cv, cx, cy, r):
+    """A chequered flag on its staff."""
+    s = r / 10.
+    cv.obj([ell(cx, cy, r * .98, r * .98, 32)[:-1]], 0)
+    cv.heavy([(cx - 5 * s, cy + 7.5 * s), (cx - 5 * s, cy - 7 * s)])
+    n, m = 4, 3
+    for i in range(n):
+        for j in range(m):
+            x0 = cx - 4.5 * s + i * 2.4 * s
+            y0 = cy - 6.5 * s + j * 2.4 * s + .5 * s * math.sin(i * 1.3)
+            q = [(x0, y0), (x0 + 2.4 * s, y0 + .4 * s), (x0 + 2.4 * s, y0 + 2.8 * s), (x0, y0 + 2.4 * s)]
+            cv.obj([q], .5)
+            if (i + j) % 2 == 0:
+                cv.line([[(x0 + .3 * s, y0 + k * .8 * s + .5 * s), (x0 + 2.1 * s, y0 + k * .8 * s + .8 * s)] for k in range(3)])
+
+
+EGGS["castle"] = egg_castle
+EGGS["flag"] = egg_flag
+
+
+def fast_inside(poly):
+    """inside(poly, x, y) with the scanline crossings cached per half-pixel row."""
+    cache = {}
+    n = len(poly)
+
+    def ok(x, y):
+        k = int(y * 2)
+        xs = cache.get(k)
+        if xs is None:
+            yy = k / 2 + .25
+            xs = sorted(ax + (bx - ax) * (yy - ay) / (by - ay) for (ax, ay), (bx, by) in
+                        ((poly[i], poly[(i + 1) % n]) for i in range(n)) if (ay > yy) != (by > yy))
+            cache[k] = xs
+        c = 0
+        for v in xs:
+            if v < x:
+                c += 1
+            else:
+                break
+        return c % 2 == 1
+    return ok
+
+
+def shape_poly(form, w, h):
+    """The plate outline (screen coords) for a planned form."""
+    if form == "roundel":
+        r = min(w, h) / 2 - 1
+        return ell(w / 2, h / 2, r, r, 120)[:-1]
+    if form == "oval":
+        ry = h / 2 - 1
+        rx = min(w / 2 - 1, ry * 2.7)
+        return ell(w / 2, h / 2, rx, ry, 120)[:-1]
+    if form == "arched":
+        c = w - 2
+        a = min(h * .32, c / 2)
+        R = (c * c / 4 + a * a) / (2 * a)
+        cy = 1 + R
+        a0 = math.asin(min(1., (c / 2) / R))
+        arc = [(w / 2 + R * math.sin(t), cy - R * math.cos(t)) for t in [-a0 + 2 * a0 * i / 60 for i in range(61)]]
+        return [(1, h - 1), (1, arc[0][1])] + arc + [(w - 1, arc[-1][1]), (w - 1, h - 1)]
+    if form == "lunette":
+        R = min(w / 2 - 1, h - 2)
+        return [(w / 2 + R * math.cos(PI + PI * i / 80), h - 1 + R * math.sin(PI + PI * i / 80)) for i in range(81)]
+    if form == "banner":
+        bw = min(w - 2, h * 9)
+        x0 = (w - bw) / 2
+        nd = min(h * .32, 18)
+        return [(x0, 1), (x0 + bw, 1), (x0 + bw - nd, h / 2), (x0 + bw, h - 1), (x0, h - 1), (x0 + nd, h / 2)]
+    return [(1, 1), (w - 1, 1), (w - 1, h - 1), (1, h - 1)]
+
+
+def auto_roots(ok, x0, x1, y0, y1, n=3, rmax=40., rmin=5., axis=None, step=7.):
+    """Stems for a scroll field: the n widest clear spots of the ground (largest empty circles),
+    each fed by a stem from the side nearer the plate's axis."""
+    cands = []
+    y = y0 + step / 2
+    while y < y1:
+        x = x0 + step / 2
+        while x < x1:
+            if ok(x, y):
+                r = rmin
+                while r < rmax and all(ok(x + r * math.cos(TAU * i / 10), y + r * math.sin(TAU * i / 10)) for i in range(10)):
+                    r += 2.
+                if r > rmin:
+                    cands.append((r, x, y))
+            x += step
+        y += step
+    cands.sort(reverse=True)
+    out = []
+    for r, x, y in cands:
+        if all(math.hypot(x - q[1], y - q[2]) > (r + q[0]) * 1.1 for q in out):
+            out.append((r, x, y))
+            if len(out) >= n:
+                break
+    roots = []
+    for i, (r, x, y) in enumerate(out):
+        rr = r * .62
+        ax = axis if axis is not None else x1
+        dirn = 1 if ax > x else -1
+        roots.append(dict(cx=x, cy=y, r=rr, sg=1 if i % 2 == 0 else -1, phi0=PI / 2 - .3 if i % 2 == 0 else -PI / 2 + .3,
+                          tail_from=(x + dirn * rr * 1.25, y + rr * .9, dirn, -.2)))
+    return roots
+
+
+def shaped_frame(w, h, ctx, scene, opts):
+    """A plate in a planned form (opts['form']): roundel, oval, arched, lunette, banner, frieze."""
+    form = opts.get("form", "oval")
+    pid = opts.get("pid", "p")
+    seed = opts.get("seed", 1)
+    egg = EGGS.get(opts.get("egg")) if opts.get("egg") else None
+    o = [matte_defs(pid)]
+    if form in ("banner", "frieze") or h < 56:
+        o += _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form)
+    else:
+        P = shape_poly(form, w, h)
+        xs = [p[0] for p in P]
+        ys = [p[1] for p in P]
+        X0, X1, Y0, Y1 = min(xs), max(xs), min(ys), max(ys)
+        PW, PH = X1 - X0, Y1 - Y0
+        cx = w / 2
+        med = opts.get("med")
+        if med:
+            mcx, mcy, mrx, mry = med(X0, Y0, PW, PH)
+        elif form == "roundel":
+            mcx, mcy, mrx, mry = cx, Y0 + PH / 2, PW * .33, PH * .33
+        elif form == "oval":
+            k = max(0., min(1., (PH - 60) / 80))
+            mcx, mcy, mrx, mry = cx, Y0 + PH / 2, min(PW * (.4 - .1 * k), PH * .62 + PH * .2 * (1 - k)), PH * (.42 - .06 * k)
+        elif form == "lunette":
+            mcx, mcy, mrx, mry = cx, Y1 - PH * .42, PW * .3, PH * .38
+        else:
+            mcx, mcy, mrx, mry = cx, Y0 + PH * .56, min(PW * .3, PH * .52), PH * .38
+        o.append(matte(_d(P, True, 0), pid))
+        inner = offset_poly(P, -6)
+        okP = fast_inside(inner)
+        bh = min(16., PH * .07) if (opts.get("banner") and PH > 150) else 0
+        holes = [(mcx, mcy, mrx + 5, mry + 5)]
+        if bh:
+            holes.append((mcx, mcy + mry + 1, mrx * 1.2, bh * 1.2))
+
+        def ok(x, y):
+            if x > cx + 2 or not okP(x, y):
+                return False
+            for hx, hy, rx, ry in holes:
+                if ((x - hx) / rx) ** 2 + ((y - hy) / ry) ** 2 < 1:
+                    return False
+            return True
+        rmin = max(4., min(PW, PH) * .02)
+        roots = auto_roots(ok, X0, cx, Y0, Y1, 6, min(30., PH * .12), rmin, cx, max(5., PH / 60))
+        if roots and egg:
+            roots[0]["eye"] = egg
+        cv, T = scroll_field(ok, roots, seed, rmin, 3, 1., True, .9)
+        o.append(clip_g(f"{pid}sc", _d(inner, True, 0), mirror_g(w, cv.svg(), f"{pid}sg")))
+        o.append(gold_border(P, False, PH > 90, 1.5 if PH > 160 else 1.))
+        ring, inn = medallion_ring(mcx, mcy, mrx, mry, 1.5 if mry > 40 else 1.)
+        ix = [p[0] for p in inn]
+        iy = [p[1] for p in inn]
+        o.append(f'<path d="{_d(inn, True, 0)}" fill="#fff"/>')
+        o.append(clip_g(f"{pid}sm", _d(inn, True, 0), scene(min(ix), min(iy), max(ix) - min(ix), max(iy) - min(iy), _d(inn, True, 0), form)))
+        o.append(ring)
+        if bh:
+            bsvg, _ = banner(mcx, mcy + mry + 1, mrx * 2.3, bh, opts["banner"], .04, None, seed)
+            o.append(bsvg)
+        if opts.get("extra"):
+            o.append(opts["extra"](w, h, (mcx, mcy, mrx, mry), P))
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{_n(w)}" height="{_n(h)}" viewBox="0 0 {_n(w)} {_n(h)}" '
+            f'fill="none" stroke="#000" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + C.codex_defs() + "".join(o) + "</svg>")
+
+
+def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
+    """Headpiece / tailpiece banner (swallowtailed ribbon) or a gap frieze: a running scroll from
+    both ends into a central cartouche holding the scene."""
+    o = []
+    P = shape_poly("banner" if form == "banner" else "rect", w, h)
+    xs = [p[0] for p in P]
+    bx0, bx1 = min(xs), max(xs)
+    bw = bx1 - bx0
+    cx, cy = w / 2, h / 2
+    o.append(matte(_d(P, True, 0), pid))
+    rb = 1. if h < 50 else 1.5
+    top = 3 + 2 * rb + (2 if h >= 50 else 1)
+    y0, y1 = top, h - top
+    gh = y1 - y0
+    mry = h / 2 - 1
+    mrx = min(bw * .22, mry * (5. if form == "frieze" else 2.2))
+    rmin = max(3., gh * .085)
+    nd = min(h * .32, 18) if form == "banner" else 0
+    okP = fast_inside(offset_poly(P, -3))
+
+    def ok(x, y):
+        return y0 - 3 < y < y1 + 3 and x <= cx + 2 and okP(x, y) and ((x - cx) / (mrx * .96 + 3)) ** 2 + ((y - cy) / (mry + 3)) ** 2 >= 1
+    roots = rinceau_roots(cx - mrx * .92, bx0 + nd * .5, cy, gh, seed, egg if gh > 34 else None)
+    cv, T = scroll_field(ok, roots, seed, rmin, 2, 1., True, .9)
+    o.append(clip_g(f"{pid}bc", _d(P, True, 0), mirror_g(w, cv.svg(), f"{pid}bg")))
+    # wires along the long edges, following the swallowtails
+    for yy, s in ((1.5, 1), (h - 1.5, -1)):
+        o.append(f'<path d="M{_n(bx0)},{_n(yy)}H{_n(bx1)}" stroke="#000" stroke-width="3"/>')
+        o.append(bead_row([(bx0 + nd * .4, yy + s * (2.5 + rb)), (bx1 - nd * .4, yy + s * (2.5 + rb))], rb, False))
+    o.append(f'<path d="{_d(P, True, 0)}" stroke="#000" stroke-width="1.5" fill="none"/>')
+    if h < 44:
+        # a slim cartouche: a black fillet with one bright wire, so the scene keeps its room
+        inner = ell(cx, cy, mrx - 2.5, mry - 2.5, 96)[:-1]
+        wire = ell(cx, cy, mrx - 1.2, mry - 1.2, 96)
+        ring = (f'<path d="{_d(ell(cx, cy, mrx, mry, 96)[:-1], True, 0)}{_d(inner[::-1], True, 0)}" fill="#000" fill-rule="evenodd"/>'
+                f'<path d="{_d(wire, False, 0)}" stroke="#fff" stroke-width="1"/>')
+    else:
+        ring, inner = medallion_ring(cx, cy, mrx, mry, 1. if h < 70 else 1.5)
+    ix = [p[0] for p in inner]
+    iy = [p[1] for p in inner]
+    o.append(f'<path d="{_d(ell(cx, cy, mrx + 1, mry + 1, 96)[:-1], True, 0)}" fill="#000"/>')
+    o.append(f'<path d="{_d(inner, True, 0)}" fill="#fff"/>')
+    o.append(clip_g(f"{pid}bq", _d(inner, True, 0), scene(min(ix), min(iy), max(ix) - min(ix), max(iy) - min(iy), _d(inner, True, 0), "band")))
+    o.append(ring)
+    return o
 
 
 _ell = C._ell_pts
@@ -1931,9 +2190,10 @@ def plate(w, h, ctx):
 
     def scene(x, y, sw, sh, clip, mode):
         field = [(x - 1, y - 1), (x + sw + 1, y - 1), (x + sw + 1, y + sh + 1), (x - 1, y + sh + 1)]
-        if mode == "tall":
+        if sh > 140:
             return _kit(field, x + sw * .04, y + sh * .1, sw * .92, sh * .84, seed)
-        return _snare_only(field, x, y, sw, sh, seed, mode == "medium")
+        return _snare_only(field, x, y, sw, sh, seed, sh > 70)
 
-    return plate_frame(w, h, ctx, scene, dict(pid="mu", seed=seed, egg="sticks",
-                                              banner="SEX MACHINE · JABO · MCMLXX", tablet=_groove2))
+    # planned form (merged into Put this record on): a full-width plate, about 40%, a roundel
+    return shaped_frame(w, h, ctx, scene, dict(form="roundel", pid="mu", seed=seed, egg="sticks",
+                                               banner="SEX MACHINE · JABO · MCMLXX"))

@@ -4080,27 +4080,32 @@ async function renderCoast() {
       <b>${esc(x.event)}</b> <span class="src">· coast · ${x.ends ? 'until ' + localWhen(x.ends) : ''}</span>${x.headline ? `<p>${esc(x.headline)}</p>` : ''}
       ${x.description ? `<details><summary>Details</summary><p style="white-space:pre-line">${esc(x.description)}</p></details>` : ''}</div></div>`).join('');
   const parts = [];
+  // An active NWS marine warning (attached by solar/integrity.py) leads the page, before anything nice.
+  const warn = c.warning;
+  if (warn) parts.push(warnLine(warn));
   if (now.temperature_2m != null) parts.push(`${Math.round(now.temperature_2m)}° and ${wxName(now.weather_code).toLowerCase()} right now, wind ${Math.round(now.wind_speed_10m || 0)} mph.`);
   const windy = days.filter(d => d.gust >= 40);
   if (windy.length) parts.push(`Strong wind ${windy.map(d => DOW[new Date(d.date + 'T12:00').getDay()]).join(', ')} with gusts to ${Math.max(...windy.map(d => d.gust))} mph; good storm watching, and power outages are possible.`);
   const big = days.filter(d => (d.waves_ft || 0) >= 12);
-  if (big.length) parts.push(`Big surf up to ${Math.max(...big.map(d => d.waves_ft))} ft. Watch for sneaker waves and stay off logs.`);
+  if (big.length) parts.push(`Big surf this week${days[0] && days[0].surf_src === 'NWS' ? `, ${ftRange(days[0].surf_ft)} today by the NWS surf forecast` : ''}. Watch for sneaker waves and stay off logs.`);
   const wet = days.reduce((a, d) => a + (d.rain_in || 0), 0);
   parts.push(wet >= 0.5 ? `About ${wet.toFixed(1)} in of rain this week.` : 'Mostly dry week.');
-  const nice = days.filter(d => d.hi >= 62 && (d.rain_pct || 0) < 30);
+  // A beach day is dry, calm and under no warning.
+  const nice = days.filter(d => d.hi >= 62 && (d.rain_pct || 0) < 30 && !d.warning && (d.gust || 0) < 30 && (d.waves_ft || 0) < 12);
   if (nice.length) parts.push(`Best beach day: ${dayLabel(nice.sort((a, b) => b.hi - a.hi)[0].date)}.`);
+  else if (warn || days.some(d => d.warning || (d.gust || 0) >= 40)) parts.push('No good beach day this week.');
   $('coast-summary').textContent = parts.join(' ');
   $('coast-meta').textContent = c.tide_station ? `Tides at ${c.tide_station}` : '';
   const nextTide = (c.tides || []).find(x => new Date(x.t.replace(' ', 'T')) > new Date());
   const facts = [];
   if (c.water_f != null) facts.push(['Ocean temp', `${c.water_f}°`]);
-  if (days[0] && days[0].waves_ft != null) facts.push(['Waves today', `${days[0].waves_ft} <small>ft · ${days[0].period_s}s</small>`]);
+  if (days[0] && (days[0].surf_ft || days[0].waves_ft != null)) facts.push(['Surf today', `${ftRange(days[0].surf_ft || String(days[0].waves_ft))} <small>ft${days[0].surf_src === 'NWS' ? ' · NWS' : ''}</small>`]);
   if (nextTide) facts.push(['Next tide', `${nextTide.type} ${clock(nextTide.t.slice(11))} <small>${nextTide.ft} ft</small>`]);
   if (days[0]) facts.push(['Sunset', clock(days[0].sunset)]);
   $('coast-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('coast-fc').innerHTML = days.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
     <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.rain_pct != null ? d.rain_pct + '% rain' : ''}</span>
-    <span class="meta">${d.waves_ft != null ? d.waves_ft + ' ft waves' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust : ''}</span></div>`).join('');
+    <span class="meta">${d.surf_ft || d.waves_ft != null ? ftRange(d.surf_ft || String(d.waves_ft)) + ' ft surf' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust + ' mph' : ''}${d.warning ? '<br>' + esc(d.warning) : ''}</span></div>`).join('');
   $('coast-tide').innerHTML = tideDoodle(c.tides, 43);
   $('minus').innerHTML = (c.minus_tides || []).map(t => `<div><span>${coastWhen(t.t)}</span><span>${t.ft} ft</span></div>`).join('')
     || '<div><span>No minus tides in the next two weeks</span><span></span></div>';
@@ -4119,6 +4124,9 @@ async function renderCoast() {
   }
 }
 
+// "12-16" -> "12–16"; a marine warning as one plain sentence: "GALE WARNING until Fri 4 pm: seas 14–18 ft. Stay off the water."
+const ftRange = x => String(x || '').replace('-', '–');
+const warnLine = w => `${(w.event || 'Marine warning').toUpperCase()}${w.until ? ' until ' + new Date(w.until).toLocaleString(undefined, { weekday: 'short', hour: 'numeric' }) : ''}${w.seas_ft ? `: seas ${ftRange(w.seas_ft)} ft` : ''}. Stay off the water.`;
 const WIND_WORD = { light: 'light wind', offshore: 'offshore', cross: 'cross-shore', onshore: 'onshore', sheltered: 'sheltered from the wind' };
 const surfWind = x => x.wind === 'light' ? 'light wind' : `${x.wind_mph} mph ${x.wind_dir || ''} ${x.wind === 'sheltered' ? '(sheltered)' : WIND_WORD[x.wind] || ''}`.replace(/\s+/g, ' ').trim();
 function renderSurf() {
@@ -4129,12 +4137,16 @@ function renderSurf() {
   $('surf-meta').innerHTML = b ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.station)}</a> · ${localWhen(b.at)}` : '';
   const parts = [];
   const top = [...breaks].sort((x, y) => y.now.score - x.now.score)[0];
-  if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
+  if (s.warning) parts.push(warnLine(s.warning) + (s.official_ft ? ` Surf ${ftRange(s.official_ft)} ft today (NWS). Every break is rated Poor while it lasts.` : ' Every break is rated Poor while it lasts.'));
+  else if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
   else parts.push(`Best bet right now: ${top.name}, ${top.now.rating.toLowerCase()} at ${top.now.surf_ft} ft (${top.now.period_s} s ${top.now.swell_dir || ''} swell, ${surfWind(top.now)}).`);
   const ahead = breaks.flatMap(x => x.days.map(d => ({ ...d, name: x.name }))).filter(d => d.score >= 3);
-  if (ahead.length) {
+  if (ahead.length && !s.warning) {
     const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
     parts.push(`Pick of the week: ${dayLabel(d.date)} at ${d.name}, ${d.rating.toLowerCase()} ${d.surf_ft} ft from about ${clock(d.from)} to ${clock(d.to)}.`);
+  } else if (ahead.length) {
+    const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
+    parts.push(`After the warning: ${dayLabel(d.date)} at ${d.name} looks ${d.rating.toLowerCase()}.`);
   } else parts.push('Nothing better than fair in the next five days.');
   $('surf-summary').textContent = parts.join(' ');
   const facts = [];

@@ -121,7 +121,7 @@ SLUGS = [
 
 def _size(form, share, shape):
     if form == "headpiece":
-        return COLUMN, int(max(60, min(85, share * SHEET * 1.2)))
+        return COLUMN, int(max(90, min(100, share * SHEET * 1.2)))   # a band under 90 px cannot hold a scene
     if form == "tailpiece":
         h = int(max(40, min(70, share * SHEET)))
         return (h if shape == "circle" else int(COLUMN * .5)), h

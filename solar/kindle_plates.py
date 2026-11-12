@@ -19,6 +19,7 @@ from . import plate_slots
 HERE = os.path.dirname(os.path.abspath(__file__))
 PLATES = os.path.join(HERE, "plates")
 MIN_H = 40   # below this a sheet gets no plate
+MIN_SCENE = 90   # a planned plate is never set shorter than this (or than its own planned height, if smaller)
 
 MEASURE = """async (n0) => {
   const wait = (f, ms) => new Promise(r => { const t0 = Date.now(); (function k() { if (f() || Date.now() - t0 > ms) r(); else setTimeout(k, 30); })(); });
@@ -265,10 +266,14 @@ def _pass(pages, out, od, base, date_iso, exe):
                     # in-flow art never reflows the data: no extra sheet and no tighter type than the page had
                     # without it; else the slot steps down (100, 80, 65 %) and is dropped if it still does not fit
                     base0, n0, ok = res, len(res["rooms"]), False
-                    for sc in ((1., .8, .65, .5) if any(sl["form"] == "front" for _, sl in flow) else (1., .8, .65)):
-                        trial = [dict(sl, w=int(sl["w"] * (sc if sl["form"] == "front" else 1)), h=int(sl["h"] * sc)) for sl in slots]
-                        if any(sl["form"] == "headpiece" and sl["h"] < 60 for sl in trial):   # a headpiece band is 60px or none
-                            continue
+                    for sc in (1., .8, .65, .5):
+                        # a slot keeps its shape: width and height step down together, never under MIN_SCENE
+                        # tall (a squashed band cannot read); a full-width headpiece does not step down at all
+                        trial = [sl if (k, sl) not in flow else
+                                 dict(sl, w=int(sl["w"] * (1 if sl["form"] == "headpiece" else sc)), h=int(sl["h"] * (1 if sl["form"] == "headpiece" else sc)))
+                                 for k, sl in enumerate(slots)]
+                        if sc < 1 and any(sl["form"] == "headpiece" or sl["h"] < min(MIN_SCENE, slots[k]["h"]) for k, sl in flow):
+                            break
                         for k, sl in enumerate(trial):   # a stand-in at each slot's path: a missing image lays out unlike the plate
                             with open(os.path.join(od, f"plate-{slug}-s{k}.svg"), "w") as f:
                                 f.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{sl["w"]}" height="{sl["h"]}"/>')
@@ -279,8 +284,9 @@ def _pass(pages, out, od, base, date_iso, exe):
                             slots, res, ok = trial, r2, True
                             flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]
                             break
-                    if not ok:
-                        print(f"kindle_plates: {slug}: no room for its {flow[0][1]['form']} without reflowing the page; dropped", file=sys.stderr)
+                    if not ok:   # no room in the flow: the plate moves to a sheet with room after its last panel
+                        print(f"kindle_plates: {slug}: no room for its {flow[0][1]['form']} in the flow; set in a sheet's open room instead", file=sys.stderr)
+                        tails = tails + [dict(sl, pos="tail", sheet=None) for _, sl in flow]
                         flow, res = [], meas(src_orig)
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_plates: {slug}: measure failed ({e!r})", file=sys.stderr)
@@ -310,15 +316,38 @@ def _pass(pages, out, od, base, date_iso, exe):
                     print(f"kindle_plates: {slug}: device failed ({e!r})", file=sys.stderr)
             kmap = []
             nsh = len(res["rooms"])
+            place = {}   # sheet -> (room, spec): each planned tail art in a room that holds it unsquashed
+
+            def seat(spec):
+                fit = []
+                for r in res["rooms"]:
+                    sc = min(1., r["h"] / spec["h"], r["w"] / spec["w"])   # never enlarged; shrunk only whole
+                    if r["sheet"] in place or spec["h"] * sc < min(MIN_SCENE, spec["h"]) or r["h"] < MIN_H:
+                        continue
+                    own = spec.get("sheet") is not None and (spec["sheet"] % nsh) == r["sheet"]
+                    fit.append((not own, sc < 1, -r["sheet"], r, sc))   # its own sheet, then whole, then the later sheet
+                if not fit:
+                    return False
+                _, _, _, r, sc = min(fit, key=lambda f: f[:3])
+                place[r["sheet"]] = (dict(r, w=int(spec["w"] * sc), h=int(spec["h"] * sc)), spec)
+                return True
+            for spec in tails:
+                if seat(spec):
+                    continue
+                if spec["form"] not in ("tailpiece", "device"):   # else the plan's smaller form, at its own size
+                    w_, h_ = plate_slots._size("tailpiece", .08, spec["shape"])
+                    if seat(dict(spec, form="tailpiece", w=w_, h=h_)):
+                        print(f"kindle_plates: {slug}: its {spec['form']} set as a tailpiece (no open room holds it unsquashed)", file=sys.stderr)
+                        continue
+                print(f"kindle_plates: {slug}: no open room holds its {spec['form']} unsquashed; left out", file=sys.stderr)
             for r in res["rooms"]:
                 if r["h"] < MIN_H:
                     continue
                 spec = None
-                if tails:   # a planned tailpiece, vignette or plate: its own size and shape, on its own sheet
-                    spec = next((t for t in tails if (t.get("sheet", -1) % nsh) == r["sheet"]), None)
-                    if not spec:
+                if tails:   # a planned tailpiece, vignette or plate: its own size and shape, in a room that holds it
+                    if r["sheet"] not in place:
                         continue
-                    r = dict(r, w=min(r["w"], spec["w"]), h=min(r["h"], spec["h"]))
+                    r, spec = place[r["sheet"]]
                 elif planned:
                     continue    # planned art only: never a plate cut to the leftover room
                 ctx = dict(res["ctx"], slug=slug, date=date_iso, sheet=r["sheet"])
@@ -499,13 +528,22 @@ def _fills(pages, out, od, base, date_iso, exe):
                     ob = white and r["sheet"] < r["n"] - 1 and y + h >= vb - 1
                     edges.append((x, y, w, h, ot, ob))
                 seed = zlib.crc32(f"{slug}/{r['sheet']}".encode()) % 100003   # no date: an unchanged sheet reuses its cached field
-                jobs.append(((slug, r["sheet"]), pool.submit(_field_svg, (slug, r["sheet"], edges, seed, MOTIF_OF(slug), od, exe))))   # drawn while the browser measures on
+                dev = None
+                dp = os.path.join(od, f"plate-{slug}-m.svg")
+                if r["sheet"] == 0 and os.path.exists(dp):   # the plan's marginal device: a roundel on the frame band, beside the widest panel gap
+                    ob = sorted(r["o"], key=lambda q: q[1])
+                    gaps = [(b2[1] - (a2[1] + a2[3]), a2[1] + a2[3] + (b2[1] - (a2[1] + a2[3])) / 2) for a2, b2 in zip(ob, ob[1:])]
+                    gy = max(gaps)[1] if gaps and max(gaps)[0] > 0 else (vt + vb) / 2
+                    dev = (open(dp).read(), 1, int(min(max(gy - 19, FY0), FY1 - 38)))
+                jobs.append(((slug, r["sheet"]), pool.submit(_field_svg, (slug, r["sheet"], edges, seed, MOTIF_OF(slug), od, exe, dev))))   # drawn while the browser measures on
                 enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
                 fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
             fmaps[slug] = fmap
         br.close()
     done = {k: f.result() for k, f in jobs}
     pool.shutdown()
+    for f in glob.glob(os.path.join(od, "plate-*-m.svg")):   # the devices are in the fields now
+        os.remove(f)
     for slug, fmap in fmaps.items():
         fmap = [e for e in fmap if done.get((slug, e[0]))]
         fp = os.path.join(out, slug + ".html")
@@ -610,7 +648,7 @@ def _field_png(im):
 def _field_svg(job):
     """One sheet's ground: the studio's scroll field with a hole round every white box (its box plus the 4 px
     inlay), and the bright double inlay edge of each box. Rasterised later; the SVG is never shipped."""
-    slug, sheet, edges, seed, motif, od, exe = job
+    slug, sheet, edges, seed, motif, od, exe, dev = job
     try:
         from .frames import field as FF, kpanel as KP
         B = 4
@@ -623,6 +661,13 @@ def _field_svg(job):
             esv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", esv)
             parts.append(re.sub(r"<svg\b", f'<svg x="{x - B}" y="{y - B}"', esv, count=1))
         fsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", fsv)
+        if dev:   # set on a white roundel over the band's scrollwork
+            dsv, dx, dy = dev
+            dsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", dsv).replace("kshape", "kdevshape")
+            dsv = re.sub(r'<svg\b([^>]*?)\swidth="[^"]*"', r"<svg\1", dsv, count=1)
+            dsv = re.sub(r'<svg\b([^>]*?)\sheight="[^"]*"', r"<svg\1", dsv, count=1)
+            parts.append(f'<circle cx="{dx + 19}" cy="{dy + 19}" r="19" fill="#fff" stroke="#000" stroke-width="1"/>'
+                         + re.sub(r"<svg\b", f'<svg x="{dx}" y="{dy}" width="38" height="38"', dsv, count=1))
         svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714" shape-rendering="crispEdges">'
                + fsv + "".join(parts) + "</svg>")   # crisp: no anti-alias greys, so the four levels below are exact
         import io

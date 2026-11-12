@@ -1896,15 +1896,16 @@ def vg_spray(cv, pts, kind, rng, size, side=1, fruit=True):
         tot = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
         s_ = 1.
         tufts = []
-        nl = size * (.3 if kind == "fir" else .45)
+        nl = size * (.42 if kind == "fir" else .6)
         while s_ < tot:
             p, a = at(s_ / tot)
-            f = 1 - .5 * s_ / tot
+            f = 1 - .4 * s_ / tot
             for sd in (-1, 1):
-                aa = a + sd * (.95 if kind == "fir" else .5)
+                aa = a + sd * (.95 if kind == "fir" else .55)
                 tufts.append([p, (p[0] + math.cos(aa) * nl * f, p[1] + math.sin(aa) * nl * f)])
-            s_ += 1.5
-        cv.hair(tufts)
+            s_ += 2.2 if size < 20 else 1.5
+        cv.line(tufts[::2])
+        cv.hair(tufts[1::2])
         if fruit:
             p, a = at(.6)
             cr = size * .12
@@ -2122,7 +2123,7 @@ def vg_plate(w, h, ctx, V):
             pts = []
             for i in range(n + 1):
                 t = i / n
-                ang = _GPI / 2 + sd * (.3 + 1.6 * t)
+                ang = _GPI / 2 + sd * (.3 + (1.15 if plant == "lotus" else 1.6) * t)
                 rr = 1.02 + .05 * math.sin(math.pi * t)
                 pts.append((cx + (a * rr + sz * .25) * math.cos(ang), cy + (b * rr + sz * .1) * math.sin(ang)))
             vg_spray(fr, pts, plant, rng, sz, side=-sd)
@@ -3000,11 +3001,21 @@ def reading_scene(X, Y, W, H, level, seed=0):
     back = [(ccx - cw * .38, seat - H * .1), (ccx - cw * .42, seat - H * .44), (ccx - cw * .3, seat - H * .55),
             (ccx, seat - H * .58), (ccx + cw * .3, seat - H * .55), (ccx + cw * .42, seat - H * .44), (ccx + cw * .38, seat - H * .1)]
     cv.obj([back], 1.)
-    for j in range(1, 14):
-        u = j / 14
+    # the back's padded round: cuts that bow with it, open in the lamplight on the left,
+    # closing and doubling into the shade on the right
+    for j in range(1, 22):
+        u = j / 22
         x0 = ccx - cw * .38 + cw * .76 * u
-        top_y = seat - H * (.47 + .1 * math.sin(math.pi * u))
-        (cv.line if u > .7 else cv.hair)([(x0, top_y), (x0 + (u - .5) * 2, seat - H * .12)])
+        top_y = seat - H * (.48 + .09 * math.sin(math.pi * u))
+        bow = (u - .5) * cw * .06
+        col = [(x0 + bow * math.sin(math.pi * v), top_y + (seat - H * .12 - top_y) * v) for v in [k / 8 for k in range(9)]]
+        if u < .3 and j % 2:
+            continue
+        (cv.line if u > .72 else cv.hair)(col)
+    for j in range(1, 9):
+        v = j / 9
+        yy = seat - H * .5 + (H * .38) * v
+        cv.hair([(ccx + cw * (.08 + .3 * (1 - v) ** .3), yy - 1), (ccx + cw * .38, yy + 1.5)])
     for i in range(3):
         for j in range(3):
             _g_disc(cv, ccx - cw * .2 + cw * .2 * i, seat - H * (.42 - .1 * j), .8, .5)

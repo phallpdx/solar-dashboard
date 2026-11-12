@@ -1892,15 +1892,16 @@ def vg_spray(cv, pts, kind, rng, size, side=1, fruit=True):
         tot = sum(math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) for i in range(1, n))
         s_ = 1.
         tufts = []
-        nl = size * (.3 if kind == "fir" else .45)
+        nl = size * (.42 if kind == "fir" else .6)
         while s_ < tot:
             p, a = at(s_ / tot)
-            f = 1 - .5 * s_ / tot
+            f = 1 - .4 * s_ / tot
             for sd in (-1, 1):
-                aa = a + sd * (.95 if kind == "fir" else .5)
+                aa = a + sd * (.95 if kind == "fir" else .55)
                 tufts.append([p, (p[0] + math.cos(aa) * nl * f, p[1] + math.sin(aa) * nl * f)])
-            s_ += 1.5
-        cv.hair(tufts)
+            s_ += 2.2 if size < 20 else 1.5
+        cv.line(tufts[::2])
+        cv.hair(tufts[1::2])
         if fruit:
             p, a = at(.6)
             cr = size * .12
@@ -2118,7 +2119,7 @@ def vg_plate(w, h, ctx, V):
             pts = []
             for i in range(n + 1):
                 t = i / n
-                ang = _GPI / 2 + sd * (.3 + 1.6 * t)
+                ang = _GPI / 2 + sd * (.3 + (1.15 if plant == "lotus" else 1.6) * t)
                 rr = 1.02 + .05 * math.sin(math.pi * t)
                 pts.append((cx + (a * rr + sz * .25) * math.cos(ang), cy + (b * rr + sz * .1) * math.sin(ang)))
             vg_spray(fr, pts, plant, rng, sz, side=-sd)

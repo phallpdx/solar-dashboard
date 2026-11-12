@@ -2124,7 +2124,7 @@ def vg_plate(w, h, ctx, V):
             pts = []
             for i in range(n + 1):
                 t = i / n
-                ang = _GPI / 2 + sd * (.3 + 1.6 * t)
+                ang = _GPI / 2 + sd * (.3 + (1.15 if plant == "lotus" else 1.6) * t)
                 rr = 1.02 + .05 * math.sin(math.pi * t)
                 pts.append((cx + (a * rr + sz * .25) * math.cos(ang), cy + (b * rr + sz * .1) * math.sin(ang)))
             vg_spray(fr, pts, plant, rng, sz, side=-sd)

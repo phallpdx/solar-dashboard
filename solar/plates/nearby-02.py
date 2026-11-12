@@ -989,8 +989,56 @@ def egg_pinwheel(cv, cx, cy, r):
     cv.hair(ell(cx, cy, 9 * s, 9 * s, 30))
 
 
+def egg_cymbal(cv, cx, cy, r):
+    """A ride cymbal on its stand, seen from a little above: lathe rings, the bell, a stick's
+    tip resting on the bow."""
+    s = r / 10.
+    cv.obj([[(cx - .5 * s, cy + 1 * s), (cx + .5 * s, cy + 1 * s), (cx + .7 * s, cy + 9.5 * s), (cx - .7 * s, cy + 9.5 * s)]], .5)
+    for sg in (-1, 1):
+        cv.line([(cx, cy + 7 * s), (cx + sg * 4 * s, cy + 9.6 * s)])
+    rim = ell(cx, cy, 9 * s, 3 * s, 36)[:-1]
+    cv.obj([rim], 1.)
+    k = 8.
+    while k > 2.2:
+        cv.hair(ell(cx, cy - .15 * (9 - k) * s, k * s, k * .33 * s, 30)[2:17])
+        k -= 1.1
+    cv.hair([(cx + 8.4 * s, cy + .6 * s), (cx - 8.4 * s, cy + .6 * s)])
+    bell = ell(cx, cy - .9 * s, 2.2 * s, 1 * s, 16)[:-1]
+    cv.obj([bell], 1.)
+    cv.hair(ell(cx, cy - .9 * s, 1.2 * s, .5 * s, 10)[1:8])
+    st = [(cx + 3 * s, cy - 1.6 * s), (cx + 9.6 * s, cy - 8.4 * s), (cx + 10.4 * s, cy - 7.6 * s), (cx + 3.8 * s, cy - .9 * s)]
+    cv.obj([st], .5)
+    cv.obj([ell(cx + 2.8 * s, cy - 1 * s, .9 * s, .7 * s, 8)[:-1]], .5)
+
+
+def egg_elephant(cv, cx, cy, r):
+    """A Lanna elephant in profile (a Thai accent): domed head, fanned ear, trunk curled up, a
+    saddle cloth with a kranok border, the legs as columns."""
+    s = r / 10.
+    body = [(-6.5, 1), (-6.6, -2.4), (-5, -4.6), (-1.5, -5.4), (2.5, -5.4), (4.4, -6.6), (6.2, -6.4), (7.4, -4.8),
+            (7.6, -2.6), (8.2, -.6), (9, 1.2), (9.6, 3), (8.8, 3.2), (8.2, 1.6), (7, .2), (6.6, 2.2),
+            (6.6, 6.4), (5.2, 6.4), (5, 3.2), (3.6, 3.2), (3.4, 6.4), (2, 6.4), (2, 3.4), (-2.6, 3.4),
+            (-2.8, 6.4), (-4.2, 6.4), (-4.4, 3.4), (-5.2, 3.4), (-5.4, 6.4), (-6.6, 6.4)]
+    P = [(cx + x * s - 1 * s, cy + y * s) for x, y in body]
+    cv.obj([P], 1.)
+    for k in range(4):
+        cv.hair([(cx + (-5.6 + k * .3) * s, cy + (-1.8 + k * 1.2) * s), (cx + (-1.2 + k * .2) * s, cy + (-4.4 + k * 1.6) * s)])
+    ear = [(cx + 3.2 * s, cy - 4.6 * s), (cx + 5.2 * s, cy - 4.8 * s), (cx + 5.6 * s, cy - 1.2 * s), (cx + 4 * s, cy + .4 * s), (cx + 2.8 * s, cy - 1.6 * s)]
+    cv.obj([ear], .5)
+    cv.hair(C.hatch_poly(ear, 80, 1.5))
+    cloth = [(cx - 4.4 * s, cy - 4.8 * s), (cx + 1.8 * s, cy - 5.2 * s), (cx + 2 * s, cy - .4 * s), (cx - 4.2 * s, cy - .2 * s)]
+    cv.obj([cloth], .5)
+    cv.hair(C.hatch_poly(cloth, 45, 2.))
+    for k in range(5):
+        x = cx + (-4 + k * 1.45) * s
+        cv.line([(x, cy - .2 * s), (x + .5 * s, cy + .8 * s), (x + 1 * s, cy - .2 * s)])
+    cv.obj([ell(cx + 5.8 * s, cy - 4.6 * s, .45 * s, .45 * s, 8)[:-1]], .5)
+    cv.line([(cx + 7.4 * s, cy - 1.6 * s), (cx + 8.8 * s, cy - 2.6 * s)])
+
+
 EGGS = {"dog": egg_dog, "heron": egg_heron, "sticks": egg_sticks, "P": egg_P, "hood": egg_hood,
-        "bridge": egg_bridge, "kranok": egg_kranok, "note": egg_note, "panel": egg_panel, "pinwheel": egg_pinwheel}
+        "bridge": egg_bridge, "kranok": egg_kranok, "note": egg_note, "panel": egg_panel, "pinwheel": egg_pinwheel,
+        "cymbal": egg_cymbal, "elephant": egg_elephant}
 
 
 # ----------------------------------------------------------------------------------------------
@@ -1093,6 +1141,7 @@ def _band(w, h, ctx, scene, opts, pid, seed, egg):
     ys = [p[1] for p in inner]
     ix0, ix1, iy0, iy1 = min(xs), max(xs), min(ys), max(ys)
     o.append(f'<path d="{_d(ell(cx, cy, mrx + 1, mry + 1, 96)[:-1], True, 0)}" fill="#000"/>')
+    o.append(f'<path d="{_d(inner, True, 0)}" fill="#fff"/>')
     o.append(clip_g(f"{pid}bm", _d(inner, True, 0), scene(ix0, iy0, ix1 - ix0, iy1 - iy0, _d(inner, True, 0), "band")))
     o.append(ring)
     return o
@@ -1122,6 +1171,7 @@ def _medium(w, h, ctx, scene, opts, pid, seed, egg):
     xs = [p[0] for p in inner]
     ys = [p[1] for p in inner]
     ix0, ix1, iy0, iy1 = min(xs), max(xs), min(ys), max(ys)
+    o.append(f'<path d="{_d(inner, True, 0)}" fill="#fff"/>')
     o.append(clip_g(f"{pid}mm", _d(inner, True, 0), scene(ix0, iy0, ix1 - ix0, iy1 - iy0, _d(inner, True, 0), "medium")))
     o.append(ring)
     return o
@@ -1161,6 +1211,7 @@ def _tall(w, h, ctx, scene, opts, pid, seed, egg):
     xs = [p[0] for p in inner]
     ys = [p[1] for p in inner]
     ix0, ix1, iy0, iy1 = min(xs), max(xs), min(ys), max(ys)
+    o.append(f'<path d="{_d(inner, True, 0)}" fill="#fff"/>')
     o.append(clip_g(f"{pid}tm", _d(inner, True, 0), scene(ix0, iy0, ix1 - ix0, iy1 - iy0, _d(inner, True, 0), "tall")))
     o.append(ring)
     cs = min(mcy - mry - m - 6, 34.)
@@ -1214,19 +1265,26 @@ def _pedestal(x, y, w, h, pid, opts, seed):
 
 def bumps(specs):
     """g(x, y) for burin_field: a sum of soft bumps (cx, cy, sx, sy, amp) - lines rise over each
-    bump the way strata of cloud roll over one another."""
+    bump the way strata of cloud roll over one another. Bumps are bucketed in 24 px columns."""
+    B = {}
+    for cx, cy, sx, sy, a in specs:
+        for k in range(int((cx - 3 * sx) // 24), int((cx + 3 * sx) // 24) + 1):
+            B.setdefault(k, []).append((cx, cy, 1 / sx, 1 / sy, a, cy - 3 * sy, cy + 3 * sy))
+    ex = math.exp
+
     def g(x, y):
         v = 0.
-        for cx, cy, sx, sy, a in specs:
-            dx, dy = (x - cx) / sx, (y - cy) / sy
-            q = dx * dx + dy * dy
-            if q < 9:
-                v += a * math.exp(-q)
+        for cx, cy, isx, isy, a, ylo, yhi in B.get(int(x // 24), ()):
+            if ylo < y < yhi:
+                dx, dy = (x - cx) * isx, (y - cy) * isy
+                q = dx * dx + dy * dy
+                if q < 9:
+                    v += a * ex(-q)
         return v
     return g
 
 
-def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=1.5, phase=0., cross=None):
+def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=2.5, phase=0., cross=None):
     """Lines y + g(x, y) = level, `pitch` apart, from x0..x1 within y0..y1. tone(x, y) in [0, 1]
     sets each stretch's weight (under .1 the line breaks: a highlight; .1-.42 a .5 px cut; .42-.72
     1 px; above 1.5 px), so the line swells and tapers with the form. ok(x, y) clips.
@@ -1240,9 +1298,8 @@ def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=1
         cur, cw = [], None
         for i in range(nx + 1):
             x = x0 + (x1 - x0) * i / nx
-            y = lev
-            for _ in range(3):
-                y = lev - g(x, y)
+            y = lev - g(x, lev)
+            y = lev - g(x, y)
             if y < y0 or y > y1 or (ok and not ok(x, y)):
                 t = -1
             else:
@@ -1311,6 +1368,19 @@ def cloud(cv, cx, cy, w, h, rng, lit=(0., -1.)):
     for k in range(3):
         yy = cy + h * (.14 + .08 * k)
         cv.line([(cx - w / 2 + k * 3, yy), (cx + w / 2 - k * 3, yy)]) if k else cv.hair([(cx - w / 2, yy), (cx + w / 2, yy)])
+
+
+
+def dots_d(pts):
+    """Zero-length dots as compact relative path data (stroke them with round caps)."""
+    out = []
+    px, py = 0, 0
+    for x, y in pts:
+        X, Y = int(round(x * 10)), int(round(y * 10))
+        out.append(f"m{C._f(X - px)}{'' if Y - py < 0 else ' '}{C._f(Y - py)}h.5")
+        px, py = X + 5, Y
+    d = "".join(out)
+    return "M" + d[1:] if d else ""
 
 
 import datetime

@@ -24,6 +24,22 @@ Treat this as the vocabulary for leaf modelling and for the free-standing orname
 - **Ribbon banners and architectural pieces:** a pedestal, knurled bars, beaded mouldings, a dark ground behind the scrolls (background cut away and stippled or line-shaded) so the relief pops.
 - **One composition, never tiles.** No repeated stamps in a row, no sticker medallions, no wallpaper ground.
 
+## KING TIER (Parker: "Recall I said this was for a king. I want this tier of engraving")
+New references:
+- tools/engrave/ref/king-vise.jpg: a GRS engraving ball vise, fully engraved
+- tools/engrave/ref/king-colt.jpg: a presentation Colt with an inlaid portrait medallion
+- tools/engrave/ref/king-hunt-scroll.jpg: Ken Hunt's dense scroll panels
+
+These set the bar. What they share, and what our plates have lacked:
+1. **Scale and density.** Fine scroll is SMALL and packed: dozens of tight, interlocking scrolls per panel, each with its own leaves. Our big chunky acanthus leaves read as clip art beside these. Drop the leaf size by 2–3× and multiply the count, so the scrollwork flows continuously over the whole field with no gaps.
+2. **Matted background.** Between the scrolls, the ground is cut away and finely punched or stippled to a dark matte. Use fine black stipple or dense punch-dot. Never plain hatching or flat black.
+3. **Every scroll is a true spiral.** Each one is a smooth logarithmic spiral ending in a tight curl, with leaves sprouting along it. Every leaf is shaded with fine parallel cuts on its shadow side and has a bright cut edge.
+4. **Gold-line borders.** Fine double or triple border lines, beading and wire-inlay lines frame every panel and follow the shape of the piece.
+5. **Inlaid medallion.** A portrait-style medallion, a scene in a ring of beading surrounded by scroll, as on the Colt cylinder. Use it for the page's subject.
+6. **Flow.** Scrolls grow from a single stem source and branch out in continuous rhythm, like Hunt's panels. They are not placed pieces.
+
+On e-ink at 618 px wide, use 0.5 px black lines for the fine cuts and at least 1 px for white lines in black. Use the -eink renders to find the finest density that still reads, then work at that density.
+
 ## No white (Parker's exact rule: "No white unless behind text")
 A plate has no text behind it, so it has NO blank white areas at all. Cartouche interiors, the sky in a scene, the space between scrolls: everything is engraved, with cut-away grounds, sky hatching, water lines and stipple. Plain white survives only as the highlight on a leaf edge or a hatch gap. The art director measures this: any blank white region larger than about 12×12 px is a rejection.
 

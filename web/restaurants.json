@@ -2,6 +2,23 @@
   "updated": "2026-11-12",
   "restaurants": [
     {
+      "name": "Louie on Lombard",
+      "neighborhood": "Old Garrison Bar Space",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "Opening in the Old Garrison Bar space.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-12",
+          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOMEhuMGliQ1ZOZWtaV29OMEdoSElYNDdhbXNiRk5DaUJpNGsxR0tFX2lBNTJqOWZ3MFpHeWFCS3c3aDlralJMbFR3LTB5Yng3RVVqSWxldjlEVklDems2ZWVSQkh4NkYzWXJ2N1dhS0NHWUJtNnU2bDQ0YUgyc1pia0dxM0ZKaWdUMkV6QjI3MDRxZHFsazNCUktwRTEwLVkzUDBTOUY0MTN1MS1CQ0stSVRXekJyb3MtYWVV?oc=5"
+        }
+      ]
+    },
+    {
       "name": "New restaurant (former Oven and Shaker space)",
       "neighborhood": "Portland",
       "cuisine": "",
@@ -403,30 +420,6 @@
           "verdict": "",
           "date": "2026-10-20",
           "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOUDBIX1djb3VrRDFqczlIcDhabHhnMW42VFVQaXJUNXlzSld6R3NQYk9vT0FEamhJRHN0V3ZrOW5wZTdqc0Vqdmd3RVdJd3Rsc1R5SVNWdHRxc2htRndkVzN0cUpoZVZFbHVZNmZMZFpxemZ0anJUQlppQzFxYjJHU3lxNDluMkdRUnEzbzlXdS1sSXk4YmF1Yg?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Una panadería familiar",
-      "neighborhood": "Eliot",
-      "cuisine": "Vegan Mexican bakery",
-      "price": "",
-      "opened": "2026-10-28",
-      "summary": "Family business serving conchas and pan de muerto in a community gathering space.",
-      "reviews": [
-        {
-          "outlet": "The Oregonian food",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-28",
-          "url": "https://www.oregonlive.com/dining/2026/10/this-was-always-supposed-to-happen-vegan-mexican-bakery-is-opening-a-storefront-that-finally-feels-like-home.html"
-        },
-        {
-          "outlet": "The Oregonian food",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-29",
-          "url": "https://www.oregonlive.com/dining/2026/10/esto-siempre-debia-suceder-una-panaderia-mexicana-vegana-abre-un-local-que-finalmente-se-siente-como-en-casa.html"
         }
       ]
     }

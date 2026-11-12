@@ -2426,7 +2426,8 @@ PAGER_JS = r"""
       var ks = t.match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
       if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); }
       var kp = t.match(/data-kplates='([^']*)'/), slug = u.split('#')[0].split('/').pop().replace(/\.html$/, '');   // its plates too
-      if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {} };
+      if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {}
+      if (/ data-kfills='\[\[0,/.test(t)) { var iff = new Image(); iff.src = 'orn/fill-' + slug + '-0.svg'; } };   // and its first sheet's fill
     x.send(); } catch (e) {} }
   setTimeout(function(){
     try { var sw = navigator.serviceWorker;

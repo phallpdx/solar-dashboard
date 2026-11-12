@@ -249,7 +249,14 @@ def _pass(pages, out, od, base, date_iso, exe):
                     base0, n0, ok = res, len(res["rooms"]), False
                     for sc in (1., .8, .65):
                         trial = [dict(sl, w=int(sl["w"] * (sc if sl["form"] == "front" else 1)), h=int(sl["h"] * sc)) for sl in slots]
+                        if any(sl["form"] == "headpiece" and sl["h"] < 60 for sl in trial):   # a headpiece band is 60px or none
+                            continue
+                        for k, sl in enumerate(trial):   # a stand-in at each slot's path: a missing image lays out unlike the plate
+                            with open(os.path.join(od, f"plate-{slug}-s{k}.svg"), "w") as f:
+                                f.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{sl["w"]}" height="{sl["h"]}"/>')
                         r2 = meas(_insert_slots(src, slug, [sl if (k, sl0) in flow else dict(sl, pos="none") for k, (sl, sl0) in enumerate(zip(trial, slots))]))
+                        if os.environ.get("KSLOT_DEBUG"):
+                            print(f"kindle_plates: {slug} slot x{sc}: base {n0} {base0.get('fit')!r} -> {len(r2['rooms']) if r2 else None} {(r2 or {}).get('fit')!r}", file=sys.stderr)
                         if r2 and len(r2["rooms"]) <= n0 and rung(r2) <= max(rung(base0), 1):
                             slots, res, ok = trial, r2, True
                             flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]

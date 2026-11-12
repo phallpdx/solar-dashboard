@@ -76,6 +76,11 @@ if SHEET:
     vfull = ref('parker-ref-vise.jpg', (40, 330, 760, 680), VISE_PPI)
     sheet_rows.append(('S1. A full Kindle sheet (618 x 714 CSS px = 1236 x 1428 device px), three panels set in one scroll field, '
                        '1:1 device pixels, 16 greys; beside it the vise at the same physical scale (300 ppi)', [sp, vfull]))
+    asp = os.path.join(SHEET, 'asym.png')
+    if len(sys.argv) > 4 and os.path.exists(os.path.join(sys.argv[4], 'asym.png')):
+        ap = q16(Image.open(os.path.join(sys.argv[4], 'asym.png')).convert('RGBA'))
+        sheet_rows.append(('S1b. An asymmetric sheet (scroll field only, panel windows transparent shown grey): large open areas composed '
+                           'about their own centre lines, 1:1 device pixels', [ap]))
     s3 = sp.crop((0, 1150, 1100, 1428))
     s3 = s3.resize((s3.size[0] * MAG, s3.size[1] * MAG), Image.NEAREST)
     v3 = ref('parker-ref-vise.jpg', (80, 470, 640, 640), VISE_PPI)

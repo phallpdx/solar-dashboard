@@ -22,6 +22,8 @@ import math
 import re
 import random
 import zlib
+import os
+import hashlib
 
 TAU = math.pi * 2
 
@@ -64,22 +66,43 @@ def _dp(q, tol):
     return [p for p, k in zip(q, keep) if k]
 
 
-def _pts(pts, tol=TOL):
-    """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
+def _fi(v):
+    """An integer count of tenths as our shortest decimal: 5 -> '.5', -15 -> '-1.5', 20 -> '2'."""
+    if not v:
+        return "0"
+    a = -v if v < 0 else v
+    i, d = divmod(a, 10)
+    t = (str(i) if i else "") + ("." + str(d) if d else "")
+    return "-" + t if v < 0 else t
+
+
+def _simp(pts, tol=TOL):
     q = [(round(x * 10), round(y * 10)) for x, y in pts]
-    if len(q) > 2:  # Douglas-Peucker: drop points within TOL px of the simplified path
+    if len(q) > 6:  # Douglas-Peucker: drop points within TOL px of the simplified path
         q = _dp(q, tol * 10)
-    out = [_j(q[0][0] / 10, q[0][1] / 10)]
+    return q
+
+
+def _enc(q):
+    x0, y0 = q[0]
+    b = _fi(y0)
+    out = _fi(x0) + ("" if b[0] == "-" else " ") + b
     rel = []
-    px, py = q[0]
+    px, py = x0, y0
     for x, y in q[1:]:
         if x == px and y == py:
             continue
-        rel.append(_j((x - px) / 10, (y - py) / 10))
+        a, b = _fi(x - px), _fi(y - py)
+        rel.append(a + ("" if b[0] == "-" else " ") + b)
         px, py = x, y
     if rel:
-        out.append("l" + _cat(rel))
-    return "".join(out)
+        out += "l" + _cat(rel)
+    return out
+
+
+def _pts(pts, tol=TOL):
+    """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
+    return _enc(_simp(pts, tol))
 
 
 def _j(a, b):
@@ -104,6 +127,7 @@ STYLE = {
     "GA": 'fill="#aaa"',
     "G2": 'fill="#888"',
     "WO": 'fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round" paint-order="stroke"',
+    "WG": 'fill="#ccc" stroke="#000" stroke-width="1" stroke-linejoin="round" paint-order="stroke"',
     "G": 'fill="#fff" fill-rule="evenodd"',
     "C05": 'fill="none" stroke="#000" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round"',
     "C1": 'fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"',
@@ -150,9 +174,17 @@ class Canvas:
         else:
             self.top.append((key, [d]))
 
-    def poly(self, key, pts, close=True):
+    def poly(self, key, pts, close=True, mirror=None):
         if len(pts) > 1:
-            self.add(key, "M" + _pts(pts, getattr(self, "tol", TOL)) + ("Z" if close else ""))
+            q = _simp(pts, getattr(self, "tol", TOL))
+            z = "Z" if close else ""
+            xs = [x for x, _ in q]
+            ys = [y for _, y in q]
+            x0, x1, y0, y1 = min(xs) / 10 - 1, max(xs) / 10 + 1, min(ys) / 10 - 1, max(ys) / 10 + 1
+            self.add(key, ("M" + _enc(q) + z, (x0, y0, x1, y1)))
+            if mirror is not None:
+                W = round(mirror * 10)
+                self.add(key, ("M" + _enc([(W - x, y) for x, y in q]) + z, (mirror - x1, y0, mirror - x0, y1)))
 
     def line(self, key, pts):
         self.poly(key, pts, close=False)
@@ -264,10 +296,13 @@ def _batch(ops, depth=60):
     out = []  # [key, [d...], [bbox...]]
     for key, ds in ops:
         if key in ("D", "M"):
-            out.append([key, list(ds), [None]])
+            out.append([key, [d[0] if isinstance(d, tuple) else d for d in ds] if key == "M" else list(ds), [None]])
             continue
         for d in ds:
-            bb = _bbox(d)
+            if isinstance(d, tuple):
+                d, bb = d
+            else:
+                bb = _bbox(d)
             tgt = None
             for g in range(len(out) - 1, max(-1, len(out) - 1 - depth), -1):
                 if out[g][0] == key:
@@ -553,7 +588,7 @@ class Mapped:
         self.cv, self.f, self.occ = cv, f, occ
 
     def poly(self, key, pts, close=True):
-        if self.occ is not None and key in ("WO", "W") and close:
+        if self.occ is not None and key in ("WO", "WG", "W") and close:
             self.occ.fill(pts)
         elif self.occ is not None and key in ("S1", "S15") and len(pts) > 1:
             self.occ.fill(_ribbon(pts, [0.75 if key == "S15" else 0.5] * len(pts))[0])
@@ -618,8 +653,10 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
     of travel, -1 the right), longest next to the edge; the tip turned over (a short cut back along the
     lit edge) and a vein cut from the base."""
     step = max(0.8, min(1.6, width * 0.28))
+    if getattr(_base(cv), "model", False):
+        step = max(step, 1.1)
     if teeth:
-        step = min(step, max(0.5, _arclen(spine)[-1] / (teeth * 5 + 4)))
+        step = min(step, max(0.9, _arclen(spine)[-1] / (teeth * 5 + 4)))
     spine = _resample(spine, step)
     n = len(spine)
     if n < 4:
@@ -645,24 +682,21 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
         Sd.append((p[0] + sg * q[0] * a, p[1] + sg * q[1] * a))
         Lt.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
     poly = Sd + Lt[::-1][1:-1]
-    cv.poly("WO", poly)
     model = getattr(_base(cv), "model", False) and width >= 2.6
+    cv.poly("WG" if model else "WO", poly)
     if model:
-        # silver: the face light grey with only a narrow white lit edge, darkening toward the root on the
-        # shadow flank; the black cuts carry the rest of the modelling
-        face_o, face_i = [], []
+        # silver: the face light grey (the fill) with only a narrow white lit edge, darkening toward the root
+        # on the shadow flank; the black cuts carry the rest of the modelling
+        lit = []
         for i, (p, q) in enumerate(zip(spine, nm)):
             t = i / (n - 1)
-            a = hw * env(t, sg) - 0.1
-            b = hw * env(t, -sg) - 0.6
-            if a + b < 0.4:
-                continue
-            face_o.append((p[0] + sg * q[0] * a, p[1] + sg * q[1] * a))
-            face_i.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
-        if len(face_o) > 2:
-            cv.poly("G0", face_o + face_i[::-1])
+            b = hw * env(t, -sg) - 0.35
+            if b > 0.3 and 0.04 < t < 0.97:
+                lit.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
+        if len(lit) > 2:
+            cv.line("S05", lit)
         outer, inner = [], []
-        for i, (p, q) in enumerate(zip(spine, nm)):
+        for i, (p, q) in enumerate(zip(spine, nm) if width >= 4.5 else ()):
             t = i / (n - 1)
             if t > 0.6:
                 break
@@ -695,7 +729,7 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
             if len(seg) > 2:
                 cv.line("C05", seg)
             k += 1
-            if k > ((2 if width < 5 else 3 if width < 8 else 5) if not model else (3 if width < 5 else 5 if width < 8 else 8)):
+            if k > ((2 if width < 5 else 3 if width < 8 else 5) if not model else (2 if width < 5 else 3 if width < 8 else 4)):
                 break
     if rib and width >= 3.0 and n >= 6:
         cv.line("C05", spine[int(n * 0.1):int(n * 0.78)])
@@ -1680,8 +1714,15 @@ class Mirror(Mapped):
         self.w = w
 
     def poly(self, key, pts, close=True):
-        Mapped.poly(self, key, pts, close)
-        self.cv.poly(key, [(self.w - x, y) for x, y in pts], close)
+        if self.occ is not None and key in ("WO", "WG", "W") and close:
+            self.occ.fill(pts)
+        elif self.occ is not None and key in ("S1", "S15") and len(pts) > 1:
+            self.occ.fill(_ribbon(pts, [0.75 if key == "S15" else 0.5] * len(pts))[0])
+        if isinstance(self.cv, Canvas):
+            self.cv.poly(key, pts, close, mirror=self.w)
+        else:
+            self.cv.poly(key, pts, close)
+            self.cv.poly(key, [(self.w - x, y) for x, y in pts], close)
 
     def circle(self, key, x, y, r):
         Mapped.circle(self, key, x, y, r)
@@ -1752,9 +1793,9 @@ def _field_fill(dc, occ, rng, anchors, gmin, wcap, spread=1.0):
     d = _dt(occ)
     c = occ.c
     cells = []
-    for j in range(occ.ny):
+    for j in range(0, occ.ny, 2):
         row = d[j]
-        for i in range(occ.nx):
+        for i in range(0, occ.nx, 2):
             v = row[i]
             if gmin <= v < 1e8:
                 cells.append((v + rng.random() * 0.3, (i + 0.5) * c + occ.x0, (j + 0.5) * c + occ.y0))
@@ -1789,7 +1830,7 @@ def _field_fill(dc, occ, rng, anchors, gmin, wcap, spread=1.0):
                          sd * 0.5)
         if v >= 2.6:
             a = math.atan2(spn[1][1] - spn[0][1], spn[1][0] - spn[0][0])
-            hand_leaf(dc, spn[0], a, _arclen(spn)[-1] + v * 1.2, min(v * 3.0, wcap), -sd, rng)
+            hand_leaf(dc, spn[0], a, _arclen(spn)[-1] + v * 1.4, min(v * 3.6, wcap), -sd, rng)
         else:
             sp = _fit(dc, lambda f: spn, v * 2.25)
             if len(sp) >= 3:
@@ -1832,7 +1873,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
     """A deeply lobed acanthus leaf fanned like a hand: a palm and 3-5 long pointed finger lobes splaying a
     little from it and all sweeping over toward `curl` (+1 / -1), each with a serrated outline and its own
     midrib cut; the outer fingers lie behind, the middle one on top."""
-    n = fingers or (3 if width < 7 else 4 if width < 11 else 5)
+    n = min(4, fingers or (3 if width < 7 else 4))
     palm = _fit(cv, lambda f: _curve(base, ang, length * 0.34, (-1 if f else 1) * curl * 0.2, 8), width * 0.7)
     if len(palm) < 3:
         return
@@ -1844,7 +1885,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
         a = math.atan2(ty, tx) + u * 0.8 * rng.uniform(0.9, 1.1)
         ln = length * (0.86 - 0.42 * abs(u)) * rng.uniform(0.92, 1.06)
         bend = curl * 0.75 + u * 0.35
-        wd = width * (0.52 - 0.16 * abs(u))
+        wd = width * (0.64 - 0.2 * abs(u))
         items.append((abs(u), (rx, ry), a, ln, bend, wd, 1 if u > 0 else -1))
     out = []
     for _, root, a, ln, bend, wd, sh in sorted(items, key=lambda it: -it[0]):
@@ -1856,7 +1897,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
         if out:
             lobe(cv, out[0][0], out[0][1], shade=out[0][2], teeth=3 if out[0][1] >= 3.5 else 0, rib=True)
         return
-    lobe(cv, palm, width * 0.6, shade=curl, cuts=False)
+    lobe(cv, palm, min(width * 0.55, 6.0), shade=curl, cuts=False)
     for sp, wd, sh in out:
         lobe(cv, sp, wd, shade=sh, teeth=3 if wd >= 3.5 else 0, rib=True)
 
@@ -1898,8 +1939,11 @@ def running_scroll(cv, run, rng):
     for uc, sd, bp, t0, sc in parts:
         lu = uc + lam * 0.03
         lp = (lu, wv(lu))
-        hand_leaf(m, lp, math.atan2(sd * 0.45, 1.0), lam * 0.46, min(hb - A + 2.0, lam * 0.24) * 1.15, -sd, rng,
-                  fingers=3)
+        lw = min(hb - A + 2.0, lam * 0.24) * 1.4
+        hand_leaf(m, lp, math.atan2(sd * 0.45, 1.0), lam * 0.46, lw, -sd, rng, fingers=3)
+        # and one tucked in behind the volute, sweeping back along the far edge
+        u2 = uc + lam * 0.34
+        hand_leaf(m, (u2, wv(u2)), math.atan2(-sd * 0.55, -1.0), lam * 0.3, lw * 0.85, sd, rng, fingers=3)
     ww = max(1.4, min(3.0, H * 0.1))
     pts = [(u, wv(u)) for u in [L * i / max(8, int(L)) for i in range(max(8, int(L)) + 1)]]
     poly, _, _ = _ribbon(pts, [ww / 2] * len(pts))
@@ -1913,28 +1957,16 @@ def running_scroll(cv, run, rng):
 
 
 def spray(cv, S, rng, f0=0.0, f1=0.42, n=None):
-    """A long serrated acanthus spray along the outer curve of scroll S: overlapping pointed leaves springing
-    from the backbone one after another, each leaning out and sweeping on round the scroll with it, tips
-    turned out, so the outer edge reads as a serrated leaf following the curve."""
+    """One big acanthus hand leaf per scroll turn: it springs from the backbone where the stem joins, leans
+    out and sweeps on round the outside of the scroll with it, fingers fanned and turned out."""
     R = S.R
-    n = n or max(2, min(4, int(R / 5)))
-    leaves = []
-    for k in range(n):
-        u = k / max(1, n - 1)
-        f = f0 + (f1 - f0) * u
-        bx, by = S.point(f, rscale=1.04)
-        tx, ty = S.tangent_at(f)
-        ox, oy = -S.dirn * -ty, -S.dirn * tx  # outward normal
-        lean = 0.55 - 0.15 * u
-        ang = math.atan2(ty + lean * oy, tx + lean * ox)
-        ln = R * (1.05 - 0.45 * u) * rng.uniform(0.9, 1.08)
-        turn = S.dirn * ln / (R * 1.35)
-        wd = R * (0.36 - 0.1 * u) * rng.uniform(0.92, 1.06)
-        leaves.append((_curve((bx, by), ang, ln, turn, 12, -S.dirn * 0.55), wd))
-    for spn, wd in leaves[::-1]:
-        a = math.atan2(spn[1][1] - spn[0][1], spn[1][0] - spn[0][0])
-        ln = _arclen(spn)[-1]
-        hand_leaf(cv, spn[0], a, ln, wd * 1.5, S.dirn, rng, fingers=3 if wd < 5 else 4)
+    f = f0 + 0.04
+    bx, by = S.point(f, rscale=1.04)
+    tx, ty = S.tangent_at(f)
+    ox, oy = -S.dirn * -ty, -S.dirn * tx  # outward normal
+    ang = math.atan2(ty + 0.5 * oy, tx + 0.5 * ox)
+    hand_leaf(cv, (bx, by), ang, R * 1.5 * rng.uniform(0.92, 1.08), R * 0.72, S.dirn, rng,
+              fingers=4 if R < 14 else 5)
 
 
 def _draw_motif(cv, motif, x, y, s, rng):
@@ -1948,13 +1980,77 @@ def _draw_motif(cv, motif, x, y, s, rng):
         fleuron(cv, x, y + s * 0.5, s, rng=rng)
 
 
-def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0, punch=0.4):
+def _largest_rect(occ, cell=4):
+    """Largest empty axis-aligned rectangle of the occupancy grid, on a coarse grid of `cell` px
+    (histogram method).  Returns (x0, y0, x1, y1) or None."""
+    k = max(1, int(round(cell / occ.c)))
+    nx, ny = occ.nx // k, occ.ny // k
+    hgt = [0] * nx
+    best = (0, None)
+    for J in range(ny):
+        rows = occ.g[J * k:(J + 1) * k]
+        for I in range(nx):
+            free = all(not any(r[I * k:(I + 1) * k]) for r in rows)
+            hgt[I] = hgt[I] + 1 if free else 0
+        st = []
+        for I in range(nx + 1):
+            hh = hgt[I] if I < nx else 0
+            start = I
+            while st and st[-1][1] >= hh:
+                s0, h0 = st.pop()
+                a = h0 * (I - s0)
+                if a > best[0]:
+                    best = (a, (s0, J - h0 + 1, I, J + 1))
+                start = s0
+            st.append((start, hh))
+    if not best[1]:
+        return None
+    I0, J0, I1, J1 = best[1]
+    c = k * occ.c
+    return (occ.x0 + I0 * c, occ.y0 + J0 * c, occ.x0 + I1 * c, occ.y0 + J1 * c)
+
+
+def _strip_runs(holes, w, h, m, pad, lo=8, hi=48):
+    """The narrow runs a running scroll should fill: between two panels, and between a panel and the sheet
+    edge (the side frames), each (x0, y0, x1, y1, 'h' | 'v')."""
+    out = []
+    for ax, ay, aw, ah in holes:
+        for bx, by, bw_, bh in holes:
+            o0, o1 = max(ax, bx), min(ax + aw, bx + bw_)
+            g0, g1 = ay + ah, by
+            if o1 - o0 > 40 and lo <= g1 - g0 <= hi - 14:
+                out.append((o0, g0, o1, g1, "h"))
+            o0, o1 = max(ay, by), min(ay + ah, by + bh)
+            g0, g1 = ax + aw, bx
+            if o1 - o0 > 40 and lo <= g1 - g0 <= hi - 14:
+                out.append((g0, o0, g1, o1, "v"))
+        for x0, y0, x1, y1, d in ((m - pad, ay, ax, ay + ah, "v"), (ax + aw, ay, w - m + pad, ay + ah, "v"),
+                                  (ax, m - pad, ax + aw, ay, "h"), (ax, ay + ah, ax + aw, h - m + pad, "h")):
+            t = (x1 - x0) if d == "v" else (y1 - y0)
+            if lo <= t <= hi and ((y1 - y0) if d == "v" else (x1 - x0)) > 40:
+                out.append((x0, y0, x1, y1, d))
+    res = []
+    for r in out:
+        x0, y0, x1, y1, d = r
+        if any(hx < x1 - 0.5 and hx + hw > x0 + 0.5 and hy < y1 - 0.5 and hy + hh > y0 + 0.5 for hx, hy, hw, hh in holes):
+            continue
+        if r not in res:
+            res.append(r)
+    return res
+
+
+def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0, punch=0.6):
     """Fill the ground of a whole sheet w x h with vise-scale scroll, laid around the rectangular `holes`
-    (x, y, w, h: panel windows, left transparent).  Dominant C-scrolls with volutes 26-50 px across where the
-    ground is wide, subordinate scrolls 2-3x smaller tucked between, every scroll joined to a neighbour by a
-    tapering stem and wrapped in acanthus, a motif at the centre of each run that crosses the centre line,
-    the rest grown over with acanthus; the cut ground is near-solid black punched with fine white dots
-    generated for this field (no tile).  Symmetric holes give a mirror-symmetric composition."""
+    (x, y, w, h: panel windows, left transparent).
+      - narrow runs (between panels, and the side frames between a panel and the sheet edge) carry a single
+        running scroll at their full width;
+      - a sheet whose holes are mirror-symmetric is composed as one symmetric field about its centre line,
+        motifs at the centres of the runs crossing it;
+      - otherwise each large open area (largest empty rectangle first) is one sweeping composition, mirrored
+        about its own centre line and anchored on a big motif, two or three dominant C-scrolls sweeping out
+        from it with subordinate scrolls tucked into their curves; what is left is filled freely;
+      - every scroll is wrapped in a big hand leaf, pockets are grown over with acanthus, and the cut ground,
+        near-solid black punched with fine white dots generated for this field, shows only as slivers."""
     rng = rng_for("field", seed)
     C = 1.0
     pad = 1.5
@@ -1964,110 +2060,170 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
         _mark_rect(occ, *r)
     for x, y, hw, hh in holes:
         _mark_rect(occ, x - pad, y - pad, x + hw + pad, y + hh + pad)
-    sym = all(any(abs((w - x - hw) - x2) < 1.5 and abs(y - y2) < 1.5 and abs(hw - hw2) < 1.5 and abs(hh - hh2) < 1.5
+    sym = all(any(abs((w - x - hw) - x2) < 4.5 and abs(y - y2) < 4.5 and abs(hw - hw2) < 4.5 and abs(hh - hh2) < 4.5
                   for x2, y2, hw2, hh2 in holes) for x, y, hw, hh in holes)
+    if sym:  # make the occupancy exactly symmetric (holes may have been rounded to a grid)
+        for x, y, hw, hh in holes:
+            _mark_rect(occ, w - x - hw - pad, y - pad, w - x + pad, y + hh + pad)
     cv.add("K", _rect_d(0, 0, w, h))
     cv.clip = _rect_d(0, 0, w, h) + "".join(_rect_d(x, y, x + hw, y + hh) for x, y, hw, hh in holes)
-    if getattr(cv, "model", False) or True:
-        dB = _dt(occ)
+    dB = _dt(occ)
 
-        def bound(x, y, dB=dB, occ=occ):
-            i, j = int((x - occ.x0) / occ.c), int((y - occ.y0) / occ.c)
-            if 0 <= i < occ.nx and 0 <= j < occ.ny:
-                v = dB[j][i]
-                return v if v < 1e8 else 0.0
-            return 0.0
-        cv.bound = bound
-    # narrow gaps between two panels carry a single running scroll, composed out from a centre motif
-    gaps = []
-    for ax, ay, aw, ah in holes:
-        for bx, by, bw_, bh in holes:
-            o0, o1 = max(ax, bx), min(ax + aw, bx + bw_)
-            g0, g1 = ay + ah, by
-            if o1 - o0 > 40 and 8 <= g1 - g0 <= 34:
-                gaps.append((o0, g0, o1, g1, "h"))
-            o0, o1 = max(ay, by), min(ay + ah, by + bh)
-            g0, g1 = ax + aw, bx
-            if o1 - o0 > 40 and 8 <= g1 - g0 <= 34:
-                gaps.append((g0, o0, g1, o1, "v"))
-    for k, (x0, y0, x1, y1, d) in enumerate(gaps):
-        if any(hx < x1 and hx + hw > x0 and hy < y1 and hy + hh > y0 for hx, hy, hw, hh in holes):
-            continue
+    def bound(x, y, dB=dB, occ=occ):
+        i, j = int((x - occ.x0) / occ.c), int((y - occ.y0) / occ.c)
+        if 0 <= i < occ.nx and 0 <= j < occ.ny:
+            v = dB[j][i]
+            return v if v < 1e8 else 0.0
+        return 0.0
+    cv.bound = bound
+    # narrow runs: a single running scroll each, at full width
+    plain0 = Mapped(cv, lambda x, y: (x, y), None)
+    for k, (x0, y0, x1, y1, d) in enumerate(_strip_runs(holes, w, h, m, pad)):
+        r2 = rng_for("gap", seed, k)
         if d == "h":
             H = (y1 - y0) - 2 * pad - 1.0
-            run = Run([(x0, (y0 + y1) / 2), (x1, (y0 + y1) / 2)], H)
+            cy = (y0 + y1) / 2
+            if sym and x0 < w / 2 - 20 and x1 > w / 2 + 20:
+                s_ = H * 0.95
+                running_scroll(Mirror(cv, w, None), Run([(w / 2 + s_ * 0.38, cy), (x1, cy)], H), r2)
+                shell(plain0, w / 2, cy + s_ * 0.42, s_ * 0.55)
+            elif sym and x1 > w / 2 + 1:
+                continue
+            else:
+                running_scroll(Mirror(cv, w, None) if sym else cv, Run([(x0, cy), (x1, cy)], H), r2)
         else:
             H = (x1 - x0) - 2 * pad - 1.0
-            run = Run([((x0 + x1) / 2, y0), ((x0 + x1) / 2, y1)], H)
-        running_scroll(cv, run, rng_for("gap", seed, k))
+            cx = (x0 + x1) / 2
+            if sym and cx > w / 2:
+                continue
+            running_scroll(Mirror(cv, w, None) if sym else cv, Run([(cx, y0), (cx, y1)], H), r2)
         _mark_rect(occ, x0, y0, x1, y1)
-    plain = Mapped(cv, lambda x, y: (x, y), occ)
-    dc = Mirror(cv, w, occ) if sym else plain
-    anchors, roots = [], []
-    i_back = len(_base(cv).ops)  # pocket leaves go in behind everything from here on
-    # motifs: at the centre of every run that crosses the centre line (top, gaps, foot) ...
-    ic = int(w / 2 / C)
-    runs, j = [], 0
-    while j < occ.ny:
-        if not occ.g[j][ic]:
-            j0 = j
-            while j < occ.ny and not occ.g[j][ic]:
-                j += 1
-            runs.append((j0 * C, j * C))
-        else:
-            j += 1
-    big = max(runs, key=lambda r: r[1] - r[0]) if runs else None
-    for y0, y1 in runs:
-        L = y1 - y0
-        if L < 16:
-            continue
-        s = min(L * 0.8, 62 * scale)
-        cy = (y0 + y1) / 2
-        _draw_motif(plain, motif if (y0, y1) == big else ("shell" if L < 40 else "rosette"), w / 2, cy, s, rng)
-        for sg in (-1, 1):
-            roots.append((w / 2 + sg * s * 0.4, cy + s * 0.2, sg, 0.0))
-    # ... and of each side run (the side frames), mirrored when the field is
-    jc = int(h / 2 / C)
-    i = 0
-    while i < occ.nx / 2:
-        if not occ.g[jc][i]:
-            i0 = i
-            while i < occ.nx and not occ.g[jc][i]:
-                i += 1
-            L = (i - i0) * C
-            if 16 <= L < w / 3:
-                s = min(L * 0.8, 50 * scale)
-                cx = (i0 * C + i * C) / 2
-                _draw_motif(dc, "rosette", cx, h / 2, s, rng)
-                for sg in (-1, 1):
-                    roots.append((cx, h / 2 + sg * s * 0.42, 0.0, sg))
-        else:
-            i += 1
+        if sym:
+            _mark_rect(occ, w - x1, y0, w - x0, y1)
     if sym:
-        _mark_rect(occ, w / 2 - 0.5, 0, w, h)
-        roots = [r for r in roots if r[0] < w / 2 + 0.01 and not (abs(r[0] - w / 2) < 0.1)]
-        roots = [r for r in roots if r[0] <= w / 2]
+        _compose_area(cv, occ, rng, (0, 0, w, h), w / 2, motif, "runs", scale)
+    else:
+        for n_area in range(3):
+            r = _largest_rect(occ)
+            if not r:
+                break
+            x0, y0, x1, y1 = r
+            if min(x1 - x0, y1 - y0) < 56 or (x1 - x0) * (y1 - y0) < 9000:
+                break
+            sub = _compose_area(cv, occ, rng, r, (x0 + x1) / 2, motif if n_area == 0 else "rosette", "centre", scale)
+            _mark_rect(occ, x0, y0, x1, y1)
+        _compose_area(cv, occ, rng, (0, 0, w, h), None, None, "free", scale)
+    # the punched ground: fine white dots on what ground still shows, at least a cell clear of every cut
+    p = punch * C * C
+    g = occ.g
+    imax = int(w / 2 / C) if sym else occ.nx - 1
+    for j in range(1, occ.ny - 1):
+        y = (j + 0.5) * C
+        for i in range(1, imax):
+            x = (i + 0.5) * C
+            if g[j][i] or g[j - 1][i] or g[j + 1][i] or g[j][i - 1] or g[j][i + 1]:
+                continue
+            if any(hx - 1 <= x <= hx + hw + 1 and hy - 1 <= y <= hy + hh + 1 for hx, hy, hw, hh in holes):
+                continue
+            if rng.random() < p:
+                dx, dy = x + rng.uniform(-0.45, 0.45), y + rng.uniform(-0.45, 0.45)
+                cv.dot(dx, dy)
+                if sym:
+                    cv.dot(w - dx, dy)
+    if border:
+        cv.over("S1", _rect_d(1.0, 1.0, w - 1.0, h - 1.0))
+        cv.over("S05", _rect_d(2.75, 2.75, w - 2.75, h - 2.75))
+
+
+def _compose_area(cv, gocc, rng, area, axis, motif, mode, scale):
+    """Compose one area of the field.  area = (x0, y0, x1, y1) on the sheet; axis = x of its mirror line
+    (None: no mirror); mode 'runs' (the whole symmetric sheet: motifs where runs cross the centre line),
+    'centre' (one big motif at the area's centre, two or three dominant C-scrolls a side sweeping out of it,
+    subordinates tucked into their curves) or 'free' (whatever is left, filled freely).  Everything drawn is
+    registered back into the sheet's occupancy `gocc`."""
+    C = gocc.c
+    ax0, ay0, ax1, ay1 = area
+    # a working occupancy cropped to the area; outside it counts as taken
+    occ = Occ(ax0, ay0, ax1, ay1, C)
+    i_off, j_off = int(round((ax0 - gocc.x0) / C)), int(round((ay0 - gocc.y0) / C))
+    for j in range(occ.ny):
+        gj = j + j_off
+        if 0 <= gj < gocc.ny:
+            seg = gocc.g[gj][i_off:i_off + occ.nx]
+            occ.g[j][:len(seg)] = seg
+            if len(seg) < occ.nx:
+                occ.g[j][len(seg):] = b"\x01" * (occ.nx - len(seg))
+        else:
+            occ.g[j][:] = b"\x01" * occ.nx
+    plain = Mapped(cv, lambda x, y: (x, y), occ)
+    dc = Mirror(cv, 2 * axis, occ) if axis is not None else plain
+    anchors, roots = [], []
+    base = _base(cv)
+    i_back = len(base.ops)
+
+    def gx(i):
+        return occ.x0 + (i + 0.5) * C
+
+    def gy(j):
+        return occ.y0 + (j + 0.5) * C
+
+    if mode == "runs":
+        ic = int((axis - occ.x0) / C)
+        runs, j = [], 0
+        while j < occ.ny:
+            if not occ.g[j][ic]:
+                j0 = j
+                while j < occ.ny and not occ.g[j][ic]:
+                    j += 1
+                runs.append((occ.y0 + j0 * C, occ.y0 + j * C))
+            else:
+                j += 1
+        big = max(runs, key=lambda r: r[1] - r[0]) if runs else None
+        for y0, y1 in runs:
+            L = y1 - y0
+            if L < 16:
+                continue
+            s = min(L * 0.8, 62 * scale)
+            cy = (y0 + y1) / 2
+            _draw_motif(plain, motif if (y0, y1) == big else ("shell" if L < 40 else "rosette"), axis, cy, s, rng)
+            roots.append((axis + s * 0.4, cy + s * 0.2, 1, 0.0))
+    elif mode == "centre":
+        W_, H_ = ax1 - ax0, ay1 - ay0
+        s = min(H_ * 0.62, W_ * 0.3, 76 * scale)
+        cy = (ay0 + ay1) / 2
+        _draw_motif(plain, motif, axis, cy - s * 0.1, s, rng)
+        roots.append((axis + s * 0.38, cy + s * 0.1, 1, 0.0))
+        roots.append((axis + s * 0.3, cy - s * 0.3, 0.7, -0.7))
+    if axis is not None:
+        _mark_rect(occ, axis - 0.5, occ.y0, occ.x0 + occ.nx * C, occ.y0 + occ.ny * C)
     mask = [bytearray(r) for r in occ.g]
     d0 = _dt(occ)
-    # scrolls: dominant, then subordinate, then small, each only where the ground has room
     scrolls = []
     sg_ = _Grid(24.0)
+    taken = {}
 
-    def place(rmin, rmax, step, gap, extra=0.0):
+    def place(rmin, rmax, step, gap, extra=0.0, limit=None, near=None):
         cand = []
         for j in range(0, occ.ny, step):
             row = d0[j]
             for i in range(0, occ.nx, step):
                 v = row[i]
                 if rmin * 0.8 + gap <= v < 1e8:
-                    cand.append((v + rng.random() * 2.0, (i + 0.5) * C, (j + 0.5) * C, v))
+                    cand.append((v + rng.random() * 2.0, gx(i), gy(j), v))
         cand.sort(reverse=True)
+        got = 0
         for _, x, y, v in cand:
-            R = min(v - gap, rng.uniform(rmin, rmax)) * (0.66 if rng.random() < 0.45 else 1.0)
+            if limit is not None and got >= limit:
+                break
+            if taken.get((int(x // 4), int(y // 4))):
+                continue
+            if near is not None and not any(S.R * 1.05 < math.hypot(S.cx - x, S.cy - y) < S.R * 2.6 for S in near):
+                continue
+            R = min(v - gap, rng.uniform(rmin, rmax)) * (0.66 if (limit is None and rng.random() < 0.45) else 1.0)
             if R < rmin * 0.62:
                 continue
             ok = True
-            for S in sg_.near(x, y, R + 30 * scale):
+            for S in sg_.near(x, y, R + 40 * scale):
                 if math.hypot(S.cx - x, S.cy - y) < R + S.R + max(3.0, 0.5 * min(R, S.R)) + extra:
                     ok = False
                     break
@@ -2075,18 +2231,31 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
                 S = Scroll(x, y, R, 1, 0.0)
                 scrolls.append(S)
                 sg_.add(x, y, S)
+                got += 1
+                rr = R + rmin * 0.6
+                for kx in range(int((x - rr) // 4), int((x + rr) // 4) + 1):
+                    for ky in range(int((y - rr) // 4), int((y + rr) // 4) + 1):
+                        if math.hypot(kx * 4 + 2 - x, ky * 4 + 2 - y) < rr - 3:
+                            taken[(kx, ky)] = 1
 
-    place(14 * scale, 24 * scale, 3, 3.0)
-    place(6.5 * scale, 11 * scale, 2, 2.0, extra=7.0 * scale)
-    # join them: largest first, each to the nearest open attach point (motif flank, scroll turn, stem)
+    if mode == "centre":
+        H_ = ay1 - ay0
+        half = (ax1 - axis)
+        k = max(1, min(3, int(half / (H_ * 0.8) + 0.5)))
+        place(14 * scale, min(30 * scale, H_ * 0.36), 3, 3.0, limit=k)
+        doms = list(scrolls)
+        place(6.5 * scale, 11 * scale, 3, 2.0, extra=4.0 * scale, near=doms)
+    else:
+        place(14 * scale, 24 * scale, 4, 3.0)
+        place(6.5 * scale, 11 * scale, 3, 2.0, extra=7.0 * scale)
     att = _Grid(24.0)
     for r in roots:
-        att.add(r[0], r[1], (r[0], r[1], r[2], r[3], None, 2.6))
+        att.add(r[0], r[1], (r[0], r[1], r[2], r[3], None, 3.0))
 
     def clear(p, q, own, tgt):
         n = int(math.hypot(q[0] - p[0], q[1] - p[1]) / 1.5) + 1
-        for k in range(1, n):
-            x, y = p[0] + (q[0] - p[0]) * k / n, p[1] + (q[1] - p[1]) * k / n
+        for kk in range(1, n):
+            x, y = p[0] + (q[0] - p[0]) * kk / n, p[1] + (q[1] - p[1]) * kk / n
             if _cell_m(mask, occ, x, y):
                 return False
             for S in sg_.near(x, y, 30 * scale):
@@ -2099,10 +2268,10 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
     tails, used, keep = set(), set(), []
     for S in order:
         best = None
-        for it in att.near(S.cx, S.cy, S.R * 3 + 40 * scale):
+        for it in att.near(S.cx, S.cy, S.R * 3 + 50 * scale):
             ax, ay, tx, ty, own, wd = it
             dd = math.hypot(S.cx - ax, S.cy - ay) - S.R
-            if dd < 1.0 or dd > S.R * 3 + 30 * scale:
+            if dd < 1.0 or dd > S.R * 3 + 40 * scale:
                 continue
             tail = id(it) in tails
             if tail and id(it) in used:
@@ -2129,7 +2298,6 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
         else:
             S.dirn, S.a0 = rng.choice((-1, 1)), rng.uniform(0, TAU)
             S.turns, S.eye = rng.uniform(1.2, 1.4), rng.uniform(0.15, 0.2)
-        # the scroll's own tail: a stem leaving here carries the backbone on, full width, into the next volute
         p = S.point(0.0)
         t = S.tangent_at(0.0)
         it = (p[0], p[1], -t[0], -t[1], S, max(1.5, min(4.6, S.R * 0.26)))
@@ -2140,15 +2308,12 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
             p = S.point(f)
             t = S.tangent_at(f)
             att.add(p[0], p[1], (p[0], p[1], t[0], t[1], S, max(1.2, S.R * 0.14)))
-    base = _base(cv)
-    i0 = len(base.ops)
     for (ax, ay), t0, S, wd in stems:
         w1 = max(1.5, min(4.6, S.R * 0.26))
         pts = _taper_stem(dc, (ax, ay), t0, S.start(), S.tangent(), max(1.2, min(wd, 4.6)), w1)
         for q in range(2, len(pts) - 2, 2):
             tx, ty = _norm(pts[q + 1][0] - pts[q - 1][0], pts[q + 1][1] - pts[q - 1][1])
             anchors.append((pts[q][0], pts[q][1], tx, ty))
-    # acanthus wrapped round the outside of each larger scroll, springing from where its stem joins
     for S in order:
         if S.R >= 7:
             spray(dc, S, rng, 0.02, 0.5 if S.R >= 12 else 0.38)
@@ -2162,31 +2327,32 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
     for r in roots:
         anchors.append(r[:4])
     i1 = len(base.ops)
-    _field_fill(dc, occ, rng, anchors, 3.0, 14 * scale, spread=1.1)
-    _field_fill(dc, occ, rng, anchors, 2.2, 9 * scale, spread=1.2)
+    if _field_fill(dc, occ, rng, anchors, FILL_GMIN, 26 * scale, spread=FILL_SPREAD) > 0 and mode != "free":
+        _field_fill(dc, occ, rng, anchors, FILL_GMIN2, 14 * scale, spread=1.1)
     chunk = base.ops[i1:]
     del base.ops[i1:]
     base.ops[i_back:i_back] = chunk
-    # the punched ground: fine white dots on what ground still shows, at least a cell clear of every cut
-    p = punch * C * C
-    g = occ.g
-    for j in range(1, occ.ny - 1):
-        y = (j + 0.5) * C
-        for i in range(1, occ.nx - 1):
-            x = (i + 0.5) * C
-            ii = i if not sym or x < w / 2 else int((w - x) / C)
-            if ii < 1 or ii >= occ.nx - 1:
-                continue
-            if g[j][ii] or g[j - 1][ii] or g[j + 1][ii] or g[j][ii - 1] or g[j][ii + 1]:
-                continue
-            if any(hx - 1 <= x <= hx + hw + 1 and hy - 1 <= y <= hy + hh + 1 for hx, hy, hw, hh in holes):
-                continue
-            if rng.random() < p:
-                cv.dot(x + rng.uniform(-0.45, 0.45), y + rng.uniform(-0.45, 0.45))
-    if border:
-        cv.over("S1", _rect_d(1.0, 1.0, w - 1.0, h - 1.0))
-        cv.over("S05", _rect_d(2.75, 2.75, w - 2.75, h - 2.75))
+    # register what was drawn back into the sheet's occupancy (the mirrored half too)
+    for j in range(occ.ny):
+        gj = j + j_off
+        if not 0 <= gj < gocc.ny:
+            continue
+        row, grow = occ.g[j], gocc.g[gj]
+        for i in range(occ.nx):
+            if row[i]:
+                gi = i + i_off
+                if 0 <= gi < gocc.nx:
+                    grow[gi] = 1
+                if axis is not None:
+                    x = gx(i)
+                    if x < axis:
+                        mi = int((2 * axis - x - gocc.x0) / C)
+                        if 0 <= mi < gocc.nx:
+                            grow[mi] = 1
     return scrolls
+
+
+FILL_GMIN, FILL_SPREAD, FILL_GMIN2 = 3.0, 1.0, 4.0
 
 
 def _cell_m(mask, occ, x, y):
@@ -2196,10 +2362,62 @@ def _cell_m(mask, occ, x, y):
     return 1
 
 
-def field(w, h, holes=(), seed=0, motif="fleuron", border=True):
-    """A sheet's engraved ground as one SVG, w x h, holes left transparent."""
-    cv = Canvas(w, h)
-    cv.tol = 0.15
-    cv.model = True
-    compose_field(cv, w, h, list(holes), seed, motif=motif, border=border)
-    return cv.svg()
+_SRC_HASH = None
+
+
+def _src_hash():
+    global _SRC_HASH
+    if _SRC_HASH is None:
+        try:
+            with open(os.path.abspath(__file__), "rb") as fh:
+                _SRC_HASH = hashlib.sha256(fh.read()).hexdigest()[:16]
+        except OSError:
+            _SRC_HASH = "nosrc"
+    return _SRC_HASH
+
+
+def _clip_d(w, h, holes):
+    return _rect_d(0, 0, w, h) + "".join(_rect_d(x, y, x + hw, y + hh) for x, y, hw, hh in holes)
+
+
+def field(w, h, holes=(), seed=0, motif="fleuron", border=True, cache=None):
+    """A sheet's engraved ground as one SVG, w x h, holes left transparent.
+
+    The composition is laid out on the holes rounded to a 4 px grid and cached on disk, keyed by a hash of
+    (w, h, rounded holes, seed, motif, border, this engine's source), in `cache` or $SOLAR_FIELD_CACHE
+    (default ~/.cache/solar-field); a build that keeps that directory between runs only composes sheets
+    whose layout changed.  The clip is always cut from the exact holes.  cache=False disables it."""
+    holes = [tuple(float(v) for v in hl) for hl in holes]
+    rh = [(4 * round(x / 4), 4 * round(y / 4), 4 * round((x + hw) / 4) - 4 * round(x / 4),
+           4 * round((y + hh) / 4) - 4 * round(y / 4)) for x, y, hw, hh in holes]
+    mname = motif if isinstance(motif, str) else getattr(motif, "__qualname__", repr(motif))
+    key = hashlib.sha256(repr((round(w), round(h), rh, repr(seed), mname, bool(border), _src_hash())).encode()).hexdigest()
+    path = None
+    if cache is not False and (callable(motif) is False or hasattr(motif, "__qualname__")):
+        d = cache or os.environ.get("SOLAR_FIELD_CACHE") or os.path.join(os.path.expanduser("~"), ".cache", "solar-field")
+        path = os.path.join(d, key[:2], key + ".svg")
+    svg = None
+    if path and os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                svg = fh.read()
+        except OSError:
+            svg = None
+    if svg is None:
+        cv = Canvas(w, h)
+        cv.tol = 0.2
+        cv.model = True
+        compose_field(cv, w, h, rh, seed, motif=motif, border=border)
+        svg = cv.svg()
+        if path:
+            try:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                tmp = path + ".%d.tmp" % os.getpid()
+                with open(tmp, "w", encoding="utf-8") as fh:
+                    fh.write(svg)
+                os.replace(tmp, path)
+            except OSError:
+                pass
+    # cut the clip from the exact holes
+    exact = _clip_d(w, h, holes)
+    return re.sub(r'(<clipPath id="[^"]+"><path clip-rule="evenodd" d=")[^"]*(")', lambda mm: mm.group(1) + exact + mm.group(2), svg, count=1)

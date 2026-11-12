@@ -194,7 +194,11 @@ def run(out, date_iso, exe=None):
         print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
         t1 = time.time()
         try:
+            del SPACE[:]
             nf = _fills(pages, out, od, base, date_iso, exe)
+            with open(os.path.join(out, "space-map.json"), "w") as f:
+                json.dump(dict(date=date_iso, sheet=[618, 714], note="CSS px; rooms are open rectangles after panels and plates, "
+                               "kind gap = between panels, room = elsewhere (foot of the sheet), strip = thin bands", sheets=SPACE), f, indent=1)
             print(f"kindle_plates: {nf} engraved fills in {time.time() - t1:.1f}s")
         except Exception as e:  # noqa: BLE001  -- no fills: the light ground and fleurons stay
             print(f"kindle_plates: fills skipped ({e!r})", file=sys.stderr)
@@ -345,7 +349,7 @@ def _pass(pages, out, od, base, date_iso, exe):
 # show it only when the device lays the sheet out the same way.
 # ------------------------------------------------------------------------------------------------
 
-FX0, FY0, FX1, FY1, FC = 44, 24, 574, 690, 2      # the panel inside the frame, and the grid cell (px)
+FX0, FY0, FX1, FY1, FC = 40, 40, 578, 674, 2      # the panel inside the frame, and the grid cell (px)
 
 FILL_MEASURE = """async (P) => {
   const wait = (f, ms) => new Promise(r => { const t0 = Date.now(); (function k() { if (f() || Date.now() - t0 > ms) r(); else setTimeout(k, 30); })(); });
@@ -403,7 +407,8 @@ FILL_MEASURE = """async (P) => {
     if (i) { const more = document.getElementById('kmore'); if (!more) break; more.click();
              await wait(() => window.KROOM.sheet === i, 3000); await new Promise(r => setTimeout(r, 400)); }
     const L = window.KLAB();
-    out.push(Object.assign({ sheet: i, o: L.o, d: L.d, p: L.p }, cut(L)));
+    const vr = document.getElementById('kclip').getBoundingClientRect();
+    out.push(Object.assign({ sheet: i, n, vr: [vr.left, vr.top, vr.width, vr.height], o: L.o, d: L.d, p: L.p }, cut(L)));
   }
   return out;
 }"""
@@ -436,6 +441,7 @@ def _raster(pages, out, od, base, exe):
             if m:
                 for sh in json.loads(_html.unescape(m.group(1))):
                     shot(f"fill-{slug}-{sh[0]}", 618, 714)
+                    os.remove(os.path.join(od, f"fill-{slug}-{sh[0]}.svg"))   # the field is 0.4-0.6 MB of SVG: never shipped
                     n += 1
                 s = re.sub(r"<body\b", '<body data-kfx=".png"', s, count=1) if " data-kfx=" not in s else s
             with open(fp, "w") as f:
@@ -447,11 +453,13 @@ def _raster(pages, out, od, base, exe):
     return n
 
 
+SPACE = []   # filled by _fills; written to orn/space-map.json
+
+
 def _fills(pages, out, od, base, date_iso, exe):
     from playwright.sync_api import sync_playwright
-    from . import kindle_frame as KF
     import zlib
-    made = 0
+    made, jobs, fmaps = 0, [], {}
     with sync_playwright() as pw:
         br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
         for slug in pages:
@@ -462,55 +470,78 @@ def _fills(pages, out, od, base, date_iso, exe):
                 pg.goto(base + slug + ".html", wait_until="load")
                 pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
                 res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
+                title = pg.evaluate("(() => { const e = document.querySelector('#kmain h2, #kmain .kftitle'); return e ? e.textContent.trim().replace(/\\s+/g, ' ') : document.title; })()")
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
                 res = None
             cx.close()
             fmap = []
-            for r in res or []:
-                if not r["panels"] and not r["strips"] and not r["ground"]:
-                    continue
+            sec = slug.split("-")[0]
+            for r in res or []:   # the space map: every open room on the sheet, for the studio to draw bespoke art to
+                rooms = ([dict(x=p[0], y=p[1], w=p[2], h=p[3], kind="gap" if p[5] else "room") for p in r["panels"]]
+                         + [dict(x=p[0], y=p[1], w=p[2], h=p[3], kind="strip") for p in r["strips"]])
+                if rooms:
+                    SPACE.append(dict(page=slug, sheet=r["sheet"], section=sec, title=title,
+                                      subject=plate_slots.FRONTS[sec][1] if slug == sec and sec in plate_slots.FRONTS else title,
+                                      rooms=rooms))
+            for r in res or []:   # the sheet's ground: one composed scroll field round its panels (claude/engrave-frames)
+                vt, vb = r["vr"][1], r["vr"][1] + r["vr"][3]
+                boxes = [(q, True) for q in r["o"]] + [(q, False) for q in r["p"]]
+                boxes += [(q, False) for q in r["d"] if not any(o[0] <= q[0] + 1 and o[1] <= q[1] + 1 and o[0] + o[2] >= q[0] + q[2] - 1
+                                                                and o[1] + o[3] >= q[1] + q[3] - 1 for o in r["o"])]
+                edges = []
+                for q, white in boxes:
+                    x, y, w, h = q[:4]
+                    ot = white and r["sheet"] > 0 and y <= vt + 1
+                    ob = white and r["sheet"] < r["n"] - 1 and y + h >= vb - 1
+                    edges.append((x, y, w, h, ot, ob))
                 seed = zlib.crc32(f"{slug}/{r['sheet']}/{date_iso}".encode()) % 100003
-                # the plan's leftover order: one carved frieze (18-36 px) in the largest gap between panels,
-                # beading in the other gaps. Never flora beside a plate or out in the margin.
-                fr, beads, matte = [], [], []
-                gaps = sorted([p for p in r["panels"] if p[5]], key=lambda p: -min(p[3], 36) * p[2])
-                for k, p in enumerate(gaps):
-                    x, y, pw, ph = p[:4]
-                    if k == 0 and ph >= 18:
-                        hf = min(ph, 36.)
-                        fr.append((x, y + (ph - hf) / 2, pw, hf, "l"))
-                    else:
-                        hf = min(ph, 10.)
-                        beads.append((x, y + (ph - hf) / 2, pw, hf))
-                    # no punched matte above and below it: that room waits for the studio's scroll ground
-                # margins, the tailpiece room and the ground behind every plate keep the frame's light engraved
-                # ground (the plates are free-standing vignettes that dissolve into it): nothing drawn there
-                beads += [tuple(p[:4]) for p in r["strips"] if p[4]]
-                dev = ""
-                if r["sheet"] == len(res) - 1 and os.path.exists(os.path.join(od, f"plate-{slug}-m.svg")):
-                    gy = [p for p in r["panels"] if p[5]] + [p for p in r["strips"] if p[4]]
-                    if gy:   # the marginal device: a roundel on the left frame band, beside the largest gap
-                        g0 = max(gy, key=lambda p: p[3])
-                        dsv = open(os.path.join(od, f"plate-{slug}-m.svg")).read()
-                        dsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", dsv)
-                        dev = re.sub(r"<svg\b", f'<svg x="3" y="{g0[1] + g0[3] / 2 - 19:.0f}"', dsv, count=1)
-                sec = slug.split("-")[0]
-                try:
-                    svg = KF.sheet_fill(fr, beads, seed, ground=[tuple(g) for g in r["ground"]], matte=matte,
-                                        motif=sec if sec in KF.MOTIFS else None, extra_svg=dev)
-                except Exception as e:  # noqa: BLE001
-                    print(f"kindle_plates: {slug}~{r['sheet'] + 1}: fill failed ({e!r})", file=sys.stderr)
-                    continue
-                with open(os.path.join(od, f"fill-{slug}-{r['sheet']}.svg"), "w") as f:
-                    f.write(_snap(svg))
+                jobs.append((slug, r["sheet"], edges, seed, MOTIF_OF(slug)))
                 enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
                 fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
-            s = re.sub(r" data-kfills='[^']*'", "", open(fp).read(), count=1)
-            if fmap:
-                s = re.sub(r"<body\b", "<body data-kfills='" + _html.escape(json.dumps(fmap, separators=(",", ":"))) + "'", s, count=1)
-            with open(fp, "w") as f:
-                f.write(s)
-            made += len(fmap)
+            fmaps[slug] = fmap
         br.close()
+    from concurrent.futures import ProcessPoolExecutor
+    with ProcessPoolExecutor(max_workers=max(1, min(8, os.cpu_count() or 1))) as ex:
+        done = dict(zip([(j[0], j[1]) for j in jobs], ex.map(_field_svg, jobs)))
+    for slug, fmap in fmaps.items():
+        fmap = [e for e in fmap if done.get((slug, e[0]))]
+        for e in fmap:
+            with open(os.path.join(od, f"fill-{slug}-{e[0]}.svg"), "w") as f:
+                f.write(done[(slug, e[0])])
+        fp = os.path.join(out, slug + ".html")
+        s = re.sub(r" data-kfills='[^']*'", "", open(fp).read(), count=1)
+        if fmap:
+            s = re.sub(r"<body\b", "<body data-kfills='" + _html.escape(json.dumps(fmap, separators=(",", ":"))) + "'", s, count=1)
+        with open(fp, "w") as f:
+            f.write(s)
+        made += len(fmap)
     return made
+
+
+def MOTIF_OF(slug):
+    """The centre motif of a section's field (the studio's set until each section has its own)."""
+    import zlib
+    return ("fleuron", "shell", "rosette")[zlib.crc32(slug.split("-")[0].encode()) % 3]
+
+
+def _field_svg(job):
+    """One sheet's ground: the studio's scroll field with a hole round every white box (its box plus the 4 px
+    inlay), and the bright double inlay edge of each box. Rasterised later; the SVG is never shipped."""
+    slug, sheet, edges, seed, motif = job
+    try:
+        from .frames import field as FF, kpanel as KP
+        B = 4
+        holes = [(max(0, x - B), max(0, y - B), min(618, x + w + B) - max(0, x - B), min(714, y + h + B) - max(0, y - B))
+                 for x, y, w, h, ot, ob in edges]
+        fsv = FF.field(618, 714, holes, seed, motif=motif, border=True)
+        parts = []
+        for k, (x, y, w, h, ot, ob) in enumerate(edges):
+            esv = KP.panel_edge(w, h, ot, ob, seed + k, b=B)
+            esv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", esv)
+            parts.append(re.sub(r"<svg\b", f'<svg x="{x - B}" y="{y - B}"', esv, count=1))
+        fsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", fsv)
+        return ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714">' + fsv + "".join(parts) + "</svg>")
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_plates: {slug}~{sheet + 1}: field failed ({e!r})", file=sys.stderr)
+        return None

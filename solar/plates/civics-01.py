@@ -21,12 +21,22 @@ def R(x0, y0, x1, y1):
     return [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
 
 
+_SMALL = [False]          # set by scene(): at marginal size the shade is cut open, not solid
+
+
 def black(cv, poly):
-    """A solid black mass of 1 px lines laid 0.8 px apart."""
+    """A deep shade: solid (1 px lines 0.8 px apart) on a large plate; at marginal size an open
+    run of vertical swelling cuts, so the building comes up light out of its shadows."""
+    if _SMALL[0]:
+        for pl in bu_hatch(poly, 90, 1.5):
+            bu_cut(cv, pl, lambda x, y: .5, jit=0)
+        return
     cv.line(C.hatch_poly(poly, 0, .8))
 
 
 def hlines(x0, x1, y0, y1, pitch, phase=0.):
+    if _SMALL[0]:
+        pitch *= 1.4
     out = []
     y = y0 + phase
     while y <= y1 + 1e-6:
@@ -44,16 +54,10 @@ def ell(cx, cy, rx, ry, a0, a1, n=24):
 # ----------------------------------------------------------------------------------------------
 
 def _sky(cv, X, Y, W, H, yb):
-    cv.obj([R(X - 2, Y - 2, X + W + 2, yb + 1)], 0)
-    split = Y + (yb - Y) * .42
-    # 1.5 px hair rules high up (deep sky), every other one lower down (paler toward the horizon)
-    y = Y - 2
-    k = 0
-    while y < yb:
-        if y < split or k % 2 == 0:
-            cv.hair([(X - 2, y), (X + W + 2, y)])
-        y += 1.5
-        k += 1
+    """Sky in swelling burin lines: deep at the top of the roundel, opening to paper at the
+    horizon behind the dome."""
+    hh = max(1., yb - Y)
+    bu_sky(cv, X - 2, Y - 2, W + 4, yb - Y + 3, lambda x, y: .36 - .4 * (y - Y) / hh, seed=3, pitch=2.)
 
 
 def _hood(cv, cx, yb, u, rng, X, W):
@@ -65,9 +69,12 @@ def _hood(cv, cx, yb, u, rng, X, W):
          (cx - .6 * u, yb - .785 * u), (cx - .57 * u, yb - .77 * u), (cx - .5 * u, yb - .7 * u),
          (cx - .38 * u, yb - .55 * u), (cx - .2 * u, yb - .38 * u), (cx + .05 * u, yb - .2 * u), (cx + .4 * u, yb)]
     cv.obj([L], 1.)
-    # the whole cone ruled dark (rock and timber), the east face crossed
-    cv.hair(C.hatch_poly(L, 75, 1.5))
-    cv.hair(C.hatch_poly([(px, py)] + [p for p in L if p[0] > px] + [(px - .05 * u, yb)], -30, 2, .5))
+    # the cone cut in rock lines that swell into the east (shade) face, which is crossed
+    rock = bu_lin(cx - 1.2 * u, 0, cx + .1 * u, 0, .3, .8)
+    for pl in bu_hatch(L, 75, 2., .3):
+        bu_cut(cv, pl, rock)
+    for pl in bu_hatch([(px, py)] + [p for p in L if p[0] > px] + [(px - .05 * u, yb)], -30, 2.5):
+        bu_cut(cv, pl, lambda x, y: .4)
 
     def ridge_y(x):
         for (ax, ay), (bx, by) in zip(L, L[1:]):
@@ -111,9 +118,7 @@ def _hills(cv, cx, yb, u, X, W):
         x = cx + .3 * u + (X + W + 4 - cx - .3 * u) * i / 30
         pts.append((x, yb - .13 * u - .05 * u * math.sin(i * .45) - .03 * u * math.sin(i * 1.3)))
     pts.append((X + W + 4, yb))
-    cv.obj([pts], 1.)
-    cv.hair(C.hatch_poly(pts, 20, 2))
-    cv.hair(C.hatch_poly(pts, -40, 3))
+    bu_form(cv, pts, lambda x, y: .3 + .4 * (y - yb + .2 * u) / (.2 * u), 12., 2., 0, -40., 1.)
 
 
 def _drum_and_dome(cv, cx, yb, u):
@@ -151,11 +156,13 @@ def _drum_and_dome(cv, cx, yb, u):
     ay0 = yb - .66 * u
     att = R(cx - a, ay0, cx + a, y0 - .045 * u)
     cv.obj([att], 1.)
-    for i in range(1, 12):
-        th = math.pi * i / 12
+    na = 12 if u >= 45 else 6
+    for i in range(1, na):
+        th = math.pi * i / na
         x = cx - a * math.cos(th)
         cv.line([(x, ay0 + .025 * u), (x, y0 - .07 * u)]) if big else cv.hair([(x, ay0 + 1.5), (x, y0 - .055 * u)])
-    cv.hair(C.hatch_poly(R(cx + a * .45, ay0, cx + a, y0 - .045 * u), 90, 1.5, .5))
+    if u >= 45:
+        cv.hair(C.hatch_poly(R(cx + a * .45, ay0, cx + a, y0 - .045 * u), 90, 1.5, .5))
     # dome
     rx, ry = .2 * u, .25 * u
     dy = ay0
@@ -167,15 +174,16 @@ def _drum_and_dome(cv, cx, yb, u):
         return [(cx + rx * sx * math.cos(math.pi / 2 * t), dy - ry * math.sin(math.pi / 2 * t)) for t in
                 [t0 + (t1 - t0) * j / 14 for j in range(15)]]
     # ribs everywhere, every 1/6 of the half-width
-    for k in range(-5, 6):
-        cv.hair(meridian(k / 6., 0, .9))
+    nk = 2 if u < 45 else 5
+    for k in range(-nk, nk + 1):
+        cv.hair(meridian(k / (nk + 1.), 0, .9))
     # shading on the right: meridians spaced 1.5 px apart in projection at the base
     s = 0.
     while True:
         s += 1.5 / rx
         if s >= 1:
             break
-        if s > .25:
+        if s > (.55 if u < 45 else .25):
             cv.hair(meridian(s, 0, .55 + .35 * s))
     # the turned-under limb, black
     black(cv, [(cx + rx * math.cos(math.pi / 2 * t), dy - ry * math.sin(math.pi / 2 * t)) for t in [j / 12 for j in range(13)]]
@@ -218,7 +226,7 @@ def _wings(cv, cx, yb, u, X, W):
         cy0, cy1 = top + .035 * u + 1, yb - .085 * u
         x = x0 + pc / 2
         while x < x1 - 1:
-            cv.line([(x, cy0), (x, cy1)])
+            (cv.hair if u < 45 else cv.line)([(x, cy0), (x, cy1)])
             if big:
                 cv.hair([(x + pc * .45, cy0), (x + pc * .45, cy1)])
             x += pc
@@ -351,7 +359,7 @@ def _pool(cv, cx, yb, u, rng, X, W, Y1):
                 if xx > cx - half * .1 and u > 90:
                     cv.hair([(xx + .5, y + 1), (xx + seg - .5, y + 1)])
                 xx += seg + rng.uniform(1.2, 2.2)
-        y += 2
+        y += 3 if u < 45 else 2
         row += 1
 
 
@@ -449,7 +457,12 @@ def scene(X, Y, W, H, clip_d, seed=0, cid="cv1"):
     cx = X + W / 2
     yb = Y + H * .7
     u = min(H * .67, W * .6)
+    _SMALL[0] = u < 45
     cv = C.Canvas()
+    if _SMALL[0]:
+        # at marginal size every contour is cut fine, so the outlines don't close up the masses
+        _obj = cv.obj
+        cv.obj = lambda polys=(), outline=1.: _obj(polys, .5 if outline == 1. else outline)
     _sky(cv, X, Y, W, H, yb)
     _hood(cv, cx, yb, u, rng, X, W)
     _hills(cv, cx, yb, u, X, W)
@@ -1910,8 +1923,8 @@ def vg_wreath(cv, cx, cy, r, kind="wheat", seed=0, k=1.):
                 vg_wheat(cv, pts, .55, k)
             else:
                 px, py = pts[4]
-                for q in range(5):
-                    t = q / 4
+                ts = [q / 4 for q in range(5)] if k > .9 else [.17, .5, .83]
+                for t in ts:
                     x_, y_ = pts[int(t * 8)]
                     aa = a0 + (a1 - a0) * t
                     for s2 in (-1, 1):
@@ -1921,7 +1934,7 @@ def vg_wreath(cv, cx, cy, r, kind="wheat", seed=0, k=1.):
                 if j % 3 == 1:
                     cone = _C._ell_pts(px, py, 2.2 * k, 3.4 * k, 12)[:-1]
                     cv.obj([cone], .5)
-                    cv.line(_C.hatch_poly(cone, 0, 1.5))
+                    (cv.line if k > .9 else cv.hair)(_C.hatch_poly(cone, 0, 1.5))
     # the bow
     for sg in (-1, 1):
         loop = [(cx, cy + r + 3), (cx + sg * 5 * k, cy + r - 1), (cx + sg * 7 * k, cy + r + 3), (cx + sg * 4 * k, cy + r + 5)]

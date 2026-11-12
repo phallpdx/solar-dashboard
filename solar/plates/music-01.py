@@ -1619,7 +1619,11 @@ def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
     cv.obj([poly], 1.)
     ys = py + ph * snow
     # east face: fall lines from the summit ridge, crowding toward the shadowed foot
-    n = max(10, int(wr * .75 / 2.)) if ph >= 70 else max(5, int(wr * .7 / 3.))
+    n = max(10, int(wr * .75 / 2.)) if ph >= 70 else 0
+    if ph < 70:
+        east = [(px + wr * .06 * t, py + ph * t) for t in [i / 12 for i in range(13)]][::-1] + R[1:]
+        cv.hair(C.hatch_poly(east, 62, 2.))
+        cv.hair(clip_in(C.hatch_poly(east, -20, 2.5), [(px - wr, ys), (px + 2 * wr, ys), (px + 2 * wr, base + 2), (px - wr, base + 2)]))
     for k in range(1, n + 1):
         f = k / n
         t0 = (.02 if k % 4 == 0 else (.1 if k % 2 == 0 else .22)) if ph >= 70 else (.12 if k % 2 else .3)
@@ -1639,7 +1643,7 @@ def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
     cv.line([(px + wr * .06 * t + _m.sin(t * 9) * .5, py + ph * t) for t in [i / 12 for i in range(13)]])
     # west face: glacier ribs with short shadow ticks on their east side
     for k, f in enumerate((.18, .36, .55, .74)):
-        a = lp(.04 + .12 * f)
+        a = lp((.04 + .12 * f) if ph >= 70 else (.3 + .2 * f))
         b = lp(1.)
         b = (px - wl * .78 * f, base)
         rib = [(a[0] + (b[0] - a[0]) * t + _m.sin(t * 7 + k) * ph * .012, a[1] + (b[1] - a[1]) * t) for t in [i / 14 for i in range(15)]]
@@ -1777,6 +1781,48 @@ def vignette_plate(w, h, ctx, spec):
         back, front = spec["frame"](poly, (x, y, sw, sh))
     body = spec["scene"](x, y, sw, sh, _d(rag, True, 0), spec.get("level", 1))
     return plate_doc(w, h, back + body + front, seed)
+
+
+# walnut and other woods: swelling grain lines bowing round knots
+def wood(cv, x, y, w, h, seed, pitch=2., knots=2, vertical=False, poly=None, outline=0.):
+    rng = random.Random(seed)
+    if poly is None:
+        poly = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
+    cv.obj([poly], outline)
+    L_, B_ = (h, w) if vertical else (w, h)
+    ks = [(rng.uniform(.15, .85) * L_, rng.uniform(.2, .8) * B_, rng.uniform(4, 9) * (B_ / 120) ** .3) for _ in range(knots)]
+    ph = rng.uniform(0, 6)
+    b = -6.
+    while b < B_ + 6:
+        cur, heavy = [], None
+        u = -4.
+        while u < L_ + 4:
+            v = b + 2.2 * math.sin(u / 53. + b / 37. + ph) + .8 * math.sin(u / 17. + b * .21)
+            for kx, ky, ksz in ks:
+                du = (u - kx) / (ksz * 2.6)
+                g = math.exp(-du * du)
+                dv = b - ky
+                v += math.copysign(ksz * 1.3, dv) * g * math.exp(-abs(dv) / (ksz * 1.6))
+            nz = math.sin(b * .53 + .3 * math.sin(u / 29.) + ph) + .6 * math.sin(u / 41. - b * .11)
+            hv = nz > .55
+            p = (x + v, y + u) if vertical else (x + u, y + v)
+            if heavy is None or hv == heavy:
+                cur.append(p)
+            else:
+                cur.append(p)
+                (cv.line if heavy else cv.hair)(cur)
+                cur = [p]
+            heavy = hv
+            u += 3.
+        if len(cur) > 1:
+            (cv.line if heavy else cv.hair)(cur)
+        b += pitch
+    for kx, ky, ksz in ks:
+        cx, cy = (x + ky, y + kx) if vertical else (x + kx, y + ky)
+        ex, ey = (ksz * .55, ksz) if vertical else (ksz, ksz * .55)
+        for f in (.25, .55, .85):
+            cv.line(E(cx, cy, ex * f, ey * f, 18))
+    return ks
 # ==== end of studio kit ====
 
 import re
@@ -1927,47 +1973,6 @@ def tonearm(cv, px, py, nx, ny, s=1.):
 # ------------------------------------------------------------------------------------------
 # walnut: swelling grain lines bowing round knots (a real texture, not a ruled ground)
 # ------------------------------------------------------------------------------------------
-
-def wood(cv, x, y, w, h, seed, pitch=2., knots=2, vertical=False, poly=None, outline=0.):
-    rng = random.Random(seed)
-    if poly is None:
-        poly = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
-    cv.obj([poly], outline)
-    L_, B_ = (h, w) if vertical else (w, h)
-    ks = [(rng.uniform(.15, .85) * L_, rng.uniform(.2, .8) * B_, rng.uniform(4, 9) * (B_ / 120) ** .3) for _ in range(knots)]
-    ph = rng.uniform(0, 6)
-    b = -6.
-    while b < B_ + 6:
-        cur, heavy = [], None
-        u = -4.
-        while u < L_ + 4:
-            v = b + 2.2 * math.sin(u / 53. + b / 37. + ph) + .8 * math.sin(u / 17. + b * .21)
-            for kx, ky, ksz in ks:
-                du = (u - kx) / (ksz * 2.6)
-                g = math.exp(-du * du)
-                dv = b - ky
-                v += math.copysign(ksz * 1.3, dv) * g * math.exp(-abs(dv) / (ksz * 1.6))
-            nz = math.sin(b * .53 + .3 * math.sin(u / 29.) + ph) + .6 * math.sin(u / 41. - b * .11)
-            hv = nz > .55
-            p = (x + v, y + u) if vertical else (x + u, y + v)
-            if heavy is None or hv == heavy:
-                cur.append(p)
-            else:
-                cur.append(p)
-                (cv.line if heavy else cv.hair)(cur)
-                cur = [p]
-            heavy = hv
-            u += 3.
-        if len(cur) > 1:
-            (cv.line if heavy else cv.hair)(cur)
-        b += pitch
-    for kx, ky, ksz in ks:
-        cx, cy = (x + ky, y + kx) if vertical else (x + kx, y + ky)
-        ex, ey = (ksz * .55, ksz) if vertical else (ksz, ksz * .55)
-        for f in (.25, .55, .85):
-            cv.line(E(cx, cy, ex * f, ey * f, 18))
-    return ks
-
 
 # ------------------------------------------------------------------------------------------
 # the record and its label

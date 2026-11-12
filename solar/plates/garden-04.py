@@ -4,7 +4,7 @@ An oval vignette of the prairie edge: oatgrass and camas in the lit foreground, 
 limbs at the wood's edge (it smokes only when the page says burning is OK), the fence line running
 back, Douglas fir and Garry oak massed in burin tone behind, cumulus over them. The top of the oval is
 ruled; its foot frays out, and grass grows up over it out of the ground beyond. Easter egg (the
-plan's): a kestrel on a fence post. At tall sizes the garlic-bed scene stays available to the code."""
+plan's): a kestrel on a fence post."""
 import sys
 import math
 import random

@@ -2573,6 +2573,8 @@ PLAN_MERGES = [
     ("Portland State Vikings", "Portland Timbers"), ("Portland Pilots", "Portland Timbers"),
     ("f1-h", "Portland Timbers"), ("title-h", "Portland Timbers"),   # The scoreboard
     ("drum-h", "rec-h"), ("bday-h", "rec-h"),     # The record page
+    ("plane-h", "sky-h"),                         # Planes overhead -> two rows in Sky events
+    ("Portland Timbers", "Portland Trail Blazers"),   # one scoreboard: the Blazers lead, the rest follow
     ("show-h", "gig-h"),                          # Live from Portland -> live music
     ("clsmov-h", "kidmov-h"),                     # Tonight's movies
     ("oldpdx-h", "near-h"),                       # Old Portland -> local history
@@ -2580,22 +2582,22 @@ PLAN_MERGES = [
     ("minus-h", "This week at the coast"), ("cev-h", "shell-h"),
 ]
 # Most items a card's main list prints (the plan's item caps: the main tool against orphan sheets).
-PLAN_CAPS = {"plan-h": 5, "cal-h": 8, "out-h": 8, "localnews-h": 6, "bignews-h": 7, "stories-h": 8, "finds-h": 3,
+PLAN_CAPS = {"plan-h": 5, "cal-h": 8, "out-h": 8, "localnews-h": 6, "bignews-h": 7, "stories-h": 4, "reviews-h": 4, "finds-h": 3,
              "open-h": 5, "big-h": 5, "liq-h": 6, "br-h": 5, "tv-h": 6, "alb-h": 6, "jazz-h": 8, "gig-h": 6, "good-h": 3,
              "play-h": 4, "mush-h": 5, "birds-h": 5, "fire-h": 4, "road-h": 4, "hol-h": 8}
 PLAN_SCIENCE_BRIEFS = 4
-# Outright cuts, held until Parker decides: flip one to True and the next edition drops it.
-PLAN_CUTS = {
-    "planes": False,            # Planes overhead (plane-h)
-    "sources": False,           # the Sources and credits pages (credits stay as each page's footer line)
-    "civics-votes": False,      # the full vote lists on Who speaks for you
-    "born-today": False,        # This day in history: Born today
-    "also-nearby": False,       # Local history: the "Also nearby" list
-    "asteroids": False,         # Sky events: asteroids passing by
-    "bday-lists": False,        # Album birthdays except round anniversaries
-    "team-news": False,         # fan-pulse and news runs on team pages
-    "market-narratives": False, # long "what moved" and "worth watching" narratives
-    "artist-nonmusician": False,  # Meet a local artist when the artist is not a musician
+# Parker on the plan's cut list: "Merge, don't cut." Each item shrinks to a line or two inside the page it
+# belongs with (the merges above put it there); these say how much of it stays. Set a value to 0 to drop it.
+PLAN_SHRINK = {
+    "planes": 2,                # Planes overhead -> two rows in Sky events
+    "civics-votes": 1,          # the newest vote per member: one compact summary
+    "civics-news": 1,           # one news line per member
+    "born-today": 2,            # Born today -> two names in This day in history
+    "also-nearby": 2,           # Local history: two nearby places
+    "asteroids": 1,             # Sky events: one line
+    "bday-lists": 2,            # Album birthdays -> two lines on the record page
+    "team-news": 1,             # team pages -> one headline each on the scoreboard
+    "long-writeups": 2,         # market and helium narratives -> a two-line summary (paragraphs)
 }
 
 # No fact twice: an item already printed earlier in the edition is taken out
@@ -2872,13 +2874,6 @@ def main(site):
             continue
         by_id[ss]["cards"].remove(sc)
         dc["html"] += f'<div class="kbrief">{as_sub(sc["html"])}</div>'
-    if PLAN_CUTS["planes"]:
-        for sec_ in by_id.values():
-            sec_["cards"] = [c_ for c_ in sec_["cards"] if 'id="plane-h"' not in c_["html"]]
-    if PLAN_CUTS["artist-nonmusician"]:
-        for sec_ in by_id.values():
-            sec_["cards"] = [c_ for c_ in sec_["cards"] if not ('id="artist-h"' in c_["html"]
-                             and not re.search(r"\b(music|musician|band|singer|drummer|jazz|songwriter|guitar)", _text(c_["html"]), re.I))]
     by_id = {k: s_ for k, s_ in by_id.items() if s_["cards"]}
     # Science: one page of briefs, not seven taps of three lines each.
     sci = by_id.get("science", {}).get("cards", [])
@@ -2958,7 +2953,7 @@ def main(site):
     dedupe(pages, [])
     import datetime as _dt0
     kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
-                       caps=PLAN_CAPS, cuts=PLAN_CUTS)
+                       caps=PLAN_CAPS, shrink=PLAN_SHRINK)
     # A card the presentation pass emptied (a trail list with no report text) is not a page.
     pages = [pg for pg in pages if len(body_text(pg["html"])) >= 25 or re.search(r"<img\b", pg["html"])]
     for sid in order:
@@ -3038,7 +3033,6 @@ def main(site):
     for i in order:
         seq.append(front[i])
         seq.extend(pg["file"] for pg in pages if pg["sec"] == i)
-    _TITLES["sources.html"] = "Sources and credits"
     seq.append("end.html")
     _TITLES["end.html"] = "The end"
     _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
@@ -3117,11 +3111,13 @@ def main(site):
         f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
                      f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
                      f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
-                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits and not PLAN_CUTS["sources"] else "") + '</div>',
+                     + ('<div class="kpanel kcolophon"><p class="kkick">Supplied by</p><p>' + " ".join(
+                         f'<b>{html.escape(by_id[i]["title"])}:</b> {html.escape(", ".join(dict.fromkeys(n.strip() for m in credits[i] for n in re.split(r"\s*·\s*", _text(m)) if n.strip() and len(n.strip()) < 40)))}.'
+                         for i in order if credits.get(i)) + '</p></div>' if credits else "") + '</div>',
                      "kme", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
                      run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
 
-    if credits and not PLAN_CUTS["sources"]:
+    if False:   # the Sources pages: replaced by each page's credit line and the colophon on The end
         rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
                        for i in order if credits.get(i))
         with open(os.path.join(out, "sources.html"), "w") as f:

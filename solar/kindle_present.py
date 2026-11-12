@@ -228,15 +228,26 @@ PRESENT = r"""
   const HEADS = 'h3, h4, .sub, .day-h, summary, .shelf-h';
   function cutSection(card, re) {
     for (const h of $$(card, HEADS)) {
-      if (!h.isConnected || !re.test(txt(h))) continue;
+      if (!card.contains(h) || !re.test(txt(h))) continue;
       let n = h.nextElementSibling; kill(h);
       while (n && !n.matches(HEADS)) { const nx = n.nextElementSibling; kill(n); n = nx; }
     }
   }
-  const CUTS = {
-    'civics-votes': ['reps-h', /floor votes/i], 'born-today': ['hist-h', /born today/i], 'also-nearby': ['near-h', /also nearby/i],
-    'asteroids': ['sky-h', /asteroid/i], 'team-news': [null, /in the news|fan pulse|latest news|what fans/i],
-    'market-narratives': ['mkt-h', /what moved|worth watching/i],
+  // keep a section's heading and its first n items (rows of its list, or paragraphs)
+  function shrinkSection(card, re, n) {
+    for (const h of $$(card, HEADS)) {
+      if (!card.contains(h) || !re.test(txt(h))) continue;
+      const sib = []; for (let x = h.nextElementSibling; x && !x.matches(HEADS); x = x.nextElementSibling) sib.push(x);
+      if (!n) { kill(h); sib.forEach(kill); continue; }
+      if (sib.length === 1 && sib[0].children.length > n && !/^P$/.test(sib[0].tagName)) Array.from(sib[0].children).slice(n).forEach(kill);
+      else sib.slice(n).forEach(kill);
+    }
+  }
+  const SHRINK = {
+    'civics-votes': ['reps-h', /floor votes/i], 'civics-news': ['reps-h', /in the news/i], 'born-today': ['hist-h', /born today/i],
+    'also-nearby': ['near-h', /also nearby/i], 'asteroids': ['sky-h', /asteroid|close approach/i],
+    'team-news': [null, /in the news|fan pulse|latest news|what fans|latest/i], 'long-writeups': ['mkt-h', /what moved|worth watching|why it moved/i],
+    'planes': ['plane-h', null], 'bday-lists': ['bday-h', null],
   };
   const SRC = /\b(TomTom|TripCheck|ODOT|WTA|NIFC|USGS|BPA|Google( News)?|Wikidata|Metacritic|Wikipedia|eBird|iNaturalist|Open-Meteo|NOAA|SWPC|NWS|CDC|Goodreads|Library of Congress|Internet Archive|Art Institute|TVmaze|TMDB|Yahoo|PVGIS|NASA|SDO|APsystems|Ambient|ESPN|7Timer|CelesTrak|JPL|AISstream|EIA|Redfin|Zillow|Ticketmaster|Songkick)\b/;
   function credit(d, extra) {
@@ -258,9 +269,25 @@ PRESENT = r"""
   return pages.map(pg => {
     const d = document.createElement('div'); d.innerHTML = pg.html;
     step('clean', () => clean(d));
-    step('cuts', () => { for (const k in CUTS) if ((args.cuts || {})[k]) { const c = CUTS[k];
-      if (c[0]) { const h = d.querySelector('#' + c[0]); if (h) cutSection(h.closest('.card, .brief, section') || d, c[1]); }
-      else if (pg.sec === 'sports') cutSection(d, c[1]); } });
+    step('shrink', () => { const sh = args.shrink || {}; for (const k in SHRINK) if (k in sh) { const c = SHRINK[k], n = sh[k];
+      const h = c[0] && d.querySelector('#' + c[0]), card = h ? (h.closest('.card, .brief, section') || d) : (c[0] ? null : (pg.sec === 'sports' ? d : null));
+      if (!card) continue;
+      if (c[1]) shrinkSection(card, c[1], n); else capList(card, n);
+      if (k === 'long-writeups') for (const id of ['mkt-h', 'he-h']) { const hh = d.querySelector('#' + id); if (!hh) continue;
+        for (const p of $$(hh.closest('.card') || d, 'p.summary, p.note, .summary')) { const t = txt(p);
+          if (t.length > 220) { const cut = t.slice(0, 210).replace(/\s+\S*$/, ''); const m = /^(.{60,210}?[.!?])\s/.exec(t); p.textContent = m ? m[1] : cut + '…'; } } } } });
+    // today's front: one title, no tiles that belong to other pages, no quiet-alert line
+    step('today', () => { const tc = d.querySelector('#today-card'); if (!tc || !d.querySelector('.kfrontwx')) return;
+      kill(tc.querySelector(':scope > .head'));
+      for (const m of $$(tc, '.mini')) if (/^(Daylight|Solar tomorrow|Smoke outlook)/i.test(txt(m.querySelector('.k')))) kill(m);
+      for (const a of $$(d, '.allclear')) if (/^No strong weather/i.test(txt(a))) kill(a); });
+    // the weather station: the answer and the jar; not the 3-day yard table, the heat filler or the since-start total
+    step('station', () => { const w = d.querySelector('#wx-h'); if (!w) return;
+      for (const p of $$(d, 'p, .note')) if (/^Solar panels lose some output/.test(txt(p))) kill(p);
+      for (const x of $$(d, '.yd')) kill(x.closest('.yd-row, .yard-days') || x);
+      for (const x of $$(d, 'span, div, small')) if (/^Since your gauge started/.test(txt(x)) && txt(x).length < 40) kill(x); });
+    // tickets: the run-on "Already on sale" paragraph is noise
+    step('tickets', () => { for (const p of $$(d, 'p.kalso')) if (/^Already on sale/.test(txt(p))) kill(p); });
     step('caps', () => { for (const id in (args.caps || {})) { const h = d.querySelector('#' + id); if (!h) continue;
       capList(h.closest('section.card, .card, .brief') || h.parentElement, args.caps[id]); } });
     for (const id in CARDS) {
@@ -374,11 +401,16 @@ CSS = r"""
 #kview #kmain .kkwh sup{font:600 11px/1 var(--k-serif) !important;letter-spacing:.1em;text-transform:uppercase;margin-left:4px;vertical-align:1px}
 #kview #kmain .kpanel .kcredit{font:600 11px/15px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase !important;font-style:normal !important;
   margin:8px 0 0 !important;padding:4px 0 0 !important;border-top:1px solid #8a8a8a}
+/* section fronts: a little slack so a four-story list never spills a blank sheet */
+html .ksecfront #kview #kmain .kfl.kcompact a{padding-top:5px !important;padding-bottom:10px !important}
+.kendpage #kview #kmain .kcolophon{margin:14px 0 0 !important;text-align:left}
+.kendpage #kview #kmain .kcolophon p{font:430 13px/18px var(--k-serif) !important;margin:0 !important}
+.kendpage #kview #kmain .kcolophon .kkick{font:600 12px/16px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;margin:0 0 4px !important}
 #kview #kmain .kunit{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:4px 0 0 !important}
 """
 
 
-def run(pages, today_iso, caps=None, cuts=None):
+def run(pages, today_iso, caps=None, shrink=None):
     """Edit every page's HTML in place. Never loses the edition: on any failure the pages stay as they were."""
     from playwright.sync_api import sync_playwright
     exe = os.environ.get("KINDLE_CHROMIUM") or None
@@ -389,7 +421,7 @@ def run(pages, today_iso, caps=None, cuts=None):
             p.on("console", lambda m: m.text.startswith("kindle ") and print(f"kindle_present: {m.text}", file=sys.stderr))
             res = p.evaluate(PRESENT, {"pages": [{"html": pg["html"], "file": pg.get("file", ""), "sec": pg.get("sec", ""),
                                                   "credit": pg.get("credit", "")} for pg in pages],
-                                       "today": today_iso, "caps": caps or {}, "cuts": cuts or {}})
+                                       "today": today_iso, "caps": caps or {}, "shrink": shrink or {}})
             browser.close()
         for pg, h in zip(pages, res):
             pg["html"] = h

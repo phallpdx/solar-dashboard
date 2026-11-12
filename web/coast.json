@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -10,12 +10,20 @@
       "url": "https://www.cannonbeach.org/haystackholidays/"
     },
     {
-      "name": "Hometown Tourism Days",
-      "date": "2026-11-07",
-      "end": "2026-11-11",
+      "name": "Justin Curry: Violin Portraits live at The Lyons Den",
+      "date": "2026-11-12",
+      "end": "2026-11-12",
       "town": "Seaside",
-      "summary": "Explore local attractions in Pacific and Clatsop counties from 8:00 am to 5:00 pm.",
-      "url": "https://www.seasideor.com/event/hometown-tourism-day-at-seaside-museum-seaside-aquarium/"
+      "summary": "Violin portraits from 7:00 pm to 9:00 pm for $5.00.",
+      "url": "https://www.seasideor.com/event/justin-curry-violin-portraits-live-at-the-lyons-den-2/"
+    },
+    {
+      "name": "Psilocybin Therapy Educational Event",
+      "date": "2026-11-12",
+      "end": null,
+      "town": "Manzanita",
+      "summary": "Free educational event at Pine Grove House.",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBxVFc2WmJ5Qk40c2N1eWctYjZPb1BpWWs1WV9KLTlfcllBZnY1VTZOVHdnRGxzeDNPQVRleDF3TldJRjBsUmE0RVRnaXVCNXduZmlaOWlsNnhaNTA?oc=5"
     },
     {
       "name": "Let’s Go Birding! Coffenbury Lake Bird Walk",
@@ -34,12 +42,28 @@
       "url": "https://www.seasideor.com/event/holiday-bazaar-3/"
     },
     {
+      "name": "A Strange Bird w/Bikehouse live at The Lyons Den",
+      "date": "2026-11-13",
+      "end": "2026-11-13",
+      "town": "Seaside",
+      "summary": "Indie/Soul/R&B music from 7:00 pm to 9:00 pm for $5.00.",
+      "url": "https://www.seasideor.com/event/a-strange-bird-w-bikehouse-live-at-the-lyons-den/"
+    },
+    {
       "name": "Film Screening – The Taking of Pelham One Two Three",
       "date": "2026-11-14",
       "end": "2026-11-14",
       "town": "Seaside",
       "summary": "Film series lecture at the public library from 2:00 pm - 4:30 pm. Free.",
       "url": "https://www.seasideor.com/event/film-screening-the-taking-of-pelham-one-two-three/"
+    },
+    {
+      "name": "A Town Called Home live at The Lyons Den",
+      "date": "2026-11-14",
+      "end": "2026-11-14",
+      "town": "Seaside",
+      "summary": "Roots/Country music from 7:00 pm to 9:00 pm for $5.00.",
+      "url": "https://www.seasideor.com/event/a-town-called-home-live-at-the-lyons-den/"
     },
     {
       "name": "Beach Towel Tuesdays",
@@ -58,12 +82,36 @@
       "url": "https://www.seasideor.com/event/iron-chef-goes-coastal-3/"
     },
     {
+      "name": "HOLIDAY TREASURES GIFT SALE",
+      "date": "2026-11-19",
+      "end": "2026-11-19",
+      "town": "Seaside",
+      "summary": "Gift sale from 10:00 am to 2:00 pm.",
+      "url": "https://www.seasideor.com/event/holiday-treasures-gift-sale/"
+    },
+    {
       "name": "Let’s Go Birding! Fort to Sea Trail Bird Hike",
       "date": "2026-11-20",
       "end": null,
       "town": "Seaside",
       "summary": "Guided walk along the Fort to Sea Trail.",
       "url": "https://www.seasideor.com/event/lets-go-birding-fort-to-sea-trail-bird-hike-8/"
+    },
+    {
+      "name": "Beach Towel Tuesdays",
+      "date": "2026-11-24",
+      "end": "2026-11-24",
+      "town": "Seaside",
+      "summary": "Post a photo to receive a free beach towel from 9:00 am to 5:00 pm.",
+      "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
+    },
+    {
+      "name": "Seaside Turkey Trot 5K Family Run at SEPRD",
+      "date": "2026-11-26",
+      "end": "2026-11-26",
+      "town": "Seaside",
+      "summary": "5K family run starting at 9 am. Doors open at 8 am.",
+      "url": "https://www.seasideor.com/event/seaside-turkey-trot-5k-family-run-at-seprd-2/"
     }
   ]
 }

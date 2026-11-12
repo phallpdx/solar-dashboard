@@ -93,7 +93,9 @@ jobs:
           mkdir -p _site
           cp web/* _site/
           cp data/dashboard.json _site/
-          python -m solar.kindle data/dashboard.json _site/kindle.html
+          # One pass over everything the editions print: one value per fact, each item once, nothing stale.
+          python -m solar.integrity _site || echo "integrity pass failed; building from the raw data"
+          python -m solar.kindle _site/dashboard.json _site/kindle.html
           if [ -d data/thai ]; then cp -r data/thai _site/; fi
 
       # The Evening Edition: a short bedtime read for the Kindle (evening.html). Built every run, so

@@ -236,6 +236,76 @@
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
         }
       ]
+    },
+    {
+      "title": "Ram PBR Portland",
+      "date": "2027-01-22",
+      "ends": "2027-01-23",
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "High attendance expected for rodeo events.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
+        }
+      ]
+    },
+    {
+      "title": "WWE Friday Night Smackdown",
+      "date": "2027-01-29",
+      "ends": null,
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "Large crowds will likely impact traffic.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/wwe-jan-29-2027"
+        }
+      ]
+    },
+    {
+      "title": "Harlem Globetrotters",
+      "date": "2027-01-31",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Sports",
+      "why": "Family events draw significant local crowds.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Gracie Abrams",
+      "date": "2027-01-31",
+      "ends": "2027-02-01",
+      "venue": "Moda Center",
+      "kind": "Concert",
+      "why": "Expect high pedestrian traffic near the venue.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Portland Winter Light Festival",
+      "date": "2027-02-01",
+      "ends": null,
+      "venue": "",
+      "kind": "Holiday lights",
+      "why": "Glowing sculptures and twinkling lights.",
+      "sources": [
+        {
+          "name": "Travel Portland",
+          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
+        }
+      ]
     }
   ]
 }

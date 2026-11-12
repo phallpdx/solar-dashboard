@@ -23,6 +23,9 @@ import os
 import sys
 import threading
 
+from . import ornament as kindle_orn
+from . import kindle_present
+
 
 TZ = "America/Los_Angeles"
 WIDTH, HEIGHT = 618, 714  # Paperwhite 11 browser: 1236 px / 2, less the toolbar that never hides
@@ -522,6 +525,8 @@ CURATE = r"""
   step('solar asleep', () => {
     const now = $('#t-now'), load = $('#loads .load');
     if (!now || parseFloat(txt(now)) !== 0 || !load) return;
+    if (/No reading yet today|hasn.t reported yet/.test(txt($('#t-now-s')))) { const td = $('#t-today'), ts = $('#t-today-s');
+      if (td) td.textContent = '–'; if (ts) ts.textContent = 'No inverter reading yet today · ' + txt(ts).replace(/ · last year this day: .*$/, ''); }
     const kw = txt(load).match(/~?(\d+) kWh/), when = txt(load.querySelector('b'));
     const tile = now.closest('.tile'); if (!tile || !kw) return;
     const k = tile.querySelector('.k'); if (k) k.textContent = 'Expected today';
@@ -559,10 +564,8 @@ CURATE = r"""
 
   step('mountain', () => {
     const rows = $$('#mtn > div, #mtn .mtn');
-    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r)))) {
+    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r))))
       verdict('All three peaks are hidden today and tomorrow.', $('#mtn'));
-      for (const r of rows) for (const el of r.querySelectorAll('*')) if (!el.children.length && /Hidden today|Tomorrow: hidden/i.test(txt(el))) kill(el);
-    }
     for (const el of $$('#ski-card .k, #ski-card .tile span')) if (/^Last 24 hours$/i.test(txt(el))) el.textContent = '24-hour change';
   });
 
@@ -586,7 +589,7 @@ CURATE = r"""
     for (const el of $$('#columbia-card p, #columbia-summary')) if (/tops out at [\d.]+ ft (Mon|Tue|Wed|Thu|Fri|Sat|Sun)/.test(txt(el))) {
       const m = txt(el).match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})/);
       if (m) { const d = new Date(`${m[1]} ${m[2]}, ${new Date().getFullYear()}`), t0 = new Date(); t0.setHours(0, 0, 0, 0);
-        if (d < t0) el.textContent = el.textContent.replace(/[;,]?\s*(the )?forecast tops out at [^.;]*[.;]?/i, '.').replace(/\.\s*\./, '.'); }
+        if (d < t0) el.textContent = el.textContent.replace(/\s*(?:The NWS )?forecast tops out at \d+(?:\.\d+)? ft [^]*?\.(?=\s|$)/i, '').trim(); }
     }
   });
 
@@ -782,7 +785,7 @@ CURATE = r"""
     // Repeated small print under each row of a list.
     for (const list of $$('.lines, #mush, #re, #he')) {
       let prev = '';
-      for (const c of list.querySelectorAll('.cite, small')) { const t = txt(c); if (t && t === prev) kill(c); else prev = t; }
+      for (const c of list.querySelectorAll('.cite, small')) { const t = txt(c); if (t && t === prev && (c.matches('.cite') || /[.!]$/.test(t))) kill(c); else prev = t; }  // repeated notes only, never data (team, position, place, date)
     }
     const mm = txt($('#mush-meta')).replace(/″/g, ' in');
     if (mm) for (const s of $$('#mush small')) if (mm.includes(txt(s).replace(/″/g, ' in'))) kill(s);
@@ -797,7 +800,7 @@ CURATE = r"""
     const td = new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
     for (const el of $$('p, small, .meta, span')) if (!el.children.length && /^(Summary|Analysis) as of /.test(txt(el)) && txt(el).includes(td)) kill(el);
     // Germ report that contradicts itself.
-    for (const el of $$('#germ-card p, #germs p, #germ p')) if (/Nothing much going around/i.test(txt(el)) && /Moderate|High/.test(txt(el.closest('.card') || el))) el.textContent = 'Mostly quiet; one thing is running at a moderate level, below.';
+    for (const el of $$('#bug-card p, #bug-note, #germ-card p')) if (/Nothing much going around/i.test(txt(el)) && /Moderate|High/.test(txt(el.closest('.card') || el))) el.textContent = 'Mostly quiet; one thing is running at a moderate level, below.';
   });
 
   step('small copy', () => {
@@ -849,8 +852,8 @@ CURATE = r"""
   step('alfred', () => {
     const brief = $('#brief'); if (!brief) return;
     const mins = s => { s = (s || '').toLowerCase().trim(); if (s === 'noon') return 720;
-      const m = s.match(/(\d{1,2})(?::(\d\d))?\s*([ap])m?/); if (!m) return null;
-      let h = +m[1] % 12; if (m[3] === 'p') h += 12; return h * 60 + (+m[2] || 0); };
+      const m = s.match(/(\d{1,2})(?::(\d\d))?\s*(?:([ap])m?)?(?:\s*[–-]\s*\d{1,2}(?::\d\d)?\s*([ap])m?)?/); if (!m || !(m[3] || m[4])) return null;
+      let h = +m[1] % 12; if ((m[3] || m[4]) === 'p') h += 12; return h * 60 + (+m[2] || 0); };
     const label = n => { const h = Math.floor(n / 60), mm = n % 60; if (n === 720) return 'Noon';
       return `${h % 12 || 12}${mm ? ':' + String(mm).padStart(2, '0') : ''} ${h < 12 ? 'am' : 'pm'}`; };
     const nowM = (() => { const d = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Los_Angeles'})); return d.getHours() * 60 + d.getMinutes(); })();
@@ -941,6 +944,7 @@ CURATE = r"""
     if (zs.length > 1 && zs.slice(1).some(z => new RegExp('^' + longDow).test(txt(z.querySelector('b, .k') || z))) && /^Today/.test(txt(zs[0].querySelector('b, .k') || zs[0]))) {
       kill(zs[0]); for (const z of zs.slice(1)) { const b = z.querySelector('b, .k'); if (b && new RegExp('^' + longDow).test(txt(b))) b.textContent = b.textContent.replace(longDow, 'Today'); }
     }
+    for (const r of $$('#nights>div')) if (/Clouded out/.test(txt(r))) { const sm = r.querySelector('small'); if (sm) kill(sm); }
     // Doubled stories and shows.
     const key = s => new Set((s.match(/\b[A-Z][a-z]{4,}\b/g) || []).map(w => w.toLowerCase()));
     for (const box of $$('#stories, #bignews, #localnews')) { const seen = [];
@@ -1883,6 +1887,17 @@ html.kfit3 #kmain .facts[data-n="4"],html.kfit3 #kmain .facts[data-n="8"]{grid-t
 
 # Tap the right two thirds of the screen to go forward a screen, the left
 # third to go back. Taps on links still follow the link. Old-browser safe.
+# The designer layer: shared engraved kit plus Morning Edition rules scoped to html.kme.
+EINK_CSS += kindle_orn.DESIGN_CSS
+
+# Performance layer (kindle_full_perf): the card moves on its own layer; art boxes are fixed-size and contained.
+EINK_CSS += """
+html.kpaged body #kmain{will-change:transform}
+.kart{display:block;margin:0 auto;contain:strict;overflow:hidden}
+"""
+# How the data is presented (answer first, statuses, one .kpanel per text block): last, so it governs.
+EINK_CSS += kindle_present.CSS
+
 PAGER_JS = r"""
 <script>
 /* The Morning Edition pager, written for the Paperwhite 11 browser (Chrome 75, ES5).
@@ -1900,9 +1915,9 @@ PAGER_JS = r"""
   var kcont = document.getElementById('kcont'), rail = document.getElementById('krail');
   var run = document.querySelector('.krun'), bar = document.querySelector('.kbar'), st = root.style;
   if (!view || !main || !kview || !bar || !window.getComputedStyle || !('flexBasis' in st || 'webkitFlexBasis' in st)) return;
-  var cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
+  var lastBoxes = null, lastSig = '', cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
   var knx = document.querySelector('.kbar .knx'), knxLabel = knx ? knx.innerHTML : '';
-  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail';
+  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail,.kgl,.kchart,.kpanel,.krow';
   var TITLE = (function(){ var h = main.querySelector('h2,.sci-title,.poem-title'); return h ? (h.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : document.title; })();
   function on() { return (' ' + root.className + ' ').indexOf(' kpaged ') >= 0; }
   function cls(name, v) { root.className = root.className.replace(new RegExp('(^|\\s)' + name + '(?=\\s|$)', 'g'), '') + (v ? ' ' + name : ''); }
@@ -1912,6 +1927,7 @@ PAGER_JS = r"""
     var all = main.getElementsByTagName('*'), ls = [], us = [], hs = [], lb = 0, base = main.getBoundingClientRect().top;
     for (var i = 0; i < all.length; i++) {
       var el = all[i];
+      if (el.ownerSVGElement) continue;          // an engraving is one box: never walk its paths
       if (el.ownerSVGElement || !blockish(el)) continue;
       var r = el.getBoundingClientRect();
       if (r.height <= 0) continue;
@@ -1969,7 +1985,7 @@ PAGER_JS = r"""
   function plan() {
     var total = drawn(), start = 0, guard = 0, mtop = main.getBoundingClientRect().top;
     var c = [0], t = [0];
-    var b = boxes(), ls = b.ls, us = b.us;
+    var b = lastBoxes = boxes(), ls = b.ls, us = b.us;   // show() reuses these: no DOM walk per turn
     heads = b.hs; brk = [];
     var bs = main.querySelectorAll('.kbreak');
     for (var q = 0; q < bs.length; q++) brk.push(bs[q].getBoundingClientRect().top - mtop);
@@ -1997,15 +2013,32 @@ PAGER_JS = r"""
     c.push(Math.max(total, start + 1));
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
-  function layout() {
+  function sig() { var f = document.fonts ? document.fonts.status : '', im = main.getElementsByTagName('img'), c = 0;
+    for (var q = 0; q < im.length; q++) if (im[q].complete) c++;
+    return window.innerWidth + 'x' + window.innerHeight + f + c; }
+  var HINT = root.getAttribute('data-kfit');
+  function hinted() {                       // the build's measured answer, checked once; null = run the ladder
+    var m = /^([fp]):(.*)$/.exec(HINT || ''); if (!m || FLOW) return null;
+    cls('kfit1', false); cls('kfit2', false); cls('kfit3', false); cls('kfit4', false); main.style.zoom = '';
+    if (rail) rail.style.display = 'none';
+    var p = m[2].split(' '); for (var k = 0; k < p.length; k++) if (p[k]) cls(p[k], true);
+    if (m[1] === 'p') return plan();
+    if (!fits()) return null;
+    if (rail && drawn() < H * 0.6) { rail.style.display = 'block'; if (drawn() > H) rail.style.display = 'none'; }
+    return { cuts: [0, drawn()], tops: [0], last: 0 };
+  }
+  function layout(force) {
+    var s0 = sig(); if (!force && s0 === lastSig) return; lastSig = s0;
     try {
       cls('kpaged', true);
       main.style.top = '0px'; unscroll();
       if (kcont && !FLOW) { kcont.innerHTML = '<b>' + TITLE.replace(/</g, '&lt;') + '</b> (continued)'; kcont.style.display = 'block'; C = outer(kcont); kcont.style.display = 'none'; }
       H = Math.max(240, window.innerHeight - outer(run) - outer(bar));
       kview.style.height = H + 'px';
+      var pl = hinted();
+      if (!pl) {
       fit();
-      var pl = { cuts: [0, drawn()], tops: [0], last: 0 };
+      pl = { cuts: [0, drawn()], tops: [0], last: 0 };
       if (!main.style.zoom && !root.className.match(/kfit1/)) {
         pl = plan();
         // A last screen with a line or two on it: set the card a little tighter instead.
@@ -2019,7 +2052,9 @@ PAGER_JS = r"""
           }
         }
       }
+      }
       cuts = pl.cuts; tops = pl.tops;
+      root.setAttribute('data-kfit-now', (cuts.length > 2 ? 'p:' : 'f:') + (root.className.match(/kfit\d/g) || []).join(' '));
       show(Math.min(sheet, cuts.length - 2));
       if (!hashDone) { hashDone = true;
         var back2 = 0; try { back2 = performance.navigation.type === 2; } catch (e) {}
@@ -2052,24 +2087,142 @@ PAGER_JS = r"""
     }
     main.style.top = (-top) + 'px';
     view.style.height = Math.min(h, end - top) + 'px';
+    var tl = document.getElementById('ktail'), kme = / kme /.test(' ' + root.className + ' ');
+    if (kme) {   /* no white unless behind text: the engraved ground shows everywhere else. White knock-outs hug
+                    each line of text (and each chart and picture) in a layer behind #kmain, never inside it */
+      var ko = document.getElementById('kko');
+      if (!ko) { ko = document.createElement('div'); ko.id = 'kko'; ko.setAttribute('aria-hidden', 'true'); view.insertBefore(ko, main); }
+      if (!main.getAttribute('data-kink')) { main.setAttribute('data-kink', '1');
+        var ka = main.getElementsByTagName('*');
+        for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
+          if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
+            ke.style.setProperty('background-color', 'transparent', 'important'); } }
+      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className;
+      if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
+        /* text blocks print on clean white labels set into the engraved paper: the line boxes of each block
+           (paragraph, stat cell, list) are united, neighbours a line apart merge, and each label gets a fine
+           double rule; charts and pictures keep a plain white ground */
+        var kr = [], rg = document.createRange(), tw = document.createTreeWalker(main, 4, null, false), tn, PX = 7, PY = 5;
+        while ((tn = tw.nextNode())) {
+          if (!/\S/.test(tn.nodeValue)) continue;
+          var pe = tn.parentNode; if (pe.closest && pe.closest('svg,script,style,.kchart,table')) continue;
+          var bk = pe; while (bk !== main && !blockish(bk)) bk = bk.parentNode;
+          rg.selectNodeContents(tn); var cr = rg.getClientRects(), pb = pe.getBoundingClientRect();
+          for (var ci = 0; ci < cr.length; ci++) { var c0 = cr[ci], cl = Math.max(c0.left, pb.left), cw = Math.min(c0.right, pb.right) - cl;
+            if (cw < 1 || c0.height < 1) continue;   /* clipped to its element: an ellipsis never leaves white beyond it */
+            var x0 = cl - mr.left, y0b = c0.top - mr.top, hit = null;
+            for (var rj = 0; rj < kr.length; rj++) if (kr[rj].b === bk) { hit = kr[rj]; break; }
+            if (!hit) kr.push({ b: bk, l: x0, t: y0b, r: x0 + cw, d: y0b + c0.height });
+            else { hit.l = Math.min(hit.l, x0); hit.t = Math.min(hit.t, y0b); hit.r = Math.max(hit.r, x0 + cw); hit.d = Math.max(hit.d, y0b + c0.height); } } }
+        for (var ra = 0; ra < kr.length; ra++) { kr[ra].l -= PX; kr[ra].r += PX; kr[ra].t -= PY; kr[ra].d += PY; }
+        var merged = true;
+        while (merged) { merged = false;
+          for (var m1 = 0; m1 < kr.length && !merged; m1++) for (var m2 = m1 + 1; m2 < kr.length; m2++) { var A = kr[m1], Bq = kr[m2];
+            var ox = Math.min(A.r, Bq.r) - Math.max(A.l, Bq.l), oy = Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t);
+            if ((ox > 0 && oy > -6) || (oy > 0 && ox > -6)) {   /* touching or a line apart: one label */
+              A.l = Math.min(A.l, Bq.l); A.t = Math.min(A.t, Bq.t); A.r = Math.max(A.r, Bq.r); A.d = Math.max(A.d, Bq.d); kr.splice(m2, 1); merged = true; break; } } }
+        var mw = main.offsetWidth, kl = [];
+        for (var rb = 0; rb < kr.length; rb++) { var L0 = kr[rb], t0 = L0.t;   /* never across a sheet cut: each sheet's part is its own label */
+          L0.l = Math.max(L0.l, -1.5); L0.r = Math.min(L0.r, mw + 1.5);
+          for (var cq = 1; cq < cuts.length - 1; cq++) if (t0 < cuts[cq] - 4 && L0.d > cuts[cq] + 4) { kl.push([L0.l, t0, L0.r, cuts[cq] - 2]); t0 = Math.max(tops[cq] + 2, t0); }
+          kl.push([L0.l, t0, L0.r, L0.d]); }
+        var kh = '';
+        for (var ri = 0; ri < kl.length; ri++) kh += '<i class="kl" style="left:' + Math.floor(kl[ri][0]) + 'px;top:' + Math.floor(kl[ri][1]) + 'px;width:' + Math.ceil(kl[ri][2] - kl[ri][0]) + 'px;height:' + Math.ceil(kl[ri][3] - kl[ri][1]) + 'px"></i>';
+        var kq = main.querySelectorAll('img,.kchart,.bars,.rain,.mix,table,figure,svg');
+        for (var qi = 0; qi < kq.length; qi++) { var qr = kq[qi].getBoundingClientRect(); if (qr.width < 1 || qr.height < 1) continue;
+          if (kq[qi].tagName.toLowerCase() === 'svg' && kq[qi].closest('.kchart,figure')) continue;
+          kh += '<i style="left:' + Math.floor(qr.left - mr.left) + 'px;top:' + Math.floor(qr.top - mr.top) + 'px;width:' + Math.ceil(qr.width + 1) + 'px;height:' + Math.ceil(qr.height + 1) + 'px"></i>'; }
+        ko.innerHTML = kh; }
+      ko.style.top = main.style.top; ko.style.left = main.offsetLeft + 'px';
+      setTimeout(function () {   /* after show() has set the bar's labels */
+      var kf = document.getElementById('kkf'), fsig = window.innerWidth + ' ' + sig + ' ' + (kcont && kcont.style.display) + (kcont ? kcont.textContent : '') + (more ? more.textContent + more.style.display : '') + (pos ? pos.textContent : '');
+        if (!kf) { kf = document.createElement('div'); kf.id = 'kkf'; kf.setAttribute('aria-hidden', 'true'); document.body.appendChild(kf); }
+        if (kf.getAttribute('data-sig') !== fsig) { kf.setAttribute('data-sig', fsig);   /* the running head, the bar, "continued": white only under their words */
+          var fh = '', fls = [], fr = document.createRange(), fq = [run, bar, kcont];
+          for (var fi = 0; fi < fq.length; fi++) { if (!fq[fi] || fq[fi].offsetParent === null) continue;
+            var fw = document.createTreeWalker(fq[fi], 4, null, false), fn;
+            while ((fn = fw.nextNode())) { if (!/\S/.test(fn.nodeValue) || fn.parentNode.offsetParent === null || (fn.parentNode.closest && fn.parentNode.closest('#kmore'))) continue; fr.selectNodeContents(fn);
+              var fc = fr.getClientRects(), fb = fn.parentNode.getBoundingClientRect();
+              for (var fj = 0; fj < fc.length; fj++) { var f0 = fc[fj], fl = Math.max(f0.left, fb.left), fw2 = Math.min(f0.right, fb.right) - fl; if (fw2 < 1) continue;
+                var fx = [fl - 6, f0.top - 3, fl + fw2 + 6, f0.bottom + 3], fm = false;
+              for (var fk = 0; fk < fls.length; fk++) { var G = fls[fk]; if (fx[0] < G[2] + 10 && fx[2] > G[0] - 10 && fx[1] < G[3] && fx[3] > G[1]) {
+                G[0] = Math.min(G[0], fx[0]); G[1] = Math.min(G[1], fx[1]); G[2] = Math.max(G[2], fx[2]); G[3] = Math.max(G[3], fx[3]); fm = true; break; } }
+              if (!fm) fls.push(fx); } } }
+          for (var fk2 = 0; fk2 < fls.length; fk2++) fh += '<i class="kl" style="left:' + Math.floor(fls[fk2][0]) + 'px;top:' + Math.floor(fls[fk2][1]) + 'px;width:' + Math.ceil(fls[fk2][2] - fls[fk2][0]) + 'px;height:' + Math.ceil(fls[fk2][3] - fls[fk2][1]) + 'px"></i>';
+          if (more && more.offsetParent !== null) { var mb2 = more.getBoundingClientRect(); fh += '<i style="left:' + Math.floor(mb2.left) + 'px;top:' + Math.floor(mb2.top) + 'px;width:' + Math.ceil(mb2.width) + 'px;height:' + Math.ceil(mb2.height) + 'px"></i>'; }
+          kf.innerHTML = fh; }
+      }, 0); }
+    if (tl) {   /* fill what this sheet leaves empty: art beside #kmain, never in it, so it never adds a sheet */
+      var t2 = document.getElementById('ktail2');
+      if (!t2) { t2 = document.createElement('div'); t2.id = 'ktail2'; t2.setAttribute('aria-hidden', 'true'); tl.parentNode.appendChild(t2); }
+      var used = Math.min(h, end - top);
+      if (i === n - 1) { var bx = (typeof lastBoxes !== 'undefined' && lastBoxes) || boxes(); if (bx.lb) used = Math.min(h, bx.lb - top + 6); }
+      var y0 = (i && !FLOW ? C : 0) + used + 6, room = H - y0 - 6;
+      tl.style.display = t2.style.display = 'none';
+      if (kme && room >= 40) {   /* never print a plate over a line of type: start below the last text visible on this sheet */
+        var vt = view.getBoundingClientRect().top, cb = document.getElementById('kclip').getBoundingClientRect(), tw = document.createTreeWalker(main, 4, null, false), tn, tb = 0;
+        while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
+          for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom); } }
+        if (tb && tb - vt + 6 > y0) { y0 = tb - vt + 6; room = H - y0 - 6; } }
+      var vr = view.getBoundingClientRect();
+      window.KROOM = { sheet: i, sheets: n, x: Math.round(vr.left), y: Math.round(vr.top + y0), w: Math.round(vr.width), h: Math.round(room) };
+      var kp = kme && room >= 40 && document.body.getAttribute('data-kplates'), pk = null;
+      if (kp) { try { kp = JSON.parse(kp); } catch (e) { kp = []; }   /* this page's plates: [sheet, h, w], cut to this morning's rooms */
+        for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && kp[pi][1] <= room + 2 && kp[pi][1] >= room - 16) pk = kp[pi];
+        if (!pk) for (pi = 0; pi < kp.length; pi++) if (kp[pi][1] <= room && (!pk || kp[pi][1] > pk[1])) pk = kp[pi]; }
+      if (pk) {   /* ONE bespoke engraved plate fills the free space: a fixed-size <img>, outside #kmain, so it never adds a sheet */
+        var slug = location.pathname.split('/').pop().replace(/\.html$/, ''), im = t2.firstChild;
+        if (!im) { im = document.createElement('img'); im.alt = ''; t2.appendChild(im); }
+        var src = 'orn/plate-' + slug + '-' + pk[0] + '.svg';
+        if (im.getAttribute('src') !== src) im.setAttribute('src', src);
+        im.width = pk[2]; im.height = pk[1]; t2.className = 'kplate';
+        t2.style.top = (y0 + Math.max(0, room - pk[1]) / 2) + 'px'; t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; 
+        setTimeout(function () {   /* after the sheet settles: if any visible line of type reaches under the plate, move the plate below it, or drop it */
+          var tr = t2.getBoundingClientRect(), vr2 = view.getBoundingClientRect(), cb = document.getElementById('kclip').getBoundingClientRect(), tw = document.createTreeWalker(main, 4, null, false), tn, tb = 0;
+          while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
+            for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.height && q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.top < vr2.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom, vr2.bottom); } }
+          if (tb > tr.top - 4) { var d = tb + 6 - tr.top, lim = vr2.top + H - 6;
+            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none'; }
+        }, 60); }
+    }
+    var gq = view.querySelectorAll('.kgap');   /* and the gaps between blocks: a fleuron in each, never over print */
+    for (var g = 0; g < gq.length; g++) view.removeChild(gq[g]);
+    if (kme) {
+      var gl = ((typeof lastBoxes !== 'undefined' && lastBoxes) || boxes()).ls.slice(), mt0 = main.getBoundingClientRect().top, vis = Math.min(h, end - top), mb = null;
+      var kpq = main.querySelectorAll('.kpanel');   /* panels are whole blocks: the fleurons go in the gaps between them only */
+      if (kpq.length) { gl = []; for (var kq0 = 0; kq0 < kpq.length; kq0++) { var kr0 = kpq[kq0].getBoundingClientRect(); if (kr0.height > 0) gl.push({ top: kr0.top - mt0, bottom: kr0.bottom - mt0 }); } }
+      var dq = main.querySelectorAll('.kfhead,.kmast,.kend,.kgl,.kendsrc,.ktoc');   /* drawn by pseudo-elements: printed too */
+      for (var d0 = 0; d0 < dq.length; d0++) { var dr = dq[d0].getBoundingClientRect(); gl.push({ top: dr.top - mt0, bottom: dr.bottom - mt0 }); }
+      gl.sort(function (a, b) { return a.top - b.top; });
+      for (var g2 = 0; g2 < gl.length; g2++) { var gi = gl[g2];
+        if (gi.bottom <= top + 1 || gi.top >= top + vis - 1) continue;
+        if (mb !== null && gi.top - mb > 40) {
+          var gd = document.createElement('div'); gd.className = 'kgap' + (gi.top - mb > 110 ? ' kbig' : gi.top - mb < 64 ? ' kthin' : '');
+          var gh = Math.min(gi.top - mb - 10, 120); gd.style.top = (mb - top + (gi.top - mb - gh) / 2) + 'px'; gd.style.height = gh + 'px'; view.appendChild(gd); }
+        if (mb === null || gi.bottom > mb) mb = gi.bottom; } }
     unscroll();
     if (more) {
       more.style.display = (i < n - 1) ? '' : 'none';
-      more.innerHTML = 'More &darr; <span class="kfol">' + (i + 1) + '/' + n + '</span>';
+      more.innerHTML = 'More &darr;<span class="kfol" hidden>' + (i + 1) + '/' + n + '</span>';
     }
-    if (pos) pos.innerHTML = (n > 1 && i === n - 1) ? n + '/' + n : '';
-    if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
+    if (pos) pos.innerHTML = '';
+    var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
+    if (ksh) ksh.innerHTML = n > 1 ? 'Sheet ' + (i + 1) + ' of ' + n : '';
+    if (knx && knxLabel && NEXT_URL) { var kl0 = knxLabel.replace(/^Next: /, ''), kl1 = kl0.replace(/<[^>]+>|&\w+;/g, '');
+      knx.innerHTML = i < n - 1 ? (kl1.length > 16 ? 'Next page &rsaquo;' : 'Skip to ' + kl0) : (kl1.length > 26 ? 'Next page &rsaquo;' : kl0); }
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
     if (busy) return;
-    if (++turns % FLASH_EVERY) { show(i); return; }
+    if (++turns % FLASH_EVERY && !root.hasAttribute('data-flash')) { show(i); return; }
     busy = true;
     var f = document.createElement('div');
     f.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';
     document.body.appendChild(f);
-    setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 250);
+    var raf = window.requestAnimationFrame || function(cb){ return setTimeout(cb, 16); };
+    raf(function(){ raf(function(){ setTimeout(function(){ f.style.background = '#fff';
+      setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 120); }, 420); }); });
   }
   function go(url) { location.href = url || 'index.html'; }
   function forward() { var n = cuts.length - 1;
@@ -2096,7 +2249,7 @@ PAGER_JS = r"""
       a.innerHTML = '<small>Pick up where you stopped</small><b>' + String(last.t).replace(/</g, '&lt;') + ' &rsaquo;</b>';
       mast.parentNode.insertBefore(a, mast.nextSibling); }
   } catch (e) {}
-  function later() { clearTimeout(timer); timer = setTimeout(layout, 60); }
+  function later(e) { clearTimeout(timer); var force = !!(e && e.type === 'toggle'); timer = setTimeout(function(){ layout(force); }, 60); }
   if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(); };
   document.addEventListener('click', function(e){
     if (!on() || swallow) return;
@@ -2133,9 +2286,12 @@ PAGER_JS = r"""
   layout();
   // The next page is fetched ahead into the browser cache. An offline copy
   // from an earlier version is removed.
+  var KART = ['orn/ground-%s.svg', 'orn/motif-%s.svg'];   // a section's CSS-background art, warmed before entry
   function warm(u) { if (!u) return; try { var x = new XMLHttpRequest(); x.open('GET', u, true);
     x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
-      for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); } };
+      for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); }
+      var ks = (x.responseText || '').match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
+      if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); } };
     x.send(); } catch (e) {} }
   setTimeout(function(){
     try { var sw = navigator.serviceWorker;
@@ -2143,7 +2299,7 @@ PAGER_JS = r"""
       if (window.caches && caches.keys) caches.keys().then(function(ks){ for (var i = 0; i < ks.length; i++) if (/^kme-/.test(ks[i])) caches['delete'](ks[i]); }).catch(function(){});
     } catch (e) {}
     warm(NEXT_URL);
-  }, 1500);
+  }, 900);
 })();
 </script>
 """
@@ -2168,18 +2324,19 @@ def write_offline(out, ed):
 
 
 FONT_CSS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@"
-            "0,7..72,400..700;1,7..72,400..700&display=block")
+            "0,7..72,400..700;1,7..72,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=block")
 
 
 BUILD = {}  # this edition's id, for the saved copy and "pick up where you stopped"
 
 
 def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run_left="", run_right="",
-         fonts="", next_label=None, run_href="index.html", jump=None):
+         fonts="", next_label=None, run_href="index.html", jump=None, sec=""):
     esc = html.escape
     nav = (_JUMP[0] if jump is None else jump) if run_left else ""
     btn = '<b class="ksecbtn">Sections &#9662;</b>' if nav else ""
-    top = f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>'
+    top = (f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}<i id="ksheet"></i>{btn}</span></nav>'
+           if run_left else f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>')
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
@@ -2195,17 +2352,18 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
 <html lang="en" class="{esc(html_class)}" data-ed="{esc(BUILD.get("id") or stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
-<body class="{esc(body_class)}">
+<body class="{esc(body_class)}"{f' data-ksec="{esc(sec)}"' if sec else ""}>
 {top}
-<div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div></div>
+<div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div><div id="ktail" aria-hidden="true"></div></div>
 {nav}
 {foot}
-{js}
+{kindle_orn.FLASH_JS if " kme" in " " + html_class else ""}{js}
 </body></html>
 """
 
 
 _TITLES = {}
+OWNER_INITIAL = "P"   # the crest on the cover
 _JUMP = [""]
 
 
@@ -2303,6 +2461,21 @@ def serve(root):
     return srv
 
 
+def _data_time(site):
+    """When dashboard.json was gathered (aware datetime), or None. Warn when it is stale."""
+    import datetime as _d
+    import json as _j
+    try:
+        with open(os.path.join(site, "dashboard.json")) as f:
+            at = _d.datetime.fromisoformat(_j.load(f)["generated_at"])
+    except Exception:
+        return None
+    age_h = (_d.datetime.now(_d.timezone.utc) - at).total_seconds() / 3600
+    if age_h > 2:
+        print(f"kindle_full: WARNING dashboard.json is {age_h:.1f} h old; printing it as of {at.isoformat()}", file=sys.stderr)
+    return at
+
+
 def snapshot(site):
     from playwright.sync_api import sync_playwright  # only the morning snapshot needs a browser
     srv = serve(site)
@@ -2313,6 +2486,13 @@ def snapshot(site):
         ctx = browser.new_context(viewport={"width": WIDTH, "height": HEIGHT}, timezone_id=TZ, device_scale_factor=2,
                                   has_touch=True, locale="en-US", reduced_motion="reduce")
         p = ctx.new_page()
+        # run the page's clock from the moment the data was gathered, so the
+        # edition stamp, "today/tonight", "N hr ago", the next tide and every past-event
+        # filter agree with the numbers on the page instead of with the build machine.
+        data_at = _data_time(site)
+        if data_at is not None:
+            p.clock.install(time=data_at)
+            p.clock.resume()
         p.on("pageerror", lambda e: print(f"kindle_full: page error: {e}", file=sys.stderr))
         p.on("console", lambda m: m.text.startswith("kindle ") and print(f"kindle_full: {m.text}", file=sys.stderr))
         p.goto(url, wait_until="networkidle", timeout=90_000)
@@ -2376,6 +2556,53 @@ CARD_ORDER = {
 # Cards that read better in another section: (heading id, from, to).
 CARD_MOVES = [("thai-h", "delights", "world")]
 
+# ---- The edition plan (redesign/edition-plan.md): merges, item caps and cuts, in one place.
+# A merge folds one card into another as a titled block (key: heading id or card title).
+PLAN_MERGES = [
+    ("shade-h", "brief-h"),                       # Window shades -> Alfred
+    ("yard-h", "wx-h"), ("jar-h", "wx-h"),        # Yard vs. forecast, rain jar -> weather station
+    ("road-h", "drive-h"),                        # Road cams -> Drive times
+    ("ski-h", "mtn-h"), ("trail-h", "mtn-h"),     # The mountain: visibility, then Mt. Hood, then trail reports
+    ("quake-h", "fire-h"),                        # Hazards
+    ("ask-h", "play-h"), ("bug-h", "play-h"),     # Dinner question, germ report -> Little adventures
+    ("loads-h", "Solar right now"),               # Solar today
+    ("wins-h", "bill-h"),                         # Milestones -> billing cycle
+    ("burn-h", "look-h"), ("pollen-h", "look-h"), ("plant-h", "look-h"), ("forest-h", "look-h"),
+    ("bloom-h", "look-h"), ("food-h", "look-h"),  # Walk the land
+    ("moor-h", "columbia-h"),                     # Ship -> The Columbia
+    ("light-h", "sunset-h"), ("set-h", "sunset-h"),  # Daylight, sunset on the move -> tonight's sunset
+    ("sunact-h", "sky-h"),                        # Spots on the sun -> sky events
+    ("reviews-h", "stories-h"),                   # A/V and tech desk
+    ("Portland State Vikings", "Portland Timbers"), ("Portland Pilots", "Portland Timbers"),
+    ("f1-h", "Portland Timbers"), ("title-h", "Portland Timbers"),   # The scoreboard
+    ("drum-h", "rec-h"), ("bday-h", "rec-h"),     # The record page
+    ("plane-h", "sky-h"),                         # Planes overhead -> two rows in Sky events
+    ("Portland Timbers", "Portland Trail Blazers"),   # one scoreboard: the Blazers lead, the rest follow
+    ("show-h", "gig-h"),                          # Live from Portland -> live music
+    ("clsmov-h", "kidmov-h"),                     # Tonight's movies
+    ("oldpdx-h", "near-h"),                       # Old Portland -> local history
+    ("shelf-h", "books-h"),                       # Bookshelf -> books
+    ("minus-h", "This week at the coast"), ("cev-h", "shell-h"),
+]
+# Most items a card's main list prints (the plan's item caps: the main tool against orphan sheets).
+PLAN_CAPS = {"plan-h": 5, "cal-h": 8, "out-h": 8, "localnews-h": 6, "bignews-h": 7, "stories-h": 4, "reviews-h": 4, "finds-h": 3,
+             "open-h": 5, "big-h": 5, "liq-h": 6, "br-h": 5, "tv-h": 6, "alb-h": 6, "jazz-h": 8, "gig-h": 6, "good-h": 3,
+             "play-h": 4, "mush-h": 5, "birds-h": 5, "fire-h": 4, "road-h": 4, "hol-h": 8}
+PLAN_SCIENCE_BRIEFS = 4
+# Parker on the plan's cut list: "Merge, don't cut." Each item shrinks to a line or two inside the page it
+# belongs with (the merges above put it there); these say how much of it stays. Set a value to 0 to drop it.
+PLAN_SHRINK = {
+    "planes": 2,                # Planes overhead -> two rows in Sky events
+    "civics-votes": 1,          # the newest vote per member: one compact summary
+    "civics-news": 1,           # one news line per member
+    "born-today": 2,            # Born today -> two names in This day in history
+    "also-nearby": 2,           # Local history: two nearby places
+    "asteroids": 1,             # Sky events: one line
+    "bday-lists": 2,            # Album birthdays -> two lines on the record page
+    "team-news": 1,             # team pages -> one headline each on the scoreboard
+    "long-writeups": 2,         # market and helium narratives -> a two-line summary (paragraphs)
+}
+
 # No fact twice: an item already printed earlier in the edition is taken out
 # of the later page. Alfred's briefing is a digest, so it goes last: any line of
 # his that another page already carries is dropped from the briefing.
@@ -2401,6 +2628,7 @@ DEDUPE = r"""
         const t = norm(c.textContent);
         if (t.length >= MIN) {
           const prev = seen.get(t);
+          if (prev && root.contains(prev) && c.closest('.lines, ul, ol, table') && prev.closest('.lines, ul, ol, table')) { visit(c); c = nx; continue; }
           if (prev && !prev.contains(c) && !c.contains(prev)) { prune(c); c = nx; continue; }
           if (!prev) seen.set(t, c);
         }
@@ -2504,7 +2732,8 @@ def self_host_fonts(out):
         local, preload = [], []
         for i, blk in enumerate(blocks):
             url = re.search(r"url\((https://[^)]+\.woff2)\)", blk).group(1)
-            name = f"literata-{i}.woff2"
+            fam = re.search(r"font-family:\s*'([^']+)'", blk).group(1).lower().replace(" ", "-")
+            name = f"{fam}-{re.search(r'font-style:\s*(\w+)', blk).group(1)}.woff2"
             with open(os.path.join(out, "fonts", name), "wb") as f:
                 f.write(urllib.request.urlopen(url, timeout=30).read())
             local.append(blk.replace(url, f"fonts/{name}"))
@@ -2548,6 +2777,8 @@ def main(site):
     font_css, font_links = self_host_fonts(out)
     with open(os.path.join(out, "kindle.css"), "w") as f:
         f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS)
+    kindle_orn.write_plates(out)
+    me = (data["htmlClass"] + " kme").strip()
 
     by_id = {s["id"]: s for s in data["sections"] if s.get("cards")}
     # Cards with nothing to read are dropped; a quiet weather alert joins the front page.
@@ -2632,8 +2863,31 @@ def main(site):
         h = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', "", h, flags=re.S)
         return re.sub(r"<h2\b([^>]*)>(.*?)</h2>", r'<h3 class="kfold"\1>\2</h3>', h, flags=re.S)
 
+    # The plan's merges: the folded card becomes a titled block inside its host.
+    def find_card(key):
+        for sid_, sec_ in by_id.items():
+            for c_ in sec_["cards"]:
+                if f'id="{key}"' in c_["html"] or c_["title"] == key:
+                    return sid_, c_
+        return None, None
+    for src_k, dst_k in PLAN_MERGES:
+        ss, sc = find_card(src_k)
+        ds, dc = find_card(dst_k)
+        if sc is None or dc is None or sc is dc:
+            continue
+        by_id[ss]["cards"].remove(sc)
+        dc["html"] += f'<div class="kbrief">{as_sub(sc["html"])}</div>'
+    by_id = {k: s_ for k, s_ in by_id.items() if s_["cards"]}
     # Science: one page of briefs, not seven taps of three lines each.
     sci = by_id.get("science", {}).get("cards", [])
+    seen_subj, kept_sci = set(), []
+    for c_ in sci:   # at most one brief per subject (three origin-of-life stories become one)
+        subj = "life" if re.search(r"\blife\b|\blife.s\b", c_["title"], re.I) else c_["title"]
+        if subj in seen_subj:
+            continue
+        seen_subj.add(subj)
+        kept_sci.append(c_)
+    sci = kept_sci[:PLAN_SCIENCE_BRIEFS]
     if len(sci) > 2:
         by_id["science"]["cards"] = [{"title": "Science this morning",
                                       "html": '<div class="head"><p class="kkick">Science</p><h2>This morning in science</h2></div>'
@@ -2670,6 +2924,8 @@ def main(site):
                 m = re.sub(r"^\s*<b>[^<]*</b>\s*", "", m).strip(" ·")
                 if m and m not in credits.setdefault(sid, []):
                     credits[sid].append(m)
+                if m:   # and each page keeps its own as a one-line credit at its foot
+                    c["credit"] = (c.get("credit", "") + " · " + _text(m)).strip(" ·")
             c["html"] = re.sub(r'<p class="ksources"[^>]*>.*?</p>', "", c["html"], flags=re.S)
 
     known = [i for _, ids in PARTS for i in ids]
@@ -2695,9 +2951,21 @@ def main(site):
                     body = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', f'<p class="kkick">{plain}</p>', body, count=1)
                 else:
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
-            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
+            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body, "credit": c.get("credit", ""),
                           "k": k + 1, "of": len(cards)})
     dedupe(pages, [])
+    import datetime as _dt0
+    kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
+                       caps=PLAN_CAPS, shrink=PLAN_SHRINK)
+    # A card the presentation pass emptied (a trail list with no report text) is not a page.
+    pages = [pg for pg in pages if len(body_text(pg["html"])) >= 25 or re.search(r"<img\b", pg["html"])]
+    for sid in order:
+        mine = [pg for pg in pages if pg["sec"] == sid]
+        for k, pg in enumerate(mine, 1):
+            pg.update(file=f"{sid}-{k:02d}.html", k=k, of=len(mine))
+    order = [i for i in order if any(pg["sec"] == i for pg in pages)]
+    parts = [(name, [i for i in ids if i in order]) for name, ids in parts]
+    parts = [(name, ids) for name, ids in parts if ids]
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -2750,7 +3018,8 @@ def main(site):
                 continue
             if len(t) >= 30 and not SKIP.search(t):
                 sm = re.match(r"(.{25,110}?[a-z0-9)%°]{2}[.!?])(\s+[A-Z(\"]|$)", t)
-                cands.append(sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…")
+                one = sm.group(1) if sm else t
+                cands.append(one if len(one) <= 62 else one[:60].rsplit(" ", 1)[0].rstrip(",;:·") + "…")
         for b in re.findall(r"<(?:b|strong)\b[^>]*>(.*?)</(?:b|strong)>", body, re.S):
             t = _text(b)
             if len(t) > 8:
@@ -2768,7 +3037,6 @@ def main(site):
     for i in order:
         seq.append(front[i])
         seq.extend(pg["file"] for pg in pages if pg["sec"] == i)
-    _TITLES["sources.html"] = "Sources and credits"
     seq.append("end.html")
     _TITLES["end.html"] = "The end"
     _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
@@ -2804,7 +3072,7 @@ def main(site):
     for n, pg in enumerate(pages):
         sec = by_id[pg["sec"]]
         sib = [p for p in pages if p["sec"] == pg["sec"]]
-        rail_items = [p for p in sib if p["k"] > pg["k"]][:3]
+        rail_items = []  # "Also in" repeated the section front's list: the free room goes to the engraved plate
         rail = ""
         if rail_items:
             rail = (f'<nav id="krail"><h4>Also in {html.escape(sec["title"])}</h4>'
@@ -2814,9 +3082,9 @@ def main(site):
         label = None
         if nxt and nxt in front.values():
             label = f'Next: {_TITLES[nxt]}'
-        doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, data["htmlClass"], data["bodyClass"] + " kcard",
+        doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, me, data["bodyClass"] + " kcard", sec=pg["sec"],
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
-                   run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
+                   run_right="", fonts=font_links, next_label=label,
                    run_href=front[pg["sec"]], jump=navigator(pg["sec"], pg["file"]))
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
@@ -2833,30 +3101,32 @@ def main(site):
             rows = "".join(
                 f'<li><a href="{cards[0]["file"]}"><span class="kn">{n:02d}</span><span class="kt"><b>{html.escape(_text(t))}</b></span></a></li>'
                 for n, t in enumerate(re.findall(r'<(?:h3 class="kfold"|b class="sci-title")[^>]*>(.*?)</(?:h3|b)>', cards[0]["html"], re.S), 1))
-        body = (f'<div class="kfhead"><div><p class="kkick">{html.escape(part_of[i])}</p>'
+        body = (f'<div class="kfhead" data-n="{len(cards) if i != "science" else rows.count("<li>")}"><div><p class="kkick">{html.escape(part_of[i])}</p>'
                 f'<h2 class="kfname">{html.escape(sec["title"])}</h2>'
-                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p></div><span class="kfnum">{num:02d}</span></div>'
+                f'<p class="kfsub">{html.escape(sec.get("sub") or "")}</p></div><span class="kfnum">{kindle_orn.roman(num)}</span></div>'
                 f'<ol class="kfl">{rows}</ol>')
         with open(os.path.join(out, front[i]), "w") as f:
-            f.write(page(sec["title"], body, data["htmlClass"], data["bodyClass"] + " ksecfront",
+            f.write(page(sec["title"], body, me, data["bodyClass"] + " ksecfront", sec=i,
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links, jump=navigator(i)))
+                         run_left="&lsaquo; The front", run_right="", fonts=font_links, jump=navigator(i)))
 
     # The end of the edition: where to go from here.
     with open(os.path.join(out, "end.html"), "w") as f:
         f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
                      f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
                      f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
-                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits else "") + '</div>',
-                     "", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
+                     + ('<div class="kpanel kcolophon"><p class="kkick">Supplied by</p><p>' + " ".join(
+                         f'<b>{html.escape(by_id[i]["title"])}:</b> {html.escape(", ".join(list(dict.fromkeys(re.sub(r"^(Sources?|From|Data:?)\s+", "", n.strip()).split(" (")[0] for m in credits[i] for n in re.split(r"\s*[·,;]\s*", _text(m)) if 2 < len(n.strip()) < 32))[:3]))}.'
+                         for i in order if credits.get(i)).replace(':</b> .', ':</b>').replace(' <b>Little one:</b>', '') + '</p></div>' if credits else "") + '</div>',
+                     "kme", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
                      run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
 
-    if credits:
+    if False:   # the Sources pages: replaced by each page's credit line and the colophon on The end
         rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
                        for i in order if credits.get(i))
         with open(os.path.join(out, "sources.html"), "w") as f:
             f.write(page("Sources and credits", f'<div class="head"><p class="kkick">The back page</p><h2>Sources and credits</h2></div>'
-                         f'<div class="kcredits">{rows}</div>', data["htmlClass"], data["bodyClass"] + " kcard",
+                         f'<div class="kcredits">{rows}</div>', me, data["bodyClass"] + " kcard",
                          prev="index.html", nxt=None, stamp=stamp_txt, run_left="The Morning Edition",
                          run_right="", fonts=font_links))
 
@@ -2880,23 +3150,34 @@ def main(site):
                          f'<span class="kc">{cnt} {"page" if cnt == 1 else "pages"}</span></a></li>')
         toc.append(f'<p class="kpart">{html.escape(name)}</p><ul class="kpartbox">{"".join(cells)}</ul>')
     import datetime as _dt
-    doy = _dt.date.today().timetuple().tm_yday
+    doy = _dt.datetime.strptime(longdate, "%A, %B %d, %Y").timetuple().tm_yday  # Pacific date
     hi = re.search(r"High (\d+°)", _text(by_id.get("today", {}).get("cards", [{}])[0].get("html", "")) if by_id.get("today") else "")
     wx = ""
     if g.get("temp"):
-        wx = (f'<div class="kgl"><div class="kdeg">{html.escape(g["temp"])}<small>{html.escape(g.get("where", ""))}</small></div>'
+        wx = (f'<div class="kgl {kindle_orn.wx_class(g.get("where", ""))}"><div class="kdeg">{html.escape(g["temp"])}<small>{html.escape(g.get("where", ""))}</small></div>'
               '</div>')
-    body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span>No. {doy}</span></div>'
-            f'<p class="kname">The Morning Edition</p>'
+    body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span class="kcrest">{OWNER_INITIAL}</span><span>No. {doy}</span></div>'
+            f'<p class="kname"><i>The</i> Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
             f' &middot; {html.escape(edition)} edition</p></div>'
             + wx
             + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
-            + f'<h2 class="ktochead kbreak" id="contents">Contents</h2>{"".join(toc)}'
+            + f'<div class="ktoc kbreak"><h2 class="ktochead" id="contents">Contents</h2>{"".join(toc)}</div>'
 )
     with open(os.path.join(out, "index.html"), "w") as f:
-        f.write(page("The Morning Edition", body, "", "kcontents", nxt=(seq[1] if len(seq) > 1 and seq[0] == "today.html" else seq[0]) if seq else None,
+        f.write(page("The Morning Edition", body, "kme", "kcontents", nxt=(seq[1] if len(seq) > 1 and seq[0] == "today.html" else seq[0]) if seq else None,
                      stamp=stamp_txt, run_left="", run_right="", fonts=font_links))
+    _t1 = os.path.join(out, "today-01.html")
+    _sr = re.search(r'Sunrise</span><span class="v"[^>]*>([^<]+)<', open(_t1).read()) if os.path.exists(_t1) else None
+    _tf = re.search(r"-?\d+", data.get("front", {}).get("temp", "") or "")
+    kindle_orn.COVER_DAY.update({"temp_f": int(_tf.group(0)) if _tf else None, "sky": (data.get("front", {}).get("where", "") or "").split("·")[-1].strip()})
+    kindle_orn.write_frames(out, _dt.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
+                            ("Sunrise " + _sr.group(1)) if _sr else "")
+    try:  # each page's own engraved plate, cut to the room its sheets leave this morning
+        from . import kindle_plates
+        kindle_plates.run(out, _dt.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat())
+    except Exception as e:  # noqa: BLE001  -- never lose the edition over the art
+        print(f"kindle_full: plates skipped: {e!r}", file=sys.stderr)
     write_offline(out, BUILD["id"])
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.

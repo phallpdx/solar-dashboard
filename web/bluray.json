@@ -1,75 +1,152 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "deals": [
-    {
-      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, via a UK deal site)",
-      "store": "Amazon Italy",
-      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout; the example given is The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
-      "ends": "2026-11-29",
-      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
-    },
     {
       "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
       "store": "Barnes & Noble",
-      "detail": "Criterion confirms all in-stock Criterion discs are 50% off online and in stores through Dec 6, preorders releasing during the sale included. Reported 4K sale prices: Blue Velvet, Mulholland Drive and The Silence of the Lambs $24.99, Harold and Maude $25, Seven Samurai $29.99, The Complete Kubrick 4K $299.99. Amazon is price-matching many Criterion 4Ks (see the entries below).",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Blue Velvet, Paris, Texas and Trainspotting; Seven Samurai 4K is $29.99 and The Complete Kubrick 4K set is $299.99. Amazon is matching many Criterion 4Ks (see below).",
       "ends": "2026-12-06",
-      "url": "https://x.com/Criterion/status/2118728293608493316"
+      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
     },
     {
       "title": "KPop Demon Hunters (Criterion 4K UHD)",
       "store": "Amazon",
-      "detail": "$24.98 in 4K, posted Nov 6; commenters say Amazon is matching the Barnes & Noble Criterion sale.",
-      "ends": "2026-12-06",
+      "detail": "$24.98 in 4K (list $49.95), posted Nov. 6; matches the Barnes & Noble Criterion sale price.",
+      "ends": null,
       "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
     },
     {
       "title": "No Country for Old Men (Criterion 4K UHD)",
       "store": "Amazon",
-      "detail": "$24.98 in 4K, posted Nov 6, half the usual Criterion list price.",
-      "ends": "2026-12-06",
+      "detail": "$24.98 in 4K (list $49.95), posted Nov. 6.",
+      "ends": null,
       "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
     },
     {
-      "title": "Star Trek: The Original 4-Movie Collection",
+      "title": "Seven Samurai (Criterion 4K UHD)",
       "store": "Amazon",
-      "detail": "$21 (4K Ultra HD + Blu-Ray + Digital)",
+      "detail": "$29.99 in 4K, posted Nov. 6; Barnes & Noble has the same price in its Criterion sale.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20266179-29-99-seven-samurai-the-criterion-collection-4k-uhd-at-amazon"
+    },
+    {
+      "title": "Star Trek: The Original 4-Movie Collection (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$20.99 (list $37.99), posted Nov. 9.",
       "ends": null,
       "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
     },
     {
-      "title": "Whiplash (2014)",
+      "title": "Star Trek 4K singles: Into Darkness, First Contact, The Search for Spock",
       "store": "Amazon",
-      "detail": "$15.36 (4K + Blu-Ray + Digital)",
+      "detail": "Into Darkness 4K $9.99, First Contact 4K $12.49, The Search for Spock 4K $12.49, posted Nov. 3.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20276370-whiplash-4k-blu-ray-digital-15-36-amazon-com"
+      "url": "https://slickdeals.net/f/20252106-star-trek-4k-blu-rays-first-contact-12-49-the-search-for-spock-12-49-into-darkness-9-99-more-free-shipping-w-prime-or-on-35"
     },
     {
-      "title": "The Hunger Games 4-Film Collection",
+      "title": "The Hunger Games 4-Film Collection (4K UHD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "$34.41 (4K Ultra HD + Blu-ray + Digital)",
+      "detail": "$34.41 for the 4K set (list $59.99), posted Nov. 8; Slickdeals listings also show the SteelBook edition at $31.93.",
       "ends": null,
       "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
     },
     {
-      "title": "Cinderella (1950)",
+      "title": "Whiplash (4K UHD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "$15.20 (4K UHD + Blu-Ray + Digital)",
+      "detail": "$15.36 in 4K.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20276370-whiplash-4k-blu-ray-digital-15-36-amazon-com"
+    },
+    {
+      "title": "Cinderella (1950) (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$15.20 in 4K (list $35), posted Nov. 7.",
       "ends": null,
       "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
     },
     {
-      "title": "KPop Demon Hunters The Criterion Collection",
-      "store": "Amazon",
-      "detail": "$25 (4K UHD)",
+      "title": "12 Monkeys (Arrow Video 4K UHD)",
+      "store": "Arrow Video US",
+      "detail": "$35.00 on Arrow's US store (MSRP $49.95), in stock; Target lists it at $39.99.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
+      "url": "https://arrowvideo.com/12-monkeys-4k-uhd/13633206.html"
     },
     {
-      "title": "Seven Samurai: The Criterion Collection",
-      "store": "Amazon",
-      "detail": "$29.99 (4K UHD)",
+      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
+      "store": "Amazon Italy",
+      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout; example: The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
+      "ends": "2026-11-29",
+      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
+    },
+    {
+      "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
+      "store": "Amazon Italy",
+      "detail": "£7.29 per a UK deal site; deal listed through Nov. 21. UK pricing, US shipping not confirmed.",
+      "ends": "2026-11-21",
+      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
+    },
+    {
+      "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
+      "store": "Amazon UK",
+      "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
+      "ends": "2026-11-23",
+      "url": "https://www.hotukdeals.com/deals/30-days-of-night-4k-uhd-limited-etd-steelbook-5029340"
+    },
+    {
+      "title": "Battlestar Galactica 4K UHD",
+      "store": "UK retailer (pre-order)",
+      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+    },
+    {
+      "title": "Scarface 4K UHD",
+      "store": "Rarewaves (UK)",
+      "detail": "£15.44 with free delivery, listed under the site's Black Friday 2026 deals. UK pricing.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20266179-29-99-seven-samurai-the-criterion-collection-4k-uhd-at-amazon"
+      "url": "https://www.hotukdeals.com/deals/scarface-4k-uhd-blu-ray-5028287"
+    },
+    {
+      "title": "The Thing (1982) 4K UHD",
+      "store": "Rarewaves (UK)",
+      "detail": "£15.44, listed under the site's Black Friday 2026 deals. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/the-thing-4k-uhd-blu-ray-5028291"
+    },
+    {
+      "title": "Apollo 13 (4K UHD + Blu-ray)",
+      "store": "Amazon UK",
+      "detail": "£10.99. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/apollo-13-4k-uhd-blu-ray-5027623"
+    },
+    {
+      "title": "Three Flavours Cornetto Trilogy (4K UHD + Blu-ray)",
+      "store": "Amazon UK",
+      "detail": "£23.79 for Shaun of the Dead, Hot Fuzz and The World's End in 4K. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/three-flavours-cornetto-trilogy-shaun-of-the-dead-hot-fuzz-the-worlds-end-4k-ultra-hd-blu-ray-5027642"
+    },
+    {
+      "title": "Trading Places 4K UHD",
+      "store": "Amazon UK",
+      "detail": "£14.99 with free delivery. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/trading-places-4k-uhd-5020843"
+    },
+    {
+      "title": "National Lampoon's Christmas Vacation 4K UHD",
+      "store": "eBay (UK)",
+      "detail": "£14.99 with free delivery. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/national-lampoons-christmas-vacation-4k-blu-ray-5027565"
+    },
+    {
+      "title": "Planes, Trains and Automobiles 4K UHD",
+      "store": "HMV (UK)",
+      "detail": "£14.99 plus £2.99 delivery (free click and collect). UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/planes-trains-and-automobiles-4k-uhd-blu-ray-free-cc-5025685"
     }
   ],
   "upcoming": [
@@ -80,7 +157,7 @@
     },
     {
       "title": "Best Buy Black Friday sale",
-      "detail": "MacRumors reports Best Buy's Black Friday sale runs Nov 19 to 28, with Cyber Monday deals Nov 29 to 30; disc deals were not detailed.",
+      "detail": "Best Buy's early sale started Nov 6; MacRumors reports the main Black Friday sale runs Nov 19 to 28, with Cyber Monday deals Nov 29 to 30. Disc deals were not detailed.",
       "url": "https://macrumors.com/2026/11/06/best-buy-reveals-black-friday-2/"
     },
     {

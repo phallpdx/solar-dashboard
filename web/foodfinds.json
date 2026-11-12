@@ -2,6 +2,20 @@
   "updated": "2026-11-11",
   "items": [
     {
+      "name": "Bob's Red Mill cookies",
+      "maker": "Bob's Red Mill",
+      "kind": "New product",
+      "what": "Hallmark holiday collaboration",
+      "where_to_buy": [],
+      "date": "2026-11-11",
+      "sources": [
+        {
+          "name": "Bob’s Red Mill cookies will star in Hallmark’s latest holiday romance",
+          "url": "https://www.oregonlive.com/tv/2026/11/bobs-red-mill-cookies-will-star-in-hallmarks-latest-holiday-romance.html"
+        }
+      ]
+    },
+    {
       "name": "Nocino walnut liqueur, 2026 batch",
       "maker": "New Deal Distillery (Portland)",
       "kind": "Seasonal",
@@ -323,48 +337,6 @@
         {
           "name": "That Oregon Life: First US cheese to win the World Cheese Awards came from this Oregon creamery",
           "url": "https://thatoregonlife.com/2026/10/rogue-river-blue-cheese-oregon-world-champion-rogue-creamery-central-point/"
-        }
-      ]
-    },
-    {
-      "name": "3 Sirens Straight American Whiskey",
-      "maker": "503 Distilling (Portland)",
-      "kind": "New product",
-      "what": "The SE Portland distillery added an 88-proof straight American whiskey to its lineup, built to be smooth on its own and versatile in cocktails. It debuted with a launch party at the distillery on September 26.",
-      "where_to_buy": [
-        {
-          "store": "503 Distilling (SE Portland distillery)",
-          "url": null
-        }
-      ],
-      "date": "2026-09-08",
-      "sources": [
-        {
-          "name": "Sip Northwest: 503 Distilling Answers the Call With 3 Sirens Straight American Whiskey",
-          "url": "https://sipmagazine.com/?p=403989"
-        }
-      ]
-    },
-    {
-      "name": "True Brut six-pack and new cans",
-      "maker": "Portland Cider Company",
-      "kind": "New product",
-      "what": "Portland Cider's zero-sugar, zero-carb True Brut, made with Northwest apples and champagne yeast, now comes in 12-ounce six-packs for the first time, alongside redesigned 19.2-ounce Proper Pint cans.",
-      "where_to_buy": [
-        {
-          "store": "Select Pacific Northwest retailers (see Portland Cider's Cider Finder)",
-          "url": null
-        }
-      ],
-      "date": "2026-09-01",
-      "sources": [
-        {
-          "name": "Brewbound: Portland Cider's True Brut gets a fresh look and a new six-pack",
-          "url": "https://www.brewbound.com/pr/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
-        },
-        {
-          "name": "Nombase: Portland Cider's True Brut Gets a Fresh Look and a New Six-Pack",
-          "url": "https://www.nombase.com/newswire/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
         }
       ]
     }

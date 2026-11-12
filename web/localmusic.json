@@ -1,6 +1,22 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-11",
   "releases": [
+    {
+      "artist": "Sour Widows",
+      "title": "Sigil",
+      "type": "Album",
+      "local": true,
+      "genre": "Magic",
+      "label": "Sophomore Album",
+      "date": "",
+      "why": "Sour Widows conjure magic on their sophomore album.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNYUJ1M0pIVzNkZU9ncnhnVmg4dDBadXdFcjJHeGpEbmhtcUxwTVNmbFkyMHZnbnVnMzVXYUlHOXo2VGpLQlpmMzNzcDNnNVZBMDNRcXloWlNoZVBabGJvQ0p6UHdLRzhCc3lucUQ2WUNPYldHX3l0OFNUdzNFOHg4VG40YTFHd3k2aGlCRVVhTXc1Z0pUTzd4SmtwVQ?oc=5"
+        }
+      ]
+    },
     {
       "artist": "Darci Phenix",
       "title": "Ruby",
@@ -410,22 +426,6 @@
         {
           "name": "KEXP review",
           "url": "https://www.kexp.org/read/2026/10/5/new-music-reviews-105/"
-        }
-      ]
-    },
-    {
-      "artist": "fish narc",
-      "title": "Uncle",
-      "type": "Album",
-      "local": false,
-      "genre": "Alternative rock",
-      "label": "K Records",
-      "date": "",
-      "why": "Fifth album from Ben Funkhouser's project, a guitar-forward alt-rock record produced by Alex Farrar, reviewed for airplay in KEXP's Oct. 19 New Music Reviews.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
         }
       ]
     }

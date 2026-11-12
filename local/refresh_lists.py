@@ -1127,6 +1127,20 @@ def refresh_teams(data, team_sources):
     return data
 
 
+def _market_session(as_of):
+    """The NYSE session a quote belongs to: its New York date, or the weekday before when taken pre-open."""
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+    try:
+        t = dt.datetime.fromisoformat(str(as_of).replace("Z", "+00:00")).astimezone(ZoneInfo("America/New_York"))
+    except (TypeError, ValueError):
+        return None
+    d = t.date() - dt.timedelta(days=1 if (t.hour, t.minute) < (9, 30) else 0)
+    while d.weekday() >= 5:
+        d -= dt.timedelta(days=1)
+    return d.isoformat()
+
+
 def refresh_marketbrief(data, sources):
     """The morning market brief from news feeds and last night's closing prices. The cloud run only fills
     gaps (real estate figures) when this one succeeded."""
@@ -1136,9 +1150,10 @@ def refresh_marketbrief(data, sources):
         quotes = markets.snapshot()
         closes = "; ".join(f"{q['name']} {q['price']:,} ({q['day_pct']:+.2f}% on the day, {q['ytd_pct']:+.1f}% this year)"
                            for q in quotes if q.get("day_pct") is not None and q.get("ytd_pct") is not None)
+        session = _market_session(quotes[0].get("as_of")) if quotes else None
     except Exception as e:  # noqa: BLE001
         log(f"  quotes failed ({e}); writing from the news alone")
-        closes = ""
+        closes, session = "", None
     schema = {"type": "object", "properties": {
         "headline": {"type": "string", "description": "one sentence"},
         "summary": {"type": "string", "description": "three or four sentences"},
@@ -1194,6 +1209,9 @@ def refresh_marketbrief(data, sources):
                    "sources": [{"name": by_url.get(u, {}).get("source") or urllib.parse.urlsplit(u).hostname, "url": u} for u in urls],
                    "by": "local model"}
         if key == "analysis":
+            # The trading day these numbers describe; the dashboard prints the wrap only beside a board of the same day.
+            if session:
+                section["session"] = session
             section["drivers"] = [clean(x, 200) for x in r.get("drivers", [])[:4] if clean(x)]
             section["watch"] = [clean(x, 200) for x in r.get("watch", [])[:4] if clean(x)]
         else:

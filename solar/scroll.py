@@ -1970,6 +1970,8 @@ def spray(cv, S, rng, f0=0.0, f1=0.42, n=None):
 
 
 def _draw_motif(cv, motif, x, y, s, rng):
+    if isinstance(motif, str) and motif in SECTION_MOTIFS:
+        motif = SECTION_MOTIFS[motif]
     if callable(motif):
         motif(cv, x, y, s)
     elif motif == "shell":
@@ -2421,3 +2423,464 @@ def field(w, h, holes=(), seed=0, motif="fleuron", border=True, cache=None):
     # cut the clip from the exact holes
     exact = _clip_d(w, h, holes)
     return re.sub(r'(<clipPath id="[^"]+"><path clip-rule="evenodd" d=")[^"]*(")', lambda mm: mm.group(1) + exact + mm.group(2), svg, count=1)
+
+
+# ---------------------------------------------------------------- section motifs
+#
+# Each section's centre motif for the field: an oval cartouche with a bright rim, flanked by two small
+# volutes and standing in an acanthus calyx (the same scroll hand as the field), with the section's emblem
+# engraved inside it.  Tone is planned for the field's four greys: white, light (#ccc), mid (#888) and black.
+# The emblem is bright on the mid ground of the cartouche, shaded in light grey, cut in black; the greys are
+# flat areas (no fine hatching inside the cartouche) so they compress and print cleanly at two bits.
+# Every motif is a module-level function f(cv, x, y, s): centred on (x, y), fitting an s x s box.
+
+def _clip_convex(poly, clip):
+    """Sutherland-Hodgman: poly clipped to the convex polygon clip (both lists of points, clip clockwise
+    or counter-clockwise)."""
+    area = sum(clip[i][0] * clip[(i + 1) % len(clip)][1] - clip[(i + 1) % len(clip)][0] * clip[i][1]
+               for i in range(len(clip)))
+    sgn = 1 if area > 0 else -1
+    out = list(poly)
+    for i in range(len(clip)):
+        a, b = clip[i], clip[(i + 1) % len(clip)]
+        inp, out = out, []
+        if not inp:
+            break
+
+        def inside(p):
+            return sgn * ((b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0])) >= 0
+
+        def cut(p, q):
+            dx, dy = q[0] - p[0], q[1] - p[1]
+            ex, ey = b[0] - a[0], b[1] - a[1]
+            den = dx * ey - dy * ex
+            if abs(den) < 1e-12:
+                return q
+            t = ((a[0] - p[0]) * ey - (a[1] - p[1]) * ex) / den
+            return (p[0] + dx * t, p[1] + dy * t)
+        for j in range(len(inp)):
+            p, q = inp[j - 1], inp[j]
+            if inside(q):
+                if not inside(p):
+                    out.append(cut(p, q))
+                out.append(q)
+            elif inside(p):
+                out.append(cut(p, q))
+    return out
+
+
+class _Emb:
+    """Emblem coordinates: u, v in [-1, 1] across the cartouche's inner oval."""
+
+    def __init__(self, cv, x, y, s):
+        self.cv = cv
+        self.cx, self.cy = x, y - s * 0.05
+        self.rx, self.ry = s * 0.36, s * 0.33
+        self.s = s
+        self.oval = [(self.cx + self.rx * math.cos(TAU * i / 48), self.cy + self.ry * math.sin(TAU * i / 48))
+                     for i in range(48)]
+
+    def P(self, u, v):
+        return (self.cx + u * self.rx, self.cy + v * self.ry)
+
+    def pts(self, uv):
+        return [self.P(u, v) for u, v in uv]
+
+    def poly(self, key, uv, clip=True):
+        p = self.pts(uv)
+        if clip:
+            p = _clip_convex(p, self.oval)
+        if len(p) >= 3:
+            self.cv.poly(key, p)
+
+    def line(self, key, uv, clip=True):
+        """Polyline; with clip, cut to the inner oval (split where it leaves and re-enters)."""
+        if not clip:
+            self.cv.line(key, self.pts(uv))
+            return
+        lim = 0.985
+
+        def inside(q):
+            return q[0] * q[0] + q[1] * q[1] <= lim * lim
+
+        def cross(a, b):
+            lo, hi = 0.0, 1.0
+            for _ in range(18):
+                m = (lo + hi) / 2
+                q = (a[0] + (b[0] - a[0]) * m, a[1] + (b[1] - a[1]) * m)
+                if inside(q) == inside(a):
+                    lo = m
+                else:
+                    hi = m
+            m = (lo + hi) / 2
+            return (a[0] + (b[0] - a[0]) * m, a[1] + (b[1] - a[1]) * m)
+        run = [uv[0]] if inside(uv[0]) else []
+        for a, b in zip(uv, uv[1:]):
+            ia, ib = inside(a), inside(b)
+            if ia and ib:
+                run.append(b)
+            elif ia:
+                run.append(cross(a, b))
+                if len(run) >= 2:
+                    self.cv.line(key, self.pts(run))
+                run = []
+            elif ib:
+                run = [cross(a, b), b]
+        if len(run) >= 2:
+            self.cv.line(key, self.pts(run))
+
+    def circle(self, key, u, v, r):
+        X, Y = self.P(u, v)
+        self.cv.circle(key, X, Y, r * self.rx)
+
+    def ell(self, u, v, a, b, rot=0.0, n=40):
+        c, s_ = math.cos(rot), math.sin(rot)
+        return [(u + a * math.cos(TAU * i / n) * c - b * math.sin(TAU * i / n) * s_,
+                 v + a * math.cos(TAU * i / n) * s_ + b * math.sin(TAU * i / n) * c) for i in range(n)]
+
+    def band(self, key, uv, w):
+        p = self.pts(uv)
+        if len(p) >= 2:
+            q = _clip_convex(_ribbon(p, [w * self.rx / 2] * len(p))[0], self.oval)
+            if len(q) >= 3:
+                self.cv.poly(key, q)
+
+
+def _cartouche(cv, x, y, s, rng):
+    """The common setting: acanthus calyx and side volutes behind, then the rimmed oval on a mid ground."""
+    for sg in (-1, 1):
+        hand_leaf(cv, (x + sg * s * 0.06, y + s * 0.3), math.atan2(0.3, sg * 1.0), s * 0.44, s * 0.2, sg, rng,
+                  fingers=3)
+    for sg in (-1, 1):
+        R = s * 0.085
+        cx_, cy_ = x + sg * s * 0.41, y + s * 0.08
+        sc = Scroll(cx_, cy_, R, sg, math.atan2(-1.0, -sg * 0.3), 1.3, 0.2)
+        draw_scroll(cv, sc, rng, bw=max(1.2, R * 0.45), inner=False)
+    e = _Emb(cv, x, y, s)
+    rim = [(e.cx + (e.rx + 2.2) * math.cos(TAU * i / 48), e.cy + (e.ry + 2.2) * math.sin(TAU * i / 48)) for i in range(48)]
+    cv.poly("WO", rim)
+    cv.poly("G0", [(e.cx + (e.rx + 1.1) * math.cos(TAU * i / 48), e.cy + (e.ry + 1.1) * math.sin(TAU * i / 48))
+                   for i in range(48) if i >= 24] + [(e.cx - e.rx - 1.1, e.cy)][:0])
+    cv.poly("G2", e.oval)
+    cv.line("C05", e.oval + [e.oval[0]])
+    bud(cv, x, y + s * 0.4, max(0.9, s * 0.04))
+    return e
+
+
+def _star_pts(u, v, r0, r1, n, rot=-math.pi / 2):
+    return [(u + (r0 if i % 2 == 0 else r1) * math.cos(rot + math.pi * i / n),
+             v + (r0 if i % 2 == 0 else r1) * math.sin(rot + math.pi * i / n)) for i in range(2 * n)]
+
+
+def _bevel_star(e, u, v, r0, r1, n, rot=-math.pi / 2):
+    """A star cut with bevelled arms: each arm half bright, half light grey."""
+    p = _star_pts(u, v, r0, r1, n, rot)
+    for i in range(2 * n):
+        a, b = p[i], p[(i + 1) % (2 * n)]
+        e.poly("W" if i % 2 == 0 else "G0", [(u, v), a, b], clip=False)
+    e.line("C05", p + [p[0]])
+
+
+def motif_sun(cv, x, y, s):
+    """today: the sun, rays alternating long and short."""
+    rng = rng_for("m-sun", round(s))
+    e = _cartouche(cv, x, y, s, rng)
+    for i in range(16):
+        a = TAU * i / 16
+        r1 = 0.92 if i % 2 == 0 else 0.72
+        e.poly("W" if i % 2 == 0 else "G0", [(0.5 * math.cos(a - 0.12), 0.5 * math.sin(a - 0.12)),
+                                             (r1 * math.cos(a), r1 * math.sin(a)),
+                                             (0.5 * math.cos(a + 0.12), 0.5 * math.sin(a + 0.12))])
+    e.poly("G0", e.ell(0, 0, 0.5, 0.5))
+    e.poly("W", e.ell(-0.06, -0.06, 0.42, 0.42))
+    e.line("C05", e.ell(0, 0, 0.5, 0.5) + [e.ell(0, 0, 0.5, 0.5)[0]])
+
+
+def motif_road(cv, x, y, s):
+    """roads: a road vanishing to a point between light fields, a low sun on the horizon."""
+    e = _cartouche(cv, x, y, s, rng_for("m-road", round(s)))
+    e.poly("G0", [(-1.2, -0.05), (1.2, -0.05), (1.2, 1.2), (-1.2, 1.2)])
+    e.poly("W", e.ell(0.45, -0.05, 0.22, 0.22)[20:] + [(0.23, -0.05)])
+    e.poly("K", [(-0.62, 1.2), (0.62, 1.2), (0.03, -0.05), (-0.03, -0.05)])
+    for a, b in ((0.05, 0.12), (0.22, 0.34), (0.48, 0.66), (0.82, 1.1)):
+        w0, w1 = 0.012 + 0.04 * a, 0.012 + 0.04 * b
+        e.poly("W", [(-w0, a), (w0, a), (w1, b), (-w1, b)])
+    for k in (0.25, 0.5, 0.8):
+        e.line("C05", [(-1.0, k), (-0.62 * (k + 0.05) / 1.25 - 0.05, k)])
+        e.line("C05", [(0.62 * (k + 0.05) / 1.25 + 0.05, k), (1.0, k)])
+
+
+def motif_house(cv, x, y, s):
+    """family: a house gable with a chimney, a door and lit windows."""
+    e = _cartouche(cv, x, y, s, rng_for("m-house", round(s)))
+    e.poly("WO", [(0.22, -0.62), (0.38, -0.62), (0.38, -0.25), (0.22, -0.25)], clip=False)
+    e.poly("WO", [(-0.48, -0.05), (0.48, -0.05), (0.48, 0.78), (-0.48, 0.78)])
+    e.poly("G0", [(0.2, -0.05), (0.48, -0.05), (0.48, 0.78), (0.2, 0.78)])
+    e.poly("W", [(-0.66, 0.0), (0.0, -0.66), (0.0, 0.0)], clip=False)
+    e.poly("G0", [(0.0, -0.66), (0.66, 0.0), (0.0, 0.0)], clip=False)
+    e.line("C1", [(-0.66, 0.0), (0.0, -0.66), (0.66, 0.0), (-0.66, 0.0)])
+    e.poly("K", [(-0.12, 0.38), (0.12, 0.38), (0.12, 0.78), (-0.12, 0.78)])
+    for u in (-0.33, 0.33):
+        e.poly("K", [(u - 0.1, 0.12), (u + 0.1, 0.12), (u + 0.1, 0.3), (u - 0.1, 0.3)])
+    e.poly("K", e.ell(0, -0.22, 0.1, 0.1))
+
+
+def motif_solar(cv, x, y, s):
+    """solar: the sun over a panel of cells."""
+    e = _cartouche(cv, x, y, s, rng_for("m-solar", round(s)))
+    for i in range(10):
+        a = math.pi + math.pi * i / 9
+        e.line("C1" if False else "S1", [(0.32 * math.cos(a), -0.3 + 0.32 * math.sin(a)),
+                                         (0.5 * math.cos(a), -0.3 + 0.5 * math.sin(a))])
+    e.poly("W", e.ell(0, -0.3, 0.25, 0.25)[20:] + [(0.25, -0.3)])
+    pan = [(-0.72, 0.1), (0.62, 0.0), (0.8, 0.62), (-0.55, 0.74)]
+    e.poly("K", pan)
+    e.poly("G0", [(-0.72, 0.1), (0.62, 0.0), (0.64, 0.07), (-0.7, 0.17)])
+    for t in (0.25, 0.5, 0.75):
+        a = (pan[0][0] + (pan[1][0] - pan[0][0]) * t, pan[0][1] + (pan[1][1] - pan[0][1]) * t)
+        b = (pan[3][0] + (pan[2][0] - pan[3][0]) * t, pan[3][1] + (pan[2][1] - pan[3][1]) * t)
+        e.line("S05", [a, b])
+    for t in (0.36, 0.68):
+        a = (pan[0][0] + (pan[3][0] - pan[0][0]) * t, pan[0][1] + (pan[3][1] - pan[0][1]) * t)
+        b = (pan[1][0] + (pan[2][0] - pan[1][0]) * t, pan[1][1] + (pan[2][1] - pan[1][1]) * t)
+        e.line("S05", [a, b])
+    e.line("S1", [pan[3], pan[2]])
+
+
+def motif_sprout(cv, x, y, s):
+    """garden: a seedling's two leaves opening from a mound of earth."""
+    e = _cartouche(cv, x, y, s, rng_for("m-sprout", round(s)))
+    e.poly("G0", [(-1.0, 0.72), (-0.5, 0.52), (0.0, 0.46), (0.5, 0.52), (1.0, 0.72), (1.0, 1.2), (-1.0, 1.2)])
+    e.line("C05", [(-0.5, 0.7), (-0.2, 0.62)])
+    e.line("C05", [(0.25, 0.66), (0.55, 0.74)])
+    e.band("W", [(0.0, 0.5), (0.02, 0.2), (-0.02, -0.05), (0.0, -0.25)], 0.09)
+    for sg in (-1, 1):
+        base = e.P(0.0, -0.05)
+        lobe(cv, _curve(base, math.atan2(-0.9, sg * 0.75), s * 0.36, sg * 0.5, 10, sg * 0.4), s * 0.17,
+             shade=-sg, rib=True)
+    bud(cv, *e.P(0.0, -0.3), max(0.9, s * 0.03))
+
+
+def motif_barge(cv, x, y, s):
+    """river: a barge with its deckhouse on running water."""
+    e = _cartouche(cv, x, y, s, rng_for("m-barge", round(s)))
+    e.poly("K", [(-1.2, 0.38), (1.2, 0.38), (1.2, 1.2), (-1.2, 1.2)])
+    for k, v in enumerate((0.55, 0.78)):
+        e.band("W", [(-1.0 + 0.1 * i, v + 0.05 * math.sin(i * 1.3 + k)) for i in range(21)], 0.06)
+    e.poly("WO", [(-0.2, -0.28), (0.25, -0.28), (0.25, 0.12), (-0.2, 0.12)], clip=False)
+    e.poly("K", [(-0.12, -0.18), (0.0, -0.18), (0.0, -0.04), (-0.12, -0.04)])
+    e.poly("K", [(0.08, -0.18), (0.18, -0.18), (0.18, -0.04), (0.08, -0.04)])
+    e.poly("WO", [(-0.78, 0.1), (0.78, 0.1), (0.58, 0.42), (-0.62, 0.42)], clip=False)
+    e.poly("G0", [(-0.7, 0.27), (0.68, 0.27), (0.58, 0.42), (-0.62, 0.42)], clip=False)
+    e.band("W", [(0.4, 0.1), (0.4, -0.45)], 0.07)
+
+
+def motif_compass(cv, x, y, s):
+    """nearby: a compass star, four long points and four short, on a ring."""
+    e = _cartouche(cv, x, y, s, rng_for("m-compass", round(s)))
+    ring = e.ell(0, 0, 0.62, 0.62, n=48)
+    e.line("S1", ring + [ring[0]])
+    _bevel_star(e, 0, 0, 0.62, 0.12, 4, rot=-math.pi / 4 - math.pi / 2)
+    _bevel_star(e, 0, 0, 0.95, 0.16, 4)
+    e.poly("K", e.ell(0, 0, 0.1, 0.1))
+    e.poly("W", e.ell(0, 0, 0.045, 0.045))
+
+
+def motif_quill(cv, x, y, s):
+    """news: a quill pen, its vane cut along the shaft, the nib inked."""
+    e = _cartouche(cv, x, y, s, rng_for("m-quill", round(s)))
+    sp = [e.P(0.42 - 0.95 * t, 0.7 - 1.55 * t + 0.25 * math.sin(math.pi * t) * 0) for t in [i / 14 for i in range(15)]]
+    sp = _resample(sp, 1.0)
+    lobe(cv, sp[2:], s * 0.24, shade=1, teeth=5, rib=False)
+    cv.line("C1", sp[1:])
+    tip = e.P(0.47, 0.82)
+    cv.poly("K", [e.P(0.36, 0.62), e.P(0.5, 0.66), tip])
+
+
+def motif_arrow(cv, x, y, s):
+    """markets: an arrow rising over three climbing bars."""
+    e = _cartouche(cv, x, y, s, rng_for("m-arrow", round(s)))
+    for u0, top in ((-0.62, 0.42), (-0.17, 0.2), (0.28, -0.05)):
+        e.poly("G0", [(u0, top), (u0 + 0.32, top), (u0 + 0.32, 1.2), (u0, 1.2)])
+        e.line("C05", [(u0 + 0.32, top), (u0 + 0.32, 0.95)])
+    pts = [(-0.82, 0.3), (-0.3, -0.12), (0.02, 0.1), (0.5, -0.38)]
+    e.band("W", pts, 0.13)
+    d = _norm(pts[-1][0] - pts[-2][0], pts[-1][1] - pts[-2][1])
+    n = (-d[1], d[0])
+    t = (pts[-1][0] + d[0] * 0.3, pts[-1][1] + d[1] * 0.3)
+    e.poly("WO", [(pts[-1][0] + n[0] * 0.2, pts[-1][1] + n[1] * 0.2), t,
+                  (pts[-1][0] - n[0] * 0.2, pts[-1][1] - n[1] * 0.2)], clip=False)
+
+
+def motif_portico(cv, x, y, s):
+    """civics: a portico of four columns under a pediment, on its steps."""
+    e = _cartouche(cv, x, y, s, rng_for("m-portico", round(s)))
+    e.poly("WO", [(-0.8, 0.62), (0.8, 0.62), (0.8, 0.78), (-0.8, 0.78)])
+    e.poly("WO", [(-0.68, 0.5), (0.68, 0.5), (0.68, 0.62), (-0.68, 0.62)])
+    for u in (-0.5, -0.17, 0.17, 0.5):
+        e.poly("W", [(u - 0.08, -0.14), (u + 0.08, -0.14), (u + 0.08, 0.5), (u - 0.08, 0.5)], clip=False)
+        e.poly("G0", [(u + 0.02, -0.14), (u + 0.08, -0.14), (u + 0.08, 0.5), (u + 0.02, 0.5)], clip=False)
+    e.poly("WO", [(-0.72, -0.3), (0.72, -0.3), (0.72, -0.14), (-0.72, -0.14)], clip=False)
+    e.poly("W", [(-0.8, -0.3), (0.0, -0.72), (0.8, -0.3)])
+    e.poly("G0", [(-0.5, -0.36), (0.0, -0.6), (0.5, -0.36)], clip=False)
+    e.line("C1", [(-0.8, -0.3), (0.0, -0.72), (0.8, -0.3), (-0.8, -0.3)])
+
+
+def motif_ball(cv, x, y, s):
+    """sports: a ball, its seams stitched."""
+    e = _cartouche(cv, x, y, s, rng_for("m-ball", round(s)))
+    e.poly("G0", e.ell(0, 0, 0.66, 0.66))
+    e.poly("W", e.ell(-0.08, -0.08, 0.56, 0.56))
+    e.line("C05", e.ell(0, 0, 0.66, 0.66) + [e.ell(0, 0, 0.66, 0.66)[0]])
+    for sg in (-1, 1):
+        arc = [(sg * (0.66 - 0.3 * math.cos(t)) * 0.95, 0.62 * math.sin(t)) for t in [-1.25 + 2.5 * i / 16 for i in range(17)]]
+        arc = [(sg * (0.75 - 0.36 * math.cos(t)), 0.6 * math.sin(t)) for t in [-1.2 + 2.4 * i / 16 for i in range(17)]]
+        e.line("C1", arc)
+        for i in range(2, 16, 2):
+            (u, v) = arc[i]
+            e.line("C05", [(u - 0.06, v - 0.03), (u + 0.06, v + 0.03)])
+
+
+def motif_drum(cv, x, y, s):
+    """music: a drum with its cords, two sticks crossed over it."""
+    e = _cartouche(cv, x, y, s, rng_for("m-drum", round(s)))
+    body = e.ell(0, 0.0, 0.58, 0.2)[:21] + [(-0.58, 0.0)]
+    e.poly("W", [(-0.58, 0.0), (0.58, 0.0), (0.58, 0.55), (-0.58, 0.55)], clip=False)
+    e.poly("G0", [(0.25, 0.0), (0.58, 0.0), (0.58, 0.55), (0.25, 0.55)], clip=False)
+    e.poly("W", e.ell(0, 0.55, 0.58, 0.18)[:21], clip=False)
+    e.poly("G0", [p for p in e.ell(0, 0.55, 0.58, 0.18)[:21] if p[0] > 0.25] + [(0.25, 0.55)], clip=False)
+    zz = [(-0.55 + 0.11 * i, 0.08 if i % 2 == 0 else 0.6) for i in range(11)]
+    e.line("C1", zz)
+    e.poly("WO", e.ell(0, 0.0, 0.58, 0.18), clip=False)
+    e.poly("G0", e.ell(0.03, 0.02, 0.45, 0.11), clip=False)
+    for sg in (-1, 1):
+        e.band("W", [(sg * 0.72, -0.82), (-sg * 0.12, -0.08)], 0.07)
+        e.circle("WO", sg * 0.75, -0.86, 0.07)
+
+
+def motif_eye(cv, x, y, s):
+    """watch: an open eye under its brow."""
+    e = _cartouche(cv, x, y, s, rng_for("m-eye", round(s)))
+    up = [(-0.82 + 1.64 * t, 0.05 - 0.55 * math.sin(math.pi * t)) for t in [i / 16 for i in range(17)]]
+    lo = [(0.82 - 1.64 * t, 0.05 + 0.4 * math.sin(math.pi * t)) for t in [i / 16 for i in range(17)]]
+    e.poly("W", up + lo[1:-1], clip=False)
+    e.poly("G0", e.ell(0.02, 0.02, 0.3, 0.3), clip=False)
+    e.poly("K", e.ell(0.02, 0.02, 0.14, 0.14), clip=False)
+    e.poly("W", e.ell(-0.06, -0.07, 0.05, 0.05), clip=False)
+    e.line("C15", up)
+    e.line("C05", lo)
+    for i in range(3, 15, 3):
+        u, v = up[i]
+        e.line("C1", [(u, v), (u * 1.08, v - 0.12)])
+    e.band("W", [(-0.7, -0.62), (-0.2, -0.78), (0.3, -0.76), (0.72, -0.56)], 0.08)
+
+
+def motif_bridge(cv, x, y, s):
+    """local: an arched bridge over the water."""
+    e = _cartouche(cv, x, y, s, rng_for("m-bridge", round(s)))
+    e.poly("K", [(-1.2, 0.5), (1.2, 0.5), (1.2, 1.2), (-1.2, 1.2)])
+    e.band("W", [(-0.9 + 0.09 * i, 0.72 + 0.04 * math.sin(i * 1.5)) for i in range(21)], 0.05)
+    arch = [(0.62 * math.cos(math.pi - math.pi * i / 20), 0.5 - 0.48 * math.sin(math.pi * i / 20)) for i in range(21)]
+    e.band("W", arch, 0.1)
+    for u in (-0.42, -0.24, 0.0, 0.24, 0.42):
+        v = 0.5 - 0.48 * math.sqrt(max(0.0, 1 - (u / 0.62) ** 2))
+        e.line("S1", [(u, -0.06), (u, v)])
+    e.poly("WO", [(-1.1, -0.16), (1.1, -0.16), (1.1, -0.02), (-1.1, -0.02)])
+    e.poly("G0", [(-1.1, -0.07), (1.1, -0.07), (1.1, -0.02), (-1.1, -0.02)])
+    for u in (-0.78, 0.78):
+        e.poly("WO", [(u - 0.12, -0.02), (u + 0.12, -0.02), (u + 0.12, 0.55), (u - 0.12, 0.55)])
+
+
+def motif_moon(cv, x, y, s):
+    """almanac: a crescent moon and a star."""
+    e = _cartouche(cv, x, y, s, rng_for("m-moon", round(s)))
+    e.poly("W", e.ell(-0.12, 0.05, 0.6, 0.6), clip=False)
+    e.poly("G0", e.ell(-0.12, 0.05, 0.6, 0.6)[18:31] + [(-0.12, 0.05)], clip=False)
+    e.poly("G2", e.ell(0.1, -0.08, 0.5, 0.5), clip=False)
+    _bevel_star(e, 0.42, -0.36, 0.28, 0.11, 5)
+
+
+def motif_atom(cv, x, y, s):
+    """science: an atom, three orbits round a nucleus."""
+    e = _cartouche(cv, x, y, s, rng_for("m-atom", round(s)))
+    for k in range(3):
+        rot = k * math.pi / 3
+        loop = e.ell(0, 0, 0.88, 0.3, rot, n=48)
+        e.band("W", loop + loop[:2], 0.07)
+        a = 0.9 + k * 2.1
+        e.circle("WO", 0.88 * math.cos(a) * math.cos(rot) - 0.3 * math.sin(a) * math.sin(rot),
+                 0.88 * math.cos(a) * math.sin(rot) + 0.3 * math.sin(a) * math.cos(rot), 0.07)
+    e.poly("G0", e.ell(0, 0, 0.2, 0.2), clip=False)
+    e.poly("W", e.ell(-0.04, -0.04, 0.15, 0.15), clip=False)
+    e.line("C05", e.ell(0, 0, 0.2, 0.2) + [e.ell(0, 0, 0.2, 0.2)[0]])
+
+
+def motif_pencil(cv, x, y, s):
+    """doodles: a sharpened pencil."""
+    e = _cartouche(cv, x, y, s, rng_for("m-pencil", round(s)))
+    d = _norm(0.75, -0.66)
+    n = (-d[1], d[0])
+
+    def A(t, o):
+        return (d[0] * t + n[0] * o, d[1] * t + n[1] * o)
+    hw = 0.15
+    e.poly("W", [A(-0.35, -hw), A(0.62, -hw), A(0.62, hw), A(-0.35, hw)], clip=False)
+    e.poly("G0", [A(-0.35, hw * 0.3), A(0.62, hw * 0.3), A(0.62, hw), A(-0.35, hw)], clip=False)
+    e.poly("G2", [A(0.62, -hw), A(0.76, -hw), A(0.76, hw), A(0.62, hw)], clip=False)
+    for t in (0.66, 0.72):
+        e.line("S05", [A(t, -hw), A(t, hw)])
+    e.poly("WO", [A(0.76, -hw), A(0.92, -hw * 0.9), A(0.92, hw * 0.9), A(0.76, hw)], clip=False)
+    e.poly("W", [A(-0.35, -hw), A(-0.72, 0.0), A(-0.35, hw)], clip=False)
+    e.poly("G0", [A(-0.35, 0.0), A(-0.72, 0.0), A(-0.35, hw)], clip=False)
+    e.poly("K", [A(-0.6, -hw * 0.32), A(-0.74, 0.0), A(-0.6, hw * 0.32)], clip=False)
+    e.line("C05", [A(-0.35, -hw), A(0.62, -hw)])
+
+
+def motif_star(cv, x, y, s):
+    """delights: a five-point star, its arms bevelled."""
+    e = _cartouche(cv, x, y, s, rng_for("m-star", round(s)))
+    _bevel_star(e, 0, 0.04, 0.92, 0.38, 5)
+    e.poly("W", e.ell(0, 0.04, 0.08, 0.08), clip=False)
+
+
+def motif_leafflame(cv, x, y, s):
+    """world: a leaf flame, a tall serrated tongue licking up between two that curl outward."""
+    rng = rng_for("m-flame", round(s))
+    e = _cartouche(cv, x, y, s, rng)
+    for sg in (-1, 1):
+        lobe(cv, _curve(e.P(sg * 0.1, 0.66), math.atan2(-1.0, sg * 0.55), s * 0.4, sg * 0.9, 12, sg * 0.9),
+             s * 0.12, shade=sg, teeth=3, rib=True)
+    sp = []
+    for i in range(19):
+        t_ = i / 18
+        sp.append(e.P(0.16 * math.sin(math.pi * t_ * 1.6) * t_, 0.7 - 1.6 * t_))
+    lobe(cv, sp, s * 0.17, shade=1, teeth=4, rib=True)
+    e.poly("WO", e.ell(0, 0.72, 0.34, 0.12), clip=False)
+    e.poly("G0", [(u, v) for u, v in e.ell(0, 0.72, 0.34, 0.12) if v > 0.72], clip=False)
+
+
+def motif_wave(cv, x, y, s):
+    """coast: a breaking wave curling over, foam on its crest."""
+    rng = rng_for("m-wave", round(s))
+    e = _cartouche(cv, x, y, s, rng)
+    body = [(-1.2, 0.35), (-0.7, 0.3), (-0.3, 0.12), (0.0, -0.18), (0.2, -0.45), (0.45, -0.55), (0.62, -0.42),
+            (0.5, -0.2), (0.3, 0.1), (0.4, 0.4), (1.2, 0.5), (1.2, 1.2), (-1.2, 1.2)]
+    e.poly("G0", body)
+    e.poly("W", [(-1.2, 0.35), (-0.7, 0.3), (-0.3, 0.12), (0.0, -0.18), (0.2, -0.45), (0.1, -0.2), (-0.25, 0.22),
+                 (-0.7, 0.42), (-1.2, 0.48)])
+    sc = Scroll(*e.P(0.3, -0.22), s * 0.09, 1, math.atan2(-1, 0.4), 1.3, 0.2)
+    draw_scroll(cv, sc, rng, bw=max(1.3, s * 0.035), inner=False)
+    for k in range(5):
+        u = 0.05 + 0.12 * k
+        cv.circle("W", *e.P(u, -0.5 - 0.06 * math.sin(k * 2.0) - 0.04 * k * (4 - k) / 4), s * 0.025 + 0.4)
+    for k, v in enumerate((0.62, 0.85)):
+        e.band("W", [(-1.0 + 0.1 * i, v + 0.04 * math.sin(i * 1.4 + k)) for i in range(21)], 0.05)
+
+
+SECTION_MOTIFS = {
+    "today": motif_sun, "roads": motif_road, "family": motif_house, "solar": motif_solar,
+    "garden": motif_sprout, "river": motif_barge, "nearby": motif_compass, "news": motif_quill,
+    "markets": motif_arrow, "civics": motif_portico, "sports": motif_ball, "music": motif_drum,
+    "watch": motif_eye, "local": motif_bridge, "almanac": motif_moon, "science": motif_atom,
+    "doodles": motif_pencil, "delights": motif_star, "world": motif_leafflame, "coast": motif_wave,
+}

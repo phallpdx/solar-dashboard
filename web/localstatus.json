@@ -1,6 +1,6 @@
 {
   "date": "2026-11-11",
-  "ran_at": "2026-11-11T12:54:46Z",
+  "ran_at": "2026-11-12T03:38:55Z",
   "lists": {
     "jazz": "unchanged",
     "concerts": "unchanged",
@@ -16,7 +16,8 @@
     "restaurants": "unchanged",
     "localmusic": "unchanged",
     "liquor": "unchanged",
-    "alfred": "unchanged"
+    "alfred": "unchanged",
+    "evening": "changed"
   },
-  "web_search": "ok"
+  "web_search": "none due"
 }

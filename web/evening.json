@@ -1,0 +1,84 @@
+{
+  "note": "The Evening Edition's stories, rewritten for bedtime by the local model.",
+  "date": "2026-11-11",
+  "written_at": "2026-11-12T03:36:35Z",
+  "stories": [
+    {
+      "url": "https://abcnews.com/Politics/democrat-colom-mississippis-black-senator-100-years-ap/story?id=137984057",
+      "title": "Democrat Colom flips Mississippi Senate seat",
+      "source": "ABC News",
+      "utc": "2026-11-12T01:22:13+00:00",
+      "coverage": 10,
+      "also": [
+        "NPR",
+        "CBS News",
+        "NBC News",
+        "PBS NewsHour",
+        "Axios",
+        "Politico",
+        "BBC",
+        "The Guardian",
+        "Al Jazeera"
+      ],
+      "headline": "Scott Colom won the Mississippi Senate election",
+      "happened": "Democrat Scott Colom defeated Republican Cindy Hyde-Smith in a close race. Officials counted absentee and provisional ballots over several days. This victory gives Mississippi its first Black senator since Reconstruction.",
+      "tonight": "Colom has secured the seat by a few thousand votes. Hyde-Smith conceded the race via social media.",
+      "next": null,
+      "major": false
+    },
+    {
+      "url": "https://abcnews.com/Politics/treasury-secretary-scott-bessent-moved-military-base-sources/story?id=138044885",
+      "title": "Treasury Secretary Scott Bessent moved to a military base: Sources",
+      "source": "ABC News",
+      "utc": "2026-11-11T20:33:27+00:00",
+      "coverage": 5,
+      "also": [
+        "CBS News",
+        "PBS NewsHour",
+        "BBC",
+        "The Guardian"
+      ],
+      "headline": "Treasury Secretary Scott Bessent relocated to a military base",
+      "happened": "Scott Bessent moved from his Washington DC home to a military base. This relocation followed reports that identified his address. The move occurred due to security concerns regarding Iranian threats.",
+      "tonight": "Bessent remains committed to economic pressure against Iran. He is currently living on a military base.",
+      "next": null,
+      "major": false
+    },
+    {
+      "url": "https://www.cbsnews.com/video/white-house-warns-dems-of-blatant-criminality-over-possible-probes-into-trump-administration/",
+      "title": "White House warns Democrats of \"blatant criminality\" over possible probes into Trump administration",
+      "source": "CBS News",
+      "utc": "2026-11-12T01:16:43+00:00",
+      "coverage": 4,
+      "also": [
+        "NBC News",
+        "PBS NewsHour",
+        "The Guardian"
+      ],
+      "headline": "White House warned Democrats about planned administration investigations",
+      "happened": "The White House issued a letter warning Democratic lawmakers regarding planned oversight probes. Counsel Will Scharf claimed these investigations might constitute criminality. Representative Robert Garcia vowed to continue the scrutiny.",
+      "tonight": "Democrats will take control of Congress in January. The incoming chair plans to pursue accountability despite threats.",
+      "next": null,
+      "major": false
+    }
+  ],
+  "local": {
+    "url": "https://www.oregonlive.com/crime/2026/11/police-arrest-suspect-in-portland-toy-horse-heist.html",
+    "title": "Police arrest suspect in Portland model horse heist",
+    "source": "The Oregonian",
+    "utc": "2026-11-11T23:38:34+00:00",
+    "coverage": 5,
+    "also": [
+      "KGW",
+      "KOIN",
+      "KATU",
+      "KPTV"
+    ],
+    "headline": "Police arrested a man for stealing model horses from a car",
+    "happened": "Police arrested Benjamin Moore for the theft of miniature horse figurines. The suspect was seen distributing items in pouches near a bookstore. He faces several theft charges and has outstanding warrants.",
+    "tonight": "The suspect is held at the Multnomah County Detention Center. Police are still seeking information regarding the missing collection.",
+    "next": null,
+    "major": false
+  },
+  "updated": "2026-11-11"
+}

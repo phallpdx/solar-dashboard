@@ -188,7 +188,7 @@ def _css():
            ".aside, .brief-rest .aside, .pill, .tag, .badge, .rt2, .rt3, .rt4, .kfl .kn, .kidea-k, .kpanel .kidea-k, .kmast .kear span, .kfhead .kkick")
     c += _r(lab, f"font:{S['label']} !important;{SC};{OLD};color:#000 !important")
     chips = (".kst, .kchip, .kpanel .kchip, .kpanel .st, .kpanel .lvl, .vote, .kpanel .vote b, .kpanel .sp .pill, .ktm .kst, .ktrail .ktags .kst, "
-             ".kcell b.kst, .kcell b.kval, .kcell .ktm b.kst, b.kval")
+             ".kcell b.kst, .kcell b.kval, .kcell .ktm b.kst, b.kval, .sun-clouds>span, .sun-clouds>span *")
     c += _r(chips, f"font:{S['labelb']} !important;{SC};{LIN};color:#000 !important;-webkit-text-fill-color:#000 !important;background-color:transparent !important")
     # the lit chip (the one notable state): a solid black ground inside the same engraved frame, white letters
     t, r, b, l = bands("chip")
@@ -347,7 +347,7 @@ def _css():
     # the best surf of the week: its rating reversed out of black, and an engraved fleuron under the cell
     c += _r("table.kmatrix td.q4", "padding-bottom:20px !important;background-repeat:no-repeat !important;"
             "background-position:50% 100% !important;background-size:72px 14px !important")
-    c += _r("table.kmatrix td.q4 b", "display:inline-block !important;background:#000 !important;color:#fff !important;"
+    c += _r("table.kmatrix td.q4 b", "display:table !important;background:#000 !important;color:#fff !important;"
             "-webkit-text-fill-color:#fff !important;padding:0 4px !important;margin-left:-4px")
     # today's facts: compact tiles, label and figure on one line, two by two and the tide across
     t, r, b, l = bands("tile")
@@ -1053,7 +1053,7 @@ CHECK_JS = r"""(F) => {
     const e = R && R[i]; let fw = 0, fh = 0;
     if (e && e.length > 5) { fw = e[5]; fh = e[6]; }
     else if (el.getAttribute('data-kf')) { const z = el.getAttribute('data-kf').split(' '); fw = +z[0]; fh = +z[1]; }
-    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
+    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead|best)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
     if (fw && (Math.abs(fw - b.width) > 1.5 || Math.abs(fh - b.height) > 1.5))
       unframed.push(role + ' size ' + fw + 'x' + fh + ' vs ' + Math.round(b.width) + 'x' + Math.round(b.height) + ': ' + name(el));
   }); }

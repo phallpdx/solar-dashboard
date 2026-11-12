@@ -2019,7 +2019,7 @@ PAGER_JS = r"""
   // The build's answer for this page at this screen size (solar/kindle_fast.py): fit classes, sheet cuts and each
   // sheet's labels, plate and ornaments, applied without measuring; checked once the fonts are in.
   var PRE = null, pre0 = 0;
-  try { PRE = JSON.parse(root.getAttribute('data-kpre') || 'null');   // matchMedia, not innerWidth: reading that forces a layout
+  try { var kpj = document.getElementById('kpre'); PRE = JSON.parse(root.getAttribute('data-kpre') || (kpj && kpj.textContent) || 'null');   // matchMedia, not innerWidth: reading that forces a layout
     if (PRE && !(window.matchMedia && window.matchMedia('(width: ' + PRE.vw + 'px) and (height: ' + PRE.vh + 'px)').matches)) PRE = null; } catch (e) { PRE = null; }
   function el(id, parent, before) { var e = document.getElementById(id);
     if (!e) { e = document.createElement('div'); e.id = id; e.setAttribute('aria-hidden', 'true'); if (before) parent.insertBefore(e, before); else parent.appendChild(e); } return e; }
@@ -2275,8 +2275,7 @@ PAGER_JS = r"""
     f.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';
     document.body.appendChild(f);
     var raf = window.requestAnimationFrame || function(cb){ return setTimeout(cb, 16); };
-    raf(function(){ raf(function(){ setTimeout(function(){ f.style.background = '#fff';
-      setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 120); }, 420); }); });
+    raf(function(){ show(i); setTimeout(function(){ document.body.removeChild(f); busy = false; }, 120); });   // one short refresh
   }
   function go(url) { location.href = url || 'index.html'; }
   function forward() { var n = cuts.length - 1;
@@ -2403,7 +2402,23 @@ def write_offline(out, ed):
 
 
 FONT_CSS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@"
-            "0,7..72,400..700;1,7..72,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=block")
+            "0,7..72,200..900;1,7..72,200..900&display=block")
+
+
+PAGER_FILE = [""]   # set by the Morning build: pages load the pager from this file instead of inline
+
+
+def write_pager(out):
+    """The pager as one file every page shares (named by its content, so a new pager is never served stale)."""
+    import hashlib
+    src = PAGER_JS.strip()
+    src = src[len("<script>"):-len("</script>")]
+    src = (src.replace("__NEXT__", "(document.body.getAttribute('data-knext') || '')")
+              .replace("__PREV__", "(document.body.getAttribute('data-kprev') || '')"))
+    name = f"pager-{hashlib.sha1(src.encode()).hexdigest()[:10]}.js"
+    with open(os.path.join(out, name), "w") as f:
+        f.write(src)
+    PAGER_FILE[0] = name
 
 
 BUILD = {}  # this edition's id, for the saved copy and "pick up where you stopped"
@@ -2426,12 +2441,17 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#" role="button">More &darr;</a>'
             f'<span id="kpos"></span></span>{nxt_short}</footer>'
             f'<footer class="kfoot">{nxt_block}<div class="kmeta"><span></span><span>{stamp}</span></div></footer>')
-    js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
+    if PAGER_FILE[0]:   # the pager is one cached file; this page's neighbours ride on <body>
+        js = f'\n<script src="{PAGER_FILE[0]}"></script>'
+        sec_attr = f' data-knext="{esc(nxt or "")}" data-kprev="{esc(prev or "")}"'
+    else:
+        js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
+        sec_attr = ""
     return f"""<!doctype html>
 <html lang="en" class="{esc(html_class)}" data-ed="{esc(BUILD.get("id") or stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
-<body class="{esc(body_class)}"{f' data-ksec="{esc(sec)}"' if sec else ""}>
+<body class="{esc(body_class)}"{f' data-ksec="{esc(sec)}"' if sec else ""}{sec_attr}>
 {top}
 <div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div><div id="ktail" aria-hidden="true"></div></div>
 {nav}
@@ -2857,6 +2877,7 @@ def main(site):
     with open(os.path.join(out, "kindle.css"), "w") as f:
         f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS)
     kindle_orn.write_plates(out)
+    write_pager(out)
     me = (data["htmlClass"] + " kme").strip()
 
     by_id = {s["id"]: s for s in data["sections"] if s.get("cards")}

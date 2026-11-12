@@ -20,7 +20,7 @@ import os
 import re
 import sys
 
-from . import bedtime_poems, evening
+from . import bedtime_poems, engraving, evening
 from .kindle_full import EINK_CSS, page, self_host_fonts, _JUMP, _TITLES, BUILD
 
 TZ = evening.TZ
@@ -34,6 +34,14 @@ html.kev.kpaged .kbar{border-top:3px double #000}
 html.kev .krun .krunh{padding-left:0 !important}
 #kmain svg text{font-family:var(--k-serif);fill:#000}
 html.kev #kmain svg text.ksm{font:italic 700 8.4px var(--k-serif) !important;stroke-width:0 !important}
+html.kev #kmain svg text.kribt{font:italic 600 10px var(--k-serif) !important;stroke-width:0 !important}
+html.kev .kcontents #kmain .kribbon{margin:4px auto 0}
+html.kev .kcontents #kmain .kribbon+.kevrest{border-top:0 !important;padding-top:4px !important}
+html.kev #kmain svg text.kmicro{font:600 4.4px var(--k-serif) !important;stroke-width:0 !important;letter-spacing:.06em}
+#kmain .kfill{display:block;height:0;overflow:hidden;position:relative}
+#kmain .kfill svg{display:none;position:absolute;left:0;top:50%;width:100%}
+html.kev #kmain svg text.kseal{font:700 17px var(--k-serif) !important;stroke-width:0 !important}
+html.kev #kmain svg text.ksealno{font:italic 600 7.4px var(--k-serif) !important;stroke-width:0 !important}
 #kmain .korn{display:block;margin:0 auto;overflow:visible;max-width:100%}
 #kmain .kdefs{position:absolute;left:0;top:0;width:0;height:0;overflow:hidden}
 /* the border family: cover, poem plate and close */
@@ -554,6 +562,160 @@ def _cover_centrepiece(w):
     return _svg(w, 84, left + right + f'<g transform="translate({_n(side)},0)">{_vig_hood()}</g>' + meds, "kcentre")
 
 
+def _tonight_oval(night, mo, phase, pl, w=236, h=96):
+    """Tonight's real sky over Mount Hood in an engraved oval: the moon at its true phase and place,
+    the bright planets lettered, a star field seeded by the date. Drawn about (0, 0)-(w, h)."""
+    cx, ry, rx, hz = w / 2, h / 2 - 1, w / 2 - 1, 66
+    rnd = engraving.rng_for(night, "stars")
+
+    def at(dirn, alt):
+        az = AZ.get(dirn, 180)
+        x = cx + max(-1, min(1, (az - 180) / 110)) * (rx - 30)
+        y = hz - 10 - max(0, min(80, alt)) / 80 * (hz - 22)
+        return x, y
+    marks, avoid, boxes = [], [], []
+    hx = cx + (113 - 180) / 110 * (rx - 30)  # Mt Hood at its true bearing from the island
+    if mo and phase:
+        x, y = at(mo["dir"], mo["alt"])
+        avoid.append((x, y, 11))
+        marks.append(f'<circle cx="{_n(x)}" cy="{_n(y)}" r="10" fill="#fff"/>' + _moon_shape(x, y, 7.5, phase[0], phase[1], "kom", dark="url(#ke-n)"))
+    for p in pl:
+        x, y = at(p["dir"], p["alt"])
+        while any(abs(x - a) < 14 and abs(y - b) < 16 for a, b, _ in avoid):
+            x += 18 if x < cx + 60 else -18
+            y += 5
+        avoid.append((x, y, 9))
+        lab = p["name"]
+        lw = 4.3 * len(lab) + 6
+        lx = x + 8 if x < cx + 40 else x - 8 - lw
+        ly = y
+        lx = max(cx - rx + 16, min(cx + rx - 16 - lw, lx))
+
+        def hit(a, b):
+            return any(a < bx + bw + 2 and bx < a + lw + 2 and abs(b - by) < 11 for bx, by, bw in boxes)
+        if hit(lx, ly):
+            lx = max(cx - rx + 16, min(cx + rx - 16 - lw, x - 8 - lw if lx > x else x + 8))
+        if hit(lx, ly):
+            ly = y + 11
+        boxes.append((lx, ly, lw))
+        avoid.append((lx + lw / 2, y + 9, lw / 2 + 2))
+        marks.insert(0, f'<circle cx="{_n(x)}" cy="{_n(y)}" r="6" fill="#fff"/>' + _star(x, y, 5, .9)
+                     + f'<circle cx="{_n(x)}" cy="{_n(y)}" r="1.4" fill="#fff" {K} stroke-width=".5"/>')
+        marks.append(f'<rect x="{_n(lx)}" y="{_n(ly + 3.4)}" width="{_n(lw)}" height="10" fill="#fff"/>'
+                     + f'<text x="{_n(lx + 3)}" y="{_n(ly + 11)}" class="ksm">{E(lab)}</text>')
+    field = engraving.stars(rnd, 34, (6, 6, w - 6, hz - 14), avoid + [(hx, hz - 20, 26)])
+    st = "".join(f'<circle cx="{_n(x)}" cy="{_n(y)}" r="{_n(r + 1)}" fill="#fff"/><circle cx="{_n(x)}" cy="{_n(y)}" r="{_n(r)}"/>'
+                 for x, y, r in field[:28])
+    st += "".join(f'<circle cx="{_n(x)}" cy="{_n(y)}" r="3.2" fill="#fff"/>' + _star(x, y, 2.6) for x, y, _ in field[28:])
+    sky = f'<rect width="{w}" height="{h}" fill="url(#ke-rule)"/>'
+    hills = (f'<path d="M0,{hz - 6}C24,{hz - 12} 40,{hz - 9} 58,{hz - 12}C76,{hz - 14} 90,{hz - 8} 104,{hz - 9}C130,{hz - 10} 150,{hz - 14} 176,{hz - 10}'
+             f'C196,{hz - 7} 214,{hz - 11} {w},{hz - 9}V{hz + 4}H0Z" fill="url(#ke-x)" {K} stroke-width="{W0}"/>')
+    firs = "".join(_fir(x, b, hh) for x, b, hh in ((12, hz + 1, 20), (22, hz + 2, 14), (150, hz + 2, 13), (196, hz, 22), (208, hz + 2, 26), (220, hz, 18), (184, hz + 2, 14)))
+    river = f'<rect y="{hz}" width="{w}" height="{h - hz}" fill="#fff"/><path d="M0,{hz}H{w}" {K} stroke-width="{W0}"/>' + _water(0, w, hz, h, None)
+    g = sky + st + _hood(hx, hz - 4, .78) + hills + firs + river + "".join(marks)
+    return (f'<clipPath id="koc"><ellipse cx="{_n(cx)}" cy="{_n(h / 2)}" rx="{_n(rx)}" ry="{_n(ry)}"/></clipPath><g clip-path="url(#koc)">{g}</g>'
+            f'<ellipse cx="{_n(cx)}" cy="{_n(h / 2)}" rx="{_n(rx)}" ry="{_n(ry)}" fill="none" {K} stroke-width="{W2}"/>'
+            f'<ellipse cx="{_n(cx)}" cy="{_n(h / 2)}" rx="{_n(rx - 2.6)}" ry="{_n(ry - 2.6)}" fill="none" {K} stroke-width="{W0}"/>')
+
+
+def _night_plate(w, night, mo, phase, pl, micro=""):
+    """The cover's plate, engraved fresh each night: the edition seal (a rose-engine rosette, tonight's
+    number at its boss), tonight's sky in the oval, the moon at its phase in a guilloche ring, and a
+    guilloche ribbon tying them together. Every curve is seeded by the date."""
+    h, R = 104, 46
+    cy = h / 2
+    yday = night.timetuple().tm_yday
+    ring_txt = ""
+    if micro:  # banknote microtext round the seal: discoverable on a second look
+        ring_txt = (f'<path id="kpsr" d="M0,-44.4A44.4,44.4 0 1 1 -.1,-44.4" fill="none"/>'
+                    f'<text class="kmicro" textLength="276" lengthAdjust="spacing"><textPath href="#kpsr" xlink:href="#kpsr">{(micro + " &#183; ") * 2}</textPath></text>')
+    seal = (f'<g transform="translate({R + 5},{_n(cy)})">'
+            f'<circle r="{R + 5}" fill="#fff" {K} stroke-width="{W1}"/><circle r="{R + 3.6}" fill="none" {K} stroke-width="{W0}"/>' + ring_txt
+            + engraving.rosette(engraving.rng_for(night, "seal"), "kps", 42.5)
+            + f'<text x="0" y="-5" text-anchor="middle" class="ksealno">No.</text>'
+            f'<text x="0" y="10" text-anchor="middle" class="kseal">{yday}</text></g>')
+    lit, waxing = (phase[0], phase[1]) if phase else (50, True)
+    mx = w - R - 5
+    moon = (f'<g transform="translate({_n(mx)},{_n(cy)})">'
+            f'<circle r="{R + 5}" fill="#fff" {K} stroke-width="{W1}"/><circle r="{R + 3.6}" fill="none" {K} stroke-width="{W0}"/>'
+            f'<circle r="{R - 2.6}" fill="#fff" {K} stroke-width="{W2}"/>'
+            + engraving.ring(engraving.rng_for(night, "moon"), "kpm", 29.6, R - 4.4)
+            + f'<circle r="29.4" fill="#fff" {K} stroke-width="{W0}"/></g>'
+            + _moon_shape(mx, cy, 26, lit, waxing, "kpmc", maria=True, dark="url(#ke-rule)"))
+    ow = 236
+    ox = (w - ow) / 2
+    rib_y = cy - 8
+    rib = ""
+    for x0, x1 in ((2 * R + 10, ox + 8), (ox + ow - 8, w - 2 * R - 10)):
+        rib += (f'<rect x="{_n(x0)}" y="{_n(rib_y)}" width="{_n(x1 - x0)}" height="16" fill="#fff"/>'
+                f'<clipPath id="kpr{int(x0)}"><rect x="{_n(x0)}" y="{_n(rib_y + 1.4)}" width="{_n(x1 - x0)}" height="13.2"/></clipPath>'
+                f'<g clip-path="url(#kpr{int(x0)})"><g transform="translate({_n(x0)},{_n(rib_y + 1.4)})">'
+                + engraving.band(engraving.rng_for(night, f"rib{int(x0)}"), f"kpb{int(x0)}", x1 - x0, 13.2) + '</g></g>'
+                f'<path d="M{_n(x0)},{_n(rib_y)}H{_n(x1)}M{_n(x0)},{_n(rib_y + 16)}H{_n(x1)}" {K} stroke-width="{W1}"/>')
+    flourish = (_kanok(2 * R + 12, rib_y - 6, .55, 0) + _kanok(w - 2 * R - 12, rib_y - 6, .55, flip=True)
+                + _leaf(2 * R + 12, rib_y + 23, .5, 6) + f'<g transform="translate({_n(w)},0) scale(-1,1)">{_leaf(2 * R + 12, rib_y + 23, .5, 6)}</g>')
+    oval = f'<g transform="translate({_n(ox)},4)">{_tonight_oval(night, mo, phase, pl, ow, 96)}</g>'
+    return _svg(w, h, rib + flourish + oval + seal + moon, "kcentre kplate2")
+
+
+def _filler(night, salt, w=528):
+    """Art for the room a page's words leave: a seeded guilloche ribbon (for a sliver of space) and a
+    panel with a rose-engine rosette on a guilloche ground (for more). The script sizes and picks one."""
+    rib = (f'<g transform="translate(0,3)">' + engraving.band(engraving.rng_for(night, salt + "r"), f"kfr{salt}", w, 12) + '</g>'
+           f'<rect y="0" width="{w}" height="3" fill="#fff"/><rect y="15" width="{w}" height="3" fill="#fff"/>'
+           f'<path d="M0,1.6H{w}M0,16.4H{w}" {K} stroke-width="{W1}"/>'
+           f'<path d="M{w / 2 - 12},9L{w / 2},2.4L{w / 2 + 12},9L{w / 2},15.6Z" fill="#fff" {K} stroke-width="{W1}"/>' + _star(w / 2, 9, 3))
+    ribbon = _fix(f'<svg class="kfr" viewBox="0 0 {w} 18" style="height:18px;margin-top:-9px" preserveAspectRatio="none" aria-hidden="true">{rib}</svg>')
+    c = w / 2
+    pan = (f'<clipPath id="kfc{salt}"><rect x="0" y="40" width="{w}" height="30"/></clipPath><g clip-path="url(#kfc{salt})"><g transform="translate(0,40)">'
+           + engraving.band(engraving.rng_for(night, salt + "p"), f"kfb{salt}", w, 30) + '</g></g>'
+           f'<path d="M0,39H{w}M0,71H{w}" {K} stroke-width="{W1}"/><path d="M0,36.6H{w}M0,73.4H{w}" {K} stroke-width="{W0}"/>'
+           + _kanok(c - 60, 55, 1.0, 180) + _kanok(c + 60, 55, 1.0, 0)
+           + f'<g transform="translate({_n(c)},55)"><circle r="54" fill="#fff" {K} stroke-width="{W1}"/>'
+           + engraving.rosette(engraving.rng_for(night, salt + "s"), f"kfs{salt}", 50)
+           + '</g>' + _star(c, 55, 9) + f'<circle cx="{_n(c)}" cy="55" r="2.2" fill="#fff" {K} stroke-width="{W0}"/>')
+    panel = _fix(f'<svg class="kfp" viewBox="0 0 {w} 110" style="height:110px;margin-top:-55px" aria-hidden="true">{pan}</svg>')
+    return f'<div class="kfill">{ribbon}{panel}</div>'
+
+
+FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
+           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr');"
+           "k.style.height='0px';p.style.display='none';r.style.display='none';"
+           "var free=Math.floor(b.getBoundingClientRect().top-24-fr.getBoundingClientRect().bottom);"
+           "if(free>=124){k.style.height=free+'px';p.style.display='block';}else if(free>=26){k.style.height=free+'px';r.style.display='block';}"
+           "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
+           "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
+           "window.addEventListener('load',go);})();</script>")
+
+
+def _drop_style(night, salt):
+    """The drop cap set in its own guilloche medallion: an engine-turned ring seeded by the night and
+    the story, the letter on a white boss. A per-page background for p.kdrop:first-letter."""
+    from urllib.parse import quote
+    rng = engraving.rng_for(night, "drop" + salt)
+    g = (engraving.ring(rng, "a", 37, 62) + '<circle r="37" fill="#fff" stroke="#000" stroke-width=".9"/>'
+         '<circle r="39.2" fill="none" stroke="#000" stroke-width=".5"/>')
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-40 -40 80 80" '
+           f'preserveAspectRatio="xMidYMid slice">{g}</svg>')
+    url = quote(svg, safe=" =:/,.-")
+    return ('<style>#kmain .kbody p.kdrop:first-letter{background:#fff url("data:image/svg+xml,' + url
+            + '") center/cover no-repeat !important;text-shadow:0 0 2px #fff,0 0 2px #fff}</style>')
+
+
+def _night_ribbon(w, night, text):
+    """A guilloche ribbon, seeded by the night, with tonight's particulars lettered on a tablet at its centre."""
+    h, c = 20, w / 2
+    tw = min(w - 40, len(re.sub(r"&\w+;", "x", text)) * 4.5 + 30)
+    g = (f'<clipPath id="kqc"><rect y="3" width="{_n(w)}" height="14"/></clipPath><g clip-path="url(#kqc)"><g transform="translate(0,3)">'
+         + engraving.band(engraving.rng_for(night, "ribbon"), "kqb", w, 14) + '</g></g>'
+         f'<path d="M0,2.4H{_n(w)}M0,17.6H{_n(w)}" {K} stroke-width="{W1}"/><path d="M0,.5H{_n(w)}M0,19.5H{_n(w)}" {K} stroke-width="{W0}"/>'
+         f'<rect x="{_n(c - tw / 2)}" y="1" width="{_n(tw)}" height="18" rx="9" fill="#fff" {K} stroke-width="{W2}"/>'
+         f'<rect x="{_n(c - tw / 2 + 2.6)}" y="3.6" width="{_n(tw - 5.2)}" height="12.8" rx="6.4" fill="none" {K} stroke-width="{W0}"/>'
+         + _kanok(c - tw / 2 - 1, 10, .55, 180) + _kanok(c + tw / 2 + 1, 10, .55, 0)
+         + f'<text x="{_n(c)}" y="13.4" text-anchor="middle" class="kribt">{text}</text>')
+    return _svg(w, h, g, "kribbon")
+
+
 def ORNAMENTS_BRIDGE_INNER():
     return _vig_bridge().split(">", 1)[1].rsplit("</svg>", 1)[0]
 
@@ -719,10 +881,10 @@ def _crane(x, y, s=1.0, flip=False):
             f'<path d="M-7,.2L-19,1.6M-7,.6L-19,2.6" {K} stroke-width=".5"/></g>')
 
 
-def _vig_goodnight():
+def _vig_goodnight(lit=36, waxing=True):
     """The close: the moon over Sauvie Island, cranes crossing, a guilloche rosette behind the moon. 240 x 140."""
     halo = f'<g>{_rosette(152, 46, 15, 22, 30, .4)}</g><circle cx="152" cy="46" r="20" fill="#fff"/>'
-    moon = _moon_shape(152, 46, 17, 36, True, "kgm", dark="url(#ke-s)")
+    moon = _moon_shape(152, 46, 17, lit, waxing, "kgm", dark="url(#ke-s)")
     stars = "".join(_star(x, y, r) for x, y, r in ((40, 30, 3.2), (66, 16, 2), (92, 40, 2.4), (210, 24, 2.6), (196, 62, 1.6),
                                                  (28, 58, 1.6), (110, 14, 1.6), (226, 50, 1.4)))
     dust = "".join(f'<circle cx="{(i * 37) % 236 + 2}" cy="{(i * 23) % 70 + 4}" r=".5"/>' for i in range(28))
@@ -1278,7 +1440,7 @@ def main(dash_path, ev_path, site):
                       "body": poem_html(poem), "notail": True})
     pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True,
                   "body": f'<div class="kframe">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["rosettes"].values())}'
-                          f'<div class="kend">{ORNAMENTS["goodnight"]}<p class="kkick">The Evening Edition</p>'
+                          f'<div class="kend">{_vig_goodnight(*phase[:2]) if phase else ORNAMENTS["goodnight"]}<p class="kkick">The Evening Edition</p>'
                           '<h2 class="kfname">That&rsquo;s the day.</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
                           f'{ORNAMENTS["divider"]}<p class="kquiet">Think of one good thing from today, then let it go.</p>'
@@ -1304,7 +1466,7 @@ def main(dash_path, ev_path, site):
                 pg["notail"] = True
             if pg.get("head") and words + 52 > limit:
                 pg["head"] = ""
-            pg["body"] = ((f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
+            pg["body"] = (_drop_style(night, pg["file"]) + (f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
                           + f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">'
                           + ORNAMENTS["asterism"].join(paras) + "</div>" + nxt
                           + f'<div class="kbox ksrc">{ORNAMENTS["box"]}<p class="ksources">{outlets_line(st)}</p>'
@@ -1319,9 +1481,12 @@ def main(dash_path, ev_path, site):
             pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
+        fill = _filler(night, pg["file"].split(".")[0].replace("-", ""))
         if not framed:
-            pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}</div>'
-        pg["body"] = ORNAMENTS["defs"] + pg["body"]
+            pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
+        elif 'kplate kframe' in pg["body"] and pg["body"].endswith("</div>"):
+            pg["body"] = pg["body"][:-6] + fill + "</div>"
+        pg["body"] = ORNAMENTS["defs"] + pg["body"] + FILL_JS
 
     # ---- chrome shared with the Morning Edition
     total = len(pages)
@@ -1383,6 +1548,10 @@ def main(dash_path, ev_path, site):
     rest_txt = (("Then " + (rest[0] if len(rest) == 1 else ", ".join(rest[:-1]) + " and " + rest[-1]) + ". ") if rest else "")
     words = sum(len(re.sub(r"<svg\b.*?</svg>|<[^>]+>|&\w+;", " ", pg["body"], flags=re.S).split()) for pg in pages)
     minutes = math.ceil(words / 200) + 1
+    made = next((x.get("produced") for x in d.get("days") or [] if x.get("date") == night.isoformat()), None)
+    micro = " &#183; ".join(["45.70&#176; N &#183; 122.80&#176; W &#183; SAUVIE ISLAND"]
+                            + ([f"TODAY THE ROOF MADE {made:.1f} kWh"] if isinstance(made, (int, float)) else [])
+                            + [f"EDITION No. {night.timetuple().tm_yday}"])
     gl = ""
     if wx:
         gl = (f'<div class="kgl"><div class="kdeg"><span class="ktmr">Tomorrow</span>{wx["hi"]}&deg;<small>high {wx["hi"]}&deg; &middot; low {wx["lo"]}&deg;</small></div>'
@@ -1397,12 +1566,16 @@ def main(dash_path, ev_path, site):
             f'<div class="kmast">{_cartouche("PRIVATE EDITION &#183; SAUVIE ISLAND", FRAME_W)}'
             f'<p class="kname">The Evening Edition</p>{_kanok_band(FRAME_W)}'
             f'<p class="kdate">{flank}<span>{night:%A, %B} {night.day} &middot; {E(edition)} edition</span>{flank_r}</p></div>'
-            + _cover_centrepiece(FRAME_W) + gl
+            + _night_plate(FRAME_W, night, mo, phase, pl, micro) + gl
             + (f'<p class="klab">The day</p><div class="kleads">{leads}</div>' if leads else
                '<p class="klab">The day</p><p class="knonews">Tonight&rsquo;s news didn&rsquo;t come through; '
                'the day&rsquo;s stories will be in your Morning Edition.</p>')
+            + _night_ribbon(FRAME_W, night, " &#183; ".join(
+                [f"{p['name']} in the {p['dir']}" for p in pl[:2]]
+                + ([f"the moon {phase[0]}% lit"] if phase else [])
+                + ([f"&#8220;{E(poem['title'])}&#8221;"] if poem else [])))
             + f'<p class="kevrest">{rest_txt if leads else rest_txt.replace("Then ", "Inside: ", 1)}About {minutes} minutes.</p>'
-            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p></div>')
+            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W)}</div>' + FILL_JS)
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
                      run_right="", fonts=font_links, next_label=_TITLES[files[0]]))

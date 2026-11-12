@@ -719,6 +719,240 @@ def layout_tall(w, h, seed, ctx):
     return "".join(o)
 
 
+def _player(cv, x, y, s, rng, light=True):
+    """A small player cut in silhouette: feet at (x, y), s tall, with a cast shadow on the boards."""
+    sh = C._ell_pts(x + s * .18, y + s * .03, s * .32, s * .06, 14)[:-1]
+    cv.obj([sh], 0)
+    cv.hair(C.hatch_poly(sh, 0, 1.))
+    lean = rng.uniform(-.12, .12) * s
+    st = rng.uniform(.12, .22) * s
+    hip = (x + lean * .4, y - s * .48)
+    cv.line([(x - st, y), (hip[0] - s * .04, hip[1])])
+    cv.line([(x + st, y - s * .02), (hip[0] + s * .04, hip[1])])
+    tor = [(hip[0] - s * .12, hip[1] + s * .06), (hip[0] + s * .12, hip[1] + s * .06),
+           (hip[0] + s * .13 + lean * .3, hip[1] - s * .34), (hip[0] - s * .13 + lean * .3, hip[1] - s * .34)]
+    cv.obj([tor], .5 if light else 1.)
+    if not light:
+        cv.hair(C.hatch_poly(tor, 70, 1.))
+    sx, sy = hip[0] + lean * .3, hip[1] - s * .32
+    ar = rng.uniform(-1, 1)
+    cv.line([(sx - s * .12, sy), (sx - s * .26, sy + s * (.18 + ar * .12))])
+    cv.line([(sx + s * .12, sy), (sx + s * .27, sy + s * (.16 - ar * .14))])
+    hd = C._ell_pts(sx, sy - s * .09, s * .075, s * .085, 10)[:-1]
+    cv.obj([hd], 1.)
+    cv.hair(C.hatch_poly(hd, 45, 1.))
+
+
+def arena_scene(X, Y, W, H, seed, result):
+    """Tonight's matchup at the Moda Center, seen from the upper bowl: the roof's dark dome lit
+    round the jumbotron (POR v OKC), the rim of lamps, the tiers of the crowd as pale heads on a
+    dark stand with a drummer among them, the fascia, and the court below - boards laid in
+    perspective, the painted keys, the players and the pinwheel at centre court."""
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    cx = X + W / 2
+    q = max(1., H / 175.) ** .8
+    r0, r1 = Y + H * .34, Y + H * .38          # roof rim, fascia foot
+    t1 = Y + H * .62                           # crowd foot
+    c0 = Y + H * .66                           # far sideline
+    # roof: tone deepens toward the rim and the walls, pale round the hung screen
+    roof = [(X - 2, Y - 2), (X + W + 2, Y - 2), (X + W + 2, r0), (X - 2, r0)]
+    cv.obj([roof], 0)
+    cv.hair(C.hatch_poly(roof, 0, 1.6 * q))
+    cv.hair(C.hatch_poly([(X - 2, Y + H * .18), (X + W + 2, Y + H * .18), (X + W + 2, r0), (X - 2, r0)], 0, 1.6 * q, .8))
+    for k in range(-9, 10):
+        bx = cx + k * W * .085
+        cv.line([(cx + k * W * .02, Y - 2), (bx, r0)])
+    for gk, gp in ((1., 2.4), (.72, 3.2), (.45, 4.5)):
+        glow = C._ell_pts(cx, Y + H * .15, W * .28 * gk, H * .21 * gk, 40)[:-1]
+        cv.obj([glow], 0)
+        cv.hair(C.hatch_poly(glow, 0, gp * q))
+    for k in range(-3, 4):
+        cv.hair([(cx + k * W * .02, Y + H * .0), (cx + k * W * .085 * .55, Y + H * .3)])
+    # rim of lamps and the fascia
+    cv.heavy([(X - 2, r0), (X + W + 2, r0)])
+    k = 0
+    xx = X + 3
+    while xx < X + W:
+        lp = C._ell_pts(xx, r0 - 1.6, 1.3, 1.3, 8)[:-1]
+        cv.obj([lp], .5)
+        xx += 9 * q
+    fas = [(X - 2, r0 + .8), (X + W + 2, r0 + .8), (X + W + 2, r1), (X - 2, r1)]
+    cv.obj([fas], 1.)
+    for i in range(int(W / 5)):
+        x0 = X + i * 5
+        cv.hair([(x0, r0 + 1.6), (x0 + 2.4, r0 + 1.6)])
+    # the stands: a dark ground, the heads pale against it
+    st = [(X - 2, r1), (X + W + 2, r1), (X + W + 2, t1), (X - 2, t1)]
+    cv.obj([st], 0)
+    cv.hair(C.hatch_poly(st, 0, 1.25 * q))
+    cv.hair(C.hatch_poly([(X - 2, r1), (X + W + 2, r1), (X + W + 2, r1 + (t1 - r1) * .45), (X - 2, r1 + (t1 - r1) * .45)], 90, 1.4 * q))
+    for sd in (-1, 1):                         # the aisles
+        ax = cx + sd * W * .28
+        cv.obj([[(ax - 2, r1), (ax + 2, r1), (ax + sd * 3 + 3, t1), (ax + sd * 3 - 3, t1)]], .5)
+        for j in range(6):
+            yy = r1 + (t1 - r1) * (j + .5) / 6
+            cv.hair([(ax - 2.5, yy), (ax + 2.5, yy)])
+    row, yy = 0, r1 + 2.2
+    drummer = None
+    while yy < t1 - 1:
+        hr = (.85 + (yy - r1) / (t1 - r1) * 1.0) * q
+        xx = X - 2 + (row % 2) * hr + rng.uniform(0, 1)
+        while xx < X + W + 2:
+            if min(abs(xx - (cx - W * .28)), abs(xx - (cx + W * .28))) > 3 + hr:
+                if rng.random() < .9:
+                    cv.obj([C._ell_pts(xx, yy, hr, hr * 1.1, 8)[:-1]], .5)
+            xx += hr * 2.5 + rng.uniform(0, .9)
+        if row == 3:
+            drummer = (cx + W * .17, yy, hr)
+        yy += hr * 2.7
+        row += 1
+    if drummer:                                # the egg: a drummer among them, sticks up
+        dx, dy, hr = drummer
+        d = hr * 2.2
+        cv.obj([C._ell_pts(dx, dy - d * 1.3, hr * 1.2, hr * 1.2, 10)[:-1]], 1.)
+        cv.obj([[(dx - d * .5, dy - d * .8), (dx + d * .5, dy - d * .8), (dx + d * .45, dy + d * .6), (dx - d * .45, dy + d * .6)]], 1.)
+        body = [(dx - d * .7, dy + d * .1), (dx + d * .7, dy + d * .1), (dx + d * .7, dy + d * .7), (dx - d * .7, dy + d * .7)]
+        cv.obj([body], 1.)
+        cv.hair(C.hatch_poly(body, 60, 1.5))
+        cv.obj([C._ell_pts(dx, dy + d * .1, d * .7, d * .25, 14)[:-1]], 1.)
+        cv.line([(dx - d * .4, dy - d * .6), (dx - d * 1.1, dy - d * 1.4)])
+        cv.line([(dx + d * .4, dy - d * .6), (dx + d * .9, dy - d * 1.6)])
+    # the dasher boards
+    db = [(X - 2, t1), (X + W + 2, t1), (X + W + 2, c0), (X - 2, c0)]
+    cv.obj([db], 1.)
+    cv.hair(C.hatch_poly(db, 0, 1. * q))
+    # the court: boards laid across, closer and wider toward us, the joints staggered
+    bot = Y + H + 2
+    court = [(X - 2, c0), (X + W + 2, c0), (X + W + 2, bot), (X - 2, bot)]
+    cv.obj([court], 1.)
+    yy, g = c0 + 1.2 * q, 1.2 * q
+    while yy < bot:
+        cv.hair([(X - 2, yy), (X + W + 2, yy)])
+        sc = g / 1.2 / q
+        xx = X + rng.uniform(0, 30) * sc
+        while xx < X + W:
+            cv.hair([(xx, yy), (xx, min(bot, yy + g))])
+            xx += rng.uniform(26, 44) * sc
+        yy += g
+        g = min(3.4 * q, g * 1.1)
+    # the painted keys at either end, foreshortened, with the free-throw arcs
+    for sd in (-1, 1):
+        kx = cx + sd * W * .44
+        key = [(kx - W * .09, c0 + 1), (kx + W * .09, c0 + 1), (kx + W * .13, bot), (kx - W * .13, bot)]
+        cv.obj([key], 1.)
+        cv.hair(C.hatch_poly(key, 0, 1.5 * q))
+        fy = c0 + (bot - c0) * .62
+        arc = [(kx + W * .12 * math.cos(t), fy + (bot - c0) * .16 * math.sin(t)) for t in [math.pi * (j / 16) for j in range(17)]]
+        cv.line(arc)
+    cv.line([(X - 2, c0 + 1), (X + W + 2, c0 + 1)])
+    cv.line([(cx, c0 + 1), (cx, bot)])
+    mid = c0 + (bot - c0) * .5
+    cr = C._ell_pts(cx, mid, W * .1, (bot - c0) * .2, 48)
+    cv.obj([cr[:-1]], 1.)
+    # the pinwheel at centre court
+    pr = min(W * .08, (bot - c0) * .17)
+    for k in range(4):
+        a0 = k * math.pi / 2 + .3
+        blade = [(cx, mid)] + [(cx + pr * math.cos(a0 + t) * (1 if t < .9 else .6), mid + pr * .55 * math.sin(a0 + t) * (1 if t < .9 else .6)) for t in [j / 8 * 1.2 for j in range(9)]]
+        cv.obj([blade], .5)
+        if k % 2 == 0:
+            cv.hair(C.hatch_poly(blade, 30, 1.))
+    # the players, two at the jump, the rest spread, one side in white and one in black
+    ps = (bot - c0) * .6
+    for (fx, fy, lt) in ((-.05, .6, True), (.05, .58, False), (-.2, .82, False), (.24, .78, True), (-.33, .45, True), (.34, .4, False)):
+        _player(cv, cx + fx * W, c0 + (bot - c0) * fy, ps * (.75 + fy * .35), rng, lt)
+    # the jumbotron, hung from the crown, its own light on the cables
+    jw, jh = W * .28, H * .14
+    jx, jy = cx - jw / 2, Y + H * .1
+    for sd in (-1, 1):
+        cv.obj([], 0)
+        cv.line([(cx + sd * jw * .3, Y - 2), (cx + sd * jw * .3, jy)])
+    box = [(jx, jy), (jx + jw, jy), (jx + jw, jy + jh), (jx, jy + jh)]
+    cv.obj([box], 1.5)
+    scr = [(jx + 2.5, jy + 2.5), (jx + jw - 2.5, jy + 2.5), (jx + jw - 2.5, jy + jh - 2.5), (jx + 2.5, jy + jh - 2.5)]
+    cv.obj([scr], .5)
+    skirt = [(jx, jy + jh), (jx + jw, jy + jh), (jx + jw * .9, jy + jh * 1.4), (jx + jw * .1, jy + jh * 1.4)]
+    cv.obj([skirt], 1.)
+    cv.hair(C.hatch_poly(skirt, 0, 1.2))
+    cv.hair(C.hatch_poly([(jx + jw * .62, jy + jh), (jx + jw, jy + jh), (jx + jw * .9, jy + jh * 1.4), (jx + jw * .58, jy + jh * 1.4)], 90, 1.2))
+    for i in range(1, 4):
+        lx = jx + jw * (.1 + .8 * i / 4)
+        cv.obj([C._ell_pts(lx, jy + jh * 1.2, 1.1, 1.1, 8)[:-1]], .5)
+    o = [cv.svg()]
+    th = jh * .38
+    o.append(st_letter("POR  v  OKC", th, cx=cx, cy=jy + jh / 2, sw=1., fit=jw * .8))
+    return "".join(o)
+
+
+def hoop_frame(cx, cy, rx, ry, fld, mode):
+    """The frame is the game's own: a hoop on its stanchion standing either side of the arena,
+    nets hanging, and the ball come to rest at the foot of the left one."""
+    if mode == "band":
+        return ""
+    xs = [p[0] for p in fld]
+    room = min(xs) - 4
+    if room < 40:
+        return ""
+    cv = C.Canvas()
+    foot = cy + ry - 2
+    s = min(ry * 1.3, room * 1.6, 140.)
+    for sd in (-1, 1):
+        bx = cx + sd * (rx + room * .5)
+        base = [(bx - s * .12, foot), (bx + s * .12, foot), (bx + s * .09, foot - s * .14), (bx - s * .09, foot - s * .14)]
+        cv.obj([base], 1.)
+        cv.hair(C.hatch_poly(base, 0, 1.2))
+        cv.hair(C.hatch_poly([(bx + sd * .0, foot), (bx + sd * s * .12, foot), (bx + sd * s * .09, foot - s * .14), (bx, foot - s * .14)], 90, 1.4))
+        top = foot - s * .78
+        pole = [(bx - s * .025, foot - s * .14), (bx - s * .025, top), (bx - sd * s * .16 - s * .02, top - s * .06),
+                (bx - sd * s * .16 + s * .02, top - s * .1), (bx + s * .025, top - s * .03), (bx + s * .025, foot - s * .14)]
+        cv.obj([pole], 1.)
+        cv.hair(C.hatch_poly(pole, 90, 1.2))
+        # the backboard, faced square to us, then rim and net
+        kx = bx - sd * s * .18
+        bw, bh = s * .34, s * .22
+        bb = [(kx - bw / 2, top - s * .2), (kx + bw / 2, top - s * .2), (kx + bw / 2, top - s * .2 + bh), (kx - bw / 2, top - s * .2 + bh)]
+        cv.obj([bb], 1.5)
+        cv.hair(C.hatch_poly([(kx + bw * .2, top - s * .2), (kx + bw / 2, top - s * .2), (kx + bw / 2, top - s * .2 + bh), (kx + bw * .2, top - s * .2 + bh)], 0, 2.))
+        sq = [(kx - bw * .17, top - s * .2 + bh * .4), (kx + bw * .17, top - s * .2 + bh * .4), (kx + bw * .17, top - s * .2 + bh * .9), (kx - bw * .17, top - s * .2 + bh * .9)]
+        cv.line(sq + [sq[0]])
+        ry_ = top - s * .2 + bh * .92
+        rr = bw * .22
+        net_t, net_b = ry_, ry_ + s * .2
+        for j in range(7):
+            u = j / 6
+            xt = kx - rr + 2 * rr * u
+            xb = kx - rr * .55 + 2 * rr * .55 * u
+            cv.hair([(xt, net_t), ((xt + xb) / 2 + rr * .12, (net_t + net_b) / 2), (xb, net_b)])
+            cv.hair([(xt, net_t), ((xt + xb) / 2 - rr * .12, (net_t + net_b) / 2), (xb, net_b)])
+        for j in range(1, 4):
+            yy = net_t + (net_b - net_t) * j / 4
+            ww = rr * (1 - .45 * j / 4)
+            cv.hair([(kx - ww, yy), (kx + ww, yy)])
+        cv.heavy(C._ell_pts(kx, ry_, rr, rr * .3, 24))
+    br = s * .085
+    bx = cx - rx - room * .5 + s * .22
+    sh = C._ell_pts(bx + br * .4, foot - br * .05, br * 1.2, br * .25, 18)[:-1]
+    cv.obj([sh], 0)
+    cv.hair(C.hatch_poly(sh, 0, 1.))
+    ball(cv, bx, foot - br, br)
+    return cv.svg()
+
+
+def arena_arch(cx, cy, rx, ry):
+    """The Moda Center's own outline: a low dome over straight walls."""
+    top, foot = cy - ry, cy + ry
+    spring = top + ry * .62
+    pts = [(cx - rx, foot), (cx - rx, spring)]
+    for i in range(1, 48):
+        t = math.pi - math.pi * i / 48
+        pts.append((cx + rx * math.cos(t), spring - (spring - top) * math.sin(t)))
+    pts += [(cx + rx, spring), (cx + rx, foot)]
+    for i in range(1, 24):
+        pts.append((cx + rx - 2 * rx * i / 24, foot))
+    return pts
+
+
 # ==== STUDIO FRAME (batch 2) ====================================================================
 # King-tier frame, copied into this plate so it can be cut to the page (house rule: the shared
 # modules stay untouched). Fine English scroll as on the GRS vise and Ken Hunt's panels: dozens of
@@ -2074,6 +2308,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -2088,16 +2352,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 
@@ -2140,8 +2403,8 @@ def plate(w, h, ctx):
         X0, Y0, X1, Y1 = min(xs), min(ys), max(xs), max(ys)
         if mode == "band":
             return medallion_scene((X0 + X1) / 2, (Y0 + Y1) / 2, (X1 - X0) / 2, (Y1 - Y0) / 2)
-        return court_scene(X0, Y0, X1 - X0, Y1 - Y0, phs, seed, eggs=(Y1 - Y0) > 110)
+        return arena_scene(X0, Y0, X1 - X0, Y1 - Y0, seed, result)
 
-    hk = dict(vignette=True, pad=3., max_aspect=.92, shape="arch", field=field, egg=egg_pinwheel, aspect=2., cw=.25, rmin=9., rmax=30.,
+    hk = dict(vignette=True, pad=3., max_aspect=1.9, shape="arch", shape_fn=arena_arch, frame=hoop_frame, field=field, egg=egg_pinwheel, aspect=2., cw=.25, rmin=9., rmax=30.,
               motto=result, tablet_lines=[record, "RIP CITY"])
     return st_plate(w, h, seed, hk)

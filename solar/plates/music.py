@@ -402,24 +402,89 @@ def ride_cymbal(cv, cx, cy, r, stand_to, rng):
 
 
 def trumpet(cv, x, y, L, rng):
-    """A trumpet lying on its side: bell, valves, the wrapped leadpipe and mouthpiece."""
-    br = L * .14
-    bell = [(x + L, y - br), (x + L * .82, y - br * .25), (x + L * .35, y - br * .15), (x + L * .35, y + br * .15),
-            (x + L * .82, y + br * .25), (x + L, y + br)]
+    """A trumpet lying on the stool, bell to the right: the flare cut in lines that follow it
+    round, dark in its throat and under its belly, a bright rim; the tubing as round brass with
+    a running highlight; three valve casings shaded as cylinders, finger buttons on top."""
+    br = L * .16
+    def flare(t):                       # t 0 (throat) .. 1 (rim)
+        return br * (.12 + .88 * t ** 3.2)
+    xs = [x + L * (.5 + .5 * t) for t in [j / 24 for j in range(25)]]
+    top = [(xx, y - flare(j / 24)) for j, xx in enumerate(xs)]
+    bot = [(xx, y + flare(j / 24)) for j, xx in enumerate(xs)]
+    bell = top + bot[::-1]
     cv.obj([bell], 1.)
-    cv.hair(C.hatch_poly([(x + L * .35, y + .2), (x + L * .82, y + br * .25), (x + L, y + br), (x + L, y + .2)], 0, 1.5))
-    cv.line(C._ell_pts(x + L, y, br * .3, br, 18))
-    loop = [(x + L * .35, y - br * .15), (x + L * .1, y - br * .15), (x + L * .02, y + br * .6), (x + L * .1, y + br * 1.3),
-            (x + L * .6, y + br * 1.3), (x + L * .6, y + br * 1.0), (x + L * .12, y + br * 1.0), (x + L * .08, y + br * .6),
-            (x + L * .12, y + br * .15), (x + L * .35, y + br * .15)]
-    cv.obj([loop], 1.)
+    for k in range(1, 6):
+        f = k / 6
+        cv.hair([(xx, y + flare(j / 24) * (1 - 2 * f)) for j, xx in enumerate(xs)][2:])
+    cv.hair(C.hatch_poly([(xx, y + flare(j / 24) * .25) for j, xx in enumerate(xs)] + bot[::-1], 80, 1.5, rng.random()))
+    rim = C._ell_pts(x + L, y, br * .28, br, 30)[:-1]
+    cv.obj([rim], 1.)
+    cv.hair(C.hatch_poly([q for q in rim if q[0] > x + L - br * .05], 90, 1.5))
+    cv.line(C._ell_pts(x + L - br * .05, y, br * .2, br * .86, 26))
+    def tube(pts, r):
+        Lt, Rt = [], []
+        for i, q in enumerate(pts):
+            a_, b_ = pts[max(0, i - 1)], pts[min(len(pts) - 1, i + 1)]
+            tx, ty = b_[0] - a_[0], b_[1] - a_[1]
+            tl = math.hypot(tx, ty) or 1
+            Lt.append((q[0] - ty / tl * r, q[1] + tx / tl * r))
+            Rt.append((q[0] + ty / tl * r, q[1] - tx / tl * r))
+        cv.obj([Lt + Rt[::-1]], 1.)
+        cv.hair([(l[0] * .7 + c[0] * .3, l[1] * .7 + c[1] * .3) for l, c in zip(Lt, pts)][1:-1])
+        cv.hair([(r_[0] * .55 + c[0] * .45, r_[1] * .55 + c[1] * .45) for r_, c in zip(Rt, pts)][1:-1])
+    r = max(1.1, L * .022)
+    loop = [(x + L * .52, y), (x + L * .2, y), (x + L * .06, y + br * .1)]
+    loop += [(x + L * .02 + br * .55 * math.cos(t), y + br * .65 + br * .55 * math.sin(t)) for t in [-1.3 - j * .2 for j in range(11)]]
+    loop += [(x + L * .2, y + br * 1.2), (x + L * .62, y + br * 1.2)]
+    tube(loop, r)
+    tube([(x + L * .3, y - br * .05), (x + L * .02, y - br * .25), (x - L * .12, y - br * .3)], r * .8)
+    mp = [(x - L * .12, y - br * .3 - r * 1.4), (x - L * .17, y - br * .3 - r * 2), (x - L * .17, y - br * .3 + r * 1.4), (x - L * .12, y - br * .3 + r * .9)]
+    cv.obj([mp], 1.)
     for k in range(3):
-        vx = x + L * (.4 + .07 * k)
-        v = [(vx - L * .022, y - br * .9), (vx + L * .022, y - br * .9), (vx + L * .022, y + br * 1.5), (vx - L * .022, y + br * 1.5)]
+        vx = x + L * (.3 + .075 * k)
+        vw = L * .028
+        v = [(vx - vw, y - br * .7), (vx + vw, y - br * .7), (vx + vw, y + br * 1.45), (vx - vw, y + br * 1.45)]
         cv.obj([v], 1.)
-        cv.hair(C.hatch_poly(v, 90, 1.5))
-        cv.obj([C._ell_pts(vx, y - br * 1.05, L * .03, L * .012, 10)[:-1]], 1.)
-    cv.obj([[(x - L * .12, y - br * .1), (x + L * .1, y - br * .06), (x + L * .1, y + br * .06), (x - L * .12, y + br * .1)]], 1.)
+        cv.hair(C.hatch_poly([(vx + vw * .2, y - br * .7), (vx + vw, y - br * .7), (vx + vw, y + br * 1.45), (vx + vw * .2, y + br * 1.45)], 90, 1.))
+        cv.hair([(vx - vw * .55, y - br * .6), (vx - vw * .55, y + br * 1.35)])
+        cv.obj([[(vx - vw * 1.2, y - br * .7), (vx + vw * 1.2, y - br * .7), (vx + vw * 1.2, y - br * .82), (vx - vw * 1.2, y - br * .82)]], 1.)
+        stem = [(vx - vw * .3, y - br * .82), (vx + vw * .3, y - br * .82), (vx + vw * .3, y - br * 1.15), (vx - vw * .3, y - br * 1.15)]
+        cv.obj([stem], .5)
+        cv.obj([C._ell_pts(vx, y - br * 1.2, vw * 1.1, vw * .45, 14)[:-1]], 1.)
+
+
+def stool(cv, x, top, wd, ht, rng):
+    """A bentwood bar stool: a round seat seen from a little above, its cushion shaded under the
+    lip, three splayed legs turned and shaded, a ring stretcher."""
+    seat = C._ell_pts(x, top, wd / 2, wd * .16, 40)[:-1]
+    lip = [(x + wd / 2 * math.cos(t), top + wd * .16 * math.sin(t)) for t in [j / 20 * math.pi for j in range(21)]]
+    lip += [(x + wd / 2 * math.cos(t), top + wd * .16 * math.sin(t) + wd * .08) for t in [math.pi - j / 20 * math.pi for j in range(21)]]
+    for sd, lx in ((-1, -.36), (0, .05), (1, .4)):
+        leg = [(x + wd * lx - 1.3, top + wd * .1), (x + wd * lx + 1.3, top + wd * .1),
+               (x + wd * lx * 1.3 + 1.1, top + ht), (x + wd * lx * 1.3 - 1.1, top + ht)]
+        cv.obj([leg], 1.)
+        cv.hair([(x + wd * lx + .6, top + wd * .14), (x + wd * lx * 1.3 + .5, top + ht - 1)])
+    ring = C._ell_pts(x, top + ht * .62, wd * .44, wd * .1, 36)
+    cv.obj([], 0)
+    cv.line(ring)
+    cv.obj([lip], 1.)
+    cv.hair(C.hatch_poly(lip, 0, 1.5))
+    cv.obj([seat], 1.)
+    cv.hair(C.hatch_poly([q for q in seat if q[1] > top] + [(x - wd / 2, top)], 15, 3, rng.random()))
+
+
+def swing_bar(cv, x, y, w):
+    """Easter egg: one bar of swing chalked on the apron - staff, three swung eighths and a rest."""
+    for k in range(5):
+        cv.hair([(x, y + k * 1.4), (x + w, y + k * 1.4)])
+    cv.line([(x, y), (x, y + 5.6)])
+    cv.line([(x + w, y), (x + w, y + 5.6)])
+    for k, (nx, ny) in enumerate(((.2, 4.2), (.38, 2.8), (.62, 3.5), (.8, 2.1))):
+        hx, hy = x + w * nx, y + ny
+        cv.obj([C._ell_pts(hx, hy, 1.1, .8, 10)[:-1]], 1.)
+        cv.line([(hx + 1, hy), (hx + 1, hy - 5)])
+    cv.heavy([(x + w * .2 + 1, y + 4.2 - 5), (x + w * .38 + 1, y + 2.8 - 5)])
+    cv.heavy([(x + w * .62 + 1, y + 3.5 - 5), (x + w * .8 + 1, y + 2.1 - 5)])
 
 
 def trio(fld, kind, seed):
@@ -483,14 +548,11 @@ def trio(fld, kind, seed):
     S = min(H, fw * .9)
     ride_cymbal(cv, cx + S * .05, floor_y - S * .52, S * .2, floor_y + 2, rng)
     upright_bass(cv, cx - S * .38, floor_y + S * .02, S * .78, rng)
-    stx = cx + S * .42
-    cv.obj([[(stx - S * .12, floor_y - S * .2), (stx + S * .12, floor_y - S * .2), (stx + S * .12, floor_y - S * .17), (stx - S * .12, floor_y - S * .17)]], 1.)
-    for sd in (-1, 1):
-        cv.line([(stx + sd * S * .1, floor_y - S * .17), (stx + sd * S * .13, floor_y + S * .03)])
-    trumpet(cv, stx - S * .16, floor_y - S * .25, S * .36, rng)
+    stx = cx + S * .44
+    stool(cv, stx, floor_y - S * .26, S * .3, S * .27, rng)
+    trumpet(cv, stx - S * .2, floor_y - S * .31, S * .4, rng)
     snare(cv, cx + S * .08, floor_y - S * .14, S * .16, S * .1)
-    for sd in (-1, 1):
-        drumstick(cv, cx + S * .08 - sd * S * .15, floor_y - S * .1, cx + S * .08 + sd * S * .1, floor_y - S * .2, max(3., S * .02))
+    swing_bar(cv, cx - S * .62, floor_y + (fy1 - floor_y) * .3, S * .22)
     o.append(cv.svg())
     return "".join(o)
 
@@ -2103,6 +2165,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -2117,16 +2209,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 

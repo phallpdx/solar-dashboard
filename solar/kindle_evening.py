@@ -224,72 +224,137 @@ html.kev .kendpage #kmain .kend .kdiv{margin:14px auto 10px}
 html.kev .kendpage #kmain .kend .ktail{margin-top:14px}
 """
 
-# The margins carry a deep, tonally modelled acanthus running scroll (a data-URI tile, so the page's
-# CSS reset cannot touch it); the frame and the running heads sit on white over it.
-try:
-    from . import engraving_acanthus as _acan
-    _V = _acan.data_uri(_acan.vine_tile(24, 44, 7, opaque=True))
-    _BK = ""
-    try:
-        from . import plate_book as _pb
-        _BK = _acan.data_uri(_pb.border(618, 618, 3, inner=(24, 20, 570, 578)))
-    except Exception:  # noqa: BLE001
-        _BK = ""
-    if _BK:
-        # THE page frame on every inner page: the book engraver's border, from the running head to the foot bar;
-        # the text frame inside it drops its own rules, corners and paper so the border is the one frame
-        EVENING_CSS += ("html.kev body:not(.kcontents){background:" + _BK + " 0 44px/618px 618px no-repeat,#fff !important}\n"
-                        "html.kev body:not(.kcontents) #kmain .kframe{background:transparent !important;}\n"
-                        "html.kev body:not(.kcontents) #kmain .kframe>svg.kfs,html.kev body:not(.kcontents) #kmain .kframe>svg.kround,"
-                        "html.kev body:not(.kcontents) #kmain .kframe>.kround{display:none !important}\n")
-    _CV = ""
-    try:
-        _CV = _acan.data_uri(_pb.border(618, 644, 5, inner=(24, 22, 570, 600)))
-    except Exception:  # noqa: BLE001
-        _CV = ""
-    # The whole sheet is engraved ground: running acanthus on a field of fine cuts, one tile for every
-    # page (in kindle.css, cached). Text sits in white panels with a fine ruled edge; the scroll runs round them.
-    try:
-        from . import engraving_ground as _eg
-        _GR = _acan.data_uri(_eg.page_ground(3)) + " 0 0/618px 720px no-repeat"
-    except Exception:  # noqa: BLE001
-        _GR = _acan.data_uri(_acan.ground_tile(3)) + " 0 0/128px 88px repeat"
-    _PAN = "background:#fff !important;box-shadow:0 0 0 4px #fff,0 0 0 4.5px #000 !important"
-    EVENING_CSS += (
-        "html.kev #kmain .kframe,html.kev #kmain .kplate,html.kev #kmain .kend{background:transparent !important}\n"
-        "html.kev #kmain h2,html.kev #kmain .kbody p,html.kev #kmain .kbox,html.kev #kmain .kalm,html.kev #kmain .ksun3,"
-        "html.kev #kmain .kmoon,html.kev #kmain .kchart,html.kev #kmain ul.ksky,html.kev #kmain .klater,html.kev #kmain .kplan,"
-        "html.kev #kmain .kchoice,html.kev #kmain .kwarn,html.kev #kmain .knextstep,html.kev #kmain .kover,html.kev #kmain .poem-text,"
-        "html.kev #kmain .kgl,html.kev #kmain .kleads,html.kev #kmain .klab,html.kev #kmain .kmast .kname,html.kev #kmain .kdate,"
-        "html.kev #kmain .kresume,html.kev #kmain .knonews,"
-        "html.kev body #kmain .kcap.kcap.kcap.kcap,html.kev body #kmain .kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet,html.kev body #kmain .kevrest.kevrest.kevrest.kevrest,html.kev body #kmain .kcolo.kcolo.kcolo.kcolo,"
-        "html.kev body #kmain .kkick.kkick.kkick.kkick,html.kev body #kmain .kfname.kfname.kfname.kfname,html.kev body #kmain .poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by,html.kev #kmain p{" + _PAN + "}\n"
-        "html.kev body #kmain .kbox.kbox.kbox.kbox p,html.kev body #kmain .kmoon.kmoon.kmoon.kmoon p,html.kev body #kmain .kgl.kgl.kgl.kgl p,html.kev body #kmain .kalm.kalm.kalm.kalm p,html.kev body #kmain .kleads.kleads.kleads.kleads p,"
-        "html.kev body #kmain .kbox.kbox.kbox.kbox .kover,html.kev body #kmain .poem-text.poem-text.poem-text.poem-text p,html.kev body #kmain .ksun.ksun.ksun.ksun3 p{box-shadow:none !important}\n"
-        "html.kev body #kmain .kcap.kcap.kcap.kcap,html.kev body #kmain .kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet,html.kev body #kmain .kevrest.kevrest.kevrest.kevrest,html.kev body #kmain .kcolo.kcolo.kcolo.kcolo,"
-        "html.kev body #kmain .kkick.kkick.kkick.kkick,html.kev body #kmain .kfname.kfname.kfname.kfname,html.kev body #kmain .poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by,html.kev body #kmain .knonews.knonews.knonews.knonews,"
-        "html.kev body #kmain .kmast.kmast.kmast.kmast .kname{width:-webkit-fit-content !important;width:fit-content !important;"
-        "margin-left:auto !important;margin-right:auto !important}\n"
-        "html.kev #kmain .poem-text{display:block !important;width:-webkit-fit-content !important;width:fit-content !important;margin-left:auto !important;margin-right:auto !important}\n"
-        # the plates become full rectangular engravings: sky ruling (0.5 px at 2 px) runs to a ruled edge
-        "html.kev #kmain .khv svg.khp.khp,html.kev #kmain svg.kpv.kpv{background:#fff url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='48'%3E%3Cpath d='M0 0.75H4M0 3.75H4M0 6.75H4M0 9.75H4M0 12.75H4M0 15.75H4M0 18.75H4M0 21.75H4M0 24.75H4M0 27.75H4M0 30.75H4M0 33.75H4M0 36.75H4M0 39.75H4M0 42.75H4M0 45.75H4' stroke='%23000' stroke-width='.5'/%3E%3C/svg%3E\") 0 4px/4px 48px repeat-x !important;"
-        "box-shadow:0 0 0 1px #000,0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
-        "html.kev #kmain svg.kplate2,html.kev #kmain svg.kvig.kgn{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
-        "html.kev #kmain svg.kast,html.kev #kmain svg.kdiv,html.kev #kmain svg.ktail,html.kev #kmain svg.kegg{visibility:hidden !important}\n"
-        # centred display lines stack into one white cartouche: no rule on each, so their edges never collide
-        "html.kev body #kmain .kfsub.kfsub.kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kfname.kfname.kfname.kfname.kfname.kfname,html.kev body #kmain .kkick.kkick.kkick.kkick.kkick.kkick,"
-        "html.kev body #kmain .poem-title.poem-title.poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by.poem-by.poem-by,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet.kquiet.kquiet{"
-        "box-shadow:0 0 0 5px #fff !important}\n"
-        "html.kev #kmain .kfill{-webkit-justify-content:flex-end !important;justify-content:flex-end !important}\n")
-    EVENING_CSS += ("html.kev body.kcontents{background:" + (_CV + " 0 0/618px 644px no-repeat" if _CV else _V + " 0 0/24px 88px repeat-y," + _V + " 100% 0/24px 88px repeat-y") + ",#fff !important}\n"
-                    # the running head and the foot bar sit on clean paper: the margin scroll stops at them
-                    "html.kev body .krun{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 -30px 0 #fff,-26px -30px 0 #fff,26px -30px 0 #fff !important}\n"
-                    "html.kev body .kbar{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 40px 0 #fff,-26px 40px 0 #fff,26px 40px 0 #fff !important}\n")
-    EVENING_CSS += ("html:root.kev{background:" + _GR + ",#fff !important}\n"
-                    "html.kev body:not(.kcontents){background:" + (_BK + " 0 44px/618px 618px no-repeat" if _BK else "transparent") + " !important}\n"
-                    "html.kev body.kcontents{background:" + (_CV + " 0 0/618px 644px no-repeat" if _CV else "transparent") + " !important}\n")
-except Exception:  # noqa: BLE001
-    pass
+# ---- the art direction (solar/atelier.py) ---------------------------------------------------------
+# Two grounds (a light hatched field between plaques, a dark matte inside ornament), one moulding
+# (heavy rule, light gap, fine rule) on every plaque, and scrollwork only where its region is known:
+# the frame's four bands, the bottom panel, the initial. Nothing is laid under the text and cropped.
+from . import atelier as _at
+
+_PLQ = (".kp", "h2.khed", ".kbody", ".ktailbox", ".kalm", ".ksun3", ".kmoon", ".kchart", "ul.ksky", ".klater", ".kplan", ".kchoice", ".kwarn",
+        ".kpoem", ".kendtxt", ".kmast", ".kgl", ".kleadbox", ".kevrest", ".kresume", ".knonews", ".kframe>p", ".kframe>h2")
+EVENING_CSS += (
+    "html.kev,html.kev #kmain,html.kev #kmain .kframe,html.kev #kmain .kplate,html.kev #kmain .kend{background-color:transparent !important}\n"
+    "html.kev .kbar,html.kev .krun,html.kev .krun *{background-color:#fff !important}\n"
+    "html.kev body .krun{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 -30px 0 #fff,-26px -30px 0 #fff,26px -30px 0 #fff !important}\n"
+    "html.kev body .kbar{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 40px 0 #fff,-26px 40px 0 #fff,26px 40px 0 #fff !important}\n"
+    # the frame: one geometry on every page; the old strip-and-roundel frames are gone
+    "html.kev body #kmain .kframe.kframe{padding:29px 20px 44px !important;margin:0 !important}\n"
+    "html.kev body.kcontents #kmain .kframe.kframe{padding:45px 20px 44px !important}\n"
+    "html.kev #kmain svg.kfs,html.kev #kmain .kround,html.kev #kmain svg.kast,html.kev #kmain svg.kdiv,html.kev #kmain svg.ktail,"
+    "html.kev #kmain svg.kegg,html.kev #kmain .kmed{display:none !important}\n"
+    # the title plaque, set into the top band of the frame
+    "html.kev body .ktop{position:absolute;left:33px;top:44px;z-index:2;width:552px;height:36px;margin:0 !important;padding:0 !important;text-align:center;"
+    "font:600 14px/34px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;white-space:nowrap;overflow:hidden}\n"
+    "html.kev body.kcontents #kmain .ktop{left:9px;top:0}\n"
+    # plaques
+    + ",".join(f"html.kev body #kmain {x}" for x in _PLQ) + "{background-color:#fff !important;box-shadow:" + _at.RINGS + " !important;border:0 !important}\n"
+    + ",".join(f"html.kev body #kmain#kmain {x}" for x in _PLQ) + "{margin-top:0 !important;margin-bottom:16px !important}\n"
+    # labels, labelled-fact tables and the type scale (nothing under 13 px)
+    "html.kev body #kmain .klb{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase;margin:0 0 3px !important;padding:0 !important;"
+    "text-align:left;box-shadow:none !important;background:none !important;border:0 !important}\n"
+    "html.kev body #kmain .kp p{margin:0 !important;padding:0 !important;box-shadow:none !important;background:none !important;border:0 !important}\n"
+    "html.kev body #kmain .kp h2{font:700 30px/34px var(--k-serif) !important;letter-spacing:-.01em;margin:0 0 4px !important;padding:0 !important;box-shadow:none !important;border:0 !important}\n"
+    "html.kev body #kmain .kp .klede{font:430 20px/26px var(--k-serif) !important}html.kev body #kmain .kp .klede2{font:430 22px/28px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .knote{font:430 15px/20px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .khr{border-top:1px solid #000 !important;margin-top:6px !important;padding-top:6px !important}\n"
+    "html.kev body #kmain table.kt{width:100% !important;border-collapse:collapse !important;table-layout:fixed !important;margin:0 !important;border:0 !important;background:none !important}\n"
+    "html.kev body #kmain table.kt th,html.kev body #kmain table.kt td{border:0 !important;background:none !important;text-align:left !important;vertical-align:top !important;"
+    "padding:4px 0 !important;font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain table.kt tr+tr th,html.kev body #kmain table.kt tr+tr td{border-top:1px solid #000 !important}\n"
+    "html.kev body #kmain table.kt th{width:96px;font:600 13px/23px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase}\n"
+    "html.kev body #kmain table.kt td{font:430 17px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt td b{font-weight:700}\n"
+    # where-to-look: when / what / where / until
+    "html.kev body #kmain table.kt.klook th{width:auto}html.kev body #kmain table.kt.klook th.kw1{width:76px}html.kev body #kmain table.kt.klook th.kw2{width:84px}html.kev body #kmain table.kt.klook th.kw4{width:124px}html.kev body #kmain table.kt.klook td{padding-right:8px !important}\n"
+    "html.kev body #kmain table.kt.klook th{line-height:16px !important;padding-top:0 !important}\n"
+    "html.kev body #kmain table.kt.klook tr+tr th,html.kev body #kmain table.kt.klook tr+tr td{border-top:1px solid #000 !important}\n"
+    # hour by hour
+    "html.kev body #kmain table.kt.khours td,html.kev body #kmain table.kt.khours th.kc{text-align:center !important}\n"
+    "html.kev body #kmain table.kt.khours th.kc{width:auto}\n"
+    "html.kev body #kmain table.kt.khours tr.ktemp td{font:700 22px/28px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt.khours tr.ksk td{font:430 15px/20px var(--k-serif) !important}\n"
+    # the answer: labelled high and low
+    "html.kev body #kmain table.kt.kans th,html.kev body #kmain table.kt.kans td{padding:0 !important}\n"
+    "html.kev body #kmain table.kt.kans td.khi{width:190px}\n"
+    "html.kev body #kmain .khero{display:block;font:700 60px/58px var(--k-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain .khero2{display:block;font:700 34px/38px var(--k-serif);font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain .khero3{display:block;font:700 54px/50px var(--k-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain .kalert{font:700 20px/26px var(--k-serif) !important}\n"
+    # the cover's lists
+    "html.kev body #kmain table.kt.kcv td.kcl{border-left:1px solid #000 !important;padding-left:16px !important;vertical-align:middle !important;font:430 20px/26px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt.kcv td.khi{width:150px}\n"
+    "html.kev body #kmain table.kt.kdaylist th{width:28px;font:430 17px/23px var(--k-serif) !important;letter-spacing:0 !important}\n"
+    "html.kev body #kmain table.kt.kdaylist td{font:680 18px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt.kdaylist td a{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:#000;text-decoration:none}\n"
+    "html.kev body.kcontents #kmain .kmast .kdate{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em !important;display:block !important;text-align:center}\n"
+    "html.kev body #kmain .ksources{color:#000 !important;font:430 15px/20px var(--k-serif) !important;font-style:normal !important}\n"
+    "html.kev body #kmain .kover{font:italic 430 15px/20px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kpoem .poem-by{font-size:13px !important}\n"
+    "html.kev body #kmain .kpoem .poem-text span{padding-left:1.5em;text-indent:-1.5em}\n"
+    "html.kev body #kmain .kplate.klong .poem-text{font-size:18px !important;line-height:1.25 !important}\n"
+    "html.kev body #kmain .kchart{padding:4px 12px 6px !important}html.kev body #kmain .kchart svg{display:block;width:100% !important;height:auto !important;margin:0 !important}\n"
+    "html.kev body #kmain .kchart .kcap{font:430 15px/20px var(--k-serif) !important;font-style:normal !important;text-align:left !important;margin:4px 0 0 !important}\n"
+    "html.kev body .kbar .kprev,html.kev body .kbar .knx{text-transform:none !important;letter-spacing:.02em !important;font:600 16px/20px var(--k-serif) !important}\n"
+    + ",".join(f"html.kev body #kmain {x}" for x in _PLQ) + "{padding:7px 12px !important}\n"
+    "html.kev body #kmain .kbody p:last-child,html.kev body #kmain .ktailbox p:last-child{margin-bottom:0 !important}\n"
+    "html.kev body #kmain .kbody{overflow:hidden}\n"
+    "html.kev body #kmain .ktailbox p{margin:0 !important;padding:0 !important;border:0 !important}\n"
+    "html.kev body #kmain .ktailbox p+p{border-top:.5px solid #000 !important;margin-top:5px !important;padding-top:4px !important}\n"
+    
+    "html.kev body #kmain .kmoon{padding:5px 7px !important}html.kev body #kmain .kchart .kcap{margin-top:2px !important}\n"
+    # the initial: a plain three-line drop letter in the text face (no engraving under type)
+    "html.kev body #kmain .kbody .kini{float:left;font:700 52px/46px var(--k-serif) !important;margin:4px 7px 0 0;padding:0}\n"
+    # the cover
+    "html.kev body.kcontents #kmain .kmast{padding:4px 7px 6px !important;text-align:center}\n"
+    "html.kev body.kcontents #kmain#kmain .kmast .kname{margin:0 !important;box-shadow:none !important}html.kev body.kcontents #kmain .kmast .kdate{margin:2px 0 0 !important}\n"
+    "html.kev body #kmain .kcentre{display:block;-webkit-flex:none;flex:none;margin:-3px -6px 10px !important;height:112px}\n"
+    "html.kev body #kmain .kcentre .kca{display:none}html.kev body #kmain .kcentre .kca:first-child{display:block}\n"
+    "html.kev body #kmain table.kt.kinside td a{color:#000;text-decoration:none}html.kev body #kmain table.kt.kinside td a.khl{font-weight:680}\n"
+    "html.kev body #kmain table.kt.kinside th,html.kev body #kmain table.kt.kinside td{padding:3px 0 !important;line-height:22px !important}\n"
+    "html.kev body #kmain table.kt.kcv td{padding:0 !important}html.kev body #kmain table.kt.kcv td.kcl{vertical-align:top !important}\n"
+    "html.kev body #kmain table.kt.khr{margin-top:6px !important;border-top:1px solid #000 !important}\n"
+    "html.kev body.kcontents #kmain .kmast .kdate{overflow:hidden}html.kev body.kcontents #kmain .kmast .kdl{float:left}html.kev body.kcontents #kmain .kmast .kdr{float:right}\n"
+    "html.kev body.kcontents #kmain .kcentre{margin:-3px -6px 0 !important}html.kev body.kcontents #kmain .kevrest{margin-bottom:var(--s2) !important}\n"
+    "html.kev body.kcontents #kmain .kgl{border:0 !important;padding:4px 7px !important;margin:0 0 var(--s2) !important}\n"
+    "html.kev body.kcontents #kmain .kleadbox .klab{margin-top:2px !important}\n"
+    "html.kev body #kmain .kevrest{border:0 !important;padding:3px 7px !important;margin:0 !important}\n"
+    "html.kev body #kmain .kevrest i{display:block;font-style:italic;font-weight:600}\n"
+    "html.kev body #kmain .kcolo{display:none !important}\n"
+    # the poem and the close: one plaque each
+    "html.kev body #kmain .kpoem{text-align:center;padding:6px 7px 8px !important}\n"
+    "html.kev body #kmain .kpoem .poem-title,html.kev body #kmain .kpoem .poem-by{display:block}\n"
+    "html.kev body #kmain .kpoem .poem-text{display:table !important;margin:0 auto !important;text-align:left}\n"
+    "html.kev body #kmain .kpoem .poem-text span{display:block}\n"
+    "html.kev body.kendpage #kmain .kframe{-webkit-justify-content:flex-start !important;justify-content:flex-start !important}\n"
+    "html.kev body #kmain .kendtxt{text-align:center;padding:14px 7px 16px !important}\n"
+    "html.kev body #kmain .kendtxt p,html.kev body #kmain .kendtxt h2{box-shadow:none !important;background:none !important}\n"
+    "html.kev body #kmain .kendtxt .kquiet{margin-top:10px !important}\n"
+    "html.kev body #kmain .kendtxt .krecap{font:430 17px/23px var(--k-serif) !important;text-align:center !important;border-top:1px solid #000 !important;margin:12px 40px 0 !important;padding:8px 0 0 !important}\n"
+    # the bottom panel: drawn for the height it gets, with a frieze or a bead for what is left over
+    "html.kev body #kmain .kfill{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-between !important;"
+    "justify-content:space-between !important;height:0;overflow:hidden;margin:0 -6px -5px !important;padding:0 !important;-webkit-flex:none;flex:none}\n"
+    "html.kev body #kmain .kfill>div{-webkit-flex:none;flex:none;margin:0 !important}\n"
+    "html.kev body #kmain .kfill .kpv{display:none;margin-top:auto !important}\n"
+    "html.kev body #kmain#kmain#kmain .kopt{display:none}\n"
+    "html.kev body #kmain#kmain .kresume{display:none !important}\n"
+    "html.kev body #kmain .ksqz table.kt th,html.kev body #kmain .ksqz table.kt td{padding-top:2px !important;padding-bottom:2px !important}\n"
+    "html.kev body #kmain#kmain .ksqz .kp{padding-top:5px !important;padding-bottom:5px !important}\n"
+    "html.kev body #kmain#kmain#kmain .ksqz>.kp,html.kev body #kmain#kmain#kmain .ksqz>h2,html.kev body #kmain#kmain#kmain .ksqz>.kbody,html.kev body #kmain#kmain#kmain .ksqz>.kmast{margin-bottom:14px !important}\n"
+    "html.kev body #kmain .kfill .kfrule{display:none;height:3px;margin:auto 0 !important;border-top:1.5px solid #000;border-bottom:.5px solid #000}\n"
+    "html.kev body #kmain .kp .klow{font:430 17px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .kbody17{font:430 17px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .kal2{font:700 17px/23px var(--k-serif) !important;border-bottom:1px solid #000 !important;padding-bottom:4px !important;margin-bottom:4px !important}\n"
+    "html.kev body #kmain .kp .kal2 .klb{display:inline;margin-right:10px !important}\n"
+    "html.kev body #kmain table.kt.kdaylist.kwide th{width:96px;font:600 13px/23px var(--k-serif) !important;letter-spacing:.12em !important}\n"
+    "html.kev body #kmain .kreadline{font:430 15px/20px var(--k-serif) !important;text-align:left !important;margin:-6px 0 8px !important;padding:0 12px !important;"
+    "box-shadow:none !important;background:none !important}\n"
+    # tomorrow: the figure at the left, the forecast beside it, as on the cover
+    "html.kev body #kmain .kalm{display:block !important}\n"
+    "html.kev body #kmain .kalm-t{display:grid;grid-template-columns:auto 1fr;-webkit-align-items:center;align-items:center}\n"
+    "html.kev body #kmain .kalm-t .kdeg{grid-column:1;grid-row:1}html.kev body #kmain .kalm-t small{grid-column:1;grid-row:2;margin:0 !important}\n"
+    "html.kev body #kmain .kalm-t .kalm-lead{grid-column:2;grid-row:1/3;margin:0 0 0 18px !important;padding:0 0 0 18px !important;border-left:1px solid #000 !important;"
+    "font:italic 430 24px/31px var(--k-serif) !important}\n"
+)
 
 
 # ---------------------------------------------------------------------------------------------
@@ -800,41 +865,64 @@ def _egg(kind, seed, size):
         return ""
 
 
-def _filler(night, salt, w=528, moon=None, budget=90000):
-    """Art for the room a page's words leave: a seeded guilloche ribbon (for a sliver of space) and a
-    panel with a rose-engine rosette on a guilloche ground (for more). The script sizes and picks one."""
-    rib = (f'<g transform="translate(0,3)">' + engraving.band(engraving.rng_for(night, salt + "r"), f"kfr{salt}", w, 12) + '</g>'
-           f'<rect y="0" width="{w}" height="3" fill="#fff"/><rect y="15" width="{w}" height="3" fill="#fff"/>'
-           f'<path d="M0,1.6H{w}M0,16.4H{w}" {K} stroke-width="{W1}"/>'
-           f'<path d="M{w / 2 - 12},9L{w / 2},2.4L{w / 2 + 12},9L{w / 2},15.6Z" fill="#fff" {K} stroke-width="{W1}"/>' + _star(w / 2, 9, 3))
-    ribbon = _fix(f'<svg class="kfr" viewBox="0 0 {w} 18" style="height:18px;margin-top:-9px" preserveAspectRatio="none" aria-hidden="true">{rib}</svg>')
-    seed = sum(ord(ch) * (i + 1) for i, ch in enumerate(salt)) + night.toordinal() % 1000
-    if engraving_thai:
+_THEME_FOR = {"cover": "river", "day1": "jazz", "day2": "river", "day3": "lotus", "local": "bridge", "tomorrow": "river",
+              "sky": "sky", "poem": "night", "goodnight": "arms", "index": "river"}
+
+
+_ART = {"dir": None, "done": {}}
+
+
+def _art(name, make):
+    """Draw a piece once per build and return its URL (relative to the pages)."""
+    if name not in _ART["done"]:
+        _ART["done"][name] = _at.write(_ART["dir"], name, make())
+    return _ART["done"][name]
+
+
+def _filler(night, salt, w=None, moon=None, budget=90000):
+    """The bottom panel for the room a page's words leave: one composed plate (scrollwork springing from
+    its frame and wrapping the page's scene) drawn for each height it may take, plus two friezes and a
+    bead for what is left over. FILL_JS measures the room and shows the pieces that fit; nothing is
+    cropped, and only the panel that is shown is fetched."""
+    theme = _THEME_FOR.get(salt, "river")
+    if moon is None:
         try:
-            ribbon = engraving_thai.kranok_band(w, 16, seed).replace(
-                "<svg ", '<svg class="kfr" style="height:16px;margin-top:-8px" preserveAspectRatio="none" aria-hidden="true" ', 1)
+            moon = _cycle(moon_phase(night))
         except Exception:  # noqa: BLE001
-            pass
-    c = w / 2
-    pan = (f'<clipPath id="kfc{salt}"><rect x="0" y="40" width="{w}" height="30"/></clipPath><g clip-path="url(#kfc{salt})"><g transform="translate(0,40)">'
-           + engraving.band(engraving.rng_for(night, salt + "p"), f"kfb{salt}", w, 30) + '</g></g>'
-           f'<path d="M0,39H{w}M0,71H{w}" {K} stroke-width="{W1}"/><path d="M0,36.6H{w}M0,73.4H{w}" {K} stroke-width="{W0}"/>'
-           + _kanok(c - 60, 55, 1.0, 180) + _kanok(c + 60, 55, 1.0, 0)
-           + f'<g transform="translate({_n(c)},55)"><circle r="54" fill="#fff" {K} stroke-width="{W1}"/>'
-           + engraving.rosette(engraving.rng_for(night, salt + "s"), f"kfs{salt}", 50)
-           + '</g>' + _star(c, 55, 9) + f'<circle cx="{_n(c)}" cy="55" r="2.2" fill="#fff" {K} stroke-width="{W0}"/>')
-    panel = _fix(f'<svg class="kfp" viewBox="0 0 {w} 110" style="height:110px;margin-top:-55px" aria-hidden="true">{pan}</svg>')
-    if engraving_panorama and moon is not None:
+            moon = .5
+    out = []
+    hs = {"arms": (160, 200, 240, 280, 320, 360, 400)}.get(theme, _at.HEIGHTS if salt in ("tomorrow", "sky", "poem") else _at.HEIGHTS[:6])
+    for H in hs:
         try:
-            panel = engraving_panorama.panorama(w, 110, seed, moon).replace(
-                "<svg ", '<svg class="kfp" style="height:110px;margin-top:-55px" aria-hidden="true" ', 1)
+            if theme == "arms":   # the last page: the arms above, the sleeping dog on the river and the bridge beneath
+                url = _art(f"arms-{H}.svg", lambda: _at.arms_panel(_at.PANEL_W, H, _at._seed("arms"), flank=("dog", "bridge"), moon=moon))
+            else:
+                url = _art(f"{theme}-{H}.svg", lambda: _at.panel(_at.PANEL_W, H, theme, _at._seed(theme, H), moon))
         except Exception:  # noqa: BLE001
-            pass
+            continue
+        out.append(f'<div class="kpv" data-h="{H}" style="height:{H}px;background:url({url}) 50% 100%/{_at.PANEL_W}px {H}px no-repeat !important"></div>')
+    return '<div class="kfill" aria-hidden="true"><div class="kfrule"></div>' + "".join(out) + '</div>'
+
+
+def _cycle(phase):
+    """(lit %, waxing) -> the scenes' moon phase: 0 new, .5 full, 1 new again."""
     try:
-        stack = _plate_stack(night, salt, seed, w, moon, budget)
+        lit, waxing = phase[0], phase[1]
+        f = max(.11, min(1.0, lit / 100.0))        # under about 10% lit the scenes show a thin crescent, never a dark disc
+        p = math.acos(1 - 2 * f) / (2 * math.pi)
+        return p if waxing else 1 - p
     except Exception:  # noqa: BLE001
-        stack = ""
-    return f'<div class="kfill">{stack}</div>'
+        return .5
+
+
+def _top(label, salt, night):
+    """The page's title plaque, set into the top band of the frame."""
+    lw = _at.label_width(label)
+    try:
+        url = _art(f"top-{lw}.svg", lambda: _at.top_band(lw, 5))
+    except Exception:  # noqa: BLE001
+        return f'<div class="ktop"><span>{label}</span></div>'
+    return f'<div class="ktop" style="background:url({url}) 0 0/{_at.TOP_W}px {_at.BAND}px no-repeat !important"><span>{label}</span></div>'
 
 
 # ---- one composed plate per page ------------------------------------------------------------------
@@ -1106,16 +1194,27 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
     return (f'<div class="kdefs" aria-hidden="true">{"".join(defs)}</div>' if defs else "") + "".join(x for _, x in items)
 
 
-FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
-           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var v=k.querySelectorAll('svg.kpv'),i;k.style.height='0px';"
-           "for(i=0;i<v.length;i++)v[i].style.display='none';"
-           "var cv=document.body.className.indexOf('kcontents')>=0,free=Math.floor(b.getBoundingClientRect().top-(cv?20:8)-fr.getBoundingClientRect().bottom);"
-           "if(free>0&&!cv)k.style.height=free+'px';if(free>=28&&v.length){k.style.height=free+'px';var pick=null,le=null;for(i=0;i<v.length;i++){var hh=+v[i].getAttribute('data-h');if(hh<=free)le=v[i];if(hh>=free&&!pick)pick=v[i];}if(!pick||free<+pick.getAttribute('data-h')*.75)pick=(le&&+le.getAttribute('data-h')>=free*.7)?le:(pick&&free>=+pick.getAttribute('data-h')*.75?pick:null);if(!pick&&le)pick=le;"
-           "if(pick){var H=+pick.getAttribute('data-h'),vb=pick.getAttribute('viewBox').split(' '),W=+vb[2],sh=Math.min(free,H);"
-           "pick.setAttribute('viewBox','0 '+(H-sh)+' '+W+' '+sh);if(free>H)pick.setAttribute('preserveAspectRatio','xMidYMax meet');pick.setAttribute('width',W);pick.setAttribute('height',sh);"
-           "pick.style.width=Math.min(W,k.clientWidth||W)+'px';pick.style.height=(free>H?Math.round(H*Math.min(W,k.clientWidth||W)/W):sh)+'px';pick.style.display='block';}}"
-           "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
-           "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
+FILL_JS = ("<script>(function(){function f(n){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
+           "k=document.querySelector('#kmain .kfill');if(!b||!fr||!k)return;var v=k.querySelectorAll('.kpv'),x=k.querySelector('.kfrule'),i,pick=null,ph=0;"
+           "k.style.height='0px';k.style.paddingTop='0px';fr.className=fr.className.replace(/ ksqz/g,'');var d0=fr.querySelectorAll('.kdrop1,.kdrop2,.kdrop3');for(i=0;i<d0.length;i++)d0[i].style.display='';var kd=fr.children;for(i=0;i<kd.length;i++)if(kd[i]!==k)kd[i].style.removeProperty('margin-bottom');var op0=document.querySelectorAll('#kmain .kopt');for(i=0;i<op0.length;i++)op0[i].style.display='none';for(i=0;i<v.length;i++)v[i].style.display='none';if(x)x.style.display='none';"
+           "function room(){return Math.floor(b.getBoundingClientRect().top-fr.getBoundingClientRect().bottom);}"
+           "var c=document.querySelector('#kmain .kcentre'),ca=c?c.querySelectorAll('.kca'):[],cp=null,chh=0;"
+           "if(ca.length){for(i=0;i<ca.length;i++)ca[i].style.display='none';c.style.display='none';var fr0=room()-7,cap=(fr0-132>=63)?132:fr0;"
+           "for(i=0;i<ca.length;i++){var q=+ca[i].getAttribute('data-h');if(!cp||(q<=cap&&q>chh)){cp=ca[i];chh=q;}}"
+           "cp.style.display='block';c.style.height=chh+'px';c.style.display='block';}"
+           "var dl,lv;for(lv=1;lv<=3&&room()<0;lv++){if(lv==1&&!/ksqz/.test(fr.className)){fr.className+=' ksqz';if(room()>=0)break;}"
+           "dl=fr.querySelectorAll('.kdrop'+lv);for(i=0;i<dl.length;i++)dl[i].style.display='none';}"
+           "var op=document.querySelectorAll('#kmain .kopt');for(i=0;i<op.length;i++){op[i].style.display='block';if(room()<2)op[i].style.display='none';}"
+           "var free=room(),rm=free-3;if(free>=12){"
+           "for(i=0;i<v.length;i++){var hh=+v[i].getAttribute('data-h');if(hh<=rm&&hh>ph){pick=v[i];ph=hh;}}"
+           "if(pick)pick.style.display='block';}"
+           "var kids=[],ch=fr.children;for(i=0;i<ch.length;i++){var cc=ch[i];if(cc!==k&&cc.offsetHeight>0&&!/kdefs|ktop/.test(cc.className))kids.push(cc);}"
+           "var sp=kids.length?Math.min(8,Math.floor((rm-ph)/kids.length)):0;if(sp>0){for(i=0;i<kids.length;i++)kids[i].style.setProperty('margin-bottom',"
+           "(parseFloat(getComputedStyle(kids[i]).marginBottom)+sp)+'px','important');free=room();}"
+           "if(pick){k.style.paddingTop='3px';k.style.height=free+'px';}"
+           "if(!n){try{document.documentElement.setAttribute('data-kev',String(+new Date()));window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){"
+           "f(1);},260);}else{try{document.documentElement.setAttribute('data-kev',String(+new Date()));window.dispatchEvent(new Event('resize'));}catch(e){}}}"
+           "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){f(0);});else f(0);},120);}"
            "window.addEventListener('load',go);})();</script>")
 
 
@@ -1588,14 +1687,7 @@ def poem_html(p):
     by = E(p["poet"]) + (f" &middot; {p['year']}" if p.get("year") else "")
     text = (f'<span class="poem-title">{E(p["title"])}</span><span class="poem-by">{by}</span>'
             f'<div class="poem-text">{body}</div>')
-    if size <= 13:
-        return (f'<div class="kplate kframe">{ORNAMENTS["frame"]}{_corner_blocks()}<div class="khv">{ORNAMENTS["listening"]}</div>'
-                f'{text}{ORNAMENTS["tail"]}</div>')
-    if size <= 17:
-        return f'<div class="kplate"><div class="khv">{ORNAMENTS["listening"]}</div>{text}{ORNAMENTS["tail"]}</div>'
-    if size <= 20:
-        return f'<div class="kplate">{text}{ORNAMENTS["tail"]}</div>'
-    return f'<div class="kplate klong">{text}</div>'
+    return f'<div class="kplate{" klong" if size > 20 else ""}"><div class="kpoem">{text}</div></div>'
 
 
 def _corner_blocks():
@@ -1632,12 +1724,12 @@ AZ = {name: 45 * i for i, name in enumerate(evening.POINTS)}
 PEAKS = (("St Helens", 41, .3), ("Adams", 61, .26), ("Mt Hood", 113, .42))  # bearings from Sauvie Island
 
 
-def sky_chart(planets, mo, phase, night, w=570, h=222):
+def sky_chart(planets, mo, phase, night, w=506, h=180):
     """Where to look, as an engraved plate: a panorama from north round through south to north, the
     sky ruled in fine horizontal lines (the engraver's night), the island's treeline and the Cascade
     peaks on the horizon, the planets and moon set in white by direction and height."""
     import random
-    y0, top = h - 46, 6
+    y0, top = h - 50, 6
     rnd = random.Random(night.toordinal())
 
     def X(az):
@@ -1646,7 +1738,7 @@ def sky_chart(planets, mo, phase, night, w=570, h=222):
     def Y(alt):
         return y0 - max(0, min(86, alt)) / 90 * (y0 - top - 8)
 
-    g = [f'<rect x="3" y="3" width="{w - 6}" height="{y0 - 3}" fill="url(#ke-rule)"/>']
+    g = [_at._hand("matte", w, y0, 0, 0, style="pearl") or f'<rect x="0" y="0" width="{w}" height="{y0}" fill="url(#ke-rule)"/>']
     # stars: a white gap in the ruling with a black point, a few engraved four-point stars
     for _ in range(70):
         x, y = rnd.uniform(10, w - 10), rnd.uniform(top + 4, y0 - 16)
@@ -1659,15 +1751,14 @@ def sky_chart(planets, mo, phase, night, w=570, h=222):
         yy = Y(alt)
         g.append(f'<path d="M30,{_n(yy)}H{w - 30}" stroke="#fff" stroke-width="2.2"/>'
                  f'<path d="M30,{_n(yy)}H{w - 30}" {K} stroke-width=".5" stroke-dasharray="2 3"/>'
-                 f'<rect x="5" y="{_n(yy - 7)}" width="24" height="13" fill="#fff"/><rect x="{w - 29}" y="{_n(yy - 7)}" width="24" height="13" fill="#fff"/>'
-                 f'<text x="8" y="{_n(yy + 3.5)}" font-size="10" font-style="italic">{alt}&deg;</text>'
-                 f'<text x="{w - 8}" y="{_n(yy + 3.5)}" font-size="10" font-style="italic" text-anchor="end">{alt}&deg;</text>')
+                 f'<rect x="3" y="{_n(yy - 9)}" width="50" height="17" fill="#fff" {K} stroke-width=".5"/>'
+                 f'<text x="7" y="{_n(yy + 4.5)}" font-size="13">{alt}&deg; up</text>')
     for name, az, sc in PEAKS:
         g.append(_hood(X(az), y0, sc))
         if name != "Adams":  # too close to St Helens to label
             ty = y0 - 40 * sc - 6
-            g.append(f'<rect x="{_n(X(az) - 4.6 * len(name) / 2 - 3)}" y="{_n(ty - 9)}" width="{_n(4.6 * len(name) + 6)}" height="12" fill="#fff"/>'
-                     f'<text x="{_n(X(az))}" y="{_n(ty)}" font-size="9.5" font-style="italic" text-anchor="middle">{name}</text>')
+            g.append(f'<rect x="{_n(X(az) - 6.8 * len(name) / 2 - 4)}" y="{_n(ty - 12)}" width="{_n(6.8 * len(name) + 8)}" height="16" fill="#fff" {K} stroke-width=".5"/>'
+                     f'<text x="{_n(X(az))}" y="{_n(ty)}" font-size="13" text-anchor="middle">{name}</text>')
     # the treeline: cottonwoods and firs along the horizon, low where the peaks stand
     x, tl = 3.0, f"M3,{y0}"
     while x < w - 3:
@@ -1683,31 +1774,35 @@ def sky_chart(planets, mo, phase, night, w=570, h=222):
     for i, lab in enumerate(["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"]):
         xx = X(45 * i)
         g.append(f'<path d="M{_n(xx)},{y0 + 24}v4" {K} stroke-width="{W1}"/>'
-                 f'<text x="{_n(xx)}" y="{h - 7}" font-size="10.5" font-weight="600" letter-spacing="1.2" text-anchor="middle">{lab}</text>')
+                 f'<text x="{_n(xx)}" y="{h - 5}" font-size="13" font-weight="600" text-anchor="middle">{lab}</text>')
     placed = []
 
     def mark(xx, yy, label, shape):
-        below = any(abs(xx - a) < 80 and abs(yy - b) < 16 for a, b in placed)
-        placed.append((xx, yy))
-        anchor, tx = ("end", xx - 13) if xx > w - 100 else ("start", xx + 13)
-        ty = yy + (18 if below else 3.8)
-        lw = 7.4 * len(label) + 4
-        return (shape + f'<rect x="{_n(tx - 4 if anchor == "start" else tx - lw)}" y="{_n(ty - 10)}" width="{_n(lw + 4)}" height="14" '
-                f'fill="#fff" {K} stroke-width="{W0}"/>'
-                f'<text x="{_n(tx)}" y="{_n(ty)}" font-size="10.5" font-weight="600" letter-spacing="1.3" text-anchor="{anchor}">{label}</text>')
+        lw = 8.3 * len(label) + 10
+        anchor, tx = ("end", xx - 15) if xx > w - lw - 30 else ("start", xx + 15)
+        x0 = tx - 5 if anchor == "start" else tx - lw + 5
+        ty = yy + 4.5
+        while any(x0 < a + aw + 4 and a < x0 + lw + 4 and abs(ty - b) < 20 for a, b, aw in placed):
+            ty += 20   # a second tag stacks below the first, never over it
+        placed.append((x0, ty, lw))
+        lead = f'<path d="M{_n(xx)},{_n(yy)}L{_n(x0 if anchor == "start" else x0 + lw)},{_n(ty - 4.5)}" {K} stroke-width=".5"/>' if ty > yy + 5 else ""
+        return (lead + shape + f'<rect x="{_n(x0)}" y="{_n(ty - 13)}" width="{_n(lw)}" height="18" fill="#fff" {K} stroke-width="1"/>'
+                f'<text x="{_n(tx)}" y="{_n(ty)}" font-size="13" font-weight="600" text-anchor="{anchor}">{label}</text>')
+
+    def at(hour, minute=0):
+        return "" if (hour, minute) == (21, 0) else " " + evening.clock(dt.time(hour, minute))
     if mo and phase:
         xx, yy = X(AZ.get(mo["dir"], 180)), Y(mo["alt"])
-        g.append(mark(xx, yy, "MOON", f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="11.5" fill="#fff" {K} stroke-width=".45"/>'
+        g.append(mark(xx, yy, "Moon" + at(mo["hour"]), f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="11.5" fill="#fff" {K} stroke-width=".45"/>'
                       + _moon_shape(xx, yy, 8.5, phase[0], phase[1], "kcm", dark="url(#ke-n)")))
     for p in planets:
         xx, yy = X(AZ.get(p["dir"], 180)), Y(p["alt"])
         rays = "".join(f'<path d="M{_n(xx)},{_n(yy)}m{dx},{dy}l{dx * 1.2:g},{dy * 1.2:g}" {K} stroke-width="{W0}"/>'
                        for dx, dy in ((0, -6.5), (0, 6.5), (-6.5, 0), (6.5, 0)))
-        g.append(mark(xx, yy, p["name"].upper(), f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="13" fill="#fff"/>' + rays
+        g.append(mark(xx, yy, p["name"] + at(p["look"].hour, p["look"].minute), f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="13" fill="#fff"/>' + rays
                       + f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="4.6" fill="url(#ke-p)" {K} stroke-width="{W1}"/>'
                       f'<circle cx="{_n(xx)}" cy="{_n(yy)}" r="1.3"/>'))
-    g.append(f'<rect x=".8" y=".8" width="{w - 1.6}" height="{h - 1.6}" fill="none" {K} stroke-width="{W2}"/>'
-             f'<rect x="3" y="3" width="{w - 6}" height="{h - 6}" fill="none" {K} stroke-width="{W0}"/>')
+    # no frame of its own: the plaque's moulding is the frame
     return _svg(w, h, "".join(g), "kskychart")
 
 
@@ -1882,7 +1977,13 @@ def main(dash_path, ev_path, site):
     os.makedirs(out, exist_ok=True)
     font_css, font_links = self_host_fonts(out)
     with open(os.path.join(out, "kindle.css"), "w") as f:
-        f.write(font_css + "\n" + EINK_CSS + "\n" + EVENING_CSS)
+        try:
+            art_css = _at.page_css(out, 3)
+        except Exception as e:  # noqa: BLE001
+            print(f"kindle_evening: frame art skipped ({e!r})")
+            art_css = ""
+        f.write(font_css + "\n" + EINK_CSS + "\n" + EVENING_CSS + art_css)
+    _ART["dir"] = out
 
     big, loc, by_model = stories(d, ev, night, now)
     for st in big + ([loc] if loc else []):
@@ -1896,52 +1997,107 @@ def main(dash_path, ev_path, site):
     tmr = night + dt.timedelta(days=1)
 
     # ---- the pages, in reading order: (file, title, part, kicker, body)
+    o = d.get("outside") or {}
+    datef = f"{night:%A, %B} {night.day}"
     pages = []
     for k, st in enumerate(big, 1):
         pages.append({"file": f"day-{k}.html", "title": st["headline"], "part": "The day", "kick": "",
-                      "run": f"The day &middot; {k} of {len(big)}", "story": st, "head": _vig(("news", "drums", "marsh")[(k - 1) % 3], ORNAMENTS[("news", "drums", "marsh")[(k - 1) % 3]]),
-                      "band": f"The Day &middot; {ROMAN[k - 1]} of {ROMAN[len(big) - 1]}"})
-    if not big:
-        pages.append({"file": "day-1.html", "title": "Tonight’s news didn’t come through", "part": "The day", "kick": "",
-                      "body": f'<div class="khv">{ORNAMENTS["news"]}</div>'
-                              '<h2 class="khed">Tonight&rsquo;s news didn&rsquo;t come through</h2>'
-                              '<p>The day&rsquo;s stories will be in your Morning Edition.</p>'})
+                      "run": "The day", "story": st, "head": "",
+                      "band": datef, "nav": f"Story {k}"})
+    # no news: the cover says so; a page that only repeats it would cost a page turn for nothing
     if loc:
         pages.append({"file": "local.html", "title": loc["headline"], "part": "Close to home", "kick": "",
-                      "run": "Close to home", "story": loc, "head": _vig("bridge", ORNAMENTS["bridge"]),
-                      "band": "Close to Home &middot; Portland"})
-    over = '<p class="kover">Anything that changes overnight will be in your Morning Edition.</p>'
+                      "run": "Close to home", "story": loc, "head": "",
+                      "band": "Close to Home &middot; Portland", "nav": "Portland"})
+    over = '<p class="kover khr">Anything that changes overnight will be in your Morning Edition.</p>'
     if big or loc:
         pages[-1]["over"] = True
 
-    # Tomorrow: an almanac entry under three firs and the day's weather
+    def table(rows, cls=""):
+        return (f'<table class="kt {cls}">' + "".join(f'<tr{" class=" + chr(34) + r[2] + chr(34) if len(r) > 2 else ""}><th>{r[0]}</th><td>{r[1]}</td></tr>' for r in rows if r[1]) + "</table>")
+
+    days = {x.get("date"): x for x in o.get("days") or []}
+    f_tm, f_td = days.get(tmr.isoformat()), days.get(night.isoformat())
+    tmr_short = f"{tmr:%a, %b} {tmr.day}"
+
+    def dur(mins):
+        return f"{int(mins) // 60} h {int(mins) % 60} m"
+
+    def sun_rows():
+        """SUN and DAYLIGHT rows for tomorrow, from the forecast day (never invented)."""
+        rows = []
+        if f_tm and f_tm.get("sunrise") and f_tm.get("sunset"):
+            rows.append(("Sun", f'Rises {evening.hhmm(f_tm["sunrise"])} &middot; sets {evening.hhmm(f_tm["sunset"])}'))
+        if f_tm and f_tm.get("daylight_min"):
+            v = dur(f_tm["daylight_min"])
+            if f_td and f_td.get("daylight_min"):
+                diff = round(f_tm["daylight_min"] - f_td["daylight_min"])
+                v += (f", {abs(diff)} min {'less' if diff < 0 else 'more'} than today" if diff else ", the same as today")
+            rows.append(("Daylight", v, "kdrop1"))
+        return rows
+
+    # Tomorrow: the answer first (labelled high and low, one-line verdict), then hour by hour, then the details
     if wx:
-        lines = []
-        if wx["timing"] or wx["amount"]:
-            lines.append(" ".join(x for x in (wx["timing"], wx["amount"]) if x))
-        if wx["wind"]:
-            lines.append(wx["wind"])
-        warn = ""
+        alert = ""
         if wx["alerts"]:
-            warn = f'<p class="kwarn"><b>{E(smart(wx["alerts"][0]))}</b>From the National Weather Service. Check the details in the morning.</p>'
-        light = daylight(wx["sunrise"], wx["sunset"])
-        cells = "".join(f'<div><span class="k">{lab}</span><b>{E(v)}</b></div>' for lab, v in
-                        (("Sunrise", (wx["sunrise"] or "").replace(" am", "")), ("Daylight", light),
-                         ("Sunset", (wx["sunset"] or "").replace(" pm", ""))) if v)
-        body = (f'<div class="kalm">{_vig_weather(wx_kind(wx))}<div class="kalm-t"><span class="kdegm">{_muse("tomorrow", 0, 50)}{_muse("tomorrow", 1, 50)}</span><div class="kdeg">{wx["hi"]}&deg;</div>'
-                f'<small>high {wx["hi"]}&deg; &middot; low {wx["lo"]}&deg;</small><p class="kalm-lead">{E(smart(wx["lead"]))}</p></div></div>'
-                + "".join(f"<p>{E(smart(x))}</p>" for x in lines)
-                + (f'<div class="ksun3">{cells}</div>' if cells else "") + warn
-                + f'{ORNAMENTS["divider"]}<p class="kplan">{E(smart(wx["plan"]))}</p>')
+            alert = (f'<div class="kp"><p class="klb">Alert</p><p class="kalert">{E(smart(wx["alerts"][0]))}</p>'
+                     '<p class="knote">National Weather Service. Details in the morning.</p></div>')
+        cmp_ = ""
+        if f_td and f_td.get("hi") is not None:
+            dd = wx["hi"] - round(f_td["hi"])
+            cmp_ = ("about the same as today" if abs(dd) <= 1 else f"{abs(dd)}&deg; {'cooler' if dd < 0 else 'warmer'} than today")
+        answer = (f'<div class="kp"><table class="kt kans"><tr><td class="khi"><p class="klb">High</p><span class="khero">{wx["hi"]}&deg;</span></td>'
+                  f'<td><p class="klb">Low</p><span class="khero2">{wx["lo"]}&deg;</span>' + (f'<p class="knote">{cmp_}</p>' if cmp_ else "") + '</td></tr></table>'
+                  f'<p class="klede2 khr">{E(smart(wx["lead"]))}</p></div>')
+        hours = {h["t"]: h for dd, h in evening._dated_hours(d, local) if dd == tmr}
+        cols = [hours[t] for t in ("07:00", "10:00", "13:00", "16:00", "19:00") if t in hours and hours[t].get("temp") is not None]
+        hourly = ""
+        if len(cols) >= 2:
+            def skyw(c):
+                return "" if c is None else "clear" if c < 40 else "some sun" if c < 85 else "cloudy"
+            def rainc(h):
+                r = h.get("rain_pct")
+                return "" if r is None else (f"<b>{round(r)}%</b>" if r >= 50 else f"{round(r)}%")
+            hourly = ('<div class="kp"><p class="klb">Hour by hour</p><table class="kt khours">'
+                      '<tr><th></th>' + "".join(f'<th class="kc">{evening.hhmm(h["t"])}</th>' for h in cols) + '</tr>'
+                      '<tr class="ktemp"><th>Temp</th>' + "".join(f'<td>{round(h["temp"])}&deg;</td>' for h in cols) + '</tr>'
+                      + ('<tr><th>Rain</th>' + "".join(f'<td>{rainc(h)}</td>' for h in cols) + '</tr>' if any(h.get("rain_pct") is not None for h in cols) else "")
+                      + ('<tr class="ksk kdrop2"><th>Sky</th>' + "".join(f'<td>{skyw(h.get("cloud"))}</td>' for h in cols) + '</tr>' if any(h.get("cloud") is not None for h in cols) else "")
+                      + '</table></div>')
+        rows = []
+        if wx.get("rain_pct") is not None:
+            rain = f'{round(wx["rain_pct"])}% chance'
+            if wx["amount"] or wx["timing"]:
+                rain += ". " + " ".join(E(smart(x)) for x in (wx["amount"], wx["timing"]) if x)
+            elif (wx.get("rain_in") or 0) < 0.01:
+                rain += ", none expected"
+            rows.append(("Rain", rain))
+        if f_tm and f_tm.get("wind") is not None:
+            wind = f'{round(f_tm["wind"])} mph' + (f', gusts to {round(f_tm["gust"])}' if f_tm.get("gust") else "")
+            rows.append(("Wind", wind + (". " + E(smart(wx["wind"].split(" Frost")[0])) if wx["wind"] and not wx["wind"].startswith("Frost") else "")))
+        wear = ("Heavy coat; scrape the windshield" if wx["lo"] <= 33 else "Warm coat" if wx["hi"] < 50 else "Jacket or fleece" if wx["hi"] < 62
+                else "A light layer" if wx["hi"] < 72 else "Short sleeves")
+        rows.append(("Wear", wear + (", and a hood" if (wx.get("rain_pct") or 0) >= 40 else "")))
+        if wx.get("frost"):
+            rows.append(("Frost", E(smart(wx["frost"]))))
+        rows += sun_rows()
+        if f_tm and (f_tm.get("uv") or 0) >= 3:
+            rows.append(("UV", f'{f_tm["uv"]:.0f}', "kdrop1"))
+        body = (alert + answer + hourly + '<div class="kp">' + table(rows)
+                + f'<p class="klede khr">{E(smart(wx["plan"]))}</p></div>')
     else:
-        body = (f'<div class="khv">{_vig_weather("cloud")}</div>'
-                '<h2 class="khed">Tomorrow&rsquo;s forecast didn&rsquo;t come through tonight</h2>'
-                '<p>It will be in your Morning Edition.</p>')
-    pages.append({"file": "tomorrow.html", "title": "Tomorrow’s weather", "part": "Tomorrow",
+        rows = sun_rows()
+        mp = moon_phase(night)
+        if mp:
+            rows.append(("Moon", f"{E(mp[2])}, {mp[0]}% lit"))
+        body = (f'<div class="kp"><p class="klb">Tomorrow &middot; {tmr_short}</p>'
+                '<p class="klede2">The forecast didn&rsquo;t come through tonight. It will be in your Morning Edition.</p></div>'
+                + (f'<div class="kp">{table(rows)}</div>' if rows else ""))
+    pages.append({"file": "tomorrow.html", "title": "Tomorrow’s weather", "part": "Tomorrow", "nav": "Tomorrow",
                   "kick": f"Tomorrow &middot; {tmr:%A, %B} {tmr.day}", "body": body})
 
-    # Tonight's sky: the moon at its phase, and a chart of where to look
-    lat, lon = (d.get("outside") or {}).get("lat") or 45.7, (d.get("outside") or {}).get("lon") or -122.8
+    # Tonight's sky: the verdict first (and the rare event), then where to look as a table, then the chart
+    lat, lon = o.get("lat") or 45.7, o.get("lon") or -122.8
     try:
         mo = evening.moon(night, lat, lon)
         pl = [p for p in evening.planets(night, lat, lon) if p["mag"] <= 1.5][:3]
@@ -1951,106 +2107,138 @@ def main(dash_path, ev_path, site):
     phase = moon_phase(night)
     if mo and phase:
         phase = (mo["lit"], mo["name"].startswith(("Waxing", "First")), mo["name"])
-    moon_line = next((v for k, v in sky["items"] if k == "Moon"), None)
-    others = [(k, v) for k, v in sky["items"] if k != "Moon"]
-    moon_block = ""
     clouded = sky["clouds"] == "Clouded out"
+    try:
+        dark = evening.dusk(night, lat, lon)[1]
+        sky_lab = f"Tonight &middot; dark by {evening.clock(dark.timetz())}"
+    except Exception:  # noqa: BLE001
+        sky_lab = "Tonight"
+    # the rare event leads when there is one
+    rare = None
+    if sky["choice"]:
+        for e in o.get("sky_events") or []:
+            if e.get("kind") == "meteors" and e.get("title"):
+                try:
+                    peak = evening._parse_utc(e["utc"]).astimezone(TZ)
+                    if (peak - dt.timedelta(hours=12)).date() == night:
+                        nm = e["title"].replace(" meteor shower peak", "")
+                        rare = f"{nm[:-1] if nm.endswith('s') else nm} meteors peak tonight"
+                except Exception:  # noqa: BLE001
+                    pass
+        if not rare and "northern lights" in sky["choice"]:
+            rare = "A chance of northern lights tonight"
+    sky_head = smart(rare or sky["headline"] or "A quiet sky tonight")
+    lede = {"Clear and steady": "Clear and steady.", "Clear but twinkly": "Clear, but twinkly.", "Some gaps": "Some clear gaps.",
+            "Clear": "Clear skies."}.get(sky["clouds"] or "")
+    if clouded:
+        lede = "Nothing to see from the island. " + (sky["later"] or "")
+    elif sky["clouds"] is None:
+        lede = "Cloud forecast unavailable; look out the window."
+    elif lede is None:
+        lede = E(sky["clouds"]) + "."
+    if rare and sky["headline"] and not clouded:
+        lede = f'{lede} {E(smart(sky["headline"]))}.'
+    verdict = (f'<div class="kp"><p class="klb">{sky_lab}</p><h2>{E(sky_head)}</h2><p class="klede">{E(smart(lede.strip()))}</p></div>')
+    moon_row = ""
     if phase:
         lit, waxing, name = phase
-        note = moon_line or ("No moon tonight: the darkest sky of the month." if lit < 3 else "Below the horizon this evening.")
-        moon_block = (f'<div class="kmoon">{_moon_plate(lit, waxing)}'
-                      f'<div><b>The moon</b><p class="kmname">{E(name)}, {lit}% lit</p><p>{E(smart(note))}</p></div>'
-                      f'<span class="kmoonm">{_muse("sky", 1, 84)}</span></div>')
-    # The chart takes the room the words leave, between 150 and 222 px tall.
-    used = (22 + _tall(sky["headline"], 36, 34) + 13 + (_tall(sky["later"], 60, 26) + 13 if clouded and sky["later"] else 0)
-            + (126 if moon_block else 0) + 34
-            + (sum(16 + _tall(v, 66, 21) + 13 for _, v in others) + 13 if others and not clouded else 0)
-            + (_tall(sky["choice"], 60, 26) + 39 if sky["choice"] else 0))
-    chart_h = max(150, min(222, SCREEN - used - 52))
-    sky_tail = SCREEN - used - chart_h >= 52
-    chart = (f'<div class="kchart">{sky_chart(pl, mo, phase, night, h=chart_h)}<p class="kcap">'
-             + ("Where they are tonight, above the clouds." if clouded else "Where to look at about 9 pm.") + "</p></div>")
-    items = "".join(f"<li><b>{E(k)}</b>{E(smart(v))}</li>" for k, v in others)
-    body = (f'<h2 class="khed">{E(smart(sky["headline"] or "A quiet sky tonight"))}</h2>'
-            + (f'<p class="klater">{E(smart(sky["later"]))}</p>' if clouded and sky["later"] else "")
-            + moon_block + chart
-            + (f'<ul class="ksky">{items}</ul>' if items and not clouded else "")
-            + (f'<p class="kchoice">{E(smart(sky["choice"]))}</p>' if sky["choice"] else ""))
-    pages.append({"file": "sky.html", "title": "Tonight’s sky", "part": "Tonight’s sky", "notail": not sky_tail,
-                  "kick": f"Tonight&rsquo;s sky &middot; {weekday}", "body": body})
+        mv = "New moon: the darkest sky of the month" if lit < 3 else f"{E(name)} &middot; {lit}% lit" + ("" if mo else ", not up this evening")
+        moon_row = f'<div class="kp">{table([("Moon", mv)])}</div>'
+    if clouded:
+        nrows = []
+        for n in (o.get("nights") or []):
+            try:
+                nd = dt.date.fromisoformat(n["night"])
+            except Exception:  # noqa: BLE001
+                continue
+            if nd > night and n.get("verdict") and len(nrows) < 4:
+                nrows.append((f"{nd:%a}", E(n["verdict"])))
+        behind = "; ".join([f"{p['name']} is in the {p['dir']}" for p in pl[:2]] + (["the moon is up"] if mo else []))
+        hid = ([("Moon", mv)] if phase else []) + ([("Hidden", E(behind[0].upper() + behind[1:]) + ".")] if behind else [])
+        body = (verdict + (f'<div class="kp"><p class="klb">The next nights</p>{table(nrows)}</div>' if nrows else "")
+                + (f'<div class="kp"><p class="klb">Behind the cloud</p>{table(hid)}</div>' if hid else ""))
+    else:
+        look = []   # (sort key, when, what, where, until)
+        if mo:
+            look.append((mo["hour"] * 60, evening.clock(dt.time(mo["hour"])), "Moon",
+                         f'{evening.height(mo["alt"]).capitalize()} in the {mo["dir"]}, {evening._lit_words(mo["lit"])}',
+                         evening._when_sets(mo["sets"], night)))
+        for p in pl:
+            look.append((p["look"].hour * 60 + p["look"].minute + (0 if p["look"].hour >= 12 else 1440), evening.clock(p["look"].timetz()), p["name"],
+                         f'{evening.height(p["alt"]).capitalize()} in the {p["dir"]}, {evening.LOOKS.get(p["name"], "")}'.rstrip(", "),
+                         evening._when_sets(p["sets"], night)))
+        look.sort(key=lambda r: r[0])
+        for k, v in sky["items"]:
+            if k == "Space station":
+                when, _, rest = v.partition(", ")
+                look.append((0, when, k, rest.split(". ")[0].rstrip(".").capitalize(), ""))
+            elif k == "Meteors":
+                look.append((0, "", k, v.rstrip("."), ""))
+        look = look[:5]
+        looks = ""
+        if look:
+            looks = ('<div class="kp"><table class="kt klook"><tr><th class="kw1">When</th><th class="kw2">What</th><th>Where</th><th class="kw4">Until</th></tr>'
+                     + "".join(f"<tr><td>{E(w_)}</td><td><b>{E(n_)}</b></td><td>{E(smart(wh))}</td><td>{E(u)}</td></tr>" for _, w_, n_, wh, u in look)
+                     + "</table></div>")
+        chart = ""
+        if mo or pl:
+            chart = (f'<div class="koptw"><div class="kchart kopt">{sky_chart(pl, mo, phase, night)}<p class="kcap">Facing south. Positions at 9 pm unless marked.</p></div></div>')
+        body = (verdict + (f'<div class="kp"><p class="klede">{E(smart(sky["choice"]))}</p></div>' if sky["choice"] else "")
+                + looks + ("" if mo else moon_row) + chart)
+    pages.append({"file": "sky.html", "title": "Tonight’s sky", "part": "Tonight’s sky", "notail": True, "nav": "Tonight’s sky",
+                  "kick": f"Tonight &middot; {datef}", "body": body})
 
     if poem:
         pages.append({"file": "poem.html", "title": f"A poem: {poem['title']}", "part": "Before bed", "kick": "", "band": "Before Bed &middot; A Poem",
-                      "body": poem_html(poem), "notail": True})
-    pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True,
-                  "body": f'<div class="kframe">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["rosettes"].values())}'
-                          f'<div class="kend"><div class="kflank kgnrow"><div class="kgcol">{_muse("goodnight", 0, 62)}{_muse("goodnight", 1, 62)}</div>'
-                          f'{_vig_goodnight(*phase[:2]) if phase else ORNAMENTS["goodnight"]}'
-                          f'<div class="kgcol">{_muse("goodnight", 2, 62)}{_muse("goodnight", 3, 62)}</div></div><p class="kkick">The Evening Edition</p>'
+                      "body": poem_html(poem), "notail": True, "nav": "Poem"})
+    recap = ""
+    if wx:
+        recap = (f'<p class="krecap">Tomorrow: high {wx["hi"]}&deg;' + (f'. Sunrise {wx["sunrise"]}' if wx.get("sunrise") else "") + '.</p>')
+    pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True, "band": datef, "nav": "Goodnight",
+                  "body": '<div class="kframe"><div class="kend kendtxt"><p class="kkick">The Evening Edition</p>'
                           '<h2 class="kfname">That&rsquo;s the day.</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
-                          f'{ORNAMENTS["divider"]}<p class="kquiet">Think of one good thing from today, then let it go.</p>'
-                          f'{ORNAMENTS["tail"]}</div>' + (_svg(12, 12, _egg("A", night.toordinal(), 12), "kegg") if engraving_medallions else "")
-                          + '</div>'})
+                          f'<p class="kquiet">Think of one good thing from today, then let it go.</p>{recap}</div></div>'})
 
     for pg in pages:
         st = pg.get("story")
         if st:
             nx = st.get("next")
             nx = nx.strip() if isinstance(nx, str) else ""
-            nxt = f'<div class="kbox">{ORNAMENTS["box"]}<p class="knextstep"><b>Next</b>{E(nx)}</p></div>' if nx else ""
+            if nx.rstrip(".").lower() == "no date is set yet":
+                nx = ""
+            nxt = f'<p class="klb">Next</p><p class="klede">{E(nx)}</p>' if nx else ""
             paras = [E(p) for p in st["paras"]]
             if paras:
-                drop = "kdrop kdrop3" if len(st["paras"][0]) > 240 else "kdrop"
-                paras[0] = f'<p class="{drop}">{paras[0]}</p>'
+                first = st["paras"][0]
+                if first[:1].isalpha():
+                    paras[0] = f'<p class="kdrp"><span class="kini">{E(first[:1])}</span>{E(first[1:])}</p>'
+                else:
+                    paras[0] = f'<p>{paras[0]}</p>'
                 paras[1:] = [f"<p>{x}</p>" for x in paras[1:]]
-            words = (_tall(st["headline"], 32, 34) + 13 + sum(_tall(x, 63, 26) + 13 for x in st["paras"])
-                     + 30 * (len(paras) > 1) + (_tall(nx, 60, 26) + 66 if nx else 0) + 50 + 70
-                     + (26 if pg.get("over") else 0))
-            # Ornament gives way to words in order: first the tailpiece, then the head vignette (52 px).
-            limit = SCREEN + 44  # the fit ladder's tighter leading takes up ~40 px
-            if words + (52 if pg.get("head") else 0) + 46 > limit:
-                pg["notail"] = True
-            if pg.get("head") and words + 52 > limit:
-                pg["head"] = ""
-            if pg.get("head"):
-                pg["head"] = _head_plate(pg["file"], night) or pg["head"]
-            pg["body"] = (_drop_style(night, pg["file"], (st["paras"][0][:1] if st.get("paras") else "")) + (f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
-                          + f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">'
-                          + ORNAMENTS["asterism"].join(paras) + "</div>" + nxt
-                          + f'<div class="kbox ksrc">{ORNAMENTS["box"]}<p class="ksources">{outlets_line(st)}</p>'
+            pg["body"] = (f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">' + "".join(paras) + "</div>"
+                          + f'<div class="kp">{nxt}<p class="ksources{" khr" if nxt else ""}">{outlets_line(st)}</p>'
                           + (over if pg.get("over") else "") + '</div>')
         if pg.get("over") and not st:
             pg["body"] += over
-        band = pg.get("band") or pg["kick"]
-        framed = pg.get("close") or 'kplate kframe' in pg["body"] or 'klong' in pg["body"]
-        if band and not framed and 'klong' not in pg["body"]:
-            pg["body"] = _head_band(band) + pg["body"]
-        elif pg["kick"]:
-            pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
-        if not pg.get("notail"):
-            pg["body"] += ORNAMENTS["tail"]
-        if pg["file"] == "poem.html" and ORNAMENTS["listening"] in pg["body"]:
-            # the poem's head: tonight's moon over the river, an open-edged frieze, not the record-player vignette
-            pg["body"] = pg["body"].replace(ORNAMENTS["listening"], _head_plate("poem.html", night) or ORNAMENTS["listening"], 1)
+        band = pg.get("band") or pg["kick"] or (E(pg["part"]) if pg["part"] else "Goodnight")
         salt = pg["file"].split(".")[0].replace("-", "")
-        fill = _filler(night, salt,
-                       budget=PAGE_BYTES - 56000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
-                       moon=(phase[0] / 100 if phase and pg["file"] in ("tomorrow.html", "sky.html") else None))
-        _NREF[salt] = (len(re.findall(rf'id="kmd{salt}\d+"', fill)) or 4, len(re.findall(rf'id="kvg{salt}\d+"', fill)) or 2)
-        pg["body"] = _dress(pg["body"], salt)
-        if not framed:
-            pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
-        elif ('kplate kframe' in pg["body"] or pg.get("close")) and pg["body"].endswith("</div>"):
+        top = _top(band, salt, night)
+        fill = _filler(night, salt, budget=PAGE_BYTES - 30000 - len(top) - len(pg["body"]),
+                       moon=(_cycle(phase) if phase else None))
+        if pg.get("close") and pg["body"].endswith("</div>"):
             pg["body"] = pg["body"][:-6] + fill + "</div>"
-        pg["body"] = ORNAMENTS["defs"] + pg["body"] + FILL_JS
+        else:
+            pg["body"] = f'<div class="kframe klite">{pg["body"]}{fill}</div>'
+        pg["body"] = (ORNAMENTS["defs"] if "ke-" in pg["body"] else "") + pg["body"] + FILL_JS
+        pg["top"] = top
 
     # ---- chrome shared with the Morning Edition
     total = len(pages)
     files = [pg["file"] for pg in pages]
     _TITLES.clear()
-    _TITLES.update({pg["file"]: pg["title"] for pg in pages})
-    _TITLES["index.html"] = "The front"
+    _TITLES.update({pg["file"]: pg.get("nav") or pg["title"] for pg in pages})   # short fixed labels: they never truncate
+    _TITLES["index.html"] = "Front"
     edition = local.strftime("%-I:%M %p").lower().replace(":00 ", " ")
     gen = d.get("generated_at")
     stamp = E(f"Edition of {edition}")
@@ -2080,13 +2268,12 @@ def main(dash_path, ev_path, site):
     for n, pg in enumerate(pages):
         prev = files[n - 1] if n else "index.html"
         nxt = files[n + 1] if n + 1 < total else None
-        label = None
-        if nxt == "tomorrow.html":
-            label = "Next: Tomorrow’s weather"
+        label = _TITLES.get(nxt) if nxt else None
         doc = page(pg["title"], pg["body"], "kev", "kcard" if not pg.get("close") else "ksecfront kendpage",
                    prev=prev, nxt=nxt, stamp=stamp, run_left=pg.get("run") or (E(pg["part"]) if pg["part"] else "Goodnight"),
-                   run_right=f"{n + 1} of {total}", fonts=font_links, next_label=label, run_href="index.html",
+                   run_right=f"Page {n + 2} of {total + 1}", fonts=font_links, next_label=label, run_href="index.html",
                    jump=navigator(pg["file"]))
+        doc = doc.replace("</nav>", "</nav>" + pg.get("top", ""), 1)  # the title plaque sits in the frame's top band, above the paged view
         if pg.get("close"):
             # The running head names the page; it isn't a link back.
             doc = doc.replace('<nav class="krun"><a href="index.html">Goodnight</a>', '<nav class="krun"><span class="krunh">Goodnight</span>', 1)
@@ -2097,45 +2284,67 @@ def main(dash_path, ev_path, site):
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(_snap_strokes(doc))
 
-    # ---- the cover: a framed nameplate, the scrollwork centrepiece, tomorrow, the day's stories
-    leads = "".join(f'<a href="{pg["file"]}"><i>{ROMAN[k]}</i><b>{E(pg["title"])}</b></a>'
-                    for k, pg in enumerate(p for p in pages if p.get("story") and p["part"] == "The day"))
-    rest = [x for x, f in (("Portland", "local.html"), ("tomorrow&rsquo;s weather", "tomorrow.html"),
-                           ("tonight&rsquo;s sky", "sky.html"), ("a poem", "poem.html")) if f in files]
-    rest_txt = (("Then " + (rest[0] if len(rest) == 1 else ", ".join(rest[:-1]) + " and " + rest[-1]) + ". ") if rest else "")
-    words = sum(len(re.sub(r"<svg\b.*?</svg>|<[^>]+>|&\w+;", " ", pg["body"], flags=re.S).split()) for pg in pages)
+    # ---- the cover: nameplate, arms, then three labelled panels: tomorrow, the day, tonight
+    words = sum(len(re.sub(r"<svg\b.*?</svg>|<script\b.*?</script>|<[^>]+>|&\w+;", " ", pg["body"], flags=re.S).split()) for pg in pages)
     minutes = math.ceil(words / 200) + 1
-    made = next((x.get("produced") for x in d.get("days") or [] if x.get("date") == night.isoformat()), None)
-    micro = " &#183; ".join(["45.70&#176; N &#183; 122.80&#176; W &#183; SAUVIE ISLAND"]
-                            + ([f"TODAY THE ROOF MADE {made:.1f} kWh"] if isinstance(made, (int, float)) else [])
-                            + [f"EDITION No. {night.timetuple().tm_yday}"])
-    gl = ""
+    day_pages = [pg for pg in pages if pg.get("story")]
+    lead_lines = sum(min(2, math.ceil(len(pg["title"]) / 46)) for pg in day_pages)
+    # tomorrow: the labelled high leads, the low under it, the verdict beside
     if wx:
-        gl = (f'<div class="kgl"><div class="kdeg"><span class="ktmr">Tomorrow</span>{wx["hi"]}&deg;<small>high {wx["hi"]}&deg; &middot; low {wx["lo"]}&deg;</small></div>'
-              f'<p class="kwx">{E(smart(wx["lead"]))}</p></div>')
-    lead_lines = sum(min(2, math.ceil(len(pg["title"]) / 52)) for pg in pages if pg.get("story") and pg["part"] == "The day")
-    tight = " ktight" if lead_lines + (math.ceil(len(wx["lead"]) / 36) if wx else 0) > 7 else ""
-    flank = _svg(46, 16, _date_flank())
-    flank_r = _svg(46, 16, f'<g transform="translate(46,0) scale(-1,1)">{_date_flank().replace("kdf", "kdg")}</g>')
-    sides = (_medallion(_subj_dog(), "kmd", 32, .7).replace('class="korn kmed"', 'class="korn kmed kmed-l"')
-             + _medallion(_subj_lotus(), "kml", 32, .7).replace('class="korn kmed"', 'class="korn kmed kmed-r"'))
-    body = (ORNAMENTS["defs"] + f'<div class="kframe kcover{tight}">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["rosettes"].values())}'
-            f'<div class="kmast">{_cartouche("PRIVATE EDITION &#183; SAUVIE ISLAND", FRAME_W)}'
-            f'<p class="kname">The Evening Edition</p>{_kanok_band(FRAME_W)}'
-            f'<p class="kdate">{flank}<span>{night:%A, %B} {night.day} &middot; {E(edition)} edition</span>{flank_r}</p></div>'
-            + _night_plate(FRAME_W, night, mo, phase, pl, micro) + gl
-            + (f'<p class="klab">The day</p><div class="kleads">{leads}</div>' if leads else
-               '<p class="klab">The day</p><p class="knonews">Tonight&rsquo;s news didn&rsquo;t come through; '
-               'the day&rsquo;s stories will be in your Morning Edition.</p>')
-            + _night_ribbon(FRAME_W, night, " &#183; ".join(
-                [f"{p['name']} in the {p['dir']}" for p in pl[:2]]
-                + ([f"the moon {phase[0]}% lit"] if phase else [])
-                + ([f"&#8220;{E(poem['title'])}&#8221;"] if poem else [])))
-            + f'<p class="kevrest">{rest_txt if leads else rest_txt.replace("Then ", "Inside: ", 1)}About {minutes} minutes.</p>'
-            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=100000)}</div>' + FILL_JS)
+        tm = ('<div class="kp">'
+              + (f'<p class="kalert kal2"><span class="klb">Alert</span> {E(smart(wx["alerts"][0]))}</p>' if wx["alerts"] else "")
+              + f'<table class="kt kcv"><tr><td class="khi"><p class="klb">High</p><span class="khero3">{wx["hi"]}&deg;</span>'
+              f'<p class="klow">Low {wx["lo"]}&deg;</p></td><td class="kcl"><p class="klb">Tomorrow &middot; {tmr_short}</p>'
+              f'<p class="klede">{E(smart(wx["lead"]))}</p></td></tr></table></div>')
+        est = 119 + (32 if wx["alerts"] else 0) + max(0, math.ceil(len(wx["lead"]) / 34) - 3) * 26
+    else:
+        sr = sun_rows()[:1]
+        tm = (f'<div class="kp"><p class="klb">Tomorrow &middot; {tmr_short}</p>'
+              '<p class="klede">The forecast didn&rsquo;t come through tonight.</p>' + (table(sr, "khr") if sr else "") + '</div>')
+        est = 16 + 26 + 30 + (38 if sr else 0)
+    # one table of what is inside: the stories by number, Portland, the sky, the moon, the poem
+    def lines(t):
+        return math.ceil(len(t) / 43)
+    rows_, k = [], 0
+    for pg in day_pages:
+        if pg["part"] == "The day":
+            k += 1
+        rows_.append(["story", str(k) if pg["part"] == "The day" else "Portland",
+                      f'<a class="khl" href="{pg["file"]}">{E(pg["title"])}</a>', lines(pg["title"])])
+    if not day_pages:
+        rows_.append(["none", "The day", "Tonight&rsquo;s news didn&rsquo;t come through. It will be in your Morning Edition.", 2])
+    rows_.append(["sky", "Sky", f'<a href="sky.html">{E(sky_head)}</a>', lines(sky_head)])
+    if not wx and not day_pages and not clouded and look:
+        _, w_, n_, wh, u = look[0]
+        v = f"<b>{E(n_)}</b>" + (f" at {E(w_)}" if w_ else "") + f": {E(smart(wh[0].lower() + wh[1:]))}"
+        rows_.append(["look", "Look", v, lines(re.sub(r"<[^>]+>", "", v))])
+    if phase:
+        rows_.append(["moon", "Moon", mv, lines(re.sub(r"&\w+;", "-", mv))])
+    if poem:
+        v = E(smart(poem["title"])) + (f', {E(poem["poet"])}' if poem.get("poet") else "")
+        rows_.append(["poem", "Poem", f'<a href="poem.html">{v}</a>', lines(v)])
+    # the arms keep at least their smallest plate; rows give way only when the page cannot hold them
+    _DROP = {"moon": "kdrop1", "poem": "kdrop2", "look": "kdrop3"}
+    inside = '<div class="kp">' + table([(r[1], r[2]) + ((_DROP[r[0]],) if r[0] in _DROP else ()) for r in rows_], "kinside") + '</div>'
+    npg = total + 1
+    cm = _cycle(phase) if phase else .5
+    cv = []
+    for ch in (112, 132, 156, 180):
+        try:
+            u = _art(f"arms-cover-{ch}.svg", lambda: _at.arms_panel(_at.PANEL_W, ch, _at._seed("arms"), flank=("river", "bridge"), moon=cm))
+            cv.append(f'<div class="kca" data-h="{ch}" style="height:{ch}px;background:url({u}) 50% 50%/{_at.PANEL_W}px {ch}px no-repeat !important"></div>')
+        except Exception:  # noqa: BLE001
+            pass
+    centre = f'<div class="kcentre" aria-hidden="true">{"".join(cv)}</div>' if cv else ""
+    body = ('<div class="kframe kcover">' + _top("Private Edition &middot; Sauvie Island", "cover", night)
+            + f'<div class="kmast"><p class="kname">The Evening Edition</p>'
+            f'<p class="kdate"><span class="kdl">{night:%A, %B} {night.day}</span><span class="kdr">{E(edition)} &middot; {minutes}-minute read</span></p></div>'
+            + centre + tm + inside
+            + _filler(night, "cover", budget=90000, moon=(_cycle(phase) if phase else None)) + '</div>' + FILL_JS)
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(_snap_strokes(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
-                     run_right="", fonts=font_links, next_label=_TITLES[files[0]])))
+                     run_right=f"Page 1 of {npg}", fonts=font_links,
+                     next_label=("Begin: the day" if day_pages else _TITLES[files[0]]))))
     with open(os.path.join(site, "evening.html"), "w") as f:
         f.write('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=evening/index.html">'
                 '<a href="evening/index.html">Open the Evening Edition</a>')

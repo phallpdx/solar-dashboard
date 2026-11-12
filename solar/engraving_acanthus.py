@@ -164,4 +164,26 @@ def vine_tile(width=24, period=44, seed=0, vertical=True, opaque=False):
 
 
 def data_uri(svg):
-    return 'url("data:image/svg+xml;base64,%s")' % base64.b64encode(svg.encode()).decode()
+    """A CSS url() for an SVG, percent-encoded only where it must be (smaller than base64)."""
+    from urllib.parse import quote
+    return 'url("data:image/svg+xml,%s")' % quote(svg.replace('"', "'"), safe=" =:/,.-'()<>;!*+@?&_~")
+
+
+def ground_tile(seed=0, col=32, period=44):
+    """The engraved ground for a whole page: four running acanthus columns, two cuts each struck
+    upright and mirrored and set at different phases so the repeat is long, leaves white in relief,
+    on a field of fine horizontal cuts (0.5 px at 4 px pitch). Seamless; 4*col wide, 2*period tall."""
+    import re as _re
+    W, P = 4 * col, 2 * period
+    inner = lambda s: _re.sub(r'^<svg[^>]*>', '', s)[:-6]
+    ia, ib = inner(vine_tile(col, period, seed)), inner(vine_tile(col, period, seed + 5))
+    hatch = "".join("M0 %sH%s" % (_f(y + 1.25), W) for y in range(0, P, 4))
+
+    def at(ref, x, dy, mirror=False):
+        m = "matrix(-1 0 0 1 %d %s)" % (x + col, _f(dy)) if mirror else "translate(%d,%s)" % (x, _f(dy))
+        return ('<use href="#%s" xlink:href="#%s" transform="%s"/><use href="#%s" xlink:href="#%s" transform="%s"/>'
+                % (ref, ref, m, ref, ref, m.replace(_f(dy) + ")", _f(dy - P) + ")")))
+    return ('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="0 0 %d %d">'
+            '<defs><g id="a">%s</g><g id="b">%s</g></defs><path d="%s" stroke="#000" stroke-width=".5"/>%s%s%s%s</svg>'
+            % (W, P, W, P, ia, ib, hatch,
+               at("a", 0, 0), at("b", col, P / 4), at("a", 2 * col, P / 2, True), at("b", 3 * col, P * 3 / 4, True)))

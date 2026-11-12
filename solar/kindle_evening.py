@@ -242,10 +242,48 @@ try:
                         "html.kev body:not(.kcontents) #kmain .kframe{background:transparent !important;}\n"
                         "html.kev body:not(.kcontents) #kmain .kframe>svg.kfs,html.kev body:not(.kcontents) #kmain .kframe>svg.kround,"
                         "html.kev body:not(.kcontents) #kmain .kframe>.kround{display:none !important}\n")
-    EVENING_CSS += ("html.kev body.kcontents{background:" + _V + " 0 0/24px 88px repeat-y," + _V + " 100% 0/24px 88px repeat-y,#fff !important}\n"
+    _CV = ""
+    try:
+        _CV = _acan.data_uri(_pb.border(618, 644, 5, inner=(24, 22, 570, 600)))
+    except Exception:  # noqa: BLE001
+        _CV = ""
+    # The whole sheet is engraved ground: running acanthus on a field of fine cuts, one tile for every
+    # page (in kindle.css, cached). Text sits in white panels with a fine ruled edge; the scroll runs round them.
+    try:
+        from . import engraving_ground as _eg
+        _GR = _acan.data_uri(_eg.page_ground(3)) + " 0 0/618px 720px no-repeat"
+    except Exception:  # noqa: BLE001
+        _GR = _acan.data_uri(_acan.ground_tile(3)) + " 0 0/128px 88px repeat"
+    _PAN = "background:#fff !important;box-shadow:0 0 0 4px #fff,0 0 0 4.5px #000 !important"
+    EVENING_CSS += (
+        "html.kev #kmain .kframe,html.kev #kmain .kplate,html.kev #kmain .kend{background:transparent !important}\n"
+        "html.kev #kmain h2,html.kev #kmain .kbody p,html.kev #kmain .kbox,html.kev #kmain .kalm,html.kev #kmain .ksun3,"
+        "html.kev #kmain .kmoon,html.kev #kmain .kchart,html.kev #kmain ul.ksky,html.kev #kmain .klater,html.kev #kmain .kplan,"
+        "html.kev #kmain .kchoice,html.kev #kmain .kwarn,html.kev #kmain .knextstep,html.kev #kmain .kover,html.kev #kmain .poem-text,"
+        "html.kev #kmain .kgl,html.kev #kmain .kleads,html.kev #kmain .klab,html.kev #kmain .kmast .kname,html.kev #kmain .kdate,"
+        "html.kev #kmain .kresume,html.kev #kmain .knonews,"
+        "html.kev body #kmain .kcap.kcap.kcap.kcap,html.kev body #kmain .kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet,html.kev body #kmain .kevrest.kevrest.kevrest.kevrest,html.kev body #kmain .kcolo.kcolo.kcolo.kcolo,"
+        "html.kev body #kmain .kkick.kkick.kkick.kkick,html.kev body #kmain .kfname.kfname.kfname.kfname,html.kev body #kmain .poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by,html.kev #kmain p{" + _PAN + "}\n"
+        "html.kev body #kmain .kbox.kbox.kbox.kbox p,html.kev body #kmain .kmoon.kmoon.kmoon.kmoon p,html.kev body #kmain .kgl.kgl.kgl.kgl p,html.kev body #kmain .kalm.kalm.kalm.kalm p,html.kev body #kmain .kleads.kleads.kleads.kleads p,"
+        "html.kev body #kmain .kbox.kbox.kbox.kbox .kover,html.kev body #kmain .poem-text.poem-text.poem-text.poem-text p,html.kev body #kmain .ksun.ksun.ksun.ksun3 p{box-shadow:none !important}\n"
+        "html.kev body #kmain .kcap.kcap.kcap.kcap,html.kev body #kmain .kfsub.kfsub.kfsub.kfsub,html.kev body #kmain .kquiet.kquiet.kquiet.kquiet,html.kev body #kmain .kevrest.kevrest.kevrest.kevrest,html.kev body #kmain .kcolo.kcolo.kcolo.kcolo,"
+        "html.kev body #kmain .kkick.kkick.kkick.kkick,html.kev body #kmain .kfname.kfname.kfname.kfname,html.kev body #kmain .poem-title.poem-title.poem-title.poem-title,html.kev body #kmain .poem-by.poem-by.poem-by.poem-by,html.kev body #kmain .knonews.knonews.knonews.knonews,"
+        "html.kev body #kmain .kmast.kmast.kmast.kmast .kname{width:-webkit-fit-content !important;width:fit-content !important;"
+        "margin-left:auto !important;margin-right:auto !important}\n"
+        "html.kev #kmain .poem-text{display:block !important;width:-webkit-fit-content !important;width:fit-content !important;margin-left:auto !important;margin-right:auto !important}\n"
+        # the plates become full rectangular engravings: sky ruling (0.5 px at 2 px) runs to a ruled edge
+        "html.kev #kmain .khv svg.khp.khp,html.kev #kmain svg.kpv.kpv{background:#fff url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='48'%3E%3Cpath d='M0 0.75H4M0 3.75H4M0 6.75H4M0 9.75H4M0 12.75H4M0 15.75H4M0 18.75H4M0 21.75H4M0 24.75H4M0 27.75H4M0 30.75H4M0 33.75H4M0 36.75H4M0 39.75H4M0 42.75H4M0 45.75H4' stroke='%23000' stroke-width='.5'/%3E%3C/svg%3E\") 0 4px/4px 48px repeat-x !important;"
+        "box-shadow:0 0 0 1px #000,0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
+        "html.kev #kmain svg.kplate2,html.kev #kmain svg.kvig{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
+        "html.kev #kmain svg.kast,html.kev #kmain svg.kdiv,html.kev #kmain svg.ktail,html.kev #kmain svg.kegg{background:#fff !important;box-shadow:0 0 0 3px #fff,0 0 0 3.5px #000 !important}\n"
+        "html.kev #kmain .kfill{-webkit-justify-content:flex-end !important;justify-content:flex-end !important}\n")
+    EVENING_CSS += ("html.kev body.kcontents{background:" + (_CV + " 0 0/618px 644px no-repeat" if _CV else _V + " 0 0/24px 88px repeat-y," + _V + " 100% 0/24px 88px repeat-y") + ",#fff !important}\n"
                     # the running head and the foot bar sit on clean paper: the margin scroll stops at them
                     "html.kev body .krun{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 -30px 0 #fff,-26px -30px 0 #fff,26px -30px 0 #fff !important}\n"
                     "html.kev body .kbar{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 40px 0 #fff,-26px 40px 0 #fff,26px 40px 0 #fff !important}\n")
+    EVENING_CSS += ("html:root.kev{background:" + _GR + ",#fff !important}\n"
+                    "html.kev body:not(.kcontents){background:" + (_BK + " 0 44px/618px 618px no-repeat" if _BK else "transparent") + " !important}\n"
+                    "html.kev body.kcontents{background:" + (_CV + " 0 0/618px 644px no-repeat" if _CV else "transparent") + " !important}\n")
 except Exception:  # noqa: BLE001
     pass
 
@@ -800,7 +838,7 @@ def _filler(night, salt, w=528, moon=None, budget=90000):
 # The plate is drawn at a few heights; FILL_JS picks the smallest one that covers the room and crops it
 # from the top (the sky), so the line work is never rescaled.
 _PLATE_FOR = {"index": "river", "cover": "river", "tomorrow": "river", "sky": "bridge", "local": "bridge",
-              "poem": "river", "goodnight": "river"}
+              "poem": "bridge", "goodnight": "river"}
 
 
 def _plate_mod(name):
@@ -885,7 +923,7 @@ def _plate_stack(night, salt, seed, w, moon, budget):
         except Exception:  # noqa: BLE001
             moon = .5
     out, spent = [], 0
-    for H in (80, 110, 150, 210, 300, 420):
+    for H in ((80, 420, 300, 210, 150, 110) if budget > 130000 else (80, 150, 300, 420, 110, 210)):  # a short page leaves a tall room: the big plates first
         try:
             import zlib
             # the jazz frieze only works short; a tall room takes the river
@@ -900,14 +938,15 @@ def _plate_stack(night, salt, seed, w, moon, budget):
         # kindle_full resets transform on every element: carry the plate's transforms as !important styles
         sv = _fix(re.sub(r'patternTransform="([^"]+)"', lambda q: _css_transform(q).replace("transform:", "transform:", 1), sv))
         if spent + len(sv) > budget and out:
-            break
+            continue
         spent += len(sv)
         sv = re.sub(r'<svg ', f'<svg class="kpv" data-h="{H}" aria-hidden="true" preserveAspectRatio="xMidYMax slice" ', sv, 1)
         out.append(sv)
+    out.sort(key=lambda x: int(re.search(r'data-h="(\d+)"', x).group(1)))
     return f'<div class="kplate1">{"".join(out)}</div>' if out else ""
 
 
-_HEAD_FOR = {"day-1": "jazz", "day-2": "river", "day-3": "lotus", "local": "bridge"}
+_HEAD_FOR = {"day-1": "jazz", "day-2": "river", "day-3": "lotus", "local": "bridge", "poem": "river"}
 
 
 def _head_plate(fname, night, h=56):
@@ -1067,19 +1106,30 @@ FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySele
            "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var v=k.querySelectorAll('svg.kpv'),i;k.style.height='0px';"
            "for(i=0;i<v.length;i++)v[i].style.display='none';"
            "var cv=document.body.className.indexOf('kcontents')>=0,free=Math.floor(b.getBoundingClientRect().top-(cv?20:8)-fr.getBoundingClientRect().bottom);"
-           "if(free>0&&!cv)k.style.height=free+'px';if(free>=28&&v.length){var pick=v[v.length-1];for(i=0;i<v.length;i++){if(+v[i].getAttribute('data-h')>=free){pick=v[i];break;}}"
-           "var H=+pick.getAttribute('data-h'),vb=pick.getAttribute('viewBox').split(' '),W=+vb[2],sh=Math.min(free,H);"
+           "if(free>0&&!cv)k.style.height=free+'px';if(free>=28&&v.length){k.style.height=free+'px';var pick=null,le=null;for(i=0;i<v.length;i++){var hh=+v[i].getAttribute('data-h');if(hh<=free)le=v[i];if(hh>=free&&!pick)pick=v[i];}if(!pick||free<+pick.getAttribute('data-h')*.75)pick=(le&&+le.getAttribute('data-h')>=free*.7)?le:(pick&&free>=+pick.getAttribute('data-h')*.75?pick:null);if(!pick&&le)pick=le;"
+           "if(pick){var H=+pick.getAttribute('data-h'),vb=pick.getAttribute('viewBox').split(' '),W=+vb[2],sh=Math.min(free,H);"
            "pick.setAttribute('viewBox','0 '+(H-sh)+' '+W+' '+sh);if(free>H)pick.setAttribute('preserveAspectRatio','xMidYMax meet');pick.setAttribute('width',W);pick.setAttribute('height',sh);"
-           "pick.style.width=Math.min(W,k.clientWidth||W)+'px';pick.style.height=free+'px';pick.style.display='block';}"
+           "pick.style.width=Math.min(W,k.clientWidth||W)+'px';pick.style.height=(free>H?Math.round(H*Math.min(W,k.clientWidth||W)/W):sh)+'px';pick.style.display='block';}}"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
            "window.addEventListener('load',go);})();</script>")
 
 
-def _drop_style(night, salt):
-    """The drop cap set in its own guilloche medallion: an engine-turned ring seeded by the night and
-    the story, the letter on a white boss. A per-page background for p.kdrop:first-letter."""
+def _drop_style(night, salt, letter=""):
+    """The drop cap: a historiated initial (the letter on a little engraved river scene, moon and firs)
+    from the book engraver, or else set in a guilloche medallion. A per-page p.kdrop:first-letter background."""
     from urllib.parse import quote
+    if letter.isalpha():
+        try:
+            from . import plate_book
+            import base64
+            sd = (night.toordinal() + sum(map(ord, salt))) % 50 * 4  # seed % 4 == 0: the river ground
+            svg = plate_book.initial(letter.upper(), 84, sd)
+            url = "data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode()
+            return ('<style>#kmain .kbody p.kdrop:first-letter{background:#fff url("' + url
+                    + '") center/100% 100% no-repeat !important;color:transparent !important;border-color:transparent !important;text-shadow:none !important}</style>')
+        except Exception:  # noqa: BLE001
+            pass
     rng = engraving.rng_for(night, "drop" + salt)
     g = (engraving.ring(rng, "a", 37, 62) + '<circle r="37" fill="#fff" stroke="#000" stroke-width=".9"/>'
          '<circle r="39.2" fill="none" stroke="#000" stroke-width=".5"/>')
@@ -1676,7 +1726,7 @@ def _moon_plate(lit, waxing, size=120):
     return _svg(size, size, ring + _moon_shape(c, c, r, lit, waxing, "kbm", maria=True, dark="url(#ke-n)"))
 
 
-PAGE_BYTES = 228000  # each page stays under ~240 KB (gzips ~4.5x)
+PAGE_BYTES = 236000  # each page stays under ~240 KB (gzips ~4.5x)
 SCREEN = 596  # usable height of a text page, px (618 x 714 less the running head and the bar)
 
 
@@ -1961,7 +2011,7 @@ def main(dash_path, ev_path, site):
                 pg["head"] = ""
             if pg.get("head"):
                 pg["head"] = _head_plate(pg["file"], night) or pg["head"]
-            pg["body"] = (_drop_style(night, pg["file"]) + (f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
+            pg["body"] = (_drop_style(night, pg["file"], (st["paras"][0][:1] if st.get("paras") else "")) + (f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
                           + f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">'
                           + ORNAMENTS["asterism"].join(paras) + "</div>" + nxt
                           + f'<div class="kbox ksrc">{ORNAMENTS["box"]}<p class="ksources">{outlets_line(st)}</p>'
@@ -1976,6 +2026,9 @@ def main(dash_path, ev_path, site):
             pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
+        if pg["file"] == "poem.html" and ORNAMENTS["listening"] in pg["body"]:
+            # the poem's head: tonight's moon over the river, an open-edged frieze, not the record-player vignette
+            pg["body"] = pg["body"].replace(ORNAMENTS["listening"], _head_plate("poem.html", night) or ORNAMENTS["listening"], 1)
         salt = pg["file"].split(".")[0].replace("-", "")
         fill = _filler(night, salt,
                        budget=PAGE_BYTES - 56000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
@@ -2075,7 +2128,7 @@ def main(dash_path, ev_path, site):
                 + ([f"the moon {phase[0]}% lit"] if phase else [])
                 + ([f"&#8220;{E(poem['title'])}&#8221;"] if poem else [])))
             + f'<p class="kevrest">{rest_txt if leads else rest_txt.replace("Then ", "Inside: ", 1)}About {minutes} minutes.</p>'
-            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=55000)}</div>' + FILL_JS)
+            f'<p class="kcolo">Edition No. {night.timetuple().tm_yday} &middot; one copy printed</p>{_filler(night, "cover", FRAME_W, budget=100000)}</div>' + FILL_JS)
     with open(os.path.join(out, "index.html"), "w") as f:
         f.write(_snap_strokes(page("The Evening Edition", body, "kev", "kcontents", nxt=files[0], stamp=stamp, run_left="",
                      run_right="", fonts=font_links, next_label=_TITLES[files[0]])))

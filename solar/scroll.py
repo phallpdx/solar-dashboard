@@ -41,6 +41,18 @@ def _f(x):
 def _pts(pts):
     """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
     q = [(round(x * 10), round(y * 10)) for x, y in pts]
+    if len(q) > 3:  # drop points that lie within 0.06 px of the chord through their neighbours
+        keep = [q[0]]
+        for i in range(1, len(q) - 1):
+            (ax, ay), (bx, by), (cx, cy) = keep[-1], q[i], q[i + 1]
+            dx, dy = cx - ax, cy - ay
+            d2 = dx * dx + dy * dy
+            if d2 and abs((bx - ax) * dy - (by - ay) * dx) / math.sqrt(d2) < 0.6 and \
+                    (bx - ax) * dx + (by - ay) * dy > 0 and (cx - bx) * dx + (cy - by) * dy > 0:
+                continue
+            keep.append(q[i])
+        keep.append(q[-1])
+        q = keep
     out = [_j(q[0][0] / 10, q[0][1] / 10)]
     rel = []
     px, py = q[0]
@@ -375,12 +387,9 @@ def leaf(cv, spine, width, lobes=3, shade=1, rng=None, cuts=1.0, step=0.9, side=
 
 def bud(cv, x, y, r):
     if r <= 0.8:
-        cv.line("S15", [(x, y), (x + 0.01, y)])
+        cv.line("S1", [(x, y), (x + 0.01, y)])
         return
     cv.circle("W", x, y, r)
-    cv.circle("C05", x, y, r)
-    if r > 1.1:
-        cv.circle("K", x + r * 0.25, y + r * 0.25, r * 0.38)
 
 
 class Occ:
@@ -636,10 +645,10 @@ def inner_leaf(cv, sc, wmax, rng, fs=0.03, fe=None):
 def draw_scroll(cv, sc, rng, wmax=1.5, R=None):
     """A scroll: backbone, the acanthus leaf rolled into it, the bud at its eye."""
     backbone(cv, sc.pts(), w0=wmax, w1=0.5)
-    if sc.r >= 2.4:
-        inner_leaf(cv, sc, wmax, rng)
     e = sc.point(sc.turns)
     bud(cv, e[0], e[1], max(0.6, sc.r * 0.12))
+    if sc.r >= 2.4:
+        inner_leaf(cv, sc, wmax, rng)
 
 
 class Run:
@@ -675,7 +684,7 @@ class Run:
         return (x + nx * v, y + ny * v)
 
 
-def _ground_in_run(cv, run, u0, u1, v0, v1, rng, density=1.1):
+def _ground_in_run(cv, run, u0, u1, v0, v1, rng, density=2.0):
     """Cut-away ground in a run: black, with a fine irregular stipple of 1-device-px pricks."""
     m = Mapped(cv, lambda x, y: run.p(x, y))
     m.poly("K", [(u0, v0), (u1, v0), (u1, v1), (u0, v1)])
@@ -696,6 +705,8 @@ def lane(cv, L, H, rng, start_side=1, wmax=None, rmin=0.44, rmax=0.56, lead=None
     """
     if L < H * 0.8:
         return []
+    if H < 6.5:
+        return vine(cv, L, H, rng, start_side)
     wmax = wmax or (1.5 if H >= 12 else 1.0)
     plan = []
     side = start_side
@@ -716,7 +727,8 @@ def lane(cv, L, H, rng, start_side=1, wmax=None, rmin=0.44, rmax=0.56, lead=None
         if x + r > L - H * 0.05:
             break
         plan.append((x, cy, r, side))
-        side = -side
+        if not (r < H * rmin * 0.9 and rng.random() < 0.5):
+            side = -side  # a small scroll may be followed by another on the same side
     if not plan:
         return []
     slack = L - (plan[-1][0] + plan[-1][2]) - H * 0.05
@@ -819,7 +831,7 @@ def lane(cv, L, H, rng, start_side=1, wmax=None, rmin=0.44, rmax=0.56, lead=None
             if which == "b":
                 off = off[::-1]
             off = [(px, max(-hb + 0.4, min(hb - 0.4, py))) for px, py in off]
-            finger(cv, off, room, shade=sd if which == "a" else -sd, cuts=2, cover=0.62)
+            finger(cv, off, room, shade=sd if which == "a" else -sd, cuts=2, cover=0.3)
     for sc in secondary:
         draw_scroll(cv, sc, rng, wmax=wmax * 0.8, R=sc.r * 1.5)
     for sc in scrolls:
@@ -873,6 +885,47 @@ def _fill_gaps(cv, L, H, rng, scrolls):
             finger(cv, sp, rr * 1.15, shade=1 if bend > 0 else -1, cuts=1, cover=0.4)
 
 
+def vine(cv, L, H, rng, start_side=1):
+    """For lanes too narrow for leafed scroll (under 6.5 px): a running wave scroll cut as one bright
+    1 px line.  The line dips to each side in turn and rolls into a tight curl ending in a bud; curl
+    size and spacing vary, and now and then a curl is skipped for a longer sweep, so it never ticks."""
+    hb = H / 2 - 0.6
+    rr0 = max(0.9, hb * 0.62)
+    x = rr0 + 0.5
+    side = start_side
+    plan = []
+    while x < L - rr0 - 0.3:
+        rr = rr0 * rng.uniform(0.8, 1.05)
+        plan.append((x, side * (hb - rr) * -1, rr, side))
+        x += rr * 2 + rng.uniform(0.9, 1.9) * rr0
+        side = -side
+    scrolls = []
+    for x, cy, rr, side in plan:
+        if side > 0:
+            sc = Scroll(x, cy, rr, -1, math.pi / 2, rng.uniform(1.05, 1.3), 0.3)
+        else:
+            sc = Scroll(x, cy, rr, 1, -math.pi / 2, rng.uniform(1.05, 1.3), 0.3)
+        scrolls.append(sc)
+    prev = None
+    for sc in scrolls:
+        p3, t3 = sc.start(), sc.tangent()
+        if prev is None:
+            p0, t0 = (0.0, p3[1] * 0.2), (1.0, 0.0)
+        else:
+            p0, t0 = prev.start(), prev.tangent()
+        d = math.hypot(p3[0] - p0[0], p3[1] - p0[1]) * 0.45
+        cv.line("S1", _bez(p0, (p0[0] + t0[0] * d, p0[1] + t0[1] * d), (p3[0] - t3[0] * d, p3[1] - t3[1] * d), p3, 10))
+        cv.line("S1", sc.pts())
+        if H >= 4.5:
+            e = sc.point(sc.turns)
+            bud(cv, e[0], e[1], 0.75)
+        prev = sc
+    if prev is not None:
+        p0, t0 = prev.start(), prev.tangent()
+        cv.line("S1", _bez(p0, (p0[0] + t0[0] * 2, p0[1] + t0[1] * 2), (L - 1.0, p0[1] * 0.2), (L, p0[1] * 0.2), 8))
+    return scrolls
+
+
 def _run_map(run, flip=False, u0=0.0):
     def f(x, y):
         u = u0 + x
@@ -899,6 +952,8 @@ def strip(cv, run, seed, u0=0.0, u1=None, flip=False, start_side=1, ground=True,
     and sits beneath them."""
     rng = rng_for("strip", seed)
     density = DENSITY if density is None else density
+    if run.H < 6.5:
+        density *= 1.5  # the wiry vine leaves more ground showing: open the matte up to hold the tone
     u1 = run.L if u1 is None else u1
     H = run.H
     L = u1 - u0
@@ -1015,7 +1070,7 @@ def volute(cv, cx, cy, R, dirn, a0, rng, wmax=1.2, turns=None):
     return sc
 
 
-def _stipple_rect(cv, x0, y0, x1, y1, rng, density=1.1):
+def _stipple_rect(cv, x0, y0, x1, y1, rng, density=2.0):
     n = int(max(0.0, x1 - x0) * max(0.0, y1 - y0) * density)
     for _ in range(n):
         cv.dot(rng.uniform(x0 + 0.3, x1 - 0.3), rng.uniform(y0 + 0.3, y1 - 0.3))
@@ -1026,22 +1081,23 @@ def _rect_d(x0, y0, x1, y1):
 
 
 def corner(cv, x, y, s, quad, seed, rng=None):
-    """Corner piece in the s x s lane square at (x, y): a volute turning the corner, its blade leaf
-    sweeping round, and a bud pointing out along the diagonal.  quad: 'tl', 'tr', 'br', 'bl'."""
+    """Corner piece in the s x s lane square at (x, y): a volute turning the corner, the acanthus rolled
+    into it, and a leaf tip pointing out along the diagonal.  quad: 'tl', 'tr', 'br', 'bl'."""
     rng = rng or rng_for("corner", seed, quad)
     sx = 1 if quad in ("tl", "bl") else -1
     sy = 1 if quad in ("tl", "tr") else -1
     ox = x if sx > 0 else x + s
     oy = y if sy > 0 else y + s
     m = Mapped(cv, lambda a, b: (ox + sx * a, oy + sy * b))
-    # the scroll sits in the square; its stem arrives from the inner side (along +a then +b)
-    if s >= 5:
-        sc = Scroll(s * 0.52, s * 0.52, s * 0.3, 1, math.pi * 0.75, 1.55, 0.16)
-        if s >= 9:
-            finger(m, [(s * 0.46 - s * 0.36 * t, s * 0.46 - s * 0.36 * t + s * 0.08 * math.sin(t * 3)) for t in
-                       [k / 10 for k in range(11)]], s * 0.32, shade=1, cuts=2)
-        draw_scroll(m, sc, rng, wmax=1.2 if s >= 9 else 0.9, R=s * 0.46)
-        bud(m, s * 0.12, s * 0.12, max(0.6, s * 0.07))
+    if s < 4:
+        return
+    # leaf tip toward the outer corner
+    if s >= 7:
+        finger(m, [(s * (0.55 - 0.47 * t), s * (0.55 - 0.47 * t) + s * 0.06 * math.sin(t * 3.0)) for t in
+                   [k / 8 for k in range(9)]], s * 0.36, shade=1, cuts=1, cover=0.35)
+    # the volute: stem enters from the inner side, winds clockwise (in quad-local coords) toward the corner
+    sc = Scroll(s * 0.56, s * 0.56, s * 0.4, 1, math.pi * 0.25, 1.6, 0.2)
+    draw_scroll(m, sc, rng, wmax=1.5 if s >= 10 else 1.0)
 
 
 def _lane_rects(x, y, w, h, ins, o=1.5, i=2.0):
@@ -1055,7 +1111,7 @@ def _lane_rects(x, y, w, h, ins, o=1.5, i=2.0):
 
 
 def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None), corners=True,
-              density=1.1, ends=None, slot=True, open_sides=()):
+              density=None, ends=None, slot=True, open_sides=(), lit=False, raised=False, motif_min=5.0):
     """A fine-scroll band round the rectangle (x, y, w, h), ins = (t, r, b, l) band widths.
 
     Band anatomy, outside in: 0.5 px rule, 1 px bright inlay, the stippled ground with its scroll, 1 px
@@ -1071,8 +1127,13 @@ def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None)
     if slot and hasattr(cv, "slot"):
         cv.slot = (x + l, y + t, w - l - r, h - t - b)
     if ends:
-        _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, ends)
+        _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, ends, lit=lit, motif_min=motif_min)
         return
+    if open_sides and hasattr(cv, "clip"):
+        cy0 = y + (t if "top" in open_sides else 0)
+        cy1 = y + h - (b if "bottom" in open_sides else 0)
+        cv.clip = _rect_d(x, cy0, x + w, cy1)
+        _terminals(cv, x, y, w, h, ins, open_sides, seed)
     # ground and the outer rule as one black frame
     cv.add("K", _rect_d(x, y, x + w, y + h))
     top = getattr(cv, "over", cv.add)
@@ -1100,7 +1161,8 @@ def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None)
         if H < 2.5:
             continue
         run = Run(runs[name](x0, y0, x1, y1), H)
-        _compose_side(cv, run, (seed, name), centre[k] if k < len(centre) else None, k)
+        _compose_side(cv, run, (seed, name), centre[k] if k < len(centre) else None, k, density=density,
+                      motif_min=motif_min)
     # inlay: bright channels and rules
     top("R05", _rect_d(x + 0.25, y + 0.25, x + w - 0.25, y + h - 0.25))
     if o > 1:
@@ -1117,11 +1179,11 @@ def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None)
                 corner(cv, cx0 + (cx1 - cx0 - s) / 2, cy0 + (cy1 - cy0 - s) / 2, s, quad, seed)
 
 
-def _compose_side(cv, run, seed, motif, k, density=None):
+def _compose_side(cv, run, seed, motif, k, density=None, motif_min=5.0):
     rng = rng_for("side", seed)
     density = DENSITY if density is None else density
     L, H = run.L, run.H
-    msz = H * 1.3 if motif and L > 5 * H else 0
+    msz = H * 1.3 if motif and L > motif_min * H else 0
     if not msz:
         strip(cv, run, seed, 0, L, ground="dots", start_side=1 if k % 2 == 0 else -1, density=density)
         return
@@ -1162,13 +1224,26 @@ def _inside(poly, x, y, margin=0.0):
     return c
 
 
-def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
+def _terminals(cv, x, y, w, h, ins, open_sides, seed):
+    """Where a panel runs on past the sheet edge: the side lanes end in small scrolled terminals."""
+    t, r, b, l = ins
+    rng = rng_for("term", seed)
+    for side in open_sides:
+        yy = y + t + 4.5 if side == "top" else y + h - b - 4.5
+        for xx, lw, d in ((x + l / 2, l, 1), (x + w - r / 2, r, -1)):
+            if lw >= 4:
+                rr = lw * 0.42
+                dirn = d if side == "top" else -d
+                volute(cv, xx, yy, rr, dirn, -math.pi / 2 if side == "top" else math.pi / 2, rng, wmax=1.0)
+
+
+def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind, lit=False, motif_min=5.0):
     """Plaque with shaped scrolled ends: top and bottom bands of scroll, and at each end a scrolled
     cartouche end whose outline leaves the rectangle (kind 'scroll': twin volutes meeting in a bud;
     'point': a pointed ogee end with one big volute; 'roll': a rolled ribbon end)."""
     t, r, b, l = ins
     rng = rng_for("ends", seed)
-    o, i = 1.5, 2.0
+    o, i = (1.5 if min(t, b) >= 10 else 0.5), 2.0
     # outline of the whole plaque: straight top/bottom, shaped ends inside the end widths
     def end_outline(left):
         e = l if left else r
@@ -1184,6 +1259,8 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
                 xx = X + sg * e * (0.85 * d ** 1.6)
             elif kind == "roll":
                 xx = X + sg * e * (0.25 + 0.15 * math.cos(q * TAU))
+            elif kind == "tail":
+                xx = X + sg * e * 0.55 * (1 - d) ** 1.2
             else:  # scroll: concave notch between two lobes
                 xx = X + sg * e * (0.05 + 0.55 * (1 - math.sin(math.pi * q) ** 2) * 0 + 0.45 * math.sin(math.pi * d) ** 1.2 * (1 - d * 0.3))
             pts.append((xx, yy))
@@ -1194,8 +1271,10 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
     outline = [(x + l, y), (x + w - r, y)] + Rp + [(x + w - r, y + h), (x + l, y + h)] + Lp[::-1]
     cv.poly("K", outline)
     cv.poly("C05", outline)
+    if hasattr(cv, "clip") and cv.clip is None:
+        cv.clip = "M" + _pts(outline) + "Z"
     # stipple, only inside the outline
-    n = int((l + r) * h * density)
+    n = 0 if lit else int((l + r) * h * density)
     for _ in range(n):
         px = rng.uniform(0, l + r)
         px = x + px if px < l else x + w - (px - l)
@@ -1213,7 +1292,8 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
             pts = [(x + w - r, (y0 + y1) / 2), (x + l, (y0 + y1) / 2)]
         H = y1 - y0
         if H >= 2.5:
-            _compose_side(cv, Run(pts, H), (seed, name), centre[k] if k < len(centre) else None, k)
+            _compose_side(cv, Run(pts, H), (seed, name), centre[k] if k < len(centre) else None, k,
+                          motif_min=motif_min)
     # the ends: volutes
     for left in (True, False):
         e = l if left else r
@@ -1223,6 +1303,11 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
         R = min(h * 0.25, e * 0.42)
         if kind == "point":
             volute(cv, X + sg * e * 0.55, y + h / 2, min(h * 0.3, e * 0.42), sg, math.pi / 2, rng)
+            if lit:
+                bud(cv, X + sg * e * 0.16, y + h / 2, 1.1)
+        elif kind == "tail":
+            for q, d in ((0.3, 1), (0.7, -1)):
+                volute(cv, X + sg * e * 0.62, y + h * q, min(h * 0.24, e * 0.36), -d * sg, (math.pi if left else 0.0), rng)
         elif kind == "roll":
             for q, d in ((0.3, 1), (0.7, -1)):
                 volute(cv, X + sg * e * 0.5, y + h * q, R, d * sg, -math.pi / 2 * d, rng)
@@ -1234,27 +1319,33 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind):
     inl = []
     for px, py in outline:
         inl.append((px, py))
-    cv.add("S1", _rect_d(x + l - 1.5, y + t - 1.5, x + w - r + 1.5, y + h - b + 1.5))
-    cv.add("R1", _rect_d(x + l - 0.5, y + t - 0.5, x + w - r + 0.5, y + h - b + 0.5))
+    top = getattr(cv, "over", cv.add)
+    top("W", _rect_d(x + l, y + t, x + w - r, y + h - b))
+    top("S1", _rect_d(x + l - 1.5, y + t - 1.5, x + w - r + 1.5, y + h - b + 1.5))
+    top("R1", _rect_d(x + l - 0.5, y + t - 0.5, x + w - r + 0.5, y + h - b + 0.5))
+    if lit:
+        top("R05", _rect_d(x + l - 2.75, y + t - 2.75, x + w - r + 2.75, y + h - b + 2.75))
     cv.line("S1", [(x + l * 0.6, y + 1), (x + w - r * 0.6, y + 1)])
     cv.line("S1", [(x + l * 0.6, y + h - 1), (x + w - r * 0.6, y + h - 1)])
 
 
-def ring(cv, cx, cy, rx, ry, band, seed, density=1.1):
+def ring(cv, cx, cy, rx, ry, band, seed, density=2.0):
     """An oval ring of scroll (centreline ellipse rx, ry), for a cartouche round a scene."""
     n = 240
     pts = [(cx + rx * math.cos(-math.pi / 2 + TAU * i / n), cy + ry * math.sin(-math.pi / 2 + TAU * i / n)) for i in range(n + 1)]
     run = Run(pts, band)
     rng = rng_for("ring", seed)
-    _ground_in_run(cv, run, 0, run.L, -band / 2, band / 2, rng, density)
+    outer = [run.p(run.L * i / n, band / 2) for i in range(n + 1)]
+    inner_ = [run.p(run.L * i / n, -band / 2) for i in range(n + 1)]
+    cv.add("K", "M" + _pts(outer) + "ZM" + _pts(inner_[::-1]) + "Z")
     inner = Run(pts, band - 5.5)
-    strip(cv, inner, (seed, "ring-a"), 0, run.L / 2, flip=True, ground=False)
-    strip(cv, inner, (seed, "ring-b"), 0, run.L / 2, ground=False, start_side=-1)
-    for off in (band / 2 - 0.5, -band / 2 + 0.5):
-        cv.poly("C1", Run(pts, 0).map([(u, off) for u in [run.L * i / 240 for i in range(241)]]), close=False)
+    strip(cv, inner, (seed, "ring-a"), 0, run.L / 2, flip=True, ground="dots", density=density)
+    strip(cv, inner, (seed, "ring-b"), 0, run.L / 2, ground="dots", start_side=-1, density=density)
+    for off, key in ((band / 2 - 0.5, "C1"), (band / 2 - 2.0, "S1"), (-band / 2 + 2.0, "S1"), (-band / 2 + 0.5, "C1")):
+        cv.poly(key, [run.p(run.L * i / 240, off) for i in range(241)], close=False)
 
 
-def fill_rect(cv, x, y, w, h, seed, row=None, density=1.1):
+def fill_rect(cv, x, y, w, h, seed, row=None, density=2.0):
     """Fill a whole rectangle with rows of fine scroll (for grounds). Rows interlock by alternating flow."""
     row = row or min(h, 22.0)
     n = max(1, int(round(h / row)))
@@ -1263,3 +1354,4 @@ def fill_rect(cv, x, y, w, h, seed, row=None, density=1.1):
         yy = y + rh * (i + 0.5)
         run = Run([(x, yy), (x + w, yy)], rh)
         strip(cv, run, (seed, "row", i), flip=bool(i % 2), start_side=1 if i % 2 else -1, density=density)
+    return cv

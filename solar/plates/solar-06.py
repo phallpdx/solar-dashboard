@@ -1710,24 +1710,99 @@ def _roll(cv, x, y0, y1, r, sg):
         cv.hair(sp)
 
 
+PI = math.pi
+
+
 def _scroll_plate(w, h, seed, ctx):
-    """The planned banner tailpiece as an unrolled ledger sheet: the scene on the sheet, its two
-    ends rolled up, standing on the light ground."""
-    o = [kk_defs(), vg_defs()]
-    hg = h - 12
-    bw = min(w - 16, hg * 5.2)
-    x0, x1 = w / 2 - bw / 2, w / 2 + bw / 2
-    r = max(4.5, hg * .15)
-    y0, y1 = 6, 6 + hg
-    face = [(x0 + r, y0 + 2), (x1 - r, y0 + 2), (x1 - r, y1 - 2), (x0 + r, y1 - 2)]
-    o.append(f'<path d="{_kk_pd_poly(face)}" fill="#fff" stroke="none"/>')
-    o.append(kk_clip(C._uid("sl", w, h, seed), _kk_pd_poly(face), ledger_scene(face[0][0], y0 + 2, face[1][0] - face[0][0], hg - 4, "band" if hg < 80 else "medium", seed, ctx)))
-    o.append(f'<path d="{_kk_pd_poly(face)}" fill="none" stroke="#000" stroke-width="1"/>')
+    """The small tailpiece: one bold motif, the year's sun account. An open ledger lies with its
+    pages curling up from the gutter, figures ruled down the left page and the months' savings
+    rising as columns on the right; the sun comes up behind the book in a burst of rays; a stack
+    of coins stands by it with one coin upright. Easter egg: the upright coin is struck with the
+    Somaster castle."""
+    rng = random.Random(seed)
     cv = C.Canvas()
-    for sg, x in ((-1, x0 + r), (1, x1 - r)):
-        _roll(cv, x, y0 + 1, y1 - 1, r, sg)
-    o.append(kk_svg(cv))
-    return C.svg_doc(w, h, "".join(o))
+    cx = w / 2 - h * .25
+    k = h / 60.
+    bw = min(w * .3, h * 1.45)
+    base = h * .93
+    ph = h * .5
+    gut = base - ph * .18
+
+    def ytop(u):
+        return base - ph + h * .1 * (1 - math.sin(PI * min(1., abs(u)) * .85) ** .5)
+
+    # the sun rising behind the book: rays, then the disc
+    sy = ytop(0) + h * .02
+    sr = h * .2
+    cv.obj([], 0)
+    for i in range(25):
+        a = PI + PI * i / 24
+        r0, r1 = sr * 1.25, sr * (2.6 if i % 2 else 1.9) * (1 if 2 < i < 22 else .75)
+        (cv.line if i % 2 else cv.hair)([(cx + r0 * math.cos(a), sy + r0 * math.sin(a)), (cx + r1 * math.cos(a), sy + r1 * math.sin(a))])
+    disc = [(cx + sr * math.cos(PI + PI * i / 24), sy + sr * math.sin(PI + PI * i / 24)) for i in range(25)]
+    cv.obj([disc], 1.5)
+    for q in (sr * .75, sr * .5):
+        bu_cut(cv, [(cx + q * math.cos(PI + PI * i / 16), sy + q * math.sin(PI + PI * i / 16)) for i in range(17)], lambda x, y: .3)
+    # the boards under the pages
+    board = [(cx - bw - 2 * k, base - h * .02), (cx + bw + 2 * k, base - h * .02), (cx + bw + 3 * k, base + 2 * k), (cx - bw - 3 * k, base + 2 * k)]
+    bu_form(cv, board, lambda x, y: .75, 0., 1.5, 0, None, 1.)
+    for sg in (-1, 1):
+        n = 18
+        top = [(cx + sg * bw * i / n, ytop(i / n)) for i in range(n + 1)]
+        bot = [(cx + sg * bw * i / n, base - ph * .18 * (1 - (i / n) ** .5) - h * .03) for i in range(n, -1, -1)]
+        page = top + bot
+        if sg > 0:
+            page = page[::-1]
+        # the page block's edge under the outer corner
+        ex = cx + sg * bw
+        blk = [(ex, ytop(1)), (ex + sg * 2.5 * k, ytop(1) + 2 * k), (ex + sg * 2.5 * k, base - h * .01), (ex, base - h * .03)]
+        bu_form(cv, blk, lambda x, y: .45, 90., 1.5, 0, None, .5)
+        cv.obj([page], 1.)
+        # paper curling into the gutter: lines that follow the page, dark only in the gutter
+        for j in range(1, 12):
+            f = j / 12
+            ln = [(cx + sg * bw * i / n, ytop(i / n) + (bot[n - i][1] - ytop(i / n)) * f) for i in range(n + 1)]
+            bu_cut(cv, ln, lambda x, y: .7 - 2.2 * abs(x - cx) / bw, .2)
+        if sg < 0:
+            # the left page: figures ruled in two columns
+            for j in range(2, 10):
+                f = j / 11
+                for (u0, u1) in ((.18, .5), (.58, .88)):
+                    ln = [(cx - bw * u, ytop(u) + (base - h * .03 - ytop(u)) * f) for u in (u0, (u0 + u1) / 2, u1)]
+                    cv.line(ln) if j == 2 else cv.hair(ln)
+        else:
+            # the right page: the months' savings rising
+            nb = 7
+            for i in range(nb):
+                u0, u1 = .1 + .115 * i, .1 + .115 * i + .075
+                hb = (base - h * .03 - ytop(u0)) * (.2 + .1 * i) * .95
+                yb0 = base - h * .03 - (base - h * .03 - ytop(u0)) * .08
+                bar = [(cx + bw * u0, yb0), (cx + bw * u0, yb0 - hb), (cx + bw * u1, yb0 - hb), (cx + bw * u1, yb0)]
+                bu_form(cv, bar, bu_lin(cx + bw * u0, 0, cx + bw * u1, 0, .35, 1.), 90., 1., 0, None, 1.)
+    cv.obj([], 0)
+    cv.heavy([(cx, ytop(0)), (cx, base - h * .03)])
+    # the coin stack and the upright coin
+    sx = cx + bw + h * .55
+    cr = h * .17
+    st = h * .42
+    y0, y1 = base, base - st
+    # one milled cylinder: vertical cuts darkening to the right, the coin edges as arcs
+    nx = int(2 * cr / 1.5)
+    cv.obj([[(sx - cr, y1), (sx + cr, y1), (sx + cr, y0)] + [(sx + cr * math.cos(PI * i / 12), y0 + cr * .32 * math.sin(PI * i / 12)) for i in range(13)]], 1.)
+    for i in range(1, nx):
+        x = sx - cr + i * 2 * cr / nx
+        dy = cr * .32 * math.sqrt(max(0., 1 - ((x - sx) / cr) ** 2))
+        bu_cut(cv, [(x, y1 + dy), (x, y0 + dy)], lambda xx, yy: .25 + .65 * (xx - sx + cr) / (2 * cr), .16)
+    for j in range(1, 6):
+        yy = y0 - st * j / 6
+        cv.line([(sx + cr * math.cos(PI * i / 12), yy + cr * .32 * math.sin(PI * i / 12)) for i in range(13)])
+    topc = C._ell_pts(sx, y1, cr, cr * .32, 24)[:-1]
+    bu_form(cv, topc, lambda x, y: .2, 0., 2., 0, None, 1.)
+    ucx, ucy, ur = sx - cr * 1.75, base - h * .27, h * .24
+    coin = C._ell_pts(ucx, ucy, ur * .9, ur, 30)[:-1]
+    bu_form(cv, coin, lambda x, y: .1, 0., 3., 0, None, 1.5)
+    out = kk_svg(cv) + kk_egg("castle", ucx, ucy + ur * .05, ur * .72)
+    return C.svg_doc(w, h, kk_defs() + out)
 
 
 def plate(w, h, ctx):
@@ -2134,7 +2209,9 @@ def bu_blade(cv, x, yb, L, ang, bend, wd, shade=1, outline=.5):
     ws = [max(.35, wd * (1 - t) ** .8) for t in [i / 8 for i in range(9)]]
     R = _C._Rib(pts, ws, ws)
     cv.obj([R.outline()], outline)
-    if wd > 1.1:
+    if wd <= 1.1:
+        cv.line(R.contour(shade * .2, 0., .55))
+    else:
         cv.hair(R.contour(shade * .35, 0., .8))
         if wd > 1.8:
             cv.line(R.contour(shade * .7, 0., .45))

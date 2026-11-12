@@ -470,7 +470,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1162,7 +1162,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1177,7 +1177,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1198,7 +1198,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1253,7 +1253,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2448,23 +2448,58 @@ def _contours(cv, P, cx, cy, ks, lo):
             cv.hair(run)
 
 
+_BULL_UV = [(3.0, 11.0), (6., 11.6), (9., 12.4), (11., 13.2), (12.6, 13.), (13.8, 12.4), (15.2, 11.4), (15.9, 11.),
+            (16.9, 10.), (17.7, 8.6), (18.4, 7.2), (18.7, 6.3), (18.3, 5.6), (17.4, 5.7), (16.4, 6.1), (15.3, 6.),
+            (14.5, 5.4), (13.8, 4.6), (13.9, 2.6), (14.1, .9), (14.3, 0.), (13.2, 0.), (13.1, .9), (12.8, 3.2),
+            (12.3, 4.2), (10.8, 4.3), (8.6, 4.4), (7.3, 4.2), (7., 2.6), (7.2, .8), (7.3, 0.), (6.2, 0.),
+            (6.1, .9), (5.4, 2.8), (4.6, 4.4), (3.6, 5.9), (2.7, 7.6), (2.4, 9.4)]
+
+
 def bull(cv, x, gy, L, rng):
+    """The bull, charging: deep in the chest, high in the withers, head down and horns forward.
+    Modelled in the burin manner: cross-contours sag round the barrel and close toward the belly,
+    the shoulder and haunch each swell in a cut, the far legs sit back in close shade."""
     k = L / 21.
-    P = _place(_BULL_D, x, gy, L)
-    cv.obj([P], 1.)
+    T = lambda u, v: (x + (u - 11) * k, gy - v * k)
+    # the far legs first, in shadow
+    for u0 in (11.9, 6.6):
+        leg = [T(u0, 4.4), T(u0 + .9, 4.4), T(u0 + .8, .9), T(u0 + .95, 0.), T(u0 - .1, 0.), T(u0 + .05, .9)]
+        cv.obj([leg], .5)
+        cv.hair(C.hatch_poly(leg, 0, 1.))
     # the tail and its tuft
-    cv.line([(x + (1.6 - 11) * k, gy - 8 * k), (x + (.6 - 11) * k, gy - 7 * k), (x + (.4 - 11) * k, gy - 4.5 * k), (x + (.8 - 11) * k, gy - 2.4 * k)])
-    cv.obj([[(x + (.2 - 11) * k, gy - 2.8 * k), (x + (1.4 - 11) * k, gy - 2.6 * k), (x + (.8 - 11) * k, gy - 1.4 * k)]], .5)
-    # modelling: contour cuts round the barrel, the belly and legs in shadow
-    _contours(cv, P, x, gy - 7 * k, (.9, .8, .7), gy - 5.6 * k)
-    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 9.6 * k)) for p in P], 78, 2.))
-    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 5 * k)) for p in P], -10, 1.5))
-    cv.hair([(x + (3 - 11) * k, gy - 6.4 * k), (x + (7 - 11) * k, gy - 7.6 * k), (x + (14 - 11) * k, gy - 8.6 * k)])
-    # the horns, the near one heavy
-    cv.heavy([(x + (18.6 - 11) * k, gy - 10.6 * k), (x + (18 - 11) * k, gy - 12.4 * k), (x + (18.8 - 11) * k, gy - 13.6 * k), (x + (20.4 - 11) * k, gy - 14 * k)])
-    cv.heavy([(x + (19.8 - 11) * k, gy - 10.6 * k), (x + (20.8 - 11) * k, gy - 12 * k), (x + (22.2 - 11) * k, gy - 12.2 * k), (x + (23 - 11) * k, gy - 13.4 * k)])
-    cv.obj([C._ell_pts(x + (19.8 - 11) * k, gy - 8.6 * k, .55 * k + .3, .55 * k + .3, 8)[:-1]], .5)
-    cv.line([(x + (21 - 11) * k, gy - 6.6 * k), (x + (21.4 - 11) * k, gy - 6.8 * k)])
+    tail = [T(2.6, 10.4), T(1.6, 9.), T(1.3, 6.5), T(1.5, 4.)]
+    cv.line(tail)
+    cv.obj([[T(1., 4.4), T(2., 4.3), T(1.6, 2.6)]], .5)
+    P = [T(u, v) for u, v in _BULL_UV]
+    cv.obj([P], 1.)
+    barrel = [(p[0], max(p[1], gy - 9.4 * k)) for p in P]
+    cv.hair(form_hatch(barrel, x - 1.5 * k, gy - 22 * k, 13 * k, 23 * k, max(1.3, k * .5), .9, 2.25, 1., 30))
+    cv.hair(C.hatch_poly([(p[0], max(p[1], gy - 4.8 * k)) for p in P], -12, 1.5))
+    # the lit back: a short curled coat; the neck's folds and dewlap
+    for n_ in range(int(L * .8)):
+        u = rng.uniform(4, 14)
+        v = rng.uniform(9.6, 12.)
+        px, py = T(u, v)
+        ln = k * rng.uniform(.7, 1.1)
+        cv.hair([(px, py), (px + ln * .6, py - ln * .2), (px + ln, py + ln * .2)])
+    cv.hair([[T(14.2 + .5 * j, 11.6 - .6 * j), T(14.6 + .4 * j, 8.6 - .3 * j), T(14.2 + .3 * j, 6.4)] for j in range(3)])
+    cv.hair(C.hatch_poly([T(14.6, 8.2), T(17.6, 8.6), T(18.4, 7.2), T(18.7, 6.3), T(18.3, 5.6), T(16.4, 6.1), T(14.6, 6.)], 60, 1.3))
+    # shoulder and haunch, each a swelling cut
+    swell(cv, [T(13., 12.4), T(12.4, 10.), T(12.3, 7.5), T(12.9, 5.4)], 1, 2)
+    swell(cv, [T(4.4, 10.6), T(5.6, 8.6), T(6.6, 6.6), T(7.2, 4.6)], -1, 2)
+    swell_outline(cv, P, (-1., -1.), 2)
+    # the horns, swept forward, the near one heavy and ringed at the base
+    for j, (bu, bv, s_) in enumerate(((15.4, 11.2, 1.), (15.9, 11.4, .8))):
+        hp = [T(bu, bv), T(bu + 1.2 * s_, bv + 1.4 * s_), T(bu + 2.6 * s_, bv + 1.7 * s_), T(bu + 3.4 * s_, bv + 1.0 * s_)]
+        hp = _dres(hp, 1.)
+        n = len(hp)
+        wl = [max(.25, k * .45 * s_ * (1 - i / n)) for i in range(n)]
+        R = C._Rib(hp, wl, wl)
+        cv.obj([R.outline()], .5 if j else 1.)
+        cv.hair(R.contour(-.4, 0, .8))
+    cv.obj([C._ell_pts(*T(16.6, 9.), .45 * k + .3, .4 * k + .3, 10)[:-1]], .5)
+    cv.hair([C._ell_pts(*T(16.6, 9.), .9 * k, .75 * k, 12, 3.6, 5.6)])
+    cv.line([T(18.1, 6.5), T(18.4, 6.7)])
 
 
 def pinwheel(cv, x, y, r):
@@ -2475,7 +2510,7 @@ def pinwheel(cv, x, y, r):
         for k in range(3):
             rr = r * (.2 + .22 * k)
             a0 = math.pi / 2 if sg > 0 else -math.pi / 2
-            cv.line([(cx + rr * math.cos(a0 + t * math.pi), y + rr * math.sin(a0 + t * math.pi)) for t in [i / 8 for i in range(9)]])
+            (cv.line if k == 2 else cv.hair)([(cx + rr * math.cos(a0 + t * math.pi), y + rr * math.sin(a0 + t * math.pi)) for t in [i / 8 for i in range(9)]])
 
 
 def bear(cv, x, gy, L, rng):
@@ -2492,6 +2527,7 @@ def bear(cv, x, gy, L, rng):
         ln = k * rng.uniform(.8, 1.3)
         cv.hair([(px, py), (px + ln * .5, py + ln * .3), (px + ln, py + ln * .25)])
     cv.obj([C._ell_pts(x + (4.2 - 11) * k, gy - 7.8 * k, .5 * k + .3, .5 * k + .3, 8)[:-1]], 0)
+    swell_outline(cv, P, (-1., -1.), 2)
     cv.obj([C._ell_pts(x + (1.1 - 11) * k, gy - 6.1 * k, .6 * k + .3, .5 * k + .3, 8)[:-1]], 0)
     cv.line([(x + (2 - 11) * k, gy - 4.8 * k), (x + (3.6 - 11) * k, gy - 4.7 * k)])
 
@@ -2520,8 +2556,71 @@ def faceoff(X, Y, W, H, seed, mode, up=True):
     cv.obj([[e, (e[0] - 4 * math.cos(a - .5), e[1] - 4 * math.sin(a - .5)), (e[0] - 4 * math.cos(a + .5), e[1] - 4 * math.sin(a + .5))]], .5)
     L = min(H * 1.25, W * .26)
     bull(cv, X + W * .27, gy + 1, L, rng)
-    pinwheel(cv, X + W * .27 + L * .08, gy - L * .4, max(2.5, L * .07))
+    pinwheel(cv, X + W * .27 + L * .06, gy - L * .4, max(2.2, L * .05))
     bear(cv, X + W * .74, gy + 1, L * .95, rng)
+    return cv.svg()
+
+
+def _candle_frame(cx, cy, sw, sh, outer, inner, mode, ft=5., seed=0):
+    """The frame, from the market's own chart: both edges of the banner are a run of daily
+    candles (a rising candle cut open, a falling one cut solid in line, each with its wick), the
+    year's walk making the edge rise and fall, and a stack of milled coins at each end."""
+    rng = _r.Random(seed + 77)
+    cv = KCanvas()
+    n = len(outer) // 2
+    top, bot = outer[:n], outer[n:][::-1]
+    for ei, edge in enumerate((top, bot)):
+        e = sorted(edge, key=lambda p: p[0])
+        x0, x1 = e[0][0], e[-1][0]
+        def ey(x):
+            for a, b in zip(e, e[1:]):
+                if a[0] <= x <= b[0]:
+                    t = (x - a[0]) / ((b[0] - a[0]) or 1)
+                    return a[1] + (b[1] - a[1]) * t
+            return e[-1][1]
+        sgn = 1 if ei == 0 else -1          # inward
+        rail = [(x, ey(x) + sgn * ft * .5) for x in [x0 + (x1 - x0) * i / 80 for i in range(81)]]
+        R = _C._Rib(rail, [ft * .5] * 81, [ft * .5] * 81)
+        cv.obj([R.outline()], 0)
+        cv.hair(_C.hatch_poly(R.outline(), 0, 2.4))
+        cv.line([(x, ey(x)) for x, _ in rail])
+        cv.line([(x, y + sgn * ft * .5) for x, y in rail])
+        pitch = max(4.5, ft * 1.1)
+        k = int((x1 - x0) / pitch)
+        walk = 0.
+        for i in range(k):
+            x = x0 + pitch * (i + .5)
+            yc = ey(x) + sgn * ft * .5
+            up = rng.random() < .58
+            walk = max(-1., min(1., walk + (.25 if up else -.25)))
+            bh = ft * rng.uniform(.35, .7)
+            yb = yc + walk * ft * .18
+            wk = [(x, yb - bh - ft * .25), (x, yb + bh * .1 + ft * .25)]
+            cv.hair([wk])
+            bw = pitch * .28
+            body = [(x - bw, yb - bh), (x + bw, yb - bh), (x + bw, yb), (x - bw, yb)]
+            cv.obj([body], .5 if up else 1.)
+            if not up:
+                cv.hair(_C.hatch_poly(body, 0, .8))
+    # coin stacks at both ends
+    lx = [p[0] for p in outer]
+    for sg in (-1, 1):
+        x = cx + sg * (sw / 2 - ft * 1.6)
+        yb = cy + sh * .38
+        cr = ft * 1.35
+        for j in range(6):
+            yy = yb - j * ft * .42
+            rim = [(x + cr * _m.cos(a), yy + cr * .32 * _m.sin(a)) for a in [_m.pi * i / 16 for i in range(17)]]
+            side = rim + [(x - cr, yy - ft * .42), (x + cr, yy - ft * .42)][::-1]
+            body = [(x - cr, yy - ft * .42), (x + cr, yy - ft * .42)] + rim[::-1]
+            body = [(x + cr, yy - ft * .42)] + rim + [(x - cr, yy - ft * .42)]
+            cv.obj([body], .5)
+            cv.hair([[(x + cr * _m.cos(a), yy + cr * .32 * _m.sin(a)), (x + cr * _m.cos(a), yy + cr * .32 * _m.sin(a) - ft * .42)]
+                     for a in [_m.pi * (i + .5) / 9 for i in range(9)]])
+        face = [(x + cr * _m.cos(a), yb - 6 * ft * .42 + cr * .32 * _m.sin(a)) for a in [2 * _m.pi * i / 24 for i in range(24)]]
+        cv.obj([face], 1.)
+        cv.hair([[(x + cr * .7 * _m.cos(a), yb - 6 * ft * .42 + cr * .7 * .32 * _m.sin(a)) for a in [2 * _m.pi * i / 20 for i in range(21)]]])
+        cv.hair(_C.hatch_poly(face, 75, 1.6))
     return cv.svg()
 
 
@@ -2536,7 +2635,9 @@ def plate(w, h, ctx):
         return clip_to(f"mkt{mode}{int(H)}", inner, faceoff(X, Y, W, H, seed, mode, up))
 
     # the edition plan: a headpiece of about 8% of the sheet, a banner
-    return form_plate(w, h, ctx, sc, "banner", "headpiece", seed)
+    ft = max(3.5, min(9., h * .08))
+    return form_plate(w, h, ctx, sc, "banner", "headpiece", seed,
+                      frame=lambda *a: _candle_frame(*a, ft=ft, seed=seed), ft=ft, fade=0.)
 
 
 def _roman(n):

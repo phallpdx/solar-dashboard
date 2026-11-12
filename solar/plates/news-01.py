@@ -470,7 +470,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1162,7 +1162,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1177,7 +1177,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1198,7 +1198,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1253,7 +1253,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2570,6 +2570,59 @@ def _layout_tall(w, h, seed, date, density=1.):
     return "".join(o)
 
 
+def _wharf_frame(cx, cy, sw, sh, outer, inner, mode, ft=5., seed=0):
+    """The frame, from the waterfront the skyline is seen from: a cluster of tarred pilings at each
+    end of the banner, bound with rope, and a hawser hung in two swags along the foot."""
+    cv = KCanvas()
+    n = len(outer) // 2
+    top, bot = outer[:n], outer[n:][::-1]
+    xl, xr = min(p[0] for p in outer), max(p[0] for p in outer)
+    yt, yb = min(p[1] for p in outer), max(p[1] for p in outer)
+    # the hawser first, so the pilings stand in front of its ends
+    b = sorted(bot, key=lambda p: p[0])
+    anchors = [xl + ft * 2.2, cx, xr - ft * 2.2]
+    for a0, a1 in zip(anchors, anchors[1:]):
+        pts = []
+        for i in range(41):
+            t = i / 40
+            x = a0 + (a1 - a0) * t
+            ye = min(b, key=lambda p: abs(p[0] - x))[1]
+            pts.append((x, ye - ft * 1.1 + ft * .9 * _m.sin(_m.pi * t)))
+        th = max(1., ft * .28)
+        R = _C._Rib(pts, [th] * 41, [th] * 41)
+        cv.obj([R.outline()], 1.)
+        # the lay of the rope: short twisted strokes across it
+        tw = []
+        for i in range(1, 40):
+            p, q = R.at(i / 40, 1), R.at((i + .6) / 40, -1)
+            tw.append([p, q])
+        cv.hair(tw)
+        swell(cv, R.contour(-.9, 0, 1)[0], -1, 1)
+    cv.obj([_kell(cx, b[len(b) // 2][1] - ft * 1.1, ft * .55, ft * .55, 12)], 1.)
+    for sg in (-1, 1):
+        for j, (dx, hf) in enumerate(((0., 1.), (1.25, .82), (-1.1, .7))):
+            x = (xl + ft * 1.6 if sg < 0 else xr - ft * 1.6) + sg * dx * ft * -.6
+            pw = ft * (.9 if j == 0 else .7)
+            ytop = yt + (yb - yt) * (1 - hf) + 1
+            post = [(x - pw, yb), (x - pw, ytop + pw * .4), (x, ytop), (x + pw, ytop + pw * .4), (x + pw, yb)]
+            cv.obj([post], 1.)
+            # a round pile: its shadow side turned in close uprights, the lit side open, rings of age
+            cv.hair(_C.hatch_poly([(x + pw * .1, yb), (x + pw * .1, ytop + pw * .3), (x + pw, ytop + pw * .4), (x + pw, yb)], 90, .9))
+            cv.hair(_C.hatch_poly(post, 90, 2.2))
+            cv.hair([[(x - pw, y), (x - pw * .3, y + .6), (x + pw * .3, y + .6), (x + pw, y)] for y in
+                     [ytop + (yb - ytop) * f for f in (.35, .62)]])
+            swell(cv, [(x + pw, ytop + pw * .4), (x + pw, yb)], -1, 2)
+        # the rope lashing round the cluster
+        x = xl + ft * 1.6 if sg < 0 else xr - ft * 1.6
+        ly = yt + (yb - yt) * .5
+        for k in range(3):
+            y = ly + k * ft * .45
+            band = [(x - ft * 1.6, y), (x + ft * 1.6, y + .5), (x + ft * 1.6, y + ft * .38), (x - ft * 1.6, y + ft * .38 - .5)]
+            cv.obj([band], .5)
+            cv.hair(_C.hatch_poly(band, 60, 1.2))
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     date = ctx.get("date", "2026-11-11")
@@ -2580,4 +2633,6 @@ def plate(w, h, ctx):
         return clip_to(f"nwo{mode}{int(H)}", inner, body)
 
     # the edition plan: a tailpiece of about 8% of the sheet, a banner
-    return form_plate(w, h, ctx, sc, "banner", "tailpiece", seed)
+    ft = max(3.5, min(9., h * .08))
+    return form_plate(w, h, ctx, sc, "banner", "tailpiece", seed,
+                      frame=lambda *a: _wharf_frame(*a, ft=ft, seed=seed), ft=ft * .4, fade=5.)

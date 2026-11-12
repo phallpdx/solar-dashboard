@@ -471,7 +471,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1163,7 +1163,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1178,7 +1178,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1199,7 +1199,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1254,7 +1254,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2772,30 +2772,54 @@ def shelf(X, Y, W, H, seed, titles):
     slots = [len(xs) // 3, (2 * len(xs)) // 3]
     for k, t in zip(slots, titles):
         named[k] = t
+    # the case behind the row: a dark recess the books stand out of, the shelf above just showing
+    rec = [(X, sy), (X, Y + H * .06), (X + W, Y + H * .06), (X + W, sy)]
+    cv.obj([rec], 0)
+    sm = H < 90
+    cv.hair(C.hatch_poly(rec, 90, 2.6 if sm else 2.))
+    cv.hair(C.hatch_poly(rec, 0, 5. if sm else 4.))
+    up = [(X, Y + H * .06), (X + W, Y + H * .06), (X + W, Y), (X, Y)]
+    cv.obj([up], 1.)
+    cv.hair(C.hatch_poly(up, 0, 2.2))
     for k, (x0, bw) in enumerate(xs):
         if k in named:
             bw = max(bw, H * .24)
         bh = H * (rng.uniform(.62, .86) if k not in named else .86)
         top = sy - bh
-        bk = [(x0, sy), (x0, top), (x0 + bw, top), (x0 + bw, sy)]
-        cv.obj([bk], 1.)
-        # the spine's roundness: dense cuts at the far edge, a few at the near edge, crown white
-        cv.hair(C.hatch_poly([(x0 + bw * .62, top), (x0 + bw, top), (x0 + bw, sy), (x0 + bw * .62, sy)], 90, 1.5))
-        cv.hair(C.hatch_poly([(x0 + bw * .82, top), (x0 + bw, top), (x0 + bw, sy), (x0 + bw * .82, sy)], 90, 1.5, .75))
-        cv.hair(C.hatch_poly([(x0, top), (x0 + bw * .14, top), (x0 + bw * .14, sy), (x0, sy)], 90, 2))
+        dome = bw * .06
+        bk = [(x0, sy), (x0, top + dome)] + [(x0 + bw * u, top + dome - dome * math.sin(math.pi * u)) for u in [i / 8 for i in range(1, 8)]] + [(x0 + bw, top + dome), (x0 + bw, sy)]
+        cv.obj([bk], .5 if sm else 1.)
+        # the spine turned in the round: uprights that close toward both edges (most toward the
+        # far, shadowed one) and leave the lit crown a third of the way across open
+        n = max(5, int(bw / 1.8))
+        cuts = []
+        for i in range(1, n):
+            u = i / n
+            xx = x0 + bw * (.5 - .5 * math.cos(math.pi * u))
+            if .14 < (xx - x0) / bw < .56 and (sm or i % 3):
+                continue
+            cuts.append([(xx, top + dome + .8), (xx, sy - .5)])
+        cv.hair(cuts)
         tone = rng.random()
-        if tone < .4 and k not in named:
-            # a dark cloth binding: crossed cuts over the whole spine
-            cv.hair(C.hatch_poly(bk, 0, 2))
-        for yb in (top + bh * .07, top + bh * .11, sy - bh * .11, sy - bh * .07):
-            cv.line([(x0 + .5, yb), (x0 + bw - .5, yb)])
+        if tone < (.22 if sm else .4) and k not in named:
+            # a dark cloth binding: crossed on the shadow half
+            cv.hair(C.hatch_poly([(x0 + bw * .45, top), (x0 + bw, top), (x0 + bw, sy), (x0 + bw * .45, sy)], 0, 1.6))
+        # raised bands at head and tail, each a cut with its shadow swelling under it
+        for yb in ((top + bh * .1, sy - bh * .1) if sm else (top + bh * .08, top + bh * .13, sy - bh * .13, sy - bh * .08)):
+            swell(cv, [(x0 + .5, yb), (x0 + bw - .5, yb)], 1, 1)
+        # the neighbour's cast shadow down the near edge
+        cv.hair([[(x0 + .9, top + dome + 1), (x0 + .9, sy - .5)]])
         if k in named:
             lab = [(x0 + bw * .15, top + bh * .18), (x0 + bw * .85, top + bh * .18), (x0 + bw * .85, sy - bh * .18), (x0 + bw * .15, sy - bh * .18)]
             cv.obj([lab], .5)
+            cv.hair(C.hatch_poly([(x0 + bw * .72, top + bh * .18), (x0 + bw * .85, top + bh * .18), (x0 + bw * .85, sy - bh * .18), (x0 + bw * .72, sy - bh * .18)], 90, 1.2))
             size = min(bw * .5, (bh * .62) / max(1., ktext_width(named[k], 1.)) )
             lets.append(letter_svg(_spine_letters(x0 + bw * .5, top + bh * .2, sy - bh * .2, size, named[k]), 1. if size < 7 else 1.5, False))
         else:
-            cv.hair([(x0 + bw * .3, top + bh * .3), (x0 + bw * .7, top + bh * .3)])
+            # a tooled title panel: a small lozenge between two fillets
+            ty = top + bh * .3
+            (cv.hair if sm else cv.line)([(x0 + bw * .25, ty), (x0 + bw * .75, ty)])
+            cv.hair([(x0 + bw * .25, ty + 2.5), (x0 + bw * .75, ty + 2.5)])
     # two books leaning against the bookend
     x0 = X + W * .9
     for j in range(2):
@@ -2807,6 +2831,7 @@ def shelf(X, Y, W, H, seed, titles):
         P = [(px - (P[3][0] - bx) * 0, py) for px, py in P]
         cv.obj([P], 1.)
         cv.hair(C.hatch_poly(P, math.degrees(a) + 90, 1.5))
+        cv.hair(C.hatch_poly(P[:2] + [((P[1][0] + P[2][0]) / 2, (P[1][1] + P[2][1]) / 2), ((P[0][0] + P[3][0]) / 2, (P[0][1] + P[3][1]) / 2)], math.degrees(a), 1.8))
     # the bookend: a carved stone block
     be = [(X + W * .985, sy), (X + W * .985, sy - H * .55), (X + W * .955, sy - H * .6), (X + W * .955, sy)]
     cv.obj([be], 1.)

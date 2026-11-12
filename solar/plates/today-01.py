@@ -467,7 +467,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1159,7 +1159,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1174,7 +1174,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1195,7 +1195,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1250,7 +1250,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2249,6 +2249,8 @@ def _barn(cv, bx, by, s, rng):
             (bx + w / 2 + s * .05, by - s * .5)]
     cv.obj([wall], 1.)
     cv.hair(hatch_poly(wall, 90, 1.5))           # board siding
+    cv.hair(hatch_poly([(bx + w * .1, by), (bx + w * .1, by - s * .5), (bx + w / 2, by - s * .5), (bx + w / 2, by)], 0, 2.))
+    swell(cv, [(bx + w / 2, by - s * .5), (bx + w / 2, by)], -1, 2)
     cv.obj([roof], 1.)
     cv.hair(hatch_poly(roof, 0, 1.5))
     cv.hair(hatch_poly(roof, 60, 3))
@@ -2772,6 +2774,69 @@ def head_scene(x, y, w, h, seed, cond, mode):
     return cv.svg()
 
 
+def _rail_frame(cx, cy, sw, sh, outer, inner, mode, ft=6., seed=0):
+    """The frame, from the farm itself: a split-rail fence runs along the foot of the band, its
+    posts in grain and its rails split and shadowed underneath, and at each end the slough's
+    cattails and blades rise and curve round the band's ends."""
+    rng = _r.Random(seed + 31)
+    cv = KCanvas()
+    rx, ry = sw / 2, sh / 2
+    # the lower edge of the band, left to right
+    low = sorted([p for p in outer if p[1] > cy + ry * .55 and abs(p[0] - cx) < rx * .93], key=lambda p: p[0])
+    if len(low) < 4:
+        return ""
+    def edge_y(x):
+        best = min(low, key=lambda p: abs(p[0] - x))
+        return best[1]
+    # posts first (the rails pass in front of them)
+    npost = max(4, int(sw / 46))
+    xs = [low[0][0] + (low[-1][0] - low[0][0]) * (i + .5) / npost for i in range(npost)]
+    rail_y = [(-ft * 1.55), (-ft * .75)]
+    for x in xs:
+        yb = edge_y(x) + .5
+        pw = max(2., ft * .45)
+        post = [(x - pw / 2, yb), (x + pw / 2, yb), (x + pw / 2 + .3, yb - ft * 2.1), (x - pw / 2 + .3, yb - ft * 2.25)]
+        cv.obj([post], 1.)
+        cv.hair(_C.hatch_poly(post, 90, 1.6))
+        cv.hair(_C.hatch_poly([(x + pw * .05, yb), (x + pw / 2, yb), (x + pw / 2 + .3, yb - ft * 2.1), (x + pw * .05, yb - ft * 2.2)], 20, 1.2))
+    # two split rails, each a long ribbon with grain, the split face lit, the underside in shadow
+    for k, dy in enumerate(rail_y):
+        pts = [(p[0], p[1] + dy + .3 * _m.sin(p[0] * .05 + k)) for p in low]
+        th = max(1.1, ft * .22)
+        R = _C._Rib(pts, [th] * len(pts), [th] * len(pts))
+        cv.obj([R.outline()], 1.)
+        cv.hair(R.contour(.3, 0, 1))
+        cv.hair(R.contour(-.25, .02, .98))
+        swell(cv, R.contour(-.95, 0, 1)[0], -1, 2)
+    # cattails and blades at both ends, rising from the foot and curving in over the band
+    for sg in (-1, 1):
+        x0 = cx + sg * rx * .985
+        y0 = cy + ry
+        for j in range(5):
+            hgt = sh * (.95 - .13 * j) * rng.uniform(.92, 1.05)
+            lean = -sg * (.05 + .07 * j)
+            stalk = []
+            for i in range(14):
+                t = i / 13
+                stalk.append((x0 - sg * j * ft * .55 + lean * hgt * t * t * 2.2, y0 - hgt * t))
+            if j % 2 == 0:
+                swell(cv, stalk, sg, 1)
+                hx, hy = stalk[-3]
+                head = [(hx + ft * .32 * _m.cos(a), hy + ft * .95 * _m.sin(a)) for a in [2 * _m.pi * i / 14 for i in range(14)]]
+                cv.obj([head], 1.)
+                cv.hair(_C.hatch_poly(head, 0, .9))
+                cv.hair(_C.hatch_poly(head, 75, 1.3))
+            else:
+                # a blade: a ribbon swelling then tapering to a point, its midrib cut
+                n = len(stalk)
+                wl = [max(.3, ft * .3 * _m.sin(_m.pi * (i + 1) / (n + 1))) for i in range(n)]
+                R = _C._Rib(stalk, wl, wl)
+                cv.obj([R.outline()], .5)
+                cv.hair(R.contour(0, .05, .95))
+                cv.hair(R.contour(-sg * .55, .1, .9))
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7 * int(ctx.get("sheet", 0) or 0)
@@ -2781,4 +2846,7 @@ def plate(w, h, ctx):
         return clip_to(f"tdy{mode}{int(H)}", inner, head_scene(X, Y, W, H, seed, cond, mode))
 
     # the edition plan: a headpiece of about a tenth of the sheet, an irregular band above the title
-    return form_plate(w, h, ctx, sc, "irregular", "headpiece", seed)
+    ft = max(4., min(9., h * .09))
+    return form_plate(w, h, ctx, sc, "irregular", "headpiece", seed,
+                      frame=lambda *a: _rail_frame(*a, ft=ft, seed=seed), ft=ft * .6, fade=6.,
+                      fade_sides=lambda x, y: y < h * .55)

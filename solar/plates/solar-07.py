@@ -471,7 +471,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1163,7 +1163,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1178,7 +1178,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1199,7 +1199,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1254,7 +1254,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2601,7 +2601,7 @@ def _night(cv, X, Y, W, H, seed, avoid=()):
             x += 1.5
         if len(run) > 1:
             cv.hair(run)
-        y += 1.5 if f < .45 else 2. if f < .75 else 3.
+        y += 2. if f < .3 else 2.4 if f < .7 else 3.
     for sx, sy, sr in stars:
         if sr > 1.4:
             cv.hair([[(sx - sr * 1.2, sy), (sx + sr * 1.2, sy)], [(sx, sy - sr * 1.2), (sx, sy + sr * 1.2)]])
@@ -2609,23 +2609,38 @@ def _night(cv, X, Y, W, H, seed, avoid=()):
 
 
 def _streak(cv, x0, y0, x1, y1, wmax):
-    """A meteor: a tapering white cut across the night lines, its head burst, a hair on its lee edge."""
+    """A meteor: its train a wedge of light opening out of the dark toward the head, combed with
+    fine lines that converge on the tail, a swelling cut along its lee edge, the head a lit disc
+    in a ring of short rays, the night lines parted round it as a halo."""
     a = math.atan2(y1 - y0, x1 - x0)
     nx, ny = -math.sin(a), math.cos(a)
-    n = 16
+    n = 18
     top, bot = [], []
     for k in range(n + 1):
         t = k / n
-        wv = wmax * t ** 1.4
+        wv = wmax * t ** 1.3
         px, py = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
         top.append((px + nx * wv, py + ny * wv))
-        bot.append((px - nx * wv * .6, py - ny * wv * .6))
+        bot.append((px - nx * wv * .7, py - ny * wv * .7))
+    hr = wmax * 1.25
+    halo = C._ell_pts(x1, y1, hr * 2.2, hr * 2.2, 20)[:-1]
+    cv.obj([halo], 0)
+    cv.hair([C._ell_pts(x1, y1, hr * f, hr * f, 24) for f in (1.6, 2.)])
     cv.obj([top + bot[::-1]], 0)
-    cv.hair(bot)
-    for k in range(8):
-        b = a + math.pi + (k - 3.5) * .2
-        L = wmax * (2.2 if k % 2 else 1.4)
-        cv.hair([(x1 + math.cos(b) * wmax * .5, y1 + math.sin(b) * wmax * .5), (x1 + math.cos(b + math.pi) * L * .2 + math.cos(b) * L, y1 + math.sin(b) * L)])
+    comb = []
+    for f in (-.45, 0., .45, .8):
+        comb.append([(x0 + (x1 - x0) * t + nx * wmax * t ** 1.3 * f * (1 if f > 0 else .7),
+                      y0 + (y1 - y0) * t + ny * wmax * t ** 1.3 * f * (1 if f > 0 else .7)) for t in [.15 + .8 * k / 10 for k in range(11)]])
+    cv.hair(comb)
+    swell(cv, bot, 1, 3 if wmax > 2 else 2)
+    cv.hair(top[3:])
+    cv.obj([C._ell_pts(x1, y1, hr, hr, 14)[:-1]], 1.)
+    rays = []
+    for k in range(10):
+        b_ = 2 * math.pi * k / 10
+        L = hr * (1.9 if k % 2 else 1.45)
+        rays.append([(x1 + math.cos(b_) * hr * 1.15, y1 + math.sin(b_) * hr * 1.15), (x1 + math.cos(b_) * L, y1 + math.sin(b_) * L)])
+    cv.line(rays)
 
 
 def leonids(X, Y, W, H, seed, mode):
@@ -2648,24 +2663,111 @@ def leonids(X, Y, W, H, seed, mode):
     _streak(cv, rx_ - W * .1, ry_ + H * .05, X + W * .42, Y + H * .55, max(2.2, H * .07))
     _streak(cv, rx_ - W * .05, ry_ + H * .1, X + W * .7, Y + H * .4, max(1., H * .025))
     _streak(cv, rx_ - W * .14, ry_ - H * .02, X + W * .62, Y + H * .16, max(1., H * .02))
-    # the island horizon: cottonwoods and the barn, in close crossed cuts
-    sil = [(X - 3, Y + H + 3), (X - 3, hz)]
+    # the island horizon: a row of cottonwood crowns, each a dome turned in arcs with its lit
+    # rim toward the horizon glow, trunks and the barn below, the field in receding rows
+    gnd = [(X - 3, Y + H + 3), (X - 3, hz), (X + W + 3, hz), (X + W + 3, Y + H + 3)]
+    cv.obj([gnd], 0)
+    yy = hz + 1.2
+    rows = []
+    k = 0
+    while yy < Y + H + 3:
+        rows.append([(X - 3, yy), (X + W + 3, yy)])
+        k += 1
+        yy += 1.5 + .6 * k
+    cv.hair(rows)
     x = X - 3
+    crowns = []
     while x < X + W + 3:
-        r = H * rng.uniform(.05, .1)
-        for k in range(7):
-            a = math.pi + math.pi * k / 6
-            sil.append((x + r + r * math.cos(a), hz - r * .5 + r * .9 * math.sin(a)))
-        x += 2 * r
-    sil += [(X + W + 3, hz), (X + W + 3, Y + H + 3)]
+        r = H * rng.uniform(.06, .11)
+        crowns.append((x + r, hz - r * .55, r))
+        x += r * rng.uniform(1.5, 1.9)
+    for cx_, cy_, r in crowns:
+        cr = [(cx_ + r * math.cos(a), min(hz, cy_ + r * .95 * math.sin(a))) for a in [2 * math.pi * i / 22 for i in range(22)]]
+        cv.obj([cr], .5)
+        cv.hair(form_hatch(cr, cx_ - r * .5, cy_ - r * .6, r * .5, r * 2.2, 1.5, -.6, 2.6, 1., 18))
+        cv.hair(form_hatch(cr, cx_ - r * .5, cy_ - r * .6, r * .1, r * .5, 2.5, 0, 2 * math.pi, 1., 18))
+        swell_outline(cv, cr, (-.3, -1.), 1)
     bx = X + W * .7
     barn = [(bx, hz + 1), (bx, hz - H * .1), (bx + H * .08, hz - H * .17), (bx + H * .16, hz - H * .1), (bx + H * .16, hz + 1)]
-    cv.obj([sil], .5)
-    cv.hair(C.hatch_poly(sil, 75, 1.5))
-    cv.hair(C.hatch_poly(sil, -15, 2.5))
     cv.obj([barn], .5)
-    cv.hair(C.hatch_poly(barn, 0, 1.5))
-    cv.hair(C.hatch_poly(barn, 90, 2.5))
+    cv.hair(C.hatch_poly(barn, 90, 1.2))
+    roof = [(bx - .8, hz - H * .1 + .6), (bx + H * .08, hz - H * .17 - .4), (bx + H * .16 + .8, hz - H * .1 + .6)]
+    cv.line(roof)
+    door = [(bx + H * .055, hz + 1), (bx + H * .055, hz - H * .06), (bx + H * .105, hz - H * .06), (bx + H * .105, hz + 1)]
+    cv.obj([door], .5)
+    cv.hair(C.hatch_poly(door, 0, .9))
+    return cv.svg()
+
+
+def _meteor_frame(cx, cy, sw, sh, outer, inner, mode, ft=5., seed=0):
+    """The frame, from the shower itself: a garland of Leonids runs round the plate's edge, every
+    trail a swelling cut that tapers away behind a bright head, all streaming from the radiant
+    in Leo above the left of the plate; small stars are set between them."""
+    rng = _r.Random(seed + 13)
+    cv = KCanvas()
+    rx, ry = sw / 2, sh / 2
+    # the edge: a cut line, with a ring of night inside it
+    cv.obj([outer + [outer[0], inner[0]] + inner[::-1] + [inner[0]]], 0)
+    cv.line([outer + [outer[0]]])
+    cv.hair([inner + [inner[0]]])
+    n = len(outer)
+    mid = [((outer[i][0] + inner[i][0]) / 2, (outer[i][1] + inner[i][1]) / 2) for i in range(n)]
+    sky = []
+    for f in (.35, .7):
+        sky.append([(outer[i][0] + (inner[i][0] - outer[i][0]) * f, outer[i][1] + (inner[i][1] - outer[i][1]) * f) for i in range(n)] +
+                   [(outer[0][0] + (inner[0][0] - outer[0][0]) * f, outer[0][1] + (inner[0][1] - outer[0][1]) * f)])
+    # meteors: trails lying along the band, heads leading away from the radiant
+    radx, rady = cx - rx * .35, cy - ry * 3.
+    k = max(6, int(sw / 38))
+    gaps = []
+    for j in range(k):
+        i = int(n * (j + rng.uniform(.2, .6)) / k)
+        hx, hy = mid[i % n]
+        # trail along the band, direction chosen so the head points away from the radiant
+        a, b = mid[(i - 4) % n], mid[(i + 4) % n]
+        tx, ty = b[0] - a[0], b[1] - a[1]
+        tl = _m.hypot(tx, ty) or 1.
+        tx, ty = tx / tl, ty / tl
+        if (hx - radx) * tx + (hy - rady) * ty < 0:
+            tx, ty = -tx, -ty
+        dirs = 1 if ((b[0] - a[0]) * (hx - radx) + (b[1] - a[1]) * (hy - rady)) > 0 else -1
+        L = ft * rng.uniform(5., 8.)
+        seg = _m.hypot(b[0] - a[0], b[1] - a[1]) / 8 or 1.
+        m = max(3, int(L / seg))
+        trail = [mid[(i - dirs * s_) % n] for s_ in range(m + 1)]
+        gaps.append((i, trail))
+    for i, trail in gaps:
+        cv.obj([], 0)
+        swell(cv, trail[::-1], 1, 3)
+        hx, hy = trail[0]
+        r = ft * .3
+        cv.obj([_kell(hx, hy, r * 1.1, r * 1.1, 10)], 1.)
+        burst = []
+        for q in range(8):
+            a = _m.pi * q / 4
+            rr = r * (1.6 if q % 2 == 0 else .9)
+            burst.append([(hx, hy), (hx + rr * _m.cos(a), hy + rr * _m.sin(a))])
+        cv.line(burst)
+    # the night of the ring, broken where trails run
+    def near(p):
+        for i, trail in gaps:
+            for q in trail[::2]:
+                if (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 < (ft * .55) ** 2:
+                    return True
+        return False
+    out = []
+    for ring in sky:
+        run = []
+        for p in ring:
+            if near(p):
+                if len(run) > 1:
+                    out.append(run)
+                run = []
+            else:
+                run.append(p)
+        if len(run) > 1:
+            out.append(run)
+    cv.objs.insert(1, ([], 0, {.5: out, 1.: [], 1.5: []}))
     return cv.svg()
 
 
@@ -2678,4 +2780,6 @@ def plate(w, h, ctx):
 
     # the edition plan: Spots on the sun merges into Sky events ahead, whose art is a small
     # tailpiece of about 8% of the sheet, an irregular silhouette
-    return form_plate(w, h, ctx, sc, "irregular", "tailpiece", seed, fade=9.)
+    ft = max(4., min(10., h * .08))
+    return form_plate(w, h, ctx, sc, "irregular", "tailpiece", seed,
+                      frame=lambda *a: _meteor_frame(*a, ft=ft, seed=seed), ft=ft, fade=0.)

@@ -470,7 +470,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1162,7 +1162,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1177,7 +1177,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1198,7 +1198,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1253,7 +1253,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2615,6 +2615,55 @@ def lisa(X, Y, W, H, seed, mode):
     return cv.svg()
 
 
+def _orbit_frame(cx, cy, sw, sh, outer, inner, mode, ft=5., seed=0):
+    """The frame, from the mission itself: the oval is LISA's orbit round the Sun, cut as a
+    graduated ring like an orrery's, the Sun rayed at its left and the Earth, which the triangle
+    trails by twenty degrees, a small hatched globe on the ring at its right."""
+    cv = KCanvas()
+    rx, ry = sw / 2, sh / 2
+    band = _kell(cx, cy, rx, ry, 120)
+    inner_ = _kell(cx, cy, rx - ft, ry - ft, 120)
+    cv.obj([band + [band[0], inner_[0]] + inner_[::-1] + [inner_[0]]], 0)
+    cv.line([band + [band[0]], inner_ + [inner_[0]]])
+    # the ring's face: a fine ground of rings, the graduations cut over it
+    cv.hair([_kell(cx, cy, rx - ft * f, ry - ft * f, 120) + [(cx + rx - ft * f, cy)] for f in (.3, .7)])
+    ticks, big = [], []
+    for i in range(120):
+        a = 2 * _m.pi * i / 120
+        c, s = _m.cos(a), _m.sin(a)
+        p0 = (cx + (rx - ft * .3) * c, cy + (ry - ft * .3) * s)
+        if i % 10 == 0:
+            p1 = (cx + (rx - ft * .95) * c, cy + (ry - ft * .95) * s)
+            big.append([p0, p1])
+        else:
+            p1 = (cx + (rx - ft * .7) * c, cy + (ry - ft * .7) * s)
+            ticks.append([p0, p1])
+    cv.hair(ticks)
+    cv.line(big)
+    swell(cv, [(cx + rx * _m.cos(a), cy + ry * _m.sin(a)) for a in [.1 + 2.9 * i / 40 for i in range(41)]], -1, 2)
+    # the Sun at the left: a disc with alternate long and short rays
+    sx, sy = cx - rx + ft * .5, cy
+    sr = ft * 1.1
+    rays = []
+    for i in range(16):
+        a = 2 * _m.pi * i / 16
+        L = sr * (1.9 if i % 2 == 0 else 1.45)
+        rays.append([(sx + sr * _m.cos(a), sy + sr * _m.sin(a)), (sx + L * _m.cos(a), sy + L * _m.sin(a))])
+    cv.obj([_kell(sx, sy, sr * 1.9, sr * 1.9, 24)], 0)
+    cv.line(rays)
+    sun = _kell(sx, sy, sr, sr, 24)
+    cv.obj([sun], 1.)
+    cv.hair([_kell(sx, sy, sr * .6, sr * .6, 16) + [(sx + sr * .6, sy)]])
+    # the Earth on the ring at the right
+    ex, ey = cx + rx - ft * .5, cy
+    er = ft * .85
+    earth = _kell(ex, ey, er, er, 24)
+    cv.obj([earth], 1.)
+    cv.hair(form_hatch(earth, ex - er * .4, ey - er * .4, er * .55, er * 2., 1., -.4, 2.3, 1., 18))
+    cv.hair([[(ex + er * .5 * _m.cos(a), ey + er * _m.sin(a)) for a in [-_m.pi / 2 + _m.pi * i / 12 for i in range(13)]]])
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 11 * int(ctx.get("sheet", 0) or 0) + 101
@@ -2623,4 +2672,6 @@ def plate(w, h, ctx):
         return clip_to(f"lisa{mode}{int(H)}", inner, lisa(X, Y, W, H, seed, mode))
 
     # the edition plan: a small tailpiece of about 8% of the sheet on the last sheet
-    return form_plate(w, h, ctx, sc, "oval", "tailpiece", seed, fade=10.)
+    ft = max(4., min(10., h * .08))
+    return form_plate(w, h, ctx, sc, "oval", "tailpiece", seed,
+                      frame=lambda *a: _orbit_frame(*a, ft=ft, seed=seed), ft=ft, fade=0.)

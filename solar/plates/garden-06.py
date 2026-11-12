@@ -471,7 +471,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1163,7 +1163,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1178,7 +1178,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1199,7 +1199,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1254,7 +1254,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2412,7 +2412,7 @@ def forest_floor(cv, X, y0, W, y1, seed, dens=1.):
                 b = a + rng.uniform(-.9, .9)
                 ll = L * rng.uniform(.6, 1.)
                 cv.hair([(x, y), (x + ll * math.cos(b), y + ll * math.sin(b) * .45)])
-            if rng.random() < .35:
+            if rng.random() < .2:
                 cv.line([(x - L * .3, y + 1.2), (x + L * .5, y + 1.2)])
             x += L * rng.uniform(1.1, 2.) / dens
         y += 2.2 + 3.5 * f
@@ -2516,11 +2516,9 @@ def scene(X, Y, W, H, seed, detail=1.):
         a = rng.uniform(-.6, .6)
         ln = rng.uniform(6, 11)
         for dd in (-1, 1):
-            fr.line([(sx_, sy_), (sx_ + ln * math.cos(a + dd * .12), sy_ + ln * math.sin(a + dd * .12))])
+            fr.hair([(sx_, sy_), (sx_ + ln * math.cos(a + dd * .12), sy_ + ln * math.sin(a + dd * .12))])
     R1 = min(W * .21, H * .28)
     gm = Y + H * .88
-    fir(fr, X + W * .07, Y + H * .02, gy0 + H * .05, W * .3, rng)
-    fir(fr, X + W * .95, Y + H * .1, gy0 + H * .04, W * .24, rng)
     for (sx_, sw_) in ((X + W * .42 + R1 * .5, R1 * .8), (X + W * .63 + R1 * .35, R1 * .55)):
         shp = ell(sx_, gm + 1, sw_, R1 * .1, 24)
         fr.obj([shp], 0)
@@ -2735,6 +2733,98 @@ def layout_band(w, h, seed):
     return "".join(o)
 
 
+def _fir_arch(cx, cy, sw, sh, outer, inner, mode, ft=8., seed=0):
+    """The frame, from the forest the mushrooms grow under: two Douglas-fir boughs rise up the
+    sides of the arch and meet at its crown, each twig set with needles in two ranks, cones
+    hanging with their three-pointed bracts, and a button matsutake as the keystone."""
+    rng = _r.Random(seed + 5)
+    cv = KCanvas()
+    rx, ry = sw / 2, sh / 2
+    rise = min(rx * .9, sh * .5)
+    spring = cy - ry + rise
+    d = ft * .5
+    def arcpt(a):
+        return (cx + (rx - d) * _m.cos(a), spring - (rise - d) * _m.sin(a))
+    boughs = []
+    for sg in (-1, 1):
+        pts = [(cx + sg * (rx - d), cy + ry - 1)]
+        n = 12
+        for i in range(1, n + 1):
+            pts.append((cx + sg * (rx - d), cy + ry - 1 - (cy + ry - 1 - spring) * i / n))
+        for i in range(1, 27):
+            a = _m.pi / 2 - sg * (_m.pi / 2) * (1 - i / 26.)
+            pts.append(arcpt(a))
+        boughs.append((sg, _dres(pts, 2.)))
+    cones = []
+    for sg, pts in boughs:
+        n = len(pts)
+        wl = [max(.5, ft * .16 * (1 - .6 * i / n)) for i in range(n)]
+        R = _C._Rib(pts, wl, wl)
+        cv.obj([R.outline()], 1.)
+        cv.hair(R.contour(.4 * sg, 0, 1))
+        # twigs: alternate sides, set at a slant toward the crown, needles in two ranks
+        step = max(3., ft * .55)
+        L = 0.
+        k = 0
+        for i in range(1, n):
+            L += _m.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])
+            if L < step:
+                continue
+            L = 0.
+            k += 1
+            tx, ty = pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]
+            tl = _m.hypot(tx, ty) or 1.
+            tx, ty = tx / tl, ty / tl
+            side = 1 if k % 2 else -1
+            nx, ny = -ty * side, tx * side
+            tlen = ft * rng.uniform(.75, 1.)
+            ax, ay = pts[i]
+            tw = [(ax + (tx * .6 + nx * .8) * tlen * u, ay + (ty * .6 + ny * .8) * tlen * u) for u in (0, .5, 1)]
+            cv.line([tw[0], tw[2]])
+            nd = []
+            m = max(3, int(tlen / 1.8))
+            for j in range(1, m + 1):
+                u = j / (m + .5)
+                bx, by = ax + (tw[2][0] - ax) * u, ay + (tw[2][1] - ay) * u
+                ln = ft * .32 * (1 - .4 * u)
+                dx, dy = (tw[2][0] - ax) / tlen, (tw[2][1] - ay) / tlen
+                for s2 in (-1, 1):
+                    ex, ey = dx * .55 - dy * s2 * .85, dy * .55 + dx * s2 * .85
+                    nd.append([(bx, by), (bx + ex * ln, by + ey * ln)])
+            cv.hair(nd)
+            if k % 9 == 4 and len(cones) < 6:
+                cones.append((tw[1][0], tw[1][1] + ft * .2))
+    for x, y in cones:
+        cr, ch = ft * .32, ft * .85
+        cone = [(x + cr * _m.cos(a), y + ch * .5 + ch * .5 * _m.sin(a)) for a in [2 * _m.pi * i / 16 for i in range(16)]]
+        cv.obj([cone], 1.)
+        # scales in crossing spirals, the bract tips a little ticks
+        cv.hair(_C.hatch_poly(cone, 35, 1.3))
+        cv.hair(_C.hatch_poly(cone, -35, 1.6))
+        swell_outline(cv, cone, (-1., -1.), 1)
+    # the keystone: a button matsutake standing at the crown
+    kx, ky = cx, cy - ry + d * .6
+    cap = [(kx + ft * .75 * _m.cos(a), ky + ft * .2 - ft * .6 * _m.sin(a)) for a in [_m.pi * i / 16 for i in range(17)]]
+    stem = [(kx - ft * .3, ky + ft * .2), (kx + ft * .3, ky + ft * .2), (kx + ft * .35, ky + ft * 1.1), (kx - ft * .35, ky + ft * 1.1)]
+    cv.obj([stem], 1.)
+    cv.hair(_C.hatch_poly([(kx, ky + ft * .2), (kx + ft * .3, ky + ft * .2), (kx + ft * .35, ky + ft * 1.1), (kx, ky + ft * 1.1)], 90, 1.))
+    cv.obj([cap], 1.)
+    cv.hair(form_hatch(cap, kx - ft * .3, ky - ft * .3, ft * .5, ft * 1.6, 1.1, -.3, 2.4, 1., 18))
+    swell_outline(cv, cap, (-1., -1.), 2)
+    # a cushion of moss at each foot
+    for sg in (-1, 1):
+        x0 = cx + sg * (rx - d)
+        y0 = cy + ry - 1
+        tufts = []
+        for j in range(14):
+            bx = x0 - sg * j * ft * .18 + rng.uniform(-.5, .5)
+            ln = ft * rng.uniform(.4, .9)
+            a = -_m.pi / 2 + rng.uniform(-.6, .6)
+            tufts.append([(bx, y0), (bx + _m.cos(a) * ln, y0 + _m.sin(a) * ln)])
+        cv.hair(tufts)
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 6
@@ -2743,4 +2833,6 @@ def plate(w, h, ctx):
         body = small_scene(X, Y, W, H, seed) if mode == "s" else scene(X, Y, W, H, seed, 1. if mode == "t" else .8)
         return clip_to(f"gdn{mode}{int(H)}", inner, body)
 
-    return form_plate(w, h, ctx, sc, "arched", "vignette", seed)
+    ft = max(5., min(14., h * .06))
+    return form_plate(w, h, ctx, sc, "arched", "vignette", seed,
+                      frame=lambda *a: _fir_arch(*a, ft=ft, seed=seed), ft=ft, fade=0.)

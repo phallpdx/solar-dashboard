@@ -470,7 +470,7 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
     lines = []
     while y < Y + H + 2:
         t = (y - Y) / max(1., H)
-        pitch = 1.5 if t < .2 else 2. if t < .55 else 3.
+        pitch = 1.8 if t < .2 else 2.2 if t < .55 else 3.
         run = []
         x = X - 2
         while x <= X + W + 2:
@@ -1162,7 +1162,7 @@ def _sub(pts, t0, t1):
     return pts[i0:i1 + 1]
 
 
-def _resample(pts, step=1.5):
+def _dres(pts, step=1.5):
     out = [pts[0]]
     for a, b in zip(pts, pts[1:]):
         L = _m.hypot(b[0] - a[0], b[1] - a[1])
@@ -1177,7 +1177,7 @@ def swell(cv, pts, side=1, weight=2):
     over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
     if len(pts) < 2:
         return
-    pts = _resample(pts, 1.5)
+    pts = _dres(pts, 1.5)
     cv.line(pts)
     spans = ((.12, .88), (.25, .75), (.38, .62))
     for k in range(min(3, weight)):
@@ -1198,7 +1198,7 @@ def swell_outline(cv, poly, light=(-1., -1.), weight=2):
     L = _m.hypot(lx, ly) or 1.
     lx, ly = lx / L, ly / L
     run = []
-    pts = _resample(poly + [poly[0]], 1.5)
+    pts = _dres(poly + [poly[0]], 1.5)
     for p in pts:
         dx, dy = p[0] - cx, p[1] - cy
         dl = _m.hypot(dx, dy) or 1.
@@ -1253,7 +1253,7 @@ def _in_poly(x, y, poly):
 
 def _clip_pl_poly(pl, poly):
     out, run = [], []
-    for p in _resample(pl, 1.):
+    for p in _dres(pl, 1.):
         if _in_poly(p[0], p[1], poly):
             run.append(p)
         else:
@@ -2327,7 +2327,7 @@ def _fields(cv, X, Y, W, H, hy, vx):
     g = [(X - 2, hy), (X + W + 2, hy), (X + W + 2, Y + H + 2), (X - 2, Y + H + 2)]
     cv.obj([g], 0)
     bot = Y + H + 2
-    bounds = [X - W * 2.2, X - W * .6, X + W * .1, vx - W * .06, vx + W * .2, X + W * .78, X + W * 1.5, X + W * 3]
+    bounds = [X - W * 12, X - W * 2.2, X - W * .6, X + W * .1, vx - W * .06, vx + W * .2, X + W * .78, X + W * 1.5, X + W * 3, X + W * 14]
     rows = []
     yy, step = hy + 1.5, 2.
     while yy < bot:
@@ -2337,7 +2337,7 @@ def _fields(cv, X, Y, W, H, hy, vx):
     for i in range(len(bounds) - 1):
         b0, b1 = bounds[i], bounds[i + 1]
         sec = [(vx + (b0 - vx) * .02, hy), (vx + (b1 - vx) * .02, hy), (b1, bot), (b0, bot)]
-        if i in (1, 5):
+        if i in (2, 6):
             # ploughed: furrows to the vanishing point, about 3 px apart at the front
             n = max(2, int(abs(b1 - b0) / 3.))
             cv.hair([[(vx + (b0 + (b1 - b0) * j / n - vx) * .02, hy + .5), (b0 + (b1 - b0) * j / n, bot)] for j in range(n + 1)])
@@ -2405,6 +2405,8 @@ def _dropbox(cv, bx, base, s, rng, label=True):
     _H(cv, [(bx + s * .82, top), (bx + s, top), (bx + s, base - s * .18), (bx + s * .82, base - s * .18)], 0, 2)
     _H(cv, [(bx, top), (bx + s * .62, top), (bx + s * .62, base - s * .18), (bx, base - s * .18)], 90, 3, .5)
     cv.hair([[(bx + 1.5, top + 1.5), (bx + 1.5, base - s * .18 - 1.5)]])
+    swell(cv, [(bx + s, top), (bx + s, base - s * .18)], 1, 3)
+    swell(cv, [(bx, base - s * .18), (bx + s, base - s * .18)], -1, 2)
     # door seam and handle
     cv.line([(bx + s * .08, top + bh * .42), (bx + s * .92, top + bh * .42)])
     hx = bx + s * .5
@@ -2455,6 +2457,9 @@ def _dropbox(cv, bx, base, s, rng, label=True):
     cv.obj([env], 1.)
     _H(cv, [E(-ew / 2, 0), E(ew / 2, 0), E(ew / 2, -eh * .35), E(-ew / 2, -eh * .35)], 0, 3, inset=.4)
     cv.hair([E(-ew / 2, -eh), E(0, -eh * .45), E(ew / 2, -eh)])
+    # the paper's laid lines, open, following the envelope's tilt; its shadowed edge swelling
+    cv.hair(C.hatch_poly(env, math.degrees(a), 3.4, 1.2))
+    swell(cv, [E(ew / 2, -eh), E(ew / 2, 0), E(-ew / 2, 0)], 1, 2)
     # the voter's X
     bxc, byc = E(-ew * .2, -eh * .55)
     k = eh * .28

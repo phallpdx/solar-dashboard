@@ -210,30 +210,25 @@ def _heron(cv, ox, oy, s, mirror=False):
 
 
 def _barn(cv, x, yb, s):
-    """A gambrel barn with board-and-batten walls; its weathervane is a Blazers pinwheel."""
+    """A gambrel barn with board-and-batten walls, lit from the low sun on the left: the front
+    pale, the boards cut in vertical lines that deepen toward the right, the roof dark under its
+    eaves; the weathervane is a Blazers pinwheel."""
     w, h1, h2 = 24 * s, 9 * s, 17 * s
     rf = [(x - 1 * s, yb - h1), (x + w * .12, yb - h1 - 5 * s), (x + w / 2, yb - h2), (x + w * .88, yb - h1 - 5 * s),
           (x + w + 1 * s, yb - h1)]
     wall = [(x, yb), (x, yb - h1), (x + w, yb - h1), (x + w, yb)]
-    cv.obj([wall], 1.)
-    cv.hair([[(x + i, yb - h1 + .5), (x + i, yb - .3)] for i in [k * 2 for k in range(1, int(w / 2))]])
+    bu_form(cv, wall, lambda px, py: .18 + .4 * (px - x) / w + .25 * max(0., (yb - h1 + 3 * s - py) / (3 * s)), 90., 2., 0, None, 1.)
     dw, dh = w * .34, h1 * .78
     door = [(x + w / 2 - dw / 2, yb), (x + w / 2 - dw / 2, yb - dh), (x + w / 2 + dw / 2, yb - dh), (x + w / 2 + dw / 2, yb)]
-    cv.obj([door], 1.)
-    cv.line(C.hatch_poly(door, 90, 1.5))
+    bu_form(cv, door, lambda px, py: .62 + .2 * (px - door[0][0]) / dw, 90., 1.5, 0, None, 1.)
     cv.obj([], 0)
     cv.line([door[0], door[2]])
     cv.line([door[1], door[3]])
     roof = rf + [(x + w + 1 * s, yb - h1 + 1.2), (x - 1 * s, yb - h1 + 1.2)]
-    cv.obj([roof], 1.)
-    cv.hair(C.hatch_poly(roof, 0, 1.5))
-    cv.hair(C.hatch_poly(roof, 70, 3))
-    # loft window
+    bu_form(cv, roof, lambda px, py: .4 + .35 * (px - x) / w + .15 * (py - (yb - h2)) / (h2 - h1), 75., 1.5, 0, 0., 1., cross_at=.7)
     lw = [(x + w / 2 - 2 * s, yb - h1 - 1.5 * s), (x + w / 2 + 2 * s, yb - h1 - 1.5 * s),
           (x + w / 2 + 2 * s, yb - h1 - 5.5 * s), (x + w / 2 - 2 * s, yb - h1 - 5.5 * s)]
-    cv.obj([lw], 1.)
-    cv.line(C.hatch_poly(lw, 0, 1.))
-    # weathervane: pole, arrow and a five-and-five pinwheel
+    bu_form(cv, lw, lambda px, py: .85, 0., 1.5, 0, None, 1.)
     vx, vy = x + w / 2, yb - h2
     top = vy - 6 * s
     cv.obj([], 0)
@@ -247,95 +242,153 @@ def _barn(cv, x, yb, s):
         for sg in (1, -1):
             cv.hair([(pc[0] + pr * (.15 + .75 * t) * math.cos(a + sg * (.15 + .9 * t * t)),
                       pc[1] + pr * (.15 + .75 * t) * math.sin(a + sg * (.15 + .9 * t * t))) for t in (0, .33, .66, 1)])
+    return x, x + w
+
+
+def _heron_m(cv, ox, oy, s, mirror=False):
+    """A great blue heron in the shallows, modelled: the breast lit by the low sun, the back and
+    the folded wing cut darker in lines that run with the feathers."""
+    body = M._chunks([
+        [(-20, -40.2), (-15, -40.6), (-11.8, -41.6)],
+        [(-11.8, -41.6), (-9, -42.4), (-7.4, -41.4)],
+        [(-7.4, -41.4), (-3.4, -43.6), (-.6, -43.6)],
+        [(-.6, -43.6), (-5, -42.2), (-6.6, -40.2), (-6.4, -37.6), (-4.6, -34.2), (-3.4, -30.6), (-1.2, -28.2),
+         (4, -27.6), (10, -24.6), (16, -18.6)],
+        [(16, -18.6), (8, -16.2), (2, -14.8), (-3.4, -16.2), (-6.4, -20.2), (-7.2, -24.6), (-8.6, -29.6),
+         (-9.8, -34.4), (-9.6, -38.4), (-11.6, -39.6), (-20, -40.2)]], 4)
+    body = M._map(body, ox, oy, s, mirror)
+    for leg in ([(0, -14.8), (.6, -7), (-.5, 0)], [(2.6, -15), (3.6, -7), (4.4, 0)]):
+        cv.obj([], 0)
+        cv.line(M._map(leg, ox, oy, s, mirror))
+    c = M._map([(2, -22)], ox, oy, s, mirror)[0]
+    bt = bu_sph(c[0] - 3 * s, c[1] - 3 * s, 14 * s, 10 * s, .12, .6)
+    bu_form(cv, body, bt, 70 if not mirror else 110, 1.5, 2 * s, None, 1.)
+    wing = M._map(M._spline([(-5.6, -22), (-1, -27), (6, -25.6), (13.6, -19), (6, -17), (-1.6, -16.6),
+                             (-5.6, -22)], True, 4), ox, oy, s, mirror)
+    bu_form(cv, wing, bu_sph(c[0], c[1] - 2 * s, 10 * s, 6 * s, .35, .5), -28 if not mirror else 208, 1.5, 1.5 * s, None, 1.)
+    plume = M._map([(-7.4, -41.4), (-3.4, -43.6), (-.6, -43.6)], ox, oy, s, mirror)
+    cv.heavy(plume)
+    e = M._map([(-9.6, -40.8)], ox, oy, s, mirror)[0]
+    cv.line([(e[0] - .3, e[1]), (e[0] + .3, e[1])])
+    cv.line(M._map([(-20, -40.2), (-15, -40.6), (-11.8, -41.6)], ox, oy, s, mirror))
 
 
 def scene(cv, x, y, w, h, seed, date, compact=False):
-    """Draw the morning scene into cv over the box (x, y, w, h); the caller clips it."""
+    """The island morning, modelled in burin tone (the caller clips it). Background: the sky,
+    dark aloft and opening round the low sun, modelled cumulus, Mt. Hood lit on its west face.
+    Middle: the far shore's cottonwoods and the Columbia, broken into ripples with the sun's
+    glitter and Hood's reflection. Foreground, the richest: the island bank in contour cuts, the
+    barn, the heron and the reeds."""
     rng = random.Random(seed)
     s = max(.55, min(w / 135., h / 88.))
     portrait = h > w * 1.05
-    yh = y + h * (.6 if portrait else .58)          # horizon (far shore)
-    yb = y + h * (.88 if portrait else .86)         # near bank top
+    yh = y + h * (.6 if portrait else .58)
+    yb = y + h * (.88 if portrait else .86)
     sx = x + w * (.34 if not compact else .4)
     sr = (min(w, h) * (.11 if not compact else .17))
     sy = yh - sr * .35 - 2 * s
-    # --- sky: graded burin rules with bulino streaks (the clouds come below) ---
-    kk_sky(cv, x, y, w, yh + 1, seed, 0)
-    nr = 18
-    # rays between the burst sectors: fine radial lines from the rim
-    rays = []
-    for i in range(nr * 2):
-        a = math.pi * i / nr
-        if math.sin(a) > -.02:
-            continue
-        r0, r1 = sr * 1.35, sr * (2.6 if i % 2 else 3.3)
-        rays.append([(sx + r0 * math.cos(a), sy + r0 * math.sin(a)), (sx + r1 * math.cos(a), sy + r1 * math.sin(a))])
-    cv.hair(rays)
-    # --- the sun: a lined disc with a flaming rim ---
+    # ---- background
+    bu_sky(cv, x, y, w, yh + 1 - y, lambda px, py: .66 - .42 * max(0., (py - y) / (yh - y)), (sx, sy, w * .32), seed, 2.)
     disc = C._ell_pts(sx, sy, sr, sr, 48)[:-1]
-    cv.obj([disc], 1.5)
-    q = sr - 2.
-    while q > 1.5:
-        cv.hair(C._ell_pts(sx, sy, q, q, max(16, int(q * 4))))
-        q -= 2. if q > sr * .55 else 3.
+    cv.obj([disc], 1.)
+    for q in (sr * .82, sr * .6):
+        bu_cut(cv, C._ell_pts(sx, sy, q, q, 40, math.pi * .1, math.pi * .9), lambda px, py: .3)
     flames = []
-    for i in range(24):
-        a = TAU * i / 24
-        a2 = a + .13
-        flames.append([(sx + (sr + 1.3) * math.cos(a), sy + (sr + 1.3) * math.sin(a)),
-                       (sx + (sr + (3.2 if i % 2 else 2.2) * s) * math.cos(a2), sy + (sr + (3.2 if i % 2 else 2.2) * s) * math.sin(a2))])
+    for i in range(30):
+        a = TAU * i / 30
+        a2 = a + .12
+        r1 = sr + (3.4 if i % 2 else 2.0) * s
+        flames.append([(sx + (sr + 1.3) * math.cos(a), sy + (sr + 1.3) * math.sin(a)), (sx + r1 * math.cos(a2), sy + r1 * math.sin(a2))])
     cv.obj([], 0)
-    cv.line(flames)
-    # --- clouds: a bank across the top, one lip drifting over the sun ---
+    cv.hair(flames)
     crng = random.Random(seed * 13 + 1)
     ch = max(9., h * .15)
-    clouds = [(x - w * .05, x + w * .3, y + h * .2 + ch * .3), (x + w * .5, x + w * 1.05, y + h * .16 + ch * .4),
-              ] + ([] if compact else [(sx - sr * .6, sx + sr * 3.4, sy - sr * 1.75)])
+    clouds = [(x - w * .05, x + w * .3, y + h * .22 + ch * .3), (x + w * .5, x + w * 1.05, y + h * .17 + ch * .4)]
+    if not compact:
+        clouds.append((sx - sr * .5, sx + sr * 3.2, sy - sr * 1.7))
     if portrait:
         clouds.append((x + w * .05, x + w * .55, y + h * .36))
     for xl, xr, cb in clouds:
-        _cloud(cv, xl, xr, cb, ch * crng.uniform(.75, 1.0), crng)
-    # --- Mt. Hood beyond the river, catching the light ---
+        bu_cloud(cv, xl, xr, cb, ch * crng.uniform(.75, 1.0), crng)
+    # Mt. Hood: the snow lit on the west face, the east face cut down its fall line
     hx = x + w * (.72 if not compact else .74)
-    hpk = yh - h * (.3 if not portrait else .2)
-    _hood(cv, hx, hpk, s, yh - 1)
-    # --- the far shore of trees ---
-    _treeline(cv, x - 2, x + w + 2, yh + 1, s, random.Random(seed + 5))
-    # --- the Columbia: rippled water, glitter under the sun ---
-    water = [(x - 2, yh + 1.5), (x + w + 2, yh + 1.5), (x + w + 2, y + h + 2), (x - 2, y + h + 2)]
-    cv.obj([water], 0)
-    wr = random.Random(seed + 9)
-    yy = math.floor(yh) + 3.
-    k = 0
-    while yy < y + h + 2:
-        depth = (yy - yh) / max(1., (y + h - yh))
-        glit = sr * (.6 + .9 * depth)
-        seg = []
-        xx = x - 2
-        ph = wr.random() * 9
-        while xx <= x + w + 2:
-            dash = math.sin(xx * .35 / (1 + depth) + ph + k) > -.75
-            in_glit = abs(xx - sx) < glit and (math.sin(xx * 1.7 + k * 2.3) > .25 or (abs(xx - sx) < glit * .3 and k % 2))
-            if dash and not in_glit:
-                seg.append((xx, yy + .35 * math.sin(xx * .5 + k)))
-            else:
-                if len(seg) > 1:
-                    cv.hair(seg)
-                seg = []
-            xx += 1.
-        if len(seg) > 1:
-            cv.hair(seg)
-        yy += 2.
-        k += 1
-    # glitter flecks
-    gl = []
-    for i in range(int(18 * s)):
-        gy = yh + 3 + (y + h - yh) * wr.random() ** 1.3
-        gx = sx + wr.uniform(-1, 1) * sr * (.6 + .8 * (gy - yh) / max(1, h * .4))
-        gl.append([(gx - 1.6, gy), (gx + 1.6, gy)])
-    cv.hair(gl)
-    # --- the near bank of Sauvie Island ---
-    br = random.Random(seed + 3)
+    H = h * (.3 if not portrait else .2)
+    hpk = yh - H
+    L = [(hx - H * 1.45, yh), (hx - H * 1.0, yh - H * .22), (hx - H * .62, yh - H * .45),
+         (hx - H * .34, yh - H * .68), (hx - H * .18, yh - H * .83), (hx - H * .07, yh - H * .94), (hx, hpk)]
+    R = [(hx + H * .05, hpk + H * .03), (hx + H * .12, yh - H * .9), (hx + H * .2, yh - H * .8),
+         (hx + H * .28, yh - H * .74), (hx + H * .45, yh - H * .58), (hx + H * .8, yh - H * .32), (hx + H * 1.2, yh - H * .12), (hx + H * 1.6, yh)]
+    prof = M._spline(L, False, 3) + M._spline(R, False, 3)[1:]
+    mpoly = prof + [(hx + H * 1.6, yh + 2), (hx - H * 1.45, yh + 2)]
+    cv.obj([mpoly], .5)
+    ridge = [(hx, hpk), (hx + H * .02, hpk + H * .3), (hx - H * .05, yh - H * .3), (hx + H * .1, yh)]
+    wedge = ridge + [(hx + H * 1.7, yh), (hx + H * 1.7, hpk - 2)]
+    ins = kk_inside(mpoly)
+    for pl in bu_hatch(wedge, 64., 1.5, 1.):
+        pl = [p for p in pl if ins(p[0], p[1])]
+        if len(pl) > 1:
+            bu_cut(cv, pl, lambda px, py: .32 + .45 * (py - hpk) / H + .12 * (px - hx) / H)
+    grng = random.Random(7)
+    for k in range(9):
+        t = (k + 1) / 10
+        x0, y0 = hx - H * .05 * t, hpk + H * (.1 + .1 * t)
+        gx = hx - H * (.25 + 1.05 * t)
+        g = [(x0 + (gx - x0) * u + math.sin(u * 5 + k) * .8, y0 + (yh - H * (.2 + .1 * grng.random()) - y0) * u ** .9) for u in [i / 12 for i in range(13)]]
+        g = [p for p in g if ins(p[0], p[1] - 1)]
+        if len(g) > 1:
+            bu_cut(cv, g, lambda px, py: .1 + .5 * (py - hpk) / H)
+    # forest skirt on the lower slopes
+    sk = [(hx - H * 1.5, yh), (hx - H * .9, yh - H * .25), (hx - H * .5, yh - H * .3), (hx, yh - H * .36),
+          (hx + H * .5, yh - H * .33), (hx + H * 1.0, yh - H * .2), (hx + H * 1.65, yh)]
+    skp = sk + [(hx + H * 1.65, yh + 2), (hx - H * 1.5, yh + 2)]
+    bu_form(cv, skp, lambda px, py: .45 + .3 * (px - hx + H) / (2.6 * H), 80., 1.5, 0, None, 0)
+    # ---- middle ground: the far shore of cottonwoods and firs
+    trng = random.Random(seed + 5)
+    crowns = []
+    xx = x - 4
+    while xx < x + w + 4:
+        if trng.random() < .3:
+            r = trng.uniform(2., 3.) * s
+            crowns.append((xx, yh - r * 2.2, r, 1))          # a fir spire
+        else:
+            r = trng.uniform(3.5, 6.5) * s
+            crowns.append((xx, yh - r * .55, r, 0))          # a cottonwood crown
+        xx += r * 1.25
+    prof = []
+    xx = x - 4
+    while xx <= x + w + 4:
+        top = yh
+        for cx_, cy_, r, kind in crowns:
+            dx = abs(xx - cx_)
+            if kind and dx < r:
+                top = min(top, cy_ - r + dx * 2.6)
+            elif not kind and dx < r:
+                top = min(top, cy_ - math.sqrt(r * r - dx * dx) * .8)
+        prof.append((xx, top))
+        xx += 1.
+    tpoly = prof + [(x + w + 4, yh + 1.5), (x - 4, yh + 1.5)]
+
+    def tree_t(px, py):
+        t = .82
+        for cx_, cy_, r, kind in crowns:
+            if abs(px - cx_) < r:
+                u, v = (px - cx_) / r, (py - cy_) / r
+                t = min(t, .42 + .3 * (u + 1) / 2 + .2 * max(0., v))
+        return t
+    bu_form(cv, tpoly, tree_t, 90., 1.5, 0, None, .5)
+    cv.obj([[(x - 4, yh - 1.5), (x + w + 4, yh - 1.5), (x + w + 4, yh + 1.5), (x - 4, yh + 1.5)]], 0)
+    cv.line([(x - 4, yh), (x + w + 4, yh)])
+    # the Columbia, Hood and the shore broken in it
+    def refl(px, py):
+        d = py - yh
+        my = yh - d * 1.2
+        if d < 3.5:
+            return .78
+        if my > hpk and abs(px - hx) < (my - hpk) * 1.1:
+            return .18 if px < hx else .55
+        return None
+    bu_water(cv, x - 2, yh + 1.5, w + 4, yb - yh + 6, refl, seed, lambda px, py: .3 + .3 * (py - yh) / (yb - yh) + .15 * min(1., abs(px - sx) / (w * .5)), 2., (sx, sr * .7))
+    # ---- foreground: the island bank in contour cuts, darkening toward us
     bank = []
     N = 40
     for i in range(N + 1):
@@ -345,57 +398,30 @@ def scene(cv, x, y, w, h, seed, date, compact=False):
         bank.append((bx, yb - rise + math.sin(t * 17 + seed) * 1.2))
     bpoly = bank + [(x + w + 2, y + h + 2), (x - 2, y + h + 2)]
     cv.obj([bpoly], 1.)
-    cv.hair(C.hatch_poly(bpoly, 0, 3, 1.))
-    meadow = []
-    yy0 = yb + 3 * s
-    rowk = 0
-    while yy0 < y + h + 2:
-        xx = x - 2 + br.uniform(0, 3)
-        while xx < x + w + 2:
-            ty = _interp_y(bank, xx)
-            if yy0 > ty + 2.5:
-                ln = (1.6 + .5 * rowk) * s * br.uniform(.7, 1.2)
-                meadow.append([(xx, yy0), (xx + br.uniform(-.8, .8), yy0 - ln)])
-            xx += br.uniform(1.6, 2.6) * (1 + .1 * rowk)
-        yy0 += (2.2 + .6 * rowk) * s
-        rowk += 1
-    cv.hair(meadow)
-    tufts = []
-    for (bx, by) in bank[1:-1]:
-        for j in range(2):
-            ox = bx + br.uniform(-1.5, 1.5)
-            ln = br.uniform(2.5, 5.) * s
-            lean = br.uniform(-1.4, 1.4)
-            tufts.append([(ox, by + 1.2), (ox + lean, by - ln)])
-    cv.line(tufts)
-    # reeds at the water's edge
-    reeds = []
+    nz = bu_noise(seed + 2, 14.)
+    d = 1.5
+    while d < h * .3:
+        ln = [(px, py + d) for px, py in bank]
+        bu_cut(cv, ln, lambda px, py, d=d: .3 + .4 * min(1., d / (h * .12)) + .18 * nz(px, py) + .1 * abs(px - (x + w / 2)) / w)
+        d += 2.
+    br = random.Random(seed + 3)
+    for (bx, by) in bank[1:-1:2]:
+        bu_tuft(cv, bx + br.uniform(-2, 2), by + 1.5, br.uniform(3.5, 6.5) * s, br, 5)
+    # reeds at the water's edge, cattails cut round
     rx0 = x + w * .62
-    for i in range(int(10 * s)):
-        rx = rx0 + i * 2.6 + br.uniform(-.6, .6)
-        ry = _interp_y(bank, rx) + 1
-        hh = br.uniform(7, 13) * s
-        reeds.append([(rx, ry), (rx + .6, ry - hh * .5), (rx + 1.6 + br.uniform(-.5, 1.2), ry - hh)])
-    cv.obj([], 0)
-    cv.line(reeds)
-    tails = []
-    for i, rd in enumerate(reeds):
-        if i % 3 == 1:
-            tx, ty = rd[1][0] + (rd[2][0] - rd[1][0]) * .55, rd[1][1] + (rd[2][1] - rd[1][1]) * .55
-            tails.append([(tx, ty - 1.6 * s), (tx + .2, ty + 1.6 * s)])
-    cv.heavy(tails)
-    # the barn on the bank, its weathervane a Blazers pinwheel
+    for i in range(int(9 * s)):
+        rx = rx0 + i * 3.2 + br.uniform(-.6, .6)
+        vg_reed(cv, rx, M._interp_y(bank, rx) + 1 if hasattr(M, "_interp_y") else _interp_y(bank, rx) + 1, br.uniform(8, 14) * s, br.uniform(-.1, .2), br, i % 3 == 1)
     bxp = x + w * (.1 if not compact else .08)
     _barn(cv, bxp, _interp_y(bank, bxp + 12 * s) + 2 * s, s * (1.0 if not compact else .7))
-    # the heron in the shallows
     hxp = x + w * .58
-    _heron(cv, hxp, _interp_y(bank, hxp) - 1.5 * s, s * .82, mirror=False)
+    _heron_m(cv, hxp, _interp_y(bank, hxp) - 1.5 * s, s * .82, mirror=False)
 
 
 def _scene_svg(cid, clip_d, bx, by, bw, bh, seed, date, compact=False):
     cv = C.Canvas()
     scene(cv, bx, by, bw, bh, seed, date, compact)
-    return f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">{cv.svg()}</g>'
+    return f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">{kk_svg(cv)}</g>'
 
 
 # ==============================================================================================
@@ -1304,8 +1330,11 @@ def kk_egg(kind, cx, cy, r):
 
 
 def kk_roundel(cx, cy, r, kind, bead=1.2):
-    """An egg in a small bead-ringed roundel on the matte."""
+    """An egg in a small bead-ringed roundel on the matte (the arms: Parker's real arms)."""
     ring, ox, oy = kk_ring(cx, cy, r, r, bead)
+    if kind == "arms":
+        return (f'<path d="{_kk_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="#fff" stroke="none"/>'
+                + bu_arms(cx - r * .72, cy - r * .95, r * 1.44, r * 1.9) + ring), ox
     return (f'<path d="{_kk_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="url(#kkM)" stroke="none"/>'
             + kk_egg(kind, cx, cy, r * .86) + ring), ox
 
@@ -1764,15 +1793,9 @@ def vg_ribbon(cv, x0, x1, yc, hgt, bow=.3, tails=True, seed=0):
 
 
 def vg_cartouche(cx, cy, r):
-    """The Somaster dedication cartouche, a placeholder until the arms are cut: a small beaded
-    oval holding crossed drumsticks over a sun, a scrolled leaf either side."""
-    cv = _C.Canvas()
-    for sg in (-1, 1):
-        vg_leaf(cv, cx + sg * r * .9, cy + r * .25, (_PI if sg < 0 else 0) - sg * .3, r * 2.2, r * .42, -sg * .4, sg)
-        vg_leaf(cv, cx + sg * r * .8, cy - r * .25, (_PI if sg < 0 else 0) + sg * .5, r * 1.7, r * .34, sg * .45, -sg)
-    s = kk_svg(cv)
-    rr, _ = kk_roundel(cx, cy, r, "arms", 1.)
-    return s + rr
+    """The Somaster dedication cartouche: Parker's arms (solar/arms.py) in a small beaded oval,
+    modelled leaves scrolling out either side (bu_cartouche in the burin kit)."""
+    return bu_cartouche(cx, cy, r)
 
 
 def vg_plate(w, h, scene, shape="oval", form="vignette", frame=None, arms=False, seed=0,
@@ -1968,17 +1991,14 @@ def _sky_frame(box, poly, w, h, mode, seed):
             yb = by + bh * (.27 + .1 * (k % 2)) + ch * .15 * k
             hh = ch * rng.uniform(.75, 1.05) * (1 - .12 * k)
             xa, xb = (x, x + span) if sg > 0 else (x - span, x)
-            kk_cloud(cv, xa, xb, yb, hh, rng)
+            bu_cloud(cv, xa, xb, yb, hh, rng)
             x += sg * span * .55
             k += 1
     gy = by + bh * .97
     for sg in (-1, 1):
-        cx = bx + bw / 2 + sg * bw * .38
-        reach = min(w / 2 - 6, bw * .5 + bh * .5) - bw * .38
-        n = max(5, int(reach / 6))
-        for i in range(n):
-            t = i / n
-            vg_reed(cv, cx + sg * reach * t, gy, bh * (.45 - .32 * t) * rng.uniform(.6, 1.05), sg * rng.uniform(.03, .2), rng, i % 3 == 0)
+        cx = bx + bw / 2 + sg * bw * .4
+        reach = min(w / 2 - 6, bw * .5 + bh * .55) - bw * .4
+        bu_reeds(cv, cx, cx + sg * reach, gy, bh * .5, rng, 1, None, .3, max(1.2, bh * .009))
     return kk_svg(cv)
 
 
@@ -1997,3 +2017,456 @@ def plate(w, h, ctx):
         return _scene_svg(cid, kk_rect_d(X, Y, W, H), X, Y, W, H, seed, date, mode == "band")
     return vg_plate(w, h, sc, shape="oval", form="vignette", seed=seed, arms=True,
                     frame=lambda *a: _sky_frame(*a, seed))
+
+
+# ==== BURIN KIT (begin) ==========================================================================
+# The modelling pass (Nov 12, batch 7 v2). Tone is cut, never filled: every form is laid in lines at
+# a fixed pitch that follow its surface, and each line swells from nothing in the light through
+# 0.5 and 1 px to 1.5 px in the shadow (bu_cut), so the subject comes up light out of a dark,
+# layered ground as in Dore, Bewick and Goltzius. Light falls from the upper left unless a form
+# says otherwise. The same block is pasted into every batch-7 plate; edit it in one place.
+#   bu_cut(cv, pl, tone)                a polyline cut as a swelling line, tone(x, y) in 0..1
+#   bu_form(cv, poly, tone, ang, ...)   a shape, hatched along ang (bowed to follow the form),
+#                                       cross-cut in its darkest part
+#   bu_rib(cv, R, ...)                  a round member (_Rib): lines along it, lit on one side
+#   bu_ball(cv, cx, cy, rx, ry, ...)    a sphere / ovoid in curved cuts
+#   bu_sky / bu_cloud / bu_water / bu_tuft / bu_clump: sky, modelled cumulus, broken
+#                                       reflections, foreground grass, foliage masses
+#   bu_arms(x, y, w, h, seed)           Parker's arms (solar/arms.py) placed in a box
+import math as _bm
+import random as _br
+from arms import arms as _bu_arms_markup
+
+_BLX, _BLY, _BLZ = -.52, -.62, .59          # toward the light: upper left, a little in front
+
+
+def bu_w(t, lo=.16):
+    """Tone (0 paper .. 1 black) -> burin width: none, 0.5, 1 or 1.5 px."""
+    if t < lo:
+        return 0.
+    if t < .43:
+        return .5
+    if t < .7:
+        return 1.
+    return 1.5
+
+
+def _bu_rs(pl, step):
+    out = [pl[0]]
+    for (ax, ay), (bx, by) in zip(pl, pl[1:]):
+        L = _bm.hypot(bx - ax, by - ay)
+        k = int(L / step)
+        for j in range(1, k + 1):
+            t = j / (k + 1)
+            out.append((ax + (bx - ax) * t, ay + (by - ay) * t))
+        out.append((bx, by))
+    return out
+
+
+def bu_cut(cv, pl, tone, lo=.16, step=1.4, cap=1.5, jit=.07):
+    """Cut polyline pl as one swelling line: where tone(x, y) is light the line breaks off, then
+    swells 0.5 -> 1 -> 1.5 px into the shadow (cap limits the widest cut). A small jitter staggers
+    the swells from line to line, so a tone step never runs straight across the lay."""
+    if len(pl) < 2:
+        return
+    pts = _bu_rs(pl, step)
+    em = {.5: cv.hair, 1.: cv.line, 1.5: cv.heavy}
+    cur, cw = [], 0.
+    j = jit * _bm.sin(1.37 * pl[0][1] + .91 * pl[0][0]) if jit else 0.
+    for p in pts:
+        w = min(cap, bu_w(tone(p[0], p[1]) + j, lo))
+        if w != cw:
+            if cw and len(cur) > 1:
+                em[cw](cur)
+            cur = [cur[-1], p] if (cur and w and cw) else [p]
+            cw = w
+        else:
+            cur.append(p)
+    if cw and len(cur) > 1:
+        em[cw](cur)
+
+
+def bu_hatch(poly, ang, pitch=2., bow=0., phase=0.):
+    """Parallel cuts across poly at ang (degrees), pitch apart, each bowed by up to bow px (scaled
+    by its chord, so short cuts at the edge stay inside) so the lay of lines turns with the form."""
+    out = []
+    segs = _C.hatch_poly(poly, ang, pitch, phase)
+    if not segs:
+        return out
+    a = _bm.radians(ang)
+    nx, ny = -_bm.sin(a), _bm.cos(a)
+    Lmax = max(_bm.hypot(b[0] - a_[0], b[1] - a_[1]) for a_, b in segs) or 1.
+    for (p, q) in segs:
+        L = _bm.hypot(q[0] - p[0], q[1] - p[1])
+        if not bow or L < 3:
+            out.append([p, q])
+            continue
+        k = bow * (L / Lmax)
+        n = max(2, int(L / 3))
+        out.append([(p[0] + (q[0] - p[0]) * i / n + nx * k * 4 * (i / n) * (1 - i / n),
+                     p[1] + (q[1] - p[1]) * i / n + ny * k * 4 * (i / n) * (1 - i / n)) for i in range(n + 1)])
+    return out
+
+
+def bu_form(cv, poly, tone, ang=45., pitch=2., bow=0., cross=None, outline=.5, lo=.16, cap=1.5,
+            cross_at=.62, phase=0.):
+    """A shape cut in tone: white body outlined, lines along ang bowed to the form, a second
+    layer at cross (degrees) laid only where the tone passes cross_at."""
+    cv.obj([poly], outline)
+    for pl in bu_hatch(poly, ang, pitch, bow, phase):
+        bu_cut(cv, pl, tone, lo, cap=cap)
+    if cross is not None:
+        t2 = lambda x, y: (tone(x, y) - cross_at) * 2.6 + .2
+        for pl in bu_hatch(poly, cross, max(3., pitch * 1.5), bow * .5):
+            bu_cut(cv, pl, t2, .25, cap=1.)
+
+
+# ---- tone fields ------------------------------------------------------------------------------
+
+def bu_lin(x0, y0, x1, y1, t0, t1):
+    """A ramp from tone t0 at (x0, y0) to t1 at (x1, y1)."""
+    dx, dy = x1 - x0, y1 - y0
+    L2 = dx * dx + dy * dy or 1.
+    return lambda x, y: t0 + (t1 - t0) * min(1., max(0., ((x - x0) * dx + (y - y0) * dy) / L2))
+
+
+def bu_sph(cx, cy, rx, ry, base=.15, amp=.75, rim=.18, L=None):
+    """Lambert shading of an ovoid lit from the upper left: highlight up-left, core shadow down-
+    right, a little reflected light on the far rim."""
+    lx, ly, lz = L or (_BLX, _BLY, _BLZ)
+
+    def f(x, y):
+        u, v = (x - cx) / rx, (y - cy) / ry
+        r2 = u * u + v * v
+        nz = _bm.sqrt(max(0., 1 - r2)) if r2 < 1 else 0.
+        lam = max(0., u * lx + v * ly + nz * lz)
+        t = base + amp * (1 - lam)
+        if r2 > .72 and u * lx + v * ly < 0:
+            t -= rim * (r2 - .72) / .28
+        return t
+    return f
+
+
+def bu_radial(cx, cy, r, t0, t1, p=1.):
+    """Light pooled round (cx, cy): t0 at the centre to t1 at r and beyond."""
+    return lambda x, y: t0 + (t1 - t0) * min(1., (_bm.hypot(x - cx, y - cy) / r)) ** p
+
+
+def bu_noise(seed, sc=24.):
+    """Smooth value noise in -1..1 with feature size sc px."""
+    rng = _br.Random(seed)
+    tab = [rng.uniform(-1, 1) for _ in range(256)]
+    perm = list(range(256))
+    rng.shuffle(perm)
+
+    def g(i, j):
+        return tab[perm[(perm[i & 255] + j) & 255]]
+
+    def f(x, y):
+        x, y = x / sc, y / sc
+        i, j = int(_bm.floor(x)), int(_bm.floor(y))
+        fx, fy = x - i, y - j
+        fx, fy = fx * fx * (3 - 2 * fx), fy * fy * (3 - 2 * fy)
+        a = g(i, j) + (g(i + 1, j) - g(i, j)) * fx
+        b = g(i, j + 1) + (g(i + 1, j + 1) - g(i, j + 1)) * fx
+        return a + (b - a) * fy
+    return f
+
+
+# ---- forms ------------------------------------------------------------------------------------
+
+def bu_rib(cv, R, base=.2, amp=.7, pitch=1.5, lit=-1, outline=1., u0=0., u1=1., cross=False, shadow=True, lo=.16):
+    """A round member (a _Rib) lit on its `lit` side (+1 = the +normal edge): lines along it at
+    about pitch px, swelling into the core shadow with reflected light on the far edge, a 1.5 cut
+    on the shadow edge."""
+    if outline is not None:
+        cv.obj([R.outline()], outline)
+    wm = max(max(R.wl), max(R.wr))
+    n = max(1, int(2 * wm / pitch))
+    for k in range(n + 1):
+        s = -1 + 2. * (k + .5) / (n + 1)
+        th = _bm.asin(max(-1., min(1., s)))
+        lam = max(0., _bm.cos(th - lit * .85))
+        t = base + amp * (1 - lam)
+        if s * lit < -.75:
+            t -= .14
+        tt = t
+        for pl in R.contour(s, u0, u1, minw=pitch * .7):
+            bu_cut(cv, pl, lambda x, y, tt=tt: tt, lo)
+    if cross:
+        u = u0
+        step = 2.5 / R.L
+        while u < u1:
+            a, b = R.at(u, -lit * .25), R.at(u, -lit * .98)
+            cv.hair([a, b])
+            u += step
+    if shadow:
+        cv.heavy(R.contour(-lit * .93, u0, u1))
+
+
+def bu_ball(cv, cx, cy, rx, ry=None, base=.12, amp=.78, pitch=1.5, ang=None, outline=1., n=None, glint=True):
+    """A sphere or ovoid: curved cuts that run round it parallel to the terminator, swelling into
+    the shadow, a lit crown and a white glint."""
+    ry = ry or rx
+    poly = _C._ell_pts(cx, cy, rx, ry, n or max(16, int((rx + ry) * 2)))[:-1]
+    tone = bu_sph(cx, cy, rx, ry, base, amp)
+    a = 45. if ang is None else ang
+    bu_form(cv, poly, tone, a, pitch, max(1., min(rx, ry) * .5), None, outline)
+    return poly
+
+
+def bu_slab(cv, x0, y0, x1, y1, base=.25, amp=.45, along="v", pitch=2., outline=1., lit=-1, edge=True):
+    """A block lit from the side: cuts along it that swell across into its shadowed side."""
+    poly = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+    if along == "v":
+        tone = bu_lin(x0 if lit < 0 else x1, 0, x1 if lit < 0 else x0, 0, base, base + amp)
+        bu_form(cv, poly, tone, 90., pitch, 0, None, outline)
+        if edge and x1 - x0 > 3:
+            cv.heavy([(x1 - .8 if lit < 0 else x0 + .8, y0 + .4), (x1 - .8 if lit < 0 else x0 + .8, y1 - .4)])
+    else:
+        tone = bu_lin(0, y0, 0, y1, base, base + amp)
+        bu_form(cv, poly, tone, 0., pitch, 0, None, outline)
+        if edge and y1 - y0 > 3:
+            cv.heavy([(x0 + .4, y1 - .8), (x1 - .4, y1 - .8)])
+    return poly
+
+
+# ---- sky, clouds, water, ground ----------------------------------------------------------------
+
+def bu_sky(cv, X, Y, W, H, tone=None, glow=None, seed=0, pitch=2.):
+    """Sky in horizontal burin lines on the device grid, dark high up and opening toward the
+    horizon (or round glow=(x, y, r), the sun), with a slow noise so it never reads as ruled."""
+    nz = bu_noise(seed + 41, 70.)
+    if tone is None:
+        tone = lambda x, y: .62 - .5 * (y - Y) / max(1., H)
+    cv.obj([[(X, Y), (X + W, Y), (X + W, Y + H), (X, Y + H)]], 0)
+    y = _bm.floor(Y * 2) / 2 + .25
+    while y < Y + H:
+        def t(x, yy, y=y):
+            v = tone(x, y) + .1 * nz(x, y)
+            if glow:
+                gx, gy, gr = glow
+                d = _bm.hypot(x - gx, (y - gy) * 1.3) / gr
+                if d < 1:
+                    v -= (1 - d) ** 1.5 * .42
+            return v
+        bu_cut(cv, [(X, y), (X + W, y)], t, .17, 2.)
+        f = (y - Y) / max(1., H)
+        y += pitch if f < .7 else pitch + 1.
+
+
+def bu_cloud(cv, x0, x1, yb, hgt, rng, lit=(-1, -1), base=.08, amp=.7, dark=1.):
+    """A modelled cumulus: heaped round bumps, each lit on its upper-left and cut in arcs that run
+    round it into a shadowed lower right, over a flat, dark, line-cut base."""
+    n = max(3, int((x1 - x0) / (hgt * .75)))
+    bumps = []
+    for i in range(n):
+        t = (i + .5) / n
+        r = hgt * (.32 + .55 * _bm.sin(_bm.pi * t) ** .7) * rng.uniform(.8, 1.12)
+        bumps.append((x0 + (x1 - x0) * t + rng.uniform(-2, 2), yb - r * .72, r))
+    # second tier of bumps on top of the big ones
+    for bx, by, br in list(bumps):
+        if br > hgt * .55 and rng.random() < .8:
+            bumps.append((bx + rng.uniform(-.4, .4) * br, by - br * .55, br * rng.uniform(.45, .6)))
+    N = max(8, int((x1 - x0) / 1.5))
+    top = []
+    for k in range(N + 1):
+        x = x0 + (x1 - x0) * k / N
+        y = yb
+        for bx, by, br in bumps:
+            dx = x - bx
+            if abs(dx) < br:
+                y = min(y, by - _bm.sqrt(br * br - dx * dx))
+        top.append((x, min(y, yb - .5)))
+    bot = [(x1 - (x1 - x0) * k / 16, yb + hgt * .06 * _bm.sin(_bm.pi * k / 16)) for k in range(17)]
+    poly = top + bot
+    # each bump its own white form, the higher (farther) ones first so the nearer cut over them;
+    # fine arcs run round its shadowed right and underside, the lit crown left as paper
+    for bx, by, br in sorted(bumps, key=lambda b: b[1]):
+        circ = [(bx + br * _bm.cos(a), min(yb, by + br * _bm.sin(a))) for a in [2 * _bm.pi * i / 36 for i in range(36)]]
+        cv.obj([circ], .5)
+        tone = bu_sph(bx, by, br, br, base * dark + .1, amp * dark * .8, .25)
+        r = br - 1.2
+        k = 0
+        while r > br * .3 and k < 6:
+            arc = [(bx + r * _bm.cos(a), by + r * _bm.sin(a)) for a in [_bm.pi * (-.8 + 1.35 * i / 20) for i in range(21)]]
+            arc = [p for p in arc if p[1] < yb - .8]
+            if len(arc) > 1:
+                bu_cut(cv, arc, tone, .24, cap=1.)
+            r -= 1.6 if k < 3 else 2.
+            k += 1
+    # the flat underside in front of them all: horizontal cuts, darkest at the base
+    yc = yb - hgt * .38
+    under = [(px, max(py, yc)) for px, py in top] + bot
+    cv.obj([under], 0)
+    d = 1.
+    while d < hgt * .38:
+        y = yb - d
+        xs = [p[0] for p in top if p[1] < y - .5]
+        if len(xs) > 1:
+            tt = (.62 - d / (hgt * .38) * .5) * dark
+            (cv.line if tt > .43 else cv.hair)([(xs[0] + 1, y), (xs[-1] - 1, y)])
+        d += 1.5 if d < 4 else 2.
+    cv.line(bot)
+    return poly
+
+
+def bu_water(cv, X, Y, W, H, refl=None, seed=0, base=None, pitch=2., spark=None):
+    """Water in horizontal cuts broken into ripples: short dashes with gaps that open toward the
+    viewer, tone from the sky's own ramp plus the broken reflection refl(x, y) of what stands on
+    the bank (a tone 0..1 or None), and a glitter path (spark=(x, width)) where the light lies."""
+    rng = _br.Random(seed * 31 + 7)
+    nz = bu_noise(seed + 5, 18.)
+    if base is None:
+        base = lambda x, y: .3 + .25 * (y - Y) / max(1., H)
+    cv.obj([[(X, Y), (X + W, Y), (X + W, Y + H), (X, Y + H)]], 0)
+    y = _bm.floor(Y * 2) / 2 + .25
+    while y < Y + H:
+        f = (y - Y) / max(1., H)
+        x = X - rng.uniform(0, 6)
+        while x < X + W:
+            L = rng.uniform(4, 16) * (1 + 2.5 * f)
+            g = rng.uniform(.8, 2.5) * (1 + 1.5 * f)
+            wob = 2.5 * _bm.sin(y * .7 + seed)
+
+            def t(xx, yy, y=y, wob=wob):
+                v = base(xx, y) + .12 * nz(xx, y * 3)
+                if refl:
+                    r = refl(xx + wob, y)
+                    if r is not None:
+                        v = .25 * v + .75 * r
+                if spark:
+                    sx, sw = spark
+                    if abs(xx - sx) < sw * (1 + f):
+                        v -= .45 * (1 - abs(xx - sx) / (sw * (1 + f)))
+                return v
+            bu_cut(cv, [(max(X, x), y), (min(X + W, x + L), y)], t, .18, 2.)
+            x += L + g
+        y += pitch if f < .55 else pitch + 1.
+
+
+def bu_tuft(cv, x, yb, hgt, rng, n=7, lean=0., dark=1.):
+    """A foreground tuft of grass: blades as long tapering cuts, heavy at the root, curving out."""
+    for i in range(n):
+        a = lean + rng.uniform(-.55, .55)
+        L = hgt * rng.uniform(.5, 1.)
+        bx = x + rng.uniform(-hgt * .18, hgt * .18)
+        c = rng.uniform(-.35, .35) * L
+        pts = [(bx + _bm.sin(a) * L * t + c * t * t, yb - _bm.cos(a) * L * t) for t in [k / 6 for k in range(7)]]
+        cv.obj([], 0)
+        if dark > .6:
+            cv.heavy(pts[:3])
+        cv.line(pts[1:5])
+        cv.hair(pts[3:])
+
+
+def bu_clump(cv, cx, cy, rx, ry, rng, leaf=3., base=.3, amp=.6, pitch=1.5, outline=.5):
+    """A mass of foliage: small scalloped bumps heaped over an ovoid, each cut in short curved
+    strokes; the mass lit up-left and darkening into its lower right and its hollows."""
+    tone0 = bu_sph(cx, cy, rx, ry, base, amp, .1)
+    pts = []
+    n = 56
+    for i in range(n):
+        a = 2 * _bm.pi * i / n
+        k = 1 + .08 * _bm.sin(a * 7 + rng.random()) + .05 * rng.uniform(-1, 1)
+        pts.append((cx + rx * k * _bm.cos(a), cy + ry * k * _bm.sin(a)))
+    # scalloped edge
+    sc = []
+    for i in range(n):
+        p, q = pts[i], pts[(i + 1) % n]
+        mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
+        dx, dy = mx - cx, my - cy
+        L = _bm.hypot(dx, dy) or 1.
+        sc += [p, (mx + dx / L * leaf * .5, my + dy / L * leaf * .5)]
+    cv.obj([sc], outline)
+    # leaf strokes: little comma cuts laid in rows following the mass
+    y = cy - ry
+    row = 0
+    while y < cy + ry:
+        x = cx - rx + (row % 2) * leaf * .7
+        while x < cx + rx:
+            u, v = (x - cx) / rx, (y - cy) / ry
+            if u * u + v * v < .95:
+                t = tone0(x, y) + .12 * rng.uniform(-1, 1)
+                w = bu_w(t, .2)
+                if w:
+                    pl = [(x - leaf * .55, y - leaf * .15), (x, y + leaf * .25), (x + leaf * .55, y - leaf * .1)]
+                    {.5: cv.hair, 1.: cv.line, 1.5: cv.heavy}[w](pl)
+            x += leaf * 1.4
+        y += pitch + .5
+        row += 1
+    return sc
+
+
+def bu_blade(cv, x, yb, L, ang, bend, wd, shade=1, outline=.5):
+    """One reed or grass blade: a long tapering leaf from (x, yb) along ang (0 = straight up),
+    curving by bend, its shadow half cut in a line that swells to the root."""
+    pts = []
+    for i in range(9):
+        t = i / 8
+        pts.append((x + _bm.sin(ang) * L * t + bend * L * t * t, yb - _bm.cos(ang) * L * t))
+    ws = [max(.35, wd * (1 - t) ** .8) for t in [i / 8 for i in range(9)]]
+    R = _C._Rib(pts, ws, ws)
+    cv.obj([R.outline()], outline)
+    if wd > 1.1:
+        cv.hair(R.contour(shade * .35, 0., .8))
+        if wd > 1.8:
+            cv.line(R.contour(shade * .7, 0., .45))
+    return pts
+
+
+def bu_reeds(cv, x0, x1, yb, hmax, rng, grow=1, n=None, heads=.35, wd=1.4):
+    """A reed bed from x0 to x1 standing on yb, tallest at the x0 end when grow > 0 (x1 when < 0):
+    reeds of uneven height leaning and curving, blades crossing, cattails modelled round, and a
+    dark tussock of short blades at the foot."""
+    n = n or max(6, int(abs(x1 - x0) / 3.2))
+    items = []
+    for i in range(n):
+        t = rng.random()
+        x = x0 + (x1 - x0) * t
+        f = (1 - t) if grow > 0 else t
+        hh = hmax * (.3 + .7 * f ** .8) * rng.uniform(.6, 1.05)
+        items.append((rng.random(), x, hh))
+    items.sort()
+    for _, x, hh in items:
+        lean = rng.uniform(-.18, .18)
+        bend = rng.uniform(-.12, .12)
+        pts = bu_blade(cv, x, yb, hh, lean, bend, wd * rng.uniform(.8, 1.2), 1 if lean > 0 else -1)
+        if rng.random() < heads and hh > hmax * .4:
+            hx, hy = pts[6]
+            hr = max(1.3, wd * 1.05)
+            bu_ball(cv, hx, hy, hr, max(3., hh * .09), .15, .75, 1.5, 90., .5, 16)
+            cv.obj([], 0)
+            cv.hair([pts[6], pts[8]])
+        else:
+            for sg in (-1, 1):
+                if rng.random() < .55:
+                    bu_blade(cv, x + sg * .5, yb, hh * rng.uniform(.4, .75), lean + sg * rng.uniform(.25, .6), sg * rng.uniform(0, .25), wd * .9, -sg)
+    # the tussock: short dark blades in a mass at the foot
+    k = int(abs(x1 - x0) / 2.2)
+    for i in range(k):
+        x = x0 + (x1 - x0) * rng.random()
+        bu_blade(cv, x, yb + 1, hmax * rng.uniform(.08, .2), rng.uniform(-.7, .7), rng.uniform(-.2, .2), wd * .8, 1)
+
+
+def bu_arms(x, y, w, h, seed=0):
+    """Parker's arms (Somaster: Or, a castle between five fleurs-de-lis sable) set in the box
+    (x, y, w, h); under about 100 px wide it is the shield alone. Placed on whole pixels so the
+    Or stipple stays on the device grid."""
+    xi, yi = int(round(x)), int(round(y))
+    return f'<g transform="translate({xi},{yi})">{_bu_arms_markup(int(round(w)), int(round(h)), seed)}</g>'
+
+
+def bu_cartouche(cx, cy, r, seed=0):
+    """The section-front dedication cartouche: the arms in a small beaded oval, a modelled leaf
+    scrolling out either side."""
+    cv = _C.Canvas()
+    for sg in (-1, 1):
+        for j, (dy, da, L, W) in enumerate(((.45, -.35, 1.25, .3), (-.1, .1, 1.05, .26), (-.6, .55, .8, .22))):
+            vg_leaf(cv, cx + sg * r * .82, cy + r * dy, (_PI if sg < 0 else 0) + sg * da, r * L, r * W, sg * (.35 if j != 1 else -.3), sg if j % 2 else -sg, r * L > 14)
+    s = kk_svg(cv)
+    ring, _, _ = kk_ring(cx, cy, r, r * 1.08, 1.)
+    bg = f'<path d="{_kk_ell_d(cx, cy, r + .5, r * 1.08 + .5, 40)}" fill="#fff" stroke="none"/>'
+    aw = r * 1.5
+    return s + bg + bu_arms(cx - aw / 2, cy - r * .98, aw, r * 1.96, seed) + ring
+# ==== BURIN KIT (end) ============================================================================

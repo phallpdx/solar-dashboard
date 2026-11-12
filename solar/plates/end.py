@@ -1269,8 +1269,11 @@ def kk_egg(kind, cx, cy, r):
 
 
 def kk_roundel(cx, cy, r, kind, bead=1.2):
-    """An egg in a small bead-ringed roundel on the matte."""
+    """An egg in a small bead-ringed roundel on the matte (the arms: Parker's real arms)."""
     ring, ox, oy = kk_ring(cx, cy, r, r, bead)
+    if kind == "arms":
+        return (f'<path d="{_kk_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="#fff" stroke="none"/>'
+                + bu_arms(cx - r * .72, cy - r * .95, r * 1.44, r * 1.9) + ring), ox
     return (f'<path d="{_kk_ell_d(cx, cy, r + .5, r + .5, 40)}" fill="url(#kkM)" stroke="none"/>'
             + kk_egg(kind, cx, cy, r * .86) + ring), ox
 
@@ -1933,15 +1936,9 @@ def vg_ribbon(cv, x0, x1, yc, hgt, bow=.3, tails=True, seed=0):
 
 
 def vg_cartouche(cx, cy, r):
-    """The Somaster dedication cartouche, a placeholder until the arms are cut: a small beaded
-    oval holding crossed drumsticks over a sun, a scrolled leaf either side."""
-    cv = _C.Canvas()
-    for sg in (-1, 1):
-        vg_leaf(cv, cx + sg * r * .9, cy + r * .25, (_PI if sg < 0 else 0) - sg * .3, r * 2.2, r * .42, -sg * .4, sg)
-        vg_leaf(cv, cx + sg * r * .8, cy - r * .25, (_PI if sg < 0 else 0) + sg * .5, r * 1.7, r * .34, sg * .45, -sg)
-    s = kk_svg(cv)
-    rr, _ = kk_roundel(cx, cy, r, "arms", 1.)
-    return s + rr
+    """The Somaster dedication cartouche: Parker's arms (solar/arms.py) in a small beaded oval,
+    modelled leaves scrolling out either side (bu_cartouche in the burin kit)."""
+    return bu_cartouche(cx, cy, r)
 
 
 def vg_plate(w, h, scene, shape="oval", form="vignette", frame=None, arms=False, seed=0,
@@ -2610,26 +2607,34 @@ def bu_cloud(cv, x0, x1, yb, hgt, rng, lit=(-1, -1), base=.08, amp=.7, dark=1.):
         top.append((x, min(y, yb - .5)))
     bot = [(x1 - (x1 - x0) * k / 16, yb + hgt * .06 * _bm.sin(_bm.pi * k / 16)) for k in range(17)]
     poly = top + bot
-    cv.obj([poly], .5)
-    # each bump: arcs concentric with it, cut on its shadow side; later bumps (lower) in front
+    # each bump its own white form, the higher (farther) ones first so the nearer cut over them;
+    # fine arcs run round its shadowed right and underside, the lit crown left as paper
     for bx, by, br in sorted(bumps, key=lambda b: b[1]):
-        tone = bu_sph(bx, by, br, br, base * dark, amp * dark, .2)
-        r = br - 1.5
-        while r > max(br * .3, br - (2. if hgt < 12 else 99.)):
-            arc = [(bx + r * _bm.cos(a), by + r * _bm.sin(a)) for a in [_bm.pi * (-.25 + 1.25 * i / 18) for i in range(19)]]
+        circ = [(bx + br * _bm.cos(a), min(yb, by + br * _bm.sin(a))) for a in [2 * _bm.pi * i / 36 for i in range(36)]]
+        cv.obj([circ], .5)
+        tone = bu_sph(bx, by, br, br, base * dark + .1, amp * dark * .8, .25)
+        r = br - 1.2
+        k = 0
+        while r > br * .3 and k < 6:
+            arc = [(bx + r * _bm.cos(a), by + r * _bm.sin(a)) for a in [_bm.pi * (-.8 + 1.35 * i / 20) for i in range(21)]]
             arc = [p for p in arc if p[1] < yb - .8]
             if len(arc) > 1:
-                bu_cut(cv, arc, tone, .2)
-            r -= 2.
-    # the flat underside: horizontal cuts, darkest at the base
+                bu_cut(cv, arc, tone, .24, cap=1.)
+            r -= 1.6 if k < 3 else 2.
+            k += 1
+    # the flat underside in front of them all: horizontal cuts, darkest at the base
+    yc = yb - hgt * .38
+    under = [(px, max(py, yc)) for px, py in top] + bot
+    cv.obj([under], 0)
     d = 1.
     while d < hgt * .38:
         y = yb - d
         xs = [p[0] for p in top if p[1] < y - .5]
         if len(xs) > 1:
-            tt = (.75 - d / (hgt * .38) * .55) * dark
-            cv.heavy([(xs[0] + 1, y), (xs[-1] - 1, y)]) if tt > .7 else (cv.line if tt > .43 else cv.hair)([(xs[0] + 1, y), (xs[-1] - 1, y)])
+            tt = (.62 - d / (hgt * .38) * .5) * dark
+            (cv.line if tt > .43 else cv.hair)([(xs[0] + 1, y), (xs[-1] - 1, y)])
         d += 1.5 if d < 4 else 2.
+    cv.line(bot)
     return poly
 
 
@@ -2718,6 +2723,57 @@ def bu_clump(cv, cx, cy, rx, ry, rng, leaf=3., base=.3, amp=.6, pitch=1.5, outli
         y += pitch + .5
         row += 1
     return sc
+
+
+def bu_blade(cv, x, yb, L, ang, bend, wd, shade=1, outline=.5):
+    """One reed or grass blade: a long tapering leaf from (x, yb) along ang (0 = straight up),
+    curving by bend, its shadow half cut in a line that swells to the root."""
+    pts = []
+    for i in range(9):
+        t = i / 8
+        pts.append((x + _bm.sin(ang) * L * t + bend * L * t * t, yb - _bm.cos(ang) * L * t))
+    ws = [max(.35, wd * (1 - t) ** .8) for t in [i / 8 for i in range(9)]]
+    R = _C._Rib(pts, ws, ws)
+    cv.obj([R.outline()], outline)
+    if wd > 1.1:
+        cv.hair(R.contour(shade * .35, 0., .8))
+        if wd > 1.8:
+            cv.line(R.contour(shade * .7, 0., .45))
+    return pts
+
+
+def bu_reeds(cv, x0, x1, yb, hmax, rng, grow=1, n=None, heads=.35, wd=1.4):
+    """A reed bed from x0 to x1 standing on yb, tallest at the x0 end when grow > 0 (x1 when < 0):
+    reeds of uneven height leaning and curving, blades crossing, cattails modelled round, and a
+    dark tussock of short blades at the foot."""
+    n = n or max(6, int(abs(x1 - x0) / 3.2))
+    items = []
+    for i in range(n):
+        t = rng.random()
+        x = x0 + (x1 - x0) * t
+        f = (1 - t) if grow > 0 else t
+        hh = hmax * (.3 + .7 * f ** .8) * rng.uniform(.6, 1.05)
+        items.append((rng.random(), x, hh))
+    items.sort()
+    for _, x, hh in items:
+        lean = rng.uniform(-.18, .18)
+        bend = rng.uniform(-.12, .12)
+        pts = bu_blade(cv, x, yb, hh, lean, bend, wd * rng.uniform(.8, 1.2), 1 if lean > 0 else -1)
+        if rng.random() < heads and hh > hmax * .4:
+            hx, hy = pts[6]
+            hr = max(1.3, wd * 1.05)
+            bu_ball(cv, hx, hy, hr, max(3., hh * .09), .15, .75, 1.5, 90., .5, 16)
+            cv.obj([], 0)
+            cv.hair([pts[6], pts[8]])
+        else:
+            for sg in (-1, 1):
+                if rng.random() < .55:
+                    bu_blade(cv, x + sg * .5, yb, hh * rng.uniform(.4, .75), lean + sg * rng.uniform(.25, .6), sg * rng.uniform(0, .25), wd * .9, -sg)
+    # the tussock: short dark blades in a mass at the foot
+    k = int(abs(x1 - x0) / 2.2)
+    for i in range(k):
+        x = x0 + (x1 - x0) * rng.random()
+        bu_blade(cv, x, yb + 1, hmax * rng.uniform(.08, .2), rng.uniform(-.7, .7), rng.uniform(-.2, .2), wd * .8, 1)
 
 
 def bu_arms(x, y, w, h, seed=0):

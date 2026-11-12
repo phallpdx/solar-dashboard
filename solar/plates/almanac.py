@@ -1127,7 +1127,7 @@ class ScrollField:
                 continue
             pts, c, rad, s, R = data
             use = None
-            if not egg_done and gen >= egg_gen and R > 11:
+            if not egg_done and gen >= egg_gen and R > 14:
                 use, egg_done = egg, True
             _draw_scroll(cv, pts, c, rad, s, R, rng, use)
 
@@ -1213,7 +1213,7 @@ def _draw_scroll(cv, pts, c, rad, s, R, rng, egg=None):
         _leaf(cv, q[0], q[1], _tangent(pts, i) + s * .35, ll, ll * .2, s * 1.6, s * .3, rng, 2)
     ex, ey = pts[-1]
     if egg:
-        egg(cv, ex, ey, max(3.5, rad[-1] * 3.))
+        egg(cv, ex, ey, max(5., R * .4))
     else:
         rr = max(1.1, W[-1] * 1.4)
         cv.obj([_C._ell_pts(ex, ey, rr, rr, 10)[:-1]], .5)
@@ -1517,6 +1517,254 @@ def st_rim(fld, depth=12., uid="r"):
             f'<path d="{"".join(o5)}" fill="none" stroke="#000" stroke-width=".5"/>')
 
 
+# ---------------------------------------------------------------------------------------------
+# Easter eggs cut into a scroll's eye: egg(cv, x, y, r) draws inside a disc of radius r
+# ---------------------------------------------------------------------------------------------
+
+def _egg_disc(cv, x, y, r):
+    cv.obj([_C._ell_pts(x, y, r, r, 28)[:-1]], 1.)
+    cv.hair(_C._ell_pts(x, y, r - 1.2, r - 1.2, 28))
+
+
+def egg_sticks(cv, x, y, r):
+    """Parker's crossed drumsticks."""
+    _egg_disc(cv, x, y, r)
+    st_crossed_sticks(cv, x, y + r * .05, r * 1.45, max(.6, r * .09))
+
+
+def egg_P(cv, x, y, r):
+    """A "P" monogram, cut as a stem and a bowl with a flourish."""
+    _egg_disc(cv, x, y, r)
+    h = r * 1.1
+    cv.line([(x - h * .22, y + h * .5), (x - h * .22, y - h * .5)])
+    bowl = [(x - h * .22, y - h * .5)] + [(x - h * .05 + h * .3 * _m.sin(t * _PI / 10), y - h * .25 - h * .25 * _m.cos(t * _PI / 10)) for t in range(11)] + [(x - h * .22, y)]
+    cv.line(bowl)
+    cv.hair([(x - h * .45, y + h * .5), (x + h * .05, y + h * .5)])
+    cv.hair([(x - h * .22, y + h * .5), (x - h * .5, y + h * .62), (x - h * .62, y + h * .45)])
+
+
+def egg_note(cv, x, y, r):
+    """A swing eighth-note pair (jazz)."""
+    _egg_disc(cv, x, y, r)
+    s = r * .32
+    for dx in (-1, 1):
+        hx, hy = x + dx * s * 1.1 - s * .4, y + s * 1.1
+        cv.obj([_C._ell_pts(hx, hy, s * .55, s * .38, 12)[:-1]], .5)
+        cv.line(_C._ell_pts(hx, hy, s * .3, s * .15, 8))
+        cv.line([(hx + s * .5, hy), (hx + s * .5, y - s * 1.5)])
+    cv.heavy([(x - s * .6 + s * .1, y - s * 1.5), (x + s * 1.6 + s * .1, y - s * 1.5)])
+
+
+def egg_cymbal(cv, x, y, r):
+    """A tiny ride cymbal on its stand, lathe rings and a bell."""
+    _egg_disc(cv, x, y, r)
+    cy = y - r * .15
+    cv.obj([_C._ell_pts(x, cy, r * .8, r * .22, 24)[:-1]], .5)
+    for k in (1, 2, 3):
+        cv.hair(_C._ell_pts(x, cy, r * .8 * k / 4, r * .22 * k / 4, 20))
+    cv.obj([_C._ell_pts(x, cy - r * .08, r * .16, r * .1, 10)[:-1]], .5)
+    cv.line([(x, cy + r * .2), (x, y + r * .7)])
+    cv.hair([(x, y + r * .55), (x - r * .35, y + r * .78)])
+    cv.hair([(x, y + r * .55), (x + r * .35, y + r * .78)])
+
+
+def egg_hood(cv, x, y, r):
+    """Mt. Hood: the snow cone, its glaciers and a timber line."""
+    _egg_disc(cv, x, y, r)
+    pk = [(x - r * .82, y + r * .45), (x - r * .1, y - r * .55), (x + r * .05, y - r * .6), (x + r * .82, y + r * .45)]
+    cv.obj([pk], .5)
+    cv.hair([(x - r * .02, y - r * .5), (x - r * .25, y + r * .05)])
+    cv.hair([(x + r * .05, y - r * .5), (x + r * .3, y + r * .1)])
+    cv.hair(_C.hatch_poly([(x + r * .05, y - r * .58), (x + r * .82, y + r * .45), (x + r * .25, y + r * .45)], 60, 1.5))
+    for k in range(7):
+        tx = x - r * .7 + k * r * .23
+        cv.line([(tx, y + r * .62), (tx, y + r * .38)])
+
+
+def egg_pinwheel(cv, x, y, r):
+    """The Blazers pinwheel: five pairs of swept bars turning about a hub."""
+    _egg_disc(cv, x, y, r)
+    for k in range(5):
+        a = k * _TAU / 5 - _PI / 2
+        for off in (-.12, .12):
+            p0 = (x + r * .18 * _m.cos(a + off), y + r * .18 * _m.sin(a + off))
+            p1 = (x + r * .78 * _m.cos(a + off + .35), y + r * .78 * _m.sin(a + off + .35))
+            cv.line([p0, p1])
+
+
+def egg_heron(cv, x, y, r):
+    """A Sauvie Island heron's head and S neck, crest plume and dagger bill."""
+    _egg_disc(cv, x, y, r)
+    neck = [(x - r * .1, y + r * .8), (x - r * .35, y + r * .3), (x - r * .05, y - r * .05), (x - r * .25, y - r * .4)]
+    cv.line(neck)
+    cv.line([(x - r * .05 + r * .15, y + r * .8), (x - r * .2 + r * .12, y + r * .3), (x + r * .12, y - r * .02), (x - r * .1, y - r * .35)])
+    hd = _C._ell_pts(x - r * .2, y - r * .45, r * .16, r * .11, 12)[:-1]
+    cv.obj([hd], .5)
+    cv.line([(x - r * .05, y - r * .48), (x + r * .65, y - r * .38)])
+    cv.hair([(x - r * .32, y - r * .5), (x - r * .7, y - r * .55)])
+
+
+def egg_dog(cv, x, y, r):
+    """Parker's dog, head on its paws, curled asleep in the eye of the scroll."""
+    _egg_disc(cv, x, y, r)
+    body = _C._ell_pts(x + r * .05, y + r * .15, r * .72, r * .42, 24)[:-1]
+    cv.obj([body], .5)
+    cv.hair(_C._fill_lines(_C._Rib([(x - r * .6, y + r * .15), (x + r * .7, y + r * .15)], [r * .38, r * .38], [r * .38, r * .38]), -.3, -.95, 1.5, .1, .9, 2))
+    head = _C._ell_pts(x - r * .38, y - r * .05, r * .26, r * .2, 16)[:-1]
+    cv.obj([head], .5)
+    cv.obj([[(x - r * .48, y - r * .2), (x - r * .3, y - r * .45), (x - r * .22, y - r * .16)]], .5)
+    cv.line(_C._ell_pts(x - r * .6, y - r * .02, .5, .5, 4))
+    cv.hair([(x - r * .45, y - r * .06), (x - r * .36, y - r * .04)])
+    cv.hair([(x + r * .7, y + r * .1), (x + r * .55, y + r * .45), (x + r * .1, y + r * .52)])
+
+
+def egg_kranok(cv, x, y, r):
+    """A Thai kranok flame: three flame tongues curling up out of a lotus calyx."""
+    _egg_disc(cv, x, y, r)
+    for sd, L, a in ((0, 1., -_PI / 2), (-1, .7, -_PI / 2 - .55), (1, .7, -_PI / 2 + .55)):
+        bx = x + sd * r * .12
+        rib = _C._euler(bx, y + r * .5, a, r * L, lambda u, s_=sd or 1: s_ * 2.2 * _sm(.5, 1, u) / (r * L), 12)
+        W = [r * .16 * (1 - i / 12) ** .7 + .3 for i in range(13)]
+        R = _C._Rib(rib, W, W)
+        cv.obj([R.outline()], .5)
+        cv.hair(R.contour(.4, .05, .85))
+    cv.obj([_C._ell_pts(x, y + r * .55, r * .3, r * .14, 14)[:-1]], .5)
+
+
+def egg_panel(cv, x, y, r):
+    """A solar panel on its rack: a grid of cells, one ray of sun."""
+    _egg_disc(cv, x, y, r)
+    q = [(x - r * .7, y + r * .2), (x + r * .45, y + r * .2), (x + r * .7, y - r * .35), (x - r * .45, y - r * .35)]
+    cv.obj([q], .5)
+    for k in range(1, 4):
+        t = k / 4
+        cv.hair([(q[0][0] + (q[1][0] - q[0][0]) * t, q[0][1]), (q[3][0] + (q[2][0] - q[3][0]) * t, q[3][1])])
+    cv.hair([((q[0][0] + q[3][0]) / 2, (q[0][1] + q[3][1]) / 2), ((q[1][0] + q[2][0]) / 2, (q[1][1] + q[2][1]) / 2)])
+    cv.line([(x - r * .1, y + r * .2), (x - r * .1, y + r * .65)])
+    cv.line([(x - r * .4, y + r * .65), (x + r * .25, y + r * .65)])
+
+
+# ---------------------------------------------------------------------------------------------
+# lettering: engraved Roman capitals as strokes (no <text>)
+# ---------------------------------------------------------------------------------------------
+
+_OV = [(.5 + .5 * _m.cos(_TAU * i / 20 - _PI / 2), .5 + .5 * _m.sin(_TAU * i / 20 - _PI / 2)) for i in range(21)]
+_GL = {
+    "A": ([[(0, 1), (.5, 0), (1, 1)], [(.22, .62), (.78, .62)]], .85),
+    "B": ([[(0, 0), (0, 1), (.7, 1), (.9, .85), (.9, .65), (.7, .5), (0, .5)], [(0, 0), (.62, 0), (.82, .12), (.82, .38), (.62, .5)]], .75),
+    "C": ([[(.95, .15), (.72, 0), (.3, 0), (0, .25), (0, .75), (.3, 1), (.72, 1), (.95, .85)]], .8),
+    "D": ([[(0, 0), (0, 1), (.55, 1), (.92, .72), (.92, .28), (.55, 0), (0, 0)]], .8),
+    "E": ([[(.85, 0), (0, 0), (0, 1), (.85, 1)], [(0, .5), (.65, .5)]], .7),
+    "F": ([[(.85, 0), (0, 0), (0, 1)], [(0, .5), (.65, .5)]], .65),
+    "G": ([[(.95, .15), (.72, 0), (.3, 0), (0, .25), (0, .75), (.3, 1), (.72, 1), (.95, .8), (.95, .55), (.55, .55)]], .82),
+    "H": ([[(0, 0), (0, 1)], [(1, 0), (1, 1)], [(0, .5), (1, .5)]], .8),
+    "I": ([[(.5, 0), (.5, 1)]], .3),
+    "J": ([[(.8, 0), (.8, .78), (.6, 1), (.2, 1), (0, .8)]], .6),
+    "K": ([[(0, 0), (0, 1)], [(.9, 0), (0, .62)], [(.3, .42), (.95, 1)]], .78),
+    "L": ([[(0, 0), (0, 1), (.85, 1)]], .65),
+    "M": ([[(0, 1), (0, 0), (.5, .65), (1, 0), (1, 1)]], 1.),
+    "N": ([[(0, 1), (0, 0), (1, 1), (1, 0)]], .82),
+    "O": ([_OV], .9),
+    "P": ([[(0, 1), (0, 0), (.7, 0), (.9, .15), (.9, .35), (.7, .5), (0, .5)]], .72),
+    "Q": ([_OV, [(.6, .72), (1, 1.06)]], .9),
+    "R": ([[(0, 1), (0, 0), (.7, 0), (.9, .15), (.9, .35), (.7, .5), (0, .5)], [(.45, .5), (.95, 1)]], .76),
+    "S": ([[(.9, .12), (.7, 0), (.25, 0), (.05, .15), (.05, .35), (.25, .47), (.75, .53), (.95, .66), (.95, .85), (.75, 1), (.25, 1), (.05, .88)]], .7),
+    "T": ([[(0, 0), (1, 0)], [(.5, 0), (.5, 1)]], .78),
+    "U": ([[(0, 0), (0, .75), (.25, 1), (.75, 1), (1, .75), (1, 0)]], .8),
+    "V": ([[(0, 0), (.5, 1), (1, 0)]], .82),
+    "W": ([[(0, 0), (.25, 1), (.5, .35), (.75, 1), (1, 0)]], 1.1),
+    "X": ([[(0, 0), (1, 1)], [(1, 0), (0, 1)]], .8),
+    "Y": ([[(0, 0), (.5, .5), (1, 0)], [(.5, .5), (.5, 1)]], .8),
+    "Z": ([[(0, 0), (1, 0), (0, 1), (1, 1)]], .76),
+    "0": ([[(.5 + .45 * _m.cos(_TAU * i / 20), .5 + .5 * _m.sin(_TAU * i / 20)) for i in range(21)]], .65),
+    "1": ([[(.25, .2), (.55, 0), (.55, 1)], [(.25, 1), (.85, 1)]], .55),
+    "2": ([[(.05, .2), (.25, 0), (.75, 0), (.95, .2), (.95, .4), (0, 1), (1, 1)]], .65),
+    "3": ([[(.05, .1), (.3, 0), (.75, 0), (.95, .2), (.9, .4), (.5, .5), (.9, .6), (.95, .8), (.75, 1), (.3, 1), (.05, .9)]], .65),
+    "4": ([[(.75, 1), (.75, 0), (0, .7), (1, .7)]], .65),
+    "5": ([[(.9, 0), (.15, 0), (.05, .45), (.6, .4), (.95, .6), (.95, .8), (.7, 1), (.25, 1), (.05, .9)]], .65),
+    "6": ([[(.85, .05), (.5, 0), (.15, .2), (.05, .6), (.15, .9), (.5, 1), (.85, .9), (.95, .7), (.8, .5), (.45, .45), (.1, .6)]], .65),
+    "7": ([[(0, 0), (1, 0), (.35, 1)]], .62),
+    "8": ([[(.5, .5), (.15, .38), (.1, .15), (.3, 0), (.7, 0), (.9, .15), (.85, .38), (.5, .5), (.1, .65), (.05, .85), (.3, 1), (.7, 1), (.95, .85), (.9, .65), (.5, .5)]], .65),
+    "9": ([[(.9, .4), (.55, .55), (.15, .45), (.05, .25), (.2, .05), (.55, 0), (.9, .2), (.95, .5), (.8, .85), (.45, 1), (.15, .95)]], .65),
+    "-": ([[(.1, .55), (.9, .55)]], .5),
+    "·": ([[(.45, .5), (.55, .5)]], .35),
+    ".": ([[(.45, .95), (.55, .95)]], .3),
+    ",": ([[(.5, .9), (.35, 1.15)]], .3),
+    ":": ([[(.5, .3), (.5, .32)], [(.5, .9), (.5, .92)]], .3),
+    "'": ([[(.5, 0), (.4, .25)]], .25),
+    "/": ([[(1, 0), (0, 1)]], .55),
+    "&": ([[(1, 1), (.2, .35), (.25, .08), (.5, 0), (.7, .1), (.7, .3), (.1, .7), (.15, .95), (.5, 1), (.85, .7)]], .8),
+    "°": ([[(.3 + .2 * _m.cos(_TAU * i / 10), .15 + .15 * _m.sin(_TAU * i / 10)) for i in range(11)]], .45),
+    "%": ([[(1, 0), (0, 1)], [(.2 + .15 * _m.cos(_TAU * i / 10), .18 + .16 * _m.sin(_TAU * i / 10)) for i in range(11)],
+           [(.8 + .15 * _m.cos(_TAU * i / 10), .82 + .16 * _m.sin(_TAU * i / 10)) for i in range(11)]], .75),
+    " ": ([], .45),
+}
+
+
+def st_text_w(text, h, track=.32):
+    t = [ch if ch in _GL else " " for ch in text.upper()]
+    return sum(_GL[ch][1] * h * .78 for ch in t) + track * h * max(0, len(t) - 1)
+
+
+def st_letter(text, h, centre=None, cx=0., cy=0., track=.32, sw=None, fit=None):
+    """Monoline engraved capitals h tall, centred on (cx, cy) or along the polyline `centre`.
+    fit shrinks the lettering to that width. -> svg path."""
+    t = [ch if ch in _GL else " " for ch in text.upper()]
+    if fit:
+        tw = st_text_w(text, h, track)
+        if tw > fit:
+            h *= fit / tw
+    tw = st_text_w(text, h, track)
+    if centre:
+        acc = [0.]
+        for i in range(1, len(centre)):
+            acc.append(acc[-1] + _m.dist(centre[i], centre[i - 1]))
+        tot = acc[-1]
+
+        def at(sv):
+            sv = max(0., min(tot, sv))
+            for i in range(1, len(acc)):
+                if acc[i] >= sv:
+                    f = (sv - acc[i - 1]) / max(1e-6, acc[i] - acc[i - 1])
+                    p0, p1 = centre[i - 1], centre[i]
+                    return p0[0] + (p1[0] - p0[0]) * f, p0[1] + (p1[1] - p0[1]) * f, _m.atan2(p1[1] - p0[1], p1[0] - p0[0])
+            return centre[-1][0], centre[-1][1], 0.
+        pos = (tot - tw) / 2
+    else:
+        pos = -tw / 2
+    d = []
+    for ch in t:
+        strokes, wf = _GL[ch]
+        gw = wf * h * .78
+        if centre:
+            mx, my, a = at(pos + gw / 2)
+        else:
+            mx, my, a = cx + pos + gw / 2, cy, 0.
+        ca, sa = _m.cos(a), _m.sin(a)
+        for st in strokes:
+            pts = []
+            for gx, gy in st:
+                lx, ly = (gx - .5) * gw, (gy - .5) * h
+                pts.append((mx + lx * ca - ly * sa, my + lx * sa + ly * ca))
+            d.append(_C._d(pts, tol=.05))
+        pos += gw + track * h
+    w = sw or (1. if h >= 7 else .5)
+    return f'<path d="{"".join(d)}" fill="none" stroke="#000" stroke-width="{_C._n(w)}"/>'
+
+
+def st_tablet_text(tx, ty, tw, th, lines):
+    """Lines of lettering in a tablet, over a dotted Or ground cut back behind each line."""
+    o = [f'<path d="{st_rect_d(tx, ty, tw, th)}" fill="url(#s2o)" stroke="none"/>']
+    n = len(lines)
+    lh = min(th / (n * 1.6 + .4), 11.)
+    for i, ln in enumerate(lines):
+        cy = ty + th * (i + .5) / n
+        w = min(tw - 8, st_text_w(ln, lh) + lh * 1.4)
+        o.append(f'<path d="{st_rect_d(tx + (tw - w) / 2, cy - lh * .85, w, lh * 1.7)}" fill="#fff" stroke="#000" stroke-width=".5"/>')
+        o.append(st_letter(ln, lh, cx=tx + tw / 2, cy=cy, fit=tw - 12))
+    return "".join(o)
+
+
 def st_doc(w, h, body):
     return _C.svg_doc(w, h, _ST_DEFS + body)
 # ==== END STUDIO FRAME ==========================================================================
@@ -1533,11 +1781,38 @@ def st_border(w, h, inset=3.):
             + st_beads(st_rect_d(inset + 4.5, inset + 4.5, w - 2 * inset - 9, h - 2 * inset - 9), 3.5, 1.))
 
 
+def _st_clip_runs(pl, mask, x0, y0, W, H, out, step=1.5):
+    """_clip_runs at a 1.5 px test step (lines are cut cleanly enough; half the work)."""
+    px, py = pl[0]
+    pts = [pl[0]]
+    for q in pl[1:]:
+        dx, dy = q[0] - px, q[1] - py
+        L = _m.hypot(dx, dy)
+        if L > step:
+            k = int(L / step)
+            for j in range(1, k + 1):
+                t = j / (k + 1)
+                pts.append((px + dx * t, py + dy * t))
+        pts.append(q)
+        px, py = q
+    run = []
+    for (x, y) in pts:
+        xi, yi = int(x - x0), int(y - y0)
+        if 0 <= xi < W and 0 <= yi < H and mask[yi][xi]:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+        else:
+            run.append((x, y))
+    if len(run) > 1:
+        out.append(run)
+
+
 class StCanvas(_C.Canvas):
     """The house Canvas, emitting with a slightly coarser simplification for the fine cuts so a
     packed field of scroll stays inside the byte budget (the eye cannot see 0.15 px)."""
 
-    def svg(self, tol_fill=.7, tol_hair=.55, tol_line=.5):
+    def svg(self, tol_fill=.95, tol_hair=.65, tol_line=.55):
         if not self.objs:
             return ""
         xs = [p[0] for o in self.objs for poly in o[0] for p in poly] or [0.]
@@ -1549,10 +1824,10 @@ class StCanvas(_C.Canvas):
         for polys, ow, strokes in reversed(self.objs):
             for wd, lines in strokes.items():
                 for pl in lines:
-                    _C._clip_runs(pl, mask, x0, y0, W, H, out[wd])
+                    _st_clip_runs(pl, mask, x0, y0, W, H, out[wd])
             if ow:
                 for poly in polys:
-                    _C._clip_runs(poly + [poly[0]], mask, x0, y0, W, H, out[float(ow)])
+                    _st_clip_runs(poly + [poly[0]], mask, x0, y0, W, H, out[float(ow)])
             for poly in polys:
                 _C._fill_mask(poly, mask, x0, y0, W, H)
         res = []
@@ -1678,6 +1953,10 @@ def st_pedestal(x, y, w, h, seed, hk, uid):
     o.append(f'<path d="{st_rect_d(tx, ty, tw, th)}" fill="#fff" stroke="none"/>')
     if hk.get("tablet"):
         o.append(hk["tablet"](tx, ty, tw, th))
+    elif hk.get("tablet_lines"):
+        o.append(st_tablet_text(tx, ty, tw, th, hk["tablet_lines"]))
+    else:
+        o.append(f'<path d="{st_rect_d(tx, ty, tw, th)}" fill="url(#s2o)" stroke="none"/>')
     o.append(_C.knurled_bar(x + 4, py1, w - 8, kb))
     o.append(st_beads(f"M{_C._n(x + 3)},{_C._n(y + h - 2.5)}h{_C._n(w - 6)}", 3.5, 1.))
     return "".join(o)
@@ -1725,8 +2004,8 @@ def st_tall(w, h, seed, hk):
         F.stem(st_sweep(x0, y0, (0. if sd > 0 else _PI) - sd * .25, (py - ins) * .55 + w * .1,
                         -sd * .004, -sd * .022), 3., 1.6)
         F.stem(st_sweep(cx + sd * (rx * .7), ins + 4, (0. if sd > 0 else _PI) + sd * .15, w * .3, sd * .004, sd * .02), 2.6, 1.4)
-    F.grow(10)
-    F.fill(ins - 4, ins - 3, w - 2 * ins + 8, py - ins, 5., hk.get("max_items", 340))
+    F.grow(4)
+    F.fill(ins - 4, ins - 3, w - 2 * ins + 8, py - ins, 6., hk.get("max_items", 340))
     uid = f"s2t{w}x{h}"
     o.append(_scroll_layer(F, uid, 0, 0, w, py, hk.get("egg"), 2))
     if fz:
@@ -1741,7 +2020,7 @@ def st_tall(w, h, seed, hk):
             G.stem([(w / 2 + sd * (fh * .7 + L * i / 40), fy0 + fh / 2 + fh * .17 * _m.sin(i / 40 * _TAU * (L / (fh * 2.1)))) for i in range(41)],
                    1.5, 1., leaves=False)
         G.grow(6)
-        G.fill(ins - 4, fy0, w - 2 * ins + 8, fh, 3., 140)
+        G.fill(ins - 4, fy0, w - 2 * ins + 8, fh, 4., 140)
         o.append(_scroll_layer(G, uid + "f", 0, fy0, w, fh, hk.get("egg2"), 1))
         cvp = _C.Canvas()
         _C.palmette(w / 2, fy0 + 1, fh * .8, False, seed, cv=cvp)
@@ -1760,6 +2039,8 @@ def st_tall(w, h, seed, hk):
     o.append(bs)
     if hk.get("banner"):
         o.append(hk["banner"](centre, bh))
+    elif hk.get("motto"):
+        o.append(st_letter(hk["motto"], bh * .55, centre=centre[4:-4], fit=_m.dist(centre[4], centre[-5]) * .92))
     o.append(st_arms(cx, aby, arx, ary))
     o.append(st_pedestal(0, py, w, ped_h, seed, hk, uid))
     return "".join(o)

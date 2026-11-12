@@ -11,10 +11,10 @@ The full achievement, engraved in the manner of a Victorian armorial bookplate:
 - **Fleurs-de-lis, sable.** Three in chief and one on each flank. Each has a tall pointed centre petal,
   side petals curling out and down, a banded collar and three short feet, with one white vein. Under
   about 24 px tall the side petals close and the feet merge, so the three lobes stay crisp.
-- **Helm.** A barred helm in three-quarter view, turned to dexter: a domed skull modelled in swelling
-  meridian and latitude cuts, and a face cage, an oval opening on the turned face with seven bars that
-  bow round it and narrow as they turn away. A short gorget of three riveted lames flares straight onto
-  the chief.
+- **Helm.** A close helmet in profile, facing dexter: the helm of an untitled gentleman. It has a rounded
+  dome with a low comb, contour cuts that swell toward the back and leave the brow and crown lit, a
+  beaked visor with two sights and a row of breaths, the visor's edge sweeping back to its pivot, and a
+  bevor curving down to the throat. A short gorget of two riveted lames sits on the chief.
 - **Torse and crest.** A cord of six crisp twists, Or (stippled) and sable, across the crown, with a
   squat tower sable issuing from it, crenellated like the castle's towers. No motto.
 - **Mantling.** Long acanthus ribbons, Or lined sable, flowing from under the torse, sweeping down and
@@ -535,15 +535,13 @@ def _mantling(M, seed):
 # helm, torse and crest
 # ------------------------------------------------------------------------------------------------
 
-HX, HY = 62., 14.            # helm origin: x centre, y at the top of the skull; the gorget rests on the chief at y 59
+HX, HY = 62., 16.            # helm origin: x centre, y at the top of the skull; the gorget rests on the chief at y 59
 
-# the skull: an egg, its centre and radii; the face is a sphere turned 40 degrees to dexter
-SKC, SKR = (1.2, 17.), (18.6, 17.4)
-# the helm's silhouette: a round dome, the face cage bulging forward to dexter, the back falling to the nape
-_HELM = [(2, 0), (9, 1.2), (14.6, 4.6), (18.4, 10.4), (19.6, 17.4), (18.8, 24.4), (16.6, 30), (15.4, 35),
-         (0, 36.4), (-15.4, 35), (-17.4, 31.6), (-20.2, 26.6), (-21, 20.4), (-19.8, 13.6), (-16.2, 7.6),
-         (-11, 3), (-5, .6)]
-FC, FR, FRY, FTH = (-4.6, 20.), 16.2, 15.6, math.radians(42)
+# a close helmet in profile, facing dexter: the dome, the beaked visor and the bevor, as one silhouette
+SKC, SKR = (2.4, 17.2), (16., 16.6)           # the dome's centre and radii
+_HELM = [(-10, 5.4), (-4.6, 2.), (2.4, .6), (9.4, 1.8), (14.6, 5.4), (17.6, 10.6), (18.6, 16.8), (18., 23.),
+         (16.4, 28.4), (14.6, 32.4), (13.6, 35.4), (0, 35.8), (-11.6, 35.2), (-14.4, 33.2), (-16.8, 30.2),
+         (-17.6, 27.2), (-16.6, 24.8), (-20.4, 23.6), (-25.6, 21.4), (-21.6, 17.2), (-16.6, 12.2), (-12.8, 8.2)]
 
 
 def _spline(pts, m=6, closed=True):
@@ -566,109 +564,96 @@ def _spline(pts, m=6, closed=True):
     return out
 
 
-def _face(lam, phi):
-    """A point on the face sphere at longitude lam (0 = straight ahead) and latitude phi, in view."""
-    return (HX + FC[0] - FR * math.cos(phi) * math.sin(FTH + lam), HY + FC[1] + FRY * math.sin(phi))
-
-
 def _helm(M):
     k = M.k
     lw = 1 / k
+    H = lambda pts: [(HX + x, HY + y) for x, y in pts]
     o = []
-    sh = ""
-    # the gorget: three short lames flaring onto the chief, drawn from the bottom up
-    lames = [(53.4, 59.6, 21., 26.5), (49.4, 55., 17.8, 22.4), (46.2, 51., 15.4, 19.)]
-    gl, gfill = "", ""
+    # the gorget: two short lames under the bevor, set on the chief
+    lames = [(54.2, 59.6, 14.6, 17.4), (50.4, 55.2, 12.8, 15.2)]
     for y0, y1, a0, a1 in lames:
-        top = [(HX + a0 * c, y0 + 1.6 * math.sqrt(max(0, 1 - c * c))) for c in [i / 12 - 1 for i in range(25)]]
-        bot = [(HX + a1 * c, y1 + 1.9 * math.sqrt(max(0, 1 - c * c))) for c in [1 - i / 12 for i in range(25)]]
-        poly = top + bot
-        o.append(f'<path d="{_poly(M, poly)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
+        top = [(HX + 1 + a0 * c, y0 + 1.3 * math.sqrt(max(0, 1 - c * c))) for c in [i / 12 - 1 for i in range(25)]]
+        bot = [(HX + 1 + a1 * c, y1 + 1.5 * math.sqrt(max(0, 1 - c * c))) for c in [1 - i / 12 for i in range(25)]]
+        o.append(f'<path d="{_poly(M, top + bot)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
         hs = ""
-        # vertical cuts round the lame, swelling into the sinister shadow, and a shade under its edge
         step = 2.6 / k
-        x = HX - a1 + 1.
-        while x < HX + a1 - .8:
-            c0, c1 = (x - HX) / a0, (x - HX) / a1
-            yt = y0 + 1.6 * math.sqrt(max(0, 1 - min(1, c0 * c0))) + .9
-            yb = y1 + 1.9 * math.sqrt(max(0, 1 - c1 * c1)) - .5
-            g = (x - HX + a1) / (2 * a1)
+        x = HX + 1 - a1 + 1.
+        while x < HX + 1 + a1 - .8:
+            c0, c1 = (x - HX - 1) / a0, (x - HX - 1) / a1
+            yt = y0 + 1.3 * math.sqrt(max(0, 1 - min(1, c0 * c0))) + .9
+            yb = y1 + 1.5 * math.sqrt(max(0, 1 - c1 * c1)) - .5
+            g = (x - HX - 1 + a1) / (2 * a1)
             if yb - yt > .8 and g > .3:
                 hs += _poly(M, _lens([(x, yt), (x, (yt + yb) / 2), (x, yb)], (.12 + .5 * g * g) * lw, .5))
             x += step
-        hs += _poly(M, _lens([(HX + a0 * c * .96, y0 + 1.6 * math.sqrt(max(0, 1 - c * c)) + .8) for c in [i / 10 - 1 for i in range(1, 20)]],
+        hs += _poly(M, _lens([(HX + 1 + a0 * c * .96, y0 + 1.3 * math.sqrt(max(0, 1 - c * c)) + .8) for c in [i / 10 - 1 for i in range(1, 20)]],
                              .5 * lw, .5))
         o.append(f'<path d="{hs}" fill="#000"/>')
-        if k >= 1.:
+        if k >= 1.2:
             rv = ""
             r = .7
-            for c in (-.7, -.25, .25, .7):
-                px_, py_ = M.xy(HX + a0 * c * 1.04, y0 + 1.6 * math.sqrt(1 - c * c) + 2.)
+            for c in (-.6, 0, .6):
+                px_, py_ = M.xy(HX + 1 + a0 * c * 1.04, y0 + 1.3 * math.sqrt(1 - c * c) + 2.)
                 rv += f"M{_f(px_ - r)},{_f(py_)}a{r} {r} 0 1 0 {2 * r} 0a{r} {r} 0 1 0-{2 * r} 0"
             o.append(f'<path d="{rv}" fill="#000"/>')
-    # the skull: an egg, with the face cage bulging out of it to dexter
-    sk = [(HX + x, HY + y) for x, y in _spline(_HELM, 5)]
-    o.append(f'<path d="{_poly(M, sk)}" fill="#fff" stroke="#000" stroke-width="1"/>')
-    # meridian cuts on the skull, closing up and swelling into the shadowed back
-    for a, hw in ((17.6, .6), (16.2, .55), (14.6, .5), (12.8, .44), (10.8, .38), (8.6, .32), (6.2, .26),
-                  (3.8, .22), (1.4, .2)):
-        pts = [(HX + SKC[0] + a * math.cos(t), HY + SKC[1] + SKR[1] * .98 * math.sin(t)) for t in
-               [-1.4 + 2.9 * i / 30 for i in range(31)]]
-        sh += _poly(M, _lens(pts, hw * lw, .55))
-    # latitude cuts under the brow and round the jaw, in the shadow below the visor
-    for d, hw in ((1.6, .45), (3.4, .35)):
-        pts = [(HX + SKC[0] + (SKR[0] - d) * math.cos(t), HY + SKC[1] + (SKR[1] - d) * math.sin(t)) for t in
-               [.25 + 1.5 * i / 16 for i in range(17)]]
-        sh += _poly(M, _lens(pts, hw * lw, .6))
-    # latitude cuts over the crown, closing toward the back
-    for d, hw in ((1.5, .4), (3.1, .32), (4.8, .25)):
-        pts = [(HX + SKC[0] + (SKR[0] - d) * math.cos(t), HY + SKC[1] + (SKR[1] - d) * math.sin(t)) for t in
-               [-2.5 + 2.2 * i / 16 for i in range(17)]]
-        sh += _poly(M, _lens(pts, hw * lw, .6))
+    # the comb: a low ridge along the top of the dome
+    dome = [(SKC[0] + (SKR[0] + .2) * math.cos(t), SKC[1] + (SKR[1] + .2) * math.sin(t)) for t in
+            [math.radians(-148 + 128 * i / 24) for i in range(25)]]
+    comb_out = [(SKC[0] + (SKR[0] + .2 + 1.7 * math.sin(math.pi * i / 24) ** .5) * math.cos(t),
+                 SKC[1] + (SKR[1] + .2 + 1.7 * math.sin(math.pi * i / 24) ** .5) * math.sin(t))
+                for i, t in enumerate([math.radians(-148 + 128 * i / 24) for i in range(25)])]
+    comb = H(comb_out + dome[::-1])
+    o.append(f'<path d="{_poly(M, comb)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
+    sk = H(_spline(_HELM, 5))
+    o.append(f'<path d="{_poly(M, sk)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
+    sh = ""
+    # the comb's shadow side
+    sh += _poly(M, _lens(H([(SKC[0] + (SKR[0] + 1.) * math.cos(t), SKC[1] + (SKR[1] + 1.) * math.sin(t)) for t in
+                            [math.radians(-110 + 85 * i / 16) for i in range(17)]]), .35 * lw, .6))
+    # the dome: contour cuts following its curve, swelling toward the back and leaving the lit
+    # edge on the brow and crown clear
+    for d, hw in ((2.4, .35), (3.8, .45), (5.3, .55), (6.9, .6)):
+        pts = [(SKC[0] + (SKR[0] - d) * math.cos(t), SKC[1] + (SKR[1] - d) * math.sin(t)) for t in
+               [math.radians(-62 + 140 * i / 24) for i in range(25)]]
+        sh += _poly(M, _lens(H(pts), hw * lw, 1.1))
+    # the visor: the brow above the sights, then cuts along its beak, closing toward the point
+    vis_top = [(-12.4, 8.8), (-16.2, 12.8), (-21., 17.6), (-24.2, 21.)]
+    for f, hw in ((1.5, .45), (2.8, .38)):
+        sh += _poly(M, _lens(H(_resample([(x + f * .55, y + f * .85) for x, y in vis_top], 12)), hw * lw, .7))
+    for f, hw in ((.9, .55), (2., .45)):
+        sh += _poly(M, _lens(H(_resample([(-23.6 + f * .3, 22.2 - f * .6), (-19.6, 22.8 - f), (-14.6, 23.4 - f), (-8, 23.6 - f * .8)], 12)),
+                             hw * lw, .7))
+    # the visor's edge sweeping back to its pivot, shaded beneath
+    edge = H(_spline([(-11.4, 8.6), (-3.6, 9.4), (3., 12.6), (6.4, 17.6), (4.6, 22.6), (-3., 24.6), (-15.6, 24.8)], 4, False))
+    under = [(x + .5, y + .7) for x, y in edge[2:-2]]
+    sh += _poly(M, _lens(under, .55 * lw, .6))
+    # the bevor: cuts curving down and back to the neck, heavier toward the throat
+    for f, hw in ((1.2, .55), (2.6, .45), (4., .35)):
+        pts = [(-15.8 + f, 25.8), (-16.6 + f, 28.4), (-15.6 + f * .9, 31.4), (-13 + f * .7, 33.8)]
+        sh += _poly(M, _lens(H(_resample(pts, 10)), hw * lw, .7))
+    for f, hw in ((1.6, .45), (3.2, .4)):
+        pts = [(-14.8, 25.8 + f), (-6, 26.2 + f), (4, 26 + f), (12.6, 25 + f * .7)]
+        sh += _poly(M, _lens(H(_resample(pts, 14)), hw * lw, .8))
     o.append(f'<path d="{sh}" fill="#000"/>')
-    # the visor: the face cage, a dark opening on the turned face sphere
-    # an oval on the face sphere, so its rim curves round the face
-    lc, LA, pc, PA = math.radians(-4), math.radians(38), math.radians(10), math.radians(46)
-    oval = lambda e: [_face(lc + (LA + e) * math.cos(t * math.pi / 24), pc + (PA + e) * math.sin(t * math.pi / 24))
-                      for t in range(48) if math.cos(FTH + lc + (LA + e) * math.cos(t * math.pi / 24)) > .05]
-    win, rim = oval(0), oval(.2)
-    o.append(f'<path d="{_poly(M, rim)}" fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round"/>')
-    o.append(f'<path d="{_poly(M, win)}" fill="#000"/>')
-    # seven bars: meridians of the face, bowing round it and narrowing as they turn away
-    bars, bs = "", ""
-    for i in range(7):
-        lam = lc + LA * (-.66 + .255 * i)
-        vis = math.cos(FTH + lam)
-        if vis < .12:
-            continue
-        q = 1 - ((lam - lc) / LA) ** 2
-        if q <= .05:
-            continue
-        ph = PA * math.sqrt(q)
-        b0, b1 = pc - ph - .02, pc + ph + .02
-        hwid = max(.6 / k, .6 * vis)
-        dl = hwid / FR / max(vis, .25)
-        left = [_face(lam - dl, b0 + (b1 - b0) * j / 14) for j in range(15)]
-        right = [_face(lam + dl, b0 + (b1 - b0) * j / 14) for j in range(15)]
-        bars += _poly(M, left + right[::-1])
-        if k >= 2 and vis > .3:
-            bs += _poly(M, _lens([_face(lam - dl * .1, b0 + (b1 - b0) * j / 14) for j in range(2, 13)], .25 * lw * 1.2, .6))
-    o.append(f'<path d="{bars}" fill="#fff" stroke="#000" stroke-width=".5"/>')
-    if bs:
-        o.append(f'<path d="{bs}" fill="#000"/>')
-    o.append(f'<path d="{_poly(M, win)}" fill="none" stroke="#000" stroke-width="1"/>')
-    # the pivot boss behind the visor
-    bx, by = M.xy(HX + 9.4, HY + 19.)
-    r = 2.3 * k
-    boss = f'<circle cx="{_f(bx)}" cy="{_f(by)}" r="{_f(r)}" fill="#fff" stroke="#000" stroke-width="1"/>'
-    if r >= 4:
-        petals = ""
-        for i in range(8):
-            a = i * math.pi / 4
-            petals += f"M{_f(bx + math.cos(a) * r * .35)},{_f(by + math.sin(a) * r * .35)}L{_f(bx + math.cos(a) * r * .8)},{_f(by + math.sin(a) * r * .8)}"
-        boss += f'<path d="{petals}" stroke="#000" stroke-width=".5" fill="none"/>'
-    boss += f'<circle cx="{_f(bx)}" cy="{_f(by)}" r="{_f(max(.75, r * .3))}" fill="#000"/>'
-    o.append(boss)
+    o.append(f'<path d="{_poly(M, edge, False)}" fill="none" stroke="#000" stroke-width="1"/>')
+    # the sights: two horizontal eye-slots across the visor, cut dark
+    sl = ""
+    for (x0, y0), (x1, y1), hw in (((-21.2, 16.9), (-8.6, 13.6), .75), ((-19.6, 19.4), (-7.6, 16.8), .6)):
+        pts = _resample([(x0, y0), ((x0 + x1) / 2, (y0 + y1) / 2 - .3), (x1, y1)], 10)
+        sl += _poly(M, _lens(H(pts), max(hw, .75 / k), .25))
+    # the breaths: a few small holes on the lower visor
+    if k >= .9:
+        r = max(.6 * k, .75)
+        for x, y in ((-18.2, 22.), (-15.2, 22.4), (-12.2, 22.6), (-9.2, 22.6)):
+            px_, py_ = M.xy(HX + x, HY + y)
+            sl += f"M{_f(px_ - r)},{_f(py_)}a{_f(r)} {_f(r)} 0 1 0 {_f(2 * r)} 0a{_f(r)} {_f(r)} 0 1 0-{_f(2 * r)} 0"
+    o.append(f'<path d="{sl}" fill="#000"/>')
+    # the pivot: a small domed rivet where the visor turns
+    bx, by = M.xy(HX + 5.8, HY + 17.6)
+    r = max(1.1, 1.2 * k)
+    o.append(f'<circle cx="{_f(bx)}" cy="{_f(by)}" r="{_f(r)}" fill="#000"/>')
+    if r >= 2.5:
+        o.append(f'<circle cx="{_f(bx - r * .3)}" cy="{_f(by - r * .3)}" r="{_f(max(.5, r * .3))}" fill="#fff"/>')
     return o
 
 

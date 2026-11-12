@@ -23,7 +23,6 @@ import os
 import sys
 import threading
 
-from playwright.sync_api import sync_playwright
 
 TZ = "America/Los_Angeles"
 WIDTH, HEIGHT = 618, 714  # Paperwhite 11 browser: 1236 px / 2, less the toolbar that never hides
@@ -2305,6 +2304,7 @@ def serve(root):
 
 
 def snapshot(site):
+    from playwright.sync_api import sync_playwright  # only the morning snapshot needs a browser
     srv = serve(site)
     url = f"http://127.0.0.1:{srv.server_address[1]}/index.html?kindle"
     exe = os.environ.get("KINDLE_CHROMIUM") or None
@@ -2473,6 +2473,7 @@ DEDUPE = r"""
 def dedupe(pages, titles):
     """Run DEDUPE over the pages in reading order (in place)."""
     import json
+    from playwright.sync_api import sync_playwright
     exe = os.environ.get("KINDLE_CHROMIUM") or None
     try:
         with sync_playwright() as pw:

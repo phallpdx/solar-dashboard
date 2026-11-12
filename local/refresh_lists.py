@@ -1490,13 +1490,131 @@ def refresh_alfred(data, sources):
             "lines": lines, "recent": recent}
 
 
+# ---------------------------------------------------------------- the evening edition
+
+EVENING_BANNED = re.compile(r"\b(breaking|urgent|shocking|slams?|chaos|deadly|crisis|developing|live|exclusive|horrific|massive|"
+                            r"experts? warn\w*)\b", re.I)
+EVENING_PREFER = ["NPR", "PBS NewsHour", "AP", "Associated Press", "BBC", "The Guardian", "Al Jazeera", "CBS News",
+                  "ABC News", "NBC News", "Axios", "Politico", "OPB", "KGW", "KOIN", "KATU", "KPTV", "The Oregonian"]
+EVENING_TASK = """You are editing a calm evening news summary that Parker reads in bed, just before sleep. Using only the facts
+in the articles below, fill the JSON fields.
+- "unsuitable": true if the story is mainly graphic crime, violence or casualty detail, celebrity gossip, or if nothing new
+  happened today. {major}
+- "happened": what happened today, past tense, 2 to 3 plain sentences.
+- "tonight": where things stand as of this evening, 1 to 2 sentences, each shorter than the last.
+- "next": the next scheduled step with its day ("The House votes on Tuesday."), under 15 words. If none is reported,
+  "No date is set for the next step."
+- "headline": 6 to 12 words, sentence case, past tense, declarative, subject first. Say what changed, not how anyone felt.
+  No question marks, exclamation marks, colons or quotation marks.
+- "happened" and "tonight" together: 60 to 100 words.
+Rules: never use the words breaking, urgent, shocking, slams, chaos, deadly, crisis, developing, live, exclusive, horrific,
+massive, or "experts warn". No exclamation marks, no questions, no quotes of insults. Round numbers ("about 40", "nearly
+half") and use no more than two numbers. No casualty counts, injury detail or descriptions of violence. No speculation.
+Never add a fact the articles don't state."""
+EVENING_SCHEMA = {"type": "object", "additionalProperties": False,
+                  "required": ["unsuitable", "headline", "happened", "tonight", "next"],
+                  "properties": {"unsuitable": {"type": "boolean"}, "headline": S, "happened": S, "tonight": S, "next": S}}
+
+
+def _evening_ok(r):
+    if not isinstance(r, dict) or r.get("unsuitable"):
+        return False
+    head, body = r.get("headline") or "", f"{r.get('happened') or ''} {r.get('tonight') or ''}"
+    every = " ".join([head, body, r.get("next") or ""])
+    return (5 <= len(head.split()) <= 14 and 45 <= len(body.split()) <= 130 and not re.search(r"[?!]", every)
+            and ":" not in head and not EVENING_BANNED.search(every) and len((r.get("next") or "").split()) <= 18)
+
+
+def _evening_story(st, major):
+    """The local model rewrites one story for bedtime from its articles. None when it isn't right for tonight."""
+    outlets = [{"source": st.get("source"), "url": st.get("url")}] + list(st.get("also") or [])
+    outlets.sort(key=lambda o: EVENING_PREFER.index(o.get("source")) if o.get("source") in EVENING_PREFER else 99)
+    texts = []
+    for o in outlets[:5]:
+        if len(texts) >= 2:
+            break
+        try:
+            text, _ = page_text({"url": o["url"]})
+        except Exception as e:  # noqa: BLE001 - paywalls and blocks are common; the feed summary still counts
+            log(f"    {o.get('source')}: {e}")
+            continue
+        if len(text) > 800:
+            texts.append(f"[{o.get('source')}]\n{text[:5000]}")
+    source = (f"Headline: {st.get('title')}\nSummary: {st.get('summary')}\n\n" + "\n\n".join(texts))[:LLM.get("max_chars_per_page", 12000)]
+    task = EVENING_TASK.format(major="This is the day's biggest story, so never set unsuitable; state it plainly in one "
+                                     "sentence without detail." if major else "")
+    for attempt in range(2):
+        r = ask_model(task, source, EVENING_SCHEMA, temperature=0.2)
+        if isinstance(r, dict) and r.get("unsuitable") and not major:
+            log(f"    left out: {st.get('title')}")
+            return None
+        if isinstance(r, dict) and major:
+            r["unsuitable"] = False
+        if _evening_ok(r):
+            r = {k: clean(v, 700) if isinstance(v, str) else v for k, v in r.items()}
+            return {"url": st.get("url"), "title": st.get("title"), "source": st.get("source"), "utc": st.get("utc"),
+                    "coverage": st.get("coverage"), "also": [a.get("source") for a in st.get("also") or []],
+                    "headline": r["headline"].rstrip(". "), "happened": r["happened"], "tonight": r["tonight"],
+                    "next": None if r["next"].lower().startswith("no date") else r["next"], "major": major}
+        log(f"    draft didn't pass the checks{', trying again' if attempt == 0 else ''}")
+    return None
+
+
+def refresh_evening(data, sources):
+    """The Evening Edition's stories: the day's three biggest, plus one from Portland, each rewritten by the
+    model into a calm what-happened, where-it-stands, what's-next. Runs in the early evening (local\\setup.ps1);
+    the overnight runs leave it alone."""
+    if dt.datetime.now().hour < 15:
+        log("  only runs in the evening")
+        return data
+    if data.get("date") == TODAY.isoformat() and data.get("stories"):
+        log("  already written tonight")
+        return data
+    git("fetch", "--quiet", "origin", "data")
+    dash = json.loads(git("show", "FETCH_HEAD:dashboard.json"))
+    news = dash.get("news") or {}
+    now = dt.datetime.now(dt.timezone.utc)
+
+    def recent(items, hours):
+        keep = []
+        for it in items or []:
+            try:
+                if now - dt.datetime.fromisoformat(it["utc"].replace("Z", "+00:00")) <= dt.timedelta(hours=hours):
+                    keep.append(it)
+            except (KeyError, ValueError):
+                keep.append(it)
+        return sorted(keep, key=lambda x: -(x.get("coverage") or 0))
+
+    big = recent(news.get("big"), 18)
+    picked = []
+    for k, st in enumerate(big[:8]):
+        nxt = big[k + 1].get("coverage", 0) if k + 1 < len(big) else 0
+        major = k == 0 and (st.get("coverage") or 0) >= max(6, 2 * nxt)
+        log(f"  {st.get('title')}")
+        done = _evening_story(st, major)
+        if done:
+            picked.append(done)
+        if len(picked) >= 3:
+            break
+    local_story = None
+    for st in recent(news.get("local"), 24)[:4]:
+        log(f"  local: {st.get('title')}")
+        local_story = _evening_story(st, False)
+        if local_story:
+            break
+    if not picked:
+        return data  # the page falls back to the feed summaries
+    return {"note": "The Evening Edition's stories, rewritten for bedtime by the local model.", "date": TODAY.isoformat(),
+            "written_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"), "stories": picked, "local": local_story}
+
+
 REFRESHERS = {
     "jazz": refresh_jazz, "concerts": refresh_concerts, "events": refresh_events, "kids": refresh_kids,
     "bluray": refresh_bluray, "foodfinds": refresh_foodfinds, "planahead": refresh_planahead,
     "skioutlook": refresh_skioutlook, "teams": refresh_teams, "marketbrief": refresh_marketbrief,
     "coast": refresh_coast, "restaurants": refresh_restaurants, "localmusic": refresh_localmusic,
     "liquor": refresh_liquor,
-    "alfred": refresh_alfred,
+    "alfred": refresh_alfred, "evening": refresh_evening,
 }
 
 

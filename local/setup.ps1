@@ -1,15 +1,18 @@
 # One-time setup for the nightly local-model list refresh. Run from the repo folder:
 #   powershell -ExecutionPolicy Bypass -File local\setup.ps1
-# Options: -At 00:05,02:05,04:05 (start times), -RunNow (run once right away), -Uninstall
-param([string[]]$At = @('00:05', '02:05', '04:05'), [switch]$RunNow, [switch]$Uninstall)
+# Options: -At 00:05,02:05,04:05 (start times), -EveningAt 19:00,19:30 (the Evening Edition's stories),
+#          -RunNow (run once right away), -Uninstall
+param([string[]]$At = @('00:05', '02:05', '04:05'), [string[]]$EveningAt = @('19:00', '19:30'), [switch]$RunNow, [switch]$Uninstall)
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repo = Split-Path -Parent $here
 $taskName = 'Solar dashboard lists'
+$eveningTask = 'Solar dashboard evening'
 
 if ($Uninstall) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
-    Write-Host "Removed the '$taskName' task."
+    Unregister-ScheduledTask -TaskName $eveningTask -Confirm:$false -ErrorAction SilentlyContinue
+    Write-Host "Removed the '$taskName' and '$eveningTask' tasks."
     return
 }
 
@@ -62,6 +65,17 @@ $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" 
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings `
     -Principal $principal -Force | Out-Null
 Write-Host "OK  '$taskName' runs every night at $($At -join ', '). Logs go to $here\logs."
+
+# The Evening Edition: the model rewrites the day's top stories for bedtime. The second run only
+# does anything if the first one didn't finish.
+$eveningAction = New-ScheduledTaskAction -Execute 'powershell.exe' `
+    -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$here\run_daily.ps1`" --only evening"
+$eveningTrigger = @($EveningAt | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ })
+$eveningSettings = New-ScheduledTaskSettingsSet -WakeToRun -StartWhenAvailable -AllowStartIfOnBatteries `
+    -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 50)
+Register-ScheduledTask -TaskName $eveningTask -Action $eveningAction -Trigger $eveningTrigger -Settings $eveningSettings `
+    -Principal $principal -Force | Out-Null
+Write-Host "OK  '$eveningTask' runs every evening at $($EveningAt -join ', ')."
 
 if ($RunNow) {
     Start-ScheduledTask -TaskName $taskName

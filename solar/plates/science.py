@@ -1,10 +1,12 @@
-"""Science plate: the lead story is NASA's LISA and gravitational waves.
+"""Science front plate (edition plan: an arched vignette of a telescope and a microscope for the
+section front, with the Somaster dedication cartouche at its foot).
 
-The cartouche holds an engraved scene of spacetime: a ruled 'rubber sheet' in perspective, pulled
-down into two wells by an orbiting pair of black holes, with the two-armed spiral of gravitational
-waves running out across it; above, a ruled night sky with LISA's three spacecraft and their laser
-triangle trailing a hatched Earth. Tall plates add a chirp waveform cut into the pedestal tablet and
-a rippling ribbon. Easter egg: a small constellation in the sky traces a 'P'."""
+A study at night: a brass refractor on its tripod at the open window, pointed up at the stars,
+and a brass microscope on the table with its slide and lamp, so the very large and the very
+small share one plate. The night sky is ruled and starred through the window; the floorboards
+and the table run in wood grain.
+Easter egg: a small constellation over the telescope traces a "P".
+"""
 import sys
 import math
 import random
@@ -54,246 +56,6 @@ def _star(x, y, r):
 
 # ------------------------------------------------------------------------------------------------
 # the scene: spacetime sheet, binary black holes, LISA, Earth
-# ------------------------------------------------------------------------------------------------
-
-def spacetime_scene(x0, y0, W, H, clip_d, seed=0, mode="medium"):
-    """Engraved gravitational-wave scene filling the box x0,y0,W,H, clipped to clip_d."""
-    rng = random.Random(seed)
-    o = []
-    small = mode == "short"
-    horizon = y0 + H * (.30 if mode == "tall" else .34 if mode == "medium" else .30)
-    cx = x0 + W / 2
-
-    # ---- sky: horizontal rules, tight at the zenith, opening toward the horizon ----
-    sky, sky1 = [], []
-    y = y0 - 2
-    while y < horizon + 1:
-        t = (y - y0) / max(1., horizon - y0)
-        (sky1 if t < .45 else sky).append([(x0 - 4, y), (x0 + W + 4, y)])
-        y += 2. if t < .45 else 1.5 if t < .75 else 2. if t < .92 else 3.
-    o.append(_path(sky, .5, tol=0))
-    o.append(_path(sky1, 1., tol=0))
-
-    # ---- the sheet geometry ----
-    D0, D1 = 1., 4.2
-    phase = (seed % 360) / 360 * TAU                     # orbital phase changes with the date
-    sep = {"tall": .55, "medium": .72, "short": .75}[mode]
-    mc = (0., {"tall": 2.0, "medium": 1.75, "short": 1.8}[mode])                                      # binary centre in world (X, D)
-    m = [(mc[0] + sep * math.cos(phase), mc[1] + sep * .55 * math.sin(phase)),
-         (mc[0] - sep * math.cos(phase), mc[1] - sep * .55 * math.sin(phase))]
-    sheet_h = y0 + H - horizon
-    Xspan = W / 2
-    A = sheet_h * (.30 if not small else .22)            # well depth scale (px at D=1)
-    k_wave = 10.                                          # radial wavenumber of the ripples
-
-    def dip(X, D):
-        s = 0.
-        for mx, md in m:
-            r2 = (X - mx) ** 2 + ((D - md) * 1.5) ** 2
-            s += 1 / math.sqrt(r2 + .1)
-        well = s - 2 / math.sqrt(4.)                      # ~0 far away
-        rx, rd = X - mc[0], (D - mc[1]) * 1.5
-        r = math.hypot(rx, rd)
-        th = math.atan2(rd, rx)
-        env = (r / (r + .6)) * math.exp(-r / 2.4)
-        ripple = .07 * math.cos(2 * th - k_wave * r + 2 * phase) * env
-        return max(0., well) * .3 + ripple
-
-    def proj(X, D):
-        t = (1 / D - 1 / D1) / (1 / D0 - 1 / D1)
-        sx = cx + X * Xspan / D
-        sy = horizon + t * sheet_h * .98 + dip(X, D) * A / D
-        return sx, sy
-
-    def steep(X, D):
-        e = .04
-        return abs(dip(X + e, D) - dip(X - e, D)) + abs(dip(X, D + e) - dip(X, D - e))
-
-    # white sheet under everything below the far edge (the far edge undulates a little)
-    nx = 70
-    Xmax = D1 * 1.25
-    far = [proj(-Xmax + 2 * Xmax * i / nx, D1) for i in range(nx + 1)]
-    sheet = far + [(x0 + W + 6, y0 + H + 6), (x0 - 6, y0 + H + 6)]
-    o.append(_fill([sheet]))
-
-    # fine rules of constant depth (the sheet's tone), major grid lines heavier
-    nd_major = 9 if not small else 6
-    sub = 4 if not small else 3
-    hair, major, deep = [], [], []
-    nsamp = 90
-    for j in range(nd_major * sub + 1):
-        u = j / (nd_major * sub)
-        D = 1 / (1 / D0 + (1 / D1 - 1 / D0) * u)          # even spacing on screen, before the dip
-        if D < D0 * .62:
-            continue
-        pts = [proj(-Xmax + 2 * Xmax * i / nsamp, D) for i in range(nsamp + 1)]
-        if j % sub == 0:
-            major.append(pts)
-        else:
-            hair.append(pts)
-    # lines running into the distance
-    nX = 22 if not small else 14
-    for i in range(-nX, nX + 1):
-        X = Xmax * i / nX
-        pts = [proj(X, D0 * .62 + (D1 - D0 * .62) * q / 60) for q in range(61)]
-        major.append(pts) if i % 2 == 0 else hair.append(pts)
-        # half-lines inside the wells for shading
-        if i < nX:
-            Xh = Xmax * (i + .5) / nX
-            ds = [D0 * .62 + (D1 - D0 * .62) * q / 80 for q in range(81)]
-            ph = [proj(Xh, d) for d in ds]
-            deep += _split(ph, lambda q, Xh=Xh, ds=ds: steep(Xh, ds[q]) > .035)
-    # cross-hatch in the steep throat of each well
-    for j in range(nd_major * sub * 2 + 1):
-        u = (j + .5) / (nd_major * sub * 2)
-        D = 1 / (1 / D0 + (1 / D1 - 1 / D0) * u)
-        Xs = [-Xmax + 2 * Xmax * i / 140 for i in range(141)]
-        pts = [proj(X, D) for X in Xs]
-        deep += _split(pts, lambda q, Xs=Xs, D=D: steep(Xs[q], D) > .065)
-    o.append(_path(hair + deep, .5))
-    o.append(_path(major, 1. if not small else .5))
-
-    # wave crests: the two-armed spiral, drawn as swelling lines across the sheet
-    crest, crest_w = [], []
-    for arm in range(2):
-        pts = []
-        for q in range(300):
-            r = .2 + q * .014
-            th = (k_wave * r - 2 * phase + arm * TAU) / 2
-            X = mc[0] + r * math.cos(th)
-            D = mc[1] + r * math.sin(th) / 1.5
-            if D < D0 * .65 or D > D1 or abs(X) > Xmax:
-                pts.append(None)
-                continue
-            pts.append((proj(X, D), r))
-        run, rw = [], None
-        for p in pts + [None]:
-            wgt = None if p is None else (1.5 if p[1] < 1.3 else 1. if p[1] < 2.6 else .5)
-            if small and wgt:
-                wgt = min(wgt, 1.)
-            if p is None or wgt != rw:
-                if len(run) > 1:
-                    crest_w.append((rw, run))
-                run = run[-1:] if p is not None else []
-            if p is not None:
-                run.append(p[0])
-                rw = wgt
-    for wv in (.5, 1., 1.5):
-        o.append(_path([r for ww, r in crest_w if ww == wv], wv))
-
-    # the two black holes, each a black sphere ringed by a shaded accretion disc
-    bodies = sorted(m, key=lambda p: p[1], reverse=True)          # far one first
-    for X, D in bodies:
-        sx, sy = proj(X, D)
-        rb = max(3., (sheet_h * {'tall': .2, 'medium': .3, 'short': .26}[mode]) / D)
-        cyb = sy - rb * .55
-        rx, ry = rb * 2.3, rb * .62
-        back = C._ell_pts(sx, cyb, rx, ry, 40, math.pi, TAU)
-        inner_b = C._ell_pts(sx, cyb, rb * 1.25, ry * .5, 30, math.pi, TAU)
-        ring_back = back + inner_b[::-1]
-        o.append(_fill([ring_back], "#fff", "#000", .5))
-        o.append(_path(C.hatch_poly(ring_back, 0, 1.5), .5, tol=0))
-        disc = C._ell_pts(sx, cyb, rb, rb, 36)[:-1]
-        o.append(_fill([disc], "#000"))
-        # photon ring and a lensed glint
-        # lensed light cut white into the black: nested Einstein arcs and in-falling streaks,
-        # 1 px white with black between, so the hole reads as depth, not a flat blot
-        rings = []
-        k = 0
-        rr = rb * .9
-        while rr > 2.4:
-            a0 = 3.3 + .5 * (k % 2)
-            rings.append(C._ell_pts(sx, cyb, rr, rr * .96, max(10, int(rr * 2)), a0, a0 + 2.6 - .3 * k))
-            rr -= max(3., rb * .2)
-            k += 1
-        for j in range(5 if rb > 9 else 2):
-            a = .4 + j * 1.25
-            rings.append([(sx + rb * (.85 - .5 * t) * math.cos(a + 1.6 * t), cyb + rb * (.85 - .5 * t) * math.sin(a + 1.6 * t)) for t in [q / 8 for q in range(9)]])
-        o.append(_path(rings, 1., "#fff"))
-        front = C._ell_pts(sx, cyb, rx, ry, 40, 0, math.pi)
-        inner_f = C._ell_pts(sx, cyb, rb * 1.25, ry * .5, 30, 0, math.pi)
-        ring_front = front + inner_f[::-1]
-        o.append(_fill([ring_front], "#fff", "#000", .5))
-        # shade the disc's underside: hatching thickening toward the front edge
-        o.append(_path(C.hatch_poly(ring_front, 0, 1.5, .75), .5, tol=0))
-        o.append(_path([C._ell_pts(sx, cyb, rx * .7, ry * .72, 30, .15, math.pi - .15)], .5))
-
-    # ---- stars, LISA, Earth ----
-    sky_h = horizon - y0
-    stars = []
-    srng = random.Random(seed * 13 + 5)
-    for _ in range(int(W * sky_h / (260 if not small else 180))):
-        sx, sy = x0 + srng.random() * W, y0 + srng.random() * (sky_h - 3)
-        stars.append(C._ell_pts(sx, sy, .9, .9, 6)[:-1] if srng.random() < .8 else _star(sx, sy, 2.4))
-
-    if not small:
-        # Easter egg: a constellation tracing a 'P' (Parker), tucked toward the left of the sky
-        ps = max(1., sky_h / 40)
-        px, py = x0 + W * .27, y0 + sky_h * .18
-        Pp = [(0, 18), (0, 9), (0, 0), (6, 0), (9.5, 4.5), (6, 9), (0, 9)]
-        Pp = [(px + a * ps, py + b * ps) for a, b in Pp]
-        o.append(_path([Pp], 1., "#fff", 0))
-        for i, (sx, sy) in enumerate(Pp[:-1]):
-            stars.append(_star(sx, sy, 2.6 * ps if i in (0, 3) else 1.9 * ps))
-
-        # Earth: a hatched globe low in the sky, LISA's triangle trailing it
-        er = max(6., sky_h * .28)
-        ex, ey = x0 + W * .80, y0 + sky_h * .52
-        globe = C._ell_pts(ex, ey, er, er, 40)[:-1]
-        o.append(_fill([globe], "#fff", "#000", 1))
-        # night side: curved hatching (lines of latitude) on the lower right
-        lat = []
-        for i in range(1, 12):
-            yy = -er + 2 * er * i / 12
-            half = math.sqrt(max(0., er * er - yy * yy))
-            seg = []
-            for q in range(21):
-                xx = -half + 2 * half * q / 20
-                if xx * .55 + yy * .35 > -er * .25:   # terminator
-                    seg.append((ex + xx, ey + yy))
-            if len(seg) > 1:
-                lat.append(seg)
-        dense = []
-        for i in range(1, 24):
-            yy = -er + 2 * er * i / 24
-            half = math.sqrt(max(0., er * er - yy * yy))
-            seg = [(ex + xx, ey + yy) for xx in [-half + 2 * half * q / 20 for q in range(21)]
-                   if xx * .55 + yy * .35 > er * .35]
-            if len(seg) > 1:
-                dense.append(seg)
-        # continents: a few stippled blobs on the lit side
-        cont = []
-        for c0 in range(3):
-            a = srng.uniform(2.2, 4.2)
-            rr = srng.uniform(.25, .55) * er
-            ccx, ccy = ex + math.cos(a) * rr, ey + math.sin(a) * rr
-            blob = [(ccx + er * .22 * (1 + .3 * math.sin(3 * t + c0)) * math.cos(t),
-                     ccy + er * .16 * (1 + .3 * math.cos(2 * t)) * math.sin(t)) for t in [TAU * q / 16 for q in range(17)]]
-            cont.append(blob)
-        o.append(_path(lat, .5))
-        o.append(_path(dense, 1.))
-
-        # LISA: three spacecraft 2.5 million km apart, laser arms between them
-        L = min(W * .30, sky_h * 1.1)
-        tx, ty = ex - er * 1.9 - L * .55, ey - sky_h * .05
-        rot = .35 + phase * .2
-        tri = [(tx + L * .58 * math.cos(rot + TAU * i / 3), ty + L * .58 * .42 * math.sin(rot + TAU * i / 3)) for i in range(3)]
-        o.append(_path([tri + [tri[0]]], 1., "#fff", 0))
-        o.append(_path([tri + [tri[0]]], .5, "#000", 0, ' stroke-dasharray="0 3"'))
-        for (sx, sy) in tri:
-            craft = C._ell_pts(sx, sy, 3., 2., 12)[:-1]
-            o.append(_fill([craft], "#fff", "#000", .5))
-            o.append(_path([[(sx - 2.2, sy - .2), (sx + 2.2, sy - .2)], [(sx - 4.5, sy), (sx - 2.5, sy)],
-                            [(sx + 2.5, sy), (sx + 4.5, sy)]], .5, tol=0))
-    o.append(_fill(stars, "#fff"))
-
-    body = "".join(o)
-    cid = C._uid("sci", x0, y0, W, H, seed, mode)
-    return f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
-
-
-# ------------------------------------------------------------------------------------------------
-# frame pieces with the white spots engraved
 # ------------------------------------------------------------------------------------------------
 
 
@@ -1002,6 +764,59 @@ def kk_egg(kind, cx, cy, r):
             cv.hair(_C._ell_pts(cx, cy - r * .2, r * .9 * k, r * .28 * k, 28, 0, _PI))
         _kk_cut(cv, [p for p in e if p[1] > cy - r * .2], 60, 1.5)
         cv.obj([_C._ell_pts(cx, cy - r * .25, r * .14, r * .07, 12)[:-1]], .5)
+    elif kind == "castle":
+        # the Somaster castle: two crenellated towers, a crenellated curtain wall between, an
+        # arched gate with its portcullis
+        def cren(x0, x1, ytop, yb, n):
+            pts = [(x0, yb), (x0, ytop)]
+            wd = (x1 - x0) / (2 * n - 1)
+            for k in range(2 * n - 1):
+                xa, xb = x0 + k * wd, x0 + (k + 1) * wd
+                if k % 2 == 0:
+                    pts += [(xa, ytop), (xb, ytop)]
+                else:
+                    pts += [(xa, ytop + .14), (xb, ytop + .14)]
+            return pts + [(x1, ytop), (x1, yb)]
+        wall = E(cren(-.5, .5, -.25, .8, 4))
+        cv.obj([wall], .5)
+        _kk_cut(cv, E([(.15, -.1), (.5, -.1), (.5, .8), (.15, .8)]), 90, 1.5)
+        for tx in (-.78, .44):
+            tw_ = E(cren(tx, tx + .34, -.85, .8, 2))
+            cv.obj([tw_], .5)
+            _kk_cut(cv, E([(tx + .2, -.7), (tx + .34, -.7), (tx + .34, .8), (tx + .2, .8)]), 90, 1.5)
+            cv.obj([E([(tx + .13, -.5), (tx + .21, -.5), (tx + .21, -.3), (tx + .13, -.3)])], .5)
+        gate = [(cx + r * .2 * _m.cos(t), cy + r * .32 + r * .26 * _m.sin(t)) for t in [_PI + _PI * k / 10 for k in range(11)]]
+        gate = [(cx + r * .2, cy + r * .8)] + gate[::-1] + [(cx - r * .2, cy + r * .8)]
+        cv.obj([gate], .5)
+        for k in (-.1, 0, .1):
+            cv.hair(E([(k, .1), (k, .8)]))
+        for k in (.3, .48, .66):
+            cv.hair(E([(-.19, k), (.19, k)]))
+        for k in range(4):
+            cv.hair(E([(-.48 + k * .03, .05 + k * .2), (.13, .05 + k * .2)]))
+    elif kind == "drum":
+        # a toddler's snare: a short cylinder, its rims and zigzag cords, two sticks crossed on it
+        top = _C._ell_pts(cx, cy - r * .3, r * .72, r * .25, 32)[:-1]
+        side = _C._ell_pts(cx, cy - r * .3, r * .72, r * .25, 16, 0, _PI) + _C._ell_pts(cx, cy + r * .45, r * .72, r * .25, 16, _PI, 0)
+        cv.obj([side], .5)
+        _kk_cut(cv, [p for p in side if p[0] > cx + r * .25], 90, 1.5)
+        cv.obj([top], .5)
+        cv.hair(_C._ell_pts(cx, cy - r * .3, r * .55, r * .17, 28))
+        zz = [(cx + r * .72 * _m.cos(t), cy + (.45 if k % 2 else -.15) * r + r * .25 * _m.sin(t)) for k, t in enumerate([_PI * (1 - j / 8) for j in range(9)])]
+        cv.line(zz)
+        cv.line(_C._ell_pts(cx, cy + r * .45, r * .72, r * .25, 16, 0, _PI))
+        for sg in (-1, 1):
+            _kk_wline(cv, E([(sg * .1, -.45), (sg * .85, -.95)]), r * .05)
+    elif kind == "cymbalP":
+        e = _C._ell_pts(cx, cy - r * .2, r * .9, r * .32, 40)[:-1]
+        cv.obj([E([(-.05, .05), (.05, .05), (.05, .95), (-.05, .95)])], .5)
+        cv.obj([e], .5)
+        for k in (.3, .55, .8):
+            cv.hair(_C._ell_pts(cx, cy - r * .2, r * .9 * k, r * .32 * k, 28, 0, _PI))
+        _kk_cut(cv, [p for p in e if p[1] > cy - r * .12], 60, 1.5)
+        cv.obj([_C._ell_pts(cx, cy - r * .25, r * .12, r * .06, 12)[:-1]], .5)
+        # the P engraved in the bow of the cymbal
+        cv.line(E([(.42, -.05), (.42, -.4), (.6, -.4), (.66, -.32), (.6, -.24), (.42, -.24)]))
     elif kind == "note":
         # two swung eighth notes, beamed: white heads cut with a shadow crescent, white stems
         for dx, dy in ((-.45, .5), (.35, .38)):
@@ -1219,20 +1034,70 @@ def kk_sky(cv, X, Y, W, yb, seed=0, clouds=2):
 
 # ---- the plate ------------------------------------------------------------------------------
 
-def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., limit=188000):
-    """The whole plate, edge to edge, by height:
-      h < 110   band: a bead row and gold line hang under the text; the matte carries fine scroll
-                flowing out both ways from an oval medallion (the scene); an egg roundel.
+def kk_med_poly(shape, cx, cy, rx, ry, seed=0):
+    """The medallion's outline (clockwise on screen) in the box cx +- rx, cy +- ry:
+    'oval', 'roundel' (a circle), 'arch' (an arched top on straight sides), 'banner' (a bowed
+    ribbon with swallowtail notches), 'lunette' (a half oval on its flat side) or 'irregular'
+    (a silhouette that swells up into a peak top-left, like a pine over a hummock)."""
+    if shape == "roundel":
+        r = min(rx, ry)
+        return _C._ell_pts(cx, cy, r, r, 72)[:-1]
+    if shape == "arch":
+        return kk_shape("arch", cx - rx, cy - ry, 2 * rx, 2 * ry, min(rx * .55, ry * .7))
+    if shape == "lunette":
+        n = 40
+        return [(cx - rx * _m.cos(_PI * i / n), cy + ry - 2 * ry * _m.sin(_PI * i / n)) for i in range(n + 1)]
+    if shape == "banner":
+        bow = ry * .3
+        n = 24
+        nt = min(ry * .9, rx * .14)
+        us = [-1 + 2. * i / n for i in range(n + 1)]
+        top = [(cx + rx * u, cy - ry + bow * u * u) for u in us]
+        bot = [(cx + rx * u, cy + ry - bow + bow * u * u) for u in us[::-1]]
+        return top + [(cx + rx - nt, cy + bow * .5)] + bot + [(cx - rx + nt, cy + bow * .5)]
+    if shape == "irregular":
+        pts = []
+        n = 90
+        rng = _r.Random(seed * 3 + 11)
+        ph = rng.uniform(0, _TAU)
+        for i in range(n):
+            a = _TAU * i / n
+            k = 1 + .05 * _m.sin(5 * a + ph) + .03 * _m.sin(9 * a + 2 * ph)
+            da = (a - 3.92 + _PI) % _TAU - _PI          # the peak, up and to the left (the pine)
+            k += .42 * _m.exp(-(da / .3) ** 2)
+            pts.append((cx + rx * .9 * k * _m.cos(a), cy + ry * .78 * k * _m.sin(a) + ry * .12))
+        return pts
+    return _C._ell_pts(cx, cy, rx, ry, 72)[:-1]
+
+
+def _kk_setting(shape, poly, cx, cy, rx, ry, bead):
+    """The medallion's setting: the bead ring for an oval, the gold-line border otherwise.
+    Returns (svg, width)."""
+    if shape == "oval":
+        s, ox, oy = kk_ring(cx, cy, rx, ry, bead)
+        return s, ox - rx
+    return kk_border(poly, bead)
+
+
+def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., limit=188000,
+             shape="oval", form="plate", flank=None):
+    """The whole plate, edge to edge. The page's planned form (edition plan 1.6) and shape steer
+    the composition; its size picks the layout:
+      h < 110   form 'headpiece': a bead row and gold line, the matte carrying fine scroll that
+                flows out both ways from the medallion, an egg roundel.
+                form 'tailpiece' / 'marginal': a pointed cul-de-lampe silhouette (or, in a squarish
+                box, a roundel) set in a gold-line border on a stippled frame ground, the scroll
+                inside it flowing from the medallion; the egg lives in the scene.
       110-260   a cut-cornered panel in a gold-line, beaded border; spandrels of scroll and
-                rosettes outside it; the medallion at the centre, scroll flowing from its foot.
-      > 260     an arched panel: a great oval copperplate scene; under it a roundel (the arms
-                placeholder on fronts, else the egg); spandrels; a bordered frieze at the foot
-                with scroll flowing both ways from a palmette.
-    scene(x, y, w, h, mode) -> svg filling that rect (it is clipped to the oval)."""
+                rosettes outside it; the medallion at the centre, the scroll flowing from its foot;
+                on section fronts the dedication cartouche (arms) at the medallion's foot.
+      > 260     an arched panel: a great copperplate scene in the medallion; under it a roundel
+                (the arms on fronts, else the egg); flank roundels either side if asked; a bordered
+                frieze at the foot with scroll flowing both ways from a palmette.
+    The medallion takes `shape` (see kk_med_poly). scene(x, y, w, h, mode) -> svg filling that
+    rect (it is clipped to the medallion); mode is 'band', 'medium' or 'tall'."""
     rng = _r.Random(seed)
     o = [kk_defs()]
-    field = _C.Canvas()
-
     deferred = []
 
     def run_field(box, obst, roots, rmin, rmax, inside=None, poly=None, sd=0, area=None, cut=None):
@@ -1248,7 +1113,7 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
 
     def finish():
         """The main field is grown last, its scroll size set so the plate lands under budget
-        (field bytes ~ 19 * area / rmin^1.2, measured)."""
+        (field bytes ~ 20 * area / rmin^1.2, measured)."""
         for (k, box, obst, roots, rmin, rmax, inside, d, sd, area) in deferred:
             used = sum(len(t) for t in o) + 1800
             room = max(30000., limit - used)
@@ -1264,24 +1129,77 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
                 f *= (1 + over / len(o[k])) ** .85
         return _C.svg_doc(w, h, "".join(o))
 
+    def medallion(cx, cy, rx, ry, mode, bead):
+        """Paint the medallion: white base, the scene clipped to the shape, the setting."""
+        poly = kk_med_poly(shape, cx, cy, rx, ry, seed)
+        o.append(f'<path d="{_kk_pd_poly(kk_offset(poly, 1.))}" fill="#fff" stroke="none"/>')
+        o.append(kk_clip(_C._uid("kks", w, h, seed, mode), _kk_pd_poly(poly), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, mode)))
+        s, e = _kk_setting(shape, poly, cx, cy, rx, ry, bead)
+        o.append(s)
+        return poly, e
+
+    def keep_clear(cx, cy, rx, ry, pad):
+        """inside() test that keeps the scroll off the medallion and its setting."""
+        q = kk_inside(kk_offset(kk_med_poly(shape, cx, cy, rx, ry, seed), pad))
+        return lambda px, py: not q(px, py)
+
+    if h < 110 and form in ("tailpiece", "marginal"):
+        o.append(_C.dark_ground((0, 0, w, h), "S"))
+        o.append(f'<path d="M0,.5H{_kn(w)}M0,{_kn(h - .5)}H{_kn(w)}" stroke="#000" stroke-width="1"{_C._CR}/>')
+        cx, cy = w / 2, h / 2
+        if w < h * 2.6:
+            # a marginal device: the roundel alone in a beaded square with rosettes at the corners
+            r = min(w, h) / 2 - 9
+            sq = kk_shape("rect", 3, 3, w - 6, h - 6)
+            o.append(kk_matte(_kk_pd_poly(sq)))
+            for (qx, qy) in ((7, 7), (w - 7, 7), (w - 7, h - 7), (7, h - 7)):
+                o.append(kk_rosette(qx, qy, 3.))
+            medallion(cx, cy, r, r, "band", 1.)
+            return finish()
+        # the cul-de-lampe: a pointed lozenge with swelling, curved sides
+        a, b = w / 2 - 4, h / 2 - 4
+        sil = []
+        for i in range(96):
+            t = _TAU * i / 96
+            c_, s_ = _m.cos(t), _m.sin(t)
+            sil.append((cx + a * _m.copysign(abs(c_) ** .75, c_),
+                        cy + b * _m.copysign(abs(s_) ** 1.25, s_) * (1 - .25 * abs(c_) ** 3)))
+        border, bw = kk_border(sil, 1.)
+        ry = h / 2 - 10.5          # the medallion's setting rides over the silhouette's border
+        rx = ry if shape == "roundel" else min(w * (.3 if shape == "banner" else .2), max(ry * (2.6 if shape == "banner" else 1.7), 26))
+        ins = kk_inside(sil)
+        clear = keep_clear(cx, cy, rx, ry, 8.)
+        run_field((0, 0, w, h), [], [(cx - rx - 7, cy, 180), (cx + rx + 7, cy, 0)], max(3.6, h * .07), max(8, h * .26),
+                  lambda px, py: ins(px, py) and clear(px, py), sil, 1,
+                  area=.62 * w * h - _PI * (rx + 8) * (ry + 8))
+        o.append(border)
+        medallion(cx, cy, rx, ry, "band", 1.)
+        return finish()
+
     if h < 110:
         top = 8.
         gy, gh = top, h - top - 3
         cx, cy = w / 2, gy + gh / 2
         ry = gh / 2 - 7.5
-        rx = min(w * .17, max(ry * 2.2, 26))
-        obst = [("e", cx, cy, rx + 9, ry + 9)]
+        if shape == "banner":
+            rx = w * .36
+        elif shape == "roundel":
+            rx = ry
+        else:
+            rx = min(w * .17, max(ry * 2.2, 26))
         er = min(gh / 2 - 7, 17)
-        ex = w * (.13 if seed % 2 else .87)
-        obst.append(("c", ex, cy, er + 7))
+        ex = w * (.08 if seed % 2 else .92) if shape == "banner" else w * (.13 if seed % 2 else .87)
+        obst = [("c", ex, cy, er + 7)] if egg else []
+        if shape == "oval":
+            obst.append(("e", cx, cy, rx + 9, ry + 9))
+        clear = keep_clear(cx, cy, rx, ry, 9.)
         run_field((0, gy, w, gh), obst, [(cx - rx - 8, cy, 180), (cx + rx + 8, cy, 0)],
-                  max(4.5, gh * .1), max(9, gh * .33), sd=1, area=w * gh - _PI * (rx + 9) * (ry + 9) - _PI * (er + 7) ** 2)
-        o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-        o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "band")))
-        ring, _, _ = kk_ring(cx, cy, rx, ry, 1.)
-        o.append(ring)
-        rr, _ = kk_roundel(ex, cy, er, egg, 1.)
-        o.append(rr)
+                  max(4.5, gh * .1), max(9, gh * .33), clear, sd=1,
+                  area=w * gh - 3.4 * (rx + 9) * (ry + 9) - (_PI * (er + 7) ** 2 if egg else 0))
+        medallion(cx, cy, rx, ry, "band", 1.)
+        if egg:
+            rr, _ = kk_roundel(ex, cy, er, egg, 1.)
+            o.append(rr)
         o.append(f'<path d="M0,1.5H{_kn(w)}M0,{_kn(top - .5)}H{_kn(w)}" stroke="#000" stroke-width="1"{_C._CR}/>')
         o.append(kk_bead_row(f"M0,{_kn(top / 2 + .25)}H{_kn(w)}", 1., False))
         o.append(f'<path d="M0,{_kn(h - 1.5)}H{_kn(w)}" stroke="#000" stroke-width="1"{_C._CR}/>')
@@ -1292,35 +1210,43 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
         m = 10.
         c = min(30., h * .17)
         poly = kk_shape("cut", m, m, w - 2 * m, h - 2 * m, c)
-        # the spandrels and margins: matte with small scroll
         outer = kk_inside(kk_offset(poly, 9.))
         run_field((0, 0, w, h), [], [(0, 0, 45), (w, 0, 135), (w, h, -135), (0, h, -45)], 4.5, 10.,
                   lambda px, py: not outer(px, py), sd=2, cut=kk_offset(poly, 4.))
         cx, cy = w / 2, h / 2
         ry = (h - 2 * m) / 2 - 12
-        rx = min(w * .2, ry * 1.25)
+        ar = min(15., h * .075) if arms else 0
+        if arms:                       # room for the dedication cartouche at the foot
+            ry -= ar + 3
+            cy -= ar + 3
+        rx = ry if shape == "roundel" else min(w * (.27 if shape in ("banner", "lunette") else .2), ry * (1.6 if shape in ("banner", "lunette") else 1.25))
+        if shape == "irregular":
+            rx = min(w * .22, ry * 1.4)
         er = min(15., h * .1)
         ex = cx + (rx + 30 + er) * (-1 if seed % 2 else 1)
-        obst = [("e", cx, cy, rx + 10, ry + 10), ("c", ex, cy, er + 8)]
+        obst = [("c", ex, cy, er + 8)] if egg else []
+        if arms:
+            obst.append(("c", cx, cy + ry + 6 + ar, ar + 8))
         border, bw = kk_border(poly)
         for q in _kk_along(poly, 3.):
             obst.append(("c", q[0], q[1], 3.))
+        pin = kk_inside(poly)
+        clear = keep_clear(cx, cy, rx, ry, 10.)
         run_field((m, m, w - 2 * m, h - 2 * m), obst,
                   [(cx - rx * .55, cy + ry + 8, 160), (cx + rx * .55, cy + ry + 8, 20), (cx, cy - ry - 9, 0 if seed % 2 else 180)],
-                  max(6, h * .045), max(13, h * .14), kk_inside(poly), poly, 3,
-                  area=(w - 2 * m) * (h - 2 * m) - 2 * c * c - _PI * (rx + 10) * (ry + 10) - _PI * (er + 8) ** 2)
+                  max(6, h * .045), max(13, h * .14), lambda px, py: pin(px, py) and clear(px, py), poly, 3,
+                  area=(w - 2 * m) * (h - 2 * m) - 2 * c * c - 3.4 * (rx + 10) * (ry + 10) - _PI * (er + 8) ** 2)
         o.append(border)
-        for p in (poly[0], poly[2], poly[4], poly[6]):
-            pass
         for (qx, qy) in ((m * .6 + c * .3, m * .6 + c * .3), (w - m * .6 - c * .3, m * .6 + c * .3),
                          (w - m * .6 - c * .3, h - m * .6 - c * .3), (m * .6 + c * .3, h - m * .6 - c * .3)):
             o.append(kk_rosette(qx, qy, 3.6))
-        o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-        o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "medium")))
-        ring, _, _ = kk_ring(cx, cy, rx, ry, 1.5)
-        o.append(ring)
-        rr, _ = kk_roundel(ex, cy, er, egg, 1.)
-        o.append(rr)
+        medallion(cx, cy, rx, ry, "medium", 1.5)
+        if egg:
+            rr, _ = kk_roundel(ex, cy, er, egg, 1.)
+            o.append(rr)
+        if arms:
+            rr, _ = kk_roundel(cx, cy + ry + 6 + ar, ar, "arms", 1.)
+            o.append(rr)
         return finish()
 
     # tall
@@ -1337,22 +1263,33 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
     ph = yb - m
     rr_ = min(24., ph * .07)
     ry = min(ph * .4, 175, (ph - rise * .5 - 18 - 2 * rr_ - 44) / 2)
-    rx = min((w - 2 * m) * .4, ry * 1.45)
+    rx = ry if shape == "roundel" else min((w - 2 * m) * (.36 if flank else .4), ry * 1.45)
     cy = m + rise * .5 + ry + 18
     ey = min(cy + ry + 14 + rr_ + 6, yb - rr_ - 10)
-    obst = [("e", cx, cy, rx + 10, ry + 10), ("c", cx, ey, rr_ + 10)]
+    obst = [("c", cx, ey, rr_ + 10)]
+    fr = 0
+    if flank:
+        fr = min(20., ((w - 2 * m) / 2 - rx - 18) / 2 - 2)
+        fx = (cx - rx - 12 - fr, cx + rx + 12 + fr)
+        for x_ in fx:
+            obst.append(("c", x_, cy + ry * .35, fr + 8))
     for q in _kk_along(poly, 3.):
         obst.append(("c", q[0], q[1], 3.))
     roots = [(cx - rr_ - 10, ey, 180), (cx + rr_ + 10, ey, 0), (cx, cy - ry - 10, 0 if seed % 2 else 180)]
-    run_field((m, m, w - 2 * m, ph), obst, roots, max(9, h * .019), max(19, h * .048), kk_inside(poly), poly, 5,
-              area=(w - 2 * m) * ph - _PI * (rx + 10) * (ry + 10) - _PI * (rr_ + 10) ** 2 - .43 * rise * (w - 2 * m))
+    pin = kk_inside(poly)
+    clear = keep_clear(cx, cy, rx, ry, 10.)
+    run_field((m, m, w - 2 * m, ph), obst, roots, max(9, h * .019), max(19, h * .048),
+              lambda px, py: pin(px, py) and clear(px, py), poly, 5,
+              area=(w - 2 * m) * ph - 3.4 * (rx + 10) * (ry + 10) - _PI * (rr_ + 10) ** 2 - .43 * rise * (w - 2 * m))
     o.append(border)
-    o.append(f'<path d="{_kk_ell_d(cx, cy, rx + 1, ry + 1)}" fill="#fff" stroke="none"/>')
-    o.append(kk_clip(_C._uid("kks", w, h, seed), _kk_ell_d(cx, cy, rx, ry), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, "tall")))
-    ring, _, _ = kk_ring(cx, cy, rx, ry, 1.5)
-    o.append(ring)
-    rr, _ = kk_roundel(cx, ey, rr_, "arms" if arms else egg, 1.2)
-    o.append(rr)
+    medallion(cx, cy, rx, ry, "tall", 1.5)
+    if arms or egg:
+        rr, _ = kk_roundel(cx, ey, rr_, "arms" if arms else egg, 1.2)
+        o.append(rr)
+    if flank:
+        for x_, kind in zip(fx, flank):
+            rr, _ = kk_roundel(x_, cy + ry * .35, fr, kind, 1.)
+            o.append(rr)
     # the frieze
     fy = yb + 8
     fp = kk_shape("rect", m + 6, fy + 4, w - 2 * m - 12, h - fy - 8)
@@ -1367,16 +1304,515 @@ def kk_plate(w, h, scene, egg="dog", seed=0, arms=False, egg2=None, dens=1., lim
     return finish()
 
 
+# ---- the vignette kit: a free-standing engraved scene on a light ground -----------------------
+# (art direction of Nov 12: the subject is the composition; no black field, no generic scroll; the
+# frame, where there is one, is built from the page's own motifs; at most a quarter of the plate dark)
+
+
+def vg_defs():
+    """No ground of our own: outside the vignette's cut the plate is transparent, so the frame
+    designer's light engraved ground shows through and the scene dissolves into it."""
+    return ""
+
+
+def vg_ragged(poly, amp=3., seed=0, step=1.6):
+    """The vignette's dissolving edge: the outline pulled in by an irregular amount, slow swells
+    and quick jags, so the lines of the scene stop raggedly as in Bewick's tailpieces."""
+    rng = _r.Random(seed * 13 + 5)
+    pts = _kk_resample(list(poly) + [poly[0]], step)[:-1]
+    n = len(pts)
+    ph = [rng.uniform(0, _TAU) for _ in range(3)]
+    cx = sum(p[0] for p in pts) / n
+    cy = sum(p[1] for p in pts) / n
+    out = []
+    for i, (x, y) in enumerate(pts):
+        t = _TAU * i / n
+        d = amp * (.55 + .25 * _m.sin(3 * t + ph[0]) + .2 * _m.sin(7 * t + ph[1]))
+        d += amp * .55 * rng.random() ** 2 * (1 if i % 2 else .4)
+        dx, dy = cx - x, cy - y
+        L = _m.hypot(dx, dy) or 1.
+        out.append((x + dx / L * d, y + dy / L * d))
+    return out
+
+
+def vg_rule(poly, double=True):
+    """A plate-mark: a 1 px rule round the shape and a fine rule just outside it."""
+    s = f'<path d="{_kk_pd_poly(poly)}" fill="none" stroke="#000" stroke-width="1"/>'
+    if double:
+        s += f'<path d="{_kk_pd_poly(kk_offset(poly, 2.5))}" fill="none" stroke="#000" stroke-width=".5"/>'
+    return s
+
+
+def vg_leaf(cv, x, y, ang, L, W, bend=.25, shade=1, veins=True):
+    """A leaf from its base (x, y) along ang: two swelling edges meeting at the tip, the midrib
+    cut, the shadow half modelled in fine cuts that follow the leaf's turn."""
+    ux, uy = _m.cos(ang), _m.sin(ang)
+    vx, vy = -uy, ux
+    n = 10
+    L_, R_ = [], []
+    for i in range(n + 1):
+        t = i / n
+        c = bend * L * t * t
+        wd = W * _m.sin(_PI * t ** .8) * (1 - .15 * t)
+        mx, my = x + ux * L * t + vx * c, y + uy * L * t + vy * c
+        L_.append((mx + vx * wd, my + vy * wd))
+        R_.append((mx - vx * wd, my - vy * wd))
+    poly = L_ + R_[::-1]
+    cv.obj([poly], .5)
+    mid = [(x + ux * L * t + vx * bend * L * t * t, y + uy * L * t + vy * bend * L * t * t) for t in [i / 8 for i in range(9)]]
+    half = (L_ if shade > 0 else R_) + mid[::-1]
+    cv.hair(_kk_zig(_C.hatch_poly(half, _m.degrees(ang) + 65 * shade, 1.5)))
+    cv.hair(mid[:-1])
+    if veins and L > 14:
+        for k in range(2, 7, 2):
+            p = mid[k]
+            q = (L_ if shade < 0 else R_)[min(n, k + 2)]
+            cv.hair([p, ((p[0] + q[0]) / 2, (p[1] + q[1]) / 2)])
+    return poly
+
+
+def vg_reed(cv, x, base, hgt, lean, rng, cattail=True):
+    """A reed: a tapering stalk leaning off true, two blade leaves with a twist, and on most a
+    cattail head, its shadow side cross-cut."""
+    top = (x + lean * hgt, base - hgt)
+    mid = (x + lean * hgt * .45, base - hgt * .55)
+    pts = _kk_bez((x, base), mid, mid, top, 10)
+    R = _C._Rib(pts, [max(.6, hgt * .012 * (1 - i / 10) + .5) for i in range(11)], [max(.6, hgt * .012 * (1 - i / 10) + .5) for i in range(11)])
+    cv.obj([R.outline()], .5)
+    for sg in (-1, 1):
+        a = -_PI / 2 + sg * rng.uniform(.25, .55) + lean
+        vg_leaf(cv, x + sg * .5, base - hgt * rng.uniform(.05, .2), a, hgt * rng.uniform(.5, .8), max(1., hgt * .018), -sg * .55, sg, False)
+    if cattail:
+        hx, hy = pts[7]
+        hh = max(4., hgt * .16)
+        head = _C._ell_pts(hx, hy, max(1.4, hgt * .028), hh / 2, 16)[:-1]
+        cv.obj([head], .5)
+        cv.line(_C.hatch_poly([p for p in head if p[0] >= hx - .3], 0, 1.5))
+        cv.hair(_C.hatch_poly(head, 35, 2))
+
+
+def vg_ribbon(cv, x0, x1, yc, hgt, bow=.3, tails=True, seed=0):
+    """A ribbon banner: a bowed face from x0 to x1 (centre line yc, depth hgt), its ends turning
+    back behind it in folds that are cut dark, with swallowtail ends. Returns the face polygon
+    (for the content) after drawing the tails and the fold shadows."""
+    n = 28
+    us = [-1 + 2. * i / n for i in range(n + 1)]
+    cx, rx = (x0 + x1) / 2, (x1 - x0) / 2
+    b = hgt * bow
+    top = [(cx + rx * u, yc - hgt / 2 + b * u * u) for u in us]
+    bot = [(cx + rx * u, yc + hgt / 2 + b * u * u) for u in us[::-1]]
+    face = top + bot
+    if tails:
+        d = hgt * .32
+        for sg in (-1, 1):
+            ex, ey = cx + sg * rx, yc + b
+            tail = [(ex - sg * hgt * .5, ey - hgt / 2 + d), (ex + sg * hgt * 1.5, ey - hgt / 2 + d),
+                    (ex + sg * hgt * 1.08, ey + d), (ex + sg * hgt * 1.5, ey + hgt / 2 + d),
+                    (ex - sg * hgt * .5, ey + hgt / 2 + d)]
+            cv.obj([tail], 1.)
+            cv.hair(_kk_zig(_C.hatch_poly(tail, 0, 1.5)))
+            cv.hair(_C.hatch_poly([(ex, ey - hgt / 2 + d), (ex + sg * hgt * .45, ey - hgt / 2 + d), (ex + sg * hgt * .3, ey + hgt / 2 + d), (ex, ey + hgt / 2 + d)], 90, 2.))
+            fold = [(ex, ey - hgt / 2 + d), (ex, ey + hgt / 2), (ex - sg * hgt * .38, ey + hgt / 2 + d)]
+            cv.obj([fold], .5)
+            cv.line(_C.hatch_poly(fold, 90 - 30 * sg, 1.5))
+    cv.obj([face], 1.)
+    # the face turns: shade near each end following the bow
+    for sg in (-1, 1):
+        sh = [p for p in top if sg * (p[0] - cx) > rx * .82] + [p for p in bot if sg * (p[0] - cx) > rx * .82]
+        if len(sh) > 2:
+            cv.hair(_C.hatch_poly(sh, 90, 1.5))
+    return face
+
+
+def vg_cartouche(cx, cy, r):
+    """The Somaster dedication cartouche, a placeholder until the arms are cut: a small beaded
+    oval holding crossed drumsticks over a sun, a scrolled leaf either side."""
+    cv = _C.Canvas()
+    for sg in (-1, 1):
+        vg_leaf(cv, cx + sg * r * .9, cy + r * .25, (_PI if sg < 0 else 0) - sg * .3, r * 2.2, r * .42, -sg * .4, sg)
+        vg_leaf(cv, cx + sg * r * .8, cy - r * .25, (_PI if sg < 0 else 0) + sg * .5, r * 1.7, r * .34, sg * .45, -sg)
+    s = kk_svg(cv)
+    rr, _ = kk_roundel(cx, cy, r, "arms", 1.)
+    return s + rr
+
+
+def vg_plate(w, h, scene, shape="oval", form="vignette", frame=None, arms=False, seed=0,
+             ragged=True, amp=None, pad=None, aspect=None, limit=192000):
+    """A plate in the planned form, transparent outside its cut: the scene, shaped
+    (kk_med_poly) and either dissolving at a ragged edge or set in a plate-mark; the page's own
+    frame (frame(box, poly, w, h, mode) -> svg) round it; on section fronts the dedication
+    cartouche at the foot. scene(x, y, w, h, mode) -> svg filling that rect."""
+    o = [kk_defs(), vg_defs()]
+    m = 4.
+    res = 0.
+    if arms and h >= 110:
+        res = min(40., h * .16)
+    ar = aspect or {"oval": 1.7, "roundel": 1., "arch": 1.25, "banner": 4.2, "lunette": 2.1, "irregular": 1.55}.get(shape, 1.6)
+    pd = 8. if pad is None else pad
+    aw, ah = w - 2 * m - 2 * pd, h - 2 * m - 2 * pd - res
+    if form == "headpiece":
+        bw, bh = aw, ah
+    else:
+        bw = min(aw, ah * ar)
+        bh = min(ah, bw / ar)
+        if shape == "roundel":
+            bw = bh = min(aw, ah)
+    cx, cy = w / 2, m + pd + ah / 2
+    rx, ry = bw / 2, bh / 2
+    mode = "band" if bh < 80 else ("medium" if bh <= 230 else "tall")
+    poly = kk_med_poly(shape, cx, cy, rx, ry, seed)
+    cp = vg_ragged(poly, amp if amp is not None else max(3., min(9., bh * .05)), seed) if ragged else poly
+    o.append(f'<path d="{_kk_pd_poly(cp)}" fill="#fff" stroke="none"/>')
+    o.append(kk_clip(_C._uid("vgs", w, h, seed), _kk_pd_poly(cp), scene(cx - rx, cy - ry, 2 * rx, 2 * ry, mode)))
+    if not ragged:
+        o.append(vg_rule(poly))
+    if frame:
+        o.append(frame((cx - rx, cy - ry, 2 * rx, 2 * ry), poly, w, h, mode))
+    if res:
+        r = res * .38
+        o.append(vg_cartouche(cx, h - m - res / 2 - 1, r))
+    return _C.svg_doc(w, h, "".join(o))
+
+
+def vg_wheat(cv, pts, ear=.42, k=1.):
+    """A wheat stalk along pts (base first): the straw, and on its last part the ear, kernels set
+    in pairs and each shaded on its lower side, long awns combed back from them."""
+    R = _C._Rib(pts, [max(.5, .9 * k)] * len(pts), [max(.5, .9 * k)] * len(pts))
+    cv.obj([R.outline()], .5)
+    n = len(pts)
+    i0 = int(n * (1 - ear))
+    for i in range(i0, n - 1):
+        (x0, y0), (x1, y1) = pts[i], pts[i + 1]
+        a = _m.atan2(y1 - y0, x1 - x0)
+        for sg in (-1, 1):
+            ka = a + sg * .55
+            L = 4.2 * k * (1 - .35 * (i - i0) / max(1, n - i0))
+            vg_leaf(cv, x0, y0, ka, L, 1.3 * k, 0, -sg, False)
+            tx, ty = x0 + _m.cos(ka) * L, y0 + _m.sin(ka) * L
+            cv.hair([(tx, ty), (tx + _m.cos(a + sg * .25) * L * 1.4, ty + _m.sin(a + sg * .25) * L * 1.4)])
+
+
+def vg_wreath(cv, cx, cy, r, kind="wheat", seed=0, k=1.):
+    """A wreath round a roundel, two branches rising from a bow at the foot to meet at the top:
+    'wheat' (ears on curving straws) or 'fir' (Douglas-fir sprigs with a cone or two)."""
+    rng = _r.Random(seed)
+    for sg in (-1, 1):
+        n = 7
+        for j in range(n):
+            a0 = _PI / 2 + sg * (.25 + j * (2.5 / n))
+            a1 = a0 + sg * .55
+            pts = [(cx + (r + 1.5 + 2 * _m.sin(_PI * t)) * _m.cos(a0 + (a1 - a0) * t), cy + (r + 1.5 + 2 * _m.sin(_PI * t)) * _m.sin(a0 + (a1 - a0) * t)) for t in [i / 8 for i in range(9)]]
+            if kind == "wheat":
+                vg_wheat(cv, pts, .55, k)
+            else:
+                px, py = pts[4]
+                for q in range(5):
+                    t = q / 4
+                    x_, y_ = pts[int(t * 8)]
+                    aa = a0 + (a1 - a0) * t
+                    for s2 in (-1, 1):
+                        cv.hair([(x_, y_), (x_ + _m.cos(aa + sg * _PI / 2 + s2 * .9) * 4 * k, y_ + _m.sin(aa + sg * _PI / 2 + s2 * .9) * 4 * k)])
+                Rb = _C._Rib(pts, [.7] * 9, [.7] * 9)
+                cv.obj([Rb.outline()], .5)
+                if j % 3 == 1:
+                    cone = _C._ell_pts(px, py, 2.2 * k, 3.4 * k, 12)[:-1]
+                    cv.obj([cone], .5)
+                    cv.line(_C.hatch_poly(cone, 0, 1.5))
+    # the bow
+    for sg in (-1, 1):
+        loop = [(cx, cy + r + 3), (cx + sg * 5 * k, cy + r - 1), (cx + sg * 7 * k, cy + r + 3), (cx + sg * 4 * k, cy + r + 5)]
+        cv.obj([loop], .5)
+        cv.hair(_C.hatch_poly(loop, 60 * sg, 1.5))
+        tail = [(cx, cy + r + 4), (cx + sg * 3 * k, cy + r + 11 * k), (cx + sg * 5 * k, cy + r + 10 * k), (cx + sg * 1.5, cy + r + 4)]
+        cv.obj([tail], .5)
+        cv.hair(_C.hatch_poly(tail, 90, 1.5))
+    cv.obj([_C._ell_pts(cx, cy + r + 3.5, 2 * k, 1.7 * k, 10)[:-1]], .5)
+
+
+def vg_bough(cv, pts, k=1., seed=0, twigs=True):
+    """A Douglas-fir bough along pts (base first): a tapering limb, side twigs thrown forward,
+    and every part clothed in needles combed forward, light above and cut heavier beneath, so the
+    bough has a lit top and a shadowed belly."""
+    rng = _r.Random(seed)
+    pts = _kk_resample(pts, 1.5)
+    n = len(pts)
+    wl = [max(.6, 2.4 * k * (1 - i / n)) for i in range(n)]
+    R = _C._Rib(pts, wl, wl)
+
+    def needles(P, L0, dens=1.6):
+        m = len(P)
+        up, dn = [], []
+        acc = 0.
+        for i in range(1, m):
+            (x0, y0), (x1, y1) = P[i - 1], P[i]
+            seg = _m.hypot(x1 - x0, y1 - y0)
+            acc += seg
+            if acc < dens:
+                continue
+            acc = 0.
+            a = _m.atan2(y1 - y0, x1 - x0)
+            t = i / m
+            L = L0 * (1 - .45 * t) * rng.uniform(.8, 1.1)
+            for sg, bag in ((-1, up), (1, dn)):
+                b = a + sg * rng.uniform(.75, 1.05)
+                bag.append([(x1, y1), (x1 + _m.cos(b) * L, y1 + _m.sin(b) * L)])
+        cv.hair(up)
+        cv.line(dn[::2])
+        cv.hair(dn[1::2])
+
+    if twigs:
+        for i in range(6, n - 6, max(6, int(10 / k))):
+            (x0, y0), (x1, y1) = pts[i - 1], pts[i]
+            a = _m.atan2(y1 - y0, x1 - x0)
+            sg = 1 if (i // 7) % 2 else -1
+            L = 14 * k * (1 - .5 * i / n) * rng.uniform(.8, 1.2)
+            b = a + sg * .6
+            tw = [(x1 + _m.cos(b) * L * u + _m.cos(a) * L * .3 * u * u, y1 + _m.sin(b) * L * u + _m.sin(a) * L * .3 * u * u) for u in [j / 8 for j in range(9)]]
+            cv.obj([], 0)
+            cv.line(tw)
+            needles(tw, 5. * k)
+    cv.obj([R.outline()], .5)
+    cv.hair(R.contour(.5, 0, 1))
+    needles(pts, 6.5 * k, 1.3)
+
+
+def vg_rope(cv, pts, r=3., closed=False):
+    """A laid rope along pts: strands twisting across it, each a lozenge lit on its upper edge
+    and cut in fine lines on its lower, the lay running at a steady pitch."""
+    P = _kk_resample(list(pts) + ([pts[0]] if closed else []), 1.)
+    n = len(P)
+    step = max(2, int(r * 1.3))
+    for i in range(0, n - step - 1, step):
+        (x0, y0), (x1, y1) = P[i], P[min(n - 1, i + step)]
+        a = _m.atan2(y1 - y0, x1 - x0)
+        nx, ny = -_m.sin(a), _m.cos(a)
+        ux, uy = _m.cos(a), _m.sin(a)
+        L = r * 1.3
+        c = ((x0 + x1) / 2, (y0 + y1) / 2)
+        q = [(c[0] - nx * r - ux * L * .9, c[1] - ny * r - uy * L * .9), (c[0] - nx * r + ux * L * .1, c[1] - ny * r + uy * L * .1),
+             (c[0] + nx * r + ux * L * .9, c[1] + ny * r + uy * L * .9), (c[0] + nx * r - ux * L * .1, c[1] + ny * r - uy * L * .1)]
+        cv.obj([q], .5)
+        cv.hair([((q[1][0] + q[2][0]) / 2, (q[1][1] + q[2][1]) / 2), ((q[0][0] + q[3][0]) / 2, (q[0][1] + q[3][1]) / 2)])
+        cv.hair([(q[2][0] - ux * .8, q[2][1] - uy * .8), (q[3][0] + ux * .3, q[3][1] + uy * .3)])
+
+
+def vg_coil(cv, cx, cy, r):
+    """A coil of rope lying flat: turns of laid rope round a dark centre."""
+    rr = r
+    while rr > 3:
+        vg_rope(cv, _C._ell_pts(cx, cy, rr, rr * .45, max(16, int(rr * 3))), 2.2, True)
+        rr -= 4.6
+    cv.obj([_C._ell_pts(cx, cy, max(1.5, rr), max(1., rr * .45), 10)[:-1]], .5)
+
+
 # ---- the plate ------------------------------------------------------------------------------
 
+# Edition plan: section front vignette, 25-30%, arched, with the dedication cartouche at its foot.
+FORM = {"form": "vignette", "share": .28, "shape": "arch", "egg": "a constellation tracing a P", "arms": True}
+
+
+def _tube(cv, p0, p1, r0, r1, bands):
+    """A brass tube from p0 to p1 (radii r0, r1), modelled in bulino along its length: dark under,
+    a bright cut along the top; brass bands round it at the fractions in bands."""
+    n = 10
+    pts = [(p0[0] + (p1[0] - p0[0]) * i / n, p0[1] + (p1[1] - p0[1]) * i / n) for i in range(n + 1)]
+    wl = [r0 + (r1 - r0) * i / n for i in range(n + 1)]
+    R = C._Rib(pts, wl, wl)
+    cv.obj([R.outline()], 1.)
+    for k in (.35, .55, .72, .86):
+        cv.hair(R.contour(k, 0, 1))
+    cv.line(R.contour(.95, 0, 1))
+    cv.hair(R.contour(-.7, 0, 1))
+    dx, dy = p1[0] - p0[0], p1[1] - p0[1]
+    L = math.hypot(dx, dy) or 1.
+    nx, ny = -dy / L, dx / L
+    for f in bands:
+        cx, cy = p0[0] + dx * f, p0[1] + dy * f
+        r = r0 + (r1 - r0) * f + .8
+        band = [(cx + nx * r - dx / L * 1.2, cy + ny * r - dy / L * 1.2), (cx + nx * r + dx / L * 1.2, cy + ny * r + dy / L * 1.2),
+                (cx - nx * r + dx / L * 1.2, cy - ny * r + dy / L * 1.2), (cx - nx * r - dx / L * 1.2, cy - ny * r - dy / L * 1.2)]
+        cv.obj([band], .5)
+        cv.hair(C.hatch_poly(band, math.degrees(math.atan2(dy, dx)), 1.5))
+
+
+def _telescope(cv, x, base, s):
+    """A refractor on a wooden tripod, pointed up to the right."""
+    hx, hy = x, base - s * 1.0
+    for dx in (-.42, .05, .38):
+        leg = C._Rib([(hx, hy), (x + dx * s, base)], [max(.8, s * .01), max(1.2, s * .018)], [max(.8, s * .01), max(1.2, s * .018)])
+        cv.obj([leg.outline()], .5)
+        cv.hair(leg.contour(.5, 0, 1))
+    cv.obj([C._ell_pts(hx, hy, s * .06, s * .05, 14)[:-1]], 1.)
+    a = math.radians(-38)
+    L = s * 1.05
+    p0 = (hx - math.cos(a) * L * .38, hy - math.sin(a) * L * .38)
+    p1 = (hx + math.cos(a) * L * .62, hy + math.sin(a) * L * .62)
+    _tube(cv, p0, p1, s * .04, s * .055, (.12, .5, .86))
+    # dew cap and eyepiece
+    p2 = (p1[0] + math.cos(a) * s * .12, p1[1] + math.sin(a) * s * .12)
+    _tube(cv, p1, p2, s * .062, s * .062, ())
+    p3 = (p0[0] - math.cos(a) * s * .1 + math.sin(a) * s * .03, p0[1] - math.sin(a) * s * .1)
+    _tube(cv, p0, p3, s * .025, s * .025, ())
+    return p2
+
+
+def _microscope(cv, x, base, s):
+    """A brass microscope: horseshoe foot, the pillar and curved arm, the stage with its slide,
+    the mirror under it, the inclined body tube, objective and eyepiece."""
+    foot = [(x - s * .32, base), (x - s * .26, base - s * .07), (x + s * .26, base - s * .07), (x + s * .32, base)]
+    cv.obj([foot], 1.)
+    cv.hair(C.hatch_poly(foot, 0, 1.5))
+    pil = [(x - s * .05, base - s * .07), (x - s * .05, base - s * .42), (x + s * .05, base - s * .42), (x + s * .05, base - s * .07)]
+    cv.obj([pil], 1.)
+    cv.hair(C.hatch_poly([(x + s * .01, pil[0][1]), (x + s * .01, pil[1][1]), (x + s * .05, pil[1][1]), (x + s * .05, pil[0][1])], 90, 1.5))
+    # mirror
+    m = C._ell_pts(x - s * .12, base - s * .2, s * .07, s * .04, 16)[:-1]
+    cv.obj([m], .5)
+    cv.hair(C.hatch_poly(m, 30, 1.5))
+    # stage and slide
+    st = [(x - s * .28, base - s * .42), (x + s * .1, base - s * .42), (x + s * .1, base - s * .47), (x - s * .28, base - s * .47)]
+    cv.obj([st], 1.)
+    cv.hair(C.hatch_poly(st, 0, 1.5))
+    sl = [(x - s * .26, base - s * .47), (x - s * .02, base - s * .47), (x - s * .02, base - s * .49), (x - s * .26, base - s * .49)]
+    cv.obj([sl], .5)
+    # the arm, a C curving up from the pillar
+    arm = [(x + s * .05 + s * .18 * math.sin(t), base - s * .55 - s * .25 * math.cos(t) * -1 * 0 - s * .3 * (1 - math.cos(t)))
+           for t in [math.pi * i / 10 for i in range(11)]]
+    R = C._Rib([(x + s * .02, base - s * .45), (x + s * .16, base - s * .62), (x + s * .14, base - s * .85), (x + s * .02, base - s * .95)],
+               [s * .045] * 4, [s * .045] * 4)
+    cv.obj([R.outline()], 1.)
+    cv.hair(R.contour(.5, 0, 1))
+    cv.hair(R.contour(.8, 0, 1))
+    # the body tube, inclined toward the viewer's left
+    _tube(cv, (x - s * .1, base - s * .55), (x - s * .02, base - s * 1.05), s * .06, s * .07, (.3, .7))
+    _tube(cv, (x - s * .02, base - s * 1.05), (x, base - s * 1.18), s * .045, s * .045, ())
+    _tube(cv, (x - s * .12, base - s * .5), (x - s * .1, base - s * .55), s * .03, s * .045, ())
+    return arm
+
+
+def study_scene(X, Y, W, H, mode, seed):
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    band = mode == "band"
+    fl = Y + H * (.8 if not band else .84)
+    # the night through a tall window: sky ruled dark, stars cut white
+    kk_sky(cv, X, Y, W, fl, seed, 0)
+    # Easter egg: a constellation in the shape of a P, joined by dotted lines
+    s_ = min(W, H)
+    px, py = X + W * .4, Y + H * .1
+    k = s_ * .045
+    P = [(px, py + k * 4), (px, py + k * 2), (px, py), (px + k * 1.4, py + k * .2), (px + k * 1.8, py + k * 1.1), (px + k * 1.2, py + k * 1.9), (px, py + k * 2)]
+    cv.obj([], 0)
+    dots = []
+    for a, b in zip(P, P[1:]):
+        L = math.hypot(b[0] - a[0], b[1] - a[1])
+        for i in range(1, max(2, int(L / 2.5))):
+            t = i / max(2, int(L / 2.5))
+            q = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)
+            dots.append([(q[0] - .25, q[1]), (q[0] + .25, q[1])])
+    cv.line(dots)
+    stars = [(px, py + k * 4), (px, py + k * 2), (px, py), (px + k * 1.4, py + k * .2), (px + k * 1.8, py + k * 1.1), (px + k * 1.2, py + k * 1.9)]
+    for i in range(int(W * H / 900)):
+        stars.append((X + rng.uniform(.04, .96) * W, Y + rng.uniform(.03, .55) * H))
+    for i, (sx, sy) in enumerate(stars):
+        r = (2.6 if i < 6 else rng.choice((1.6, 2.2, 3.))) * max(.7, min(1.3, s_ / 160))
+        cv.obj([_star(sx, sy, r)], .5)
+    # the window frame: mullion and transom carry across the night
+    cv.obj([], 0)
+    for fx in (X + W * .5,):
+        mul = [(fx - 1.5, Y - 2), (fx + 1.5, Y - 2), (fx + 1.5, fl), (fx - 1.5, fl)]
+        cv.obj([mul], 1.)
+        cv.hair(C.hatch_poly(mul, 90, 1.5))
+    # the floor: boards in perspective, grain along them
+    floor = [(X - 2, fl), (X + W + 2, fl), (X + W + 2, Y + H + 2), (X - 2, Y + H + 2)]
+    cv.obj([floor], 1.)
+    vx = X + W * .5
+    seams = []
+    for i in range(-14, 15):
+        seams.append([(vx + i * W * .025, fl), (vx + i * W * .09, Y + H + 2)])
+    cv.hair(seams)
+    y = fl + 1.5
+    while y < Y + H + 2:
+        cv.hair([(X - 2, y), (X + W + 2, y)])
+        y += 1.5 + (y - fl) * .25
+    # the table at the right
+    tx0, tx1 = X + W * .55, X + W * 1.02
+    ty = Y + H * (.62 if not band else .64)
+    top = [(tx0, ty), (tx1, ty), (tx1, ty + H * .04), (tx0, ty + H * .04)]
+    cv.obj([top], 1.)
+    cv.hair(C.hatch_poly(top, 0, 1.5))
+    for lx in (tx0 + W * .03, tx1 - W * .05):
+        leg = [(lx, ty + H * .04), (lx + W * .02, ty + H * .04), (lx + W * .02, fl + H * .08), (lx, fl + H * .08)]
+        cv.obj([leg], 1.)
+        cv.hair(C.hatch_poly(leg, 90, 1.5))
+    apron = [(tx0, ty + H * .04), (tx1, ty + H * .04), (tx1, ty + H * .1), (tx0, ty + H * .1)]
+    cv.obj([apron], 1.)
+    cv.hair(C.hatch_poly(apron, 0, 1.5))
+    cv.hair(C.hatch_poly(apron, 60, 2))
+    _microscope(cv, X + W * .74, ty, H * (.48 if not band else .55))
+    # a book and a lamp's glow on the table
+    bk = [(X + W * .86, ty), (X + W * .98, ty), (X + W * .98, ty - H * .05), (X + W * .86, ty - H * .05)]
+    cv.obj([bk], 1.)
+    cv.hair(C.hatch_poly(bk, 0, 1.5))
+    # the telescope at the window
+    _telescope(cv, X + W * .24, fl + H * .08, H * (.5 if not band else .6))
+    return cv.svg()
+
+
+def _stone_frame(box, poly, w, h, mode, seed):
+    """The arched vignette is the study's window seen from the dark room: a dressed-stone
+    surround of voussoirs and a keystone over the arch, quoined jambs, and a moulded sill, each
+    block lit on its upper left and cut in close lines on its shaded faces; the night inside."""
+    bx, by, bw, bh = box
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    t = max(7., min(16., bw * .07))
+    rx = bw / 2
+    rise = min(rx * .55, bh / 2 * .7)
+    cx = bx + rx
+    cyA = by + rise                                 # the arch's springing line
+    n = 13
+    for i in range(n):
+        a0, a1 = math.pi * i / n, math.pi * (i + 1) / n
+        k = 1.35 if i == n // 2 else 1.
+        r0x, r0y = rx + 1.5, rise + 1.5
+        r1x, r1y = rx + t * k, rise + t * k
+        blk = [(cx - r0x * math.cos(a0), cyA - r0y * math.sin(a0)), (cx - r1x * math.cos(a0), cyA - r1y * math.sin(a0)),
+               (cx - r1x * math.cos(a1), cyA - r1y * math.sin(a1)), (cx - r0x * math.cos(a1), cyA - r0y * math.sin(a1))]
+        cv.obj([blk], 1.)
+        cv.hair(C.hatch_poly([blk[0], blk[1], ((blk[1][0] + blk[2][0]) / 2, (blk[1][1] + blk[2][1]) / 2), ((blk[0][0] + blk[3][0]) / 2, (blk[0][1] + blk[3][1]) / 2)], 0, 1.5) if i >= n // 2 else [])
+        cv.hair([((blk[0][0] + blk[1][0]) / 2, (blk[0][1] + blk[1][1]) / 2), ((blk[3][0] + blk[2][0]) / 2, (blk[3][1] + blk[2][1]) / 2)])
+    yb = by + bh
+    y = cyA
+    j = 0
+    while y < yb - 2:
+        hh = min(t * 1.1, yb - y)
+        for sg in (-1, 1):
+            ww = t * (1.5 if j % 2 == 0 else 1.)
+            x_in = cx + sg * (rx + 1.5)
+            q = [(x_in, y), (x_in + sg * ww, y), (x_in + sg * ww, y + hh), (x_in, y + hh)]
+            cv.obj([q], 1.)
+            if sg > 0:
+                cv.hair(C.hatch_poly(q, 90, 1.5))
+            else:
+                cv.hair(C.hatch_poly([(x_in - ww, y + hh * .7), (x_in, y + hh * .7), (x_in, y + hh), (x_in - ww, y + hh)], 0, 1.5))
+        y += hh
+        j += 1
+    sill = [(cx - rx - t * 1.9, yb), (cx + rx + t * 1.9, yb), (cx + rx + t * 1.6, yb + t * .7), (cx - rx - t * 1.6, yb + t * .7)]
+    cv.obj([sill], 1.)
+    cv.hair(C.hatch_poly([(sill[3][0], yb + t * .35), (sill[2][0], yb + t * .35), sill[2], sill[3]], 0, 1.5))
+    cv.line([(cx - rx - t * 1.9, yb + .5), (cx + rx + t * 1.9, yb + .5)])
+    return kk_svg(cv)
+
+
 def plate(w, h, ctx):
-    """Science (section front): spacetime bent round a mass, the ripples of a merger running
-    out across it, in the inlaid medallion; on tall plates the arms placeholder (crossed
-    drumsticks over a sun) beneath; a Mt. Hood roundel in the scroll (the Easter egg)."""
+    """Science (section front): a refractor at the night window and a microscope on the table,
+    the very large and the very small, in an arched vignette set in the window's own dressed-stone
+    surround; the dedication cartouche beneath. Easter egg: a constellation tracing a P."""
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7 * int(ctx.get("sheet", 0) or 0)
 
     def sc(x, y, ww, hh, mode):
-        X, Y, W, H = x - 2, y - 2, ww + 4, hh + 4
-        return spacetime_scene(X, Y, W, H, kk_rect_d(X, Y, W, H), seed, "short" if mode == "band" else mode)
-    return kk_plate(w, h, sc, egg="hood", seed=seed, arms=True)
+        return study_scene(x - 2, y - 2, ww + 4, hh + 4, mode, seed)
+    return vg_plate(w, h, sc, shape="arch", form="vignette", seed=seed, arms=True, ragged=False, pad=16,
+                    frame=lambda *a: _stone_frame(*a, seed))

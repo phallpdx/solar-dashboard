@@ -2321,6 +2321,7 @@ def _coast_rest(cv, X, Y, W, H, hz, rng, seed, detail):
     lr_x, lr_y = X + W * .16, Y + H * .84
     _life_ring(cv, lr_x, lr_y, max(6.5, W * .045))
     _swimmer(cv, lr_x + W * .09, lr_y + 1, max(5., H * .045))
+    egg_dog(cv, lr_x - W * .07, lr_y - H * .015, max(4., H * .045))   # Easter egg: the dog swims out too
 
     return cv.svg()
 
@@ -2338,6 +2339,7 @@ def mini(X, Y, W, H, seed=0):
     cr = _stack(cv, rng, X + W * .28, W * .15, W * .09, hz - H * .4, hz + 2)
     _stack(cv, rng, X + W * .4, W * .07, W * .045, hz - H * .16, hz + 2)
     _heron(cv, X + W * .29, min(p[1] for p in cr) + .8, H * .24)
+    egg_dog(cv, X + W * .55, hz + H * .2, max(3., H * .13))
     return cv.svg()
 
 

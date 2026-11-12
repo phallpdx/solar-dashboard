@@ -1878,6 +1878,11 @@ def scene(X, Y, W, H, seed, mode):
         cv.hair([(xx, hz - H * .043), (xx, hz - .5)])
     _spire(cv, sp1, hz - H * .07, sp_h - H * .07, sp_w)
     _spire(cv, sp2, hz - H * .07, sp_h - H * .07, sp_w)
+    # Easter egg: a Blazers pinwheel banner flying from the east spire's mast
+    fr = max(3., H * .09)
+    fx, fy = sp2 + fr * 1.15, hz - sp_h + fr * 1.1
+    cv.obj([[(sp2 + .5, fy - fr), (fx + fr, fy - fr), (fx + fr * .8, fy), (fx + fr, fy + fr), (sp2 + .5, fy + fr)]], 1.)
+    egg_pinwheel(cv, fx, fy, fr * .85)
     # the plaza in front, lit: flagstones in perspective
     cv.obj([[(X - 4, hz), (X + W + 4, hz), (X + W + 4, Y + H + 4), (X - 4, Y + H + 4)]], .5)
     burin_field(cv, X - 4, X + W + 4, hz + 1, Y + H + 4, None, lambda x, y: .2 + .45 * (y - hz) / H, 2.5, step=3.)

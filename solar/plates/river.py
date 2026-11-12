@@ -1761,7 +1761,7 @@ def river_scene(X, Y, W, H, seed):
         if shx0 < x < shx1 and y < hz + D * .45:
             return .85
         return .25 + .4 * t
-    burin_field(cv, X - 6, X + W + 6, hz + .8, Y + H + 4, lambda x, y: (.2 + t_(y, hz, D)) * math.sin(x * .3 + y), wt, 1.5 if H < 120 else 2.)
+    burin_field(cv, X - 6, X + W + 6, hz + .8, Y + H + 4, lambda x, y: (.15 + .5 * t_(y, hz, D)) * math.sin(x * .12 + y * .3), wt, 1.5 if H < 120 else 2.)
     # the ship at anchor, bow upstream (right)
     wl = hz + H * .1
     L = shx1 - shx0
@@ -1796,6 +1796,7 @@ def river_scene(X, Y, W, H, seed):
         burin_field(cv, tx - W * .06, tx + W * .06, tb - H * .4, tb, lambda x, y: math.sin(x * .9) * 1.5,
                     lambda x, y: .4 + .5 * max(0., (x - tx) / (W * .05) + .2), 1.5, step=1.5, ok=fast_inside(crown), cross=.85)
         cv.heavy([(tx, tb), (tx + .5, tb - H * .12)])
+    egg_heron(cv, X + W * .3, Y + H * .86, max(4., H * .07))   # Easter egg: the heron on the island bank
     return cv.svg()
 
 

@@ -1750,6 +1750,15 @@ def scarf_scene(X, Y, W, H, seed):
         burin_field(cv, a - 1, b + 1, cy - amp - sw, cy + amp + sw, lambda x, y: -(wave(x) - cy),
                     (lambda x, y: .85) if dark else (lambda x, y: .2), 1.5 if dark else 2., step=1.5,
                     ok=fast_inside(band), cross=.8 if dark else None)
+    # the stadium rail the scarf hangs over, the stands rising behind in rows
+    cv.obj([], 0)
+    for k in range(4):
+        cv.hair([(X - 4, Y + H * (.08 + .07 * k)), (X + W + 4, Y + H * (.08 + .07 * k))])
+    cv.heavy([(X - 4, cy + sw * .05), (X + W + 4, cy + sw * .05)])
+    for k in range(9):
+        px = X + W * (k + .5) / 9
+        cv.line([(px, cy + sw * .1), (px, Y + H + 4)])
+    egg_flag(cv, X + W * .95, Y + H * .3, max(4., H * .26))   # Easter egg: the chequered flag
     for xe, sg in ((x0, -1), (x1, 1)):
         y0 = wave(xe) - sw / 2
         cv.line([[(xe, y0 + sw * i / 7), (xe + sg * H * .1, y0 + sw * i / 7 + H * .03)] for i in range(8)])

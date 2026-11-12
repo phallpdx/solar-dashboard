@@ -2180,6 +2180,9 @@ def scene(X, Y, W, H, seed, small=False):
     tip, sand_y = _wreck(cv2, X, Y, W, H, btop, rng)
     tx = X + W * (.5 if not portrait else .3)
     _tidepool(cv2, tx, sand_y(tx) + S * .1, S * .1, rng)
+    # Easter egg: the Somaster castle built as a sandcastle above the wash
+    kx = X + W * (.62 if not portrait else .7)
+    egg_castle(cv2, kx, sand_y(kx) + S * .07, max(5., S * .07))
     o.append(cv2.svg())
     o.append(_heron(tip[0] + 1, tip[1] + .5, max(1.5, S * .03)))
     return "".join(o)

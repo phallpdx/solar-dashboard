@@ -1776,6 +1776,170 @@ def vignette_plate(w, h, ctx, spec):
         back, front = spec["frame"](poly, (x, y, sw, sh))
     body = spec["scene"](x, y, sw, sh, _d(rag, True, 0), spec.get("level", 1))
     return plate_doc(w, h, back + body + front, seed)
+
+
+# walnut and other woods: swelling grain lines bowing round knots
+def wood(cv, x, y, w, h, seed, pitch=2., knots=2, vertical=False, poly=None, outline=0.):
+    rng = random.Random(seed)
+    if poly is None:
+        poly = [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
+    cv.obj([poly], outline)
+    L_, B_ = (h, w) if vertical else (w, h)
+    ks = [(rng.uniform(.15, .85) * L_, rng.uniform(.2, .8) * B_, rng.uniform(4, 9) * (B_ / 120) ** .3) for _ in range(knots)]
+    ph = rng.uniform(0, 6)
+    b = -6.
+    while b < B_ + 6:
+        cur, heavy = [], None
+        u = -4.
+        while u < L_ + 4:
+            v = b + 2.2 * math.sin(u / 53. + b / 37. + ph) + .8 * math.sin(u / 17. + b * .21)
+            for kx, ky, ksz in ks:
+                du = (u - kx) / (ksz * 2.6)
+                g = math.exp(-du * du)
+                dv = b - ky
+                v += math.copysign(ksz * 1.3, dv) * g * math.exp(-abs(dv) / (ksz * 1.6))
+            nz = math.sin(b * .53 + .3 * math.sin(u / 29.) + ph) + .6 * math.sin(u / 41. - b * .11)
+            hv = nz > .55
+            p = (x + v, y + u) if vertical else (x + u, y + v)
+            if heavy is None or hv == heavy:
+                cur.append(p)
+            else:
+                cur.append(p)
+                (cv.line if heavy else cv.hair)(cur)
+                cur = [p]
+            heavy = hv
+            u += 3.
+        if len(cur) > 1:
+            (cv.line if heavy else cv.hair)(cur)
+        b += pitch
+    for kx, ky, ksz in ks:
+        cx, cy = (x + ky, y + kx) if vertical else (x + kx, y + ky)
+        ex, ey = (ksz * .55, ksz) if vertical else (ksz, ksz * .55)
+        for f in (.25, .55, .85):
+            cv.line(E(cx, cy, ex * f, ey * f, 18))
+    return ks
+
+
+# ---------------------------------------------------------------------------------------------
+# gap friezes (18-36 px): a carved running band between bead-and-reel rules, the page's motif
+# small in a cartouche at its centre
+# ---------------------------------------------------------------------------------------------
+
+def bead_reel(cv, x0, x1, y, s=2.):
+    """Bead and reel: oval beads alternating with pairs of thin reels, each bead lit on its upper
+    left."""
+    x = x0
+    while x < x1 - s * 2:
+        b = E(x + s * 1.1, y, s * 1.1, s * .75, 12)[:-1]
+        cv.obj([b], .5)
+        cv.hair(E(x + s * 1.25, y + s * .1, s * .7, s * .45, 10, 0, PI))
+        x += s * 2.5
+        for k in range(2):
+            r = [(x, y - s * .6), (x + s * .35, y - s * .6), (x + s * .35, y + s * .6), (x, y + s * .6)]
+            cv.obj([r], .5)
+            x += s * .65
+        x += s * .25
+
+
+def vitruvian(cv, x0, x1, yb, h, flip=False):
+    """The running dog (Vitruvian scroll): dark water cut in close level lines rises and curls
+    forward over into a spiral at each crest; the eye of each curl is left white with the spiral's
+    inner turns cut through it, and the crest edge is a heavy line."""
+    per = h * 1.75
+    R = h * .4
+    cy = yb - h * .56
+
+    def spiral(cx, a0, a1, n):
+        out = []
+        for i in range(n + 1):
+            a = a0 + (a1 - a0) * i / n
+            u = (a - PI) / (2.6 * PI)
+            r = R * (1 - .85 * max(0., u) ** 1.5)
+            out.append((cx + r * _m.cos(a), cy + r * _m.sin(a)))
+        return out
+
+    cxs = []
+    c = x0 + per * .55
+    while c - R < x1:
+        cxs.append(c)
+        c += per
+    edge = [(x0, yb - h * .14)]
+    for k, cx in enumerate(cxs):
+        p = (cx - R, cy)
+        if k == 0:
+            q = edge[-1]
+        else:
+            q = edge[-1]
+        tx = (q[0] + p[0]) / 2
+        tro = (tx, yb - h * .1)
+        seg = [q, (q[0] + (tro[0] - q[0]) * .5, tro[1] - h * .02), tro,
+               (tro[0] + (p[0] - tro[0]) * .55, tro[1] - h * .08), (p[0] - R * .05, p[1] + R * .45)]
+        edge += resample(seg, 1.)[1:] + spiral(cx, PI, PI * 2.5, 26)
+    edge.append((x1 + 2, edge[-1][1]))
+    ground = [(x0, yb)] + [(min(px, x1 + 2), py) for px, py in edge] + [(x1 + 2, yb)]
+    cv.obj([ground], 0)
+    cv.hair(C.hatch_poly(ground, 0, 1.4))
+    cv.heavy([p for p in edge if p[0] <= x1 + 1])
+    for cx in cxs:
+        if cx - R * .6 > x1:
+            continue
+        cv.obj([E(cx + R * .04, cy + R * .02, R * .56, R * .56, 18)[:-1]], 0)
+        cv.line([p for p in spiral(cx, PI * 2.5, PI * 3.6, 22)])
+    cv.line([(x0, yb), (x1, yb)])
+
+
+def guilloche_band(cv, x0, x1, yc, h, n=3):
+    """A twisted guilloche: n phase-shifted sine strands interlacing, a pearl in each eye."""
+    per = h * 1.8
+    for k in range(n):
+        ph = TAU * k / n
+        pts = [(x, yc + h * .42 * _m.sin(TAU * (x - x0) / per + ph)) for x in [x0 + i * 1.5 for i in range(int((x1 - x0) / 1.5) + 1)]]
+        (cv.line if k == 0 else cv.hair)(pts)
+    x = x0 + per * .25
+    while x < x1:
+        cv.obj([E(x, yc, h * .1 + .5, h * .1 + .5, 8)[:-1]], .5)
+        x += per / 2
+
+
+def egg_dart(cv, x0, x1, yt, h):
+    """Egg and dart: ovolo eggs in their shells, a dart between each pair; the eggs modelled by
+    a few curved cuts on their shaded side, the shell hollows cut in fine lines."""
+    s = h * .78
+    x = x0
+    while x < x1 - s:
+        shell = [(x, yt)] + [(x + s * .5 + s * .5 * _m.cos(PI - PI * i / 14), yt + h * .15 + h * .8 * _m.sin(PI * i / 14)) for i in range(15)] + [(x + s, yt)]
+        cv.obj([shell], .5)
+        cv.hair(C.hatch_poly(shell, 90, 2.2))
+        ex, ey, erx, ery = x + s / 2, yt + h * .46, s * .34, h * .4
+        cv.obj([E(ex, ey, erx, ery, 18)[:-1]], 1.)
+        for j in range(3):
+            f = .8 - j * .2
+            cv.hair(E(ex - erx * (1 - f) * .3, ey + ery * (1 - f) * .2, erx * f, ery * f, 12, -.55, PI * .55))
+        dx = x + s + s * .12
+        cv.obj([[(dx - s * .09, yt), (dx + s * .09, yt), (dx + s * .03, yt + h * .55), (dx, yt + h * .92), (dx - s * .03, yt + h * .55)]], .5)
+        cv.hair([(dx, yt + 1), (dx, yt + h * .8)])
+        x += s * 1.24
+
+
+def frieze_plate(w, h, seed, band, center, cw):
+    """band(cv, x0, x1, y0, y1) fills each side; center(x, y, w, h) -> svg in a beaded cartouche."""
+    cv = Canvas()
+    yb0, yb1 = 3., h - 3.
+    cx = w / 2
+    bw = min(cw, w * .3)
+    for a, b in ((4., cx - bw / 2 - 4), (cx + bw / 2 + 4, w - 4.)):
+        bead_reel(cv, a, b, yb0 + 1, min(2., h * .06))
+        bead_reel(cv, a, b, yb1 - 1, min(2., h * .06))
+        band(cv, a, b, yb0 + 4, yb1 - 4)
+    o = [cv.svg()]
+    car = [(cx - bw / 2, h / 2), (cx - bw / 2 + 5, 1.), (cx + bw / 2 - 5, 1.), (cx + bw / 2, h / 2), (cx + bw / 2 - 5, h - 1.), (cx - bw / 2 + 5, h - 1.)]
+    o.append(f'<path d="{_d(car, True, 0)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+    inner = offset_poly(car, -2.5)
+    o.append(f'<path d="{_d(inner, True, 0)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    cid = C._uid("fz", w, h, seed)
+    o.append(f'<clipPath id="{cid}"><path d="{_d(inner, True, 0)}"/></clipPath><g clip-path="url(#{cid})">'
+             + center(cx - bw / 2 + 3, 3.5, bw - 6, h - 7) + '</g>')
+    return plate_doc(w, h, "".join(o), seed)
 # ==== end of studio kit ====
 
 import re

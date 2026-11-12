@@ -429,11 +429,34 @@ def gm_relief(cv, rng, x, y, w, h, density=1., avoid=None):
 def gm_shape(kind, cx, cy, a, b, n=120):
     """Cartouche outlines (half-width a, half-height b): oval, cushion, shield, arch, quatre,
     ogee, lozenge."""
+    if kind in ("lunette", "archtop"):
+        # built from arcs and straights, then resampled evenly (clockwise on screen like the rest)
+        raw = []
+        rc = min(a, b) * .12
+        if kind == "lunette":
+            # a half-round: the arc over the top, a flat sill below with eased corners
+            for i in range(61):
+                t = _GPI + _GPI * i / 60
+                raw.append((cx + a * math.cos(t), cy + b - 2 * b * .97 * (-math.sin(t)) + 0))
+            raw = [(x, min(y, cy + b - rc)) for x, y in raw]
+            raw += [(cx + a - rc * .4, cy + b), (cx - a + rc * .4, cy + b)]
+        else:
+            # an arched-top window: straight jambs, a round head, a flat sill
+            ra = min(a, b * 1.4)
+            yc = cy - b + ra * min(1., b / a)
+            ry = ra * min(1., b / a)
+            for i in range(61):
+                t = _GPI + _GPI * i / 60
+                raw.append((cx + a * math.cos(t), yc + ry * math.sin(t)))
+            raw += [(cx + a, cy + b - rc), (cx + a - rc * .3, cy + b - rc * .3), (cx + a - rc, cy + b),
+                    (cx - a + rc, cy + b), (cx - a + rc * .3, cy + b - rc * .3), (cx - a, cy + b - rc)]
+        per = sum(math.hypot(raw[i][0] - raw[i - 1][0], raw[i][1] - raw[i - 1][1]) for i in range(len(raw)))
+        return [p for p, _ in _g_resample(raw, per / n)]
     pts = []
     for i in range(n):
         t = _GTAU * i / n
         c, s = math.cos(t), math.sin(t)
-        if kind == "oval":
+        if kind in ("oval", "roundel"):
             pts.append((cx + a * c, cy + b * s))
         elif kind == "cushion":
             e = 2.7
@@ -1331,12 +1354,115 @@ def gm_plate(w, h, ctx, P):
     o = [gm_defs(), gm_ground((0, 0, w, h))]
     eggs = P.get("eggs", [("dog", {})])
     shape = P.get("shape", "oval")
-    if h < 110:
+    form = (ctx or {}).get("form") or P.get("form", "vignette")
+    aspect = {"roundel": 1., "lunette": 1.9, "archtop": 1.05}
+    if w < 200 or (form == "device" and h < 110 and w < 260):
+        # the marginal device (or a small tailpiece): one medallion carries the whole plate
+        bead = .9 if min(w, h) < 80 else 1.2
+        dep = 6.5 + 2 * bead
+        b = h / 2 - dep - 2.5
+        a = b if shape == "roundel" else min(w / 2 - dep - 2.5, b * P.get("band_aspect", 1.6))
+        cx, cy = w / 2, h / 2
+        ring, field, outer = gm_medallion(shape, cx, cy, a, b, bead)
+        o.append(gm_tendrils(1, 1, w - 2, h - 2, rng, .6))
+        side = (w - 2 * (a + dep)) / 2
+        if side > 14:
+            rr = min(12., side * .45, h * .3)
+            src = [((cx - a - dep, cy + b * .2), _GPI, rr, False), ((cx + a + dep, cy + b * .2), 0., rr, True)]
+            o.append(None)
+            fargs = (1, 1, w - 2, h - 2, [outer], random.Random(seed_ + 1), src, max(3.5, rr * .35), rr, eggs[:1])
+        o.append(ring)
+        o.append(gm_scene_in(field, lambda X, Y, W, H: P["scene"](X, Y, W, H, 0), "gmc%x" % (P.get("seed", 0) & 0xfff)))
+        o.append(f'<path d="M.5,.5H{_n(w - .5)}V{_n(h - .5)}H.5z" fill="none" stroke="#000" stroke-width="1"/>')
+        if None not in o:
+            return C.svg_doc(w, h, "".join(o))
+    elif h < 46 or (h < 110 and P.get("band_banner")):
+        # a gap frieze (or a lettered headpiece): a running scroll between wires, the page's
+        # motif small at the centre (or a carved banner with the heading between fleurons)
+        if h < 46:
+            dep = 3.5 if h < 30 else 5.
+            wires = (f'<path d="M0,1.25H{_n(w)}M0,{_n(dep - .75)}H{_n(w)}M0,{_n(h - 1.25)}H{_n(w)}M0,{_n(h - dep + .75)}H{_n(w)}" '
+                     f'stroke="#fff" stroke-width="1" fill="none"/>')
+            if h >= 30:
+                bd = "".join(f"M{_n(x)},{_n(dep / 2 + .25)}h0M{_n(x)},{_n(h - dep / 2 - .25)}h0" for x in [1.5 + 3. * i for i in range(int(w / 3))])
+                wires += f'<path d="{bd}" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none"/>'
+            bsvg, inner = wires, _g_rect(0, dep, w, h - dep)
+        else:
+            bsvg, inner = gm_border(w, h)
+        ix0, iy0, ix1, iy1 = _g_bbox(inner)
+        cx, cy = w / 2, h / 2
+        ih = iy1 - iy0
+        txt = P.get("band_banner")
+        if txt:
+            bh = min(22., ih * .5)
+            bw_ = min(w * .5, max(160., gm_text_width(txt, bh * .52) * 1.7))
+            ring, centre = gm_banner(cx, cy - bh * .1, bw_, bh, .04, txt, .15)
+            hole = [(cx - bw_ / 2 - 2, iy0), (cx + bw_ / 2 + 2, iy0), (cx + bw_ / 2 + 2, iy1), (cx - bw_ / 2 - 2, iy1)]
+            fl = GmCanvas()
+            fl.shadow = (1., 1.5)
+            fs = min(ih * .5, 22.)
+            for sd in (-1, 1):
+                fx_ = cx + sd * (bw_ / 2 + fs * .7)
+                for k in (-1, 1):
+                    gm_leaf(fl, fx_, cy, (0. if sd > 0 else _GPI) + k * .75, fs * 1.1, fs * .34, k * .5, k * 1.4, rng)
+                gm_leaf(fl, fx_, cy, 0. if sd > 0 else _GPI, fs * 1.35, fs * .32, .05, .4, rng, turn=False)
+                if sd < 0 and eggs:
+                    GM_EGGS[eggs[0][0]](fl, fx_, cy, fs * .42, **eggs[0][1])
+                else:
+                    _g_disc(fl, fx_, cy, fs * .2)
+            holes = [hole, _g_rect(cx - bw_ / 2 - fs * 2.1, iy0, cx + bw_ / 2 + fs * 2.1, iy1)]
+            scene_svg = ring + fl.svg()
+            src = [((cx - bw_ / 2 - fs * 2.4, cy), _GPI, min(14., ih * .4), False), ((cx + bw_ / 2 + fs * 2.4, cy), 0., min(14., ih * .4), True)]
+            eg = []
+        else:
+            # the page's motif small in a beaded roundel that breaks the frieze
+            fr = max(5., h / 2 - 1 - (5.5 + 1.6))
+            mring, field, outer = gm_medallion("roundel", cx, cy, fr, fr, .8)
+            holes = [outer]
+            scene_svg = mring + gm_scene_in(field, lambda X, Y, W, H: P["scene"](X, Y, W, H, 0), "gmz%x" % (seed_ & 0xfff))
+            # the running rinceau: a wave stem throwing alternate curls up and down
+            vine = GmCanvas()
+            vine.shadow = (.8, 1.)
+            rr = max(3.5, ih * .29)
+            step = rr * 2.3
+            amp = ih * .16
+            vr = random.Random(seed_ + 5)
+            for sd in (-1, 1):
+                x0 = cx + sd * (fr + 7)
+                # the wave stem, one round-cut ribbon from the roundel to the plate's end
+                L = (w - x0) if sd > 0 else x0
+                ns = max(8, int(L / 2))
+                stem = [(x0 + sd * L * i / ns, cy + amp * math.sin(_GPI * (L * i / ns) / step)) for i in range(ns + 1)]
+                ws = [max(.7, rr * .09)] * len(stem)
+                vine.obj([_GR(stem, ws, ws).outline()], 1.)
+                k = 0
+                x = x0 + sd * step * .5
+                while 0 < x < w:
+                    up = k % 2 == 0
+                    yb = cy + amp * math.sin(_GPI * abs(x - x0) / step)
+                    head = (0. if sd > 0 else _GPI) + (-.7 if up else .7) * sd
+                    pts, cen = gm_spine((x, yb), head, rr, 1.1, up == (sd > 0), .5, (-.4 if up else .4) * sd)
+                    gm_scroll_unit(vine, pts, cen, rr, up == (sd > 0), vr, 1 if rr < 7 else 2)
+                    x += sd * step
+                    k += 1
+            scene_svg = vine.svg() + scene_svg
+            src = []
+            eg = []
+        o.append(gm_tendrils(ix0 + 1, iy0 + 1, ix1 - ix0 - 2, ih - 2, rng, .5))
+        rr = min(12., ih * .42)
+        if src:
+            o.append(None)
+            fargs = (ix0, iy0, ix1 - ix0, ih, holes, random.Random(seed_ + 1), src, max(3.2, rr * .32), rr, eg)
+        o.append(scene_svg)
+        o.append(bsvg)
+        if None not in o:
+            return C.svg_doc(w, h, "".join(o))
+    elif h < 110:
         bsvg, inner = gm_border(w, h)
         ix0, iy0, ix1, iy1 = _g_bbox(inner)
         cx, cy = w / 2, h / 2
         b = (iy1 - iy0) / 2 - 8
-        a = min(w * .16, b * P.get("band_aspect", 1.9))
+        a = min(w * (.3 if w < 420 else .16), b * aspect.get(shape, P.get("band_aspect", 1.9)))
         ring, field, outer = gm_medallion(shape, cx, cy, a, b, 1.2)
         rr = min(15., (iy1 - iy0) * .3)
         src = [((cx - a - 8, cy + b * .3), _GPI, rr, False), ((cx + a + 8, cy + b * .3), 0., rr, True),
@@ -1353,7 +1479,12 @@ def gm_plate(w, h, ctx, P):
         ix0, iy0, ix1, iy1 = _g_bbox(inner)
         cx, cy = w / 2, h / 2
         b = (iy1 - iy0) / 2 - 10
-        a = min(w * .22, b * P.get("med_aspect", 1.45))
+        foot = P.get("arms_foot") and h > 140
+        dr = min(15., b * .3)
+        if foot:
+            cy -= dr * .55
+            b -= dr * .55
+        a = min(w * (.3 if shape == "lunette" else .24), b * aspect.get(shape, P.get("med_aspect", 1.45)))
         ring, field, outer = gm_medallion(shape, cx, cy, a, b, 1.5)
         rr = min(19., h * .14)
         src = [((cx - a * .6, cy + b + 9), _GPI, rr, False), ((cx + a * .6, cy + b + 9), 0., rr, True),
@@ -1363,6 +1494,14 @@ def gm_plate(w, h, ctx, P):
         fargs = (ix0, iy0, ix1 - ix0, iy1 - iy0, [outer], random.Random(seed_ + 1), src, 4.5, rr, eggs)
         o.append(ring)
         o.append(gm_scene_in(field, lambda X, Y, W, H: P["scene"](X, Y, W, H, 1), "gmc%x" % (P.get("seed", 0) & 0xfff)))
+        if foot:
+            # the small Somaster dedication cartouche at the vignette's foot
+            dcy = cy + b + dr * .55
+            dring, dfield, douter = gm_medallion("oval", cx, dcy, dr * 1.25, dr, .9)
+            fargs[4].append(douter)
+            o.append(dring)
+            o.append(f'<path d="{_d(dfield, True, 0)}" fill="#fff"/>')
+            o.append(_g_clip("gmf%x" % (P.get("seed", 0) & 0xfff), _d(dfield, True, 0), gm_arms(cx, dcy, dr * .95, seed_)))
         o.append(bsvg)
         o.append(gm_corner_fleurons(w, h, cut * .45 + 2, rng, cut * .9))
     else:
@@ -1375,7 +1514,14 @@ def gm_plate(w, h, ctx, P):
         top = iy0 + 14
         bot = iy0 + (iy1 - iy0) * (.62 + .06 * _Gsm(320, 548, h))
         a, b = aw, (bot - top) / 2
-        ring, field, outer = gm_medallion(P.get("tall_shape", "arch"), cx, top + b, a, b, 1.8)
+        if P.get("tall_shape") == "lunette":
+            b = min(b, a * .62)
+            top = bot - 2 * b
+        tsh = P.get("tall_shape", "arch")
+        if tsh == "roundel":
+            a = min(a, b)
+            b = a
+        ring, field, outer = gm_medallion(tsh, cx, top + b, a, b, 1.8)
         # banner under it, then the dedication cartouche
         bh = min(21., max(15., h * .038))
         by = bot + 14 + bh / 2
@@ -1806,10 +1952,12 @@ def scene(field, seed=0, tall=False):
         hgt = (1.6 + 4.5 * f) / s
         stepx = (2.3 + 2. * f) / s
         gx = xl + r2.uniform(0, stepx)
+        row = []
         while gx < xr:
-            lean = r2.uniform(-.7, .7) / s
-            tufts.append([P(gx, gy), P(gx + lean, gy - hgt * r2.uniform(.6, 1.2))])
+            lean = r2.uniform(-.4, .7) / s
+            row += [P(gx, gy), P(gx + lean, gy - hgt * r2.uniform(.6, 1.2))]
             gx += stepx * r2.uniform(.7, 1.3)
+        tufts.append(row)
         gy += (1.9 + 2.6 * f) / s
     cv.hair(tufts)
 
@@ -2241,7 +2389,7 @@ def plate(w, h, ctx):
     def sc(X, Y, W, H, level):
         f = [(X - 3, Y - 3), (X + W + 3, Y - 3), (X + W + 3, Y + H + 3), (X - 3, Y + H + 3)]
         return scene(f, seed, level == 2)
-    P = {"seed": seed, "scene": sc, "shape": "quatre", "tall_shape": "arch", "band_aspect": 1.9, "med_aspect": 1.6,
-         "banner": "PORTLAND REAL ESTATE", "tablet": lambda x, y, w, h: key_svg(x, y, w, h, seed),
-         "eggs": [("kranok", {}), ("P", {})]}
+    # the edition plan: a vignette with an arched top, the island house; egg the dog on the porch
+    P = {"seed": seed, "scene": sc, "form": "vignette", "shape": "archtop", "tall_shape": "archtop",
+         "banner": "PORTLAND REAL ESTATE", "tablet": lambda x, y, w, h: key_svg(x, y, w, h, seed), "eggs": []}
     return gm_plate(w, h, ctx, P)

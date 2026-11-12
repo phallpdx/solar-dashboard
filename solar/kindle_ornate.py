@@ -183,6 +183,8 @@ def _css():
             f"display:inline-block !important;box-sizing:border-box !important;height:{max(24, 20 + t + b)}px !important;line-height:18px !important;"
             f"padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;vertical-align:middle;white-space:nowrap !important;{BG}")
     c += _r(".kcell b.kval", "display:inline-block")
+    # the peaks table: a chip and its ears need a wider status column
+    c += _r(".kmtn .kth>span:not(:first-child), .kmtn .krow>.kcell:not(.kname)", "width:122px !important;-webkit-box-flex:0;flex:none !important")
     t, r, b, l = bands("tile")
     c += _r(".tiles, .facts, .minis, .facts[data-n], .minis[data-n], .tiles[data-n]",
             "display:grid !important;grid-template-columns:1fr 1fr !important;grid-gap:6px 6px !important;padding:0 !important;margin:8px 0 10px !important")
@@ -247,7 +249,7 @@ def _css():
     bh = NOMINAL["button"][1]
     c += _r(".kbar", "-webkit-box-pack:justify !important;justify-content:space-between !important", X + ".kpaged body")
     c += _r(".kbar .kprev, .kbar .knx", f"-webkit-box-flex:1 !important;flex:1 1 0 !important;min-width:0;box-sizing:border-box;height:{bh}px;"
-            f"line-height:{bh - t - b}px !important;padding:{t}px {r + 4}px {b}px {l + 4}px !important;{BG}", C)
+            f"line-height:{bh - t - b}px !important;padding:{t}px {r}px {b}px {l}px !important;letter-spacing:0 !important;{BG}", C)
     c += _r(".kbar .knx", "text-align:right", C)
     c += _r(".kbar span.kprev", "display:none !important", C)
     # fixed: More hides on a page's last sheet, and the buttons either side must keep their size (and frame)

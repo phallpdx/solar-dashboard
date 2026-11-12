@@ -88,31 +88,26 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
     black = []          # solid silhouettes painted after the canvas
     whites = []         # small white highlights on the silhouettes
     small = mode == "band"
-    hz = Y0 + H * (.6 if small else .6)          # horizon (top of the water)
-    sun_x = X0 + W * (.5 if small else .44)
-    R = min(W * .14, H * .19) if not small else H * .2
+    hz = Y0 + H * (.6 if small else .62)         # horizon (top of the water)
+    age = _moon_age(date)
+    mr = max(5., min(W, H) * .085) if not small else max(4., H * .12)
+    mx, my = X0 + W * (.62 if not small else .2), Y0 + (hz - Y0) * (.3 if not small else .3)
+    sun_x = mx                                   # the moon's glade lies where the sun's path was
+    R = mr * .8
 
     # --- sky: ruled, darkest at the zenith, opening to the glow at the horizon --------------
     cv.obj([], 0)
     span = hz - Y0
-    _sh, _sl = st_sky(X0 - 2, Y0 - 2, X0 + W + 2, hz + 2, rng.randrange(1 << 16), top_dark=.5,
-                      avoid=lambda x, y: math.hypot(x - sun_x, y - hz) < R * 1.25)
+    _sh, _sl = st_sky(X0 - 2, Y0 - 2, X0 + W + 2, hz + 2, rng.randrange(1 << 16), top_dark=.85, pitch=(1.5, 1.5, 1.8, 2.2),
+                      avoid=lambda x, y: math.hypot(x - mx, y - my) < mr * 1.5, clouds=[])
     cv.hair(_sh)
     cv.line(_sl)
-
-    # --- rays of the setting sun -------------------------------------------------------------
-    nr = 29 if not small else 13
-    for i in range(nr):
-        a = math.pi + math.pi * (i + .5) / nr
-        if abs(math.sin(a)) < .12:
-            continue
-        r0 = R * 1.18
-        r1 = R * (3.4 if i % 2 else 2.4) * (1 if not small else .8)
-        hw = .03 if i % 2 else .05
-        wedge = [(sun_x + r0 * math.cos(a - hw), hz + r0 * math.sin(a - hw)),
-                 (sun_x + r1 * math.cos(a), hz + r1 * math.sin(a)),
-                 (sun_x + r0 * math.cos(a + hw), hz + r0 * math.sin(a + hw))]
-        cv.obj([wedge], .5)
+    # the moon's halo: two faint rings of broken line
+    for f in (1.9, 2.5):
+        ring = C._ell_pts(mx, my, mr * f, mr * f, 60)
+        for j in range(0, 60, 3):
+            cv.obj([], 0)
+            cv.hair(ring[j:j + 2])
 
     # --- (cloud banks tried and dropped: they read as bars across the rays) --------------------------------------------
     if False:
@@ -135,18 +130,19 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
     # --- stars, and the "P" constellation (Easter egg) ---------------------------------------
     stars = []
     tries = 0
-    nst = 18 if not small else 6
+    nst = 40 if not small else 8
     while len(stars) < nst and tries < 400:
         tries += 1
         sx = X0 + W * rng.uniform(.06, .94)
         sy = Y0 + span * rng.uniform(.04, .5 if not small else .4)
-        if math.hypot(sx - sun_x, sy - hz) < R * 3.6:
+        sy = Y0 + span * rng.uniform(.03, .8 if not small else .4)
+        if math.hypot(sx - mx, sy - my) < mr * 2.8:
             continue
-        if any(math.hypot(sx - a, sy - b) < 14 for a, b, _ in stars):
+        if any(math.hypot(sx - a, sy - b) < 9 for a, b, _ in stars):
             continue
-        stars.append((sx, sy, rng.choice((3., 3.6, 4.4, 5.4))))
+        stars.append((sx, sy, rng.choice((1.6, 2.2, 2.2, 3., 3.6, 4.6))))
     pcon = []
-    if not small:
+    if False:
         px, py = X0 + W * .2, Y0 + span * .2
         s = max(6., min(W, H) * .036)
         pcon = [(px, py + 3.2 * s), (px, py + 1.6 * s), (px, py), (px + 1.3 * s, py + .1 * s),
@@ -179,13 +175,11 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
         cv.obj([[(tx, ty), (hx + nx * wh, hy + ny * wh), (hx - nx * wh, hy - ny * wh)]], .5)
         cv.obj([_star(hx, hy, 3.6, 1.2, 4, .4)], .5)
 
-    # --- the young moon (phase from the date) -------------------------------------------------
-    age = _moon_age(date)
-    mr = max(5., min(W, H) * .052) if not small else max(4., H * .1)
-    mx, my = X0 + W * (.8 if not small else .2), Y0 + span * (.36 if not small else .3)
-    disc = C._ell_pts(mx, my, mr, mr, 40)
-    cv.obj([disc], .5)
-    cv.line(C.hatch_poly(disc, 0, 1.5, .25))
+    # --- the moon in today's phase: earthshine ruled on the dark limb, the lit part left white
+    disc = C._ell_pts(mx, my, mr, mr, 48)
+    cv.obj([disc], 1.)
+    cv.hair(C.hatch_poly(disc, 0, 1.2, .25))
+    cv.hair(C.hatch_poly(disc, 90, 1.8, .25))
     th = 2 * math.pi * age / 29.530588
     k = math.cos(th)
     waxing = age < 14.765
@@ -199,10 +193,17 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
         yy = 1 - 2 * i / 24
         lit.append((mx + sgn * k * mr * math.sqrt(max(0, 1 - yy * yy)), my + mr * yy))
     cv.obj([lit], 1.)
-    cv.hair([[(x, yy) for x, yy in lit[:25]]])
+    mrng = random.Random(date)
+    for j in range(5):                   # maria, softly cut in the lit part
+        a = mrng.uniform(0, 6.28)
+        rr_ = mr * mrng.uniform(.15, .55)
+        qx, qy = mx + rr_ * math.cos(a), my + rr_ * math.sin(a)
+        mp = C._ell_pts(qx, qy, mr * mrng.uniform(.1, .2), mr * mrng.uniform(.08, .16), 12)[:-1]
+        if all(((x - mx) * sgn > k * math.sqrt(max(0, mr * mr - (y - my) ** 2)) + 1) for x, y in mp) and all(math.hypot(x - mx, y - my) < mr - 1 for x, y in mp):
+            cv.hair(C.hatch_poly(mp, 30, 1.4))
 
     # --- an airliner and its contrail (planes overhead) -----------------------------------------
-    if not small:
+    if False:
         ax, ay = X0 + W * .66, Y0 + span * .62
         ps = max(7., min(W, H) * .045)
         ca = math.radians(-12)
@@ -237,11 +238,6 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
     # sun first, then the hills cover its foot
     sun = C._ell_pts(sun_x, hz, R, R, 56)
     # insert the sun before the hills in paint order: build its own object now
-    cv.obj([sun], 1.5)
-    for f in (.84, .66, .48):
-        ring = C._ell_pts(sun_x, hz, R * f, R * f, 48)
-        cv.hair([ring + [ring[0]]])
-    cv.hair(C.hatch_poly(C._ell_pts(sun_x, hz, R * .3, R * .3, 24), 0, 1.5))
     cv.obj([hills], 1.)
     cv.hair(C.hatch_poly(hills, 0, 1.5, .25))
     cv.hair(C.hatch_poly(hills, 70, 3))
@@ -333,7 +329,7 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
 
     # the barn on the far bank, black against the afterglow, boards cut white, one lit window
     if not small:
-        bx, bw_, bh_ = X0 + W * .74, W * .12, H * .1
+        bx, bw_, bh_ = X0 + W * .5, W * .2, H * .15
         base = hz + .5
         barn = [(bx - bw_ / 2, base), (bx - bw_ / 2, base - bh_ * .55), (bx - bw_ * .32, base - bh_ * .85),
                 (bx, base - bh_), (bx + bw_ * .32, base - bh_ * .85), (bx + bw_ / 2, base - bh_ * .55), (bx + bw_ / 2, base)]
@@ -350,6 +346,50 @@ def _scene(field, X0, Y0, W, H, mode, ctx):
     if whites:
         out.append(f'<path d="{"".join(_d(p, True, .15) for p in whites)}" fill="#fff" stroke="none"/>')
     return "".join(out)
+
+
+def _phase_disc(cv, x, y, r, f, waxing):
+    """One small moon: ruled dark limb, the lit fraction f (0 new .. 1 full) left white."""
+    disc = C._ell_pts(x, y, r, r, 28)
+    cv.obj([disc], .5)
+    cv.hair(C.hatch_poly(disc, 0, 1.2))
+    if f < .03:
+        return
+    k = 1 - 2 * f
+    sgn = 1 if waxing else -1
+    lit = [(x + sgn * r * math.sqrt(max(0, 1 - u * u)), y + r * u) for u in [-1 + 2 * i / 16 for i in range(17)]]
+    lit += [(x + sgn * k * r * math.sqrt(max(0, 1 - u * u)), y + r * u) for u in [1 - 2 * i / 16 for i in range(17)]]
+    cv.obj([lit], .5)
+
+
+def phases_frame(cx, cy, rx, ry, fld, mode, date):
+    """The frame is the sky's own clock: the moon's month set round the roundel, new at the foot
+    of the left side, full at the foot of the right, tonight's moon ringed."""
+    if mode == "band":
+        return ""
+    R = min(rx, ry)
+    room = cx - R
+    if room < 30:
+        return ""
+    cv = C.Canvas()
+    age = _moon_age(date)
+    n = 12
+    rr = R + min(20., room * .4)
+    dr = min(7.5, R * .085)
+    lim = math.asin(max(.2, min(1., (ry + 2 - dr - 4) / rr)))
+    today = int(round(age / 29.530588 * n)) % n
+    for i in range(n):
+        if i < n // 2:      # left side, foot to top
+            a = math.pi + lim - 2 * lim * i / (n // 2 - 1)
+        else:               # right side, top to foot
+            a = -lim + 2 * lim * (i - n // 2) / (n // 2 - 1)
+        x, y = cx + rr * math.cos(a), cy - rr * math.sin(a) if i < n // 2 else cy + rr * math.sin(a)
+        ag = 29.530588 * i / n
+        f = (1 - math.cos(2 * math.pi * ag / 29.530588)) / 2
+        _phase_disc(cv, x, y, dr, f, ag < 14.765)
+        if i == today:
+            cv.line(C._ell_pts(x, y, dr + 2.5, dr + 2.5, 32))
+    return cv.svg()
 
 
 def _wrap(field, X0, Y0, W, H, mode, ctx, cid):
@@ -1785,6 +1825,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -1799,16 +1869,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 
@@ -1850,7 +1919,7 @@ def plate(w, h, ctx):
         x0, y0 = min(xs), min(ys)
         md = "band" if mode in ("band", "device") else mode
         return _scene(fld, x0, y0, max(xs) - x0, max(ys) - y0, md, ctx)
-    hk = dict(vignette=True, pad=3., max_aspect=1., field=field, shape="roundel", dedication=True, egg=egg_P, aspect=1.9, cw=.27, rmin=9., rmax=30.,
+    hk = dict(vignette=True, pad=3., max_aspect=1., field=field, shape="roundel", dedication=True, egg=None, frame=lambda cx, cy, rx, ry, fld, mode: phases_frame(cx, cy, rx, ry, fld, mode, date), aspect=1.9, cw=.27, rmin=9., rmax=30.,
               banner=lambda centre, bh: _banner_extra(centre, bh, date),
               tablet=lambda tx, ty, tw, th: _tablet_extra(tx, ty, tw, th, date))
     return st_plate(w, h, seed, hk)

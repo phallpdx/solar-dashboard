@@ -726,7 +726,7 @@ def _room(fld, mode, seed, date):
 def _tailpiece(w, h, seed, date):
     """The tailpiece: the set itself, free-standing on a little pool of floor, its glow fanning
     out sideways in fine rays, and its own flex curling off either side into the closing flourish
-    (the cord ends in a plug at one end, a tiny heron stands on the other)."""
+    (Easter egg: a heron standing on the screen)."""
     o = []
     cx = w / 2
     legs = h * .1
@@ -769,19 +769,26 @@ def _tailpiece(w, h, seed, date):
                 pts.append((ccx - sd * r * math.cos(ang), ccy - r * math.sin(ang)))
         cord.append("M" + "L".join(f"{_n(px)},{_n(py)}" for px, py in pts))
     o.append(f'<path d="{"".join(cord)}" stroke="#000" stroke-width="1" fill="none"/>')
-    tv, _ = tv_set(cx, top, W, H, seed, date, legs, ant, "tvtp", detail=H > 34)
+    tv, (sx, sy, sw, sh) = tv_set(cx, top, W, H, seed, date, legs, ant, "tvtp", detail=H > 34)
     o.append(tv)
-    # Easter egg: a heron, stepped out of the screen, fishing by the set's foot
-    hs = h * .42
-    hx, hy = cx + W * .5 + hs * .55, floor
-    k = hs
+    # Easter egg: a heron on the screen, standing in the late show, cut black with a white edge
+    scr = _se(sx, sy, sw / 2 - 1.5, sh / 2 - 1.5, 3.4)
+    scan = "".join(f"M{_n(sx - sw / 2)},{_n(yy)}h{_n(sw)}" for yy in [sy - sh / 2 + 1.2 + 1.8 * i for i in range(int(sh / 1.8))])
+    cid = C._uid("tvh", w, h, seed)
+    o.append(f'<path d="{C._d(scr, True, 0)}" fill="#fff" stroke="none"/>'
+             f'<clipPath id="{cid}"><path d="{C._d(scr, True, 0)}"/></clipPath><g clip-path="url(#{cid})">'
+             f'<path d="{scan}" stroke="#000" stroke-width=".5"/>'
+             f'<path d="M{_n(sx - sw / 2)},{_n(sy + sh * .3)}h{_n(sw)}" stroke="#000" stroke-width="1"/></g>')
+    k = sh * .9
+    hx, hy = sx - sw * .05, sy + sh * .36
     Q = lambda u, v: (hx + u * k, hy - v * k)
-    body = [Q(-.22, .55), Q(-.05, .66), Q(.15, .62), Q(.22, .52), Q(.05, .47), Q(-.25, .46)]
-    neck = [Q(.15, .6), Q(.2, .75), Q(.12, .86), Q(.18, .95), Q(.26, .96)]
-    o.append(f'<path d="{C._d(body, True, .1)}" fill="#fff" stroke="#000" stroke-width=".5"/>')
-    o.append(f'<path d="{C._d([Q(-.2, .54), Q(.15, .58)], False, .1)}{C._d([Q(-.18, .5), Q(.1, .53)], False, .1)}" stroke="#000" stroke-width=".5"/>')
-    o.append(f'<path d="{C._d(neck, False, .1)}" fill="none" stroke="#000" stroke-width="1"/>')
-    o.append(f'<path d="{C._d([Q(.26, .96), Q(.48, .93)], False, .1)}{C._d([Q(-.02, .47), Q(-.03, 0)], False, .1)}{C._d([Q(.04, .47), Q(.06, 0)], False, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
+    body = [Q(-.26, .52), Q(-.08, .66), Q(.1, .64), Q(.2, .55), Q(.06, .45), Q(-.2, .44)]
+    neck = [Q(.12, .6), Q(.19, .74), Q(.1, .84), Q(.16, .94), Q(.24, .95)]
+    bill = [Q(.24, .97), Q(.44, .92), Q(.24, .93)]
+    o.append(f'<path d="{C._d(body, True, .1)}{C._d(bill, True, 0)}" fill="#000" stroke="#fff" stroke-width=".5"/>')
+    o.append(f'<path d="{C._d(neck, False, .1)}" fill="none" stroke="#fff" stroke-width="2"/>'
+             f'<path d="{C._d(neck, False, .1)}" fill="none" stroke="#000" stroke-width="1.5"/>')
+    o.append(f'<path d="{C._d([Q(-.03, .45), Q(-.05, 0)], False, .1)}{C._d([Q(.04, .45), Q(.08, 0)], False, .1)}" fill="none" stroke="#000" stroke-width=".5"/>')
     return "".join(o)
 
 

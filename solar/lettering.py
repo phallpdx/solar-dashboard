@@ -9,20 +9,23 @@ matching viewBox. `size` is the type size it stands in for; the lettering's x-he
 
 How it is drawn. Every letter is a skeleton: a few smooth pen paths through hand-placed points, in units of the
 x-height, upright. Nothing here is taken from a font or a specimen: the shapes are drawn for this module, in the
-manner of copperplate roundhand and banknote script (a pointed pen held on a slant: weight comes from pressure,
-so strokes moving down the slant swell and strokes moving up or across are hairlines). A headline is composed
+manner of copperplate roundhand and banknote script, as an engraver cuts it: weight comes from the direction of
+the stroke, so strokes moving down the slant are full shades that swell in from a fine point and thin out again,
+strokes moving up or across are hairlines, and many strokes end in a ball terminal. A capital's structural thin
+strokes are cut a little firmer than a joining hair, so a word in capitals (NASA, I-638) still holds together. A headline is composed
 letter by letter: lowercase letters join with hairline connectors from one letter's exit to the next one's entry,
 each word starts with a short lead-in, and the last letter may finish with a small flick. The pen is then
 followed along each path and the outline of the swelling stroke is written out as a filled path.
 
 Lettered for itself. The text seeds everything that is not fixed: the slant, the width, the weight and contrast,
 ascender and descender length, which alternate of each letter is used (a letter is never drawn the same way twice
-in a row), a small tremor in every point, a slight rise and fall of the baseline, and the underline flourish.
+in a row), and the underline flourish. The burin is steady: the slant is one for the whole headline and the
+baseline does not drift; the life is in the forms.
 Two headlines therefore never look like one font repeated, and the same headline always comes out the same.
 
 Legibility comes first: a large x-height against short ascenders and descenders, a moderate slant, open counters,
 roman-structured capitals, hairlines that never drop under about one device pixel at 2x, generous word spaces,
-and flourishes kept below the words, clear of every letter. One or two lines; a long headline is set smaller
+and a flourish (where the caller wants one) that runs the whole length of the last line, clear of every letter. One or two lines; a long headline is set smaller
 before it is ever set on three.
 
 Pure Python (no numpy), importable on its own: the Morning and Evening Editions both call it.
@@ -76,8 +79,8 @@ g("a", [OVAL, _turn(0.60)], e=(1.0, 0.12))
 g("a", ["0.54,0.84 0.44,0.98 0.22,0.96 0.07,0.74 0.04,0.38 0.12,0.10 0.28,0.00 0.46,0.08 0.58,0.30", _turn(0.61)], e=(1.0, 0.12))
 g("b", [LOOP + " 0.12,0.0", "0.12,0.46 0.22,0.84 0.38,1.00 0.54,0.92 0.60,0.62 0.55,0.26 0.40,0.03 0.24,0.00 0.13,0.08"], e=(0.5, 1.0), j=False)
 g("b", [PLAIN + " 0.12,0.0", "0.12,0.46 0.22,0.84 0.38,1.00 0.54,0.92 0.60,0.62 0.55,0.26 0.40,0.03 0.24,0.00 0.13,0.08"], e=(0.4, 1.0), j=False)
-g("c", ["0.40,0.82 0.50,0.92 0.42,1.00 0.24,0.96 0.08,0.72 0.04,0.38 0.12,0.10 0.28,0.00 0.44,0.04 0.58,0.18"], e=(1.0, 0.12))
-g("c", ["0.46,0.88 0.36,1.00 0.18,0.92 0.05,0.64 0.05,0.30 0.15,0.07 0.31,0.00 0.47,0.05 0.59,0.19"], e=(1.0, 0.12))
+g("c", ["@0.40,0.82 0.50,0.92 0.42,1.00 0.24,0.96 0.08,0.72 0.04,0.38 0.12,0.10 0.28,0.00 0.44,0.04 0.58,0.18"], e=(1.0, 0.12))
+g("c", ["@0.46,0.88 0.36,1.00 0.18,0.92 0.05,0.64 0.05,0.30 0.15,0.07 0.31,0.00 0.47,0.05 0.59,0.19"], e=(1.0, 0.12))
 g("d", [OVAL, _turn(0.60, 1.82)], e=(1.0, 0.12))
 g("d", [OVAL, "0.36,1.62 0.50,1.80 0.62,1.82 0.62,1.60 " + _turn(0.60, 1.2)[10:]], e=(1.0, 0.12))
 g("e", ["0.05,0.36 0.30,0.50 0.47,0.72 0.45,0.93 0.31,0.99 0.13,0.84 0.04,0.52 0.07,0.18 0.21,0.01 0.40,0.02 0.56,0.17"], e=(1.0, 0.45))
@@ -86,10 +89,10 @@ g("g", [OVAL, "0.62,1.00 0.60,0.10 0.58,-0.40 0.48,-0.70 0.32,-0.78 0.20,-0.66 0
 g("g", [OVAL, "0.62,1.00 0.60,0.10 0.57,-0.42 0.46,-0.72 0.28,-0.76 0.16,-0.62 0.30,-0.36 0.56,-0.12 0.76,0.06 0.88,0.20"], e=(1.0, 0.12))
 g("h", [LOOP + " 0.12,0.0", _arch(0.12, 0.62) + " " + _turn(0.62, 0.40)[10:]], e=(0.5, 1.0))
 g("h", [PLAIN + " 0.12,0.0", _arch(0.12, 0.62) + " " + _turn(0.62, 0.40)[10:]], e=(0.4, 1.0))
-g("i", [_turn(0.12)], x=["0.20,1.42 0.17,1.30"], e=(0.35, 1.0))
-g("i", [_turn(0.12)], x=["0.21,1.40 0.16,1.31"], e=(0.25, 1.0))
+g("i", [_turn(0.12)], x=["@0.19,1.36"], e=(0.35, 1.0))
+g("i", [_turn(0.12)], x=["@0.19,1.35"], e=(0.25, 1.0))
 g("j", ["0.14,1.00 0.12,0.10 0.10,-0.40 0.02,-0.70 -0.12,-0.78 -0.22,-0.66 -0.10,-0.40 0.12,-0.14 0.32,0.04 0.46,0.18"],
-  x=["0.22,1.42 0.19,1.30"], e=(0.35, 1.0))
+  x=["@0.21,1.36"], e=(0.35, 1.0))
 g("k", [LOOP + " 0.12,0.0", "0.12,0.42 0.24,0.82 0.40,0.99 0.52,0.92 0.46,0.70 0.24,0.54 0.40,0.50 0.50,0.32 0.51,0.10 0.59,0.00 0.71,0.04 0.82,0.16"], e=(0.5, 1.0))
 g("k", [PLAIN + " 0.12,0.0", "0.12,0.42 0.24,0.82 0.40,0.99 0.52,0.92 0.46,0.70 0.24,0.54 0.40,0.50 0.50,0.32 0.51,0.10 0.59,0.00 0.71,0.04 0.82,0.16"], e=(0.4, 1.0))
 g("l", [LOOP + " 0.12,0.30 0.13,0.10 0.21,0.00 0.32,0.03 0.43,0.16"], e=(0.5, 1.0))
@@ -101,12 +104,12 @@ g("o", ["0.48,0.95 0.32,1.00 0.14,0.89 0.04,0.58 0.07,0.22 0.21,0.02 0.38,0.01 0
 g("o", ["0.50,0.93 0.34,1.00 0.15,0.90 0.05,0.60 0.06,0.24 0.19,0.03 0.37,0.00 0.52,0.15 0.59,0.48 0.56,0.80 0.48,0.95", "h:0.48,0.95 0.62,0.92 0.78,0.92"], e=(1.0, 0.12))
 g("p", ["0.14,1.00 0.12,-0.78", "0.13,0.42 0.22,0.82 0.38,0.99 0.54,0.92 0.60,0.62 0.55,0.26 0.40,0.03 0.24,0.02 0.14,0.12"], e=(0.3, 1.0), j=False)
 g("q", [OVAL, "0.62,1.00 0.60,0.0 0.58,-0.78"], e=(1.0, 0.12), j=False)
-g("r", ["0.12,1.00 0.12,0.0", "0.12,0.44 0.20,0.80 0.34,0.98 0.48,0.98 0.56,0.88"], e=(0.3, 1.0))
-g("r", ["0.10,1.00 0.12,0.0", "0.12,0.50 0.22,0.86 0.36,1.00 0.50,0.97 0.57,0.86"], e=(0.3, 1.0))
+g("r", ["0.12,1.00 0.12,0.0", "0.12,0.44 0.20,0.80 0.34,0.98 0.48,0.98 @0.56,0.88"], e=(0.3, 1.0))
+g("r", ["0.10,1.00 0.12,0.0", "0.12,0.50 0.22,0.86 0.36,1.00 0.50,0.97 @0.57,0.86"], e=(0.3, 1.0))
 g("s", ["0.52,0.84 0.44,0.98 0.24,0.98 0.12,0.82 0.18,0.64 0.38,0.50 0.52,0.30 0.46,0.08 0.26,0.00 0.08,0.08"], e=(0.5, 1.0), j=False)
 g("f", [LOOP + " 0.12,0.0 0.11,-0.48 0.15,-0.72 0.25,-0.74 0.29,-0.56 0.21,-0.28 0.12,-0.02 0.26,0.08 0.40,0.18"],
   x=["m:-0.04,0.98 0.20,1.00 0.42,1.02"], e=(0.5, 1.0))
-g("f", ["0.56,1.62 0.48,1.80 0.32,1.84 0.20,1.68 0.16,1.30 0.14,0.50 0.12,-0.30 0.06,-0.66 -0.06,-0.76 -0.14,-0.66"],
+g("f", ["@0.56,1.62 0.48,1.80 0.32,1.84 0.20,1.68 0.16,1.30 0.14,0.50 0.12,-0.30 0.06,-0.66 -0.06,-0.76 -0.14,-0.66"],
   x=["m:-0.04,0.98 0.20,1.00 0.42,1.02"], e=(0.4, 1.0), j=False)
 g("s", ["0.50,0.82 0.42,0.98 0.22,0.96 0.12,0.78 0.22,0.60 0.42,0.46 0.52,0.26 0.42,0.05 0.22,0.00 0.06,0.10"], e=(0.5, 1.0), j=False)
 g("t", ["0.16,1.48 " + _turn(0.12)[10:]], x=["h:-0.04,0.96 0.20,1.00 0.40,1.02"], e=(0.25, 1.0))
@@ -122,93 +125,93 @@ g("z", ["h:0.06,0.86 0.20,0.99 0.40,0.97 0.56,0.98", "0.56,0.98 0.30,0.50 0.04,0
 
 # capitals: roman in structure, so a word in capitals still reads ----------------------------------------
 C = 1.72
-g("A", ["h:-0.06,0.12 0.06,0.02 0.18,0.18 0.42,1.10 0.58,1.72", "0.58,1.72 0.66,0.80 0.70,0.24 0.74,0.04 0.85,0.00 0.97,0.10"],
-  x=["h:0.24,0.64 0.48,0.68 0.72,0.68"], e=(1, 0.3), lead=False)
-g("B", ["h:0.00,1.44 0.14,1.66 0.36,1.74", "0.34,1.72 0.28,0.80 0.22,0.0",
+g("A", ["k:-0.06,0.12 0.06,0.02 0.18,0.18 0.42,1.10 0.58,1.72", "0.58,1.72 0.66,0.80 0.70,0.24 0.74,0.04 0.85,0.00 0.97,0.10"],
+  x=["k:0.24,0.64 0.48,0.68 0.72,0.68"], e=(1, 0.3), lead=False)
+g("B", ["h:@0.00,1.44 0.14,1.66 0.36,1.74", "0.34,1.72 0.28,0.80 0.22,0.0",
         "h:0.34,1.72 0.62,1.74 0.82,1.58 0.80,1.30 0.62,1.04 0.36,0.94",
         "0.36,0.94 0.62,0.90 0.84,0.70 0.86,0.36 0.70,0.08 0.44,0.00 0.18,0.02 0.06,0.12"], j=False, lead=False)
-g("C", ["0.78,1.42 0.84,1.60 0.70,1.72 0.44,1.66 0.20,1.38 0.06,0.92 0.06,0.42 0.20,0.10 0.44,0.00 0.68,0.08 0.84,0.22"], lead=False)
-g("D", ["0.38,1.70 0.32,0.80 0.26,0.08", "h:0.02,1.40 0.18,1.66 0.42,1.74 0.72,1.68 0.92,1.38 0.94,0.90 0.82,0.40 0.60,0.08 0.32,0.00 0.10,0.04 0.04,0.16 0.16,0.20"],
+g("C", ["@0.78,1.42 0.84,1.60 0.70,1.72 0.44,1.66 0.20,1.38 0.06,0.92 0.06,0.42 0.20,0.10 0.44,0.00 0.68,0.08 0.84,0.22"], lead=False)
+g("D", ["0.38,1.70 0.32,0.80 0.26,0.08", "h:@0.02,1.40 0.18,1.66 0.42,1.74 0.72,1.68 0.92,1.38 0.94,0.90 0.82,0.40 0.60,0.08 0.32,0.00 0.10,0.04 0.04,0.16 0.16,0.20"],
   j=False, lead=False)
-g("E", ["0.60,1.46 0.62,1.64 0.48,1.73 0.28,1.66 0.22,1.44 0.32,1.18 0.52,1.02",
+g("E", ["@0.60,1.46 0.62,1.64 0.48,1.73 0.28,1.66 0.22,1.44 0.32,1.18 0.52,1.02",
         "0.52,1.02 0.26,0.92 0.08,0.64 0.08,0.30 0.22,0.06 0.46,0.00 0.70,0.08 0.84,0.22"], lead=False)
-g("F", ["0.50,1.70 0.44,0.80 0.40,0.0"], x=["m:0.14,1.62 0.30,1.70 0.60,1.71 0.96,1.76", "m:0.24,0.86 0.50,0.88 0.78,0.92"], j=False, lead=False, a=0.80)
-g("G", ["0.78,1.42 0.84,1.60 0.70,1.72 0.44,1.66 0.20,1.38 0.06,0.92 0.06,0.42 0.20,0.10 0.44,0.00 0.64,0.06 0.76,0.24", "0.80,0.80 0.78,0.40 0.74,0.0"],
+g("F", ["0.50,1.70 0.44,0.80 0.40,0.0"], x=["m:@0.14,1.62 0.30,1.70 0.60,1.71 0.96,1.76", "m:0.24,0.86 0.50,0.88 0.78,0.92"], j=False, lead=False, a=0.80)
+g("G", ["@0.78,1.42 0.84,1.60 0.70,1.72 0.44,1.66 0.20,1.38 0.06,0.92 0.06,0.42 0.20,0.10 0.44,0.00 0.64,0.06 0.76,0.24", "0.80,0.80 0.78,0.40 0.74,0.0"],
   x=["m:0.48,0.78 0.70,0.80 0.94,0.82"], j=False, lead=False)
-g("H", ["h:-0.04,1.40 0.12,1.66 0.32,1.72", "0.32,1.72 0.26,0.80 0.20,0.10 0.08,0.00 -0.02,0.08",
-        "0.88,1.72 0.82,0.80 0.78,0.20 0.82,0.04 0.93,0.00 1.04,0.10"], x=["h:0.10,0.80 0.50,0.86 0.84,0.90"], lead=False)
+g("H", ["h:@-0.04,1.40 0.12,1.66 0.32,1.72", "0.32,1.72 0.26,0.80 0.20,0.10 0.08,0.00 -0.02,0.08",
+        "0.88,1.72 0.82,0.80 0.78,0.20 0.82,0.04 0.93,0.00 1.04,0.10"], x=["k:0.10,0.80 0.50,0.86 0.84,0.90"], lead=False)
 g("I", ["0.50,1.72 0.38,0.0"], x=["m:0.18,1.70 0.48,1.72 0.80,1.74", "m:0.06,0.00 0.38,0.01 0.68,0.03"], j=False, lead=False)
-g("J", ["0.60,1.72 0.54,0.60 0.48,0.00 0.36,-0.42 0.16,-0.58 0.02,-0.46"], x=["h:0.30,1.70 0.60,1.73 0.84,1.74"], j=False, lead=False)
-g("K", ["h:-0.04,1.40 0.12,1.66 0.32,1.72", "0.32,1.72 0.26,0.80 0.20,0.0",
-        "h:0.90,1.72 0.62,1.20 0.28,0.84", "0.28,0.84 0.52,0.82 0.64,0.50 0.70,0.16 0.80,0.02 0.94,0.06"], lead=False)
-g("L", ["0.60,1.54 0.66,1.72 0.56,1.80 0.42,1.70 0.38,1.30 0.32,0.60 0.22,0.12 0.08,0.00 0.02,0.10 0.16,0.17 0.40,0.07 0.62,0.00 0.84,0.08"], lead=False)
-g("M", ["h:-0.04,0.02 0.06,0.30 0.18,1.20 0.24,1.72", "0.24,1.72 0.38,0.80 0.50,0.0", "h:0.50,0.0 0.72,0.80 0.92,1.72",
+g("J", ["0.60,1.72 0.54,0.60 0.48,0.00 0.36,-0.42 0.16,-0.58 @0.02,-0.46"], x=["h:@0.30,1.70 0.60,1.73 0.84,1.74"], j=False, lead=False)
+g("K", ["h:@-0.04,1.40 0.12,1.66 0.32,1.72", "0.32,1.72 0.26,0.80 0.20,0.0",
+        "k:@0.90,1.72 0.62,1.20 0.28,0.84", "0.28,0.84 0.52,0.82 0.64,0.50 0.70,0.16 0.80,0.02 0.94,0.06"], lead=False)
+g("L", ["@0.60,1.54 0.66,1.72 0.56,1.80 0.42,1.70 0.38,1.30 0.32,0.60 0.22,0.12 0.08,0.00 0.02,0.10 0.16,0.17 0.40,0.07 0.62,0.00 0.84,0.08"], lead=False)
+g("M", ["k:-0.04,0.02 0.06,0.30 0.18,1.20 0.24,1.72", "0.24,1.72 0.38,0.80 0.50,0.0", "k:0.50,0.0 0.72,0.80 0.92,1.72",
         "0.92,1.72 0.88,0.80 0.86,0.24 0.89,0.04 1.00,0.00 1.10,0.10"], lead=False)
-g("N", ["h:-0.04,0.02 0.06,0.30 0.16,1.20 0.22,1.72", "0.22,1.72 0.48,0.80 0.72,0.0", "h:0.72,0.0 0.82,0.90 0.88,1.60 0.96,1.76 1.04,1.72"],
+g("N", ["k:-0.04,0.02 0.06,0.30 0.16,1.20 0.22,1.72", "0.22,1.72 0.48,0.80 0.72,0.0", "k:0.72,0.0 0.82,0.90 0.88,1.60 0.96,1.76 @1.04,1.72"],
   j=False, lead=False)
-g("O", ["0.52,1.62 0.34,1.72 0.14,1.52 0.04,1.04 0.06,0.44 0.22,0.06 0.44,0.00 0.66,0.20 0.78,0.70 0.76,1.24 0.62,1.60 0.46,1.66 0.42,1.50"],
+g("O", ["0.52,1.62 0.34,1.72 0.14,1.52 0.04,1.04 0.06,0.44 0.22,0.06 0.44,0.00 0.66,0.20 0.78,0.70 0.76,1.24 0.62,1.60 0.46,1.66 @0.42,1.50"],
   j=False, lead=False)
-g("P", ["h:0.00,1.42 0.16,1.68 0.38,1.74", "0.38,1.72 0.32,0.80 0.26,0.0", "h:0.38,1.72 0.66,1.74 0.86,1.56 0.84,1.22 0.62,0.96 0.34,0.88"],
+g("P", ["h:@0.00,1.42 0.16,1.68 0.38,1.74", "0.38,1.72 0.32,0.80 0.26,0.0", "h:0.38,1.72 0.66,1.74 0.86,1.56 0.84,1.22 0.62,0.96 0.34,0.88"],
   j=False, lead=False)
 g("Q", ["0.52,1.62 0.34,1.72 0.14,1.52 0.04,1.04 0.06,0.44 0.22,0.06 0.44,0.00 0.66,0.20 0.78,0.70 0.76,1.24 0.62,1.60 0.46,1.66 0.42,1.50"],
   x=["m:0.34,0.14 0.56,-0.06 0.92,-0.06"], j=False, lead=False)
-g("R", ["h:0.00,1.42 0.16,1.68 0.38,1.74", "0.38,1.72 0.32,0.80 0.26,0.0",
+g("R", ["h:@0.00,1.42 0.16,1.68 0.38,1.74", "0.38,1.72 0.32,0.80 0.26,0.0",
         "h:0.38,1.72 0.66,1.74 0.86,1.56 0.84,1.22 0.62,0.96 0.34,0.88",
         "0.36,0.88 0.56,0.82 0.66,0.46 0.70,0.14 0.80,0.00 0.94,0.08"], lead=False)
-g("S", ["0.76,1.48 0.70,1.68 0.50,1.74 0.28,1.62 0.22,1.36 0.38,1.04 0.58,0.74 0.64,0.40 0.54,0.10 0.30,0.00 0.10,0.06 0.04,0.22"], j=False, lead=False)
-g("T", ["0.56,1.68 0.50,0.90 0.46,0.0"], x=["m:-0.02,1.58 0.10,1.68 0.50,1.70 1.02,1.76"], j=False, lead=False, a=0.74)
-g("T", ["0.58,1.66 0.52,0.90 0.47,0.06 0.52,0.00 0.62,0.04"], x=["m:0.00,1.52 0.12,1.70 0.54,1.68 1.00,1.74"], j=False, lead=False, a=0.74)
-g("U", ["h:-0.04,1.42 0.12,1.66 0.30,1.72", "0.30,1.72 0.24,0.80 0.22,0.30 0.32,0.04 0.50,0.00 0.66,0.14 0.80,0.60 0.88,1.72",
+g("S", ["@0.76,1.48 0.70,1.68 0.50,1.74 0.28,1.62 0.22,1.36 0.38,1.04 0.58,0.74 0.64,0.40 0.54,0.10 0.30,0.00 0.10,0.06 @0.04,0.22"], j=False, lead=False)
+g("T", ["0.56,1.68 0.50,0.90 0.46,0.0"], x=["m:@-0.02,1.58 0.10,1.68 0.50,1.70 1.02,1.76"], j=False, lead=False, a=0.74)
+g("T", ["0.58,1.66 0.52,0.90 0.47,0.06 0.52,0.00 0.62,0.04"], x=["m:@0.00,1.52 0.12,1.70 0.54,1.68 1.00,1.74"], j=False, lead=False, a=0.74)
+g("U", ["h:@-0.04,1.42 0.12,1.66 0.30,1.72", "0.30,1.72 0.24,0.80 0.22,0.30 0.32,0.04 0.50,0.00 0.66,0.14 0.80,0.60 0.88,1.72",
         "0.88,1.72 0.82,0.60 0.80,0.20 0.85,0.02 0.96,0.00 1.06,0.10"], lead=False)
-g("V", ["h:-0.04,1.42 0.12,1.66 0.28,1.72", "0.28,1.72 0.36,0.90 0.44,0.0", "h:0.44,0.0 0.70,0.90 0.88,1.60 0.96,1.74 1.04,1.70"],
+g("V", ["h:@-0.04,1.42 0.12,1.66 0.28,1.72", "0.28,1.72 0.36,0.90 0.44,0.0", "k:0.44,0.0 0.70,0.90 0.88,1.60 0.96,1.74 @1.04,1.70"],
   j=False, lead=False)
-g("W", ["h:-0.04,1.42 0.10,1.66 0.24,1.72", "0.24,1.72 0.30,0.80 0.34,0.0", "h:0.34,0.0 0.50,0.80 0.60,1.40", "0.60,1.40 0.64,0.70 0.70,0.0",
-        "h:0.70,0.0 0.92,0.90 1.06,1.60 1.14,1.74 1.22,1.70"], j=False, lead=False)
-g("X", ["0.08,1.70 0.20,1.72 0.30,1.50 0.50,0.60 0.62,0.10 0.72,0.00 0.86,0.08"], x=["h:0.86,1.72 0.44,0.86 0.02,0.0"], lead=False)
-g("Y", ["0.06,1.70 0.18,1.72 0.30,1.40 0.46,0.88", "0.46,0.88 0.40,0.0"], x=["h:0.94,1.72 0.70,1.30 0.46,0.88"], j=False, lead=False)
-g("Z", ["h:0.10,1.50 0.26,1.70 0.84,1.72", "0.84,1.72 0.42,0.84 0.02,0.0", "h:0.02,0.0 0.40,0.06 0.80,0.00 0.96,0.10"], lead=False)
+g("W", ["h:@-0.04,1.42 0.10,1.66 0.24,1.72", "0.24,1.72 0.30,0.80 0.34,0.0", "k:0.34,0.0 0.50,0.80 0.60,1.40", "0.60,1.40 0.64,0.70 0.70,0.0",
+        "k:0.70,0.0 0.92,0.90 1.06,1.60 1.14,1.74 @1.22,1.70"], j=False, lead=False)
+g("X", ["@0.08,1.70 0.20,1.72 0.30,1.50 0.50,0.60 0.62,0.10 0.72,0.00 0.86,0.08"], x=["k:0.86,1.72 0.44,0.86 0.02,0.0"], lead=False)
+g("Y", ["@0.06,1.70 0.18,1.72 0.30,1.40 0.46,0.88", "0.46,0.88 0.40,0.0"], x=["k:@0.94,1.72 0.70,1.30 0.46,0.88"], j=False, lead=False)
+g("Z", ["h:@0.10,1.50 0.26,1.70 0.84,1.72", "0.84,1.72 0.42,0.84 0.02,0.0", "h:0.02,0.0 0.40,0.06 0.80,0.00 0.96,0.10"], lead=False)
 # second hands of the capitals that open headlines most
-g("S", ["0.74,1.52 0.72,1.70 0.52,1.74 0.30,1.64 0.24,1.40 0.40,1.08 0.60,0.76 0.66,0.40 0.56,0.10 0.32,0.00 0.10,0.08 0.06,0.26 0.18,0.30"], j=False, lead=False)
-g("A", ["h:-0.04,0.10 0.08,0.02 0.20,0.20 0.42,1.10 0.56,1.72", "0.56,1.72 0.64,0.80 0.68,0.24 0.72,0.04 0.83,0.00 0.95,0.10"],
-  x=["h:0.20,0.70 0.46,0.64 0.74,0.70"], e=(1, 0.3), lead=False)
-g("M", ["h:-0.06,0.10 0.04,0.02 0.12,0.40 0.20,1.20 0.24,1.72", "0.24,1.72 0.38,0.80 0.50,0.0", "h:0.50,0.0 0.72,0.80 0.92,1.72",
+g("S", ["@0.74,1.52 0.72,1.70 0.52,1.74 0.30,1.64 0.24,1.40 0.40,1.08 0.60,0.76 0.66,0.40 0.56,0.10 0.32,0.00 0.10,0.08 0.06,0.26 0.18,0.30"], j=False, lead=False)
+g("A", ["k:-0.04,0.10 0.08,0.02 0.20,0.20 0.42,1.10 0.56,1.72", "0.56,1.72 0.64,0.80 0.68,0.24 0.72,0.04 0.83,0.00 0.95,0.10"],
+  x=["k:0.20,0.70 0.46,0.64 0.74,0.70"], e=(1, 0.3), lead=False)
+g("M", ["k:-0.06,0.10 0.04,0.02 0.12,0.40 0.20,1.20 0.24,1.72", "0.24,1.72 0.38,0.80 0.50,0.0", "k:0.50,0.0 0.72,0.80 0.92,1.72",
         "0.92,1.72 0.88,0.80 0.86,0.24 0.89,0.04 1.00,0.00 1.10,0.10"], lead=False)
-g("W", ["0.24,1.72 0.30,0.80 0.34,0.0", "h:0.34,0.0 0.50,0.80 0.60,1.40", "0.60,1.40 0.64,0.70 0.70,0.0",
-        "h:0.70,0.0 0.92,0.90 1.04,1.60 1.12,1.74"], x=["h:0.00,1.52 0.10,1.70 0.24,1.72"], j=False, lead=False)
+g("W", ["0.24,1.72 0.30,0.80 0.34,0.0", "k:0.34,0.0 0.50,0.80 0.60,1.40", "0.60,1.40 0.64,0.70 0.70,0.0",
+        "k:0.70,0.0 0.92,0.90 1.04,1.60 @1.12,1.74"], x=["h:@0.00,1.52 0.10,1.70 0.24,1.72"], j=False, lead=False)
 
 # figures (lining, a little under cap height) -------------------------------------------------------------
 N = 1.42
 g("0", ["0.48,1.32 0.36,1.42 0.18,1.32 0.06,0.96 0.06,0.40 0.16,0.06 0.32,0.00 0.48,0.12 0.58,0.50 0.58,1.04 0.48,1.32"], j=False, lead=False)
-g("1", ["h:0.02,1.06 0.20,1.30 0.40,1.42", "0.40,1.42 0.34,0.70 0.28,0.0"], j=False, lead=False, a=0.52)
-g("2", ["0.04,1.10 0.14,1.34 0.34,1.42 0.52,1.32 0.54,1.08 0.36,0.72 0.04,0.04", "h:0.04,0.04 0.24,0.08 0.44,0.00 0.62,0.06"], j=False, lead=False)
-g("3", ["h:0.06,1.24 0.22,1.40 0.44,1.40 0.54,1.20", "0.54,1.20 0.42,0.92 0.22,0.82", "h:0.22,0.82 0.42,0.80",
-        "0.42,0.80 0.58,0.56 0.56,0.20 0.38,0.00 0.16,0.02 0.04,0.14"], j=False, lead=False)
+g("1", ["h:@0.02,1.06 0.20,1.30 0.40,1.42", "0.40,1.42 0.34,0.70 0.28,0.0"], j=False, lead=False, a=0.52)
+g("2", ["@0.04,1.10 0.14,1.34 0.34,1.42 0.52,1.32 0.54,1.08 0.36,0.72 0.04,0.04", "h:0.04,0.04 0.24,0.08 0.44,0.00 0.62,0.06"], j=False, lead=False)
+g("3", ["h:@0.06,1.24 0.22,1.40 0.44,1.40 0.54,1.20", "0.54,1.20 0.42,0.92 0.22,0.82", "h:0.22,0.82 0.42,0.80",
+        "0.42,0.80 0.58,0.56 0.56,0.20 0.38,0.00 0.16,0.02 @0.04,0.14"], j=False, lead=False)
 g("4", ["h:0.48,1.42 0.20,0.86 0.00,0.42", "h:0.00,0.42 0.34,0.43 0.68,0.46", "0.52,1.10 0.48,0.50 0.44,0.0"], j=False, lead=False)
 g("5", ["h:0.64,1.42 0.42,1.40 0.22,1.42", "0.22,1.42 0.18,1.10 0.14,0.84", "h:0.14,0.84 0.34,0.90",
-        "0.34,0.90 0.56,0.70 0.58,0.28 0.40,0.02 0.18,0.00 0.04,0.14"], j=False, lead=False)
-g("6", ["0.54,1.38 0.34,1.28 0.14,0.96 0.06,0.48 0.14,0.08 0.32,0.00 0.50,0.12 0.56,0.42 0.44,0.66 0.24,0.64 0.12,0.44"], j=False, lead=False)
-g("7", ["h:0.04,1.30 0.20,1.42 0.44,1.40 0.68,1.42", "0.68,1.42 0.44,0.80 0.24,0.0"], j=False, lead=False)
+        "0.34,0.90 0.56,0.70 0.58,0.28 0.40,0.02 0.18,0.00 @0.04,0.14"], j=False, lead=False)
+g("6", ["@0.54,1.38 0.34,1.28 0.14,0.96 0.06,0.48 0.14,0.08 0.32,0.00 0.50,0.12 0.56,0.42 0.44,0.66 0.24,0.64 0.12,0.44"], j=False, lead=False)
+g("7", ["h:@0.04,1.30 0.20,1.42 0.44,1.40 0.68,1.42", "0.68,1.42 0.44,0.80 0.24,0.0"], j=False, lead=False)
 g("8", ["0.52,1.18 0.42,1.40 0.22,1.40 0.14,1.16 0.32,0.86 0.54,0.56 0.52,0.14 0.32,0.00 0.10,0.10 0.08,0.38 0.30,0.70 0.50,0.98 0.52,1.18"],
   j=False, lead=False)
-g("9", ["0.54,1.00 0.40,0.78 0.20,0.80 0.08,1.04 0.18,1.36 0.38,1.42 0.56,1.28 0.56,0.90 0.46,0.32 0.30,0.02 0.08,0.06"], j=False, lead=False)
+g("9", ["0.54,1.00 0.40,0.78 0.20,0.80 0.08,1.04 0.18,1.36 0.38,1.42 0.56,1.28 0.56,0.90 0.46,0.32 0.30,0.02 @0.08,0.06"], j=False, lead=False)
 
 # punctuation ---------------------------------------------------------------------------------------------
-DOT = "0.10,0.12 0.06,0.02"
+DOT = "@0.09,0.08"
 g(".", [DOT], j=False, lead=False, a=0.20)
-g(",", ["0.12,0.12 0.09,0.00 0.02,-0.20"], j=False, lead=False, a=0.20)
-g(":", [DOT], x=["0.14,0.84 0.10,0.74"], j=False, lead=False, a=0.24)
-g(";", ["0.12,0.12 0.09,0.00 0.02,-0.20"], x=["0.16,0.84 0.12,0.74"], j=False, lead=False, a=0.24)
+g(",", ["@0.12,0.09 0.11,-0.02 0.02,-0.24"], j=False, lead=False, a=0.20)
+g(":", [DOT], x=["@0.13,0.80"], j=False, lead=False, a=0.24)
+g(";", ["@0.12,0.09 0.11,-0.02 0.02,-0.24"], x=["@0.15,0.80"], j=False, lead=False, a=0.24)
 g("!", ["0.30,1.74 0.22,1.10 0.14,0.42"], x=[DOT], j=False, lead=False, a=0.36)
-g("?", ["h:0.04,1.36 0.16,1.66 0.40,1.74 0.56,1.54 0.48,1.24", "0.48,1.24 0.30,1.00 0.22,0.72 0.20,0.44"], x=["0.18,0.12 0.14,0.02"],
+g("?", ["h:0.04,1.36 0.16,1.66 0.40,1.74 0.56,1.54 0.48,1.24", "0.48,1.24 0.30,1.00 0.22,0.72 0.20,0.44"], x=["@0.16,0.08"],
   j=False, lead=False, a=0.62)
-RQ = "0.30,1.80 0.26,1.66 0.16,1.48"
+RQ = "@0.30,1.74 0.30,1.64 0.18,1.44"
 LQ = "0.18,1.48 0.26,1.66 0.30,1.80"
 g("'", [RQ], j=False, lead=False, a=0.32)
 g("’", [RQ], j=False, lead=False, a=0.32)
-g("‘", ["0.24,1.50 0.20,1.62 0.24,1.80"], j=False, lead=False, a=0.32)
+g("‘", ["0.30,1.86 0.20,1.70 @0.22,1.58"], j=False, lead=False, a=0.32)
 g('"', ["0.30,1.80 0.24,1.50"], x=["0.50,1.80 0.44,1.50"], j=False, lead=False, a=0.54)
-g("”", [RQ], x=["0.52,1.80 0.48,1.66 0.38,1.48"], j=False, lead=False, a=0.54)
-g("“", ["0.24,1.50 0.20,1.62 0.24,1.80"], x=["0.46,1.50 0.42,1.62 0.46,1.80"], j=False, lead=False, a=0.54)
+g("”", [RQ], x=["@0.52,1.74 0.52,1.64 0.40,1.44"], j=False, lead=False, a=0.54)
+g("“", ["0.30,1.86 0.20,1.70 @0.22,1.58"], x=["0.52,1.86 0.42,1.70 @0.44,1.58"], j=False, lead=False, a=0.54)
 g("-", ["m:0.04,0.46 0.24,0.50 0.42,0.52"], j=False, lead=False, a=0.46)
 g("‐", ["m:0.04,0.46 0.24,0.50 0.42,0.52"], j=False, lead=False, a=0.46)
 g("–", ["m:0.04,0.48 0.34,0.50 0.66,0.52"], j=False, lead=False, a=0.72)
@@ -225,9 +228,9 @@ g("$", ["0.66,1.20 0.58,1.36 0.38,1.40 0.20,1.28 0.20,1.04 0.40,0.82 0.58,0.56 0
 g("#", ["h:0.08,0.98 0.44,1.00 0.80,1.02", "h:0.00,0.46 0.36,0.48 0.72,0.50"], x=["0.40,1.40 0.26,0.06", "0.70,1.40 0.56,0.06"], j=False, lead=False)
 g("+", ["h:0.06,0.60 0.36,0.62 0.66,0.64"], x=["0.40,0.96 0.32,0.28"], j=False, lead=False)
 g("=", ["h:0.06,0.80 0.36,0.82 0.66,0.84"], x=["h:0.04,0.44 0.34,0.46 0.64,0.48"], j=False, lead=False)
-g("·", ["0.16,0.58 0.12,0.48"], j=False, lead=False, a=0.30)
-g("•", ["0.18,0.64 0.12,0.42"], j=False, lead=False, a=0.34)
-g("…", [DOT], x=["0.34,0.12 0.30,0.02", "0.58,0.12 0.54,0.02"], j=False, lead=False, a=0.70)
+g("·", ["@0.14,0.54"], j=False, lead=False, a=0.30)
+g("•", ["@0.15,0.54"], j=False, lead=False, a=0.34)
+g("…", [DOT], x=["@0.33,0.08", "@0.57,0.08"], j=False, lead=False, a=0.70)
 g("@", ["0.62,0.84 0.42,0.90 0.30,0.66 0.36,0.40 0.54,0.44 0.64,0.80 0.66,0.44 0.82,0.42 0.92,0.80 0.80,1.22 0.52,1.36 0.22,1.24 0.06,0.84 0.12,0.34 0.38,0.06 0.70,0.06"],
   j=False, lead=False)
 g("°", ["0.26,1.62 0.14,1.56 0.12,1.40 0.24,1.32 0.36,1.40 0.34,1.56 0.26,1.62"], j=False, lead=False, a=0.42)
@@ -245,12 +248,19 @@ ALIAS = {"′": "'", "″": '"', " ": " ", " ": " ", " ": " ", "−": "–"
 
 # ---------------------------------------------------------------- geometry
 
+FIRM = 0.01   # "k:" a firm hairline: a capital's structural thin stroke, cut a little heavier than a joining hair
+
+
 def _pts(s):
+    """A stroke string: points, pressure, and which ends carry a ball terminal ("@" before a point)."""
     p = 1.0
-    if s[:2] in ("h:", "m:"):
-        p = 0.0 if s[0] == "h" else 0.5
+    if s[:2] in ("h:", "m:", "k:"):
+        p = {"h": 0.0, "m": 0.5, "k": FIRM}[s[0]]
         s = s[2:]
-    return [tuple(float(v) for v in t.split(",")) for t in s.split()], p
+    toks = s.split()
+    balls = [i for i, t in enumerate(toks) if t.startswith("@")]
+    P = [tuple(float(v) for v in t.lstrip("@").split(",")) for t in toks]
+    return P, p, [P[i] for i in balls]
 
 
 def _spline(P, step=0.035):
@@ -310,7 +320,7 @@ class _Pen:
         self.heavy, self.hair = heavy, hair
         self.strokes = []   # (points, widths)
 
-    def stroke(self, pts, pressure=1.0, taper=True):
+    def stroke(self, pts, pressure=1.0, taper=True, floor=0.0):
         if len(pts) < 2:
             return
         ws = []
@@ -319,7 +329,7 @@ class _Pen:
             a, b = pts[max(0, i - 1)], pts[min(n - 1, i + 1)]
             tx, ty = _unit(b[0] - a[0], b[1] - a[1])
             s = max(0.0, -(tx * self.ax[0] + ty * self.ax[1]))
-            ws.append(self.hair + (self.heavy - self.hair) * pressure * s ** 1.7)
+            ws.append(self.hair + (self.heavy - self.hair) * pressure * s ** 2.3)
         ws = [(ws[max(0, i - 1)] + 2 * ws[i] + ws[min(n - 1, i + 1)]) / 4 for i in range(n)]
         if taper and n > 4:   # a shaded stroke swells in and out of its ends: it is not cut off square
             L = 0.0
@@ -327,14 +337,20 @@ class _Pen:
             for i in range(1, n):
                 L += math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])
                 acc.append(L)
-            r = self.heavy * 1.1
-            for i in range(n):
+            r = self.heavy * 2.0
+            for i in range(n):   # the shade swells in from a fine start and thins out again, as a burin cuts it
                 k = min(1.0, acc[i] / r, (L - acc[i]) / r) if L > 2 * r else 1.0
-                ws[i] = self.hair + (ws[i] - self.hair) * (0.55 + 0.45 * k)
+                ws[i] = self.hair + (ws[i] - self.hair) * (0.12 + 0.88 * math.sin(k * math.pi / 2))
+        if floor:
+            ws = [max(w, floor) for w in ws]
         self.strokes.append((pts, ws))
 
     def shaped(self, pts, ws):
         self.strokes.append((pts, ws))
+
+    def ball(self, p, d):
+        """A ball terminal: a round dot of diameter d (a stroke of no length, round at both ends)."""
+        self.strokes.append(([(p[0] - 0.01, p[1]), (p[0] + 0.01, p[1])], [d, d]))
 
 
 def _outline(pts, ws):
@@ -404,16 +420,16 @@ class _Hand:
 
     def __init__(self, rng):
         self.rng = rng
-        self.slant = math.radians(rng.uniform(16.0, 21.0))
-        self.wide = rng.uniform(1.08, 1.18)
-        self.heavy = rng.uniform(0.21, 0.25)
-        self.hair = rng.uniform(0.050, 0.062)
+        self.slant = math.radians(rng.uniform(17.0, 20.0))
+        self.wide = rng.uniform(1.12, 1.20)
+        self.heavy = rng.uniform(0.27, 0.30)     # cut, not written: full shades against
+        self.hair = rng.uniform(0.034, 0.040)    # hairlines (held at a device pixel or more below)
         self.asc = rng.uniform(0.86, 1.0)      # ascender / cap scale above the x-height
         self.desc = rng.uniform(0.86, 1.0)
         self.track = rng.uniform(0.09, 0.14)
         self.space = rng.uniform(0.66, 0.76)
-        self.tremor = rng.uniform(0.006, 0.013)
-        self.wave = (rng.uniform(0.008, 0.02), rng.uniform(2.2, 4.5), rng.uniform(0, 6.28))
+        self.tremor = rng.uniform(0.0015, 0.004)   # a steady burin: the hand's life is in its forms, not a wobble
+        self.wave = (rng.uniform(0.0, 0.004), rng.uniform(3.0, 5.0), rng.uniform(0, 6.28))
         self.lead = rng.choice(["short", "short", "long"])
         self.flick = rng.random() < 0.6
         self.last = {}
@@ -486,21 +502,36 @@ def _set_word(hand, word, x0, final):
     for n, (ch, marks) in enumerate(word):
         gl = hand.pick(ch)
         lower = ch.isalpha() and ch.islower()
+        # capitals and figures are drawn leaning a little more than the lowercase stems: stand them up to match
+        shear = 0.06 if (ch.isupper() or ch.isdigit()) else 0.0
         strokes = []
         maxx = 0.0
         for k, s in enumerate(gl["s"] + gl["x"]):
             for part in s.split("|"):
-                P, pr = _pts(part)
+                P, pr, balls = _pts(part)
+                if shear:
+                    P = [(x - shear * y, y) for x, y in P]
+                    balls = [(x - shear * y, y) for x, y in balls]
+                for b in balls:   # a ball terminal: drawn after, never part of the joined chain
+                    strokes.append(([hand.warp(*b)], -1.0, False))
+                if len(P) < 2:
+                    continue
                 P = _spline([hand.warp(*J(p)) for p in P])
                 maxx = max([maxx] + [p[0] for p in P]) if k < len(gl["s"]) else maxx
                 strokes.append((P, pr, k < len(gl["s"])))
         adv = (gl["a"] * hand.wide if gl["a"] is not None else maxx + 0.06) + hand.track
         if n and word[n - 1][0].isupper() and not G[word[n - 1][0]][0]["j"]:
             x += 0.08   # a little air after a capital that does not join
+        if n and (ch.isupper() or ch.isdigit()) and (word[n - 1][0].isupper() or word[n - 1][0].isdigit()):
+            x += 0.12   # capitals and figures in a row (NASA, I-638) are spaced like small roman capitals
         if ch in ".,:;!?'’”\"" and n:
             x -= hand.track + 0.02   # punctuation sits close to its word
+        if n and word[n - 1][0] in "-‐–—" and (ch.isupper() or ch.isdigit()):
+            x += 0.08
+        if ch in "-‐–—" and n and (word[n - 1][0].isupper() or word[n - 1][0].isdigit()):
+            x += 0.18   # a hyphen after a capital (I-638) must not run into its serif
         placed = [([(p[0] + x, p[1]) for p in P], pr, main) for P, pr, main in strokes]
-        chain = [s for s in placed if s[2]]
+        chain = [s for s in placed if s[2]] or [([(x, 0.0), (x + 0.01, 0.0)], 0.0, True)]   # (a dot: no chain)
         entry = chain[0][0][0]
         edir = _unit(gl["e"][0], gl["e"][1])
         if prev_exit is not None and lower:
@@ -529,8 +560,11 @@ def _set_word(hand, word, x0, final):
                 lift = 0.0
             mx = x + (adv - hand.track) / 2 - 0.18
             for part in MARKS[m].split("|"):
-                P, pr = _pts(part)
-                out.append((_spline([(p[0] * hand.wide + mx, p[1] + lift) for p in P]), pr, True))
+                P, pr, balls = _pts(part)
+                for b in balls:
+                    out.append(([(b[0] * hand.wide + mx, b[1] + lift)], -1.0, True))
+                if len(P) > 1:
+                    out.append((_spline([(p[0] * hand.wide + mx, p[1] + lift) for p in P]), pr, True))
         last = chain[-1][0]
         if gl["j"] and len(last) > 1:
             d = _unit(last[-1][0] - last[-2][0], last[-1][1] - last[-2][1])
@@ -577,6 +611,8 @@ class _Set:
             strokes, end, a, b = self.set[i]
             if n:   # a word's lead-in reaches back into the gap: the gap grows by most of it
                 x += self.hand.space + 1.0 * max(0.0, -a)
+                if self.words[i][0][0].isupper():
+                    x += 0.12   # a capital has no lead-in to mark the word's start: give it the room instead
             for P, pr, main in strokes:
                 out.append(([(p[0] + x, p[1]) for p in P], pr, main))
             x += end
@@ -644,7 +680,7 @@ def _flourish(rng, x0, x1, y, xh, style, heavy, hair):
             rr = r * (1 - 0.55 * k / n)
             pts.append((cx + sign * rr * math.cos(t), cy - rr * math.sin(t)))
         return pts
-    sag = rng.uniform(0.10, 0.22) * xh
+    sag = rng.uniform(0.04, 0.10) * xh
     if style == "rule":
         # a long swelled rule, a little lower in the middle, its ends turned up in small curls
         n = max(12, int(L / 4))
@@ -680,14 +716,18 @@ def _flourish(rng, x0, x1, y, xh, style, heavy, hair):
 # ---------------------------------------------------------------- the SVG
 
 def headline(text, width, size, seed=0, align="left", flourish=None, lines_max=2, min_scale=0.72, ink="#000",
-             tight=False):
+             tight=False, metrics=False):
     """`text` hand-lettered as one SVG (str), at most `width` CSS px wide, for type of `size` CSS px.
 
     align: "left" or "center" (where the lines sit inside the drawing; the drawing is as wide as its widest line
     unless centred, when it is `width` wide; tight=True keeps a centred drawing as narrow as its ink, for a page
     that centres the picture itself and must not lay a box wider than the letters). flourish: None (the headline's own choice), False, or one of
-    "rule", "lozenge", "sweep". Raises Unsupported when a character has no letter."""
-    return _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, tight)[0]
+    "rule", "lozenge", "sweep". Raises Unsupported when a character has no letter.
+
+    metrics=True returns (svg, m) instead, m in the drawing's CSS px from its top: "b0" and "b1" the first and last
+    baselines, "ink" the lowest letter ink, "fl" the top of the flourish (None without one), "lines"."""
+    svg, w, h, n, m = _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, tight)
+    return (svg, m) if metrics else svg
 
 
 def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, tight=False):
@@ -703,8 +743,8 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, t
     if wu * xh > width:
         xh = width / wu * 0.995
     xh = max(xh, xh0 * 0.5)
-    heavy = max(hand.heavy * xh, 1.6)
-    hair = max(hand.hair * xh, 0.8)
+    heavy = max(hand.heavy * xh, 2.0)
+    hair = max(hand.hair * xh, 0.7)
 
     drawn = [st.line(idx) for idx in lines]
     # lines one under the other: as close as the letters allow, never closer than the hand's own spacing
@@ -747,7 +787,12 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, t
     # px space has y down: the pen's "down the slant" is +y
     pen.ax = (math.sin(hand.slant), -math.cos(hand.slant))
     for Q, pr, main in out_strokes:
-        pen.stroke(Q, pr, taper=main and pr > 0)
+        if pr < 0:
+            pen.ball(Q[0], heavy * 0.92)
+        elif pr == FIRM:
+            pen.stroke(Q, 0.0, taper=False, floor=min(hair * 2.0, heavy * 0.42))
+        else:
+            pen.stroke(Q, pr, taper=main and pr > 0)
 
     fl = flourish if flourish is not None else rng.choice(["rule", "lozenge", "sweep", "rule"])
     extra = []
@@ -755,15 +800,11 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, t
         strokes, a, b = drawn[-1]
         lw = (b - a) * xh
         ox = (box_w - lw) / 2 if align == "center" else 0.0
-        frac = rng.uniform(0.55, 0.85) if fl != "lozenge" else rng.uniform(0.4, 0.6)
-        span = min(lw * frac, max(lw, 6 * xh))
-        if align == "center" or fl == "lozenge":
-            x0 = ox + (lw - span) / 2
-        else:
-            x0 = ox + rng.uniform(0.02, 0.12) * lw
-            if x0 + span > ox + lw:
-                x0 = ox + lw - span
-        x1 = x0 + span
+        if fl == "lozenge" and align != "center":
+            fl = "rule"   # a centre ornament under a ranged-left line sits under one word: it reads as an accident
+        # the flourish belongs to the whole line: it runs from the line's first letter to its last
+        inset = 0.28 * xh
+        x0, x1 = ox + inset, ox + lw - inset
         # just under the lowest ink above the rule's span (a descender sets it lower)
         under = bases[-1] + 0.10 * xh
         for Q, ws in pen.strokes:
@@ -779,6 +820,8 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, t
                 pen.shaped(*e)
     paths = []
     tol = 0.12
+    n_fl = sum(1 for e in extra if e[0] != "poly")
+    letter_strokes = pen.strokes[:len(pen.strokes) - n_fl]
     for pts, ws in pen.strokes:
         poly = _outline(pts, ws)
         if _area(poly) < 0:
@@ -804,4 +847,8 @@ def _draw(text, width, size, seed, align, flourish, lines_max, min_scale, ink, t
     d = "".join("M" + "L".join(f"{(x - left) * k:.1f} {(y - top) * k:.1f}" for x, y in P) + "Z" for P in paths)
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w_out}" height="{h_out}" viewBox="0 0 {w_out} {h_out}">'
            f'<path fill="{ink}" d="{d}"/></svg>')
-    return svg, w_out, h_out, len(lines)
+    lo = max(y + w / 2 for Q, ws in letter_strokes for (_, y), w in zip(Q, ws))
+    fl_top = min([y for P in paths[len(letter_strokes):] for _, y in P], default=None)
+    m = {"b0": round((bases[0] - top) * k, 1), "b1": round((bases[-1] - top) * k, 1), "ink": round((lo - top) * k, 1),
+         "fl": None if fl_top is None else round((fl_top - top) * k, 1), "lines": len(lines)}
+    return svg, w_out, h_out, len(lines), m

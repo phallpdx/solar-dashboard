@@ -3179,6 +3179,11 @@ def main(site):
     except Exception as e:  # noqa: BLE001  -- never lose the edition over the art
         print(f"kindle_full: plates skipped: {e!r}", file=sys.stderr)
     write_offline(out, BUILD["id"])
+    try:  # last: raster art, trimmed stylesheet, each page's layout worked out here instead of on the Kindle
+        from . import kindle_fast
+        kindle_fast.run(out)
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_full: speed pass skipped: {e!r}", file=sys.stderr)
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.
     with open(os.path.join(site, "kindle.html"), "w") as f:

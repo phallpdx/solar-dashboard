@@ -308,12 +308,13 @@ def _css():
     t, r, b, l = bands("runhead")
     c += _r("#kjump .kjg", "-webkit-box-pack:justify;justify-content:space-between", C)
     # a long page name takes a second line in its plaque rather than trailing off
-    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:auto !important;min-height:{22 + t + b + 2}px !important;"
+    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:auto !important;min-height:{22 + t + b}px !important;"
             "display:-webkit-box !important;display:flex !important;-webkit-box-align:center;align-items:center;"
-            f"line-height:20px !important;padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;margin:0 0 2px !important;"
+            f"line-height:20px !important;padding:{t}px {r + 2}px {b}px {l + 2}px !important;margin:0 0 1px !important;"
             f"white-space:normal !important;overflow:visible !important;text-overflow:clip !important;{BG}", C)
     c += _r("#kjump .kjg a i", "line-height:22px !important;width:24px !important;-webkit-box-flex:0;flex:none", C)
-    c += _r("#kjump .kjh", "margin:8px 0 2px !important", C)
+    c += _r("#kjump .kjh", "margin:6px 0 2px !important;padding:0 !important", C)
+    c += _r("#kjump .kjtop", "margin:0 0 2px !important", C)
     c += _r("#kjump .kjg a.kjcur", "color:#fff !important;-webkit-text-fill-color:#fff !important;position:relative;z-index:0", C)
     c += _r("#kjump .kjg a.kjcur i", "color:#fff !important", C)
     c += _r("#kjump .kjg a.kjcur::before", f"content:'';position:absolute;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;background:#000;z-index:-1", C)

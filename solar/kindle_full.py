@@ -24,6 +24,7 @@ import sys
 import threading
 
 from . import ornament as kindle_orn
+from . import kindle_present
 
 
 TZ = "America/Los_Angeles"
@@ -563,10 +564,8 @@ CURATE = r"""
 
   step('mountain', () => {
     const rows = $$('#mtn > div, #mtn .mtn');
-    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r)))) {
+    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r))))
       verdict('All three peaks are hidden today and tomorrow.', $('#mtn'));
-      for (const r of rows) for (const el of r.querySelectorAll('*')) if (!el.children.length && /Hidden today|Tomorrow: hidden/i.test(txt(el))) kill(el);
-    }
     for (const el of $$('#ski-card .k, #ski-card .tile span')) if (/^Last 24 hours$/i.test(txt(el))) el.textContent = '24-hour change';
   });
 
@@ -1896,6 +1895,8 @@ EINK_CSS += """
 html.kpaged body #kmain{will-change:transform}
 .kart{display:block;margin:0 auto;contain:strict;overflow:hidden}
 """
+# How the data is presented (answer first, statuses, one .kpanel per text block): last, so it governs.
+EINK_CSS += kindle_present.CSS
 
 PAGER_JS = r"""
 <script>
@@ -1916,7 +1917,7 @@ PAGER_JS = r"""
   if (!view || !main || !kview || !bar || !window.getComputedStyle || !('flexBasis' in st || 'webkitFlexBasis' in st)) return;
   var lastBoxes = null, lastSig = '', cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
   var knx = document.querySelector('.kbar .knx'), knxLabel = knx ? knx.innerHTML : '';
-  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail,.kgl,.kchart';
+  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail,.kgl,.kchart,.kpanel,.krow';
   var TITLE = (function(){ var h = main.querySelector('h2,.sci-title,.poem-title'); return h ? (h.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : document.title; })();
   function on() { return (' ' + root.className + ' ').indexOf(' kpaged ') >= 0; }
   function cls(name, v) { root.className = root.className.replace(new RegExp('(^|\\s)' + name + '(?=\\s|$)', 'g'), '') + (v ? ' ' + name : ''); }
@@ -2094,7 +2095,7 @@ PAGER_JS = r"""
       if (!main.getAttribute('data-kink')) { main.setAttribute('data-kink', '1');
         var ka = main.getElementsByTagName('*');
         for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
-          if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg')))
+          if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
             ke.style.setProperty('background-color', 'transparent', 'important'); } }
       var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className;
       if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
@@ -2200,9 +2201,11 @@ PAGER_JS = r"""
     unscroll();
     if (more) {
       more.style.display = (i < n - 1) ? '' : 'none';
-      more.innerHTML = 'More &darr; <span class="kfol">' + (i + 1) + '/' + n + '</span>';
+      more.innerHTML = 'More &darr;<span class="kfol" hidden>' + (i + 1) + '/' + n + '</span>';
     }
-    if (pos) pos.innerHTML = (n > 1 && i === n - 1) ? n + '/' + n : '';
+    if (pos) pos.innerHTML = '';
+    var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
+    if (ksh) ksh.innerHTML = n > 1 ? 'Sheet ' + (i + 1) + ' of ' + n : '';
     if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
@@ -2329,7 +2332,8 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     esc = html.escape
     nav = (_JUMP[0] if jump is None else jump) if run_left else ""
     btn = '<b class="ksecbtn">Sections &#9662;</b>' if nav else ""
-    top = f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>'
+    top = (f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}<i id="ksheet"></i>{btn}</span></nav>'
+           if run_left else f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>')
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
@@ -2875,6 +2879,8 @@ def main(site):
             pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
                           "k": k + 1, "of": len(cards)})
     dedupe(pages, [])
+    import datetime as _dt0
+    kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat())
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -2981,7 +2987,7 @@ def main(site):
     for n, pg in enumerate(pages):
         sec = by_id[pg["sec"]]
         sib = [p for p in pages if p["sec"] == pg["sec"]]
-        rail_items = [p for p in sib if p["k"] > pg["k"]][:3]
+        rail_items = []  # "Also in" repeated the section front's list: the free room goes to the engraved plate
         rail = ""
         if rail_items:
             rail = (f'<nav id="krail"><h4>Also in {html.escape(sec["title"])}</h4>'
@@ -2993,7 +2999,7 @@ def main(site):
             label = f'Next: {_TITLES[nxt]}'
         doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, me, data["bodyClass"] + " kcard", sec=pg["sec"],
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
-                   run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
+                   run_right="", fonts=font_links, next_label=label,
                    run_href=front[pg["sec"]], jump=navigator(pg["sec"], pg["file"]))
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
@@ -3017,7 +3023,7 @@ def main(site):
         with open(os.path.join(out, front[i]), "w") as f:
             f.write(page(sec["title"], body, me, data["bodyClass"] + " ksecfront", sec=i,
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links, jump=navigator(i)))
+                         run_left="&lsaquo; The front", run_right="", fonts=font_links, jump=navigator(i)))
 
     # The end of the edition: where to go from here.
     with open(os.path.join(out, "end.html"), "w") as f:

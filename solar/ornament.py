@@ -1896,8 +1896,7 @@ TEMPLATE = r"""
    =================================================================== */
 
 /* ---------- Part 1. Shared kit: display face, ornaments, frames ---------- */
-@font-face{font-family:'Playfair Figures';font-style:normal;font-weight:400 900;font-display:block;src:url(fonts/playfair-display-normal.woff2) format('woff2');unicode-range:U+0024-0025,U+002C-002E,U+0030-0039,U+2013}
-:root{--k-disp:'Playfair Display','Literata',Georgia,serif;--k-figs:'Playfair Figures','Literata',Georgia,serif;/*KIT*/}
+:root{--k-disp:'Literata',Georgia,serif;--k-figs:'Literata',Georgia,serif;/*KIT*/}
 .korn-band{display:block;height:22px;background:var(--orn-kranok) repeat-x 0 0/auto 22px}
 .korn-beads{display:block;height:10px;background:var(--orn-beads) repeat-x 0 0/auto 10px}
 .korn-fleuron{display:block;height:26px;background:var(--orn-fleuron) no-repeat center/140px 26px}
@@ -1932,12 +1931,12 @@ html.kme #kmain .kkick:after,html.kme #kmain .kkicker:after{height:10px;border:0
 html.kme .ksecfront #kmain .kfnum,html.kme .ksecfront #kmain .kfhead:before{width:96px;height:28px;text-align:center;line-height:28px !important;background:var(--orn-tag) no-repeat 0 0/96px 28px}
 html.kme .ksecfront #kmain .kfhead:before{font-size:14px !important;line-height:28px !important}
 
-/* ===== Type: Playfair Display for display, Literata for reading ===== */
+/* ===== Type: Literata throughout, heavy for display ===== */
 html.kme #kmain h2,html.kme #kmain .kh2,html.kme #kmain .sci-title{font-family:var(--k-disp) !important;font-weight:800 !important;letter-spacing:-.005em !important}
 html.kme #kmain .kkick,html.kme #kmain .kkicker{display:flex !important;align-items:center;color:#000 !important;letter-spacing:.16em !important}
 html.kme #kmain .kkick:before,html.kme #kmain .kkicker:before{content:'';flex:none;width:10px;height:10px;margin:0 8px 0 0;background:var(--orn-lozenge) no-repeat center/10px 10px}
 html.kme #kmain .kkick:after,html.kme #kmain .kkicker:after{content:'';-webkit-box-flex:1;flex:1 1 auto;min-width:16px;height:0;margin:0 0 0 10px;border-top:1px solid #000}
-/* the numbers: fat-face Playfair, lining figures */
+/* the numbers: heavy Literata, lining figures */
 html.kme #kmain .tile .big,html.kme #kmain .mini .v,html.kme #kmain .kscore b,html.kme #kmain .kdeg,html.kme #kmain .big{
   font-family:var(--k-figs) !important;font-weight:900 !important;font-variant-numeric:lining-nums tabular-nums !important;letter-spacing:0 !important}
 html.kme #kmain .mini .v small,html.kme #kmain .tile .u,html.kme #kmain .kdeg small{font-family:var(--k-serif) !important;font-weight:430 !important}
@@ -2071,7 +2070,7 @@ html.kme .kendpage #kmain .kend .kbig{border:0 !important;margin:20px 40px 14px 
   box-shadow:inset 0 0 0 2px #000,inset 0 0 0 5px #fff,inset 0 0 0 6px #000}
 html.kme .kendpage #kmain .kendsrc:before{content:'\2014\00a0 30 \00a0\2014';display:block;margin:0 0 10px;font:italic 700 20px/24px var(--k-disp);letter-spacing:.2em}
 html.kme .kendpage #kmain .kendsrc{font:italic 430 15px/20px var(--k-serif) !important}
-html.kme .kendpage #kmain .kendsrc:after{content:'Set in Literata and Playfair Display. Engraved and printed for one reader on Sauvie Island.';display:block;margin:6px 30px 0;font:600 13px/18px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
+html.kme .kendpage #kmain .kendsrc:after{content:'Set in Literata. Engraved and printed for one reader on Sauvie Island.';display:block;margin:6px 30px 0;font:600 13px/18px var(--k-serif);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
 
 /* ================= ROUND TWO: twice as ornate ================= */
 /* Every page in a full engraved border: rosette corners, a dialect band down each side and across. */
@@ -2245,12 +2244,11 @@ var ws=m.querySelectorAll('.kmast .kear>span:not(.kcrest),.kmast .kname,.kmast .
 for(var q=0;q<ws.length;q++){var e=ws[q],sp=document.createElement('span');sp.className='kinl';while(e.firstChild)sp.appendChild(e.firstChild);e.appendChild(sp);e.className+=' knok';}
 var as=m.querySelectorAll('a');for(var j=0;j<as.length;j++){var t=(as[j].textContent||'').trim();
 if(/^(listen|watch|read more|tickets|buy|stream)( on| now| it)?\b/i.test(t)||/(\u2192|\u203a)$/.test(t)&&!as[j].closest('.kbar,.krun,.kfl,.ktoc,.kleads,.krail'))as[j].style.setProperty('display','none','important');}}catch(e){}})();</script>
-<script>/* the chapter flash: a deliberate full refresh (black held 420 ms, then white) on entering a
-new section, and onto or off any sheet carrying a black plate, so it prints clean and leaves no ghost */
+<script>/* the chapter flash: one short full refresh (black, then the page) only where an inverse section
+begins, so its black plate prints clean; every other page goes straight to the page */
 (function(){try{var r=document.documentElement,b=document.body;if(!/ kme /.test(' '+r.className+' '))return;
-var s=b.getAttribute('data-ksec')||(/kendpage/.test(b.className)?'end':'cover'),st=window.sessionStorage,last=null,inv=/^(nearby|music|end)$/.test(s),was=false;
-if(inv)r.setAttribute('data-flash','1');
-try{last=st.getItem('kme:sec');was=st.getItem('kme:inv')==='1';st.setItem('kme:sec',s);st.setItem('kme:inv',inv?'1':'0');}catch(e){}
-if(last===s&&!inv&&!was)return;var f=document.createElement('div');
+var s=b.getAttribute('data-ksec')||(/kendpage/.test(b.className)?'end':'cover'),st=window.sessionStorage,last=null,inv=/^(nearby|music|end)$/.test(s);
+try{last=st.getItem('kme:sec');st.setItem('kme:sec',s);}catch(e){}
+if(!inv||last===s)return;var f=document.createElement('div');
 f.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';b.appendChild(f);
-setTimeout(function(){f.style.background='#fff';setTimeout(function(){if(f.parentNode)b.removeChild(f);},200);},420);}catch(e){}})();</script>"""
+setTimeout(function(){if(f.parentNode)b.removeChild(f);},120);}catch(e){}})();</script>"""

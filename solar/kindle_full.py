@@ -2189,6 +2189,8 @@ PAGER_JS = r"""
     for (var g = 0; g < gq.length; g++) view.removeChild(gq[g]);
     if (kme) {
       var gl = ((typeof lastBoxes !== 'undefined' && lastBoxes) || boxes()).ls.slice(), mt0 = main.getBoundingClientRect().top, vis = Math.min(h, end - top), mb = null;
+      var kpq = main.querySelectorAll('.kpanel');   /* panels are whole blocks: the fleurons go in the gaps between them only */
+      if (kpq.length) { gl = []; for (var kq0 = 0; kq0 < kpq.length; kq0++) { var kr0 = kpq[kq0].getBoundingClientRect(); if (kr0.height > 0) gl.push({ top: kr0.top - mt0, bottom: kr0.bottom - mt0 }); } }
       var dq = main.querySelectorAll('.kfhead,.kmast,.kend,.kgl,.kendsrc,.ktoc');   /* drawn by pseudo-elements: printed too */
       for (var d0 = 0; d0 < dq.length; d0++) { var dr = dq[d0].getBoundingClientRect(); gl.push({ top: dr.top - mt0, bottom: dr.bottom - mt0 }); }
       gl.sort(function (a, b) { return a.top - b.top; });
@@ -2206,7 +2208,8 @@ PAGER_JS = r"""
     if (pos) pos.innerHTML = '';
     var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
     if (ksh) ksh.innerHTML = n > 1 ? 'Sheet ' + (i + 1) + ' of ' + n : '';
-    if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
+    if (knx && knxLabel && NEXT_URL) { var kl0 = knxLabel.replace(/^Next: /, ''), kl1 = kl0.replace(/<[^>]+>|&\w+;/g, '');
+      knx.innerHTML = i < n - 1 ? (kl1.length > 16 ? 'Next page &rsaquo;' : 'Skip to ' + kl0) : (kl1.length > 26 ? 'Next page &rsaquo;' : kl0); }
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
@@ -3015,7 +3018,8 @@ def main(site):
                 continue
             if len(t) >= 30 and not SKIP.search(t):
                 sm = re.match(r"(.{25,110}?[a-z0-9)%°]{2}[.!?])(\s+[A-Z(\"]|$)", t)
-                cands.append(sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…")
+                one = sm.group(1) if sm else t
+                cands.append(one if len(one) <= 62 else one[:60].rsplit(" ", 1)[0].rstrip(",;:·") + "…")
         for b in re.findall(r"<(?:b|strong)\b[^>]*>(.*?)</(?:b|strong)>", body, re.S):
             t = _text(b)
             if len(t) > 8:

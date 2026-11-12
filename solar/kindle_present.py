@@ -63,6 +63,27 @@ PRESENT = r"""
     // empty boxes: notes with nothing in them, camera strips with no cameras
     for (const el of $$(d, 'p, .cams, .note, .meta, small, .mtn-st')) if (!txt(el) && !el.querySelector('img,svg,i[style]')) kill(el);
     for (const el of $$(d, 'font')) el.replaceWith(...el.childNodes);
+    // G10: web leftovers. Arrows on links, "(pictured)" with no picture, separators left at the start of a line,
+    // zero-padded hours, double hyphens; times and short dates never break across lines.
+    for (const a of $$(d, 'a, span, p, b')) if (/^(more about this poem|read it|read more|more)\s*[→›]?$/i.test(txt(a))) kill(a);
+    const tw = document.createTreeWalker(d, NodeFilter.SHOW_TEXT); const tn = []; for (let n = tw.nextNode(); n; n = tw.nextNode()) tn.push(n);
+    for (const n of tn) {
+      if (n.parentNode && n.parentNode.closest && n.parentNode.closest('svg, script, style')) continue;
+      let v = n.nodeValue;
+      v = v.replace(/\s*\(pictured\)/g, '').replace(/\s*[→]\s*$/, '').replace(/--/g, '–')
+           .replace(/\b0(\d):(\d\d)\s?([ap]m)\b/gi, '$1:$2 $3')
+           .replace(/(\d)\s+(am|pm|a\.m\.|p\.m\.)\b/gi, '$1 $2')
+           .replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\s+(\d{1,2})\b/g, '$1 $2');
+      if (!n.previousSibling && /^\s*·\s*/.test(v)) v = v.replace(/^\s*·\s*/, '');
+      if (v !== n.nodeValue) n.nodeValue = v;
+    }
+    // G11: long text is never set in small italic: a long <small> or caption reads in roman at the small size
+    for (const el of $$(d, 'small, .meta, figcaption, .cite, i, em')) if (txt(el).length > 90 && !el.closest('.head')) el.classList.add('klong');
+    // G12: US and Thai holidays told apart by a word, not a grey square
+    const leg = $$(d, '.legend > span').map(txt);
+    for (const sw of $$(d, '#holidays .sw')) { const k = /ksw(\d)/.exec(sw.className); const w = k && leg[+k[1]];
+      if (w) { const c = make('b', 'kst kchip', /thai/i.test(w) ? 'TH' : 'US'); const row = sw.closest('div'); sw.remove(); if (row) row.lastElementChild.prepend(c); } }
+    for (const l of $$(d, '.legend')) if (l.querySelector('.ksw0') && d.querySelector('#holidays')) kill(l);
   }
 
   // ---- the cards
@@ -430,6 +451,19 @@ html .ksecfront #kview #kmain .kfl.kcompact a{padding-top:5px !important;padding
 #kview #kmain .kpanel .kmile ul{margin:2px 0 0 !important;padding-left:1.1em !important}
 #kview #kmain .kpanel .kmile li{font:430 16px/22px var(--k-serif) !important;margin:0 !important}
 #kview #kmain .kpanel .kmile-k{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:0 !important}
+/* G2: a row's value is a right-aligned cell inside the panel, never pushed past the frame */
+#kview #kmain .kpanel .lines>div{display:-webkit-box;display:flex !important;align-items:baseline;justify-content:space-between}
+#kview #kmain .kpanel .lines>div>*:first-child{-webkit-box-flex:1;flex:1 1 auto;min-width:0}
+#kview #kmain .kpanel .lines>div>*:last-child:not(:first-child){flex:0 1 auto;max-width:42%;padding-left:12px !important;text-align:right !important;
+  white-space:normal !important;font-variant-numeric:tabular-nums lining-nums}
+/* G3: every status word the dashboard prints reads as a status: black, bold, small caps */
+#kview #kmain .kpanel .st,#kview #kmain .kpanel .lvl,#kview #kmain .kpanel .mush .st,#kview #kmain .kpanel .bug b,#kview #kmain .kpanel .shell b+small,
+#kview #kmain .kpanel .sp .pill,#kview #kmain .kpanel .vote b,#kview #kmain .kpanel .kchip{font:700 14px/20px var(--k-serif) !important;letter-spacing:.07em !important;
+  text-transform:uppercase !important;color:#000 !important;font-style:normal !important}
+#kview #kmain .kpanel .kchip{display:inline-block;border:1.5px solid #000;padding:0 4px !important;margin-left:8px;font-size:12px !important;line-height:16px !important}
+/* G11: long text in roman; a recap headline never smaller than its body */
+#kview #kmain .kpanel .klong{font:430 15px/21px var(--k-serif) !important;font-style:normal !important}
+#kview #kmain .kpanel .recap>b,#kview #kmain .kpanel .recap>b *{font:700 var(--ks-row)/var(--kl-row) var(--k-serif) !important;letter-spacing:0 !important;white-space:normal !important}
 #kview #kmain .kunit{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:4px 0 0 !important}
 """
 

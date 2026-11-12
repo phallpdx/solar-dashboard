@@ -19,6 +19,7 @@ import math
 import os
 import re
 import sys
+import zlib
 
 from . import bedtime_poems, engraving, evening
 try:  # the engravers' optional pieces: every page renders without them
@@ -85,7 +86,7 @@ html.kev .kcontents #kmain .kdate{display:flex;align-items:center;justify-conten
 html.kev .kcontents #kmain .kdate .korn{display:inline-block;margin:0 10px;flex:none}
 html.kev .kcontents #kmain .kcentre{margin:9px auto 8px}
 html.kev .kcontents #kmain .kgl{display:flex;align-items:center;border-top:1px solid #000;border-bottom:1px solid #000;padding:8px 0 !important;margin:0 0 10px !important}
-html.kev .kcontents #kmain .kgl .kdeg{flex:none;width:auto;min-width:118px;display:block;font:700 54px/50px var(--k-serif);letter-spacing:-.02em;margin:0 !important;text-align:left}
+html.kev .kcontents #kmain .kgl .kdeg{flex:none;width:auto;min-width:118px;display:block;font:700 60px/58px var(--k-serif);letter-spacing:-.02em;margin:0 !important;text-align:left}
 html.kev .kcontents #kmain .kgl .kdeg .ktmr{display:block;font:600 12px/15px var(--k-serif);letter-spacing:.15em;text-transform:uppercase;margin:0 0 2px}
 html.kev .kcontents #kmain .kgl .kdeg small{display:block !important;margin:4px 0 0 !important;white-space:nowrap;font:italic 430 14px/18px var(--k-serif) !important;
   text-transform:none !important;letter-spacing:0 !important}
@@ -103,7 +104,7 @@ html.kev .kcontents #kmain .ktight .kgl .kdeg{font-size:46px;line-height:44px}
 html.kev .kcontents #kmain .ktight .kgl .kwx{font-size:18px !important;line-height:23px !important}
 html.kev .kcontents #kmain .ktight .kleads a{padding:4px 0 5px !important}
 html.kev .kcontents #kmain .kleads i{flex:none;width:34px;font:600 12px/16px var(--k-serif);font-style:normal;letter-spacing:.12em}
-html.kev .kcontents #kmain .kleads b,html.kev .kcontents #kmain .kleads a:first-child b{flex:1 1 auto;min-width:0;font:680 18px/23px var(--k-serif) !important}
+html.kev .kcontents #kmain .kleads b,html.kev .kcontents #kmain .kleads a:first-child b{flex:1 1 auto;min-width:0;font:680 17px/23px var(--k-serif) !important}
 html.kev #kmain .kevrest{text-align:center;font:italic 430 14px/19px var(--k-serif) !important;color:#000 !important;
   border-top:1px solid #000;padding:7px 0 0 !important;margin:2px 0 0 !important}
 html.kev .kcontents #kmain .kresume{display:flex;align-items:baseline;border:0 !important;border-top:1px solid #000 !important;border-bottom:1px solid #000 !important;
@@ -161,7 +162,7 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 #kmain .ksun3>div{flex:1 1 0;text-align:center;padding:5px 0 7px}
 #kmain .ksun3>div+div{border-left:1px solid var(--hair)}
 #kmain .ksun3 .k{display:block;font:600 12px/16px var(--k-serif);letter-spacing:.14em;text-transform:uppercase}
-#kmain .ksun3 b{display:block;font:700 22px/28px var(--k-serif);font-variant-numeric:tabular-nums}
+#kmain .ksun3 b{display:block;font:700 20px/26px var(--k-serif);font-variant-numeric:tabular-nums}
 #kmain .kwarn{border-top:2px solid #000;border-bottom:1px solid #000;padding:var(--s1) 0 !important}
 #kmain .kplan,#kmain .kchoice{font:italic 430 var(--t4)/var(--l4) var(--k-serif) !important}
 #kmain .kchoice{border-top:1px solid #000;padding-top:var(--s2) !important;margin-top:var(--s2) !important}
@@ -217,7 +218,7 @@ html.kev .kendpage #kmain .kframe{-webkit-box-sizing:border-box;box-sizing:borde
   -webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center}
 html.kev .kendpage #kmain .kend .kgn{width:330px;height:auto}
 html.kev .kendpage #kmain .kend .kkick{margin:12px 0 2px !important;letter-spacing:.2em !important}
-html.kev .kendpage #kmain .kend .kfname{font:italic 700 40px/46px var(--k-serif) !important;margin:0 !important}
+html.kev .kendpage #kmain .kend .kfname{font:italic 700 44px/48px var(--k-serif) !important;margin:0 !important}
 html.kev .kendpage #kmain .kend .kfsub{font:italic 430 var(--t4)/var(--l4) var(--k-serif) !important;border-bottom:0 !important;margin:4px 0 0 !important;padding:0 !important}
 html.kev .kendpage #kmain .kquiet{font:italic 430 var(--t4)/var(--l4) var(--k-serif) !important;margin:0 !important;border:0 !important;padding:0 !important}
 html.kev .kendpage #kmain .kend .kdiv{margin:14px auto 10px}
@@ -244,17 +245,17 @@ EVENING_CSS += (
     "html.kev #kmain svg.kegg,html.kev #kmain .kmed{display:none !important}\n"
     # the title plaque, set into the top band of the frame
     "html.kev body .ktop{position:absolute;left:33px;top:44px;z-index:2;width:552px;height:36px;margin:0 !important;padding:0 !important;text-align:center;"
-    "font:600 14px/34px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;white-space:nowrap;overflow:hidden}\n"
+    "font:600 13px/34px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;white-space:nowrap;overflow:hidden}\n"
     "html.kev body.kcontents #kmain .ktop{left:9px;top:0}\n"
     # plaques
     + ",".join(f"html.kev body #kmain {x}" for x in _PLQ) + "{background-color:#fff !important;box-shadow:" + _at.RINGS + " !important;border:0 !important}\n"
-    + ",".join(f"html.kev body #kmain#kmain {x}" for x in _PLQ) + "{margin-top:0 !important;margin-bottom:16px !important}\n"
+    + ",".join(f"html.kev body #kmain#kmain {x}" for x in _PLQ) + "{margin-top:0 !important;margin-bottom:26px !important}\n"
     # labels, labelled-fact tables and the type scale (nothing under 13 px)
     "html.kev body #kmain .klb{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase;margin:0 0 3px !important;padding:0 !important;"
     "text-align:left;box-shadow:none !important;background:none !important;border:0 !important}\n"
     "html.kev body #kmain .kp p{margin:0 !important;padding:0 !important;box-shadow:none !important;background:none !important;border:0 !important}\n"
     "html.kev body #kmain .kp h2{font:700 30px/34px var(--k-serif) !important;letter-spacing:-.01em;margin:0 0 4px !important;padding:0 !important;box-shadow:none !important;border:0 !important}\n"
-    "html.kev body #kmain .kp .klede{font:430 20px/26px var(--k-serif) !important}html.kev body #kmain .kp .klede2{font:430 22px/28px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .klede{font:430 22px/28px var(--k-serif) !important}html.kev body #kmain .kp .klede2{font:430 22px/28px var(--k-serif) !important}\n"
     "html.kev body #kmain .kp .knote{font:430 15px/20px var(--k-serif) !important}\n"
     "html.kev body #kmain .kp .khr{border-top:1px solid #000 !important;margin-top:6px !important;padding-top:6px !important}\n"
     "html.kev body #kmain table.kt{width:100% !important;border-collapse:collapse !important;table-layout:fixed !important;margin:0 !important;border:0 !important;background:none !important}\n"
@@ -262,7 +263,7 @@ EVENING_CSS += (
     "padding:4px 0 !important;font-variant-numeric:tabular-nums}\n"
     "html.kev body #kmain table.kt tr+tr th,html.kev body #kmain table.kt tr+tr td{border-top:1px solid #000 !important}\n"
     "html.kev body #kmain table.kt th{width:96px;font:600 13px/23px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase}\n"
-    "html.kev body #kmain table.kt td{font:430 17px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt td{font:430 18px/24px var(--k-serif) !important}\n"
     "html.kev body #kmain table.kt td b{font-weight:700}\n"
     # where-to-look: when / what / where / until
     "html.kev body #kmain table.kt.klook th{width:auto}html.kev body #kmain table.kt.klook th.kw1{width:76px}html.kev body #kmain table.kt.klook th.kw2{width:84px}html.kev body #kmain table.kt.klook th.kw4{width:124px}html.kev body #kmain table.kt.klook td{padding-right:8px !important}\n"
@@ -277,24 +278,24 @@ EVENING_CSS += (
     "html.kev body #kmain table.kt.kans th,html.kev body #kmain table.kt.kans td{padding:0 !important}\n"
     "html.kev body #kmain table.kt.kans td.khi{width:190px}\n"
     "html.kev body #kmain .khero{display:block;font:700 60px/58px var(--k-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}\n"
-    "html.kev body #kmain .khero2{display:block;font:700 34px/38px var(--k-serif);font-variant-numeric:tabular-nums}\n"
-    "html.kev body #kmain .khero3{display:block;font:700 54px/50px var(--k-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}\n"
-    "html.kev body #kmain .kalert{font:700 20px/26px var(--k-serif) !important}\n"
+    "html.kev body #kmain .khero2{display:block;font:700 30px/34px var(--k-serif);font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain .khero3{display:block;font:700 60px/58px var(--k-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}\n"
+    "html.kev body #kmain .kalert{font:700 22px/28px var(--k-serif) !important}\n"
     # the cover's lists
-    "html.kev body #kmain table.kt.kcv td.kcl{border-left:1px solid #000 !important;padding-left:16px !important;vertical-align:middle !important;font:430 20px/26px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt.kcv td.kcl{border-left:1px solid #000 !important;padding-left:16px !important;vertical-align:middle !important;font:430 22px/28px var(--k-serif) !important}\n"
     "html.kev body #kmain table.kt.kcv td.khi{width:150px}\n"
-    "html.kev body #kmain table.kt.kdaylist th{width:28px;font:430 17px/23px var(--k-serif) !important;letter-spacing:0 !important}\n"
-    "html.kev body #kmain table.kt.kdaylist td{font:680 18px/23px var(--k-serif) !important}\n"
+    "html.kev body #kmain table.kt.kdaylist th{width:28px;font:430 18px/24px var(--k-serif) !important;letter-spacing:0 !important}\n"
+    "html.kev body #kmain table.kt.kdaylist td{font:680 18px/24px var(--k-serif) !important}\n"
     "html.kev body #kmain table.kt.kdaylist td a{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:#000;text-decoration:none}\n"
     "html.kev body.kcontents #kmain .kmast .kdate{font:600 13px/16px var(--k-serif) !important;letter-spacing:.12em !important;display:block !important;text-align:center}\n"
     "html.kev body #kmain .ksources{color:#000 !important;font:430 15px/20px var(--k-serif) !important;font-style:normal !important}\n"
     "html.kev body #kmain .kover{font:italic 430 15px/20px var(--k-serif) !important}\n"
     "html.kev body #kmain .kpoem .poem-by{font-size:13px !important}\n"
     "html.kev body #kmain .kpoem .poem-text span{padding-left:1.5em;text-indent:-1.5em}\n"
-    "html.kev body #kmain .kplate.klong .poem-text{font-size:18px !important;line-height:1.25 !important}\n"
+    "html.kev body #kmain .kplate.klong .poem-text{font-size:18px !important;line-height:1.3 !important}\n"
     "html.kev body #kmain .kchart{padding:4px 12px 6px !important}html.kev body #kmain .kchart svg{display:block;width:100% !important;height:auto !important;margin:0 !important}\n"
     "html.kev body #kmain .kchart .kcap{font:430 15px/20px var(--k-serif) !important;font-style:normal !important;text-align:left !important;margin:4px 0 0 !important}\n"
-    "html.kev body .kbar .kprev,html.kev body .kbar .knx{text-transform:none !important;letter-spacing:.02em !important;font:600 16px/20px var(--k-serif) !important}\n"
+    "html.kev body .kbar .kprev,html.kev body .kbar .knx{text-transform:none !important;letter-spacing:.02em !important;font:600 18px/22px var(--k-serif) !important}\n"
     + ",".join(f"html.kev body #kmain {x}" for x in _PLQ) + "{padding:7px 12px !important}\n"
     "html.kev body #kmain .kbody p:last-child,html.kev body #kmain .ktailbox p:last-child{margin-bottom:0 !important}\n"
     "html.kev body #kmain .kbody{overflow:hidden}\n"
@@ -329,7 +330,7 @@ EVENING_CSS += (
     "html.kev body #kmain .kendtxt{text-align:center;padding:14px 7px 16px !important}\n"
     "html.kev body #kmain .kendtxt p,html.kev body #kmain .kendtxt h2{box-shadow:none !important;background:none !important}\n"
     "html.kev body #kmain .kendtxt .kquiet{margin-top:10px !important}\n"
-    "html.kev body #kmain .kendtxt .krecap{font:430 17px/23px var(--k-serif) !important;text-align:center !important;border-top:1px solid #000 !important;margin:12px 40px 0 !important;padding:8px 0 0 !important}\n"
+    "html.kev body #kmain .kendtxt .krecap{font:430 18px/24px var(--k-serif) !important;text-align:center !important;border-top:1px solid #000 !important;margin:12px 40px 0 !important;padding:8px 0 0 !important}\n"
     # the bottom panel: drawn for the height it gets, with a frieze or a bead for what is left over
     "html.kev body #kmain .kfill{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-between !important;"
     "justify-content:space-between !important;height:0;overflow:hidden;margin:0 -6px -5px !important;padding:0 !important;-webkit-flex:none;flex:none}\n"
@@ -339,11 +340,11 @@ EVENING_CSS += (
     "html.kev body #kmain#kmain .kresume{display:none !important}\n"
     "html.kev body #kmain .ksqz table.kt th,html.kev body #kmain .ksqz table.kt td{padding-top:2px !important;padding-bottom:2px !important}\n"
     "html.kev body #kmain#kmain .ksqz .kp{padding-top:5px !important;padding-bottom:5px !important}\n"
-    "html.kev body #kmain#kmain#kmain .ksqz>.kp,html.kev body #kmain#kmain#kmain .ksqz>h2,html.kev body #kmain#kmain#kmain .ksqz>.kbody,html.kev body #kmain#kmain#kmain .ksqz>.kmast{margin-bottom:14px !important}\n"
+    "html.kev body #kmain#kmain#kmain .ksqz>.kp,html.kev body #kmain#kmain#kmain .ksqz>h2,html.kev body #kmain#kmain#kmain .ksqz>.kbody,html.kev body #kmain#kmain#kmain .ksqz>.kmast{margin-bottom:20px !important}\n"
     "html.kev body #kmain .kfill .kfrule{display:none;height:3px;margin:auto 0 !important;border-top:1.5px solid #000;border-bottom:.5px solid #000}\n"
-    "html.kev body #kmain .kp .klow{font:430 17px/23px var(--k-serif) !important}\n"
-    "html.kev body #kmain .kp .kbody17{font:430 17px/23px var(--k-serif) !important}\n"
-    "html.kev body #kmain .kp .kal2{font:700 17px/23px var(--k-serif) !important;border-bottom:1px solid #000 !important;padding-bottom:4px !important;margin-bottom:4px !important}\n"
+    "html.kev body #kmain .kp .klow{font:430 18px/24px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .kbody17{font:430 18px/24px var(--k-serif) !important}\n"
+    "html.kev body #kmain .kp .kal2{font:700 18px/24px var(--k-serif) !important;border-bottom:1px solid #000 !important;padding-bottom:4px !important;margin-bottom:4px !important}\n"
     "html.kev body #kmain .kp .kal2 .klb{display:inline;margin-right:10px !important}\n"
     "html.kev body #kmain table.kt.kdaylist.kwide th{width:96px;font:600 13px/23px var(--k-serif) !important;letter-spacing:.12em !important}\n"
     "html.kev body #kmain .kreadline{font:430 15px/20px var(--k-serif) !important;text-align:left !important;margin:-6px 0 8px !important;padding:0 12px !important;"
@@ -353,7 +354,12 @@ EVENING_CSS += (
     "html.kev body #kmain .kalm-t{display:grid;grid-template-columns:auto 1fr;-webkit-align-items:center;align-items:center}\n"
     "html.kev body #kmain .kalm-t .kdeg{grid-column:1;grid-row:1}html.kev body #kmain .kalm-t small{grid-column:1;grid-row:2;margin:0 !important}\n"
     "html.kev body #kmain .kalm-t .kalm-lead{grid-column:2;grid-row:1/3;margin:0 0 0 18px !important;padding:0 0 0 18px !important;border-left:1px solid #000 !important;"
-    "font:italic 430 24px/31px var(--k-serif) !important}\n"
+    "font:italic 430 22px/28px var(--k-serif) !important}\n"
+    # one scale for the whole edition: 13 label, 15 note, 18 text, 22 lede, 30 headline, 44 title, 60 figure
+    "html.kev body #kmain .klet{display:block;margin:2px 0 0 !important;padding:0 !important}\n"
+    "html.kev body .krun .ksecbtn{font-size:13px !important;line-height:13px !important}\n"
+    "html.kev body #kmain .kpoem .poem-title{font-size:30px !important;line-height:34px !important}\n"
+    "html.kev body #kmain .kendtxt h2.kfname{font-size:44px !important;line-height:48px !important}\n"
 )
 
 
@@ -870,6 +876,32 @@ _THEME_FOR = {"cover": "river", "day1": "jazz", "day2": "river", "day3": "lotus"
 
 
 _ART = {"dir": None, "done": {}}
+
+
+def _lettered(text, width, size=30, align="left"):
+    """A headline written out by hand (solar/lettering.py), as a block the height of the writing with the
+    drawing as its background; None when the hand is not there or cannot letter this text, so the
+    caller keeps the type."""
+    try:
+        from . import lettering
+    except Exception:  # noqa: BLE001
+        return None
+    text = html.unescape(re.sub(r"<[^>]+>", "", str(text or ""))).strip()
+    if not text or not _ART["dir"]:
+        return None
+    seed = zlib.crc32(text.encode("utf-8")) & 0xffff
+    try:
+        svg = lettering.headline(text, width, size, seed, align=align)
+        m = re.search(r'<svg[^>]*?\swidth="([\d.]+)"[^>]*?\sheight="([\d.]+)"', svg)
+        w, h = float(m.group(1)), float(m.group(2))
+    except Exception as e:  # noqa: BLE001
+        print(f"LETTERING FALLBACK: {text!r} ({e!r})")
+        return None
+    url = _art(f"let-{seed:04x}-{int(width)}-{int(size)}.svg", lambda: svg)
+    pos = "50%" if align == "center" else "0"
+    return (f'<span class="klet" role="img" aria-label="{E(text)}" style="height:{_n(h)}px;'
+            f'background:url({url}) {pos} 0/{_n(w)}px {_n(h)}px no-repeat !important"></span>')
+
 
 
 def _art(name, make):
@@ -1685,7 +1717,7 @@ def poem_html(p):
     size = nlines + (len(stanzas) - 1) / 2  # a stanza gap is half a line
     body = '<div class="gap"></div>'.join("".join(f"<span>{E(smart(line.strip()))}</span>" for line in s.strip().split("\n")) for s in stanzas)
     by = E(p["poet"]) + (f" &middot; {p['year']}" if p.get("year") else "")
-    text = (f'<span class="poem-title">{E(p["title"])}</span><span class="poem-by">{by}</span>'
+    text = (f'<span class="poem-title">{_lettered(p["title"], 500, 30, "center") or E(p["title"])}</span><span class="poem-by">{by}</span>'
             f'<div class="poem-text">{body}</div>')
     return f'<div class="kplate{" klong" if size > 20 else ""}"><div class="kpoem">{text}</div></div>'
 
@@ -2138,7 +2170,7 @@ def main(dash_path, ev_path, site):
         lede = E(sky["clouds"]) + "."
     if rare and sky["headline"] and not clouded:
         lede = f'{lede} {E(smart(sky["headline"]))}.'
-    verdict = (f'<div class="kp"><p class="klb">{sky_lab}</p><h2>{E(sky_head)}</h2><p class="klede">{E(smart(lede.strip()))}</p></div>')
+    verdict = (f'<div class="kp"><p class="klb">{sky_lab}</p><h2>{_lettered(sky_head, 506) or E(sky_head)}</h2><p class="klede">{E(smart(lede.strip()))}</p></div>')
     moon_row = ""
     if phase:
         lit, waxing, name = phase
@@ -2196,7 +2228,7 @@ def main(dash_path, ev_path, site):
         recap = (f'<p class="krecap">Tomorrow: high {wx["hi"]}&deg;' + (f'. Sunrise {wx["sunrise"]}' if wx.get("sunrise") else "") + '.</p>')
     pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True, "band": datef, "nav": "Goodnight",
                   "body": '<div class="kframe"><div class="kend kendtxt"><p class="kkick">The Evening Edition</p>'
-                          '<h2 class="kfname">That&rsquo;s the day.</h2>'
+                          '<h2 class="kfname">' + (_lettered("That\u2019s the day.", 500, 44, "center") or "That&rsquo;s the day.") + '</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
                           f'<p class="kquiet">Think of one good thing from today, then let it go.</p>{recap}</div></div>'})
 
@@ -2216,7 +2248,7 @@ def main(dash_path, ev_path, site):
                 else:
                     paras[0] = f'<p>{paras[0]}</p>'
                 paras[1:] = [f"<p>{x}</p>" for x in paras[1:]]
-            pg["body"] = (f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">' + "".join(paras) + "</div>"
+            pg["body"] = (f'<h2 class="khed">{_lettered(st["headline"], 506) or E(st["headline"])}</h2><div class="kbody">' + "".join(paras) + "</div>"
                           + f'<div class="kp">{nxt}<p class="ksources{" khr" if nxt else ""}">{outlets_line(st)}</p>'
                           + (over if pg.get("over") else "") + '</div>')
         if pg.get("over") and not st:
@@ -2269,7 +2301,7 @@ def main(dash_path, ev_path, site):
         prev = files[n - 1] if n else "index.html"
         nxt = files[n + 1] if n + 1 < total else None
         label = _TITLES.get(nxt) if nxt else None
-        doc = page(pg["title"], pg["body"], "kev", "kcard" if not pg.get("close") else "ksecfront kendpage",
+        doc = page(pg["title"], pg["body"], f"kev kf{(n + 1) % 3}", "kcard" if not pg.get("close") else "ksecfront kendpage",
                    prev=prev, nxt=nxt, stamp=stamp, run_left=pg.get("run") or (E(pg["part"]) if pg["part"] else "Goodnight"),
                    run_right=f"Page {n + 2} of {total + 1}", fonts=font_links, next_label=label, run_href="index.html",
                    jump=navigator(pg["file"]))

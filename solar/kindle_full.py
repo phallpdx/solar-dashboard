@@ -3335,6 +3335,11 @@ def main(site):
     kindle_orn.COVER_DAY.update({"temp_f": int(_tf.group(0)) if _tf else None, "sky": (data.get("front", {}).get("where", "") or "").split("·")[-1].strip()})
     kindle_orn.write_frames(out, _dt.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
                             ("Sunrise " + _sr.group(1)) if _sr else "")
+    try:  # every headline hand-lettered (solar/lettering.py), before the plates are fitted to the room left
+        from . import kindle_fast as _kf
+        _kf.letter(out)
+    except Exception as e:  # noqa: BLE001
+        print(f"LETTERING FALLBACK: headlines left in Literata: {e!r}", file=sys.stderr)
     try:  # each page's own engraved plate, cut to the room its sheets leave this morning
         from . import kindle_plates
         kindle_plates.run(out, _dt.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat())

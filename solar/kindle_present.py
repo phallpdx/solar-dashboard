@@ -54,7 +54,7 @@ PRESENT = r"""
       for (const decl of el.getAttribute('style').split(';')) {
         const i = decl.indexOf(':'); if (i < 0) continue;
         const p = decl.slice(0, i).trim().toLowerCase(), v = decl.slice(i + 1).trim();
-        if (DROP.test(p) || (p === 'background-color' && /transparent/.test(v))) continue;
+        if (DROP.test(p)) continue;
         keep.push(p + ':' + v);
       }
       if (keep.length) el.setAttribute('style', keep.join(';')); else el.removeAttribute('style');
@@ -419,7 +419,7 @@ CSS = r"""
 /* section fronts: a little slack so a four-story list never spills a blank sheet */
 html .ksecfront #kview #kmain .kfl.kcompact a{padding-top:5px !important;padding-bottom:10px !important}
 .kendpage #kview #kmain .kcolophon{margin:14px 0 0 !important;text-align:left}
-.kendpage #kview #kmain .kcolophon p{font:430 13px/18px var(--k-serif) !important;margin:0 !important}
+.kendpage #kview #kmain .kcolophon p{font:430 12px/16px var(--k-serif) !important;margin:0 !important}
 .kendpage #kview #kmain .kcolophon .kkick{font:600 12px/16px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;margin:0 0 4px !important}
 #kview #kmain .kpanel .idea{display:block !important;padding:6px 0 !important;margin:0 !important;border:0 !important;border-bottom:1px solid #8a8a8a !important;background:none !important}
 #kview #kmain .kpanel .idea:last-child{border-bottom:0 !important}

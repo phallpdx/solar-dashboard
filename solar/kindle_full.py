@@ -3112,8 +3112,8 @@ def main(site):
                      f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
                      f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
                      + ('<div class="kpanel kcolophon"><p class="kkick">Supplied by</p><p>' + " ".join(
-                         f'<b>{html.escape(by_id[i]["title"])}:</b> {html.escape(", ".join(dict.fromkeys(n.strip() for m in credits[i] for n in re.split(r"\s*·\s*", _text(m)) if n.strip() and len(n.strip()) < 40)))}.'
-                         for i in order if credits.get(i)) + '</p></div>' if credits else "") + '</div>',
+                         f'<b>{html.escape(by_id[i]["title"])}:</b> {html.escape(", ".join(list(dict.fromkeys(re.sub(r"^(Sources?|From|Data:?)\s+", "", n.strip()).split(" (")[0] for m in credits[i] for n in re.split(r"\s*[·,;]\s*", _text(m)) if 2 < len(n.strip()) < 32))[:3]))}.'
+                         for i in order if credits.get(i)).replace(':</b> .', ':</b>').replace(' <b>Little one:</b>', '') + '</p></div>' if credits else "") + '</div>',
                      "kme", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
                      run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
 

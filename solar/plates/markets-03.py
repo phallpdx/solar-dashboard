@@ -2989,7 +2989,7 @@ def scene(field, seed=0, tall=False):
     while gy < yb:
         f = max(0., min(1., (gy - 16) / max(1., yb - 16)))
         hgt = (1.6 + 4.5 * f) / s
-        stepx = (2.3 + 2. * f) / s
+        stepx = (2.3 + 2. * f) / s * (1 + max(0., FH - 250) / 500)
         gx = xl + r2.uniform(0, stepx)
         row = []
         while gx < xr:

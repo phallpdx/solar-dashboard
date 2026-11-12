@@ -458,7 +458,7 @@ async def _visit_all(br, out, base, sels):
 
     async def one(p):
         resume = p == "index~resume"
-        cx = await br.new_context(viewport={"width": VW, "height": VH}, has_touch=True)
+        cx = await br.new_context(viewport={"width": VW, "height": VH}, device_scale_factor=DPR, has_touch=True)   # as the Kindle: sub-pixel text
         if resume:
             if not ed:
                 await cx.close()

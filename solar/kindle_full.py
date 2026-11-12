@@ -2494,9 +2494,9 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
-    prev_link = (f'<a class="kprev" href="{prev}">&lsaquo; {esc(prev_title(prev)) or "Back"}</a>' if prev
+    prev_link = (f'<a class="kprev" href="{prev}">&lsaquo;&nbsp;{esc(prev_title(prev)) or "Back"}</a>' if prev
                  else '<span class="kprev"></span>')
-    nxt_short = (f'<a class="knx" href="{nxt}">{"Next: " if next_label is None else ""}{nxt_name} &rsaquo;</a>' if nxt
+    nxt_short = (f'<a class="knx" href="{nxt}">{"Next: " if next_label is None else ""}{nxt_name}&nbsp;&rsaquo;</a>' if nxt
                  else '<a class="knx" href="index.html">The front &rsaquo;</a>')
     foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#" role="button">More &darr;</a>'
             f'<span id="kpos"></span></span>{nxt_short}</footer>'

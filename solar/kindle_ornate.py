@@ -296,18 +296,20 @@ def _css():
     c += _r("#kjump .kjtop a", f"box-sizing:border-box;padding:{t + 2}px {r + 4}px {b + 2}px {l + 4}px !important;{BG};color:#000 !important;"
             "white-space:normal !important;text-overflow:clip !important", C)
     # the skip button is the menu's lit one: black ground inside the frame
-    c += _r("#kjump .kjskip", "background-color:transparent !important;color:#fff !important;position:relative;z-index:0", C)
+    c += _r("#kjump .kjtop a.kjskip, #kjump .kjtop a.kjskip *", "color:#fff !important;-webkit-text-fill-color:#fff !important", C)
+    c += _r("#kjump .kjtop a.kjskip", "background-color:transparent !important;color:#fff !important;position:relative;z-index:0", C)
     c += _r("#kjump .kjskip small", "color:#fff !important", C)
     c += _r("#kjump .kjskip::before", f"content:'';position:absolute;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;background:#000;z-index:-1", C)
     c += _r("#kjump .kjtop a small, #kjump .kjh, #kjump .kjg a i", f"font:{S['label']} !important;{SC};{OLD};color:#000 !important", C)
     c += _r("#kjump .kjtop a", f"font:{S['bodyb']} !important", C)
     t, r, b, l = bands("runhead")
     c += _r("#kjump .kjg", "-webkit-box-pack:justify;justify-content:space-between", C)
-    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:{max(30, 22 + t + b + 4)}px !important;"
-            f"line-height:22px !important;padding:{t + 2}px {r + 2}px {b + 2}px {l + 2}px !important;margin:0 0 4px !important;"
+    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:{22 + t + b + 2}px !important;"
+            f"line-height:22px !important;padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;margin:0 0 2px !important;"
             f"white-space:nowrap;overflow:hidden;{BG}", C)
     c += _r("#kjump .kjg a i", "line-height:22px !important;width:24px !important", C)
-    c += _r("#kjump .kjg a.kjcur", "color:#fff !important;position:relative;z-index:0", C)
+    c += _r("#kjump .kjh", "margin:8px 0 2px !important", C)
+    c += _r("#kjump .kjg a.kjcur", "color:#fff !important;-webkit-text-fill-color:#fff !important;position:relative;z-index:0", C)
     c += _r("#kjump .kjg a.kjcur i", "color:#fff !important", C)
     c += _r("#kjump .kjg a.kjcur::before", f"content:'';position:absolute;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;background:#000;z-index:-1", C)
     c += _r("#kjump .kjg a.kjcur i:before", "content:none !important", C)
@@ -335,7 +337,8 @@ def _css():
     # today's facts: compact tiles, label and figure on one line, two by two and the tide across
     t, r, b, l = bands("tile")
     c += _r("#out-facts>.mini, #out-facts[data-n]>.mini, #out-facts>.mini:nth-child(even), #out-facts[data-n]>.mini:not(:nth-child(3n+1))",
-            "display:-webkit-box !important;display:flex !important;-webkit-box-pack:justify;justify-content:space-between !important;"
+            "display:-webkit-box !important;display:flex !important;-webkit-box-orient:horizontal !important;-webkit-flex-direction:row !important;"
+            "flex-direction:row !important;flex-wrap:wrap !important;-webkit-box-pack:justify;justify-content:space-between !important;"
             f"-webkit-box-align:baseline;align-items:baseline !important;padding:{t + 1}px {r + 4}px {b + 1}px {l + 4}px !important;min-height:0 !important")
     c += _r("#out-facts>.mini>.k, #out-facts>.mini>span:first-child", "margin:0 8px 0 0 !important")
     c += _r("#out-facts>.mini>.v", "text-align:right;white-space:nowrap")

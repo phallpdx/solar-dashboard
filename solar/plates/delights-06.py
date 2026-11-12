@@ -1,13 +1,11 @@
-"""delights-06 "Live from Portland - A Portland show, recorded live" (Internet Archive, Live Music Archive).
+"""delights-06 Live from Portland, merged into Live music ahead (edition plan: small tailpiece, banner).
 
-The scene is a Portland club stage on show night: a draped proscenium with tasselled curtains and a
-fringed valance, hanging spot cans throwing beams onto the backline (amp stacks, a drum kit with ride
-cymbal and hi-hat), the singer's vintage mic front and centre, the plank stage lip, and the crowd
-rim-lit from the stage with a taper's ORTF mic stand rising out of it. The set list varies by date.
-Frame at king tier: the stage in a beaded medallion (an arch on the tall plate, a cushion below),
-fine scroll from one stem on a punched matte, gold-line borders and beading; the tall ribbon reads
-LIVE FROM PORTLAND over a predella with Parker's arms. Easter eggs: Parker's crossed drumsticks
-on the kick-drum head, and a taper's reel of tape hidden in the scroll."""
+The tailpiece is a ribbon cartouche holding the club's marquee at night: a bulb-lit board over a
+coursed brick front reading LIVE TONIGHT, with Parker's dog looking out as the O (the plan's Easter
+egg), light thrown down the wall, and a strip of ADMIT ONE tickets unspooling across the foot.
+King-tier frame: beaded medallion, fine scroll from one stem on a punched matte, gold-line borders; a
+ride cymbal hides in the scroll. Taller sizes show the club stage on show night (proscenium, spot cans,
+backline with the crossed drumsticks on the kick, the crowd rim-lit, a taper's ORTF stand)."""
 import sys
 import math
 import random
@@ -845,7 +843,7 @@ def shape_pts(cx, cy, a, b, kind="oval", n=120):
     for i in range(n):
         t = _TAU * i / n
         c_, s_ = _m.cos(t), _m.sin(t)
-        e = {"oval": 2., "squircle": 2.8, "cushion": 3.6, "round": 2.}.get(kind, 2.)
+        e = {"oval": 2., "squircle": 2.8, "cushion": 3.6, "round": 2., "banner": 5., "lunette": 2.}.get(kind, 2.)
         x = cx + a * _m.copysign(abs(c_) ** (2 / e), c_)
         y = cy + b * _m.copysign(abs(s_) ** (2 / e), s_)
         if kind == "shield":
@@ -859,6 +857,13 @@ def shape_pts(cx, cy, a, b, kind="oval", n=120):
             if s_ > 0:
                 x = cx + a * _m.copysign(abs(c_) ** .3, c_)
                 y = cy + b * _m.copysign(abs(s_) ** .3, s_)
+        elif kind == "banner":
+            # a ribbon cartouche: long and square-shouldered, a swallowtail notch cut into each end
+            x = cx + a * _m.copysign(abs(c_) ** (2 / e), c_) * (1 - .1 * _m.exp(-(s_ / .22) ** 2))
+        elif kind == "lunette":
+            if s_ > 0:
+                x = cx + a * _m.copysign(abs(c_) ** .25, c_)
+                y = cy + b * _m.copysign(abs(s_) ** .2, s_)
         elif kind == "quatre":
             rr = 1 + .07 * _m.cos(4 * t)
             x, y = cx + a * c_ * rr, cy + b * s_ * rr
@@ -973,6 +978,28 @@ def fig_dog(cv, cx, cy, s, flip=False):
     cv.hair([(hx - f * s * .02, hy + s * .02), (hx + f * s * .06, hy + s * .03)])
 
 
+def fig_dogface(cv, cx, cy, r):
+    """Parker's dog looking straight out, the head filling a circle of radius r (the O of a word)"""
+    for sd in (-1, 1):   # floppy ears, hatched dark on the inside
+        ear = [(cx + sd * r * .45, cy - r * .75), (cx + sd * r * 1.02, cy - r * .55), (cx + sd * r * 1.08, cy + r * .1),
+               (cx + sd * r * .9, cy + r * .45), (cx + sd * r * .62, cy + r * .1)]
+        cv.obj([ear], 1.)
+        cv.hair(_C.hatch_poly(ear, 70 * sd, 1.5))
+    head = _ell(cx, cy, r * .72, r * .82, 24)[:-1]
+    cv.obj([head], 1.)
+    for k in range(3):   # the brow and the coat over the skull
+        cv.hair([(cx - r * (.35 - k * .05), cy - r * (.62 - k * .1)), (cx, cy - r * (.5 - k * .1)), (cx + r * (.35 - k * .05), cy - r * (.62 - k * .1))])
+    for sd in (-1, 1):
+        cv.obj([_ell(cx + sd * r * .28, cy - r * .12, r * .11, r * .11, 10)[:-1]], 1.)
+        cv.hair(_ell(cx + sd * r * .28, cy - r * .12, r * .18, r * .15, 10))
+    muz = _ell(cx, cy + r * .32, r * .4, r * .32, 18)[:-1]
+    cv.obj([muz], .5)
+    cv.hair(_C.hatch_poly(_ell(cx + r * .12, cy + r * .4, r * .25, r * .2, 12)[:-1], 45, 1.5))
+    cv.obj([[(cx - r * .14, cy + r * .12), (cx + r * .14, cy + r * .12), (cx, cy + r * .28)]], 1.)
+    cv.line([(cx, cy + r * .28), (cx, cy + r * .4), (cx - r * .14, cy + r * .48)])
+    cv.line([(cx, cy + r * .4), (cx + r * .14, cy + r * .48)])
+
+
 def fig_p(cv, cx, cy, s):
     """a P monogram cut as a ribbon"""
     st = [(cx - s * .2, cy + s * .5), (cx - s * .2, cy - s * .5)]
@@ -1031,7 +1058,7 @@ def arms_somaster(cx, cy, s, seed=0):
         return arms_placeholder(cx, cy, s)
     w = s * 120. / 140.
     return (f'<svg x="{_nn(cx - w / 2)}" y="{_nn(cy - s / 2)}" width="{_nn(w)}" height="{_nn(s)}" overflow="visible">'
-            + _slim(_AR.arms(w, s, seed)) + "</svg>")
+            + _slim(_simp(_AR.arms(w, s, seed), .25)) + "</svg>")
 
 
 def panel_pts(kind, x0, y0, x1, y1, d=0., c=None):
@@ -1093,6 +1120,92 @@ def corner_spray(cv, x, y, ang, s, rng, thai=False):
 # the composer
 # ---------------------------------------------------------------------------------------------
 
+
+def _garc(cx, cy, rx, ry, a0, a1, n=8):
+    return [(cx + rx * _m.cos(_m.radians(a0 + (a1 - a0) * i / n)),
+             cy + ry * _m.sin(_m.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
+
+
+_GF = {
+    "A": (.72, [[(0, 1), (.36, 0), (.72, 1)], [(.15, .64), (.57, .64)]]),
+    "B": (.6, [[(0, 0), (0, 1), (.38, 1)] + _garc(.38, .76, .22, .24, 90, -90, 6) + [(0, .52)],
+               [(0, 0), (.33, 0)] + _garc(.33, .26, .2, .26, -90, 90, 6)[1:] + [(0, .52)]]),
+    "C": (.66, [_garc(.36, .5, .34, .5, -45, -315, 12)]),
+    "D": (.68, [[(0, 0), (0, 1), (.3, 1)] + _garc(.3, .5, .36, .5, 90, -90, 10) + [(0, 0)]]),
+    "E": (.56, [[(.54, 0), (0, 0), (0, 1), (.54, 1)], [(0, .5), (.42, .5)]]),
+    "F": (.54, [[(.54, 0), (0, 0), (0, 1)], [(0, .5), (.42, .5)]]),
+    "G": (.7, [_garc(.36, .5, .34, .5, -45, -315, 12) + [(.7, .58), (.42, .58)]]),
+    "H": (.66, [[(0, 0), (0, 1)], [(.66, 0), (.66, 1)], [(0, .5), (.66, .5)]]),
+    "I": (.08, [[(.04, 0), (.04, 1)]]),
+    "J": (.46, [[(.44, 0), (.44, .74)] + _garc(.22, .74, .22, .26, 0, 180, 6)[1:]]),
+    "K": (.62, [[(0, 0), (0, 1)], [(.6, 0), (0, .6)], [(.2, .45), (.62, 1)]]),
+    "L": (.52, [[(0, 0), (0, 1), (.52, 1)]]),
+    "M": (.84, [[(0, 1), (0, 0), (.42, .8), (.84, 0), (.84, 1)]]),
+    "N": (.68, [[(0, 1), (0, 0), (.68, 1), (.68, 0)]]),
+    "O": (.76, [_garc(.38, .5, .38, .5, 0, 360, 16)]),
+    "P": (.58, [[(0, 1), (0, 0), (.32, 0)] + _garc(.32, .27, .26, .27, -90, 90, 6)[1:] + [(0, .54)]]),
+    "Q": (.76, [_garc(.38, .5, .38, .5, 0, 360, 16), [(.45, .7), (.78, 1.04)]]),
+    "R": (.62, [[(0, 1), (0, 0), (.32, 0)] + _garc(.32, .27, .26, .27, -90, 90, 6)[1:] + [(0, .54)],
+                [(.28, .54), (.62, 1)]]),
+    "S": (.56, [_garc(.28, .25, .26, .25, -20, -270, 7) + _garc(.28, .75, .28, .25, -90, 160, 7)[1:]]),
+    "T": (.66, [[(0, 0), (.66, 0)], [(.33, 0), (.33, 1)]]),
+    "U": (.66, [[(0, 0), (0, .66)] + _garc(.33, .66, .33, .34, 180, 0, 8)[1:] + [(.66, 0)]]),
+    "V": (.7, [[(0, 0), (.35, 1), (.7, 0)]]),
+    "W": (.96, [[(0, 0), (.24, 1), (.48, .2), (.72, 1), (.96, 0)]]),
+    "X": (.64, [[(0, 0), (.64, 1)], [(.64, 0), (0, 1)]]),
+    "Y": (.66, [[(0, 0), (.33, .5), (.66, 0)], [(.33, .5), (.33, 1)]]),
+    "Z": (.6, [[(0, 0), (.6, 0), (0, 1), (.6, 1)]]),
+    "0": (.54, [_garc(.27, .5, .27, .5, 0, 360, 14)]),
+    "1": (.36, [[(.04, .2), (.26, 0), (.26, 1)], [(.04, 1), (.48, 1)]]),
+    "2": (.54, [_garc(.27, .27, .26, .27, -170, 10, 6) + [(0, 1), (.54, 1)]]),
+    "3": (.52, [_garc(.25, .25, .25, .25, -160, 90, 6), _garc(.25, .74, .27, .26, -90, 160, 6)]),
+    "4": (.58, [[(.42, 1), (.42, 0), (0, .7), (.58, .7)]]),
+    "5": (.54, [[(.5, 0), (.08, 0), (.04, .44)] + _garc(.26, .7, .28, .3, -120, 150, 8)]),
+    "6": (.56, [[(.46, .02), (.2, .2), (.02, .65)] + _garc(.28, .7, .26, .3, 180, 540, 12)]),
+    "7": (.54, [[(0, 0), (.54, 0), (.2, 1)]]),
+    "8": (.54, [_garc(.27, .25, .22, .25, 90, 450, 10), _garc(.27, .74, .27, .26, -90, 270, 12)]),
+    "9": (.56, [_garc(.28, .3, .26, .3, 0, 360, 12) + [(.54, .35), (.36, .8), (.1, .98)]]),
+    "-": (.4, [[(.04, .55), (.36, .55)]]),
+    ".": (.2, [[(.1, .92), (.1, .96)]]),
+    "·": (.36, [[(.18, .4), (.26, .51), (.18, .62), (.1, .51), (.18, .4), (.18, .62)]]),
+}
+
+
+def motto(centre, txt, rh, w=1., holes=None, fill=.86):
+    """txt lettered in drawn capitals along the ribbon centre line, cap = half the ribbon height"""
+    cap = rh * .5
+    L = sum(_m.dist(centre[i - 1], centre[i]) for i in range(1, len(centre)))
+    tw = sum((_GF.get(ch, (.5, []))[0] + .32) * cap if ch != " " else .5 * cap for ch in txt) - .32 * cap
+    _GF.setdefault("@", (.76, []))
+    while tw > L * fill and cap > 3:
+        cap *= .92
+        tw = sum((_GF.get(ch, (.5, []))[0] + .32) * cap if ch != " " else .5 * cap for ch in txt) - .32 * cap
+
+    def along(s, off):
+        acc = 0.
+        for i in range(1, len(centre)):
+            p, q = centre[i - 1], centre[i]
+            Lq = _m.dist(p, q)
+            if acc + Lq >= s or i == len(centre) - 1:
+                t = (s - acc) / Lq if Lq else 0
+                nx, ny = (-(q[1] - p[1]) / Lq, (q[0] - p[0]) / Lq) if Lq else (0, 1)
+                return (p[0] + (q[0] - p[0]) * t + nx * off, p[1] + (q[1] - p[1]) * t + ny * off)
+            acc += Lq
+        return centre[-1]
+    out, cur = [], (L - tw) / 2
+    for ch in txt.upper():
+        if ch == " ":
+            cur += .5 * cap
+            continue
+        gw, strokes = _GF.get(ch, _GF["·"])
+        if ch == "@" and holes is not None:
+            holes.append(along(cur + gw * cap / 2, 0.) + (cap,))
+        for st in strokes:
+            out.append([along(cur + px * cap, -cap / 2 + py * cap) for px, py in st])
+        cur += (gw + .32) * cap
+    return f'<path d="{"".join(_dd(p, False, .05) for p in out)}" fill="none" stroke="#000" stroke-width="{_nn(w)}"/>'
+
+
 def _extras(fn, occ, g):
     out = []
     if fn:
@@ -1101,6 +1214,49 @@ def _extras(fn, occ, g):
                 occ.poly(poly)
             out.append(svg)
     return out
+
+
+def _rdp(P, tol):
+    if len(P) < 3:
+        return P
+    (ax, ay), (bx, by) = P[0], P[-1]
+    dx, dy = bx - ax, by - ay
+    L = _m.hypot(dx, dy) or 1e-9
+    i, dm = 0, -1.
+    for j in range(1, len(P) - 1):
+        dd = abs((P[j][0] - ax) * dy - (P[j][1] - ay) * dx) / L
+        if dd > dm:
+            i, dm = j, dd
+    if dm <= tol:
+        return [P[0], P[-1]]
+    return _rdp(P[:i + 1], tol)[:-1] + _rdp(P[i:], tol)
+
+
+def _simp(sv, tol=.3):
+    """path data of absolute M/L/Z polylines -> simplified, relative, one decimal"""
+    def one(m):
+        d = m.group(1)
+        if not _re.fullmatch(r"(?:[MLZz][-\d., ]*)+", d):
+            return m.group(0)
+        o, cx, cy = [], 0., 0.
+        for sub in _re.findall(r"M[^M]*", d):
+            closed = sub.rstrip().endswith(("Z", "z"))
+            nums = [float(v) for v in _re.findall(r"-?\d*\.?\d+", sub)]
+            P = _rdp(list(zip(nums[0::2], nums[1::2])), tol)
+            q = []
+            for k, (x, y) in enumerate(P):
+                x, y = round(x, 1), round(y, 1)
+                if k == 0:
+                    q.append(f"M{_nn(x)} {_nn(y)}" if not o else f"m{_nn(round(x - cx, 1))} {_nn(round(y - cy, 1))}")
+                else:
+                    q.append(f"l{_nn(round(x - cx, 1))} {_nn(round(y - cy, 1))}")
+                cx, cy = x, y
+            if closed:
+                q.append("z")
+                cx, cy = round(P[0][0], 1), round(P[0][1], 1)
+            o.append("".join(q))
+        return ' d="' + "".join(o) + '"'
+    return _re.sub(r' d="([^"]*)"', one, sv)
 
 
 def _slim(sv):
@@ -1127,7 +1283,7 @@ def _rel_h(m):
 
 
 def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False, k=None,
-            panel=None, ribbon=True, banner=None, extras=None):
+            panel=None, ribbon=True, banner=None, extras=None, mw_frac=None):
     """A complete king-tier plate filling w x h edge to edge.
     scene(x, y, sw, sh, mode) -> svg drawn in the box (it is clipped to the medallion field);
     mode is 'band', 'medium' or 'tall'. egg(cv, x, y, s) carves Parker's Easter egg into the
@@ -1150,7 +1306,7 @@ def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False,
         x0, y0 = inner[0]
         x1, y1 = inner[2]
         H = y1 - y0
-        mw = min(H * 2.3, 210.)
+        mw = min(H * 2.3, 210.) if mw_frac is None else max(H * 1.2, (x1 - x0) * mw_frac)
         mh = H + 6
         cx, cy = w / 2, h / 2
         fr, field, outer = medallion(cx, cy, mw, mh, medal if medal != "arch" else "cushion")
@@ -1199,10 +1355,19 @@ def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False,
                 span_seeds.append((qx, 4, (0 if sd < 0 else _PI) + (-sd) * -.3, sd, cc * 1.4, cc * .36, 1.8, cc * .3))
                 span_seeds.append((qx, cc * .9, -_PI / 2, -sd, cc * 1.1, cc * .3, 1.6, 0.))
         cx = w / 2
+        acs_m = ""
         if mode == "medium":
             mh = H - 4
-            mw = min(w * .4, mh * 1.32)
             cy = (y0 + y1) / 2
+            if arms:
+                # a section front: the small dedication cartouche with Parker's arms at the vignette's foot
+                acs_sz = max(26., min(40., H * .24))
+                mh = H - 4 - acs_sz * .55
+                cy = y0 + 2 + mh / 2
+                ay = y1 - acs_sz / 2 - 1
+                acs_m = arms_somaster(cx, ay, acs_sz, seed % 5)
+                occ.poly(shape_pts(cx, ay, acs_sz * .42 + 2, acs_sz / 2 + 1, "cushion"))
+            mw = min(w * .4, mh * 1.32) if mw_frac is None else max(mh, w * mw_frac)
         else:
             mw = min(w * .52, (H) * .74)
             mh = min(H * .74, mw * 1.3)
@@ -1210,6 +1375,8 @@ def compose(w, h, scene, seed=0, medal="oval", thai=False, egg=None, arms=False,
             mh = min(mh, (y1 - cy) * 2 - 30)
         mk = medal
         fr, field, outer = medallion(cx, cy, mw, mh, mk)
+        if acs_m:
+            top.append(acs_m)
         occ.poly(shape_pts(cx, cy, mw / 2 + 2.5, mh / 2 + 2.5, mk))
         rib = ""
         rw, ry = mw, cy + mh / 2
@@ -1959,33 +2126,101 @@ def _layout_tall(w, h, seed):
     return "".join(o)
 
 
+
+def ticket_strip(cv, pts, th):
+    """a strip of ADMIT ONE tickets unspooling along pts, th wide: perforated, edge-lit, lettered"""
+    R = _Rib(pts, [th / 2] * len(pts), [th / 2] * len(pts))
+    cv.obj([R.outline()], 1.)
+    L = 0.
+    acc = [0.]
+    for i in range(1, len(pts)):
+        L += _m.dist(pts[i - 1], pts[i])
+        acc.append(L)
+    step = th * 3.2
+    s_ = step
+    while s_ < L - 2:
+        for i in range(1, len(pts)):
+            if acc[i] >= s_:
+                t = (s_ - acc[i - 1]) / max(1e-6, acc[i] - acc[i - 1])
+                p, q = pts[i - 1], pts[i]
+                x, y = p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t
+                nx, ny = -(q[1] - p[1]), q[0] - p[0]
+                nl = _m.hypot(nx, ny) or 1
+                nx, ny = nx / nl, ny / nl
+                for k in range(-2, 3):
+                    cv.hair([(x + nx * th * .2 * k - nx * .3, y + ny * th * .2 * k - ny * .3),
+                             (x + nx * th * .2 * k + nx * .3, y + ny * th * .2 * k + ny * .3)])
+                break
+        s_ += step
+    cv.hair(R.contour(.42, .35, .5))
+
+
+def marquee_scene(x, y, W, H, seed):
+    """the club's marquee at night: a bulb-lit board over a brick front, LIVE TONIGHT with Parker's dog
+    looking out as the O, a strip of tickets unspooling across the foot"""
+    cv = Canvas()
+    cv.obj([[(x - 2, y - 2), (x + W + 2, y - 2), (x + W + 2, y + H + 2), (x - 2, y + H + 2)]], 0)
+    # brick: coursed, the joints raked, the lower courses in shadow
+    yy, k = y, 0
+    while yy < y + H + 3:
+        cv.hair([(x - 2, yy), (x + W + 2, yy)])
+        xx = x - 2 + (k % 2) * 4
+        while xx < x + W + 2:
+            cv.hair([(xx, yy), (xx, yy + 3)])
+            xx += 8
+        if (yy - y) / H > .55:
+            cv.hair([(x - 2, yy + 1.5), (x + W + 2, yy + 1.5)])
+        yy += 3
+        k += 1
+    bw, bh = W * .66, H * .62
+    bx0, by0 = x + (W - bw) / 2, y + H * .08
+    board = [(bx0, by0), (bx0 + bw, by0), (bx0 + bw, by0 + bh), (bx0, by0 + bh)]
+    cv.obj([board], 1.5)
+    rb = max(.9, min(1.6, bh * .045))
+    inn = [(bx0 + rb * 3, by0 + rb * 3), (bx0 + bw - rb * 3, by0 + rb * 3), (bx0 + bw - rb * 3, by0 + bh - rb * 3), (bx0 + rb * 3, by0 + bh - rb * 3)]
+    cv.obj([inn], 1.)
+    # the rays of light thrown down from the marquee onto the wall below it
+    for i in range(14):
+        tx = bx0 + bw * (i + .5) / 14
+        cv.hair([(tx, by0 + bh + 1), (tx + (tx - (x + W / 2)) * .25, y + H + 3)])
+    svg_cv = cv.svg()
+    o = [svg_cv, bead_line([p for i in range(4) for p in
+                            [(board[i][0] + (board[(i + 1) % 4][0] - board[i][0]) * t / 20 + (rb * 1.6 if i in (0, 3) else -rb * 1.6) * 0,
+                              board[i][1] + (board[(i + 1) % 4][1] - board[i][1]) * t / 20) for t in range(20)]], rb, True)]
+    cy = by0 + bh / 2
+    holes = []
+    o.append(motto([(bx0 + rb * 4, cy), (bx0 + bw - rb * 4, cy)], "LIVE T@NIGHT", bh * .9, 1.5, holes, .92))
+    cv2 = Canvas()
+    for hx, hy, cap in holes:
+        fig_dogface(cv2, hx, hy, cap * .52)
+    tp = [(x - 4 + (W + 8) * t / 24, y + H * (.86 + .07 * _m.sin(t / 24 * _TAU * 1.3 + seed))) for t in range(25)]
+    th = max(4., H * .14)
+    ticket_strip(cv2, tp, th)
+    o.append(cv2.svg())
+    if th >= 5:
+        o.append(motto(tp, " · ".join(["ADMIT ONE"] * 5), th * .9, .5, None, .96))
+    return "".join(o)
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 6
 
     def sc(x, y, sw, sh, mode):
+        if mode in ("band", "egg"):
+            return marquee_scene(x, y, sw, sh, seed)
         return stage(x, y, sw, sh, seed, True)
 
     def banner(centre, rh):
         return f'<path d="{_pl_d(letter_arc("LIVE FROM PORTLAND", centre, rh * .48, 2.0))}" stroke="#000" stroke-width="1"/>'
 
     def egg(cv, x, y, s):
-        # a reel of the taper's tape, spokes and wound pack, hidden in the scroll
-        r = s * .48
-        cv.obj([_ell(x, y, r, r, 30)[:-1]], 1.)
-        for q in (.86, .74, .62):
-            cv.hair(_ell(x, y, r * q, r * q, 26))
-        cv.obj([_ell(x, y, r * .5, r * .5, 22)[:-1]], .5)
-        for i in range(3):
-            a = _TAU * i / 3 + .3
-            cv.obj([[(x + r * .14 * _m.cos(a + .5), y + r * .14 * _m.sin(a + .5)),
-                     (x + r * .46 * _m.cos(a + .32), y + r * .46 * _m.sin(a + .32)),
-                     (x + r * .46 * _m.cos(a - .32), y + r * .46 * _m.sin(a - .32)),
-                     (x + r * .14 * _m.cos(a - .5), y + r * .14 * _m.sin(a - .5))]], .5)
-            cv.hair(_C.hatch_poly([(x + r * .16 * _m.cos(a + .45), y + r * .16 * _m.sin(a + .45)),
-                                   (x + r * .44 * _m.cos(a + .28), y + r * .44 * _m.sin(a + .28)),
-                                   (x + r * .44 * _m.cos(a - .28), y + r * .44 * _m.sin(a - .28)),
-                                   (x + r * .16 * _m.cos(a - .45), y + r * .16 * _m.sin(a - .45))], 45, 1.5))
-        cv.obj([_ell(x, y, r * .12, r * .12, 12)[:-1]], .5)
+        # a ride cymbal, hidden in the scroll
+        r = s * .45
+        cv.obj([_ell(x, y, r, r * .32, 30)[:-1]], 1.)
+        for q in (.85, .7, .55, .4):
+            cv.hair(_ell(x, y, r * q, r * .32 * q, 24))
+        cv.obj([_ell(x, y - r * .05, r * .16, r * .08, 12)[:-1]], .5)
+        cv.line([(x, y + r * .05), (x, y + r * 1.1)])
 
-    return compose(w, h, sc, seed, medal="arch" if h > 260 else "cushion", egg=egg, arms=True, banner=banner)
+    return compose(w, h, sc, seed, medal="banner", egg=egg, banner=banner, mw_frac=.66)

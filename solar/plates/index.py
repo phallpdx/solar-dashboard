@@ -1339,9 +1339,9 @@ def gm_plate(w, h, ctx, P):
         ix0, iy0, ix1, iy1 = _g_bbox(inner)
         cx = w / 2
         # the copperplate scene: an arched panel
-        aw = (ix1 - ix0) * .37
+        aw = (ix1 - ix0) * .41
         top = iy0 + 14
-        bot = iy0 + (iy1 - iy0) * .64
+        bot = iy0 + (iy1 - iy0) * (.62 + .06 * _Gsm(320, 548, h))
         a, b = aw, (bot - top) / 2
         ring, field, outer = gm_medallion(P.get("tall_shape", "arch"), cx, top + b, a, b, 1.8)
         # banner under it, then the dedication cartouche
@@ -1350,18 +1350,18 @@ def gm_plate(w, h, ctx, P):
         bw_ = a * 2.5
         banner, centre = gm_banner(cx, by, bw_, bh, .03, P.get("banner", ""), .2)
         dy0 = by + bh + 8
-        dr = max(14., min(34., (iy1 - dy0) * .42))
+        dr = max(14., min(40., (iy1 - dy0) * .42))
         dcy = dy0 + dr + 4
         dring, dfield, douter = gm_medallion("oval", cx, dcy, dr * 1.45, dr, 1.3)
         band_poly = [(cx - bw_ / 2 - 4, by - bh * 1.2), (cx + bw_ / 2 + 4, by - bh * 1.2), (cx + bw_ / 2 + 4, by + bh * 1.5), (cx - bw_ / 2 - 4, by + bh * 1.5)]
-        rr = 22. * P.get("tall_scale", 1.) * (1 + .2 * _Gsm(320, 548, h))
+        rr = 26. * P.get("tall_scale", 1.) * (1 + .15 * _Gsm(320, 548, h))
         src = [((cx - a * .5, bot + 9), _GPI, rr, False), ((cx + a * .5, bot + 9), 0., rr, True),
                ((cx - a - 10, top + b * .4), _GPI * .5, rr * .9, False), ((cx + a + 10, top + b * .4), _GPI * .5, rr * .9, True),
                ((cx - a * .3, top - 6), _GPI, rr * .7, True), ((cx + a * .3, top - 6), 0., rr * .7, False),
                ((cx - dr * 1.5 - 8, dcy), _GPI, rr * .8, True), ((cx + dr * 1.5 + 8, dcy), 0., rr * .8, False)]
         o.append(gm_tendrils(ix0 + 2, iy0 + 2, ix1 - ix0 - 4, iy1 - iy0 - 4, rng, .28))
         o.append(None)
-        fargs = (ix0, iy0, ix1 - ix0, iy1 - iy0, [outer, douter, band_poly], random.Random(seed_ + 1), src, rr * .36, rr, eggs)
+        fargs = (ix0, iy0, ix1 - ix0, iy1 - iy0, [outer, douter, band_poly], random.Random(seed_ + 1), src, rr * .42, rr, eggs)
         o.append(ring)
         o.append(gm_scene_in(field, lambda X, Y, W, H: P["scene"](X, Y, W, H, 2), "gmc%x" % (P.get("seed", 0) & 0xfff)))
         o.append(dring)
@@ -1413,6 +1413,7 @@ def gm_arms(cx, cy, r, seed=0):
 def gm_cloud(cv, cx, cy, w, h, rng, lit=(-1, -1)):
     """a cumulus bank: billows painted back to front, each lit on its upper side and modelled by
     arcs that follow its round into the shade, over a flat, ruled-dark base."""
+    h = min(h, 22.)
     nb = max(3, int(w / max(5., h * .8)))
     bills = []
     for k in range(nb):
@@ -1444,6 +1445,14 @@ def gm_cloud(cv, cx, cy, w, h, rng, lit=(-1, -1)):
             if len(arc) > 1:
                 (cv.line if j == 1 and r > 7 else cv.hair)(arc)
             j += 1 if rr > r * .5 else 2
+        # a light tone of gently waved lines over the whole billow, leaving a lit rim
+        if r > 5:
+            yy = by - r * .9 + 2.5
+            while yy < min(base, by + r * .9) - 1:
+                hw = r * math.sqrt(max(0., 1 - ((yy - by) / (r * .9)) ** 2)) - 2.2
+                if hw > 1.5:
+                    cv.hair([(bx - hw + i * hw / 4, yy + .3 * math.sin(i * 1.3)) for i in range(9)])
+                yy += 3.
     und = [(cx - w * .5, base - h * .25), (cx + w * .5, base - h * .25), (cx + w * .44, base + .5), (cx - w * .44, base + .5)]
     cv.obj([und], 0)
     yy = base - h * .2

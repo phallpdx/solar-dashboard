@@ -716,7 +716,10 @@ def check(out, shots=None, only=None):
                     n = await pg.evaluate("window.KROOM ? window.KROOM.sheets : 1")
                     v = await pg.evaluate(CHECK_JS, F)
                     v["sheets"] = n
-                    v["usedpre"] = await pg.evaluate("!!document.getElementById('kpre') && document.documentElement.hasAttribute('data-kfit-now')")
+                    # the pager's own check (verify): the recorded layout still holds, so the fast path stays on
+                    v["usedpre"] = await pg.evaluate("""() => { const j = document.getElementById('kpre'); if (!j) return null;
+                      const P = JSON.parse(j.textContent), m = document.getElementById('kmain'), r = document.querySelector('.krun'), b = document.querySelector('.kbar');
+                      return innerWidth === P.vw && innerHeight === P.vh && m.offsetHeight === P.mh && (!r || r.offsetHeight === P.rh) && b.offsetHeight === P.bh; }""")
                     if shots:
                         os.makedirs(shots, exist_ok=True)
                         for i in range(n):
@@ -745,7 +748,8 @@ def _summary(res):
             "bare_boxes_ours": sum(len(v["bad"]) for v in res.values()), "bare_kinds": bad.most_common(40),
             "bare_boxes_frame_detail": sum(len(v["theirs"]) for v in res.values()), "theirs_kinds": theirs.most_common(10),
             "unframed": unf[:60], "unframed_n": len(unf),
-            "no_kpre": [p for p, v in res.items() if not v["kpre"]], "sizes": sizes.most_common()}
+            "no_kpre": [p for p, v in res.items() if not v["kpre"]],
+            "kpre_broken": [p for p, v in res.items() if v.get("usedpre") is False], "sizes": sizes.most_common()}
 
 
 def frame_source():

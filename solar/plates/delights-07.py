@@ -1851,18 +1851,105 @@ def _bough_frame(box, poly, w, h, mode, seed):
     return kk_svg(cv)
 
 
-def plate(w, h, ctx):
-    """Little adventures: a pinecone bird feeder with a chickadee in an oval tailpiece that
-    dissolves at its edge, fir boughs reaching in over it. Easter egg: a toddler's drum left in
-    the grass."""
-    ctx = ctx or {}
-    date = ctx.get("date", "")
-    seed = sum(map(ord, date)) + 7 * int(ctx.get("sheet", 0) or 0)
+def _bold_bough(cv, pts, k, rng, depth=0):
+    """A fir bough for a small tailpiece: a round, lit branch with needle sprays cut as bold
+    strokes of uneven length, dark beneath the branch and catching the light above it, and a
+    couple of side shoots carrying their own sprays."""
+    n = len(pts)
+    for i in range(1, n - 1):
+        px, py = pts[i]
+        tx, ty = pts[i + 1][0] - pts[i - 1][0], pts[i + 1][1] - pts[i - 1][1]
+        ta = math.atan2(ty, tx)
+        L0 = k * (8 + 6 * math.sin(PI * i / n)) * (.7 if depth else 1.)
+        for j in range(-4, 5):
+            if rng.random() < .25:
+                continue
+            a = ta + PI / 2 + j * .28 + rng.uniform(-.12, .12)
+            L = L0 * rng.uniform(.6, 1.15)
+            e = (px + L * math.cos(a), py + L * math.sin(a))
+            cv.obj([], 0)
+            (cv.line if abs(j) < 3 else cv.hair)([(px, py), ((px + e[0]) / 2 + .5, (py + e[1]) / 2), e])
+            if j in (-3, -1, 1, 3) and rng.random() < .7:
+                a2 = ta - PI / 2 + j * .3
+                cv.hair([(px, py), (px + L * .5 * math.cos(a2), py + L * .5 * math.sin(a2))])
+        if not depth and i in (6, 17):
+            sh = _kk_bez((px, py), (px + 8 * k, py + 6 * k), (px + 16 * k, py + 9 * k), (px + 22 * k, py + 14 * k), 8)
+            _bold_bough(cv, sh, k * .8, rng, 1)
+    ws = [max(.7, k * (2.4 - 1.6 * i / (n - 1)) * (.6 if depth else 1.)) for i in range(n)]
+    R = C._Rib(pts, ws, ws)
+    bu_rib(cv, R, .25, .65, 1.5, -1, 1.)
 
-    def sc(x, y, ww, hh, mode):
-        return feeder_scene(x - 2, y - 2, ww + 4, hh + 4, mode, seed)
-    return vg_plate(w, h, sc, shape="oval", form="tailpiece", seed=seed, pad=4,
-                    frame=lambda *a: _bough_frame(*a, seed))
+
+def _bold_feeder(cv, cx, cy, rx, ry):
+    """The pinecone feeder, bold: an ovoid lit on its upper left, rows of scale cups whose lips
+    are cut heavy on the shadowed side, seed specks."""
+    poly = C._ell_pts(cx, cy, rx, ry, 30)[:-1]
+    tt = bu_sph(cx, cy, rx, ry, .08, .6)
+    bu_form(cv, poly, tt, 25., 2., rx * .5, None, 1.5)
+    rows = max(4, int(ry * 2 / 3.))
+    for j in range(rows):
+        v = -1 + (j + .5) * 2 / rows
+        half = rx * math.sqrt(max(0, 1 - v * v)) * .92
+        cols = max(2, int(half * 2 / 3.))
+        for i in range(cols):
+            u = -1 + (i + .5 + (.5 if j % 2 else 0)) * 2 / (cols + (1 if j % 2 else 0))
+            sx, sy = cx + u * half, cy + v * ry
+            bu_cut(cv, [(sx - 1.4, sy - .6), (sx - .8, sy + .9), (sx + .8, sy + .9), (sx + 1.4, sy - .6)], lambda px, py: tt(px, py) + .35)
+
+
+def _bold_chickadee(cv, x, y, s, f=-1):
+    """A chickadee clinging to the feeder, bold: black cap and bib, the white cheek, the buff
+    breast rounded in curved cuts, a dark wing and tail."""
+    P = lambda u, v: (x + f * u * s, y - v * s)
+    tail = [P(.35, .35), P(.95, .55), P(1.0, .45), P(.4, .2)]
+    bu_form(cv, tail, lambda px, py: .75, 20 * f, 1.5, 0, None, 1.)
+    body = [P(-.45, .62), P(-.3, .82), P(0, .86), P(.3, .7), P(.5, .45), P(.35, .18), P(0, .08), P(-.3, .2), P(-.5, .42)]
+    c = P(0, .48)
+    bu_form(cv, body, bu_sph(c[0] - s * .1, c[1] - s * .1, s * .5, s * .42, .05, .65), 75., 1.5, s * .1, None, 1.)
+    wing = [P(-.05, .62), P(.28, .7), P(.62, .42), P(.2, .3)]
+    bu_form(cv, wing, lambda px, py: .62, -30 * f, 1.5, 0, None, 1.)
+    head = C._ell_pts(*P(-.38, .78), s * .27, s * .25, 18)[:-1]
+    cv.obj([head], 1.)
+    cap = [P(-.64, .82), P(-.56, 1.02), P(-.3, 1.04), P(-.12, .86), P(-.3, .83)]
+    cv.obj([cap], 1.)
+    for pl in C.hatch_poly(cap, 0, 1.):
+        cv.line(pl)
+    bib = [P(-.56, .66), P(-.34, .64), P(-.3, .5), P(-.5, .52)]
+    cv.obj([bib], 1.)
+    for pl in C.hatch_poly(bib, 0, 1.):
+        cv.line(pl)
+    cv.obj([C._ell_pts(*P(-.47, .78), .9, .9, 8)], 1.5)
+    cv.heavy([P(-.66, .76), P(-.8, .74)])
+
+
+def plate(w, h, ctx):
+    """Little adventures, as a small tailpiece: one bold motif, today's idea for the little one: a
+    fir bough arching across with the pinecone feeder hanging from it and a chickadee clinging
+    to the cone. Easter egg: a toddler's drum with its sticks crossed on it, in a tuft of grass
+    under the feeder."""
+    ctx = ctx or {}
+    seed = sum(map(ord, ctx.get("date", ""))) + 7 * int(ctx.get("sheet", 0) or 0)
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    cx = w / 2
+    k = max(.6, min(1.2, h / 60))
+    span = min(w * .42, h * 2.3)
+    p0, p1, p2, p3 = (cx - span, h * .4), (cx - span * .4, h * .02), (cx + span * .3, h * .1), (cx + span, h * .34)
+    pts = _kk_bez(p0, p1, p2, p3, 24)
+    _bold_bough(cv, pts, k, rng)
+    fx, fy = pts[10]
+    pr = h * .12
+    top = h * .4
+    cv.obj([], 0)
+    cv.line([(fx, fy + 1.5), (fx, top)])
+    _bold_feeder(cv, fx, top + pr * 1.45, pr, pr * 1.45)
+    _bold_chickadee(cv, fx - pr * 2.3, top + pr * 1.9, h * .3, -1)
+    # the egg: the drum in a tuft of grass
+    gx, gy = fx + span * .62, h * .92
+    bu_tuft(cv, gx - h * .12, gy, h * .22, rng, 6)
+    bu_tuft(cv, gx + h * .16, gy, h * .18, rng, 5)
+    body = kk_svg(cv) + kk_egg("drum", gx, gy - h * .1, h * .12)
+    return C.svg_doc(w, h, kk_defs() + body)
 
 
 # ==== BURIN KIT (begin) ==========================================================================

@@ -2142,22 +2142,101 @@ def _reed_frame(box, poly, w, h, mode, seed):
     return kk_svg(cv)
 
 
+def _coho_bold(cv, bx, by, th0, L, bend, flip=1):
+    """The tailpiece coho, cut bold enough to read at 60 px: the body in lines that run its
+    length, dark along the back and swelling there, thinning down the flank and leaving the
+    silver belly as paper; dark fins, a heavy lateral line, spots on the back, the eye."""
+    F = _Fish(bx, by, th0, L, bend, flip, "coho")
+    P, S, hh = F.P, F.S, F.hh
+    h0 = hh(0)
+    tl = L * .22
+    tail = [P(.03, h0 * .9), P(-.08, L * .1), P(-tl / L, L * .16), P(-.15, L * .07), P(-.11, 0),
+            P(-.15, -L * .07), P(-tl / L, -L * .16), P(-.08, -L * .1), P(.03, -h0 * .9)]
+    cv.obj([tail], 1.)
+    for i in range(7):
+        t = i / 6
+        cv.line([P(.02, 0), P(-tl / L + .07 * (1 - abs(2 * t - 1)), L * .16 * (1 - 2 * t))])
+
+    def fin(pts):
+        cv.obj([pts], 1.)
+        a, b = pts[0], pts[-1]
+        for t in (.25, .5, .75):
+            m = (a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)
+            e = pts[len(pts) // 2]
+            cv.line([m, (m[0] + (e[0] - m[0]) * .85, m[1] + (e[1] - m[1]) * .85)])
+    fin([S(.6, .93), P(.56, hh(.56) + L * .08), P(.47, hh(.47) + L * .1), P(.42, hh(.42) + L * .05), S(.44, .93)])
+    fin([S(.32, -.93), P(.27, -hh(.27) - L * .08), P(.2, -hh(.2) - L * .06), S(.22, -.93)])
+    fin([S(.52, -.93), P(.45, -hh(.45) - L * .08), P(.42, -hh(.42) - L * .05), S(.45, -.93)])
+    n = 40
+    body = [S(i / n, 1) for i in range(n + 1)] + [S(1 - i / n, -1) for i in range(n + 1)][1:-1]
+    cv.obj([body], 1.5)
+    k = 0
+    s_ = .9
+    while s_ > -.95:
+        tone = .95 if s_ > .5 else (.62 if s_ > .15 else (.32 if s_ > -.25 else 0.))
+        run = [S(.04 + .9 * j / 40, s_) for j in range(41) if hh(.04 + .9 * j / 40) > L * .03]
+        if len(run) > 1 and tone:
+            bu_cut(cv, run, lambda x, y, tone=tone: tone, .16, 1.2, 1.5, 0)
+        s_ -= .17
+    cv.heavy([S(u / 30 * .74 + .05, .08) for u in range(31)])
+    rng = random.Random(int(L))
+    for _ in range(14):
+        u, s2 = rng.uniform(.1, .7), rng.uniform(.35, .8)
+        cv.obj([_circle(*S(u, s2), .9, 6)], 1.)
+    cv.heavy([S(.8 - .035 * math.sin(PI * j / 10), .8 - 1.6 * j / 10) for j in range(11)])
+    cv.line([S(1., -.05), P(.93, -hh(.93) * .3), P(.86, -hh(.86) * .4)])
+    ec = S(.915, .3)
+    cv.obj([_circle(ec[0], ec[1], max(1.6, L * .025), 14)], 1.)
+    cv.obj([_circle(ec[0], ec[1], max(.8, L * .012), 8)], 1.5)
+    return F
+
+
 def plate(w, h, ctx):
-    """Fishing the Columbia: a coho leaping clear of the river at the dusk bite off Sauvie Island,
-    rings spreading where it broke, the heron in the reeds, today's moon by the setting sun, in an
-    oval tailpiece that dissolves at its edge, carried on reed beds either side. Easter egg: a
-    fishing float painted like a Blazers pinwheel bobbing by the fish."""
+    """Fishing the Columbia, as a small tailpiece: one bold coho leaping clear of the river at
+    the dusk bite, arched over the rings and the spray where it broke, the water a short lens of
+    ripples dark under the fish, a few reeds at each end. Easter egg: a fishing float painted like
+    a Blazers pinwheel bobbing by the fish."""
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 7 * int(ctx.get("sheet", 0) or 0)
-
-    def sc(x, y, ww, hh, mode):
-        X, Y, W, H = x - 2, y - 2, ww + 4, hh + 4
-        cv = scene(X, Y, W, H, ctx, mode, seed)
-        fx, wy, L = getattr(cv, "_coho", (X + W * .4, Y + H * .8, 40))
-        egg = _float(fx - L * (.62 if mode == "band" else .95), wy + 1, max(2.8, L * .055))
-        return kk_clip("rv%d" % int(hh * 10), kk_rect_d(X, Y, W, H), cv.svg() + egg)
-    return vg_plate(w, h, sc, shape="oval", form="tailpiece", seed=seed, pad=3,
-                    frame=lambda *a: _reed_frame(*a, seed))
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    cx = w / 2
+    wy = h * .8
+    L = min(w * .4, h * 1.95)
+    ww = min(w * .46, L * 1.35)
+    # the river: a lens of ripples, darkest under the fish, thinning out at its tips
+    y = wy - 1.5
+    k = 0
+    while y < h - 2:
+        f = (y - wy + 1.5) / max(1., h - 2 - wy + 1.5)
+        half = ww * math.sqrt(max(0., 1 - (abs(f - .35) / .75) ** 2))
+        x = cx - half
+        while x < cx + half:
+            Lr = rng.uniform(3, 10)
+            bu_cut(cv, [(x, y), (min(cx + half, x + Lr), y)],
+                   lambda px, py: .2 + .45 * max(0., 1 - abs(px - cx) / (L * .5)) + .1 * f, .16, 2., 1.5, 0)
+            x += Lr + rng.uniform(1., 2.5)
+        y += 1.5 if k < 2 else 2.
+        k += 1
+    # rings where it broke the surface
+    rx0 = cx - L * .5
+    for j in range(3):
+        r = L * (.08 + .07 * j)
+        cv.obj([], 0)
+        cv.line([(rx0 + r * math.cos(PI * i / 16), wy + .5 + r * .22 * math.sin(PI * i / 16)) for i in range(17)])
+    # the coho, arched head-down to the left
+    F = _coho_bold(cv, rx0 + L * .02, wy - L * .06, -.62, L, 1.25, 1)
+    # spray: drops flung off the tail
+    for i in range(9):
+        a = -PI / 2 + rng.uniform(-.9, .9)
+        d = rng.uniform(.06, .22) * L
+        px, py = rx0 + d * math.cos(a) - L * .02, wy - L * .08 + d * math.sin(a) * .7
+        cv.obj([_circle(px, py, rng.choice((.9, 1.2, 1.5)), 12)], 1.)
+    # reeds at the lens's tips
+    for sg in (-1, 1):
+        bu_reeds(cv, cx + sg * ww * .78, cx + sg * (ww + 8), wy + 2, h * .55, rng, -sg, 7, .35, 1.1)
+    body = kk_svg(cv) + _float(cx + L * .62, wy + 1, max(2.8, h * .05))
+    return C.svg_doc(w, h, kk_defs() + body)
 
 
 # ==== BURIN KIT (begin) ==========================================================================

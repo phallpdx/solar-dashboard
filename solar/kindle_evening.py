@@ -59,6 +59,7 @@ html.kev #kmain svg text.kmicro{font:600 4.4px var(--k-serif) !important;stroke-
 #kmain .kfill{display:block;height:0;overflow:hidden;position:relative}
 #kmain .kfill svg.kfr,#kmain .kfill svg.kfp{display:none !important}
 #kmain .kfill{-webkit-flex:none;flex:none;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-evenly;justify-content:space-evenly}
+#kmain .kplate1{display:block;line-height:0;margin:0 auto;text-align:center}#kmain svg.kpv{display:none;margin:0 auto;max-width:100%}
 #kmain .kfi{display:none;flex:none;margin:0;text-align:center;line-height:0}
 #kmain .kfi svg{display:inline-block;max-width:100%;vertical-align:top}
 #kmain .kfi.kfrow{-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center}#kmain .kfrow svg{margin:0 4px;-webkit-flex:0 1 auto;flex:0 1 auto;min-width:0}
@@ -115,6 +116,7 @@ html.kev #kmain .kcolo{text-align:center;font:600 12px/15px var(--k-serif) !impo
 #kmain .khv{margin:0 0 6px}
 #kmain .khv svg.kvig{width:auto;height:46px}
 #kmain .khv svg.kvig2{width:84px !important;height:56px !important}
+#kmain .khv svg.khp{display:block;width:100% !important;height:56px !important;margin:0 auto}
 #kmain h2.khed{font:700 var(--t2)/var(--l2) var(--k-serif) !important;letter-spacing:-.01em;margin:0 0 var(--s2) !important}
 #kmain .kbody p{margin:0 0 var(--s2) !important}
 #kmain .kbody p.kdrop:first-letter{float:left;font:700 60px/50px var(--k-serif);margin:3px 7px 0 -1px;padding:0}
@@ -134,8 +136,9 @@ html.kev #kmain .kcolo{text-align:center;font:600 12px/15px var(--k-serif) !impo
 #kmain .kls-r{right:0;top:0;width:9px;height:100%;-webkit-transform:scaleX(-1) !important;transform:scaleX(-1) !important}
 #kmain svg.khb{width:100%;height:auto;margin:0 0 8px}
 html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spacing:.16em;text-transform:uppercase;stroke-width:0 !important}
-#kmain .kbox{position:relative;padding:9px 14px 8px !important;margin:var(--s2) 0 var(--s2) !important}
-#kmain .kbox.ksrc{padding:7px 14px 6px !important;margin-bottom:0 !important}
+#kmain .kbox{position:relative;padding:4px 0 0 !important;margin:var(--s1) 0 var(--s1) !important;border-top:1px solid #000}
+#kmain .kbox.ksrc{padding:3px 0 0 !important;margin-bottom:0 !important;border-top:.5px solid #000}
+#kmain .kbox svg.kfs{display:none !important}
 #kmain .kbox p{margin:0 !important}
 #kmain .kbox .kover{border-top:1px solid var(--hair);padding-top:3px !important;margin-top:4px !important}
 #kmain .kbx-t{left:0;top:0;width:100%;height:6px}
@@ -188,23 +191,12 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 #kmain .kplate.klong .poem-by{margin-bottom:8px !important}
 
 /* no white page: a fine engraved ground under everything, banknote style; type knocked out in white */
-html.kev body,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") repeat !important}
+/* a light security tint in the margins only, like the guilloche under a banknote; the text column is clean paper */
+html.kev body{background:#fff !important}
+html.kev #kmain .kframe{background:#fff !important}
+html.kev .kbar,html.kev .krun,html.kev .krun *{background-color:#fff !important}
 html.kev,html.kev #kmain{background:transparent !important}
-html.kev #kmain h2.khed,html.kev #kmain h2.khed *,html.kev #kmain .kfname,html.kev #kmain .kdeg,html.kev #kmain .kname,html.kev #kmain .poem-title{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px -1.5px #fff,1.5px -1.5px #fff,-1.5px 1.5px #fff !important}
-/* on the soft ground the leading is clear, so a light 8-offset halo is enough (cheap to paint on the Kindle) */
-html.kev #kmain .kbody p,html.kev #kmain .kbody p *,html.kev #kmain .kbox p,html.kev #kmain .kbox p *,html.kev #kmain .kalm-lead,html.kev #kmain .kalm-lead *,html.kev #kmain .kplan,html.kev #kmain .kplan *,html.kev #kmain .kchoice,html.kev #kmain .kchoice *,html.kev #kmain .klater,html.kev #kmain .klater *,html.kev #kmain .kmoon p,html.kev #kmain .kmoon p *,html.kev #kmain .ksky li,html.kev #kmain .ksky li *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}
 html.kev .kendpage #kmain .kfill,html.kev .kcontents #kmain .kfill{margin:0 26px}
-/* body copy sits on a soft ground: one hairline wave per line of type, laid in the leading, so the letters stay clean */
-html.kev #kmain .kbody p,html.kev #kmain .kbox p.knextstep{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 24px repeat !important}
-html.kev #kmain .kbox p.ksources{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 20px repeat !important}
-html.kev #kmain .kalm-lead,html.kev #kmain .kplan,html.kev #kmain .kchoice,html.kev #kmain .klater{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 26px repeat !important}
-html.kev #kmain .kmoon p.kmname{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 28px repeat !important}
-html.kev #kmain .kmoon p:not(.kmname),html.kev #kmain .ksky li{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 21px repeat !important}
-html.kev #kmain .poem-text{background:transparent !important}
-html.kev #kmain .poem-text span{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 100% repeat-x !important}
-html.kev #kmain .kbox p.knextstep{background-position:0 16px !important}html.kev #kmain .kbox p.ksources{background-position:0 6px !important}
-/* kindle_full sets html body *{text-shadow:none !important}; the knockout must out-rank it, on text-bearing elements and their children */
-html.kev #kmain h1,html.kev #kmain h1 *,html.kev #kmain h2,html.kev #kmain h2 *,html.kev #kmain h3,html.kev #kmain h3 *,html.kev #kmain p,html.kev #kmain p *,html.kev #kmain li,html.kev #kmain li *,html.kev #kmain td,html.kev #kmain td *,html.kev #kmain th,html.kev #kmain th *,html.kev #kmain .kkick,html.kev #kmain .kkick *,html.kev #kmain .kdeg,html.kev #kmain .kdeg *,html.kev #kmain .ksun3 div,html.kev #kmain .ksun3 div *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *,html.kev #kmain .poem-title,html.kev #kmain .poem-title *,html.kev #kmain .poem-by,html.kev #kmain .poem-by *,html.kev #kmain .kleads a,html.kev #kmain .kleads a *,html.kev .kbar,html.kev .kbar *,html.kev .krun,html.kev .krun *{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff !important}
 
 /* margins dressed in engraving: medallion flanks and columns, by reference to the page's filler set */
 #kmain .kflank{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center}
@@ -231,6 +223,31 @@ html.kev .kendpage #kmain .kquiet{font:italic 430 var(--t4)/var(--l4) var(--k-se
 html.kev .kendpage #kmain .kend .kdiv{margin:14px auto 10px}
 html.kev .kendpage #kmain .kend .ktail{margin-top:14px}
 """
+
+# The margins carry a deep, tonally modelled acanthus running scroll (a data-URI tile, so the page's
+# CSS reset cannot touch it); the frame and the running heads sit on white over it.
+try:
+    from . import engraving_acanthus as _acan
+    _V = _acan.data_uri(_acan.vine_tile(24, 44, 7, opaque=True))
+    _BK = ""
+    try:
+        from . import plate_book as _pb
+        _BK = _acan.data_uri(_pb.border(618, 618, 3, inner=(24, 20, 570, 578)))
+    except Exception:  # noqa: BLE001
+        _BK = ""
+    if _BK:
+        # THE page frame on every inner page: the book engraver's border, from the running head to the foot bar;
+        # the text frame inside it drops its own rules, corners and paper so the border is the one frame
+        EVENING_CSS += ("html.kev body:not(.kcontents){background:" + _BK + " 0 44px/618px 618px no-repeat,#fff !important}\n"
+                        "html.kev body:not(.kcontents) #kmain .kframe{background:transparent !important;}\n"
+                        "html.kev body:not(.kcontents) #kmain .kframe>svg.kfs,html.kev body:not(.kcontents) #kmain .kframe>svg.kround,"
+                        "html.kev body:not(.kcontents) #kmain .kframe>.kround{display:none !important}\n")
+    EVENING_CSS += ("html.kev body.kcontents{background:" + _V + " 0 0/24px 88px repeat-y," + _V + " 100% 0/24px 88px repeat-y,#fff !important}\n"
+                    # the running head and the foot bar sit on clean paper: the margin scroll stops at them
+                    "html.kev body .krun{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 -30px 0 #fff,-26px -30px 0 #fff,26px -30px 0 #fff !important}\n"
+                    "html.kev body .kbar{box-shadow:-26px 0 0 #fff,26px 0 0 #fff,0 40px 0 #fff,-26px 40px 0 #fff,26px 40px 0 #fff !important}\n")
+except Exception:  # noqa: BLE001
+    pass
 
 
 # ---------------------------------------------------------------------------------------------
@@ -771,8 +788,151 @@ def _filler(night, salt, w=528, moon=None, budget=90000):
                 "<svg ", '<svg class="kfp" style="height:110px;margin-top:-55px" aria-hidden="true" ', 1)
         except Exception:  # noqa: BLE001
             pass
-    stack = _fill_stack(night, salt, seed, w, moon, budget)
+    try:
+        stack = _plate_stack(night, salt, seed, w, moon, budget)
+    except Exception:  # noqa: BLE001
+        stack = ""
     return f'<div class="kfill">{stack}</div>'
+
+
+# ---- one composed plate per page ------------------------------------------------------------------
+# Each page's free room takes ONE engraved plate, banknote-vignette style: open, vignetted edges, no box.
+# The plate is drawn at a few heights; FILL_JS picks the smallest one that covers the room and crops it
+# from the top (the sky), so the line work is never rescaled.
+_PLATE_FOR = {"index": "river", "cover": "river", "tomorrow": "river", "sky": "bridge", "local": "bridge",
+              "poem": "river", "goodnight": "river"}
+
+
+def _plate_mod(name):
+    try:
+        import importlib
+        return importlib.import_module(f".{name}", __package__)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _pano_tall(w, H, seed, moon):
+    """Fallback plate: the Columbia panorama at the foot, its night sky carried up and opening out
+    into the paper, lines breaking off toward the edges; stars knocked out of the sky."""
+    import random as _r
+    ph = int(min(140, max(60, H)))
+    pv = engraving_panorama.panorama(w, ph, seed, moon if moon is not None else .5)
+    pv = re.sub(r'</g><rect x="1" y="1".*?</svg>$', '</g></svg>', pv, flags=re.S)
+    pv = re.sub(r'<rect width="[\d.]+" height="[\d.]+" fill="#fff"/>', '', pv, 1)
+    inner = re.sub(r'^<svg[^>]*>', '', pv)[:-6]
+    rng = _r.Random(f"{seed}t")
+    top = H - ph
+    d = []
+    if top > 4:
+        y = top + 4 - 1.3
+        k = 0
+        while y > 2:
+            u = (top + 4 - y) / max(1.0, top)  # 0 at the seam, 1 at the top
+            half = (w / 2 - 6) * (1 - .55 * u ** 1.4) + rng.uniform(-6, 6)
+            x = w / 2 - half
+            while x < w / 2 + half:
+                ln = rng.uniform(30, 120) * (1 - .6 * u)
+                e = min(x + ln, w / 2 + half)
+                d.append(f"M{x:.1f} {y:.1f}H{e:.1f}")
+                x = e + rng.uniform(2, 4) + rng.uniform(0, 26) * u * u
+            y -= 1.3 + 4.2 * u ** 1.3
+            k += 1
+    stars = []
+    for _ in range(int(w * max(0, top) / 2600)):
+        sx, sy = rng.uniform(40, w - 40), rng.uniform(6, max(8, top - 4))
+        r = rng.choice((1.2, 1.6, 2.2))
+        stars.append(f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="{r + 1.1:.1f}" fill="#fff"/>'
+                     f'<path d="M{sx - r:.1f} {sy:.1f}H{sx + r:.1f}M{sx:.1f} {sy - r:.1f}V{sy + r:.1f}" stroke="#000" stroke-width=".5"/>')
+    mid = f"kpm{seed}".replace(" ", "")
+    mask = (f'<defs><linearGradient id="{mid}g" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000"/>'
+            f'<stop offset=".07" stop-color="#fff"/><stop offset=".93" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>'
+            f'<mask id="{mid}" maskUnits="userSpaceOnUse" x="0" y="0" width="{w}" height="{H}"><rect width="{w}" height="{H}" fill="url(#{mid}g)"/></mask></defs>')
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 {w} {H}" width="{w}" height="{H}">{mask}'
+            f'<g mask="url(#{mid})"><path d="{"".join(d)}" stroke="#000" stroke-width=".4" fill="none"/>{"".join(stars)}'
+            f'<g transform="translate(0,{top})">{inner}</g></g></svg>')
+
+
+def _one_plate(kind, w, h, seed, moon):
+    mp = moon if moon is not None else .5
+    try:
+        if kind == "jazz":
+            m = _plate_mod("plate_jazz")
+            if m:
+                return m.plate(w, h, seed)
+        elif kind == "lotus":
+            m = _plate_mod("plate_thai")
+            if m:
+                return m.lotus(w, h, seed)
+        elif kind == "bridge":
+            m = _plate_mod("plate_thai")
+            if m:
+                return m.bridge(w, h, seed, mp)
+        m = _plate_mod("plate_river")
+        if m:
+            return m.plate(w, h, seed, mp)
+    except Exception:  # noqa: BLE001
+        pass
+    if engraving_panorama:
+        return _pano_tall(w, h, seed, mp)
+    return ""
+
+
+def _plate_stack(night, salt, seed, w, moon, budget):
+    kind = _PLATE_FOR.get(salt, "jazz")
+    if moon is None:
+        try:
+            moon = moon_phase(night)[0] / 100
+        except Exception:  # noqa: BLE001
+            moon = .5
+    out, spent = [], 0
+    for H in (80, 110, 150, 210, 300, 420):
+        try:
+            import zlib
+            # the jazz frieze only works short; a tall room takes the river
+            sv = _one_plate(kind if (kind != "jazz" or H < 170) else "river", w, H, zlib.crc32(f"{salt}{seed}".encode()) % 100000, moon)
+        except Exception:  # noqa: BLE001
+            sv = ""
+        if not sv:
+            continue
+        sv = re.sub(r'\bid="', f'id="p{H}', sv)
+        sv = re.sub(r'url\(#', f'url(#p{H}', sv)
+        sv = re.sub(r'href="#', f'href="#p{H}', sv)
+        # kindle_full resets transform on every element: carry the plate's transforms as !important styles
+        sv = _fix(re.sub(r'patternTransform="([^"]+)"', lambda q: _css_transform(q).replace("transform:", "transform:", 1), sv))
+        if spent + len(sv) > budget and out:
+            break
+        spent += len(sv)
+        sv = re.sub(r'<svg ', f'<svg class="kpv" data-h="{H}" aria-hidden="true" preserveAspectRatio="xMidYMax slice" ', sv, 1)
+        out.append(sv)
+    return f'<div class="kplate1">{"".join(out)}</div>' if out else ""
+
+
+_HEAD_FOR = {"day-1": "jazz", "day-2": "river", "day-3": "lotus", "local": "bridge"}
+
+
+def _head_plate(fname, night, h=56):
+    """A story's headpiece: a long, open-edged engraved frieze (jazz, the river, the lotus pond, the
+    St Johns Bridge) in place of the small boxed vignette, the same height so the page still fits."""
+    salt = fname.split(".")[0]
+    kind = _HEAD_FOR.get(salt)
+    if not kind:
+        return ""
+    try:
+        import zlib
+        try:
+            moon = moon_phase(night)[0] / 100
+        except Exception:  # noqa: BLE001
+            moon = .5
+        sv = _one_plate(kind, 528, h, zlib.crc32(f"h{salt}{night}".encode()) % 100000, moon)
+        if not sv:
+            return ""
+        sv = re.sub(r'\bid="', 'id="h', sv)
+        sv = re.sub(r'url\(#', 'url(#h', sv)
+        sv = re.sub(r'href="#', 'href="#h', sv)
+        sv = _fix(re.sub(r'patternTransform="([^"]+)"', _css_transform, sv))
+        return re.sub(r'<svg ', f'<svg class="korn khp" aria-hidden="true" preserveAspectRatio="xMidYMid meet" ', sv, 1)
+    except Exception:  # noqa: BLE001
+        return ""
 
 
 _MED_ORDER = ("snare", "paw", "vinyl", "fir", "rose", "salmon", "bass", "sticks", "moon", "sun")
@@ -904,18 +1064,13 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
 
 
 FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySelector('.kbar'),fr=document.querySelector('#kmain .kframe'),"
-           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var p=k.querySelector('.kfp'),r=k.querySelector('.kfr'),"
-           "it=k.querySelectorAll('.kfi'),i;k.style.height='0px';if(p)p.style.display='none';if(r)r.style.display='none';"
-           "for(i=0;i<it.length;i++)it[i].style.display='none';"
-           "var cs=document.querySelectorAll('#kmain .kcol'),pt=document.querySelector('#kmain .poem-text, #kmain .kend');for(i=0;i<cs.length;i++){cs[i].style.display='';"
-           "if(pt){var a=cs[i].getBoundingClientRect(),q=pt.getBoundingClientRect();if(a.right>q.left-6&&a.left<q.right+6&&q.width<600&&(a.left<q.left?a.right>q.left-6:a.left<q.right+6))cs[i].style.display='none';}}"
-           "var free=Math.floor(b.getBoundingClientRect().top-20-fr.getBoundingClientRect().bottom);"
-           "if(free>=20){k.style.height=free+'px';var left=free-4,on=0;"
-           "for(var pass=0;pass<2;pass++)for(i=0;i<it.length;i++){var h=+it[i].getAttribute('data-h');"
-           "if(it[i].style.display!=='none')continue;if(pass===0&&h<=20&&on===0&&left>140)continue;"
-           "if(h<=left){it[i].style.display=it[i].className.indexOf('kfrow')>=0?'-webkit-flex':'block';if(it[i].style.display!=='-webkit-flex'&&it[i].className.indexOf('kfrow')>=0)it[i].style.display='flex';left-=h;on++;}}}"
-           "var fl=document.querySelectorAll('#kmain .kft svg.kmu,#kmain .kft svg.kvu'),rows=0;for(i=0;i<it.length;i++)if(it[i].style.display&&it[i].style.display!=='none'&&+it[i].getAttribute('data-h')>30)rows++;"
-           "for(i=0;i<fl.length;i++)fl[i].style.display=rows?'none':'';"
+           "k=document.querySelector('#kmain .kfill');if(busy||!b||!fr||!k)return;busy=1;var v=k.querySelectorAll('svg.kpv'),i;k.style.height='0px';"
+           "for(i=0;i<v.length;i++)v[i].style.display='none';"
+           "var cv=document.body.className.indexOf('kcontents')>=0,free=Math.floor(b.getBoundingClientRect().top-(cv?20:8)-fr.getBoundingClientRect().bottom);"
+           "if(free>0&&!cv)k.style.height=free+'px';if(free>=28&&v.length){var pick=v[v.length-1];for(i=0;i<v.length;i++){if(+v[i].getAttribute('data-h')>=free){pick=v[i];break;}}"
+           "var H=+pick.getAttribute('data-h'),vb=pick.getAttribute('viewBox').split(' '),W=+vb[2],sh=Math.min(free,H);"
+           "pick.setAttribute('viewBox','0 '+(H-sh)+' '+W+' '+sh);if(free>H)pick.setAttribute('preserveAspectRatio','xMidYMax meet');pick.setAttribute('width',W);pick.setAttribute('height',sh);"
+           "pick.style.width=Math.min(W,k.clientWidth||W)+'px';pick.style.height=free+'px';pick.style.display='block';}"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
            "window.addEventListener('load',go);})();</script>")
@@ -1141,9 +1296,9 @@ def _vig_goodnight(lit=36, waxing=True):
 def _lite_strips():
     """The text pages' frame: the border family's lighter cousin, a rule, a rope band and a hairline. 9 px deep."""
     h = (f'<path d="M0,.6H9999" {K} stroke-width="{W1}"/><path d="M0,2.2H9999M0,8.4H9999" {K} stroke-width="{W0}"/>'
-         f'<rect x="0" y="2.5" width="100%" height="5.6" fill="url(#ke-rope)"/>')
+         )
     v = (f'<path d="M.6,0V9999" {K} stroke-width="{W1}"/><path d="M2.2,0V9999M8.4,0V9999" {K} stroke-width="{W0}"/>'
-         f'<rect x="2.5" y="0" width="5.6" height="100%" fill="url(#ke-rope-v)"/>')
+         )
     return (f'<svg class="kfs kls-t" aria-hidden="true">{h}</svg><svg class="kfs kls-b" aria-hidden="true">{h}</svg>'
             f'<svg class="kfs kls-l" aria-hidden="true">{v}</svg><svg class="kfs kls-r" aria-hidden="true">{v}</svg>')
 
@@ -1521,7 +1676,7 @@ def _moon_plate(lit, waxing, size=120):
     return _svg(size, size, ring + _moon_shape(c, c, r, lit, waxing, "kbm", maria=True, dark="url(#ke-n)"))
 
 
-PAGE_BYTES = 172000  # each page stays under ~180 KB
+PAGE_BYTES = 228000  # each page stays under ~240 KB (gzips ~4.5x)
 SCREEN = 596  # usable height of a text page, px (618 x 714 less the running head and the bar)
 
 
@@ -1622,6 +1777,7 @@ def _vuse(salt, i, h, cls=""):
 def _dress(body, salt, close=False):
     """Fill a page's margins with engraving: medallions flank the head vignette, vignettes and medallions flank
     the tailpiece, and a framed plate (poem, close) gets medallion columns down its sides."""
+    return body  # one plate per page now; the head, tail and asterism keep their single ornament
     try:
         tail = ORNAMENTS["tail"]
         if tail in body:
@@ -1803,6 +1959,8 @@ def main(dash_path, ev_path, site):
                 pg["notail"] = True
             if pg.get("head") and words + 52 > limit:
                 pg["head"] = ""
+            if pg.get("head"):
+                pg["head"] = _head_plate(pg["file"], night) or pg["head"]
             pg["body"] = (_drop_style(night, pg["file"]) + (f'<div class="khv">{pg["head"]}</div>' if pg.get("head") else "")
                           + f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">'
                           + ORNAMENTS["asterism"].join(paras) + "</div>" + nxt
@@ -1904,7 +2062,7 @@ def main(dash_path, ev_path, site):
     flank_r = _svg(46, 16, f'<g transform="translate(46,0) scale(-1,1)">{_date_flank().replace("kdf", "kdg")}</g>')
     sides = (_medallion(_subj_dog(), "kmd", 32, .7).replace('class="korn kmed"', 'class="korn kmed kmed-l"')
              + _medallion(_subj_lotus(), "kml", 32, .7).replace('class="korn kmed"', 'class="korn kmed kmed-r"'))
-    body = (ORNAMENTS["defs"] + f'<div class="kframe kcover{tight}">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["roundels"].values())}{sides}'
+    body = (ORNAMENTS["defs"] + f'<div class="kframe kcover{tight}">{ORNAMENTS["frame"]}{"".join(ORNAMENTS["rosettes"].values())}'
             f'<div class="kmast">{_cartouche("PRIVATE EDITION &#183; SAUVIE ISLAND", FRAME_W)}'
             f'<p class="kname">The Evening Edition</p>{_kanok_band(FRAME_W)}'
             f'<p class="kdate">{flank}<span>{night:%A, %B} {night.day} &middot; {E(edition)} edition</span>{flank_r}</p></div>'

@@ -1,11 +1,11 @@
-"""Science-01 plate: 'This morning in science' (LISA, and three stories on how life began:
-a metabolic spark, the RNA world, the lipid bubble).
+"""Science-01 plate: 'This morning in science', lead story LISA.
 
-The cartouche holds the primordial pool: a storm sky over a smoking volcano, a lightning spark
-striking warm water and ringing it with ripples, and riding the water a great protocell, its
-lipid bilayer drawn bead by bead, an RNA stem-loop coiled inside, small vesicles budding nearby.
-Tall plates add a crest of a cell-sphere, a helix cut into the pedestal tablet and gravitational
-ripple rules on the banner. Easter egg: one of the floating 'vesicles' is a tiny ride cymbal."""
+Per the edition plan: a small tailpiece of about 8% of the sheet, the lead story's subject. The
+three LISA spacecraft in their triangle trade laser beams across space while the ripples from a
+merging pair of black holes spread toward them, cut white through a night of fine lines; the oval's
+edge dissolves into the page's ground.
+Easter egg: under the triangle the gravitational wave is a bar of swing ride rhythm on a staff.
+"""
 import sys
 import math
 import random
@@ -492,38 +492,31 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
         y += pitch
     cv.hair(lines)
     for poly, tops, cy, bl, x0, x1 in sorted(shapes, key=lambda s: s[2]):
-        cv.obj([poly], .5)
-        # the body rolled in curved cuts that bow with the base, stopping short of each crown so
-        # a lit rim stays white; denser toward the shadowed base
-        cuts = []
-        v = cy - .5
-        while True:
-            seg = []
-            any_ = False
-            for x, tp in tops:
-                u = (x - x0) / max(1., x1 - x0)
-                yy = v + 1.6 * _m.sin(_SPI * u) - 1.2
-                rim = 1.8 + (cy - tp) * .22
-                if yy > tp + rim:
-                    seg.append((x, yy))
-                    any_ = True
-                elif len(seg) > 1:
-                    cuts.append(seg)
-                    seg = []
-                else:
-                    seg = []
-            if len(seg) > 1:
-                cuts.append(seg)
-            if not any_:
-                break
-            v -= 1.5 if cy - v < 5 else 2. if cy - v < 11 else 3.
-        cv.hair(cuts)
-        # the billows' crowns where they fold over one another
-        for bx, by, br in bl:
-            arc = [(bx + br * .92 * _m.cos(a), by + br * .92 * _m.sin(a)) for a in [_SPI * (1.15 + .7 * i / 8) for i in range(9)]]
-            arc = [p for p in arc if (top_of(bl, p[0]) or -1e9) < p[1] - 1.5]
-            if len(arc) > 1:
-                cv.hair(arc)
+        # each billow a modelled dome, painted back to front: its crown left white to the light
+        # (upper left), its body turned in arcs that close toward the shadowed lower right, a
+        # dark seam of close lines at its base
+        for bx, by, br in sorted(bl, key=lambda b: b[2]):
+            circ = [(bx + br * _m.cos(a), min(cy + 1., by + br * _m.sin(a))) for a in [2 * _SPI * i / 40 for i in range(40)]]
+            cv.obj([circ], .5)
+            arcs = []
+            k = 0
+            rr = br * .9
+            while rr > br * .3:
+                a0 = -.35 - .25 * k / 4
+                a1 = _SPI * (.95 - .04 * k)
+                seg = []
+                for i in range(15):
+                    a = a0 + (a1 - a0) * i / 14
+                    px, py = bx + rr * _m.cos(a) + br * .08, by + rr * _m.sin(a) * .9 + br * .1
+                    if py < cy:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                k += 1
+                rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            cv.hair(arcs)
+            sh = [(x, max(y, cy - br * .3)) for x, y in circ]
+            cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
         cv.line([(x0 + 2, cy + .8), (x1 - 2, cy + .8)])
     if sun:
         sx, sy, sr = sun
@@ -1501,6 +1494,143 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
 
 
 # ------------------------------------------------------------------------------------------------
+# Planned forms (edition plan 1.6; art direction of Nov 12): every plate is cut to its page's form
+# and shape and stands free on the paper. No black field, no filler: the scene is the plate, its
+# edge either dissolves into white the way Bewick's tailpieces do, or is held by a frame built
+# from the page's own motifs (passed in by the page).
+# ------------------------------------------------------------------------------------------------
+
+def _shape_poly(shape, cx, cy, sw, sh, seed=0):
+    rx, ry = sw / 2, sh / 2
+    if shape in ("oval", "roundel"):
+        return _kell(cx, cy, rx, ry, 120)
+    if shape == "arched":
+        rise = min(rx * .9, sh * .5)
+        spring = cy - ry + rise
+        pts = [(cx - rx, cy + ry), (cx + rx, cy + ry), (cx + rx, spring)]
+        for i in range(1, 60):
+            a = _SPI * i / 60
+            pts.append((cx + rx * _m.cos(a), spring - rise * _m.sin(a)))
+        pts.append((cx - rx, spring))
+        return pts
+    if shape == "banner":
+        # a lunette band: both edges arched, the ends cut square
+        arch = sh * .14
+        n = 48
+        top, bot = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = cx - rx + 2 * rx * t
+            b = arch * _m.sin(_SPI * t)
+            top.append((x, cy - ry + arch - b))
+            bot.append((x, cy + ry - b))
+        return top + bot[::-1]
+    # irregular: a soft, lobed silhouette
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    pts = []
+    for i in range(140):
+        a = 2 * _SPI * i / 140
+        c, s = _m.cos(a), _m.sin(a)
+        k = (abs(c) ** 3.2 + abs(s) ** 3.2) ** (-1 / 3.2)
+        wob = (1 + .04 * _m.sin(3 * a + ph[0]) + .03 * _m.sin(7 * a + ph[1]) + .018 * _m.sin(13 * a + ph[2])
+               + .012 * _m.sin(29 * a + ph[3]))
+        pts.append((cx + rx * c * k * wob, cy + ry * s * k * wob * (.96 if s > 0 else 1.)))
+    return pts
+
+
+def _form_geom(form, shape, w, h):
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh)."""
+    pad = 2.
+    sh = h - 2 * pad
+    if shape == "roundel":
+        sw = min(sh, w * .62)
+        sh = min(sh, sw)
+    elif shape == "oval":
+        frac = .55 if form == "tailpiece" else .62
+        sw = min(sh * (2.3 if form == "tailpiece" else 1.45), w * frac)
+        sh = min(sh, sw * 1.05)
+    elif shape == "arched":
+        sw = min(sh * 1.3, w * .6)
+        sh = min(sh, sw * 1.45)
+    elif shape == "banner":
+        sw = w * (.96 if form == "headpiece" else .6)
+        sh = min(sh, sw * .32)
+    else:
+        sw = {"headpiece": w * .97, "tailpiece": min(w * .6, sh * 3.4)}.get(form, min(w * .7, sh * 1.8))
+        sh = min(sh, sw * .95)
+    return w / 2, h / 2, sw, sh
+
+
+def ragged(poly, band, seed=0, sides=None):
+    """The Bewick edge as a cut: the outline resampled every px or so and each point pushed inward
+    by its own random depth (most near the rim, a few deep), so the scene's lines end raggedly and
+    the engraving fades into whatever lies under the plate. sides(x, y) limits it to part of the edge."""
+    rng = _r.Random(seed)
+    cx = sum(p[0] for p in poly) / len(poly)
+    cy = sum(p[1] for p in poly) / len(poly)
+    out = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        seg = _m.hypot(b[0] - a[0], b[1] - a[1])
+        steps = max(1, int(seg / 1.3))
+        tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
+        nx, ny = -ty, tx
+        if (cx - a[0]) * nx + (cy - a[1]) * ny < 0:
+            nx, ny = -nx, -ny
+        for k in range(steps):
+            t = k / steps
+            x, y = a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t
+            if sides is not None and not sides(x, y):
+                out.append((x, y))
+                continue
+            d = band * (rng.random() ** 1.8) * (.6 + .4 * _m.sin(x * .07 + y * .05) ** 2)
+            out.append((x + nx * d, y + ny * d))
+    return out
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False, frame=None, ft=0.,
+               fade=10., fade_sides=None):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form`, standing free on the
+    paper. frame(cx, cy, sw, sh, outer, inner, mode) -> svg draws the page's own frame over the
+    scene's edge (ft: how far it reaches in). fade: the width of the dissolving edge (0 for none).
+    arms=True (section fronts) sets the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+    mode = "s" if h < 110 else ("m" if h <= 260 else "t")
+    cx, cy, sw, sh = _form_geom(form, shape, w, h)
+    ah = 0.
+    if arms:
+        ah = max(24., min(48., h * .17))
+        sh = min(sh, h - 4 - ah * .6)
+        cy = 2 + sh / 2
+        if shape == "roundel":
+            sw = min(sw, sh)
+    outer = _shape_poly(shape, cx, cy, sw, sh, seed)
+    inner = _shape_poly(shape, cx, cy, sw - 2 * ft, sh - 2 * ft, seed) if ft else outer
+    ixs = [p[0] for p in inner]
+    iys = [p[1] for p in inner]
+    X, Y = min(ixs), min(iys)
+    W, H = max(ixs) - X, max(iys) - Y
+    # the cut: outside it the plate is transparent, so the page's own light ground shows through;
+    # with fade the cut is ragged, every line ending at its own depth, so the engraving dissolves
+    # into that ground instead of stopping at a rule (no white is laid anywhere)
+    cut = ragged(inner, min(fade, H * .25), seed + 77, fade_sides) if fade else inner
+    o = [scene(X, Y, W, H, mode, cut)]
+    if frame:
+        o.append(frame(cx, cy, sw, sh, outer, inner, mode))
+    if arms:
+        import arms as _A
+        aw = ah * .86
+        ax, ay = cx - aw / 2, h - ah - 1
+        plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
+        o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
+        o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
+    return _C.svg_doc(w, h, "".join(o))
+
+
+# ------------------------------------------------------------------------------------------------
 # Easter eggs, carved as a small relief roundel where a scroll would have grown
 # ------------------------------------------------------------------------------------------------
 
@@ -2108,11 +2238,103 @@ def _layout_tall(w, h, seed, density=1.):
     return "".join(o)
 
 
+def _night(cv, X, Y, W, H, seed, avoid=()):
+    """A night sky in line: close waved cuts darkest at the zenith, opening toward the horizon
+    glow; stars are left as gaps in the cuts with a four-point burst. avoid: (x, y, r) discs left
+    clear (a planet, a craft). Returns the star list."""
+    rng = random.Random(seed)
+    stars = [(X + rng.uniform(0, W), Y + rng.uniform(0, H * .85), rng.choice((.8, 1.1, 1.6))) for _ in range(int(W * H / 260))]
+    clear = list(avoid) + [(sx, sy, sr + 1.) for sx, sy, sr in stars]
+    grid = {}
+    for c in clear:
+        grid.setdefault((int(c[0] // 8), int(c[1] // 8)), []).append(c)
+
+    def blocked(x, y):
+        gi, gj = int(x // 8), int(y // 8)
+        for i in (gi - 1, gi, gi + 1):
+            for j in (gj - 1, gj, gj + 1):
+                for cx, cy, r in grid.get((i, j), ()):
+                    if (x - cx) ** 2 + (y - cy) ** 2 < r * r:
+                        return True
+        return False
+    cv.obj([[(X - 3, Y - 3), (X + W + 3, Y - 3), (X + W + 3, Y + H + 3), (X - 3, Y + H + 3)]], 0)
+    y = Y - 2
+    while y < Y + H + 2:
+        f = (y - Y) / max(1., H)
+        run = []
+        x = X - 3
+        while x <= X + W + 3:
+            yy = y + .5 * math.sin(x * .09 + y * .3)
+            if blocked(x, yy):
+                if len(run) > 1:
+                    cv.hair(run)
+                run = []
+            else:
+                run.append((x, yy))
+            x += 1.5
+        if len(run) > 1:
+            cv.hair(run)
+        y += 1.5 if f < .45 else 2. if f < .75 else 3.
+    for sx, sy, sr in stars:
+        if sr > 1.4:
+            cv.hair([[(sx - sr * 1.2, sy), (sx + sr * 1.2, sy)], [(sx, sy - sr * 1.2), (sx, sy + sr * 1.2)]])
+    return stars
+
+
+def lisa(X, Y, W, H, seed, mode):
+    """The lead story as a tailpiece: LISA's three spacecraft in their triangle, trading laser
+    beams across space, while the ripples of a merging pair of black holes spread toward them."""
+    rng = random.Random(seed)
+    cv = KCanvas()
+    # the merging pair, left, and the craft's triangle, right
+    bx, by = X + W * .2, Y + H * .52
+    tri = [(X + W * .62, Y + H * .18), (X + W * .86, Y + H * .5), (X + W * .58, Y + H * .82)]
+    _night(cv, X, Y, W, H, seed + 2, avoid=[(bx, by, H * .14)] + [(x, y, H * .1) for x, y in tri])
+    # the wave: rings spreading from the pair, cut white across the night, closing in pitch
+    for k in range(1, 9):
+        r = H * (.12 + .11 * k)
+        ring = [(bx + r * 1.25 * math.cos(a), by + r * .8 * math.sin(a)) for a in [-1.1 + 2.2 * j / 40 for j in range(41)]]
+        cv.obj([[(x + .0, y) for x, y in ring] + [(x - 1.2, y) for x, y in ring[::-1]]], 0)
+        cv.hair(ring)
+    for sg in (-1, 1):
+        cv.obj([C._ell_pts(bx + sg * H * .05, by, H * .05, H * .05, 14)[:-1]], 1.)
+        cv.hair(C.hatch_poly(C._ell_pts(bx + sg * H * .05, by, H * .045, H * .045, 12), 0, 1.))
+    # the laser arms
+    for a, b in zip(tri, tri[1:] + tri[:1]):
+        cv.obj([[(a[0], a[1] - .8), (b[0], b[1] - .8), (b[0], b[1] + .8), (a[0], a[1] + .8)]], 0)
+        cv.line([a, b])
+    # each craft: a squat drum with its two telescopes and a solar skirt
+    for x, y in tri:
+        s_ = max(3., H * .08)
+        body = [(x - s_, y - s_ * .35), (x + s_, y - s_ * .35), (x + s_, y + s_ * .35), (x - s_, y + s_ * .35)]
+        cv.obj([C._ell_pts(x, y + s_ * .35, s_, s_ * .35, 16)[:-1]], 1.)
+        cv.obj([body], 1.)
+        cv.hair(C.hatch_poly(body, 90, 1.5))
+        cv.obj([C._ell_pts(x, y - s_ * .35, s_, s_ * .35, 16)[:-1]], 1.)
+        cv.hair(C.hatch_poly(C._ell_pts(x, y - s_ * .35, s_ * .55, s_ * .2, 10), 0, 1.))
+    # the egg: the wave as a bar of swing ride rhythm, a staff rippling under the triangle
+    sx0, sx1 = X + W * .3, X + W * .52
+    sy = Y + H * .84
+    staff = []
+    for k in range(5):
+        staff.append([(sx0 + (sx1 - sx0) * t, sy - 4 + k * 1.6 + 1.2 * math.sin(t * 6.3)) for t in [j / 20 for j in range(21)]])
+    cv.obj([[(sx0 - 2, sy - 7), (sx1 + 2, sy - 7), (sx1 + 2, sy + 6), (sx0 - 2, sy + 6)]], 0)
+    cv.hair(staff)
+    for j, t in enumerate((.12, .38, .55, .8)):
+        nx = sx0 + (sx1 - sx0) * t
+        ny = sy - 2 + 1.2 * math.sin(t * 6.3) + (0 if j % 2 == 0 else 1.6)
+        cv.obj([C._ell_pts(nx, ny, 1.4, 1., 8)[:-1]], 1.)
+        cv.hair(C.hatch_poly(C._ell_pts(nx, ny, 1.3, .9, 8), 0, .8))
+        cv.line([(nx + 1.3, ny), (nx + 1.3, ny - 6)])
+    return cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 11 * int(ctx.get("sheet", 0) or 0) + 101
 
     def sc(X, Y, W, H, mode, inner):
-        return scene(X, Y, W, H, _d(inner, True, 0), seed, "short" if mode == "s" else "medium")
+        return clip_to(f"lisa{mode}{int(H)}", inner, lisa(X, Y, W, H, seed, mode))
 
-    return king_plate(w, h, ctx, sc, egg_elephant, "THIS MORNING IN SCIENCE", seed)
+    # the edition plan: a small tailpiece of about 8% of the sheet on the last sheet
+    return form_plate(w, h, ctx, sc, "oval", "tailpiece", seed, fade=10.)

@@ -1,12 +1,15 @@
-"""Roads and mountains: Mt. Hood rising over a winding road, engraved inside the house cartouche.
+"""Roads and mountains: the section front.
 
-The road S-curves up out of a tufted meadow toward the mountain between fir-crowned
-foothills; the moon hangs at today's phase in an engraved sky. Set as a section front: King-tier
-medallion in a fine-scroll field, the title lettered over it. Easter eggs: the roadside route
-shield reads "P", and a tiny Mt. Hood roundel hides in the scrolls.
+Per the edition plan: a vignette of a quarter sheet or more, a ROUNDEL showing the commute. The St.
+Johns Bridge's gothic towers and cable sag over the Willamette, US-30 running under Forest Park on
+the near shore with a car on it, the Sauvie Island bridge low on the horizon downriver, cumulus
+building over the hills. The roundel is ringed in riveted steel truss, the bridge's own; the
+Somaster arms sit in a small beaded cartouche at its foot.
+Easter egg: the St. Johns Bridge itself is Parker's (it is also his commute).
 """
 import sys
 import math
+import random
 import datetime
 import engraving_codex as C
 
@@ -491,38 +494,31 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
         y += pitch
     cv.hair(lines)
     for poly, tops, cy, bl, x0, x1 in sorted(shapes, key=lambda s: s[2]):
-        cv.obj([poly], .5)
-        # the body rolled in curved cuts that bow with the base, stopping short of each crown so
-        # a lit rim stays white; denser toward the shadowed base
-        cuts = []
-        v = cy - .5
-        while True:
-            seg = []
-            any_ = False
-            for x, tp in tops:
-                u = (x - x0) / max(1., x1 - x0)
-                yy = v + 1.6 * _m.sin(_SPI * u) - 1.2
-                rim = 1.8 + (cy - tp) * .22
-                if yy > tp + rim:
-                    seg.append((x, yy))
-                    any_ = True
-                elif len(seg) > 1:
-                    cuts.append(seg)
-                    seg = []
-                else:
-                    seg = []
-            if len(seg) > 1:
-                cuts.append(seg)
-            if not any_:
-                break
-            v -= 1.5 if cy - v < 5 else 2. if cy - v < 11 else 3.
-        cv.hair(cuts)
-        # the billows' crowns where they fold over one another
-        for bx, by, br in bl:
-            arc = [(bx + br * .92 * _m.cos(a), by + br * .92 * _m.sin(a)) for a in [_SPI * (1.15 + .7 * i / 8) for i in range(9)]]
-            arc = [p for p in arc if (top_of(bl, p[0]) or -1e9) < p[1] - 1.5]
-            if len(arc) > 1:
-                cv.hair(arc)
+        # each billow a modelled dome, painted back to front: its crown left white to the light
+        # (upper left), its body turned in arcs that close toward the shadowed lower right, a
+        # dark seam of close lines at its base
+        for bx, by, br in sorted(bl, key=lambda b: b[2]):
+            circ = [(bx + br * _m.cos(a), min(cy + 1., by + br * _m.sin(a))) for a in [2 * _SPI * i / 40 for i in range(40)]]
+            cv.obj([circ], .5)
+            arcs = []
+            k = 0
+            rr = br * .9
+            while rr > br * .3:
+                a0 = -.35 - .25 * k / 4
+                a1 = _SPI * (.95 - .04 * k)
+                seg = []
+                for i in range(15):
+                    a = a0 + (a1 - a0) * i / 14
+                    px, py = bx + rr * _m.cos(a) + br * .08, by + rr * _m.sin(a) * .9 + br * .1
+                    if py < cy:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                k += 1
+                rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            cv.hair(arcs)
+            sh = [(x, max(y, cy - br * .3)) for x, y in circ]
+            cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
         cv.line([(x0 + 2, cy + .8), (x1 - 2, cy + .8)])
     if sun:
         sx, sy, sr = sun
@@ -1500,6 +1496,143 @@ def king_plate(w, h, ctx, scene, egg=None, caption="", seed=0, front=None, land=
 
 
 # ------------------------------------------------------------------------------------------------
+# Planned forms (edition plan 1.6; art direction of Nov 12): every plate is cut to its page's form
+# and shape and stands free on the paper. No black field, no filler: the scene is the plate, its
+# edge either dissolves into white the way Bewick's tailpieces do, or is held by a frame built
+# from the page's own motifs (passed in by the page).
+# ------------------------------------------------------------------------------------------------
+
+def _shape_poly(shape, cx, cy, sw, sh, seed=0):
+    rx, ry = sw / 2, sh / 2
+    if shape in ("oval", "roundel"):
+        return _kell(cx, cy, rx, ry, 120)
+    if shape == "arched":
+        rise = min(rx * .9, sh * .5)
+        spring = cy - ry + rise
+        pts = [(cx - rx, cy + ry), (cx + rx, cy + ry), (cx + rx, spring)]
+        for i in range(1, 60):
+            a = _SPI * i / 60
+            pts.append((cx + rx * _m.cos(a), spring - rise * _m.sin(a)))
+        pts.append((cx - rx, spring))
+        return pts
+    if shape == "banner":
+        # a lunette band: both edges arched, the ends cut square
+        arch = sh * .14
+        n = 48
+        top, bot = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = cx - rx + 2 * rx * t
+            b = arch * _m.sin(_SPI * t)
+            top.append((x, cy - ry + arch - b))
+            bot.append((x, cy + ry - b))
+        return top + bot[::-1]
+    # irregular: a soft, lobed silhouette
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    pts = []
+    for i in range(140):
+        a = 2 * _SPI * i / 140
+        c, s = _m.cos(a), _m.sin(a)
+        k = (abs(c) ** 3.2 + abs(s) ** 3.2) ** (-1 / 3.2)
+        wob = (1 + .04 * _m.sin(3 * a + ph[0]) + .03 * _m.sin(7 * a + ph[1]) + .018 * _m.sin(13 * a + ph[2])
+               + .012 * _m.sin(29 * a + ph[3]))
+        pts.append((cx + rx * c * k * wob, cy + ry * s * k * wob * (.96 if s > 0 else 1.)))
+    return pts
+
+
+def _form_geom(form, shape, w, h):
+    """Where the shape sits in the w x h box: (cx, cy, sw, sh)."""
+    pad = 2.
+    sh = h - 2 * pad
+    if shape == "roundel":
+        sw = min(sh, w * .62)
+        sh = min(sh, sw)
+    elif shape == "oval":
+        frac = .55 if form == "tailpiece" else .62
+        sw = min(sh * (2.3 if form == "tailpiece" else 1.45), w * frac)
+        sh = min(sh, sw * 1.05)
+    elif shape == "arched":
+        sw = min(sh * 1.3, w * .6)
+        sh = min(sh, sw * 1.45)
+    elif shape == "banner":
+        sw = w * (.96 if form == "headpiece" else .6)
+        sh = min(sh, sw * .32)
+    else:
+        sw = {"headpiece": w * .97, "tailpiece": w * .6}.get(form, min(w * .7, sh * 1.8))
+        sh = min(sh, sw * .95)
+    return w / 2, h / 2, sw, sh
+
+
+def ragged(poly, band, seed=0, sides=None):
+    """The Bewick edge as a cut: the outline resampled every px or so and each point pushed inward
+    by its own random depth (most near the rim, a few deep), so the scene's lines end raggedly and
+    the engraving fades into whatever lies under the plate. sides(x, y) limits it to part of the edge."""
+    rng = _r.Random(seed)
+    cx = sum(p[0] for p in poly) / len(poly)
+    cy = sum(p[1] for p in poly) / len(poly)
+    out = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        seg = _m.hypot(b[0] - a[0], b[1] - a[1])
+        steps = max(1, int(seg / 1.3))
+        tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
+        nx, ny = -ty, tx
+        if (cx - a[0]) * nx + (cy - a[1]) * ny < 0:
+            nx, ny = -nx, -ny
+        for k in range(steps):
+            t = k / steps
+            x, y = a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t
+            if sides is not None and not sides(x, y):
+                out.append((x, y))
+                continue
+            d = band * (rng.random() ** 1.8) * (.6 + .4 * _m.sin(x * .07 + y * .05) ** 2)
+            out.append((x + nx * d, y + ny * d))
+    return out
+
+
+def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False, frame=None, ft=0.,
+               fade=10., fade_sides=None):
+    """A planned plate, w x h: the subject in its `shape`, sized for its `form`, standing free on the
+    paper. frame(cx, cy, sw, sh, outer, inner, mode) -> svg draws the page's own frame over the
+    scene's edge (ft: how far it reaches in). fade: the width of the dissolving edge (0 for none).
+    arms=True (section fronts) sets the Somaster dedication cartouche at the foot.
+    scene(X, Y, W, H, mode, clip_poly) -> svg; mode 's' (h < 110), 'm' (to 260) or 't'."""
+    mode = "s" if h < 110 else ("m" if h <= 260 else "t")
+    cx, cy, sw, sh = _form_geom(form, shape, w, h)
+    ah = 0.
+    if arms:
+        ah = max(24., min(48., h * .17))
+        sh = min(sh, h - 4 - ah * .6)
+        cy = 2 + sh / 2
+        if shape == "roundel":
+            sw = min(sw, sh)
+    outer = _shape_poly(shape, cx, cy, sw, sh, seed)
+    inner = _shape_poly(shape, cx, cy, sw - 2 * ft, sh - 2 * ft, seed) if ft else outer
+    ixs = [p[0] for p in inner]
+    iys = [p[1] for p in inner]
+    X, Y = min(ixs), min(iys)
+    W, H = max(ixs) - X, max(iys) - Y
+    # the cut: outside it the plate is transparent, so the page's own light ground shows through;
+    # with fade the cut is ragged, every line ending at its own depth, so the engraving dissolves
+    # into that ground instead of stopping at a rule (no white is laid anywhere)
+    cut = ragged(inner, min(fade, H * .25), seed + 77, fade_sides) if fade else inner
+    o = [scene(X, Y, W, H, mode, cut)]
+    if frame:
+        o.append(frame(cx, cy, sw, sh, outer, inner, mode))
+    if arms:
+        import arms as _A
+        aw = ah * .86
+        ax, ay = cx - aw / 2, h - ah - 1
+        plq = _kell(cx, ay + ah / 2, aw / 2 + 4, ah / 2 + 2.5, 48)
+        o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
+        o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
+        o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
+    return _C.svg_doc(w, h, "".join(o))
+
+
+# ------------------------------------------------------------------------------------------------
 # Easter eggs, carved as a small relief roundel where a scroll would have grown
 # ------------------------------------------------------------------------------------------------
 
@@ -1933,11 +2066,162 @@ def _tree(x, y, s):
 # plate
 # ----------------------------------------------------------------------------------------------
 
+def _wavelets(cv, X, y0, W, y1, seed, glint=None):
+    rng = random.Random(seed)
+    y = y0 + 1.2
+    while y < y1 + 2:
+        f = (y - y0) / max(1., y1 - y0)
+        x = X - 3 - rng.uniform(0, 8)
+        while x < X + W + 3:
+            L = rng.uniform(4, 10) * (1 + 1.5 * f)
+            gap = rng.uniform(.8, 2.4)
+            if glint and abs(x - glint) < W * .06 * (1 + f):
+                gap *= 2.5
+            n = max(2, int(L / 2.5))
+            amp = .4 + .7 * f
+            cv.hair([(x + L * k / n, y - amp * math.sin(math.pi * k / n)) for k in range(n + 1)])
+            x += L + gap
+        y += 2. if f < .5 else 1.5
+
+
+def _gothic_tower(cv, x, top, base, wd):
+    """A St. Johns tower: twin legs rising to a pointed gothic crown, lancet openings cut through,
+    the shadowed east face close-ruled."""
+    hh = base - top
+    out = [(x - wd * .5, base), (x - wd * .42, top + hh * .1), (x - wd * .3, top + hh * .03), (x, top - wd * .5),
+           (x + wd * .3, top + hh * .03), (x + wd * .42, top + hh * .1), (x + wd * .5, base)]
+    cv.obj([out], 1.)
+    cv.hair(C.hatch_poly([(x + wd * .08, base), (x + wd * .1, top), (x + wd * .42, top + hh * .1), (x + wd * .5, base)], 90, 1.5))
+    for f0, f1 in ((.12, .3), (.36, .54), (.6, .78)):
+        ya, yb = top + hh * f0, top + hh * f1
+        lw = wd * .2
+        lan = [(x - lw, yb), (x - lw, ya + lw), (x, ya - lw * .2), (x + lw, ya + lw), (x + lw, yb)]
+        cv.obj([lan], .5)
+        cv.line([(x - lw, yb), (x - lw, ya + lw), (x, ya - lw * .2)])
+    cv.heavy([(x, top - wd * .5), (x, top - wd * 1.1)])
+
+
+def commute(X, Y, W, H, seed, mode):
+    """The commute in a roundel: the St. Johns Bridge's gothic towers and cable over the Willamette,
+    US-30 running under Forest Park on the near shore, the Sauvie Island bridge far downriver."""
+    rng = random.Random(seed)
+    cv = KCanvas()
+    hz = Y + H * .62
+    engraved_sky(cv, X - 2, Y - 2, W + 4, hz - Y + 3, seed + 3, clouds=2, maxc=3)
+    # Forest Park: a long wooded ridge, its crowns stippled in little arcs, shadowed below
+    ridge = [(X - 3, hz + 1)] + [(X + W * t, hz - H * (.16 - .1 * t + .025 * math.sin(t * 17 + seed))) for t in [k / 40 for k in range(41)]] + [(X + W + 3, hz + 1)]
+    cv.obj([ridge], .5)
+    for k in range(int(W * H / 60)):
+        u = rng.random()
+        top = hz - H * (.16 - .1 * u)
+        yy = rng.uniform(top + 2, hz)
+        if yy > top + 1:
+            xx = X + W * u
+            r = 1.2 + 1.5 * (yy - top) / max(1., hz - top)
+            cv.hair([(xx - r, yy), (xx - r * .5, yy - r * .8), (xx + r * .5, yy - r * .8), (xx + r, yy)])
+    cv.hair(C.hatch_poly([(p[0], max(p[1], hz - H * .05)) for p in ridge], 0, 1.5))
+    # the Sauvie Island bridge far off, a low tied arch on the horizon at the right
+    sx0, sx1 = X + W * .74, X + W * .9
+    arc = [(sx0 + (sx1 - sx0) * t, hz - 1 - H * .045 * math.sin(math.pi * t)) for t in [k / 12 for k in range(13)]]
+    cv.line(arc)
+    cv.line([(sx0 - 6, hz - 1), (sx1 + 6, hz - 1)])
+    for k in range(1, 12):
+        cv.hair([arc[k], (arc[k][0], hz - 1)])
+    # the river
+    cv.obj([[(X - 3, hz + 1), (X + W + 3, hz + 1), (X + W + 3, Y + H + 3), (X - 3, Y + H + 3)]], 0)
+    _wavelets(cv, X, hz + 1, W, Y + H, seed + 5, glint=X + W * .55)
+    # US-30 on the near (left) shore: an embankment with the road and a car on it
+    by = Y + H * .8
+    bank = [(X - 3, Y + H + 3), (X - 3, by - H * .02), (X + W * .28, by + H * .02), (X + W * .36, Y + H + 3)]
+    cv.obj([bank], 1.)
+    cv.hair(C.hatch_poly(bank, -25, 2))
+    cv.hair(C.hatch_poly(bank, 50, 3))
+    road = [(X - 3, by - H * .05), (X + W * .3, by - H * .005)]
+    cv.obj([[road[0], road[1], (road[1][0], road[1][1] + H * .03), (road[0][0], road[0][1] + H * .03)]], .5)
+    cv.line([road[0], road[1]])
+    cars = [(X + W * .12, by - H * .035)]
+    for cx_, cy_ in cars:
+        cw, ch = W * .045, H * .028
+        car = [(cx_ - cw / 2, cy_), (cx_ - cw / 2, cy_ - ch * .55), (cx_ - cw * .2, cy_ - ch), (cx_ + cw * .25, cy_ - ch),
+               (cx_ + cw / 2, cy_ - ch * .5), (cx_ + cw / 2, cy_)]
+        cv.obj([car], 1.)
+        cv.hair(C.hatch_poly(car, 0, 1.))
+    # the St. Johns Bridge
+    dk = Y + H * .5
+    t1, t2 = X + W * .3, X + W * .7
+    ttop = Y + H * .14
+    wd = max(5., W * .05)
+    deck = [(X - 3, dk), (X + W + 3, dk - 1), (X + W + 3, dk + H * .03), (X - 3, dk + H * .03 + 1)]
+    cable = [(X - 3, dk - H * .02)]
+    cable += [(t1 + (X - 3 - t1) * (1 - t) , ttop + (dk - H * .02 - ttop) * (1 - t) ** 1.3) for t in [k / 10 for k in range(1, 11)]]
+    mid = [(t1 + (t2 - t1) * t, ttop + (dk - H * .04 - ttop) * math.sin(math.pi * t) ** .9) for t in [k / 24 for k in range(1, 24)]]
+    right = [(t2 + (X + W + 3 - t2) * t, ttop + (dk - H * .02 - ttop) * t ** 1.3) for t in [k / 10 for k in range(11)]]
+    cab = cable + mid + right
+    # piers into the water, with their reflections
+    for tx in (t1, t2):
+        pier = [(tx - wd * .6, dk), (tx + wd * .6, dk), (tx + wd * .7, hz + H * .05), (tx - wd * .7, hz + H * .05)]
+        cv.obj([pier], 1.)
+        cv.hair(C.hatch_poly(pier, 0, 1.5))
+        refl = [(tx - wd * .6, hz + H * .05), (tx + wd * .6, hz + H * .05), (tx + wd * .3, hz + H * .16), (tx - wd * .3, hz + H * .16)]
+        cv.hair(C.hatch_poly(refl, 90, 1.5))
+    # suspenders
+    sus = []
+    for p in cab:
+        if p[1] < dk - 2 and abs(p[0] - t1) > wd * .6 and abs(p[0] - t2) > wd * .6:
+            sus.append([p, (p[0], dk)])
+    cv.hair(sus)
+    cv.obj([deck], 1.)
+    tr = []
+    xx = X - 3
+    k = 0
+    while xx < X + W + 3:
+        tr.append([(xx, dk + .5), (xx + H * .03, dk + H * .03)] if k % 2 else [(xx, dk + H * .03), (xx + H * .03, dk + .5)])
+        xx += H * .03
+        k += 1
+    cv.hair(tr)
+    for tx in (t1, t2):
+        _gothic_tower(cv, tx, ttop, dk + 1, wd)
+    cv.line(cab)
+    return cv.svg()
+
+
+def _truss_ring(cx, cy, sw, sh, outer, inner, mode, ft=8.):
+    """The frame: a riveted steel ring like the bridge's own stiffening truss, two chords with a
+    lattice between them and a rivet at every node."""
+    cv = KCanvas()
+    rx, ry = sw / 2, sh / 2
+    ring_o = C._ell_pts(cx, cy, rx, ry, 160)[:-1]
+    ring_i = C._ell_pts(cx, cy, rx - ft, ry - ft, 160)[:-1]
+    band = (f'<path d="{_SD(ring_o, True, .1)}{_SD(ring_i[::-1], True, .1)}" fill="none" '
+            f'stroke="#000" stroke-width="1"/>')
+    per = math.pi * (2 * rx - ft)
+    n = int(per / (ft * .9)) // 2 * 2
+    lat, riv = [], []
+    for i in range(n):
+        a0 = 2 * math.pi * i / n
+        a1 = 2 * math.pi * (i + 1) / n
+        po = (cx + (rx - ft * .2) * math.cos(a0), cy + (ry - ft * .2) * math.sin(a0))
+        pi_ = (cx + (rx - ft * .8) * math.cos(a1), cy + (ry - ft * .8) * math.sin(a1))
+        pi0 = (cx + (rx - ft * .8) * math.cos(a0), cy + (ry - ft * .8) * math.sin(a0))
+        lat.append([po, pi_] if i % 2 else [pi0, (cx + (rx - ft * .2) * math.cos(a1), cy + (ry - ft * .2) * math.sin(a1))])
+        lat.append([po, pi0])
+        riv.append(C._ell_pts(po[0], po[1], .7, .7, 6)[:-1])
+    cv.line(lat)
+    cv.hair([[(cx + (rx - ft * .1) * math.cos(a), cy + (ry - ft * .1) * math.sin(a)) for a in [2 * math.pi * k / 160 for k in range(161)]]])
+    for r_ in riv:
+        cv.obj([r_], .5)
+    return band + cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = _hash(ctx.get("date", "") + "roads") % 100000
 
     def sc(X, Y, W, H, mode, inner):
-        return clip_to(C._uid("rdf", w, h, seed, mode), inner, _scene(X, Y, W, H, ctx))
+        return clip_to(C._uid("rdf", w, h, seed, mode), inner, commute(X, Y, W, H, seed, mode))
 
-    return king_plate(w, h, ctx, sc, egg_hood, "IS THE MOUNTAIN OUT?", seed, front="ROADS AND MOUNTAINS", land=.7)
+    # the edition plan: the section front's vignette, a quarter sheet or more, a ROUNDEL of the
+    # commute, ringed in bridge truss, with the Somaster dedication cartouche at its foot
+    ft = max(6., min(12., h * .045))
+    return form_plate(w, h, ctx, sc, "roundel", "front", seed, arms=True,
+                      frame=lambda *a: _truss_ring(*a, ft=ft), ft=ft, fade=0.)

@@ -1563,42 +1563,32 @@ def _form_geom(form, shape, w, h):
     return w / 2, h / 2, sw, sh
 
 
-def dissolve(poly, band, seed=0, sides=None):
-    """The Bewick edge: the scene's lines break up into white flecks toward the shape's edge, many
-    at the rim and fewer inward, so the engraving fades into the paper rather than stopping at a
-    rule. sides(x, y) -> bool limits it to part of the edge. Three white path elements."""
+def ragged(poly, band, seed=0, sides=None):
+    """The Bewick edge as a cut: the outline resampled every px or so and each point pushed inward
+    by its own random depth (most near the rim, a few deep), so the scene's lines end raggedly and
+    the engraving fades into whatever lies under the plate. sides(x, y) limits it to part of the edge."""
     rng = _r.Random(seed)
     cx = sum(p[0] for p in poly) / len(poly)
     cy = sum(p[1] for p in poly) / len(poly)
-    d1, d2 = [], []
+    out = []
     n = len(poly)
     for i in range(n):
         a, b = poly[i], poly[(i + 1) % n]
         seg = _m.hypot(b[0] - a[0], b[1] - a[1])
-        steps = max(1, int(seg / 1.4))
+        steps = max(1, int(seg / 1.3))
+        tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
+        nx, ny = -ty, tx
+        if (cx - a[0]) * nx + (cy - a[1]) * ny < 0:
+            nx, ny = -nx, -ny
         for k in range(steps):
             t = k / steps
             x, y = a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t
             if sides is not None and not sides(x, y):
+                out.append((x, y))
                 continue
-            tx, ty = (b[0] - a[0]) / (seg or 1), (b[1] - a[1]) / (seg or 1)
-            nx, ny = -ty, tx
-            if (cx - x) * nx + (cy - y) * ny < 0:
-                nx, ny = -nx, -ny
-            for j in range(3):
-                u = band * rng.random() ** 2.2
-                f = 1 - u / band
-                ln = (1.5 + 5 * rng.random()) * f + .8
-                px, py = x + nx * u, y + ny * u
-                ang = _m.atan2(ty, tx) + rng.uniform(-.25, .25)
-                sd = f"M{_SN(px - _m.cos(ang) * ln / 2)},{_SN(py - _m.sin(ang) * ln / 2)}l{_SN(_m.cos(ang) * ln)},{_SN(_m.sin(ang) * ln)}"
-                (d2 if f > .55 else d1).append(sd)
-    o = f'<path d="{_SD(poly, True, .1)}" fill="none" stroke="#fff" stroke-width="3"/>'
-    if d2:
-        o += f'<path d="{"".join(d2)}" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>'
-    if d1:
-        o += f'<path d="{"".join(d1)}" stroke="#fff" stroke-width="1" stroke-linecap="round" fill="none"/>'
-    return o
+            d = band * (rng.random() ** 1.8) * (.6 + .4 * _m.sin(x * .07 + y * .05) ** 2)
+            out.append((x + nx * d, y + ny * d))
+    return out
 
 
 def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=False, frame=None, ft=0.,
@@ -1615,15 +1605,19 @@ def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=Fal
         ah = max(24., min(48., h * .17))
         sh = min(sh, h - 4 - ah * .6)
         cy = 2 + sh / 2
+        if shape == "roundel":
+            sw = min(sw, sh)
     outer = _shape_poly(shape, cx, cy, sw, sh, seed)
     inner = _shape_poly(shape, cx, cy, sw - 2 * ft, sh - 2 * ft, seed) if ft else outer
     ixs = [p[0] for p in inner]
     iys = [p[1] for p in inner]
     X, Y = min(ixs), min(iys)
     W, H = max(ixs) - X, max(iys) - Y
-    o = [scene(X, Y, W, H, mode, inner)]
-    if fade:
-        o.append(clip_to(f"fd{seed % 9973}{mode}{int(h)}", inner, dissolve(inner, min(fade, H * .25), seed + 77, fade_sides)))
+    # the cut: outside it the plate is transparent, so the page's own light ground shows through;
+    # with fade the cut is ragged, every line ending at its own depth, so the engraving dissolves
+    # into that ground instead of stopping at a rule (no white is laid anywhere)
+    cut = ragged(inner, min(fade, H * .25), seed + 77, fade_sides) if fade else inner
+    o = [scene(X, Y, W, H, mode, cut)]
     if frame:
         o.append(frame(cx, cy, sw, sh, outer, inner, mode))
     if arms:

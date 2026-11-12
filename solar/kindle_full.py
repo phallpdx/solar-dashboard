@@ -24,6 +24,7 @@ import sys
 import threading
 
 from . import ornament as kindle_orn
+from . import kindle_present
 
 
 TZ = "America/Los_Angeles"
@@ -563,10 +564,8 @@ CURATE = r"""
 
   step('mountain', () => {
     const rows = $$('#mtn > div, #mtn .mtn');
-    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r)))) {
+    if (rows.length > 1 && rows.every(r => /Hidden today/.test(txt(r)) && /Tomorrow: hidden/i.test(txt(r))))
       verdict('All three peaks are hidden today and tomorrow.', $('#mtn'));
-      for (const r of rows) for (const el of r.querySelectorAll('*')) if (!el.children.length && /Hidden today|Tomorrow: hidden/i.test(txt(el))) kill(el);
-    }
     for (const el of $$('#ski-card .k, #ski-card .tile span')) if (/^Last 24 hours$/i.test(txt(el))) el.textContent = '24-hour change';
   });
 
@@ -1896,6 +1895,8 @@ EINK_CSS += """
 html.kpaged body #kmain{will-change:transform}
 .kart{display:block;margin:0 auto;contain:strict;overflow:hidden}
 """
+# How the data is presented (answer first, statuses, one .kpanel per text block): last, so it governs.
+EINK_CSS += kindle_present.CSS
 
 PAGER_JS = r"""
 <script>
@@ -1916,7 +1917,7 @@ PAGER_JS = r"""
   if (!view || !main || !kview || !bar || !window.getComputedStyle || !('flexBasis' in st || 'webkitFlexBasis' in st)) return;
   var lastBoxes = null, lastSig = '', cuts = [0], tops = [0], heads = [], brk = [], sheet = 0, H = 0, C = 0, turns = 0, timer = 0, FLASH_EVERY = 6, hashDone = false;
   var knx = document.querySelector('.kbar .knx'), knxLabel = knx ? knx.innerHTML : '';
-  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail,.kgl,.kchart';
+  var UNITS = '.kleads>a,.kresume,.kbrief,.sp,.bday,.deal,.mush,.rep-head,.story,.lines>div,li,.fd,.sday,.brk,.rec,.idea,.book,.book-today,.rep,.recap,.mini,.tile,.tiles,.facts,figure,img,svg,.bars,.rain,.vote,.poem-text>span,h3,.sub,.day-h,.cal-day,.kscore,table,tr,.allclear,.krail,.kgl,.kchart,.kpanel,.krow';
   var TITLE = (function(){ var h = main.querySelector('h2,.sci-title,.poem-title'); return h ? (h.textContent || '').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '') : document.title; })();
   function on() { return (' ' + root.className + ' ').indexOf(' kpaged ') >= 0; }
   function cls(name, v) { root.className = root.className.replace(new RegExp('(^|\\s)' + name + '(?=\\s|$)', 'g'), '') + (v ? ' ' + name : ''); }
@@ -2094,7 +2095,7 @@ PAGER_JS = r"""
       if (!main.getAttribute('data-kink')) { main.setAttribute('data-kink', '1');
         var ka = main.getElementsByTagName('*');
         for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
-          if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg')))
+          if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
             ke.style.setProperty('background-color', 'transparent', 'important'); } }
       var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className;
       if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
@@ -2188,6 +2189,8 @@ PAGER_JS = r"""
     for (var g = 0; g < gq.length; g++) view.removeChild(gq[g]);
     if (kme) {
       var gl = ((typeof lastBoxes !== 'undefined' && lastBoxes) || boxes()).ls.slice(), mt0 = main.getBoundingClientRect().top, vis = Math.min(h, end - top), mb = null;
+      var kpq = main.querySelectorAll('.kpanel');   /* panels are whole blocks: the fleurons go in the gaps between them only */
+      if (kpq.length) { gl = []; for (var kq0 = 0; kq0 < kpq.length; kq0++) { var kr0 = kpq[kq0].getBoundingClientRect(); if (kr0.height > 0) gl.push({ top: kr0.top - mt0, bottom: kr0.bottom - mt0 }); } }
       var dq = main.querySelectorAll('.kfhead,.kmast,.kend,.kgl,.kendsrc,.ktoc');   /* drawn by pseudo-elements: printed too */
       for (var d0 = 0; d0 < dq.length; d0++) { var dr = dq[d0].getBoundingClientRect(); gl.push({ top: dr.top - mt0, bottom: dr.bottom - mt0 }); }
       gl.sort(function (a, b) { return a.top - b.top; });
@@ -2200,10 +2203,13 @@ PAGER_JS = r"""
     unscroll();
     if (more) {
       more.style.display = (i < n - 1) ? '' : 'none';
-      more.innerHTML = 'More &darr; <span class="kfol">' + (i + 1) + '/' + n + '</span>';
+      more.innerHTML = 'More &darr;<span class="kfol" hidden>' + (i + 1) + '/' + n + '</span>';
     }
-    if (pos) pos.innerHTML = (n > 1 && i === n - 1) ? n + '/' + n : '';
-    if (knx && knxLabel && NEXT_URL) knx.innerHTML = (i < n - 1 ? 'Skip to ' : '') + knxLabel.replace(/^Next: /, '');
+    if (pos) pos.innerHTML = '';
+    var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
+    if (ksh) ksh.innerHTML = n > 1 ? 'Sheet ' + (i + 1) + ' of ' + n : '';
+    if (knx && knxLabel && NEXT_URL) { var kl0 = knxLabel.replace(/^Next: /, ''), kl1 = kl0.replace(/<[^>]+>|&\w+;/g, '');
+      knx.innerHTML = i < n - 1 ? (kl1.length > 16 ? 'Next page &rsaquo;' : 'Skip to ' + kl0) : (kl1.length > 26 ? 'Next page &rsaquo;' : kl0); }
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
@@ -2329,7 +2335,8 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     esc = html.escape
     nav = (_JUMP[0] if jump is None else jump) if run_left else ""
     btn = '<b class="ksecbtn">Sections &#9662;</b>' if nav else ""
-    top = f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>'
+    top = (f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}<i id="ksheet"></i>{btn}</span></nav>'
+           if run_left else f'<nav class="krun"><a href="{run_href}">{run_left}</a><span>{esc(run_right)}{btn}</span></nav>')
     nxt_name = esc(next_label) if next_label else esc(prev_title(nxt)) if nxt else ""
     nxt_block = (f'<a class="knext" href="{nxt}"><small>Next</small><span>{nxt_name} &rarr;</span></a>' if nxt
                  else '<a class="knext" href="index.html"><small>The end</small><span>Back to the front &rarr;</span></a>')
@@ -2548,6 +2555,53 @@ CARD_ORDER = {
 }
 # Cards that read better in another section: (heading id, from, to).
 CARD_MOVES = [("thai-h", "delights", "world")]
+
+# ---- The edition plan (redesign/edition-plan.md): merges, item caps and cuts, in one place.
+# A merge folds one card into another as a titled block (key: heading id or card title).
+PLAN_MERGES = [
+    ("shade-h", "brief-h"),                       # Window shades -> Alfred
+    ("yard-h", "wx-h"), ("jar-h", "wx-h"),        # Yard vs. forecast, rain jar -> weather station
+    ("road-h", "drive-h"),                        # Road cams -> Drive times
+    ("ski-h", "mtn-h"), ("trail-h", "mtn-h"),     # The mountain: visibility, then Mt. Hood, then trail reports
+    ("quake-h", "fire-h"),                        # Hazards
+    ("ask-h", "play-h"), ("bug-h", "play-h"),     # Dinner question, germ report -> Little adventures
+    ("loads-h", "Solar right now"),               # Solar today
+    ("wins-h", "bill-h"),                         # Milestones -> billing cycle
+    ("burn-h", "look-h"), ("pollen-h", "look-h"), ("plant-h", "look-h"), ("forest-h", "look-h"),
+    ("bloom-h", "look-h"), ("food-h", "look-h"),  # Walk the land
+    ("moor-h", "columbia-h"),                     # Ship -> The Columbia
+    ("light-h", "sunset-h"), ("set-h", "sunset-h"),  # Daylight, sunset on the move -> tonight's sunset
+    ("sunact-h", "sky-h"),                        # Spots on the sun -> sky events
+    ("reviews-h", "stories-h"),                   # A/V and tech desk
+    ("Portland State Vikings", "Portland Timbers"), ("Portland Pilots", "Portland Timbers"),
+    ("f1-h", "Portland Timbers"), ("title-h", "Portland Timbers"),   # The scoreboard
+    ("drum-h", "rec-h"), ("bday-h", "rec-h"),     # The record page
+    ("plane-h", "sky-h"),                         # Planes overhead -> two rows in Sky events
+    ("Portland Timbers", "Portland Trail Blazers"),   # one scoreboard: the Blazers lead, the rest follow
+    ("show-h", "gig-h"),                          # Live from Portland -> live music
+    ("clsmov-h", "kidmov-h"),                     # Tonight's movies
+    ("oldpdx-h", "near-h"),                       # Old Portland -> local history
+    ("shelf-h", "books-h"),                       # Bookshelf -> books
+    ("minus-h", "This week at the coast"), ("cev-h", "shell-h"),
+]
+# Most items a card's main list prints (the plan's item caps: the main tool against orphan sheets).
+PLAN_CAPS = {"plan-h": 5, "cal-h": 8, "out-h": 8, "localnews-h": 6, "bignews-h": 7, "stories-h": 4, "reviews-h": 4, "finds-h": 3,
+             "open-h": 5, "big-h": 5, "liq-h": 6, "br-h": 5, "tv-h": 6, "alb-h": 6, "jazz-h": 8, "gig-h": 6, "good-h": 3,
+             "play-h": 4, "mush-h": 5, "birds-h": 5, "fire-h": 4, "road-h": 4, "hol-h": 8}
+PLAN_SCIENCE_BRIEFS = 4
+# Parker on the plan's cut list: "Merge, don't cut." Each item shrinks to a line or two inside the page it
+# belongs with (the merges above put it there); these say how much of it stays. Set a value to 0 to drop it.
+PLAN_SHRINK = {
+    "planes": 2,                # Planes overhead -> two rows in Sky events
+    "civics-votes": 1,          # the newest vote per member: one compact summary
+    "civics-news": 1,           # one news line per member
+    "born-today": 2,            # Born today -> two names in This day in history
+    "also-nearby": 2,           # Local history: two nearby places
+    "asteroids": 1,             # Sky events: one line
+    "bday-lists": 2,            # Album birthdays -> two lines on the record page
+    "team-news": 1,             # team pages -> one headline each on the scoreboard
+    "long-writeups": 2,         # market and helium narratives -> a two-line summary (paragraphs)
+}
 
 # No fact twice: an item already printed earlier in the edition is taken out
 # of the later page. Alfred's briefing is a digest, so it goes last: any line of
@@ -2809,8 +2863,31 @@ def main(site):
         h = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', "", h, flags=re.S)
         return re.sub(r"<h2\b([^>]*)>(.*?)</h2>", r'<h3 class="kfold"\1>\2</h3>', h, flags=re.S)
 
+    # The plan's merges: the folded card becomes a titled block inside its host.
+    def find_card(key):
+        for sid_, sec_ in by_id.items():
+            for c_ in sec_["cards"]:
+                if f'id="{key}"' in c_["html"] or c_["title"] == key:
+                    return sid_, c_
+        return None, None
+    for src_k, dst_k in PLAN_MERGES:
+        ss, sc = find_card(src_k)
+        ds, dc = find_card(dst_k)
+        if sc is None or dc is None or sc is dc:
+            continue
+        by_id[ss]["cards"].remove(sc)
+        dc["html"] += f'<div class="kbrief">{as_sub(sc["html"])}</div>'
+    by_id = {k: s_ for k, s_ in by_id.items() if s_["cards"]}
     # Science: one page of briefs, not seven taps of three lines each.
     sci = by_id.get("science", {}).get("cards", [])
+    seen_subj, kept_sci = set(), []
+    for c_ in sci:   # at most one brief per subject (three origin-of-life stories become one)
+        subj = "life" if re.search(r"\blife\b|\blife.s\b", c_["title"], re.I) else c_["title"]
+        if subj in seen_subj:
+            continue
+        seen_subj.add(subj)
+        kept_sci.append(c_)
+    sci = kept_sci[:PLAN_SCIENCE_BRIEFS]
     if len(sci) > 2:
         by_id["science"]["cards"] = [{"title": "Science this morning",
                                       "html": '<div class="head"><p class="kkick">Science</p><h2>This morning in science</h2></div>'
@@ -2847,6 +2924,8 @@ def main(site):
                 m = re.sub(r"^\s*<b>[^<]*</b>\s*", "", m).strip(" ·")
                 if m and m not in credits.setdefault(sid, []):
                     credits[sid].append(m)
+                if m:   # and each page keeps its own as a one-line credit at its foot
+                    c["credit"] = (c.get("credit", "") + " · " + _text(m)).strip(" ·")
             c["html"] = re.sub(r'<p class="ksources"[^>]*>.*?</p>', "", c["html"], flags=re.S)
 
     known = [i for _, ids in PARTS for i in ids]
@@ -2872,9 +2951,21 @@ def main(site):
                     body = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', f'<p class="kkick">{plain}</p>', body, count=1)
                 else:
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
-            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
+            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body, "credit": c.get("credit", ""),
                           "k": k + 1, "of": len(cards)})
     dedupe(pages, [])
+    import datetime as _dt0
+    kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
+                       caps=PLAN_CAPS, shrink=PLAN_SHRINK)
+    # A card the presentation pass emptied (a trail list with no report text) is not a page.
+    pages = [pg for pg in pages if len(body_text(pg["html"])) >= 25 or re.search(r"<img\b", pg["html"])]
+    for sid in order:
+        mine = [pg for pg in pages if pg["sec"] == sid]
+        for k, pg in enumerate(mine, 1):
+            pg.update(file=f"{sid}-{k:02d}.html", k=k, of=len(mine))
+    order = [i for i in order if any(pg["sec"] == i for pg in pages)]
+    parts = [(name, [i for i in ids if i in order]) for name, ids in parts]
+    parts = [(name, ids) for name, ids in parts if ids]
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -2927,7 +3018,8 @@ def main(site):
                 continue
             if len(t) >= 30 and not SKIP.search(t):
                 sm = re.match(r"(.{25,110}?[a-z0-9)%°]{2}[.!?])(\s+[A-Z(\"]|$)", t)
-                cands.append(sm.group(1) if sm else t[:96].rsplit(" ", 1)[0] + "…")
+                one = sm.group(1) if sm else t
+                cands.append(one if len(one) <= 62 else one[:60].rsplit(" ", 1)[0].rstrip(",;:·") + "…")
         for b in re.findall(r"<(?:b|strong)\b[^>]*>(.*?)</(?:b|strong)>", body, re.S):
             t = _text(b)
             if len(t) > 8:
@@ -2945,7 +3037,6 @@ def main(site):
     for i in order:
         seq.append(front[i])
         seq.extend(pg["file"] for pg in pages if pg["sec"] == i)
-    _TITLES["sources.html"] = "Sources and credits"
     seq.append("end.html")
     _TITLES["end.html"] = "The end"
     _JUMP[0] = ('<nav id="kjump"><a href="index.html"><b>The front</b></a>'
@@ -2981,7 +3072,7 @@ def main(site):
     for n, pg in enumerate(pages):
         sec = by_id[pg["sec"]]
         sib = [p for p in pages if p["sec"] == pg["sec"]]
-        rail_items = [p for p in sib if p["k"] > pg["k"]][:3]
+        rail_items = []  # "Also in" repeated the section front's list: the free room goes to the engraved plate
         rail = ""
         if rail_items:
             rail = (f'<nav id="krail"><h4>Also in {html.escape(sec["title"])}</h4>'
@@ -2993,7 +3084,7 @@ def main(site):
             label = f'Next: {_TITLES[nxt]}'
         doc = page(pg["title"], slim(link_fix(pg["html"])) + rail, me, data["bodyClass"] + " kcard", sec=pg["sec"],
                    prev=before[pg["file"]], nxt=nxt, stamp=stamp_txt, run_left=html.escape(sec["title"]),
-                   run_right=f'{pg["k"]} of {pg["of"]}' if pg["of"] > 1 else "", fonts=font_links, next_label=label,
+                   run_right="", fonts=font_links, next_label=label,
                    run_href=front[pg["sec"]], jump=navigator(pg["sec"], pg["file"]))
         with open(os.path.join(out, pg["file"]), "w") as f:
             f.write(doc)
@@ -3017,18 +3108,20 @@ def main(site):
         with open(os.path.join(out, front[i]), "w") as f:
             f.write(page(sec["title"], body, me, data["bodyClass"] + " ksecfront", sec=i,
                          prev=before[front[i]], nxt=after[front[i]], stamp=stamp_txt,
-                         run_left="&lsaquo; The front", run_right=f"{num} of {nsec}", fonts=font_links, jump=navigator(i)))
+                         run_left="&lsaquo; The front", run_right="", fonts=font_links, jump=navigator(i)))
 
     # The end of the edition: where to go from here.
     with open(os.path.join(out, "end.html"), "w") as f:
         f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
                      f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
                      f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
-                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits else "") + '</div>',
+                     + ('<div class="kpanel kcolophon"><p class="kkick">Supplied by</p><p>' + " ".join(
+                         f'<b>{html.escape(by_id[i]["title"])}:</b> {html.escape(", ".join(list(dict.fromkeys(re.sub(r"^(Sources?|From|Data:?)\s+", "", n.strip()).split(" (")[0] for m in credits[i] for n in re.split(r"\s*[·,;]\s*", _text(m)) if 2 < len(n.strip()) < 32))[:3]))}.'
+                         for i in order if credits.get(i)).replace(':</b> .', ':</b>').replace(' <b>Little one:</b>', '') + '</p></div>' if credits else "") + '</div>',
                      "kme", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
                      run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
 
-    if credits:
+    if False:   # the Sources pages: replaced by each page's credit line and the colophon on The end
         rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
                        for i in order if credits.get(i))
         with open(os.path.join(out, "sources.html"), "w") as f:

@@ -51,6 +51,7 @@ they are:
 import asyncio
 import functools
 import hashlib
+import html.parser
 import http.server
 import json
 import os
@@ -618,16 +619,66 @@ APPLY = ("<script>(function(){try{var d=JSON.parse(document.getElementById('kfrm
 
 
 # run in the page as parsed, scripts off (the same elements, in the same order, as the load-time script would see:
-# the page prep before it only wraps charts and hides links); returns the page with the frames in style attributes
+# the page prep before it only wraps charts and hides links): each framed element's place among all elements, and
+# the declarations its style attribute gains. The source is then patched tag by tag, so nothing else in it changes.
 INLINE_JS = r"""() => { const j = document.getElementById('kfrm'); if (!j) return null; const d = JSON.parse(j.textContent);
+  const all = [...document.getElementsByTagName('*')], at = new Map(all.map((e, i) => [e, i])), add = [];
   for (const k in d.r) { const q = document.querySelectorAll(d.s[k]), L = d.r[k];
-    for (let i = 0; i < L.length && i < q.length; i++) { const e = L[i]; if (!e) continue; const s = q[i].style;
-      s.setProperty('background-image', 'url(' + d.u[e[0]] + ')', 'important');
-      if (e.length > 1) { s.setProperty('background-position', -e[1] + 'px ' + (-e[2]) + 'px', 'important');
-        s.setProperty('background-size', e[3] + 'px ' + e[4] + 'px', 'important'); s.setProperty('background-repeat', 'no-repeat', 'important');
-        q[i].setAttribute('data-kf', e[5] + ' ' + e[6]); } } }
-  const n = j.nextElementSibling; j.remove(); if (n && n.tagName === 'SCRIPT' && /kfrm/.test(n.textContent)) n.remove();
-  return '<!doctype html>\n' + document.documentElement.outerHTML; }"""
+    for (let i = 0; i < L.length && i < q.length; i++) { const e = L[i]; if (!e) continue;
+      let v = 'background-image:url(' + d.u[e[0]] + ') !important';
+      if (e.length > 1) v += ';background-position:' + (-e[1]) + 'px ' + (-e[2]) + 'px !important;background-size:' + e[3] + 'px ' + e[4] +
+        'px !important;background-repeat:no-repeat !important';
+      add.push([at.get(q[i]), v, e.length > 5 ? e[5] + ' ' + e[6] : '']); } }
+  return { tags: all.map(e => e.tagName.toLowerCase() + '.' + (e.getAttribute('class') || '')), add }; }"""
+
+
+class _Tags(html.parser.HTMLParser):
+    """Every start tag in the source, in order: (name.class, start offset, end offset)."""
+    def __init__(self, src):
+        super().__init__(convert_charrefs=True)
+        self.src, self.tags = src, []
+        self._lines = [0]
+        for m in re.finditer("\n", src):
+            self._lines.append(m.end())
+        self.feed(src)
+
+    def handle_starttag(self, tag, attrs):
+        ln, col = self.getpos()
+        st = self._lines[ln - 1] + col
+        self.tags.append((tag + "." + (dict(attrs).get("class") or ""), st, st + len(self.get_starttag_text())))
+
+    handle_startendtag = handle_starttag
+
+
+def _patch(src, info):
+    """src with each framed element's start tag carrying its frame; None if the tags cannot be lined up."""
+    import difflib
+    T = _Tags(src).tags
+    sm = difflib.SequenceMatcher(None, info["tags"], [t[0] for t in T], autojunk=False)
+    dom2src = {}
+    for a, b, n in sm.get_matching_blocks():
+        for k in range(n):
+            dom2src[a + k] = b + k
+    edits = []
+    for di, decl, kf in info["add"]:
+        si = dom2src.get(di)
+        if si is None:
+            return None
+        _, st, en = T[si]
+        tag = src[st:en]
+        m = re.search(r'\sstyle=(["\'])(.*?)\1', tag, re.S)
+        extra = f' data-kf="{kf}"' if kf else ""
+        if m:
+            q = m.group(1)
+            val = m.group(2).rstrip().rstrip(";")
+            new = tag[:m.start()] + f" style={q}{val + ';' if val else ''}{decl}{q}" + extra + tag[m.end():]
+        else:
+            cut = en - st - (2 if tag.endswith("/>") else 1)
+            new = tag[:cut] + f' style="{decl}"' + extra + tag[cut:]
+        edits.append((st, en, new))
+    for st, en, new in sorted(edits, reverse=True):
+        src = src[:st] + new + src[en:]
+    return src
 
 
 def _inline(out, pages):
@@ -646,13 +697,22 @@ def _inline(out, pages):
                     pg = await cx.new_page()
                     try:
                         await pg.goto(base + p + ".html", wait_until="domcontentloaded")
-                        h = await pg.evaluate(INLINE_JS)
-                        if h and 'id="kfrm"' not in h:
-                            with open(os.path.join(out, p + ".html"), "w", encoding="utf-8") as f:
-                                f.write(h)
-                            done[0] += 1
+                        info = await pg.evaluate(INLINE_JS)
                     finally:
                         await pg.close()
+                    if not info:
+                        return
+                    fp = os.path.join(out, p + ".html")
+                    src = open(fp, encoding="utf-8").read()
+                    new = _patch(src, info)
+                    if new is None:
+                        print(f"kindle_ornate: {p}: frames left to the load-time script (tags did not line up)", file=sys.stderr)
+                        return
+                    new = re.sub(r'<script type="application/json" id="kfrm">.*?</script><script>\(function\(\)\{try\{var d=JSON\.parse\(document\.getElementById\(\'kfrm\'\).*?</script>',
+                                 "", new, flags=re.S)
+                    with open(fp, "w", encoding="utf-8") as f:
+                        f.write(new)
+                    done[0] += 1
             await asyncio.gather(*(one(p) for p in pages))
             await br.close()
     try:

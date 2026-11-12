@@ -2303,7 +2303,7 @@ PAGER_JS = r"""
                            build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
     var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
     if (!fm || !fi || i !== sheet) return;
-    var key = i + '|' + cuts.join(','), ok = kfillSeen[key];
+    var key = i + '|' + cuts.join(',') + '|' + main.offsetHeight + '|' + (document.fonts ? document.fonts.status : ''), ok = kfillSeen[key];   /* a check made before the fonts were in is not kept */
     if (ok === undefined) {
       ok = false;
       if (window.innerWidth === 618 && window.innerHeight === 714) {

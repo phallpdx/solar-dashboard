@@ -2553,6 +2553,51 @@ CARD_ORDER = {
 # Cards that read better in another section: (heading id, from, to).
 CARD_MOVES = [("thai-h", "delights", "world")]
 
+# ---- The edition plan (redesign/edition-plan.md): merges, item caps and cuts, in one place.
+# A merge folds one card into another as a titled block (key: heading id or card title).
+PLAN_MERGES = [
+    ("shade-h", "brief-h"),                       # Window shades -> Alfred
+    ("yard-h", "wx-h"), ("jar-h", "wx-h"),        # Yard vs. forecast, rain jar -> weather station
+    ("road-h", "drive-h"),                        # Road cams -> Drive times
+    ("ski-h", "mtn-h"), ("trail-h", "mtn-h"),     # The mountain: visibility, then Mt. Hood, then trail reports
+    ("quake-h", "fire-h"),                        # Hazards
+    ("ask-h", "play-h"), ("bug-h", "play-h"),     # Dinner question, germ report -> Little adventures
+    ("loads-h", "Solar right now"),               # Solar today
+    ("wins-h", "bill-h"),                         # Milestones -> billing cycle
+    ("burn-h", "look-h"), ("pollen-h", "look-h"), ("plant-h", "look-h"), ("forest-h", "look-h"),
+    ("bloom-h", "look-h"), ("food-h", "look-h"),  # Walk the land
+    ("moor-h", "columbia-h"),                     # Ship -> The Columbia
+    ("light-h", "sunset-h"), ("set-h", "sunset-h"),  # Daylight, sunset on the move -> tonight's sunset
+    ("sunact-h", "sky-h"),                        # Spots on the sun -> sky events
+    ("reviews-h", "stories-h"),                   # A/V and tech desk
+    ("Portland State Vikings", "Portland Timbers"), ("Portland Pilots", "Portland Timbers"),
+    ("f1-h", "Portland Timbers"), ("title-h", "Portland Timbers"),   # The scoreboard
+    ("drum-h", "rec-h"), ("bday-h", "rec-h"),     # The record page
+    ("show-h", "gig-h"),                          # Live from Portland -> live music
+    ("clsmov-h", "kidmov-h"),                     # Tonight's movies
+    ("oldpdx-h", "near-h"),                       # Old Portland -> local history
+    ("shelf-h", "books-h"),                       # Bookshelf -> books
+    ("minus-h", "This week at the coast"), ("cev-h", "shell-h"),
+]
+# Most items a card's main list prints (the plan's item caps: the main tool against orphan sheets).
+PLAN_CAPS = {"plan-h": 5, "cal-h": 8, "out-h": 8, "localnews-h": 6, "bignews-h": 7, "stories-h": 8, "finds-h": 3,
+             "open-h": 5, "big-h": 5, "liq-h": 6, "br-h": 5, "tv-h": 6, "alb-h": 6, "jazz-h": 8, "gig-h": 6, "good-h": 3,
+             "play-h": 4, "mush-h": 5, "birds-h": 5, "fire-h": 4, "road-h": 4, "hol-h": 8}
+PLAN_SCIENCE_BRIEFS = 4
+# Outright cuts, held until Parker decides: flip one to True and the next edition drops it.
+PLAN_CUTS = {
+    "planes": False,            # Planes overhead (plane-h)
+    "sources": False,           # the Sources and credits pages (credits stay as each page's footer line)
+    "civics-votes": False,      # the full vote lists on Who speaks for you
+    "born-today": False,        # This day in history: Born today
+    "also-nearby": False,       # Local history: the "Also nearby" list
+    "asteroids": False,         # Sky events: asteroids passing by
+    "bday-lists": False,        # Album birthdays except round anniversaries
+    "team-news": False,         # fan-pulse and news runs on team pages
+    "market-narratives": False, # long "what moved" and "worth watching" narratives
+    "artist-nonmusician": False,  # Meet a local artist when the artist is not a musician
+}
+
 # No fact twice: an item already printed earlier in the edition is taken out
 # of the later page. Alfred's briefing is a digest, so it goes last: any line of
 # his that another page already carries is dropped from the briefing.
@@ -2813,8 +2858,38 @@ def main(site):
         h = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', "", h, flags=re.S)
         return re.sub(r"<h2\b([^>]*)>(.*?)</h2>", r'<h3 class="kfold"\1>\2</h3>', h, flags=re.S)
 
+    # The plan's merges: the folded card becomes a titled block inside its host.
+    def find_card(key):
+        for sid_, sec_ in by_id.items():
+            for c_ in sec_["cards"]:
+                if f'id="{key}"' in c_["html"] or c_["title"] == key:
+                    return sid_, c_
+        return None, None
+    for src_k, dst_k in PLAN_MERGES:
+        ss, sc = find_card(src_k)
+        ds, dc = find_card(dst_k)
+        if sc is None or dc is None or sc is dc:
+            continue
+        by_id[ss]["cards"].remove(sc)
+        dc["html"] += f'<div class="kbrief">{as_sub(sc["html"])}</div>'
+    if PLAN_CUTS["planes"]:
+        for sec_ in by_id.values():
+            sec_["cards"] = [c_ for c_ in sec_["cards"] if 'id="plane-h"' not in c_["html"]]
+    if PLAN_CUTS["artist-nonmusician"]:
+        for sec_ in by_id.values():
+            sec_["cards"] = [c_ for c_ in sec_["cards"] if not ('id="artist-h"' in c_["html"]
+                             and not re.search(r"\b(music|musician|band|singer|drummer|jazz|songwriter|guitar)", _text(c_["html"]), re.I))]
+    by_id = {k: s_ for k, s_ in by_id.items() if s_["cards"]}
     # Science: one page of briefs, not seven taps of three lines each.
     sci = by_id.get("science", {}).get("cards", [])
+    seen_subj, kept_sci = set(), []
+    for c_ in sci:   # at most one brief per subject (three origin-of-life stories become one)
+        subj = "life" if re.search(r"\blife\b|\blife.s\b", c_["title"], re.I) else c_["title"]
+        if subj in seen_subj:
+            continue
+        seen_subj.add(subj)
+        kept_sci.append(c_)
+    sci = kept_sci[:PLAN_SCIENCE_BRIEFS]
     if len(sci) > 2:
         by_id["science"]["cards"] = [{"title": "Science this morning",
                                       "html": '<div class="head"><p class="kkick">Science</p><h2>This morning in science</h2></div>'
@@ -2851,6 +2926,8 @@ def main(site):
                 m = re.sub(r"^\s*<b>[^<]*</b>\s*", "", m).strip(" ·")
                 if m and m not in credits.setdefault(sid, []):
                     credits[sid].append(m)
+                if m:   # and each page keeps its own as a one-line credit at its foot
+                    c["credit"] = (c.get("credit", "") + " · " + _text(m)).strip(" ·")
             c["html"] = re.sub(r'<p class="ksources"[^>]*>.*?</p>', "", c["html"], flags=re.S)
 
     known = [i for _, ids in PARTS for i in ids]
@@ -2876,11 +2953,21 @@ def main(site):
                     body = re.sub(r'<p class="kkick(?:er)?"[^>]*>.*?</p>', f'<p class="kkick">{plain}</p>', body, count=1)
                 else:
                     body = re.sub(r"(<h2\b)", f'<p class="kkick">{plain}</p>\\1', body, count=1)
-            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body,
+            pages.append({"sec": i, "file": f"{i}-{k + 1:02d}.html", "title": NAMES.get(c["title"], c["title"]), "html": body, "credit": c.get("credit", ""),
                           "k": k + 1, "of": len(cards)})
     dedupe(pages, [])
     import datetime as _dt0
-    kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat())
+    kindle_present.run(pages, _dt0.datetime.strptime(longdate, "%A, %B %d, %Y").date().isoformat(),
+                       caps=PLAN_CAPS, cuts=PLAN_CUTS)
+    # A card the presentation pass emptied (a trail list with no report text) is not a page.
+    pages = [pg for pg in pages if len(body_text(pg["html"])) >= 25 or re.search(r"<img\b", pg["html"])]
+    for sid in order:
+        mine = [pg for pg in pages if pg["sec"] == sid]
+        for k, pg in enumerate(mine, 1):
+            pg.update(file=f"{sid}-{k:02d}.html", k=k, of=len(mine))
+    order = [i for i in order if any(pg["sec"] == i for pg in pages)]
+    parts = [(name, [i for i in ids if i in order]) for name, ids in parts]
+    parts = [(name, ids) for name, ids in parts if ids]
     localize_images(pages, out)
     front = {i: f"{i}.html" for i in order}
     _TITLES.update({pg["file"]: pg["title"] for pg in pages})
@@ -3030,11 +3117,11 @@ def main(site):
         f.write(page("The end", f'<div class="kend"><p class="kkick">The Morning Edition</p><h2 class="kfname">That&rsquo;s the edition.</h2>'
                      f'<p class="kfsub">A new one is printed every hour. Have a good day.</p>'
                      f'<a class="kbig" href="index.html">Back to the front &rsaquo;</a>'
-                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits else "") + '</div>',
+                     + ('<p class="kendsrc"><a href="sources.html">Sources and credits</a></p>' if credits and not PLAN_CUTS["sources"] else "") + '</div>',
                      "kme", "ksecfront kendpage", prev=before["end.html"], nxt="index.html", stamp=stamp_txt,
                      run_left="&lsaquo; The front", run_right="", fonts=font_links, next_label="The front"))
 
-    if credits:
+    if credits and not PLAN_CUTS["sources"]:
         rows = "".join(f'<h3>{html.escape(by_id[i]["title"])}</h3><p>{" &middot; ".join(credits[i])}</p>'
                        for i in order if credits.get(i))
         with open(os.path.join(out, "sources.html"), "w") as f:

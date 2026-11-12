@@ -111,7 +111,7 @@ PRESENT = r"""
         const smalls = $$(left, 'small'), issues = smalls.map(txt).filter(s => /^·/.test(s)).map(s => s.replace(/^·\s*/, ''))[0] || '';
         const quote = smalls.map(txt).filter(s => /^[“"]/.test(s))[0] || '';
         if (!issues && !quote) { kill(r); continue; }
-        const date = txt(right).replace(/\s*\d+ (report|reports).*$/i, '').replace(/\s*\d+ in 3 weeks.*$/i, ''), n = daysAgo(date);
+        const date = ((/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w* \d{1,2}(?!\d)/.exec(right.firstChild ? right.firstChild.textContent : txt(right)) || [''])[0]), n = daysAgo(date);
         if (n != null && n > 21) { kill(r); continue; }
         const tags = issues.split(/;\s*/).filter(Boolean);
         const q = quote.replace(/^[“"]/, '').replace(/[”"](\s*·.*)?$/, ''), by = (/[”"]\s*·\s*(.+)$/.exec(quote) || [])[1] || '';
@@ -216,9 +216,53 @@ PRESENT = r"""
     for (const p of $$(root, '.kpanel')) if (!txt(p) && !p.querySelector('img,svg,.bars,.khr,.kmix,.kgrid')) kill(p);
   }
 
+  // ---- the plan: item caps, held cuts, the credit line
+  const LISTS = ['.story', '.lines > div', '.idea', '.deal', '.sp', '.mush', '.ktable > .krow', '.rep', '.bday', 'li'];
+  function capList(card, n) {
+    const mine = sel => $$(card, sel).filter(e => !e.closest('.kbrief') || !!card.closest('.kbrief'));
+    let best = null, cnt = 0;
+    for (const sel of LISTS) { const k = mine(sel).length; if (k > cnt) { cnt = k; best = sel; } }
+    if (!best || cnt <= n) return;
+    mine(best).slice(n).forEach(kill);
+  }
+  const HEADS = 'h3, h4, .sub, .day-h, summary, .shelf-h';
+  function cutSection(card, re) {
+    for (const h of $$(card, HEADS)) {
+      if (!h.isConnected || !re.test(txt(h))) continue;
+      let n = h.nextElementSibling; kill(h);
+      while (n && !n.matches(HEADS)) { const nx = n.nextElementSibling; kill(n); n = nx; }
+    }
+  }
+  const CUTS = {
+    'civics-votes': ['reps-h', /floor votes/i], 'born-today': ['hist-h', /born today/i], 'also-nearby': ['near-h', /also nearby/i],
+    'asteroids': ['sky-h', /asteroid/i], 'team-news': [null, /in the news|fan pulse|latest news|what fans/i],
+    'market-narratives': ['mkt-h', /what moved|worth watching/i],
+  };
+  const SRC = /\b(TomTom|TripCheck|ODOT|WTA|NIFC|USGS|BPA|Google( News)?|Wikidata|Metacritic|Wikipedia|eBird|iNaturalist|Open-Meteo|NOAA|SWPC|NWS|CDC|Goodreads|Library of Congress|Internet Archive|Art Institute|TVmaze|TMDB|Yahoo|PVGIS|NASA|SDO|APsystems|Ambient|ESPN|7Timer|CelesTrak|JPL|AISstream|EIA|Redfin|Zillow|Ticketmaster|Songkick)\b/;
+  function credit(d, extra) {
+    const names = [];
+    for (const m of $$(d, '.head .meta')) {
+      const parts = txt(m).split(/\s*·\s*/), keep = [];
+      for (const p of parts) (SRC.test(p) && p.length < 40 ? names : keep).push(p);
+      if (keep.length !== parts.length) { if (keep.length) m.textContent = keep.join(' · '); else kill(m); }
+    }
+    for (const n of (extra || '').split(/\s*·\s*/)) if (n) names.push(n.replace(/^Sources?:?\s*/i, ''));
+    for (const p of $$(d, 'p, small, span.cite, .src-line')) { const t = txt(p);
+      if (/^Sources?:?\s/i.test(t) && t.length < 120) { names.push(t.replace(/^Sources?:?\s*/i, '')); kill(p); } }
+    const uniq = names.map(x => x.trim()).filter((x, i, a) => x && a.indexOf(x) === i);
+    if (!uniq.length) return;
+    const last = $$(d, '.kpanel').pop(); if (!last) return;
+    last.appendChild(make('p', 'kcredit', 'Source' + (uniq.length > 1 ? 's' : '') + ': ' + esc(uniq.join(' · '))));
+  }
+
   return pages.map(pg => {
     const d = document.createElement('div'); d.innerHTML = pg.html;
     step('clean', () => clean(d));
+    step('cuts', () => { for (const k in CUTS) if ((args.cuts || {})[k]) { const c = CUTS[k];
+      if (c[0]) { const h = d.querySelector('#' + c[0]); if (h) cutSection(h.closest('.card, .brief, section') || d, c[1]); }
+      else if (pg.sec === 'sports') cutSection(d, c[1]); } });
+    step('caps', () => { for (const id in (args.caps || {})) { const h = d.querySelector('#' + id); if (!h) continue;
+      capList(h.closest('section.card, .card, .brief') || h.parentElement, args.caps[id]); } });
     for (const id in CARDS) {
       const card = d.querySelector('#' + id); if (!card) continue;
       step(id, () => {
@@ -226,6 +270,7 @@ PRESENT = r"""
       });
     }
     step('panels', () => panelize(d));
+    step('credit', () => credit(d, pg.credit));
     return d.innerHTML;
   });
 }
@@ -299,6 +344,7 @@ CSS = r"""
 #kview #kmain .ktrails{border-top:1.5px solid #000 !important}
 #kview #kmain .ktrail{display:block !important}
 #kview #kmain .ktrail .ktags{display:block;margin:3px 0 2px}
+#kview #kmain .ktrail .ktags .kst{font-size:13px !important;line-height:18px !important;white-space:normal}
 #kview #kmain .ktrail .ktags i{font-style:normal}
 #kview #kmain .ktrail .kquote{display:block;font:italic 430 16px/22px var(--k-serif) !important}
 #kview #kmain .ktrail .kname small{display:inline;margin-left:6px}
@@ -326,11 +372,13 @@ CSS = r"""
 #kview #kmain .kgauge.ksolid i{background:#000 !important}
 #kview #kmain .krain b,#kview #kmain .kkwh b{font:700 15px/18px var(--k-serif) !important;font-variant-numeric:tabular-nums lining-nums}
 #kview #kmain .kkwh sup{font:600 11px/1 var(--k-serif) !important;letter-spacing:.1em;text-transform:uppercase;margin-left:4px;vertical-align:1px}
+#kview #kmain .kpanel .kcredit{font:600 11px/15px var(--k-serif) !important;letter-spacing:.12em !important;text-transform:uppercase !important;font-style:normal !important;
+  margin:8px 0 0 !important;padding:4px 0 0 !important;border-top:1px solid #8a8a8a}
 #kview #kmain .kunit{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:4px 0 0 !important}
 """
 
 
-def run(pages, today_iso):
+def run(pages, today_iso, caps=None, cuts=None):
     """Edit every page's HTML in place. Never loses the edition: on any failure the pages stay as they were."""
     from playwright.sync_api import sync_playwright
     exe = os.environ.get("KINDLE_CHROMIUM") or None
@@ -339,8 +387,9 @@ def run(pages, today_iso):
             browser = pw.chromium.launch(executable_path=exe)
             p = browser.new_page()
             p.on("console", lambda m: m.text.startswith("kindle ") and print(f"kindle_present: {m.text}", file=sys.stderr))
-            res = p.evaluate(PRESENT, {"pages": [{"html": pg["html"], "file": pg.get("file", ""), "sec": pg.get("sec", "")} for pg in pages],
-                                       "today": today_iso})
+            res = p.evaluate(PRESENT, {"pages": [{"html": pg["html"], "file": pg.get("file", ""), "sec": pg.get("sec", ""),
+                                                  "credit": pg.get("credit", "")} for pg in pages],
+                                       "today": today_iso, "caps": caps or {}, "cuts": cuts or {}})
             browser.close()
         for pg, h in zip(pages, res):
             pg["html"] = h

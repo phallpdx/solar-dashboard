@@ -220,10 +220,7 @@ PRESENT = r"""
   const LISTS = ['.story', '.lines > div', '.idea', '.deal', '.sp', '.mush', '.ktable > .krow', '.rep', '.bday', 'li'];
   function capList(card, n) {
     const mine = sel => $$(card, sel).filter(e => !e.closest('.kbrief') || !!card.closest('.kbrief'));
-    let best = null, cnt = 0;
-    for (const sel of LISTS) { const k = mine(sel).length; if (k > cnt) { cnt = k; best = sel; } }
-    if (!best || cnt <= n) return;
-    mine(best).slice(n).forEach(kill);
+    for (const sel of LISTS) { const xs = mine(sel).filter(e => !e.closest('.kmile')); if (xs.length > n) { xs.slice(n).forEach(kill); return; } }
   }
   const HEADS = 'h3, h4, .sub, .day-h, summary, .shelf-h';
   function cutSection(card, re) {
@@ -286,6 +283,24 @@ PRESENT = r"""
       for (const p of $$(d, 'p, .note')) if (/^Solar panels lose some output/.test(txt(p))) kill(p);
       for (const x of $$(d, '.yd')) kill(x.closest('.yd-row, .yard-days') || x);
       for (const x of $$(d, 'span, div, small')) if (/^Since your gauge started/.test(txt(x)) && txt(x).length < 40) kill(x); });
+    // the little one: "Coming up at 3" as its own titled block with the skills as a list; the CDC credit to the foot
+    step('milestones', () => { const g = d.querySelector('#kid-grow'); if (!g) return;
+      const src = Array.from(g.querySelectorAll('span')).filter(x => /CDC/.test(txt(x)));
+      src.forEach(kill); if (src.length) pg.credit = (pg.credit ? pg.credit + ' · ' : '') + 'CDC developmental milestones';
+      const m = /^Coming up:\s*by (\d+) (years?|months?),? most kids can (.+?)\.?$/i.exec(txt(g)); if (!m) return;
+      const items = [];
+      for (const x of m[3].split(/,\s*(?:and\s+)?|\s+and\s+/).map(x => x.trim()).filter(Boolean)) {
+        if (items.length && /^(who|what|where|when|why|how)\b/i.test(x) && /\b(who|what|where|when|why|how)$/i.test(items[items.length - 1]))
+          items[items.length - 1] += (/questions$/.test(x) ? ' and ' : ', ') + x; else items.push(x); }
+      const box = make('div', 'kmile', '<h3>Coming up at ' + esc(m[1]) + (/month/.test(m[2]) ? ' months' : '') + '</h3><p class="kmile-k">Most kids can:</p><ul>' +
+        items.map(x => '<li>' + esc(cap(x)) + '</li>').join('') + '</ul>');
+      g.replaceWith(box); });
+    // the play ideas: when to do it is a kicker, the idea a row label, the how a line
+    step('ideas', () => { for (const i of $$(d, '.idea')) { const sm = i.querySelector(':scope > small'); if (sm) sm.className = 'kkick kidea-k'; } });
+    // the scoreboard: merged teams print score, next game and standing; their recaps and fan talk shrink away
+    step('scoreboard', () => { if (pg.sec !== 'sports') return;
+      for (const k of $$(d, '.kbrief')) { for (const r of $$(k, '.recap p, .recap small')) kill(r);
+        shrinkSection(k, /fan pulse|championship|standings|title fight/i, 3); } });
     // tickets: the run-on "Already on sale" paragraph is noise
     step('tickets', () => { for (const p of $$(d, 'p.kalso')) if (/^Already on sale/.test(txt(p))) kill(p); });
     step('caps', () => { for (const id in (args.caps || {})) { const h = d.querySelector('#' + id); if (!h) continue;
@@ -406,6 +421,15 @@ html .ksecfront #kview #kmain .kfl.kcompact a{padding-top:5px !important;padding
 .kendpage #kview #kmain .kcolophon{margin:14px 0 0 !important;text-align:left}
 .kendpage #kview #kmain .kcolophon p{font:430 13px/18px var(--k-serif) !important;margin:0 !important}
 .kendpage #kview #kmain .kcolophon .kkick{font:600 12px/16px var(--k-serif) !important;letter-spacing:.14em !important;text-transform:uppercase;margin:0 0 4px !important}
+#kview #kmain .kpanel .idea{display:block !important;padding:6px 0 !important;margin:0 !important;border:0 !important;border-bottom:1px solid #8a8a8a !important;background:none !important}
+#kview #kmain .kpanel .idea:last-child{border-bottom:0 !important}
+#kview #kmain .kpanel .idea>b{display:block;font:700 var(--ks-row)/var(--kl-row) var(--k-serif) !important}
+#kview #kmain .kpanel .idea>span{display:block;font:430 16px/22px var(--k-serif) !important}
+#kview #kmain .kpanel .kidea-k{display:block !important;margin:0 !important}
+#kview #kmain .kpanel .kidea-k:before,#kview #kmain .kpanel .kidea-k:after{display:none !important}
+#kview #kmain .kpanel .kmile ul{margin:2px 0 0 !important;padding-left:1.1em !important}
+#kview #kmain .kpanel .kmile li{font:430 16px/22px var(--k-serif) !important;margin:0 !important}
+#kview #kmain .kpanel .kmile-k{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:0 !important}
 #kview #kmain .kunit{font:italic 430 var(--ks-sm)/var(--kl-sm) var(--k-serif) !important;margin:4px 0 0 !important}
 """
 

@@ -1,5 +1,5 @@
 {
-  "note": "The Evening Edition's stories, rewritten for bedtime by the local model.",
+  "note": "The Evening Edition's stories, rewritten for bedtime by the local model. Tonight's copy was fact-checked and corrected by hand.",
   "date": "2026-11-11",
   "written_at": "2026-11-12T03:36:35Z",
   "stories": [
@@ -20,10 +20,10 @@
         "The Guardian",
         "Al Jazeera"
       ],
-      "headline": "Scott Colom won the Mississippi Senate election",
-      "happened": "Democrat Scott Colom defeated Republican Cindy Hyde-Smith in a close race. Officials counted absentee and provisional ballots over several days. This victory gives Mississippi its first Black senator since Reconstruction.",
-      "tonight": "Colom has secured the seat by a few thousand votes. Hyde-Smith conceded the race via social media.",
-      "next": null,
+      "headline": "Colom wins Mississippi Senate seat",
+      "happened": "Democrat Scott Colom defeated Republican Senator Cindy Hyde-Smith in a close race. Officials spent more than a week counting absentee and affidavit ballots before the result was clear. Colom becomes Mississippi's first Black senator since Reconstruction.",
+      "tonight": "Colom won by about 4,500 votes. Hyde-Smith called him to concede, then posted a video statement.",
+      "next": "Colom takes his seat when the new Congress meets in January.",
       "major": false
     },
     {
@@ -38,10 +38,10 @@
         "BBC",
         "The Guardian"
       ],
-      "headline": "Treasury Secretary Scott Bessent relocated to a military base",
-      "happened": "Scott Bessent moved from his Washington DC home to a military base. This relocation followed reports that identified his address. The move occurred due to security concerns regarding Iranian threats.",
-      "tonight": "Bessent remains committed to economic pressure against Iran. He is currently living on a military base.",
-      "next": null,
+      "headline": "Treasury Secretary Bessent moves to a military base",
+      "happened": "Treasury Secretary Scott Bessent moved out of his Georgetown home and onto a military base in recent weeks. Officials cited security concerns linked to threats from Iran. Earlier media reports had helped identify his home.",
+      "tonight": "A Treasury spokesperson said he will not be deterred from economic pressure on Iran. He is living on the base for now.",
+      "next": "No date is set yet.",
       "major": false
     },
     {
@@ -55,10 +55,10 @@
         "PBS NewsHour",
         "The Guardian"
       ],
-      "headline": "White House warned Democrats about planned administration investigations",
-      "happened": "The White House issued a letter warning Democratic lawmakers regarding planned oversight probes. Counsel Will Scharf claimed these investigations might constitute criminality. Representative Robert Garcia vowed to continue the scrutiny.",
-      "tonight": "Democrats will take control of Congress in January. The incoming chair plans to pursue accountability despite threats.",
-      "next": null,
+      "headline": "White House warns top Oversight Democrat about planned probes",
+      "happened": "White House Counsel Will Scharf sent a letter to Representative Robert Garcia, the top Democrat on the House Oversight Committee. It warned that planned investigations of the administration could amount to criminality. Garcia said the oversight work will go on.",
+      "tonight": "Democrats take control of Congress in January, and Garcia is expected to chair the committee.",
+      "next": "The new Congress convenes in January.",
       "major": false
     }
   ],
@@ -74,10 +74,10 @@
       "KATU",
       "KPTV"
     ],
-    "headline": "Police arrested a man for stealing model horses from a car",
-    "happened": "Police arrested Benjamin Moore for the theft of miniature horse figurines. The suspect was seen distributing items in pouches near a bookstore. He faces several theft charges and has outstanding warrants.",
-    "tonight": "The suspect is held at the Multnomah County Detention Center. Police are still seeking information regarding the missing collection.",
-    "next": null,
+    "headline": "Police arrest man accused of selling stolen model horses",
+    "happened": "Portland police arrested Benjamin Moore, 39, after he was seen handing out and selling stolen horse figurines near Powell's Books downtown. He faces several theft charges and two outstanding warrants. Police say he is not charged with the original car break-in.",
+    "tonight": "Most of the collection is still missing; only one or two horses have been turned in. Police are asking anyone who has seen them to call.",
+    "next": "No date is set yet.",
     "major": false
   },
   "updated": "2026-11-11"

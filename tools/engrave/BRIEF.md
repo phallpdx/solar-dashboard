@@ -72,6 +72,19 @@ Reference: tools/engrave/ref/binding-picturesque.jpg. It sets the look for the C
 - the title in ornate Victorian display lettering, drawn as paths, interlaced with a central emblem (for us: drumsticks crossed over a sun, until Parker's real arms arrive)
 - tooled fleurons above and below
 
+## Tone and the burin (Parker sent Doré, Victorian wood engravings and Goltzius)
+References in tools/engrave/ref/:
+- tone-dore.jpg: Doré's Inferno
+- tone-diana.jpg: "Diana at the Chase", a wood engraving
+- tone-bewick-vignette.jpg: a shaped vignette of putti and vines
+- tone-goltzius-bacchus.jpg: Bacchus after Goltzius
+
+What they teach:
+1. **Light emerging from dark.** The ground is rich and dark, made of dense layered lines. Never flat. Subjects glow out of it in the light, giving drama and depth.
+2. **Swelling lines.** Tone and form come from lines that swell and taper as they follow the contour, like the muscle on the Bacchus, with cross-hatch layered over them in the shadows. This is the only legitimate use of hatching: it MODELS FORM and follows surfaces. Plain ruled lines are not allowed.
+3. **Shaped plates.** Use cut corners, arched tops, ovals and lunettes instead of plain rectangles. The Bacchus oval has grotesque masks and foliage in the corners, and a caption ribbon at the foot.
+4. **Abundance.** Vines, grapes, leaves and drapery fill every corner, and each element is modelled.
+
 ## No white (Parker's exact rule: "No white unless behind text")
 A plate has no text behind it, so it has NO blank white areas at all. Cartouche interiors, the sky in a scene, the space between scrolls: everything is engraved, with cut-away grounds, sky hatching, water lines and stipple. Plain white survives only as the highlight on a leaf edge or a hatch gap. The art director measures this: any blank white region larger than about 12×12 px is a rejection.
 

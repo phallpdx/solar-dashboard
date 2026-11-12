@@ -499,15 +499,15 @@ def _scene(field, ctx, mini=False):
     sky = _rect(X0 - 3, Y0 - 3, BW + 6, min(yH, Y1) - Y0 + 4)
     cv.obj([sky], 0)
     mr0 = max(5, BH * .06) if not mini else max(4, BH * .16)
-    mx0 = X0 + BW * (.74 if not mini else .2)
-    my0 = Y0 + BH * (.12 if not mini else .3)
+    mx0 = X0 + BW * (.7 if not mini else .2)
+    my0 = Y0 + BH * (.17 if not mini else .3)
     hl, _ = st_sky(X0 - 3, Y0 - 3, X1 + 3, min(yH, Y1 + 3), day.toordinal(),
                    avoid=lambda x, y: math.hypot(x - mx0, y - my0) < mr0 + 6, top_dark=.3)
     cv.hair(hl)
     # moon + stars
     mr = max(5, BH * .06) if not mini else max(4, BH * .16)
-    mx = X0 + BW * (.74 if not mini else .2)
-    my = Y0 + BH * (.12 if not mini else .3)
+    mx = X0 + BW * (.7 if not mini else .2)
+    my = Y0 + BH * (.17 if not mini else .3)
     cv.obj([_ell(mx, my, mr + 5.5, mr + 5.5, 40)[:-1]], 0)
     for k in range(1, 3):
         cv.hair(_ell(mx, my, mr + 2 * k, mr + 2 * k, 40))
@@ -527,14 +527,18 @@ def _scene(field, ctx, mini=False):
     R = min(BW * .25, BH * .225)
     scx, scy = X0 + BW * .5, Y0 + BH * .37
     _water(cv, X0, Y0, BW, BH, yH, Y1, rng, mx, (X0 + BW * .16, X0 + BW * .84))
-    _krathong(cv, X0 + BW * .26, yH + BH * .09, max(10, 19 * s))
+    _krathong(cv, X0 + BW * .62, yH + BH * .1, max(10, 19 * s))
     _heron(cv, X0 + BW * .82, bank_y + BH * .01, max(20, 50 * s))
     _bank(cv, X0, Y0, BW, BH, bank_y, Y1, rng, scx)
     _reeds(cv, X0 + BW * .06, bank_y + BH * .06, BH * .14, rng, 7)
     # stand, then sphere on it
     _baluster(cv, scx, scy + R * 1.15, bank_y + BH * .015, R * .42)
     _armillary(cv, scx, scy, R, detail=.75 if R > 42 else .4)
-    return cv.svg()
+    # the hourglass on the bank, the year's sand still to run held in its upper bulb
+    yd = day.timetuple().tm_yday
+    nd = 366 if day.year % 4 == 0 and (day.year % 100 or day.year % 400 == 0) else 365
+    hgH = BH * .3
+    return cv.svg() + _hourglass(X0 + BW * .27, bank_y + BH * .015, hgH, 1 - yd / nd)
 
 
 def _hourglass(cx, ybot, H, frac_left):
@@ -596,6 +600,43 @@ def _hourglass(cx, ybot, H, frac_left):
     fin = _ell(cx, y0 - 2.2, 2.6, 2.4, 14)[:-1]
     cv.obj([fin], 1.)
     cv.hair(C.hatch_poly(fin, 45, 1.5))
+    return cv.svg()
+
+
+def meridian_frame(cx, cy, rx, ry, fld, mode):
+    """The frame is the sphere's own meridian: a graduated ring round the roundel, degrees cut
+    every five and figured every thirty, open at the foot where the stand would hold it."""
+    if mode == "band":
+        return ""
+    cv = C.Canvas()
+    R = min(rx, ry)
+    r0, r1 = R + 4., R + 10.
+    gap = math.radians(24)
+    a0, a1 = math.pi / 2 + gap, math.pi / 2 + 2 * math.pi - gap
+    arc = lambda r: [(cx + r * math.cos(a0 + (a1 - a0) * i / 160), cy + r * math.sin(a0 + (a1 - a0) * i / 160)) for i in range(161)]
+    cv.line(arc(r0))
+    cv.line(arc(r1))
+    cv.hair(arc(r1 + 2))
+    for d in range(0, 360, 5):
+        a = math.radians(d)
+        if not (a0 <= a + (2 * math.pi if a < a0 else 0) <= a1):
+            continue
+        L = (r1 - r0) * (1. if d % 30 == 0 else .55 if d % 10 == 0 else .35)
+        (cv.line if d % 30 == 0 else cv.hair)([(cx + r0 * math.cos(a), cy + r0 * math.sin(a)), (cx + (r0 + L) * math.cos(a), cy + (r0 + L) * math.sin(a))])
+    for a in (a0, a1):                  # the ring's turned ends
+        ex, ey = cx + (r0 + r1) / 2 * math.cos(a), cy + (r0 + r1) / 2 * math.sin(a)
+        k = _ell(ex, ey, 3.6, 3.6, 16)[:-1]
+        cv.obj([k], 1.)
+        cv.hair(C.hatch_poly(k, 45, 1.5))
+    for sd in (-1, 1):                  # the polar pins at the poles of the axis (45.5 deg)
+        a = -math.pi / 2 - sd * (math.pi / 2 - LAT)
+        a = math.pi + a if sd < 0 else a
+    a = -math.pi / 2 + (math.pi / 2 - LAT)
+    for b in (a, a + math.pi):
+        px, py = cx + (r1 + 4) * math.cos(b), cy + (r1 + 4) * math.sin(b)
+        if ry + 2 > abs(py - cy) + 3:
+            pin = _ell(px, py, 2.4, 2.4, 12)[:-1]
+            cv.obj([pin], 1.)
     return cv.svg()
 
 
@@ -2165,6 +2206,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -2179,16 +2250,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 
@@ -2240,5 +2310,5 @@ def plate(w, h, ctx):
     def tablet(tx, ty, tw, th):
         return _tablet(tx + 2, ty + 2, tw - 3, th - 3, _moon_phase(day))
 
-    hk = dict(vignette=True, pad=3., max_aspect=1., shape="roundel", dedication=True, rmin=8.5, rmax=30., frieze=False, field=field, crest=lambda cx, y, hh, mode: crest(cx, y, hh, mode) if mode == "tall" else "", banner=banner, tablet=tablet)
+    hk = dict(vignette=True, pad=14., max_aspect=1., shape="roundel", frame=meridian_frame, dedication=True, rmin=8.5, rmax=30., frieze=False, field=field, crest=lambda cx, y, hh, mode: crest(cx, y, hh, mode) if mode == "tall" else "", banner=banner, tablet=tablet)
     return st_plate(w, h, seed, hk)

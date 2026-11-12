@@ -595,6 +595,41 @@ def medallion_walnuts(cx, cy, rx, ry, seed):
 # layouts (house layouts, with walnuts grown into the volutes and the field engraved edge to edge)
 # ---------------------------------------------------------------------------------------------
 
+def walnut_frame(cx, cy, rx, ry, fld, mode, seed):
+    """The frame is the fruit's own tree: a walnut bough rising round each end of the oval, its
+    pinnate leaves turned outward and a pair of green walnuts hanging at the foot."""
+    if mode == "band":
+        return ""
+    xs = [q[0] for q in fld]
+    room = min(xs) - 2
+    if room < 26:
+        return ""
+    cv = C.Canvas()
+    rng = random.Random(seed + 77)
+    for sd in (-1, 1):
+        br = []
+        for i in range(25):
+            u = i / 24
+            a = math.radians(118 + 100 * u)
+            k = 1.06 + .05 * math.sin(math.pi * u)
+            br.append((cx - sd * rx * k * math.cos(a) * -1 * -1 if sd < 0 else cx - rx * k * math.cos(a), cy + ry * k * math.sin(a)))
+        if sd < 0:
+            br = [(cx + rx * (1.06 + .05 * math.sin(math.pi * i / 24)) * math.cos(math.radians(118 + 100 * i / 24)), y) for i, (x, y) in enumerate(br)]
+        out = PI if sd < 0 else 0.
+        L = min(room * .6, ry * .85)
+        compound_leaf(cv, br[6][0], br[6][1], out + sd * .5, L * .85, 2, .9, -.4 * sd, rng)
+        compound_leaf(cv, br[16][0], br[16][1], out - sd * .15, L, 2, .95, .35 * sd, rng)
+        compound_leaf(cv, br[24][0], br[24][1], out - sd * .7, L * .8, 2, .85, .3 * sd, rng)
+        twig(cv, br, max(1.6, ry * .045), max(.8, ry * .02))
+        wr = max(4., min(room * .09, ry * .13))
+        bx, by = br[11]
+        for j, dx in enumerate((-.9, .9)):
+            hx, hy = bx - sd * (wr * 1.3) + dx * wr * .95, by + wr * (2.0 + .3 * j)
+            cv.line([(bx, by), (hx, hy - wr * .9)])
+            walnut(cv, hx, hy, wr, -.25 * sd, random.Random(seed + 9 + j))
+    return cv.svg()
+
+
 def _field_clip(cid, d, body):
     return f'<clipPath id="{cid}"><path d="{d}"/></clipPath><g clip-path="url(#{cid})">{body}</g>'
 
@@ -2374,6 +2409,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -2388,16 +2453,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 
@@ -2433,6 +2497,7 @@ def plate(w, h, ctx):
     seed = sum(map(ord, ctx.get("date", ""))) + 31 * int(ctx.get("sheet", 0) or 0)
     subj = _subject(ctx)
     hk = dict(field=lambda fld, mode: _field(fld, mode, seed, subj), egg=egg_sticks, shape="oval", vignette=True, pad=3., max_aspect=2.1,
+              frame=lambda cx, cy, rx, ry, fld, mode: walnut_frame(cx, cy, rx, ry, fld, mode, seed),
               aspect=(1.5 if subj == "nocino" else 1.8), cw=.27, rmin=9., rmax=30.,
               motto=("NOCINO · NEW DEAL · 2026" if subj == "nocino" else "PELICAN · PUBLIC COAST · CANNON BEACH"),
               tablet_lines=(["GREEN-WALNUT LIQUEUR", "SMALL BATCH · PORTLAND"] if subj == "nocino"

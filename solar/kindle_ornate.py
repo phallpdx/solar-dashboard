@@ -12,8 +12,10 @@ they are:
                         the size this scale gives its kind (LETTER_SIZES below), the column wide; every headline
                         also carries class .khl and data-khl="<plain text>". 34 rather than 30: a script's
                         x-height is half its size, and the question must still out-rank the bold answer under it.
-     lead       24/30   the answer, or the lead figure (53°, ~69 kWh, $32): second, and smaller than the question.
-                        Steps 14-17-20-24 rise by about 1.2 (reading sizes); 24-34-48 by about 1.4 (display sizes)
+     figure     44/48   the one key number on a page or tile (53°, ~69 kWh, $32): bold lining figures, so the page
+                        answers at a glance before anything is read
+     lead       24/30   the answer sentence: second, and smaller than the question.
+                        Steps 14-17-20-24 rise by about 1.2 (reading sizes); 24-34-44/48 by about 1.4 (display sizes)
      section    20/26   a section heading inside a page ("Today", "On the prairie"), under an engraved section mark
      value      20/26   a figure in a tile or fact box (7:05 am, 54): bold lining figures, one step above the text
      body       17/25   running text and table rows: about 60 characters to the line in a panel, leading 1.47
@@ -31,7 +33,9 @@ they are:
    studio (solar/scroll.py, branch claude/engrave-frames; spec in /mnt/project-files/kindle/redesign/frame-spec.md).
    CSS reserves the band (padding) and removes every border; at build time each framed element is measured at
    the Kindle's size and a frame composed for its exact w x h is rasterised to a 16-grey PNG and set behind it,
-   from a per-page list (script#kfrm) applied once on load. Frames never change the layout, so the fast path
+   from a per-page list (script#kfrm) applied once on load. The chrome's frames (running head, buttons, the
+   Sections menu) share one sprite for the whole edition; each page's own frames share one sprite per page,
+   placed with background-position, so a page load fetches two pictures instead of dozens. Frames never change the layout, so the fast path
    (script#kpre) is unchanged.
 
 3. No bare boxes: check(out) visits every page and fails any visible CSS border, outline or ring shadow that is
@@ -57,25 +61,34 @@ import zlib
 
 # ---------------------------------------------------------------- the frame families (see frame-spec.md)
 # role: (selector, band (t, r, b, l), fixed size or None, lit selector, seed per instance)
-FAMILIES = {
-    "chip":      ("#kmain .kst-off, #kmain .kst-on, #kmain .kchip, #kmain b.kval-on, #kmain .vote, #kmain .sun-clouds>span",
-                  (4, 11, 4, 11), None, ".kst-on, .kval-on", True),
-    "button":    (".kbar a.kprev, .kbar a.knx, .kbar #kmore, #kjump .kjtop a, #kmain .kend .kbig, #kmain .kresume",
-                  (6, 14, 6, 14), None, ".kjskip", False),
-    "sections":  (".krun .ksecbtn", (4, 12, 5, 12), None, "", False),
-    "runhead":   (".krun > a, .krun #ksheet", (4, 13, 4, 13), None, "", False),
-    "banner":    ("#kmain .kmast .kdate", (8, 34, 8, 34), None, "", False),
-    "tile":      ("#kmain .tiles>.tile, #kmain .facts>.mini, #kmain .minis>.mini, #kmain .bug, #kmain .open-pick, "
-                  "#kmain p.ask, #kmain .look-weather>p, #kmain .sp.kblock",
-                  (7, 7, 7, 7), None, "", True),
-    "tablehead": ("#kmain .kth", (6, 12, 6, 12), None, "", True),
-    "barbase":   ("#kmain .khr, #kmain .bars", (0, 0, 14, 0), None, "", False),
-    "gauge":     ("#kmain .kgauge, #kmain .progress", (2, 4, 2, 4), None, "", False),
-    "divider":   ("#kmain .kpanel h3:not(.kfold), #kmain .kpanel .sub, #kmain .kpanel .day-h, #kmain .kpanel .shelf-h",
-                  (0, 0, 0, 0), (140, 16), "", False),
-    "initial":   ("#kmain .kdropcap", (14, 14, 14, 14), (74, 74), "", False),
+# The frame families' bands as drawn in frame-spec.md (used only when solar/frames is missing)
+FAMILIES = {"chip": (3, 18, 3, 18), "button": (4, 22, 4, 22), "sections": (3, 14, 3, 14), "runhead": (3, 16, 3, 16),
+            "banner": (14, 30, 14, 30), "tile": (14, 14, 14, 14), "tablehead": (3, 20, 3, 20), "barbase": (0, 0, 14, 0),
+            "gauge": (2, 14, 2, 14), "divider": (0, 0, 0, 0), "initial": (14, 14, 14, 14)}
+# Every framed thing on a page: slot -> (family, selector, fixed size or None, lit selector, seed per element, pack)
+#   pack "chrome": in the edition's one chrome sprite (the same on every page, cached once)
+#   pack "page":   in the page's own sprite
+#   pack "solo":   its own picture, placed by CSS (a base line, a section mark, an initial, a table's head band)
+SLOTS = {
+    "chip":      ("chip", "#kmain .kst, #kmain b.kval, #kmain .kchip, #kmain .vote, #kmain .sun-clouds>span", None,
+                  ".kst-on, .kval-on", True, "page"),
+    "button":    ("button", ".kbar a.kprev, .kbar a.knx, .kbar #kmore, #kjump .kjtop a, #kmain .kend .kbig", None, ".kjskip", False, "chrome"),
+    "sections":  ("sections", ".krun .ksecbtn", None, "", False, "chrome"),
+    "runhead":   ("runhead", ".krun > a, .krun #ksheet", None, "", False, "chrome"),
+    "menu":      ("runhead", "#kjump .kjg a", None, ".kjcur", False, "chrome"),
+    "banner":    ("banner", "#kmain .kmast .kdate", None, "", False, "page"),
+    "tile":      ("tile", "#kmain .tiles>.tile, #kmain .facts>.mini, #kmain .minis>.mini, #kmain .bug, #kmain .open-pick, "
+                  "#kmain p.ask, #kmain .look-weather>p, #kmain .sp.kblock", None, "", True, "page"),
+    "tablehead": ("tablehead", "#kmain .kth", None, "", True, "page"),
+    "matrixhead": ("tablehead", "#kmain table.kmatrix", "thead", "", True, "solo"),
+    "gauge":     ("gauge", "#kmain .kgauge, #kmain .progress", None, "", False, "page"),
+    "barbase":   ("barbase", "#kmain .khr, #kmain .bars", "base", "", False, "solo"),
+    "divider":   ("divider", "#kmain .kpanel h3:not(.kfold), #kmain .kpanel .sub, #kmain .kpanel .day-h, #kmain .kpanel .shelf-h",
+                  (140, 16), "", False, "solo"),
+    "initial":   ("initial", "#kmain .kdropcap", (74, 74), "", False, "solo"),
 }
-# where each family's picture sits in its element (CSS background-position / size)
+# drawn once per edition and set by the stylesheet: things the pager makes after the page loads
+STATIC = {"resume": ("button", "body.kcontents #kmain .kresume", (526, 64), "")}
 
 # the type size each kind of hand-lettered headline stands in for (solar/lettering.py via kindle_fast.letter):
 # section title pages are display, page and card titles are headline, the cover's top lead is lead, story
@@ -84,7 +97,7 @@ LETTER_SIZES = {"section": 48, "contents": 34, "title": 34, "poem": 34, "sub": 3
                 "lead": 24, "leads": 17, "story": 17}
 
 # the size each family is drawn at in the layout (CSS px); variable ones are measured per element
-NOMINAL = {"chip": (96, 26), "button": (200, 40), "sections": (120, 26), "runhead": (200, 26), "banner": (526, 80),
+NOMINAL = {"chip": (96, 26), "button": (200, 48), "sections": (120, 26), "runhead": (200, 26), "banner": (526, 80),
            "tile": (250, 96), "tablehead": (506, 34), "gauge": (88, 12), "initial": (74, 74), "divider": (140, 16), "barbase": (506, 14)}
 
 
@@ -94,7 +107,7 @@ def bands(role):
         import importlib
         return tuple(int(round(x)) for x in importlib.import_module(f"solar.frames.{role}").insets(*NOMINAL[role], {}))
     except Exception:  # noqa: BLE001
-        return FAMILIES[role][1]
+        return FAMILIES[role]
 
 
 X = "html.kme:not(#k0):not(#k1):not(#k2)"      # three ids: outranks every earlier !important rule
@@ -102,6 +115,7 @@ M = X + " #kmain"
 
 S = {  # the scale: font shorthand per role
     "display": "700 48px/52px var(--k-serif)",
+    "figure":  "700 44px/48px var(--k-serif)",
     "head":    "700 34px/40px var(--k-serif)",
     "lead":    "650 24px/30px var(--k-serif)",
     "sect":    "600 20px/26px var(--k-serif)",
@@ -144,8 +158,12 @@ def _css():
     c += _r("h2, .kh2, .sci-title, .kpanel h2, .kpanel .kh2, .kpanel h3.kfold, h3.kfold, .ktochead",
             f"font:{S['head']} !important;letter-spacing:-.005em !important;text-transform:none !important;{LIN}")
     # ---- lead: the answer and the lead figure
-    c += _r(".kanswer .kans, .kanswer .kans.klong, .kpanel .kverdict, .kdeg, .tile .big, .tiles[data-n] .tile .big, .kscore b",
+    c += _r(".kanswer .kans, .kanswer .kans.klong, .kpanel .kverdict, .kscore b",
             f"font:{S['lead']} !important;letter-spacing:0 !important;{LIN}")
+    # ---- figure: the one key number on a page or tile (the temperature now, the solar kWh, the dollars)
+    c += _r(".kdeg, .tile .big, .tiles[data-n] .tile .big, .tiles .tile .big",
+            f"font:{S['figure']} !important;letter-spacing:-.01em !important;display:block;{LIN}")
+    c += _r(".kdeg small", "display:block;margin-top:2px")
     c += _r(".kdeg small, .tile .u, .tile .s", f"font:{S['caption']} !important;{OLD}")
     # ---- section headings: under an engraved section mark, no rule
     c += _r(".kpanel h3:not(.kfold), .kpanel .sub, .kpanel .day-h, .kpanel .cal-day, .kpanel details>summary, .kpanel h4, .kpanel .shelf-h, "
@@ -162,9 +180,16 @@ def _css():
     lab = (".kkick, .kkicker, .k, .tile .k, .mini .k, .mini>span:first-child, .kth, .kth>span, .rec-k, .sci-topic, .klab, .kpart, "
            ".aside, .brief-rest .aside, .pill, .tag, .badge, .rt2, .rt3, .rt4, .kfl .kn, .kidea-k, .kpanel .kidea-k, .kmast .kear span, .kfhead .kkick")
     c += _r(lab, f"font:{S['label']} !important;{SC};{OLD};color:#000 !important")
-    c += _r(".kst, .kchip, .kpanel .kchip, .kpanel .st, .kpanel .lvl, .vote, .kpanel .vote b, .kpanel .sp .pill, .ktm .kst, .ktrail .ktags .kst",
-            f"font:{S['labelb']} !important;{SC};{OLD};color:#000 !important;-webkit-text-fill-color:#000 !important;background-color:transparent !important")
-    c += _r(".kst-on, b.kval-on", "background-color:transparent !important;color:#000 !important;-webkit-text-fill-color:#000 !important")
+    chips = (".kst, .kchip, .kpanel .kchip, .kpanel .st, .kpanel .lvl, .vote, .kpanel .vote b, .kpanel .sp .pill, .ktm .kst, .ktrail .ktags .kst, "
+             ".kcell b.kst, .kcell b.kval, .kcell .ktm b.kst, b.kval")
+    c += _r(chips, f"font:{S['labelb']} !important;{SC};{LIN};color:#000 !important;-webkit-text-fill-color:#000 !important;background-color:transparent !important")
+    # the lit chip (the one notable state): a solid black ground inside the same engraved frame, white letters
+    t, r, b, l = bands("chip")
+    lit = ".kst-on, b.kval-on, .kcell b.kval-on, .kcell b.kst-on"
+    c += _r(lit, "background-color:transparent !important;color:#fff !important;-webkit-text-fill-color:#fff !important;position:relative;z-index:0")
+    c += _r(", ".join(x.strip() + "::before" for x in lit.split(",")),
+            f"content:'' !important;display:block !important;position:absolute !important;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;"
+            "background:#000 !important;z-index:-1;margin:0 !important;width:auto !important;height:auto !important")
     # ---- captions: italic asides
     cap = (".kpanel small, small, .meta, .cite, .src-line, figcaption, .muted, .s, .u, .kunit, .kcredit, .kpanel .kcredit, .ksources, "
            ".kfoot-note, .kpanel .kfoot-note, .kcell small, .kmile-k, .kfc .kth em, .kfl .kc, .kfl .kt small, .head .meta, .kpanel .head .meta, "
@@ -186,10 +211,10 @@ def _css():
     # ---- frames: each family's band (the studio's insets) as padding; the picture is set per element at build time
     BG = "background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important"
     t, r, b, l = bands("chip")
-    c += _r(".kst-off, .kst-on, .kchip, .kpanel .kchip, b.kval-on, .vote, .sun-clouds>span, .ktrail .ktags .kst-off, .ktrail .ktags .kst-on",
+    c += _r(".kst, .kst-off, .kst-on, .kchip, .kpanel .kchip, b.kval, b.kval-on, .kcell b.kval, .kcell b.kst, .vote, .sun-clouds>span, .ktrail .ktags .kst-off, .ktrail .ktags .kst-on",
             f"display:inline-block !important;box-sizing:border-box !important;height:{max(24, 20 + t + b)}px !important;line-height:18px !important;"
             f"padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;vertical-align:middle;white-space:nowrap !important;{BG}")
-    c += _r(".kcell b.kval", "display:inline-block")
+    c += _r(".kroads .kright, .kroads .kth>span:last-child", "width:auto !important;-webkit-box-flex:0;flex:none !important;text-align:right")
     # the peaks table: a chip and its ears need a wider status column
     c += _r(".kmtn .kth>span:not(:first-child), .kmtn .krow>.kcell:not(.kname)", "width:122px !important;-webkit-box-flex:0;flex:none !important")
     t, r, b, l = bands("tile")
@@ -204,6 +229,7 @@ def _css():
     c += _r(".kth", f"box-sizing:border-box !important;min-height:{22 + t + b + 4}px !important;padding:{t + 2}px {r + 2}px {b + 2}px {l + 2}px !important;margin:0 !important;"
             f"-webkit-box-align:center;align-items:center;{BG}")
     c += _r(".kroads .kright, .kroads .kth>span:last-child", "padding-left:10px")
+    c += _r(".kmtn .krow>.kcell:not(.kname), .kroads .kright", "align-self:center")
     c += _r(".krow", f"padding-left:{l + 2}px !important;padding-right:{r + 2}px !important")
     bw, bh = NOMINAL["barbase"]
     c += _r(".khr, .bars", f"padding-bottom:{bh + 2}px !important;background-repeat:no-repeat !important;background-position:0 100% !important;"
@@ -239,8 +265,10 @@ def _css():
             "-webkit-box-pack:justify !important;justify-content:space-between !important", C)
     t, r, b, l = bands("runhead")
     rh = max(26, 20 + t + b)
-    c += _r(".krun>a", f"display:inline-block !important;box-sizing:border-box;height:{rh}px;line-height:{rh - t - b}px !important;padding:{t}px {r + 2}px {b}px {l + 2}px !important;"
-            f"-webkit-box-flex:0;flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;{BG}", C)
+    # never truncated: a long section name takes a second line inside the same plaque
+    c += _r(".krun>a", f"display:-webkit-inline-box !important;display:inline-flex !important;-webkit-box-align:center;align-items:center;box-sizing:border-box;"
+            f"min-height:{rh}px;height:auto;line-height:18px !important;padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;"
+            f"-webkit-box-flex:0;flex:0 1 auto;min-width:0;white-space:normal !important;overflow:visible !important;text-overflow:clip !important;{BG}", C)
     c += _r("body.kcontents .krun", "display:none !important", X)
     c += _r(".krun>a:before", "display:none !important", C)   # the ears carry the ornament now
     c += _r(".krun>a, .krun #ksheet", "letter-spacing:0 !important", C)
@@ -253,20 +281,36 @@ def _css():
     c += _r(".krun .ksecbtn", f"display:inline-block !important;box-sizing:border-box;height:{sh}px;line-height:{sh - t - b}px !important;"
             f"padding:{t}px {r + 3}px {b}px {l + 3}px !important;margin:0 !important;text-align:center;vertical-align:top;{BG};color:#000 !important", C)
     t, r, b, l = bands("button")
-    bh = NOMINAL["button"][1]
+    bh = NOMINAL["button"][1]   # two lines of label fit: a long page name wraps, never trails off
     c += _r(".kbar", "-webkit-box-pack:justify !important;justify-content:space-between !important", X + ".kpaged body")
     c += _r(".kbar .kprev, .kbar .knx", f"-webkit-box-flex:1 !important;flex:1 1 0 !important;min-width:0;box-sizing:border-box;height:{bh}px;"
-            f"line-height:{bh - t - b}px !important;padding:{t}px {r}px {b}px {l}px !important;letter-spacing:0 !important;{BG}", C)
-    c += _r(".kbar .knx", "text-align:right", C)
+            "display:-webkit-box !important;display:flex !important;-webkit-box-align:center;align-items:center;"
+            f"line-height:18px !important;padding:{t}px {r}px {b}px {l}px !important;letter-spacing:0 !important;"
+            f"white-space:normal !important;overflow:hidden;text-overflow:clip !important;{BG}", C)
+    c += _r(".kbar .knx", "text-align:right;-webkit-box-pack:end;justify-content:flex-end", C)
     c += _r(".kbar span.kprev", "display:none !important", C)
     # fixed: More hides on a page's last sheet, and the buttons either side must keep their size (and frame)
     c += _r(".kbar .kmid", f"-webkit-box-flex:0 !important;flex:none !important;width:{62 + l + r + 6 + 8}px;box-sizing:border-box;padding:0 4px !important", C)
     c += _r(".kbar #kmore", f"display:block !important;box-sizing:border-box;height:{bh}px !important;line-height:{bh - t - b}px !important;"
             f"width:100%;padding:{t}px 0 {b}px !important;text-align:center;font-style:normal !important;white-space:nowrap;{BG}", C)
-    c += _r("#kjump .kjtop a", f"box-sizing:border-box;padding:{t + 2}px {r + 4}px {b + 2}px {l + 4}px !important;{BG};color:#000 !important", C)
+    c += _r("#kjump .kjtop a", f"box-sizing:border-box;padding:{t + 2}px {r + 4}px {b + 2}px {l + 4}px !important;{BG};color:#000 !important;"
+            "white-space:normal !important;text-overflow:clip !important", C)
+    # the skip button is the menu's lit one: black ground inside the frame
+    c += _r("#kjump .kjskip", "background-color:transparent !important;color:#fff !important;position:relative;z-index:0", C)
+    c += _r("#kjump .kjskip small", "color:#fff !important", C)
+    c += _r("#kjump .kjskip::before", f"content:'';position:absolute;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;background:#000;z-index:-1", C)
     c += _r("#kjump .kjtop a small, #kjump .kjh, #kjump .kjg a i", f"font:{S['label']} !important;{SC};{OLD};color:#000 !important", C)
     c += _r("#kjump .kjtop a", f"font:{S['bodyb']} !important", C)
-    c += _r("#kjump .kjg a", f"font:{S['body']} !important;height:31px;line-height:31px !important", C)
+    t, r, b, l = bands("runhead")
+    c += _r("#kjump .kjg", "-webkit-box-pack:justify;justify-content:space-between", C)
+    c += _r("#kjump .kjg a", f"font:{S['body']} !important;width:49% !important;height:{max(30, 22 + t + b + 4)}px !important;"
+            f"line-height:22px !important;padding:{t + 2}px {r + 2}px {b + 2}px {l + 2}px !important;margin:0 0 4px !important;"
+            f"white-space:nowrap;overflow:hidden;{BG}", C)
+    c += _r("#kjump .kjg a i", "line-height:22px !important;width:24px !important", C)
+    c += _r("#kjump .kjg a.kjcur", "color:#fff !important;position:relative;z-index:0", C)
+    c += _r("#kjump .kjg a.kjcur i", "color:#fff !important", C)
+    c += _r("#kjump .kjg a.kjcur::before", f"content:'';position:absolute;top:{t}px;right:{r}px;bottom:{b}px;left:{l}px;background:#000;z-index:-1", C)
+    c += _r("#kjump .kjg a.kjcur i:before", "content:none !important", C)
     c += _r(".kfl .kn", f"font:{S['label']} !important;{SC};{LIN}")
     c += _r(".kfl .kt", f"font:{S['bodyb']} !important;{OLD}")
     c += _r(".kleads b, .kleads a b", f"font:{S['bodyb']} !important;{OLD}")
@@ -277,7 +321,26 @@ def _css():
     c += _r("#mkt>div>span", "display:block !important;max-width:none !important;padding:0 !important;text-align:left !important;white-space:normal !important")
     c += _r("#mkt>div>span:first-child", f"font:{S['label']} !important;{SC};{OLD}")
     c += _r("#kcont", f"font:{S['caption']} !important", C)
+    t, r, b, l = bands("button")
     c += _r(".kend .kbig, .kresume", f"{BG};padding:{t + 4}px {r + 4}px {b + 4}px {l + 4}px !important")
+    c += _r("body.kcontents #kmain .kresume", "display:block;width:auto !important;margin:0 0 14px !important", X)
+    c += _r("body.kcontents #kmain .kresume small", f"display:block;font:{S['label']} !important;{SC};{OLD}", X)
+    c += _r("body.kcontents #kmain .kresume b", f"display:block;font:{S['bodyb']} !important;{OLD}", X)
+    # the surf matrix: its head row carries a table-head plaque; the image covers the head only
+    t, r, b, l = bands("tablehead")
+    c += _r("table.kmatrix", "background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% auto !important")
+    c += _r("table.kmatrix thead th", f"padding-top:{t + 4}px !important;padding-bottom:{b + 4}px !important;font:{S['label']} !important;{SC};{OLD}")
+    c += _r("table.kmatrix thead th:first-child", f"padding-left:{l + 2}px !important;width:{104 + l}px !important")
+    c += _r("table.kmatrix thead th:last-child", f"padding-right:{r + 2}px !important")
+    # today's facts: compact tiles, label and figure on one line, two by two and the tide across
+    t, r, b, l = bands("tile")
+    c += _r("#out-facts>.mini, #out-facts[data-n]>.mini, #out-facts>.mini:nth-child(even), #out-facts[data-n]>.mini:not(:nth-child(3n+1))",
+            "display:-webkit-box !important;display:flex !important;-webkit-box-pack:justify;justify-content:space-between !important;"
+            f"-webkit-box-align:baseline;align-items:baseline !important;padding:{t + 1}px {r + 4}px {b + 1}px {l + 4}px !important;min-height:0 !important")
+    c += _r("#out-facts>.mini>.k, #out-facts>.mini>span:first-child", "margin:0 8px 0 0 !important")
+    c += _r("#out-facts>.mini>.v", "text-align:right;white-space:nowrap")
+    c += _r("#out-facts>.mini:nth-child(5):last-child, #out-facts>.mini:nth-child(odd):last-child", "grid-column:1 / span 2 !important")
+    c += _r("#out-facts", "margin:4px 0 6px !important")
     # the fit ladder may tighten space, never the type: the roles above are fixed and outrank it
     return c
 
@@ -416,6 +479,14 @@ FULL_FONTS = {
 }
 
 
+FONT_FEATURES = ["smcp", "onum", "lnum", "pnum", "tnum", "liga", "kern", "ccmp", "locl", "mark", "mkmk", "rvrn"]
+FONT_AXES = {"wght": (400, 900), "opsz": (12, 48)}
+# Latin-1, general punctuation, arrows and the symbols the edition prints; kindle_fast cuts further per edition
+FONT_UNICODES = (list(range(0x20, 0x7f)) + list(range(0xa0, 0x180)) + list(range(0x2000, 0x2070)) + [0x20ac, 0x2116, 0x2122]
+                 + list(range(0x2190, 0x21a0)) + [0x2212, 0x2215, 0x2219, 0x221e, 0x2248, 0x2260, 0x2264, 0x2265, 0x25b2, 0x25bc, 0x25cf,
+                                                  0x25e6, 0x2605, 0x2606, 0x2665, 0x2713, 0x2766, 0x2767, 0x00a7, 0x00b6, 0x02c6, 0x02dc])
+
+
 def full_fonts(out):
     """Swap Google's trimmed Literata (no smcp, c2sc or onum) for the family's full variable font, as woff2 under the
     same names; kindle_fast later cuts it to this edition's characters with every feature kept. Cached; never fatal."""
@@ -428,15 +499,30 @@ def full_fonts(out):
             continue
         try:
             os.makedirs(cache, exist_ok=True)
-            src = os.path.join(cache, f"literata-{style}-full.woff2")
+            src = os.path.join(cache, f"literata-{style}-book-v2.woff2")
             if not os.path.exists(src):
                 from fontTools.ttLib import TTFont
+                from fontTools import subset
+                from fontTools.varLib import instancer
                 import io
                 raw = urllib.request.urlopen(url, timeout=60).read()
                 f = TTFont(io.BytesIO(raw))
                 feats = {fr.FeatureTag for fr in f["GSUB"].table.FeatureList.FeatureRecord}
                 if not {"smcp", "onum", "lnum"} <= feats:
                     raise ValueError("full font lacks smcp/onum")
+                # the features the edition sets, the characters it can print, and only the axes' used ranges
+                o = subset.Options()
+                o.layout_features = FONT_FEATURES
+                o.name_IDs = ["*"]
+                o.notdef_outline = True
+                o.drop_tables += ["DSIG"]
+                sub = subset.Subsetter(o)
+                sub.populate(unicodes=FONT_UNICODES)
+                sub.subset(f)
+                b = io.BytesIO()
+                f.save(b)
+                f = TTFont(io.BytesIO(b.getvalue()))
+                f = instancer.instantiateVariableFont(f, FONT_AXES)
                 f.flavor = "woff2"
                 f.save(src + ".tmp")
                 os.replace(src + ".tmp", src)
@@ -479,7 +565,7 @@ def _compose_key(k):
 
 def standin(role, w, h, variant="plain"):
     """Until the studio's art lands: a plain stand-in (fine double rule) so the wiring can be checked. Not the design."""
-    t, r, b, l = FAMILIES[role][1]
+    t, r, b, l = FAMILIES.get(role, (3, 3, 3, 3))
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" fill="none" stroke="#000">']
     if role in ("divider",):
         o.append(f'<path d="M4 {h/2}H{w/2-8}M{w/2+8} {h/2}H{w-4}" stroke-width=".5"/><path d="M{w/2} {h/2-4}l4 4-4 4-4-4z" stroke-width="1"/>')
@@ -497,26 +583,32 @@ def standin(role, w, h, variant="plain"):
 
 
 MEASURE_JS = r"""(F) => {
+  // every framed element's border box at the Kindle's size (the Sections menu measured open)
   const out = {}, r = document.documentElement, open = r.classList.contains('kjumpopen');
   r.classList.add('kjumpopen');
-  for (const role in F) {
-    const [sel, fixed, lit] = F[role]; const L = [];
+  for (const k in F) {
+    const [sel, fixed, lit, baseH] = F[k]; const L = [];
     for (const el of document.querySelectorAll(sel)) {
       const b = el.getBoundingClientRect(); let w = Math.round(b.width), h = Math.round(b.height);
-      if (role === 'barbase') h = F[role][3];
-      if (fixed) { w = fixed[0]; h = fixed[1]; }
+      if (fixed === 'base') h = baseH;
+      else if (fixed === 'thead') { const t = el.tHead; h = t ? Math.round(t.getBoundingClientRect().height) : 0; }
+      else if (fixed) { w = fixed[0]; h = fixed[1]; }
       const v = lit && el.matches(lit) ? 'lit' : 'plain';
-      L.push(w >= 8 && h >= 6 ? [w, h, v, (el.textContent || '').trim().slice(0, 40)] : null);
+      L.push(w >= 8 && h >= 6 && getComputedStyle(el).display !== 'none' ? [w, h, v] : null);
     }
-    out[role] = L;
+    out[k] = L;
   }
   if (!open) r.classList.remove('kjumpopen');
   return out;
 }"""
 
-APPLY = ("<script>(function(){try{var d=JSON.parse(document.getElementById('kfrm').textContent),k,q,L,i;"
-         "for(k in d.r){q=document.querySelectorAll(d.s[k]);L=d.r[k];for(i=0;i<L.length&&i<q.length;i++)"
-         "if(L[i])q[i].style.setProperty('background-image','url('+d.b+L[i]+')','important');}}catch(e){}})();</script>")
+# applied once on load, before the pager: each element gets its frame (a cell of a sprite, or its own picture)
+APPLY = ("<script>(function(){try{var d=JSON.parse(document.getElementById('kfrm').textContent),k,q,L,i,e,s;"
+         "for(k in d.r){q=document.querySelectorAll(d.s[k]);L=d.r[k];for(i=0;i<L.length&&i<q.length;i++){e=L[i];if(!e)continue;s=q[i].style;"
+         "s.setProperty('background-image','url('+d.u[e[0]]+')','important');"
+         "if(e.length>1){s.setProperty('background-position',-e[1]+'px '+(-e[2])+'px','important');"
+         "s.setProperty('background-size',e[3]+'px '+e[4]+'px','important');s.setProperty('background-repeat','no-repeat','important');}}}}"
+         "catch(x){}})();</script>")
 
 
 class _Quiet(http.server.SimpleHTTPRequestHandler):
@@ -577,88 +669,173 @@ async def _raster(br, jobs, odir):
     await cx.close()
 
 
+def _pack(names, sizes):
+    """Shelf-pack frames (CSS px sizes) with a 2 px gutter: {name: (x, y)}, (W, H)."""
+    order = sorted(names, key=lambda n: (-sizes[n][1], -sizes[n][0]))
+    W = max([512] + [sizes[n][0] + 4 for n in order])
+    x = y = shelf = 0
+    pos = {}
+    for n in order:
+        w, h = sizes[n]
+        if x + w + 2 > W:
+            x, y, shelf = 0, y + shelf + 2, 0
+        pos[n] = (x, y)
+        x += w + 2
+        shelf = max(shelf, h)
+    return pos, (W, y + shelf)
+
+
+def _sprite(odir, names, sizes, dst):
+    """One 16-grey sprite (2x) from the frames' own PNGs; returns {name: (x, y)} and its CSS size."""
+    import io
+    from PIL import Image
+    from solar.kindle_fast import _png16
+    pos, (W, H) = _pack(names, sizes)
+    im = Image.new("RGBA", (W * 2, H * 2), (0, 0, 0, 0))
+    for n, (x, y) in pos.items():
+        im.paste(Image.open(os.path.join(odir, n)).convert("RGBA"), (x * 2, y * 2))
+    b = io.BytesIO()
+    im.save(b, "PNG")
+    _png16(b.getvalue(), dst, opaque=False)
+    return pos, (W, H)
+
+
 def frames(out):
-    """Measure every framed element on every page at the Kindle's size, compose and rasterise each distinct frame,
-    and write each page's list (script#kfrm) with the line that applies it. Never fatal."""
+    """Measure every framed element on every page at the Kindle's size; compose each distinct frame (the studio's
+    solar/frames) and rasterise it; pack the chrome's frames into one sprite for the edition and each page's own
+    into one sprite per page; write each page's list (script#kfrm) with the line that applies it, and the
+    stylesheet's fixed frames. Never fatal."""
     import time
     t0 = time.time()
     try:
         from playwright.async_api import async_playwright
     except ImportError:
         return None
-    pages = sorted(os.path.basename(p)[:-5] for p in os.listdir(out) if p.endswith(".html"))
-    pages = [p for p in pages if os.path.exists(os.path.join(out, p + ".html"))]
-    F = {role: [f[0], list(f[2]) if isinstance(f[2], tuple) else None, f[3], NOMINAL.get(role, (0, 0))[1]] for role, f in FAMILIES.items()}
+    pages = sorted(p[:-5] for p in os.listdir(out) if p.endswith(".html"))
+    F = {k: [v[1], list(v[2]) if isinstance(v[2], tuple) else v[2], v[3], NOMINAL["barbase"][1]] for k, v in SLOTS.items()}
     odir = os.path.join(out, "orn", "kf")
     os.makedirs(odir, exist_ok=True)
     srv, base = _serve(out)
-    stats = {"pages": 0, "frames": 0, "pngs": 0, "missing": 0}
+    stats = {"pages": 0, "frames": 0, "pictures": 0, "sprites": 0, "missing": 0}
     try:
         async def go():
             async with async_playwright() as pw:
                 br = await pw.chromium.launch(executable_path=os.environ.get("KINDLE_CHROMIUM") or None)
-                meas = await _measure_all(br, base, [p.replace(".html", "") for p in pages], F)
+                meas = await _measure_all(br, base, pages, F)
                 keys, plan = {}, {}
-                for p, roles in meas.items():
+                for p, slots in meas.items():
                     plan[p] = {}
-                    for role, L in roles.items():
+                    for k, L in slots.items():
+                        role = SLOTS[k][0]
                         ks = []
                         for i, it in enumerate(L):
                             if not it:
                                 ks.append(None)
                                 continue
-                            w, h, v, _t = it
-                            seed = zlib.crc32(f"{p}:{role}:{i}".encode()) & 0xffff if FAMILIES[role][4] else 0
-                            k = (role, w, h, seed, v)
-                            keys[k] = None
-                            ks.append(k)
-                        plan[p][role] = ks
-                # compose every distinct frame once, on every core (the studio's engine is pure Python)
+                            w, h, v = it
+                            seed = zlib.crc32(f"{p}:{k}:{i}".encode()) & 0xffff if SLOTS[k][4] else 0
+                            key = (role, w, h, seed, v)
+                            keys[key] = None
+                            ks.append(key)
+                        plan[p][k] = ks
+                for k, (role, sel, (w, h), lit) in STATIC.items():
+                    keys[(role, w, h, 0, "plain")] = None
                 from concurrent.futures import ProcessPoolExecutor
                 ks = list(keys)
                 with ProcessPoolExecutor(max_workers=max(1, min(8, os.cpu_count() or 1))) as ex:
                     svgs = list(ex.map(_compose_key, ks, chunksize=8))
                 jobs = {}
-                for k, svg in zip(ks, svgs):
+                for key, svg in zip(ks, svgs):
                     if not svg:
                         stats["missing"] += 1
                         continue
-                    role, w, h, seed, v = k
+                    role, w, h, seed, v = key
                     name = f"{role}-{w}x{h}-{v[0]}-{hashlib.sha1(svg.encode()).hexdigest()[:8]}.png"
                     jobs.setdefault(name, (svg, w, h))
-                    keys[k] = name
-                for p in plan:
-                    for role in list(plan[p]):
-                        urls = [keys.get(k) or 0 if k else 0 for k in plan[p][role]]
-                        stats["frames"] += sum(1 for u in urls if u)
-                        if any(urls):
-                            plan[p][role] = urls
-                        else:
-                            del plan[p][role]
+                    keys[key] = name
                 await _raster(br, {n: j for n, j in jobs.items() if not os.path.exists(os.path.join(odir, n))}, odir)
-                stats["pngs"] = len(jobs)
                 await br.close()
-                return plan
-        plan = asyncio.run(go())
+                return plan, keys, {n: (j[1], j[2]) for n, j in jobs.items()}
+        plan, keys, sizes = asyncio.run(go())
     finally:
         srv.shutdown()
-    sels = {role: f[0] for role, f in FAMILIES.items()}
-    for p, roles in plan.items():
-        if not roles:
+    used = set()
+    # the chrome: one sprite for the whole edition
+    chrome = sorted({keys[k] for p in plan for s, L in plan[p].items() if SLOTS[s][5] == "chrome" for k in L if k and keys.get(k)})
+    cpos, csz, cname = {}, (0, 0), None
+    if chrome:
+        tmp = os.path.join(odir, "chrome.tmp.png")
+        cpos, csz = _sprite(odir, chrome, sizes, tmp)
+        cname = "chrome-" + hashlib.sha1(open(tmp, "rb").read()).hexdigest()[:10] + ".png"
+        os.replace(tmp, os.path.join(odir, cname))
+        stats["sprites"] += 1
+    sels = {k: v[1] for k, v in SLOTS.items()}
+    for p, slots in plan.items():
+        urls, R = [], {}
+        if cname:
+            urls.append("orn/kf/" + cname)
+        mine = sorted({keys[k] for s, L in slots.items() if SLOTS[s][5] == "page" for k in L if k and keys.get(k)})
+        ppos, psz, pi = {}, (0, 0), None
+        if mine:
+            tmp = os.path.join(odir, f"page.tmp.png")
+            ppos, psz = _sprite(odir, mine, sizes, tmp)
+            pn = f"page-{p}-" + hashlib.sha1(open(tmp, "rb").read()).hexdigest()[:10] + ".png"
+            os.replace(tmp, os.path.join(odir, pn))
+            urls.append("orn/kf/" + pn)
+            pi = len(urls) - 1
+            stats["sprites"] += 1
+        for s, L in slots.items():
+            row = []
+            for k in L:
+                n = keys.get(k) if k else None
+                if not n:
+                    row.append(0)
+                    continue
+                pack = SLOTS[s][5]
+                if pack == "chrome":
+                    x, y = cpos[n]
+                    row.append([0, x, y, csz[0], csz[1], sizes[n][0], sizes[n][1]])
+                elif pack == "page":
+                    x, y = ppos[n]
+                    row.append([pi, x, y, psz[0], psz[1], sizes[n][0], sizes[n][1]])
+                else:
+                    used.add(n)
+                    if "orn/kf/" + n not in urls:
+                        urls.append("orn/kf/" + n)
+                    row.append([urls.index("orn/kf/" + n)])
+                stats["frames"] += 1
+            if any(row):
+                R[s] = row
+        if not R:
             continue
-        data = json.dumps({"b": "orn/kf/", "s": {r: sels[r] for r in roles}, "r": roles}, separators=(",", ":")).replace("</", "<\\/")
+        data = json.dumps({"u": urls, "s": {s: sels[s] for s in R}, "r": R}, separators=(",", ":")).replace("</", "<\\/")
         fp = os.path.join(out, p + ".html")
-        s = open(fp, encoding="utf-8").read()
-        s = re.sub(r'<script type="application/json" id="kfrm">.*?</script><script>\(function\(\)\{try\{var d=JSON\.parse\(document\.getElementById\(\'kfrm\'\).*?</script>',
-                   "", s, flags=re.S)
+        doc = open(fp, encoding="utf-8").read()
+        doc = re.sub(r'<script type="application/json" id="kfrm">.*?</script><script>\(function\(\)\{try\{var d=JSON\.parse\(document\.getElementById\(\'kfrm\'\).*?</script>',
+                     "", doc, flags=re.S)
         block = f'<script type="application/json" id="kfrm">{data}</script>{APPLY}'
         # after the page prep (which moves charts) and before the pager: the same DOM as measured
-        m = re.search(r'<script src="[^"]*pager[^"]*"></script>|<script>\s*/\*[^*]*pager|<script>\(function \(\) \{', s)
-        i = s.rfind("</body>") if not m else m.start()
-        s = s[:i] + block + s[i:]
+        m = re.search(r'<script src="[^"]*pager[^"]*"></script>', doc)
+        at = doc.rfind("</body>") if not m else m.start()
         with open(fp, "w", encoding="utf-8") as f:
-            f.write(s)
+            f.write(doc[:at] + block + doc[at:])
         stats["pages"] += 1
+    # fixed frames the stylesheet sets (what the pager makes after load)
+    css = ""
+    for k, (role, sel, (w, h), lit) in STATIC.items():
+        n = keys.get((role, w, h, 0, "plain"))
+        if n:
+            used.add(n)
+            css += (f"{X} {sel}{{background-image:url(orn/kf/{n}) !important;background-repeat:no-repeat !important;"
+                    f"background-size:{w}px {h}px !important;background-position:0 0 !important;box-sizing:border-box;width:{w}px;height:{h}px}}\n")
+    if css:
+        with open(os.path.join(out, "kindle.css"), "a", encoding="utf-8") as f:
+            f.write("\n/* kindle_ornate: fixed frames */\n" + css)
+    # the single frames now live in the sprites
+    for n in os.listdir(odir):
+        if n.endswith(".png") and n not in used and not n.startswith(("chrome-", "page-")):
+            os.remove(os.path.join(odir, n))
+    stats["pictures"] = len(sizes)
     stats["secs"] = round(time.time() - t0, 1)
     return stats
 
@@ -687,12 +864,17 @@ CHECK_JS = r"""(F) => {
     if (txt && !el.closest('#kjump, .kltx, .ksr') && cs.color !== 'rgba(0, 0, 0, 0)') { const k = parseFloat(cs.fontSize) + '/' + parseFloat(cs.lineHeight || 0);
       (sizes[k] = sizes[k] || []).length < 3 && sizes[k].push(name(el) + ': ' + (el.textContent || '').trim().slice(0, 20)); }
   }
-  for (const role in F) for (const el of document.querySelectorAll(F[role])) {
-    const b = el.getBoundingClientRect(); if (!b.width || getComputedStyle(el).display === 'none') continue;
-    const bi = getComputedStyle(el).backgroundImage; if (!/url\(/.test(bi)) unframed.push(role + ': ' + name(el));
-    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && role !== 'divider' && role !== 'barbase' && role !== 'initial' && (Math.abs(+m[1] - b.width) > 1.5 || Math.abs(+m[2] - b.height) > 1.5))
-      unframed.push(role + ' size ' + m[1] + 'x' + m[2] + ' vs ' + Math.round(b.width) + 'x' + Math.round(b.height) + ': ' + name(el)); }
-  }
+  let D = null; try { D = JSON.parse(document.getElementById('kfrm').textContent); } catch (e) {}
+  for (const role in F) { const q = document.querySelectorAll(F[role]); const R = D && D.r[role];
+    q.forEach((el, i) => {
+    const b = el.getBoundingClientRect(); if (!b.width || getComputedStyle(el).display === 'none') return;
+    const bi = getComputedStyle(el).backgroundImage; if (!/url\(/.test(bi)) { unframed.push(role + ': ' + name(el)); return; }
+    const e = R && R[i]; let fw = 0, fh = 0;
+    if (e && e.length > 5) { fw = e[5]; fh = e[6]; }
+    else { const m = /-(\d+)x(\d+)-/.exec(bi); if (m && !/^(divider|barbase|initial|matrixhead)$/.test(role)) { fw = +m[1]; fh = +m[2]; } }
+    if (fw && (Math.abs(fw - b.width) > 1.5 || Math.abs(fh - b.height) > 1.5))
+      unframed.push(role + ' size ' + fw + 'x' + fh + ' vs ' + Math.round(b.width) + 'x' + Math.round(b.height) + ': ' + name(el));
+  }); }
   return { bad, theirs, sizes, unframed, kpre: !!document.getElementById('kpre'), fast: !!(window.KROOM) };
 }"""
 
@@ -704,7 +886,8 @@ def check(out, shots=None, only=None):
     pages = sorted(p[:-5] for p in os.listdir(out) if p.endswith(".html"))
     if only:
         pages = [p for p in pages if p in only]
-    F = {role: f[0] for role, f in FAMILIES.items()}
+    F = {k: v[1] for k, v in SLOTS.items()}
+    F.update({k: v[1] for k, v in STATIC.items()})
     srv, base = _serve(out)
     res = {}
 

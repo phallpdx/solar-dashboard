@@ -2270,7 +2270,7 @@ PAGER_JS = r"""
     }
     if (pos) pos.innerHTML = '';
     var ksh = document.getElementById('ksheet');   /* one counter: this page's sheets, in the running head */
-    if (ksh) ksh.innerHTML = n > 1 ? 'Sheet ' + (i + 1) + ' of ' + n : '';
+    if (ksh) ksh.innerHTML = n > 1 ? (i + 1) + ' of ' + n : '';   /* the folio: the running head names the section, this the sheet */
     if (knx && knxLabel && NEXT_URL) { var kl0 = knxLabel.replace(/^Next: /, ''), kl1 = kl0.replace(/<[^>]+>|&\w+;/g, '');
       knx.innerHTML = i < n - 1 ? (kl1.length > 16 ? 'Next page &rsaquo;' : 'Skip to ' + kl0) : (kl1.length > 26 ? 'Next page &rsaquo;' : kl0); }
     try { store['kme:' + location.pathname] = i;

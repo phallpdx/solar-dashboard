@@ -25,6 +25,7 @@ import threading
 
 from . import ornament as kindle_orn
 from . import kindle_present
+from . import kindle_ornate
 
 
 TZ = "America/Los_Angeles"
@@ -1897,6 +1898,8 @@ html.kpaged body #kmain{will-change:transform}
 """
 # How the data is presented (answer first, statuses, one .kpanel per text block): last, so it governs.
 EINK_CSS += kindle_present.CSS
+# One type scale, book typography and the small frames' bands (kindle_ornate): after everything, so it governs.
+EINK_CSS += kindle_ornate.CSS
 
 PAGER_JS = r"""
 <script>
@@ -2931,6 +2934,7 @@ def main(site):
     out = os.path.join(site, "kindle")
     os.makedirs(out, exist_ok=True)
     font_css, font_links = self_host_fonts(out)
+    kindle_ornate.full_fonts(out)   # the full Literata: true small caps, old-style figures
     with open(os.path.join(out, "kindle.css"), "w") as f:
         f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS)
     kindle_orn.write_plates(out)
@@ -3120,6 +3124,7 @@ def main(site):
         mine = [pg for pg in pages if pg["sec"] == sid]
         for k, pg in enumerate(mine, 1):
             pg.update(file=f"{sid}-{k:02d}.html", k=k, of=len(mine))
+    kindle_ornate.typeset(pages, data["css"] + "\n" + EINK_CSS, me, data["bodyClass"] + " kcard")   # curly and hanging quotes, the section's engraved initial, headline hooks
     order = [i for i in order if any(pg["sec"] == i for pg in pages)]
     parts = [(name, [i for i in ids if i in order]) for name, ids in parts]
     parts = [(name, ids) for name, ids in parts if ids]
@@ -3316,7 +3321,7 @@ def main(site):
     body = (f'<div class="kmast"><div class="kear"><span>Sauvie Island, Ore.</span><span class="kcrest">{OWNER_INITIAL}</span><span>No. {doy}</span></div>'
             f'<p class="kname"><i>The</i> Morning Edition</p>'
             f'<p class="kdate">{html.escape(longdate.rsplit(",", 1)[0])}{" &middot; " + html.escape(g["holiday"]) if g.get("holiday") else ""}'
-            f' &middot; {html.escape(edition)} edition</p></div>'
+            f'<span class="kded">{html.escape(edition)} edition</span></p></div>'
             + wx
             + (f'<p class="klab">Top of the edition</p><div class="kleads">{leads}</div>' if leads else "")
             + f'<div class="ktoc kbreak"><h2 class="ktochead" id="contents">Contents</h2>{"".join(toc)}</div>'
@@ -3336,6 +3341,10 @@ def main(site):
     except Exception as e:  # noqa: BLE001  -- never lose the edition over the art
         print(f"kindle_full: plates skipped: {e!r}", file=sys.stderr)
     write_offline(out, BUILD["id"])
+    try:  # every small engraved frame, composed for its element's exact size (before the speed pass records the layout)
+        print(f"kindle_ornate: frames {kindle_ornate.frames(out)}")
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_full: frames skipped: {e!r}", file=sys.stderr)
     try:  # last: raster art, trimmed stylesheet, each page's layout worked out here instead of on the Kindle
         from . import kindle_fast
         kindle_fast.run(out)

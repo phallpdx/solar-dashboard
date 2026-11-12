@@ -3,7 +3,8 @@
 Every motif is drawn on the black ground at its field sizes (62 px, the usual; 76 px, the largest open area),
 rendered as the build does (2x, crispEdges) and quantised to the four shipping greys (white, #ccc, #888, black).
 A. 1:1, one pixel = one Kindle device pixel.  B. The same pixels magnified 3x, nearest-neighbour.
-C. A full sheet with a section motif in its field, 1:1, and that field's size as a 2-bit PNG."""
+C. A full sheet with a section motif in its field, 1:1, and that field's size as a 2-bit PNG.
+D. Beside an approved batch plate (civics-01's emblem, the Capitol), both at 3x, to check the hand matches."""
 import io, os, re, subprocess, sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from PIL import Image, ImageDraw, ImageFont
@@ -59,6 +60,8 @@ sheet = ('<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" w
          '<rect width="618" height="714" fill="#fff"/>' + inner
          + re.sub(r'^\s*<\?xml[^>]*>\s*', '', fsvg).replace(' xmlns="http://www.w3.org/2000/svg"', '', 1) + '</svg>')
 open(os.path.join(work, 'zsheet.svg'), 'w').write(sheet)
+PLATE = os.path.join(HERE, '..', '..', 'solar', 'kindle_art', 'civics-01', 'emblem.svg')
+open(os.path.join(work, 'zzplate.svg'), 'w').write(crisp(open(PLATE).read()))
 subprocess.run(['node', os.path.join(HERE, 'render.js'), work, '2'], check=True)
 
 tiles = {}
@@ -87,11 +90,11 @@ tB = tA[SIZES[0]] * M
 colsB = 5
 Wd = max(PAD * 2 + colsA * (tA[SIZES[-1]] + 16), PAD * 2 + colsB * (tB + 20), PAD * 2 + 1236 + 24 + 6 * 76 + 40)
 Hd = (60 + sum(2 * (tA[s] + 40) + 40 for s in SIZES) + 40
-      + ((len(names) + colsB - 1) // colsB) * (tB + 40) + 60 + 1428 + 80)
+      + ((len(names) + colsB - 1) // colsB) * (tB + 40) + 60 + 1428 + 80 + 1100)
 sh = Image.new('L', (Wd, Hd), 0xdd)
 dr = ImageDraw.Draw(sh)
 y = PAD
-dr.text((PAD, y), 'Section motifs: SECTION_MOTIFS in solar/scroll.py (re-exported by solar/frames/field.py), '
+dr.text((PAD, y), 'Section emblems (engraved): SECTION_MOTIFS in solar/scroll.py (re-exported by solar/frames/field.py), '
         'branch claude/engrave-motifs. Shown in the four shipping greys.', fill=0, font=font)
 y += 36
 dr.text((PAD, y), 'A. 1:1, one pixel = one Kindle device pixel. View at 100 %.', fill=0, font=font)
@@ -126,6 +129,22 @@ hw = int(ms * 1.4)
 box = (int(mx * 2) - hw, int(my_ * 2) - hw, int(mx * 2) + hw, int(my_ * 2) + hw)
 crop = ctx.crop(box)
 sh.paste(crop.resize((crop.size[0] * M, crop.size[1] * M), Image.NEAREST), (PAD + 1236 + 24, y))
-sh = sh.crop((0, 0, Wd, y + 1428 + PAD))
+y += 1428 + 30
+pl = Image.open(os.path.join(work, 'zzplate.png')).convert('RGBA')
+bg = Image.new('RGB', pl.size, '#fff')
+bg.paste(pl, (0, 0), pl)
+pl = grey4(bg)
+dr.text((PAD, y), 'D. Beside a batch plate at %dx: civics-01 emblem (approved, claude/engrave-batch) and the civics motif '
+        '(size %d), each a %d px device-pixel window.' % (M, SIZES[0], tA[SIZES[0]]), fill=0, font=font)
+y += 30
+T = tA[SIZES[0]]
+cx_, cy_ = pl.size[0] // 2, pl.size[1] // 2 + 20
+crop = pl.crop((cx_ - T // 2, cy_ - T // 2, cx_ - T // 2 + T, cy_ - T // 2 + T))
+sh.paste(pl, (PAD, y))
+sh.paste(crop.resize((T * M, T * M), Image.NEAREST), (PAD + pl.size[0] + 24, y))
+t_ = tiles['civics', SIZES[0]]
+sh.paste(t_.resize((t_.size[0] * M, t_.size[1] * M), Image.NEAREST), (PAD + pl.size[0] + 24 + T * M + 24, y))
+y += max(pl.size[1], T * M) + PAD
+sh = sh.crop((0, 0, Wd, y))
 sh.save(out, optimize=True)
 print(out, sh.size, 'context field %.1f KB' % ctx_kb)

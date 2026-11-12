@@ -103,7 +103,7 @@ jobs:
       # which Parker's PC writes at 7 pm.
       - name: Build the Evening Edition
         continue-on-error: true
-        timeout-minutes: 3
+        timeout-minutes: 6
         run: |
           pip install --quiet ephem
           python -m solar.kindle_evening data/dashboard.json web/evening.json _site
@@ -117,6 +117,13 @@ jobs:
           pip install --quiet playwright pillow
           python -m playwright install --with-deps chromium >/dev/null
           python -m solar.kindle_full _site
+
+      # The Evening Edition's engravings are drawn as SVG; the Kindle paints one-bit PNGs far faster.
+      # Uses the browser installed just above. If it fails the pages keep their SVGs and still work.
+      - name: Engrave the Evening Edition's art as PNG
+        continue-on-error: true
+        timeout-minutes: 5
+        run: python -m solar.art_raster _site
 
       - uses: actions/upload-pages-artifact@v3
         with:

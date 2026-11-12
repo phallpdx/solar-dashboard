@@ -1940,7 +1940,7 @@ PAGER_JS = r"""
       var kids = el.children, hasBlock = false;
       for (var j = 0; j < kids.length; j++) if (blockish(kids[j])) { hasBlock = true; break; }
       for (var n = el.firstChild; n; n = n.nextSibling)
-        if ((n.nodeType === 3 && /\S/.test(n.nodeValue)) || (n.nodeType === 1 && !blockish(n) && /\S/.test(n.textContent || ''))) { if (bottom > lb) lb = bottom; break; }
+        if ((n.nodeType === 3 && /\S/.test(n.nodeValue)) || (n.nodeType === 1 && !blockish(n) && window.getComputedStyle(n).display !== 'none' && /\S/.test(n.textContent || ''))) { if (bottom > lb) lb = bottom; break; }   // a hidden child prints nothing
       if (hasBlock && !/^(LI|P|H1|H2|H3|H4|TR|FIGURE|IMG|SVG)$/.test(tag)) continue;
       if (bottom > lb) lb = bottom;
       ls.push({ top: top, bottom: bottom, head: isHead || tag === 'H2' });
@@ -2015,7 +2015,7 @@ PAGER_JS = r"""
   }
   function sig() { var f = document.fonts ? document.fonts.status : '', im = main.getElementsByTagName('img'), c = 0;
     for (var q = 0; q < im.length; q++) if (im[q].complete) c++;
-    return window.innerWidth + 'x' + window.innerHeight + f + c; }
+    return window.innerWidth + 'x' + window.innerHeight + f + c + (root.getAttribute('data-kev') || ''); }   // data-kev: a page's own script changed its layout
   var HINT = root.getAttribute('data-kfit');
   function hinted() {                       // the build's measured answer, checked once; null = run the ladder
     var m = /^([fp]):(.*)$/.exec(HINT || ''); if (!m || FLOW) return null;

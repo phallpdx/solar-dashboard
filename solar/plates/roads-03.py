@@ -1695,6 +1695,124 @@ def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
     return poly
 
 
+
+_HOOD = [(-1.1, 0), (-.8, .07), (-.6, .16), (-.45, .26), (-.34, .35), (-.28, .41), (-.245, .465),
+         (-.222, .5), (-.205, .515), (-.19, .5), (-.172, .505), (-.14, .56), (-.1, .66), (-.068, .76),
+         (-.04, .86), (-.018, .945), (0, 1), (.025, .99), (.05, .975), (.068, .955), (.085, .91),
+         (.1, .86), (.115, .8), (.13, .745), (.15, .71), (.18, .68), (.215, .645), (.27, .57),
+         (.35, .46), (.45, .35), (.58, .23), (.75, .12), (.9, .05), (1.1, 0)]
+
+
+def hood(cv, x0, x1, base, px, ph, seed=0, forest=True, detail=1):
+    """Mt. Hood from the south, as from Timberline: the summit set left of a short ridge that
+    drops at once over the dark Steel Cliff; Crater Rock a cross-hatched dome in the bowl below
+    it; Illumination Rock a crag on the long west shoulder. The glaciers are lit planes left
+    nearly white, crossed only by a few crevasse cuts, between rock ribs carried down in broken
+    dark strokes with their shadow ticks; the east faces are cross-hatched in shadow; rock and
+    forest below the snow line. Returns the outline polygon."""
+    rng = _r.Random(seed)
+    hw = ph * 1.85
+
+    def P(u, v):
+        return (px + u * hw, base - v * ph)
+
+    prof = []
+    for i, (u, v) in enumerate(_HOOD):
+        j = rng.uniform(-.006, .006) if 0 < i < len(_HOOD) - 1 and v < .9 else 0
+        prof.append(P(u, v + j))
+    left = [(min(x0, prof[0][0]), base)]
+    for k in range(1, 5):
+        fx = x0 + (prof[2][0] - x0) * k / 5
+        left.append((fx, base - ph * (.06 + .03 * _m.sin(k * 1.7 + seed))))
+    right = []
+    for k in range(1, 5):
+        fx = prof[-3][0] + (x1 - prof[-3][0]) * k / 5
+        right.append((fx, base - ph * (.07 + .03 * _m.sin(k * 2.3 + seed))))
+    right.append((max(x1, prof[-1][0]), base))
+    hills = left + [(prof[2][0], base - ph * .05)]
+    sil = prof
+    cv.obj([sil], 1.)
+    sm = detail == 0
+    # the shadowed east faces: everything east of the ridge line from the summit to the foot
+    D = [P(.03, .99), P(.045, .9), P(.07, .78), P(.11, .66), P(.18, .52), P(.27, .37), P(.38, .2), P(.5, 0)]
+    east = [P(u, v) for u, v in _HOOD if u > .03]
+    shade = D + east[::-1]
+    cv.hair(C.hatch_poly(shade, 58, 1.25 if sm else 1.6))
+    if not sm:
+        upper = [P(.03, .99), P(.045, .9), P(.07, .78), P(.11, .66), P(.18, .52), P(.24, .42)] + [P(u, v) for u, v in _HOOD if u > .03 and v > .42][::-1]
+        cv.hair(C.hatch_poly(upper, -32, 2.2))
+    # Steel Cliff: the dark wall under the summit ridge
+    sc = [P(.05, .97), P(.07, .95), P(.087, .9), P(.102, .85), P(.118, .79), P(.132, .745), P(.12, .72), P(.1, .75), P(.08, .8), P(.06, .87), P(.045, .93)]
+    cv.obj([sc], 0)
+    cv.line(C.hatch_poly(sc, 62, 1.1 if sm else 1.3))
+    if not sm:
+        cv.hair(C.hatch_poly(sc, -28, 1.6))
+    # Crater Rock in the bowl below the summit
+    cr = [P(-.03, .6), P(-.018, .628), P(0, .645), P(.016, .642), P(.03, .622), P(.038, .6), P(.01, .594)]
+    cv.obj([cr], .5 if not sm else 0)
+    crs = [P(0, .645), P(.016, .642), P(.03, .622), P(.038, .6), P(.01, .594), P(.004, .62)]
+    cv.line(C.hatch_poly(crs, 45, 1.2))
+    cv.hair(C.hatch_poly(cr, -45, 1.6))
+    # Illumination Rock on the west shoulder
+    ir = [P(-.232, .49), P(-.212, .52), P(-.198, .517), P(-.186, .5), P(-.2, .478), P(-.222, .476)]
+    cv.obj([ir], 0)
+    cv.line(C.hatch_poly(ir, 50, 1.1))
+    # snow line: ragged, fingers of snow running down the gullies
+    sl = []
+    n = 40
+    for i in range(n + 1):
+        u = -1.1 + 2.2 * i / n
+        v = .27 + .035 * _m.sin(u * 23 + seed % 7) + .02 * rng.uniform(-1, 1) - .03 * (abs(_m.sin(u * 9)) > .85)
+        sl.append(P(u, v))
+    low = [P(-1.1, 0)] + sl + [P(1.1, 0)]
+    if not sm:
+        # rock ribs on the glaciers, carried down in broken strokes with shadow ticks
+        ribs = [[(-.04, .86), (-.09, .64), (-.16, .5), (-.24, .36), (-.3, .3)],
+                [(-.05, .57), (-.075, .45), (-.11, .36), (-.14, .29)],
+                [(.04, .58), (.05, .47), (.045, .38), (.05, .29)],
+                [(.17, .66), (.22, .52), (.3, .4), (.37, .3)]]
+        for k, rb in enumerate(ribs):
+            pts = resample([P(u, v) for u, v in rb], 1.)
+            i = 0
+            while i < len(pts) - 2:
+                L = rng.randint(2, 5)
+                seg = pts[i:i + L]
+                (cv.line if k != 1 else cv.hair)(seg)
+                for q in seg[::2]:
+                    cv.hair([q, (q[0] + 1.8, q[1] + .9)])
+                i += L + rng.randint(1, 2)
+        # crevasse cuts across the lit glaciers (Palmer, Zigzag, Coalman): short bowed arcs
+        for (u, v, s) in ((-.02, .5, .05), (-.01, .44, .06), (-.05, .4, .05), (-.13, .44, .04), (-.18, .4, .05),
+                          (.1, .48, .04), (.09, .42, .05), (-.08, .34, .05), (.0, .34, .04), (-.2, .33, .05)):
+            a, m, b = P(u - s / 2, v + .006), P(u + s * .05, v), P(u + s / 2, v - .004)
+            cv.hair([a, P(u - s * .08, v + .002)])
+            cv.hair([m, b])
+        # a faint shading down the west edge, turning the cone
+        wedge = [P(u, v) for u, v in _HOOD if u < -.05 and v > .27] + [P(-.32, .27)]
+        cv.hair(C.hatch_poly(wedge + [P(-.24, .4), P(-.13, .6)], 75, 3.))
+    # rock and timber below the snow line
+    rock = [p for p in low]
+    cv.hair(C.hatch_poly(rock, 72, 1.4 if sm else 1.8))
+    if not sm:
+        cv.hair(C.hatch_poly([p for p in low if p[0] > px] + [P(.2, 0)], -40, 2.4))
+    cv.line(sl)
+    if forest and not sm:
+        fa = [P(-1.1, 0)]
+        u = -1.1
+        while u < 1.1:
+            v = .09 + .02 * rng.uniform(-1, 1)
+            fa.append(P(u, v * .5))
+            fa.append(P(u + .015, v))
+            u += .03
+        fa.append(P(1.1, 0))
+        cv.obj([fa], .5)
+        cv.line(C.hatch_poly(fa, 90, 1.2))
+    if hills and not sm:
+        for side in (left + [prof[1], prof[0]], [prof[-1], prof[-2]] + right):
+            cv.obj([side], .5)
+            cv.hair(C.hatch_poly(side, 80, 1.5))
+    return sil
+
 def fir(cv, x, base, h, rng, wfac=.36, snow=False):
     """A Douglas fir carved in relief: drooping tiers lit on the upper left (open cuts),
     shadowed on the lower right (close cuts, a heavy shade line under each bough); with snow,
@@ -1982,16 +2100,18 @@ def lodge(cv, cx, by, W):
             wx = a + 2.5 + i * 4.5
             cv.obj([[(wx, by - wh * .7), (wx + 1.6, by - wh * .7), (wx + 1.6, by - wh * .3), (wx, by - wh * .3)]], 0)
             cv.line([(wx + .8, by - wh * .7), (wx + .8, by - wh * .3)])
-        rh = W * .13
+        rh = W * .17
         roof = [(a - 1.5, by - wh), (b + 1.5, by - wh), (b - W * .04, by - wh - rh), (a + W * .04, by - wh - rh)]
         cv.obj([roof], 1.)
-        k = 0
-        xx = a + 3
-        while xx < b - 2:
-            cv.hair([(xx, by - wh - 1), (xx + (cx - xx) * .04, by - wh - rh * .9)])
-            xx += 3.
-            k += 1
-        cv.heavy([(a - 1.5, by - wh + .5), (b + 1.5, by - wh + .5)])
+        # the roof is under snow: left white but for a few seams; a scalloped lip of snow hangs
+        # over the eave and throws a dark band of shadow on the wall beneath
+        xx = a + 5
+        while xx < b - 4:
+            cv.hair([(xx, by - wh - rh * .25), (xx + (cx - xx) * .03, by - wh - rh * .8)])
+            xx += 6.
+        lip = [(a - 1.5, by - wh)] + [(a - 1.5 + (b - a + 3) * i / 24, by - wh + (1.3 if i % 2 else .4)) for i in range(25)] + [(b + 1.5, by - wh)]
+        cv.heavy([(a - 1, by - wh + 1.6), (b + 1, by - wh + 1.6)])
+        cv.obj([lip], .5)
         # gable dormers
         for f in (.3, .65):
             dx = a + (b - a) * f
@@ -2059,7 +2179,7 @@ def scene(x, y, w, h, clip_d, ctx, lv, seed):
     cv = Canvas()
     burin_sky(cv, X0, Y0, X1 - X0, base - Y0, rng.randrange(1 << 20), pitch=2. if not small else 2.5, dark_top=True,
               banks=[(x + w * .17, base - ph * .45, w * .26, ph * .22), (x + w * .9, base - ph * .62, w * .2, ph * .16)] if not small else [])
-    mountain(cv, X0, X1, base, px, ph, rng.randrange(1 << 20), snow=.62)
+    hood(cv, X0, X1, base, px, ph, rng.randrange(1 << 20))
     # today's freezing level, carved across the cone as a dotted level line with end markers
     fz = freeze_today(ctx)
     lvl = base - ph * min(1.02, max(.08, (fz - 4.6) / (11.25 - 4.6)))
@@ -2075,8 +2195,7 @@ def scene(x, y, w, h, clip_d, ctx, lv, seed):
         cv.obj([[(mx, lvl), (mx + sg * 4, lvl - 2.5), (mx + sg * 4, lvl + 2.5)]], .5)
     # the lodge on the flank, at its 6,000 ft
     if not small:
-        ly = base - ph * (6.0 - 4.6) / (11.25 - 4.6) - ph * .02
-        lodge(cv, px - ph * .38, ly, ph * .62)
+        lodge(cv, px - ph * .5, base + 1.5, ph * .5)
     # the foreground snowfield: drifts and the groomed run with its ski tracks
     fy = base + 3
     field = [(X0, base - 1)] + [(X0 + (X1 - X0) * i / 20, base - 1.5 - 1.2 * math.sin(i * .9)) for i in range(21)] + [(X1, Y1), (X0, Y1)]

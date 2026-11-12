@@ -740,6 +740,60 @@ def layout_tall(w, h, seed, date):
     return "".join(o)
 
 
+def _catkin(cv, x, y, L, ang, rng):
+    """A hazel catkin: a pendulous tassel of overlapping scales on a curving thread."""
+    pts = []
+    a = ang
+    px, py = x, y
+    n = max(5, int(L / 1.6))
+    for j in range(n + 1):
+        pts.append((px, py))
+        a += rng.uniform(-.05, .09)
+        px += math.cos(a) * L / n
+        py += math.sin(a) * L / n
+    for j, (qx, qy) in enumerate(pts[1:], 1):
+        t = j / n
+        r = max(.9, L * .09 * math.sin(math.pi * min(1, .25 + t)) )
+        cv.obj([[(qx + r * math.cos(k * math.tau / 10), qy + r * .75 * math.sin(k * math.tau / 10)) for k in range(10)]], .5)
+        if j % 2:
+            cv.hair([(qx + r * .1, qy - r * .2), (qx + r * .7, qy + r * .3)])
+
+
+def _hazel(fld, seed):
+    """The food-forest hedge: bare hazel twigs reaching in over the scene from both sides, hung
+    with this month's catkins, and the hedge's low, dark mass across the near corners."""
+    xs = [q[0] for q in fld]
+    ys = [q[1] for q in fld]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    W, H = x1 - x0, y1 - y0
+    rng = random.Random(seed + 41)
+    cv = C.Canvas()
+    for sd in (-1, 1):
+        sx = x0 - 2 if sd > 0 else x1 + 2
+        sy = y0 + H * .2
+        a = (0 if sd > 0 else math.pi) - sd * .15
+        L = W * .34
+        pts = [(sx, sy)]
+        for j in range(24):
+            a += sd * .012
+            pts.append((pts[-1][0] + math.cos(a) * L / 24, pts[-1][1] + math.sin(a) * L / 24))
+        wd = lambda t: max(.6, 2.2 * (1 - t))
+        Lft = [(p[0], p[1] - wd(k / 24)) for k, p in enumerate(pts)]
+        Rgt = [(p[0], p[1] + wd(k / 24)) for k, p in enumerate(pts)]
+        cv.obj([Lft + Rgt[::-1]], 1.)
+        cv.hair([(p[0], p[1] + wd(k / 24) * .4) for k, p in enumerate(pts)][:-2])
+        for k in (7, 14, 21):
+            bx, by = pts[k]
+            ba = a - sd * rng.uniform(.4, .9)
+            tw = [(bx, by), (bx + math.cos(ba) * L * .22, by + math.sin(ba) * L * .22 - L * .05)]
+            cv.obj([], 0)
+            cv.line(tw)
+            for q in (pts[k], tw[1], ((bx + tw[1][0]) / 2, (by + tw[1][1]) / 2)):
+                for m in range(rng.choice((1, 2))):
+                    _catkin(cv, q[0] + m * 1.5, q[1] + 1, min(13., H * rng.uniform(.05, .08)), math.pi / 2 + sd * rng.uniform(.0, .3), rng)
+    return cv.svg()
+
+
 # ==== STUDIO FRAME (batch 2) ====================================================================
 # King-tier frame, copied into this plate so it can be cut to the page (house rule: the shared
 # modules stay untouched). Fine English scroll as on the GRS vise and Ken Hunt's panels: dozens of
@@ -1859,7 +1913,7 @@ def st_band(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2 + hk.get("dx", 0.), h / 2
-    ry = max(4., h / 2 - 8.5)
+    ry = max(4., h / 2 - 8.5) if h >= 40 else h / 2 - 3.5
     rx = min(w * .2, max(ry * 1.5, ry * hk.get("aspect", 1.7)))
     if h < 40:
         ins = 5.
@@ -2098,9 +2152,10 @@ def plate(w, h, ctx):
         xs = [p[0] for p in fld]
         ys = [p[1] for p in fld]
         fx, fy = min(xs), min(ys)
-        return scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed,
-                     "mini" if mode == "band" else "full")
+        sc = scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed,
+                   "mini" if mode == "band" else "full")
+        return sc + (_hazel(fld, seed) if mode != "band" else "")
 
-    hk = dict(shape="irregular", dedication=True, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
+    hk = dict(shape="irregular", dedication=True, frieze=False, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
               tablet_lines=["WALK THE LAND · BURN DAY · BIRDS", "SOW · BLOOMS · MUSHROOMS"])
     return st_plate(w, h, seed, hk)

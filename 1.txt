@@ -1,0 +1,501 @@
+URL: https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing
+STATUS: 200 text/html; charset=utf-8
+BYTES: 18635
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><body><div id="count-data">229</div>
+
+    <div class="js-tab-target">
+      
+
+    <!-- Navigation -->
+
+
+  <nav class="pagination">
+
+    <ul>
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      <li class="active">
+        <span>1</span>
+      </li>
+
+      
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=5">2</a>
+      </li>
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=10">3</a>
+      </li>
+
+      
+      <li class="disabled">
+        <span>...</span>
+      </li>
+
+      
+      <li class="last">
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=225">46</a>
+      </li>
+
+      
+      <li class="next">
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=5">
+          <span class="label">Next 5 items</span>
+          <span class="arrow"></span>
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+
+
+
+
+
+      <div id="trip-reports">
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-10-21.160050454011">
+              Beacon Rock State Park - Hamilton Mountain —
+              Oct. 21, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-10-21.160050454011">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-10-21.160050454011/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              4 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-CascadiaRed">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">CascadiaRed</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">3</span> people found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>Excellent October Wednesday to be on the trail. Good trail conditions.</p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-09-04.160955508295">
+              Beacon Rock State Park - Hamilton Mountain —
+              Sep. 4, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-09-04.160955508295">
+                   
+                </a>
+              </div>
+          </div>
+          
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-cartemer">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">cartemer</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    
+
+    
+
+              
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>We only went to a fork in the road after the falls, and the trail was in good condition (although fairly slick due to rain). It’s a beautiful hike though and make sure to stop and go look at the falls!</p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-08-24.182425850831">
+              Beacon Rock State Park - Hamilton Mountain —
+              Aug. 22, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-08-24.182425850831">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-08-24.182425850831/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              3 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-MegHikes8">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/portal_memberdata/portraits/1f536d74d41f42299cd83408d2f54869');" alt=""></div>
+                               <span class="wta-icon-headline__text">MegHikes8</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    
+
+    
+
+              
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>I always forget how steep this trail gets. You start off climbing with just a few areas of flat. The wash out areas have been fixed. The small bridge over the complete trail washout was a little scary but it was more stable than I expected. There is a rock scramble as you get close to the summit and requires extra caution. I like to do the loop so I don’t have to come down that rock scramble. Plus you get the best views at the saddle! Thank you WTA for the recent brushing between the summit and saddle!!!</p>
+<p>For a Saturday it felt relatively quiet at first but on the way back a lot of hikers were heading up. There is construction at the trailhead but it does not impede the trail at all. Restrooms were very clean with plenty of TP and soap! This trail is not to be taken lightly. Be sure to have plenty of water or a way to filter. </p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-07-27.085404183083">
+              Beacon Rock State Park - Hamilton Mountain —
+              Jul. 26, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-07-27.085404183083">
+                   
+                </a>
+              </div>
+          </div>
+          
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-MapleMountaingoat10528">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">MapleMountaingoat10528</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      <div class="Badge Member" data-title="Member support powers WTA's work.">WTA Member</div>
+                      
+                      
+                      
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/hiked_with_a_dog.svg" />
+                <span class="wta-icon__label">Hiked with a dog</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">1</span> person found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>The trail was in very good condition with some rocky switchbacks that were sketchy in spots. WTA crews did excellent work mending some wash out areas. Great hike for a hot summer day as there are many shady spots to keep cool along the route.</p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-26.093516738940">
+              Beacon Rock State Park - Hamilton Mountain —
+              Jun. 25, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-26.093516738940">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-26.093516738940/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              4 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-Rose+L+Sarkkinen">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">Rose L Sarkkinen</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      <div class="Badge Member" data-title="Member support powers WTA's work.">WTA Member</div>
+                      
+                      
+                      
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">4</span> people found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>One of my favorite hikes as you simply cannot beat the views. It is up and up  winding back and forth toward the top. I am getting older so using walking sticks is a good idea if you can use some steady support. It is quite rocky as you ascend the higher areas of the trail. It can be dangerous in some places and you need to be careful pulling yourself up in parts of the trail IF you are going to the top.  Need good hiking shoes. I noticed WTA work having been done on this trail including clearing a lot of overgrowth and new little support which made me thankful! I would say  summer months always bring mosquitoes or bugs that can keep hanging around your head and upper body. I seem to attract all bugs and use a safe natural bug spray around my head and clothing. Horseflies start getting heavier in July and August near the lower third of the trail.  LOVE this trail...oh, guess I said that. </p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+      </div>
+
+      
+
+    <!-- Navigation -->
+
+
+  <nav class="pagination">
+
+    <ul>
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      <li class="active">
+        <span>1</span>
+      </li>
+
+      
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=5">2</a>
+      </li>
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=10">3</a>
+      </li>
+
+      
+      <li class="disabled">
+        <span>...</span>
+      </li>
+
+      
+      <li class="last">
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=225">46</a>
+      </li>
+
+      
+      <li class="next">
+        <a href="https://www.wta.org/go-hiking/hikes/hamilton-mountain/@@related_tripreport_listing?b_start:int=5">
+          <span class="label">Next 5 items</span>
+          <span class="arrow"></span>
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+
+
+
+
+
+      
+    </div>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a59680ae3d71244d',t:'MTc5NDQ5NjYzNw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a59680ae3d71244d',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>

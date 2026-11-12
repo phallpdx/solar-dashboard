@@ -1,0 +1,547 @@
+URL: https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing
+STATUS: 200 text/html; charset=utf-8
+BYTES: 24408
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><body><div id="count-data">357</div>
+
+    <div class="js-tab-target">
+      
+
+    <!-- Navigation -->
+
+
+  <nav class="pagination">
+
+    <ul>
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      <li class="active">
+        <span>1</span>
+      </li>
+
+      
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=5">2</a>
+      </li>
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=10">3</a>
+      </li>
+
+      
+      <li class="disabled">
+        <span>...</span>
+      </li>
+
+      
+      <li class="last">
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=355">72</a>
+      </li>
+
+      
+      <li class="next">
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=5">
+          <span class="label">Next 5 items</span>
+          <span class="arrow"></span>
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+
+
+
+
+
+      <div id="trip-reports">
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-20.183714940260">
+              Dog Mountain —
+              Jun. 19, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-20.183714940260">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-20.183714940260/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              2 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-NDnPNW">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">NDnPNW</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">1</span> person found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p class="isSelectedEnd"><span>We arrived at the trailhead parking lot around 7:30 a.m., and there were still plenty of parking spaces available. A sign at the lot indicated that a recreation pass was required, although we noticed several vehicles without visible passes on their dashboards.</span></p>
+<p class="isSelectedEnd"><span>The balsamroot bloom had already passed for the season, but the hillsides and meadows were still beautifully blanketed with a variety of colorful wildflowers. It was a perfect day for this steep hike, with clear blue skies, light winds, and outstanding visibility. We were rewarded with stunning views of Mt. Hood and Mt. St. Helens along the way.</span></p>
+<p class="isSelectedEnd"><span>On our ascent, we encountered only three or four hikers coming down from the summit. However, on our descent, we passed quite a few people making their way up the trail. By the time we finished around noon, the parking lot had filled considerably, though a few spaces remained available.</span></p>
+<p><span>We completed the hike as an out-and-back route this time. After rereading the trail description, we realized we missed the opportunity to do the full loop, which we'll definitely try on our next visit. We also plan to return during peak balsamroot season.</span></p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-08.145941492959">
+              Dog Mountain —
+              Jun. 4, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-08.145941492959">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-08.145941492959/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              1 photo
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-Ca-kid">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">Ca-kid</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports25" data-title="25+ Trip Reports"><span class="Count">25</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">2</span> people found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>This popular hike has very easy access - parking lot is right off Hwy 14. For most people the hike up should take you somewhere between 2 to 3 hours. About 30 minutes into the hike you reach a junction. A sign here indicates one way as "difficult", and the other way as "more difficult". The more difficult way is slightly shorter, but steeper. I would recommend going up the more difficult way and come down the difficult way. Both trails meet up again about 1 mile below the top. The final mile or so to the top is on an open slope where you can get great views of the river (weather permitting). This final stretch also - depending on time of year - features great wildflower displays. The wildflowers were still on display as of June 4. One bad part about this hike is that there are no views from the true summit due to trees. The best views are probably from what is called "Puppy Dog Overlook". I understand that this is a very popular hike, which is why I did it on a weekday. </p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-02.192617547589">
+              Dog Mountain —
+              Jun. 1, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-02.192617547589">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-06-02.192617547589/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              4 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-marigoldorange">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">marigoldorange</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">5</span> people found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p></p>
+<p><span>We started the hike around 8:00 a.m. on a Monday, so parking was plentiful and easy to find. The weather was absolutely perfect, making for an ideal day on the trail.</span></p>
+<p><span style="font-size: 1.13rem;">The hike itself was challenging, with a steep elevation gain as we approached the summit. There were several sections with loose gravel that made the descent a bit slippery. Even wearing trail shoes, I found myself sliding occasionally when I wasn’t paying close attention to my footing.</span><br /><span></span></p>
+<p><span style="font-size: 1.13rem;">Bugs were present along the trail—not overwhelming, but definitely noticeable. As long as we kept moving, they weren’t much of an issue. The moment we stopped for a water or snack break, however, they quickly made their presence known.</span><br /><span></span></p>
+<p><span style="font-size: 1.13rem;">Despite the steep climb, loose footing, and persistent bugs, every bit of effort was worth it. The view from the summit was simply incredible. Standing there, surrounded by rolling green hills and breathtaking scenery, I had the sudden urge to run across the field like Julie Andrews and burst into song: “The hills are alive with the sound of music!”</span><br /><span></span></p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-30.004142079200">
+              Dog Mountain —
+              May. 25, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-30.004142079200">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-30.004142079200/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              4 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-iaminter">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/portal_memberdata/portraits/f628fd1eff4747ff8f80a9c87f72725d');" alt=""></div>
+                               <span class="wta-icon-headline__text">iaminter</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      
+                      
+                      
+                      <div class="Badge Reporter Reports5" data-title="5+ Trip Reports"><span class="Count">5</span></div>
+                  </div>
+              </div>
+            
+            <div class="trail-issues">
+              <strong>Beware of:</strong>
+              bugs
+            </div>
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">1</span> person found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>If you, like me, have never been there during balsamroot bloom season before, it is totally worth the trip. It was probably past the peak. The weather was cloudy and the wind was so strong on the top that I felt my soul would be blown away. But the view was gorgeous. Most people just turned straight back from the top, while I took the <span>Augspurger Mountain Trail as suggested by WTA, which I think is not only easier for your body, but also provides some extra views of the flowers. </span></p>
+<p><span>I was lucky to grab a ticket for Memorial Monday. When I got there at 12 pm, there were already plenty parking spots. </span></p>
+<p><span>Do watch out for ticks! I found one on my skin only when I took shower that night. It tightly sticks to your body without you knowing it at all! I learned later that insect repellent (DEET) can help keep ticks away. Pity I did not apply insect repellent because the wind was strong and I thought any insect would be blown away. </span></p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+          
+            <div class="item">
+    <div class="item-row">
+        <div class="item-header">
+          <h3 class="listitem-title">
+            <a href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-26.215804302642">
+              Dog Mountain —
+              May. 22, 2026
+            </a>
+          </h3>
+          <div class="region"><span class="region">Southwest Washington &gt; Columbia River Gorge - WA</span></div>
+        </div>
+
+        <div class="col three">
+          <div class="listing-image">
+              <div class="thumb-background wta-ratio-figure wta-ratio-figure--watermark">
+                <a aria-hidden="true" tabindex="-1" href="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-26.215804302642">
+                   <img width="230" height="162" loading="lazy" class="wta-ratio-figure__image" src="https://www.wta.org/go-hiking/trip-reports/trip_report-2026-05-26.215804302642/image/preview" />
+                </a>
+              </div>
+          </div>
+          <div class="media-indicator">
+              4 photos
+              
+          </div>
+        </div>
+        <div class="col nine">
+            
+              <div class="CreatorInfo">
+                  <span>
+                      <a class="wta-icon-headline" href="https://www.wta.org/@@backpacks/scrnm-NatureFan">
+                          <div class="avatar wta-icon-headline__icon" style="width: 30px; background-image: url('https://www.wta.org/defaultUser.png');" alt=""></div>
+                               <span class="wta-icon-headline__text">NatureFan</span>
+                      </a>
+                      
+                  </span>
+                  <div class="Badges">
+                      <div class="Badge Member" data-title="Member support powers WTA's work.">WTA Member</div>
+                      
+                      
+                      <div class="Badge Reporter Reports25" data-title="25+ Trip Reports"><span class="Count">25</span></div>
+                  </div>
+              </div>
+            
+            
+
+            <div class="trip-report-stats">
+              
+
+    <ul class="wta-icon-list wta-icon-list--small">
+        <li>
+            <span class="wta-icon">
+                <img width="24" height="24" alt="" class="wta-icon__image" src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/wildflowers_blooming.svg" />
+                <span class="wta-icon__label">Wildflowers blooming</span>
+            </span>
+        </li>
+    </ul>
+
+    
+
+              <div class="upvote">
+                <p><img src="https://www.wta.org/++theme++plonetheme.wta/images/svg/trail-icons/thumbs-up.svg" /> <span class="UpvoteCount">1</span> person found this report helpful</p>
+              </div>
+            </div>
+
+            <div class="clear"> </div>
+
+            <div class="report-text show-excerpt">
+                <div>
+                    <div class="trip-report-full-text"><p>This was a fabulous hike as usual especially if you are into wildflowers. The mountain is ablaze in signature bright yellow balsamroot flowers interspersed with Indian paintbrush and lupines and other assorted flowers. The show will likely last for another week or two max so get out there soon if you want to take that in.</p>
+<p>The train was in great condition, nothing noteworthy other than a few steep sections especially from the sign where it says 1mi to the top, but after that you are on a gently climbing path filled with wildflowers and you hardly notice. We did the inner loop i.e. went up the regular Dog Mountain trail but on the way back made a short right turn to join Augspurger trail and followed it all the way down. As advertised it is much gentler on your knees because it descends gradually but adds about a mile to your route. The tradeoff is totally worth it and you can even run it if you are into that.</p>
+<p>We went on a Friday before the Memorial Day (usually the busiest weekend) but parking lot was nearly full by 8:30am and we had to be creative to squeeze in a tight spot. There were lots of people on the trail enjoying the sunshine and the flowers but it never felt crowded. As you ascend and especially near the top you can catch glimpse of Mt Hood and St Helens and of course Colombia River views are aplenty.</p>
+<p></p>
+<p></p></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+          
+        
+      </div>
+
+      
+
+    <!-- Navigation -->
+
+
+  <nav class="pagination">
+
+    <ul>
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      <li class="active">
+        <span>1</span>
+      </li>
+
+      
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=5">2</a>
+      </li>
+      <li>
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=10">3</a>
+      </li>
+
+      
+      <li class="disabled">
+        <span>...</span>
+      </li>
+
+      
+      <li class="last">
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=355">72</a>
+      </li>
+
+      
+      <li class="next">
+        <a href="https://www.wta.org/go-hiking/hikes/dog-mountain/@@related_tripreport_listing?b_start:int=5">
+          <span class="label">Next 5 items</span>
+          <span class="arrow"></span>
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+
+
+
+
+
+      
+    </div>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a59680bcdad72cc6',t:'MTc5NDQ5NjYzOQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a59680bcdad72cc6',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>

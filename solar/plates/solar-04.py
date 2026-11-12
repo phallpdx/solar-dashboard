@@ -1588,37 +1588,36 @@ def _studio5():
 
 
     def sky(cv, x0, y0, x1, y1, seed, clouds=3, sun=None, glow=0., dense=1.):
-        """A copperplate sky from y0 down to the horizon y1: crisp ruled lines, darkest at the zenith
-        (1 px at 2 px pitch), opening to .5 px at 2, then 3 px toward the horizon; lines part round
-        the sun and stop at the clouds, which are modelled on top."""
+        """A Bewick sky from the horizon y1 up toward y0: fine lines laid close along the horizon,
+        opening upward and breaking into ever shorter strokes with longer gaps until they dissolve
+        into the paper; lines part round the sun, and the clouds are modelled on top."""
         rng = _r.Random(seed)
         H = y1 - y0
-        y = _gy(y0)
         thin, thick = [], []
-        while y < y1:
-            t = (y - y0) / H
-            if t < .22 * dense:
-                w_, pitch = 1., 2.
-            elif t < .62:
-                w_, pitch = .5, 2.
-            else:
-                w_, pitch = .5, 3.
-            yy = _gy(y, w_)
-            segs = []
-            a, b = x0, x1
+        y = _gy(y1 - 1)
+        while y > y0:
+            t = (y1 - y) / H                     # 0 at the horizon, 1 at the top
+            if t > .78 * dense + .1:
+                break
+            pitch = 1.5 if t < .12 else 2. if t < .3 else 3. if t < .55 else 4.
+            keep = 1. - min(.92, max(0., (t - .25) * 1.5))   # share of each line that is cut
+            segs = [(x0, x1)]
             if sun:
                 sx, sy, sr = sun
-                dy = yy - sy
+                dy = y - sy
                 rr = sr + glow
                 if abs(dy) < rr:
                     dx = _m.sqrt(rr * rr - dy * dy)
-                    segs = [(a, sx - dx), (sx + dx, b)]
-            if not segs:
-                segs = [(a, b)]
+                    segs = [(x0, sx - dx), (sx + dx, x1)]
             for (p, q) in segs:
-                if q - p > .8:
-                    (thick if w_ == 1. else thin).append(f"M{_N(p)},{_N(yy)}H{_N(q)}")
-            y += pitch
+                x = p - rng.uniform(0, 20)
+                while x < q:
+                    L = rng.uniform(8, 40) * (keep + .15)
+                    a_, b_ = max(x, p), min(x + L, q)
+                    if b_ - a_ > .8 and (keep >= 1. or rng.random() < keep + .1):
+                        thin.append(f"M{_N(a_)},{_N(y)}H{_N(b_)}")
+                    x += L + rng.uniform(1., 3.) + (1 - keep) * rng.uniform(4, 22)
+            y = _gy(y - pitch)
         out = ruled(thin, thick)
         if sun:
             sx, sy, sr = sun
@@ -1918,17 +1917,14 @@ def _studio5():
         if kind == "culdelampe":
             top, bot = cy - B, cy + B
             pts = []
-            m = n // 3
-            for i in range(m + 1):                      # right side down to the point
-                u = i / m
-                pts.append((cx + A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m + 1):                   # left side back up
-                u = 1 - i / m
-                pts.append((cx - A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m):                       # arched top, left to right
-                u = i / m
-                x = cx - A + 2 * A * u
-                pts.append((x, top - B * .12 * _m.sin(_PI * u)))
+            for i in range(n):
+                t = _TAU * i / n
+                c, sn = _m.cos(t), _m.sin(t)
+                if sn >= 0:
+                    y = top + max(7., (bot - top) * (1 - abs(c)) ** 1.45)
+                else:
+                    y = top - (bot - top) * .08 * (1 - c * c)
+                pts.append((cx + A * c, y))
             return pts
         return _shape(kind, cx, cy, A, B, n)
 
@@ -2011,8 +2007,8 @@ def _studio5():
         arches gently, the ends fold under into swallow tails ribbed with silk lines."""
         st = Studio(bw, bh, P.get("seed", 1))
         cv = C.Canvas()
-        tail_w = _clamp(bw * .1, 14., 60.)
-        fw = bw - 2 * tail_w * .9
+        tail_w = _clamp(bw * .07, 12., 40.)
+        fw = bw - 2 * tail_w * .95
         fh = bh * .7
         cx = bw / 2
         x0, x1 = cx - fw / 2, cx + fw / 2
@@ -2027,21 +2023,20 @@ def _studio5():
             ey = yc(ex)
             tx0 = ex - side * tail_w * .3
             tx1 = ex + side * tail_w * .9
-            dy = fh * .28
+            dy = fh * .2
             top0, bot0 = (tx0, ey - fh / 2 + dy), (tx0, ey + fh / 2 + dy)
             top1, bot1 = (tx1, ey - fh / 2 + dy - fh * .12), (tx1 - side * fh * .1, ey + fh / 2 + dy)
             notch = (tx1 - side * fh * .45, ey + dy + fh * .05)
             tail = [top0, top1, notch, bot1, bot0]
             cv.obj([tail], 1.)
-            for k in range(1, 12):
-                f = k / 12.
-                if f < .35 and k % 2:
+            nk = max(8, int(fh / 1.6))
+            for k in range(1, nk):
+                f = k / nk
+                if f < .3 and k % 2:
                     continue
                 a = _lerp(top0, bot0, f)
-                b = _lerp(top1, bot1, f)
-                if f > .4:
-                    b = _lerp(b, notch, (f - .4) * 1.4)
-                cv.hair([a, b])
+                b = _lerp(top1, notch, f / .5) if f < .5 else _lerp(notch, bot1, (f - .5) / .5)
+                (cv.line if f > .8 else cv.hair)([a, b])
             fold = [(ex, ey - fh / 2), (ex, ey + fh / 2), (tx0, ey + fh / 2 + dy), (tx0, ey - fh / 2 + dy)]
             cv.obj([fold], 1.)
             cv.hair(C.hatch_poly(fold, 45 * side, 1.5))
@@ -2092,19 +2087,27 @@ def _studio5():
             kind = P.get("silhouette", "lens")
             cx = bw / 2
             if kind == "culdelampe":
-                sil = silhouette(kind, cx, bh * .55, bw / 2 - .5, bh * .43)
-                mb = bh * .3
-                med = (P.get("shape_tail", "oval"), cx, bh * .34, mb * 1.25, mb)
+                bw = min(w, bh * 2.9)
+                cx = bw / 2
+                sil = silhouette(kind, cx, bh * .54, bw / 2 - .5, bh * .44)
+                mb = bh * .34
+                med = (P.get("shape_tail", "oval"), cx, bh * .4, mb * 1.3, mb)
             else:
                 sil = silhouette(kind, cx, bh / 2, bw / 2 - .5, bh / 2 - .5)
                 mb = bh / 2 - 1.
                 med = (P.get("shape_tail", "oval"), cx, bh / 2, mb * P.get("tail_aspect", 1.45), mb)
             def lens_src(g):
                 L = g["mx"] - g["ma"] - 4
-                R0 = min(bh * .3, L * .32)
-                return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
-                         {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
-            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src if kind == "lens" else None, ring_r=.9)
+                if kind == "lens":
+                    R0 = min(bh * .3, L * .32)
+                    return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
+                             {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
+                R0 = min(bh * .17, L * .3)
+                return [((g["mx"] - g["ma"] * .9, g["my"] - g["mb"] * .45), _PI - .05, R0, -1,
+                         {"lead": max(2., L - R0 * 2.2), "lead_k": .001}),
+                        ((g["mx"] - g["ma"] * .55, g["my"] + g["mb"] * .85), _PI * .8, R0 * .7, 1,
+                         {"lead": max(2., L * .35), "lead_k": .003})]
+            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src, ring_r=.9)
             return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
         if form == "device":
             D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
@@ -2140,6 +2143,149 @@ def _studio5():
             body = _shaped_plate(bw, bh, P, sil, med, 1, legend=legend, extra=P.get("extra"))
             return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
         return compose(w, h, ctx, P)
+
+
+    # ----------------------------------------------------------------------------------------------
+    # free-standing plates (art director, round 3): the subject is the composition. A vignette is a
+    # shaped engraved scene whose edges dissolve into the paper the way Bewick's do; no black field,
+    # no generic vines. Ornament, when there is any, is built from the page's own motifs (frame_fn).
+    # ----------------------------------------------------------------------------------------------
+
+    def ragged(kind, cx, cy, A, B, seed, n=260, rough=1., flat_foot=False):
+        """An outline that frays: the base shape with slow swells and a fine per-vertex jitter, so
+        the engraved lines stop at uneven lengths and the picture dissolves into white."""
+        rng = _r.Random(seed)
+        base = _shape(kind, cx, cy, A, B, n) if kind != "lens" else silhouette("lens", cx, cy, A, B, n)
+        p1, p2 = rng.uniform(0, 6.3), rng.uniform(0, 6.3)
+        out = []
+        m = len(base)
+        for i, (x, y) in enumerate(base):
+            t = _TAU * i / m
+            k = 1 + rough * (.03 * _m.sin(5 * t + p1) + .02 * _m.sin(11 * t + p2) + rng.uniform(-.018, .018))
+            dx, dy = x - cx, y - cy
+            if flat_foot and dy > B * .55:
+                k = 1 + rough * rng.uniform(-.01, .01)
+            out.append((cx + dx * k, cy + dy * k))
+        return out
+
+
+    def caption(cx, y, text, cap, maxw):
+        """A caption in engraved Roman capitals, centred under the plate."""
+        tw = text_width(text, cap)
+        if tw > maxw:
+            cap *= maxw / tw
+        th, tn = letters(text, cx, y, cap)
+        return letter_svg(th, tn, cap), cap
+
+
+    def free_plate(w, h, ctx, P):
+        """Lay out the page's planned form (P['form']) and engrave the scene as the plate itself."""
+        form = P.get("form", "vignette")
+        seed = P.get("seed", 1)
+        share = P.get("share", .25)
+        kind = P.get("shape", "oval")
+        cap_txt = P.get("legend") or ""
+        if form == "device":
+            D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
+            bw = bh = D
+            lod = 0
+        elif form == "tailpiece":
+            bh = _clamp(h, 40., 70.) if h >= 40 else h
+            bw = _clamp(w * P.get("tail_w", .55), min(w, 180.), min(w, 330.))
+            lod = 0
+        elif form == "plate":
+            bh = _clamp(h, 140., SHEET_H * share * 1.06) if h >= 140 else h
+            bw = w
+            lod = 2 if bh > 260 else 1
+        else:
+            bh = _clamp(h, 100., SHEET_H * share * 1.08) if h >= 100 else h
+            bw = min(w, bh * P.get("aspect", 1.7))
+            lod = 1
+        ox, oy = (w - bw) / 2, (h - bh) / 2
+        capsz = 0.
+        if cap_txt and form in ("vignette", "plate") and bh > 120:
+            capsz = _clamp(bh * .045, 7., 11.)
+        sh = bh - (capsz * 2.2 if capsz else 0)
+        cx, cy = bw / 2, sh / 2
+        A, B = bw / 2 - 1.5, sh / 2 - 1.5
+        if kind == "round":
+            A = B = min(A, B)
+        g = {"w": bw, "h": bh, "cx": cx, "cy": cy, "A": A, "B": B, "lod": lod, "sh": sh, "form": form}
+        o = []
+        if P.get("under"):
+            o.append(P["under"](g))
+        edge = P.get("edge", "ragged")
+        if edge == "ragged":
+            clip = ragged(kind, cx, cy, A, B, seed, rough=P.get("rough", 1.), flat_foot=P.get("flat_foot", False))
+        else:
+            clip = _shape(kind, cx, cy, A, B, 200)
+        xs = [q[0] for q in clip]
+        ys = [q[1] for q in clip]
+        fx, fy, fw, fh = min(xs), min(ys), max(xs) - min(xs), max(ys) - min(ys)
+        cid = _uidp("fv", w, h, seed, form)
+        o.append(f'<clipPath id="{cid}"><path d="{C._d(clip, True, 0)}"/></clipPath>'
+                 f'<g clip-path="url(#{cid})">{P["scene"](fx, fy, fw, fh, lod)}</g>')
+        if edge == "ruled":
+            # a fine double rule (the roundel device): a 1 px line and a .5 px line inside it
+            o.append(f'<path d="{C._d(_offset(clip, .5), True, .1)}" stroke="#000" stroke-width="1" fill="none"/>')
+            o.append(f'<path d="{C._d(_offset(clip, 2.5), True, .1)}" stroke="#000" stroke-width=".5" fill="none"/>')
+        if P.get("frame"):
+            o.append(P["frame"](g))
+        if capsz:
+            sv, _ = caption(cx, sh + capsz * .7, cap_txt, capsz, bw * .9)
+            o.append(sv)
+        if P.get("egg"):
+            o.append(P["egg"](g))
+        return plate_doc(w, h, f'<g transform="translate({_N(ox)},{_N(oy)})">{"".join(o)}</g>')
+
+
+    def frieze_plate(w, h, P):
+        """A gap frieze (18-36 px) on the paper, not on black: a bead-and-reel moulding cut between
+        fine rules, each bead an oval turned by its shading cuts, each reel a pair of discs, and the
+        page's motif small in a ruled roundel at the centre."""
+        bh = _clamp(h, 18., 36.) if h >= 18 else h
+        oy = (h - bh) / 2
+        cx = w / 2
+        o = []
+        cv = Cv()
+        R = bh / 2 - 1
+        mid = oy + bh / 2
+        gap = R * 1.25
+        rb = bh * .16                                 # bead half-height
+        # rules: a 1 px line outside, a .5 px line inside, both edges
+        for yy, sw in ((oy + .5, 1.), (oy + 2.25, .5), (oy + bh - .5, 1.), (oy + bh - 2.25, .5)):
+            for xa, xb in ((1, cx - R - gap), (cx + R + gap, w - 1)):
+                cv.hair([(xa, yy), (xb, yy)]) if sw < 1 else cv.line([(xa, yy), (xb, yy)])
+        beads = []
+        for side in (-1, 1):
+            x = cx + side * (R + gap + 2)
+            k = 0
+            while (side < 0 and x > 6) or (side > 0 and x < w - 6):
+                if k % 2 == 0:
+                    bl = rb * 2.4
+                    bx = x + side * bl / 2
+                    bead = _ell(bx, mid, bl / 2, rb, 18)[:-1]
+                    cv.obj([bead], .5)
+                    cv.hair([[(bx - bl * .18 + q, mid + rb * .25 - q * .05), (bx + bl * .3 + q, mid + rb * .55 - q * .05)] for q in (0,)] +
+                            [_ell(bx + bl * .05, mid + rb * .12, bl * .3, rb * .55, 10, .1, 2.4)])
+                    x += side * (bl + 1.2)
+                else:
+                    for j in range(2):
+                        dx = x + side * (rb * .45 + j * rb * 1.)
+                        disc = _ell(dx, mid, rb * .35, rb * .95, 10)[:-1]
+                        cv.obj([disc], .5)
+                        cv.hair([[(dx + rb * .1, mid - rb * .6), (dx + rb * .1, mid + rb * .6)]])
+                    x += side * (rb * 2.2 + 1.2)
+                k += 1
+        o.append(cv.svg())
+        # the motif roundel
+        clip = _shape("round", cx, mid, R, R, 64)
+        cid = _uidp("fz", w, h, P.get("seed", 1))
+        o.append(f'<clipPath id="{cid}"><path d="{C._d(clip, True, 0)}"/></clipPath>'
+                 f'<g clip-path="url(#{cid})">{P["scene"](cx - R, mid - R, 2 * R, 2 * R, 0)}</g>')
+        o.append(f'<path d="{C._d(_offset(clip, .5), True, .1)}" stroke="#000" stroke-width="1" fill="none"/>')
+        o.append(f'<path d="{C._d(_offset(clip, 2.), True, .1)}" stroke="#000" stroke-width=".5" fill="none"/>')
+        return plate_doc(w, h, "".join(o))
     return _types.SimpleNamespace(**{k: v for k, v in locals().items() if not k.startswith('__')})
 
 
@@ -2534,4 +2680,4 @@ def plate(w, h, ctx):
              vig_med_b=.8, stems=2, med_aspect=.88,
              leaf_k=.95, rmin_k=1.1, legend=f"{pct}% Carbon-Free · BPA", tablet="",
              tablet_fn=_mix_tablet, scene=sc)
-    return ST5.compose_form(w, h, ctx, P)
+    return ST5.free_plate(w, h, ctx, dict(P, aspect=1.6, shape="archtop", flat_foot=True))

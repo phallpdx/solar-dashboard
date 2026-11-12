@@ -167,6 +167,62 @@ def _clip_runs(pl, mask, x0, y0, W, H, out, step=1.6):
         out.append(run)
 
 
+def _thin(pts, tol):
+    """O(n) simplification: drop a point while the chord from the last kept point stays within tol
+    of every point it skips (checked against the newest skipped point only)."""
+    n = len(pts)
+    if n < 3:
+        return pts
+    out = [pts[0]]
+    ax, ay = pts[0]
+    for i in range(1, n - 1):
+        bx, by = pts[i + 1]
+        px, py = pts[i]
+        dx, dy = bx - ax, by - ay
+        L = abs(dx) + abs(dy)
+        if L < 1e-9 or abs((px - ax) * dy - (py - ay) * dx) > tol * (dx * dx + dy * dy) ** .5:
+            out.append(pts[i])
+            ax, ay = px, py
+    out.append(pts[-1])
+    return out
+
+
+class _Pen:
+    """Quarter-px relative path data (as engraving_codex._Pen) with the O(n) thinning."""
+
+    def __init__(self):
+        self.o = []
+        self.cur = None
+
+    def add(self, pts, close=False, tol=.3):
+        if len(pts) < 2:
+            return
+        if tol:
+            pts = _thin(pts, tol)
+        o = self.o
+        X = [int(round(p[0] * 4)) for p in pts]
+        Y = [int(round(p[1] * 4)) for p in pts]
+        if self.cur is None:
+            o.append(f"M{X[0]} {Y[0]}")
+        else:
+            dx, dy = X[0] - self.cur[0], Y[0] - self.cur[1]
+            o.append(f"m{dx}{'' if dy < 0 else ' '}{dy}")
+        seg = []
+        for i in range(1, len(X)):
+            dx, dy = X[i] - X[i - 1], Y[i] - Y[i - 1]
+            if dx or dy:
+                seg.append(f"{dx}{'' if dy < 0 else ' '}{dy}")
+        o.append("l" + (" ".join(seg).replace(" -", "-") if seg else "0 0"))
+        if close:
+            o.append("z")
+            self.cur = (X[0], Y[0])
+        else:
+            self.cur = (X[-1], Y[-1])
+
+    def d(self):
+        return "".join(self.o)
+
+
 class Canvas(C.Canvas):
     def svg(self, max_layers=90):
         if not self.objs:
@@ -222,17 +278,17 @@ class Canvas(C.Canvas):
         res = []
         T = C._QT
         for (dk, ow) in sorted(layers):
-            pen = C._Pen()
+            pen = _Pen()
             for polys in layers[(dk, ow)]:
                 for poly in polys:
-                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, 1.4)
+                    pen.add(poly if C._area(poly) >= 0 else poly[::-1], True, .3)
             sw = f' stroke="#000" stroke-width="{_n(ow * 4)}"' if ow else ' stroke="none"'
             res.append(f'<path{T} d="{pen.d()}" fill="#fff"{sw}/>')
         for w in (.5, 1., 1.5):
             if out[w]:
-                pen = C._Pen()
+                pen = _Pen()
                 for pl in out[w]:
-                    pen.add(pl, False, 1.3)
+                    pen.add(pl, False, .3)
                 res.append(f'<path{T} d="{pen.d()}" fill="none" stroke="#000" stroke-width="{_n(w * 4)}"/>')
         return "".join(res)
 
@@ -457,17 +513,10 @@ def acanthus_leaf(cv, x, y, ang, L, W=None, bend=.5, curl=2.4, lobes=3, seed=0, 
             cv.hair(seg)
         k += 1
     if L >= 18:
-        lines = []
-        root = [(0, -W * .1), (L * .38, -W * .1), (L * .3, -W * .7), (0, -W * .7)]
-        lines += C.hatch_poly(root, 135 if sg > 0 else 45, 3., .5)
         for ua, ub, kk in tab:
             s0 = ub - ua
             um = ua + s0 * .55
-            lines.append([((ua + s0 * .1) * L, .5), (um * L, E(um) * .8)])
-        for pl in clip_in(lines, flat):
-            if len(pl) > 1:
-                cv.hair([M(p) for p in pl])
-    # the carved midrib groove
+            cv.hair([M(((ua + s0 * .1) * L, .5)), M(((ua + s0 * .32) * L, E(ua + s0 * .32) * .42)), M((um * L, E(um) * .72))])
     i9 = int(N * .92)
     cv.line([(SX[i], SY[i]) for i in range(1, i9)])
     if L > 14:
@@ -568,7 +617,7 @@ def small_leaf(cv, x, y, ang, L, curl=1, seed=0, lobes=None):
     """A small acanthus leaf for fine scroll (L about 5-16 px)."""
     lobes = lobes or (2 if L < 9 else 3)
     return acanthus_leaf(cv, x, y, ang, L, L * .42, bend=curl * .6, curl=curl * .9, lobes=lobes,
-                         seed=seed, pitch=1.5, inner_lobes=1 + (L > 11))
+                         seed=seed, pitch=1.5 if L < 13 else 2., inner_lobes=1 + (L > 11))
 
 
 def fine_volute(cv, cx, cy, r, a0, dirn, rng, tail=None, leaves=True, thin=None, leafk=1.):
@@ -604,7 +653,7 @@ def fine_volute(cv, cx, cy, r, a0, dirn, rng, tail=None, leaves=True, thin=None,
     cv.hair([(e[0] - er * .5, e[1] + er * .3), (e[0] + er * .5, e[1] - er * .3)])
     # leaves along the outer turn, pointing with the flow and rolling outward
     if leaves:
-        k = 3 + (r > 12) + (r > 20)
+        k = 2 + (r > 11) + (r > 19)
         m = len(sp)
         for j in range(k):
             f = .03 + .5 * (j + rng.uniform(.1, .6)) / k
@@ -686,7 +735,7 @@ def _tangent_entry(ax, ay, px, py, r, dirn):
 
 
 def scroll_field(cv, x, y, w, h, roots, seed=0, rmax=24., rmin=7., inside_fn=None, avoid=(), limit=400,
-                 rfun=None, leafk=1.):
+                 rfun=None, leafk=1., marks=None):
     """Pack the field (x, y, w, h) [and inside_fn] with fine scroll grown outward from roots
     [(x, y, heading, dirn)]: each new scroll takes the roomiest free spot within reach of an
     existing stem and grows from it on a tangent. avoid: [(cx, cy, r)] kept clear."""
@@ -785,6 +834,8 @@ def scroll_field(cv, x, y, w, h, roots, seed=0, rmax=24., rmin=7., inside_fn=Non
                 F.disc(q[0], q[1], 3., rmax + 2)
         add_att(new)
         placed += 1
+        if marks is not None:
+            marks.append(len(cv.objs))
     return placed
 
 
@@ -1071,15 +1122,15 @@ def burin_sky(cv, x, y, w, h, seed=0, clouds=3, dark_top=True, holes=(), pitch=2
             poly = [(cx + r * _m.cos(TAU * i / 44), min(by, cy + r * _m.sin(TAU * i / 44))) for i in range(44)]
             cv.obj([poly], .5)
             k = 1
-            while r - k * 1.8 > 1.5:
-                rr = r - k * 1.8
+            while r - k * 1.6 > 1.5:
+                rr = r - k * 1.6
                 arc = [(cx + rr * _m.cos(a), min(by - .8, cy + rr * _m.sin(a)))
                        for a in [PI * (.05 + .9 * i / 12) - PI * .05 * k for i in range(13)]]
                 arc = [p for p in arc if p[1] < by - .8]
                 if len(arc) > 1:
-                    cv.hair(arc)
+                    (cv.line if k <= 1 else cv.hair)(arc)
                 k += 1
-                if k > 3 + r / 6:
+                if k > 3 + r / 4:
                     break
     return banks
 
@@ -1347,11 +1398,11 @@ def compose(w, h, ctx, spec):
         ped_h = min(max(h * .16, 50), 84.)
         rb_h = min(22., h * .05)
         top = 16.
-        pw = w * .66
+        pw = w * spec.get("pw", .7)
         arm_room = 44. if h > 380 else 0.
         ph = h - ped_h - top - rb_h * 1.6 - 10 - arm_room
         px = w / 2 - pw / 2
-        shape = spec.get("shape", "arch")
+        shape = spec.get("tall_shape", "arch")
         if shape == "oval":
             med = ellipse_poly(w / 2, top + ph / 2, pw / 2, ph / 2, 120)
         elif shape == "cut":
@@ -1388,7 +1439,7 @@ def compose(w, h, ctx, spec):
                 fronts.append(rg)
                 avoid.append(_poly_contains_margin(rp, 8))
         field = (M + 4, M + 4, w - 2 * M - 8, h - 2 * M - 8)
-        rmax = min(spec.get("rmax", 25.) * max(1., (w * h / (526. * 548.)) ** .5), h * .072)
+        rmax = min(spec.get("rmax_tall", 24.) * max(1., (w * h / (526. * 548.)) ** .5), h * .075)
         border_lines = gold_frame(M, M, w - 2 * M, h - 2 * M, 26.)
         for (cx, cy) in ((0, 0), (w, 0), (0, h), (w, h)):
             fronts.append(_spandrel(cx, cy, 26., rng.randrange(1 << 20)))
@@ -1398,12 +1449,28 @@ def compose(w, h, ctx, spec):
             if f(a, b):
                 return False
         return True
-    scroll_field(cv, *field, roots, seed=seed, rmax=rmax, rmin=max(6., rmax * .33), inside_fn=ok,
-                 leafk=spec.get("leafk", 1.))
-    o.append(black_ground((0, 0, w, h), seed, dens=.12))
-    o.append(cv.svg())
-    o.append(border_lines)
-    o += fronts
+    fixed = [black_ground((0, 0, w, h), seed, dens=.12), border_lines] + fronts
+    budget = spec.get("budget", 191) * 1024 - sum(len(f.encode()) for f in fixed) - 1500
+    cv = Canvas()
+    marks = []
+    scroll_field(cv, *field, roots, seed=seed, rmax=rmax, rmin=max(6., rmax * .36), inside_fn=ok,
+                 leafk=spec.get("leafk", 1.), marks=marks)
+    sv = cv.svg()
+    tries = 0
+    while len(sv) > budget and marks and tries < 3:
+        # over budget: keep the larger scrolls (placed first) and let the matte show where the
+        # smallest would have gone
+        tries += 1
+        n_obj = len(cv.objs)
+        target = n_obj * (budget / len(sv)) ** 1.3 * .97
+        ms = [m_ for m_ in marks if m_ <= target]
+        cut = ms[-1] if ms else marks[0]
+        cv.objs = cv.objs[:cut]
+        marks = [m_ for m_ in marks if m_ <= cut]
+        sv = cv.svg()
+    o.append(fixed[0])
+    o.append(sv)
+    o += fixed[1:]
     return plate_doc(w, h, "".join(o), seed)
 
 

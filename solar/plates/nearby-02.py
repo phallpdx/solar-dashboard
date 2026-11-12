@@ -944,19 +944,16 @@ def _offset_pl(pl, d):
 
 
 def egg_note(cv, cx, cy, r):
-    """A swung jazz eighth-note pair."""
+    """A pair of beamed eighth notes, cut bold enough to read in a small eye."""
     s = r / 10.
-    for x, y in ((-4, 4.4), (3.4, 2.6)):
-        cv.obj([ell(cx + x * s, cy + y * s, 2.2 * s, 1.5 * s, 12)[:-1]], 0)
-        hd = ell(cx + x * s, cy + y * s, 2.2 * s, 1.5 * s, 12)
-        q = 1.2
-        while q > .2:
-            cv.line(ell(cx + x * s, cy + y * s, q * 1.4 * s, q * s, 10))
-            q -= .5
-        cv.line([(cx + (x + 2) * s, cy + y * s), (cx + (x + 2) * s, cy + (y - 9) * s)])
-    beam = [(cx - 2 * s, cy - 4.6 * s), (cx + 5.4 * s, cy - 6.4 * s), (cx + 5.4 * s, cy - 5 * s), (cx - 2 * s, cy - 3.2 * s)]
-    cv.obj([beam], .5)
-    cv.line([(cx - 1.6 * s, cy - 4.1 * s), (cx + 5 * s, cy - 5.7 * s)])
+    cv.obj([ell(cx, cy, r * .98, r * .98, 32)[:-1]], 0)
+    for x, y in ((-4.2, 4.2), (3.6, 2.4)):
+        hd = ell(cx + x * s, cy + y * s, 2.5 * s, 1.7 * s, 14)[:-1]
+        cv.obj([hd], 1.5)
+        cv.heavy([(cx + (x - 1.2) * s, cy + y * s), (cx + (x + 1.2) * s, cy + y * s)])
+        cv.heavy([(cx + (x + 2.3) * s, cy + y * s), (cx + (x + 2.3) * s, cy + (y - 9.6) * s)])
+    cv.heavy([(cx - 1.9 * s, cy - 5.4 * s), (cx + 5.9 * s, cy - 7.2 * s)])
+    cv.heavy([(cx - 1.9 * s, cy - 3.2 * s), (cx + 5.9 * s, cy - 5. * s)])
 
 
 def egg_panel(cv, cx, cy, r):
@@ -1060,6 +1057,16 @@ def _half_field(w, x0, y0, y1, holes, seed, roots, rmin, kmax=3, leaf_k=1., bloc
     """Grow the left half (x <= w/2) and return svg for both halves (mirrored)."""
     ok = _ok_box(x0, y0, w / 2 + 2, y1, holes, 3.)
     cv, T = scroll_field(ok, roots, seed, rmin, kmax, leaf_k, True, .9, blocks)
+    area = max(1., (w / 2 - x0) * (y1 - y0))
+    cov = sum(s.r * s.r for s in T.sc) / area
+    for k in (1, 2):
+        if cov >= .1:
+            break
+        # a stem that strangled itself early: regrow from another cut (deterministic)
+        cv2, T2 = scroll_field(ok, roots, seed + 101 * k, rmin, kmax, leaf_k, True, .9, blocks)
+        c2 = sum(s.r * s.r for s in T2.sc) / area
+        if c2 > cov:
+            cv, T, cov = cv2, T2, c2
     return mirror_g(w, cv.svg(), gid), T
 
 

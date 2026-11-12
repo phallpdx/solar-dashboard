@@ -68,14 +68,27 @@ FAMILIES = {
                   "#kmain p.ask, #kmain .look-weather>p, #kmain .sp.kblock",
                   (7, 7, 7, 7), None, "", True),
     "tablehead": ("#kmain .kth", (6, 12, 6, 12), None, "", True),
-    "barbase":   ("#kmain .khr, #kmain .bars", (0, 0, 14, 0), "barbase", "", False),
+    "barbase":   ("#kmain .khr, #kmain .bars", (0, 0, 14, 0), None, "", False),
     "gauge":     ("#kmain .kgauge, #kmain .progress", (2, 4, 2, 4), None, "", False),
     "divider":   ("#kmain .kpanel h3:not(.kfold), #kmain .kpanel .sub, #kmain .kpanel .day-h, #kmain .kpanel .shelf-h",
-                  (0, 0, 0, 0), (120, 12), "", False),
-    "initial":   ("#kmain .kdropcap", (5, 5, 5, 5), (50, 50), "", False),
+                  (0, 0, 0, 0), (140, 16), "", False),
+    "initial":   ("#kmain .kdropcap", (14, 14, 14, 14), (74, 74), "", False),
 }
 # where each family's picture sits in its element (CSS background-position / size)
-PLACE = {"barbase": ("0 100%", "100% 14px"), "divider": ("50% 0", "120px 12px")}
+
+# the size each family is drawn at in the layout (CSS px); variable ones are measured per element
+NOMINAL = {"chip": (96, 26), "button": (200, 40), "sections": (120, 26), "runhead": (200, 26), "banner": (526, 80),
+           "tile": (250, 96), "tablehead": (506, 34), "gauge": (88, 12), "initial": (74, 74), "divider": (140, 16), "barbase": (506, 14)}
+
+
+def bands(role):
+    """(t, r, b, l): the studio's band for this family (solar/frames/<role>.insets), else the spec's numbers."""
+    try:
+        import importlib
+        return tuple(int(round(x)) for x in importlib.import_module(f"solar.frames.{role}").insets(*NOMINAL[role], {}))
+    except Exception:  # noqa: BLE001
+        return FAMILIES[role][1]
+
 
 X = "html.kme:not(#k0):not(#k1):not(#k2)"      # three ids: outranks every earlier !important rule
 M = X + " #kmain"
@@ -131,8 +144,8 @@ def _css():
     c += _r(".kpanel h3:not(.kfold), .kpanel .sub, .kpanel .day-h, .kpanel .cal-day, .kpanel details>summary, .kpanel h4, .kpanel .shelf-h, "
             "h3:not(.kfold), .sub, .day-h, .cal-day, #krail h4",
             f"font:{S['sect']} !important;letter-spacing:0 !important;text-transform:none !important;font-variant-caps:normal !important;"
-            "padding:18px 0 0 !important;margin:14px 0 6px !important;background-repeat:no-repeat !important;"
-            "background-position:50% 0 !important;background-size:120px 12px !important;text-align:left")
+            "padding:20px 0 0 !important;margin:14px 0 6px !important;background-repeat:no-repeat !important;"
+            "background-position:50% 0 !important;background-size:140px 16px !important;text-align:left")
     c += _r(".kpanel>h3:first-child, .kpanel>.sub:first-child, .kpanel>.day-h:first-child, .head+h3, h2+h3",
             "margin-top:2px !important")
     # ---- values: tiles and fact boxes
@@ -163,66 +176,85 @@ def _css():
     # the kicker loses its trailing rule; its lozenge stays
     c += _r(".kkick:after, .kkicker:after", "display:none !important")
 
-    # ---- frames: each family's band as padding; the picture is set per element at build time
+    # ---- frames: each family's band (the studio's insets) as padding; the picture is set per element at build time
+    BG = "background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important"
+    t, r, b, l = bands("chip")
     c += _r(".kst-off, .kst-on, .kchip, .kpanel .kchip, b.kval-on, .vote, .sun-clouds>span, .ktrail .ktags .kst-off, .ktrail .ktags .kst-on",
-            "display:inline-block !important;box-sizing:border-box !important;height:26px !important;line-height:22px !important;"
-            "padding:2px 13px !important;vertical-align:middle;white-space:nowrap !important;"
-            "background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important")
+            f"display:inline-block !important;box-sizing:border-box !important;height:{max(24, 20 + t + b)}px !important;line-height:18px !important;"
+            f"padding:{t + 1}px {r + 2}px {b + 1}px {l + 2}px !important;vertical-align:middle;white-space:nowrap !important;{BG}")
     c += _r(".kcell b.kval", "display:inline-block")
+    t, r, b, l = bands("tile")
     c += _r(".tiles, .facts, .minis, .facts[data-n], .minis[data-n], .tiles[data-n]",
-            "display:grid !important;grid-template-columns:1fr 1fr !important;grid-gap:8px 8px !important;padding:0 !important;margin:8px 0 10px !important")
+            "display:grid !important;grid-template-columns:1fr 1fr !important;grid-gap:6px 6px !important;padding:0 !important;margin:8px 0 10px !important")
     c += _r(".tiles>.tile, .facts>.mini, .minis>.mini, .facts[data-n]>.mini, .minis[data-n]>.mini, .tiles>.tile:nth-child(even), "
             ".facts>.mini:nth-child(even), .minis>.mini:nth-child(even), .facts[data-n]>.mini:not(:nth-child(3n+1)), .minis[data-n]>.mini:not(:nth-child(3n+1)), "
             ".bug, .open-pick, p.ask, .look-weather>p, .sp.kblock",
-            "box-sizing:border-box !important;padding:10px 13px 11px !important;background-color:#fff !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important")
+            f"box-sizing:border-box !important;padding:{t + 2}px {r + 3}px {b + 2}px {l + 3}px !important;background-color:#fff !important;{BG}")
     c += _r(".tile .k, .mini .k, .mini>span:first-child", "margin:0 0 2px !important")
-    c += _r(".kth", "box-sizing:border-box !important;min-height:34px !important;padding:6px 14px !important;margin:0 !important;"
-            "-webkit-box-align:center;align-items:center;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important")
+    t, r, b, l = bands("tablehead")
+    c += _r(".kth", f"box-sizing:border-box !important;min-height:{22 + t + b + 4}px !important;padding:{t + 2}px {r + 2}px {b + 2}px {l + 2}px !important;margin:0 !important;"
+            f"-webkit-box-align:center;align-items:center;{BG}")
     c += _r(".kroads .kright, .kroads .kth>span:last-child", "padding-left:10px")
-    c += _r(".krow", "padding-left:14px !important;padding-right:14px !important")
-    c += _r(".khr, .bars", "padding-bottom:16px !important;background-repeat:no-repeat !important;background-position:0 100% !important;background-size:100% 14px !important;box-sizing:border-box")
-    c += _r(".kgauge", "box-sizing:content-box !important;width:80px !important;height:8px !important;padding:2px 4px !important;"
-            "margin:3px 0 3px !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important;position:relative")
-    c += _r(".kgauge i", "position:relative !important;left:auto !important;top:auto !important;bottom:auto !important;height:8px !important")
-    c += _r(".progress", "padding:2px 4px !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important")
+    c += _r(".krow", f"padding-left:{l + 2}px !important;padding-right:{r + 2}px !important")
+    bw, bh = NOMINAL["barbase"]
+    c += _r(".khr, .bars", f"padding-bottom:{bh + 2}px !important;background-repeat:no-repeat !important;background-position:0 100% !important;"
+            f"background-size:100% {bh}px !important;box-sizing:border-box")
+    t, r, b, l = bands("gauge")
+    gw, gh = NOMINAL["gauge"]
+    c += _r(".kgauge", f"box-sizing:content-box !important;width:{gw - l - r}px !important;height:{max(4, gh - t - b)}px !important;padding:{t}px {r}px {b}px {l}px !important;"
+            f"margin:3px 0 3px !important;{BG};position:relative")
+    c += _r(".kgauge i", f"position:relative !important;left:auto !important;top:auto !important;bottom:auto !important;height:{max(4, gh - t - b)}px !important")
+    c += _r(".progress", f"padding:{t}px {r}px {b}px {l}px !important;{BG}")
     # data marks that were bordered squares: filled for on, stippled for off
     c += _r(".kq>i", "background:repeating-linear-gradient(45deg,#000 0,#000 1px,#fff 1px,#fff 3px) !important")
     c += _r(".kq>i.on", "background:#000 !important")
     c += _r(".legend .sw, .legend i[class^='ksw']", "background:repeating-linear-gradient(45deg,#000 0,#000 1px,#fff 1px,#fff 3px) !important")
     # the cover's date banner
-    c += _r(".kmast .kdate", f"font:{S['label']} !important;{SC};{OLD};box-sizing:border-box;min-height:44px;padding:11px 36px !important;"
-            "margin:10px 0 6px !important;text-align:center;white-space:normal !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important")
-    # the engraved initial opening a section's first page
+    t, r, b, l = bands("banner")
+    c += _r(".kmast .kdate", f"font:{S['label']} !important;{SC};{OLD};box-sizing:border-box;padding:{t + 3}px {r + 4}px {b + 3}px {l + 4}px !important;"
+            f"margin:10px 0 6px !important;text-align:center;white-space:normal !important;{BG}")
     c += _r(".kmast .kdate .kded", "display:block")
-    c += _r(".kdropcap", "float:left;display:block;box-sizing:border-box;width:50px;height:50px;margin:4px 8px 0 0;padding:0;"
-            "font:600 36px/50px var(--k-serif) !important;text-align:center;font-variant:normal !important;"
-            "background-color:#fff;background-repeat:no-repeat;background-position:0 0;background-size:50px 50px")
+    # the engraved initial opening a section's first page: three lines of text deep
+    iw, ih = NOMINAL["initial"]
+    t, r, b, l = bands("initial")
+    c += _r(".kdropcap", f"float:left;display:block;box-sizing:border-box;width:{iw}px;height:{ih}px;margin:4px 10px 0 0;padding:0;"
+            f"font:600 {min(44, ih - t - b - 6)}px/{ih}px var(--k-serif) !important;text-align:center;font-variant:normal !important;"
+            f"background-color:#fff;background-repeat:no-repeat;background-position:0 0;background-size:{iw}px {ih}px")
     c += _r(".khang", "margin-left:-.42em")
     c += _r(".khang1", "margin-left:-.25em")
     # ---- chrome: running head, sections button, bottom bar, the section list
     C = X + " body"
     c += _r(".krun, .krun a, .krun span, .krun b, .krun i, .kbar, .kbar a, .kbar span, #kmore",
-            f"font:{S['label']} !important;{SC};{OLD}", C)
-    c += _r(".krun", "-webkit-box-align:center !important;align-items:center !important", C)
-    c += _r(".krun>a", "display:inline-block !important;box-sizing:border-box;height:26px;line-height:26px !important;padding:0 14px !important;"
-            "max-width:300px;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important", C)
-    c += _r(".krun>span", "display:inline-block;padding-left:8px;line-height:26px !important;height:26px", C)
-    c += _r(".krun #ksheet", "display:inline-block;box-sizing:border-box;width:116px;height:26px;line-height:26px !important;text-align:center;"
-            "font-style:normal !important;margin:0 8px 0 0;vertical-align:top;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:116px 26px !important", C)
+            f"font:{S['label']} !important;{SC};{OLD};letter-spacing:.02em !important", C)
+    c += _r(".krun", "display:-webkit-box !important;display:flex !important;-webkit-box-align:center !important;align-items:center !important;"
+            "-webkit-box-pack:justify !important;justify-content:space-between !important", C)
+    t, r, b, l = bands("runhead")
+    rh = max(26, 20 + t + b)
+    c += _r(".krun>a", f"display:inline-block !important;box-sizing:border-box;height:{rh}px;line-height:{rh - t - b}px !important;padding:{t}px {r + 2}px {b}px {l + 2}px !important;"
+            f"-webkit-box-flex:0;flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;{BG}", C)
+    c += _r("body.kcontents .krun", "display:none !important", X)
+    c += _r(".krun>a:before", "display:none !important", C)   # the ears carry the ornament now
+    c += _r(".krun>a, .krun #ksheet", "letter-spacing:0 !important", C)
+    c += _r(".krun>span", f"display:block;-webkit-box-flex:0;flex:none;overflow:visible !important;padding-left:6px;line-height:{rh}px !important;height:{rh}px;white-space:nowrap", C)
+    c += _r(".krun #ksheet", f"display:inline-block;box-sizing:border-box;height:{rh}px;line-height:{rh - t - b}px !important;padding:{t}px {r + 3}px {b}px {l + 3}px !important;text-align:center;"
+            f"font-style:normal !important;margin:0 6px 0 0;vertical-align:top;{LIN};{BG}", C)
     c += _r(".krun #ksheet:empty", "display:none !important", C)
-    c += _r(".krun .ksecbtn", "display:inline-block !important;box-sizing:border-box;width:108px;height:26px;line-height:26px !important;"
-            "padding:0 !important;margin:0 !important;text-align:center;vertical-align:top;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:108px 26px !important;"
-            "color:#000 !important", C)
+    t, r, b, l = bands("sections")
+    sh = max(26, 20 + t + b)
+    c += _r(".krun .ksecbtn", f"display:inline-block !important;box-sizing:border-box;height:{sh}px;line-height:{sh - t - b}px !important;"
+            f"padding:{t}px {r + 3}px {b}px {l + 3}px !important;margin:0 !important;text-align:center;vertical-align:top;{BG};color:#000 !important", C)
+    t, r, b, l = bands("button")
+    bh = NOMINAL["button"][1]
     c += _r(".kbar", "-webkit-box-pack:justify !important;justify-content:space-between !important", X + ".kpaged body")
-    c += _r(".kbar .kprev, .kbar .knx", "-webkit-box-flex:0 !important;flex:none !important;box-sizing:border-box;width:200px;height:38px;"
-            "line-height:38px !important;padding:0 16px !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important", C)
+    c += _r(".kbar .kprev, .kbar .knx", f"-webkit-box-flex:1 !important;flex:1 1 0 !important;min-width:0;box-sizing:border-box;height:{bh}px;"
+            f"line-height:{bh - t - b}px !important;padding:{t}px {r + 4}px {b}px {l + 4}px !important;{BG}", C)
     c += _r(".kbar .knx", "text-align:right", C)
     c += _r(".kbar span.kprev", "display:none !important", C)
-    c += _r(".kbar span.kprev~.knx", "width:398px", C)
-    c += _r(".kbar .kmid", "flex:none !important;width:96px;padding:0 !important", C)
-    c += _r(".kbar #kmore", "display:block !important;box-sizing:border-box;width:96px;height:38px !important;line-height:38px !important;"
-            "padding:0 12px !important;text-align:center;font-style:normal !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:96px 38px !important", C)
-    c += _r("#kjump .kjtop a", "box-sizing:border-box;padding:8px 20px !important;background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important;color:#000 !important", C)
+    # fixed: More hides on a page's last sheet, and the buttons either side must keep their size (and frame)
+    c += _r(".kbar .kmid", f"-webkit-box-flex:0 !important;flex:none !important;width:{62 + l + r + 6 + 8}px;box-sizing:border-box;padding:0 4px !important", C)
+    c += _r(".kbar #kmore", f"display:block !important;box-sizing:border-box;height:{bh}px !important;line-height:{bh - t - b}px !important;"
+            f"width:100%;padding:{t}px 0 {b}px !important;text-align:center;font-style:normal !important;white-space:nowrap;{BG}", C)
+    c += _r("#kjump .kjtop a", f"box-sizing:border-box;padding:{t + 2}px {r + 4}px {b + 2}px {l + 4}px !important;{BG};color:#000 !important", C)
     c += _r("#kjump .kjtop a small, #kjump .kjh, #kjump .kjg a i", f"font:{S['label']} !important;{SC};{OLD};color:#000 !important", C)
     c += _r("#kjump .kjtop a", f"font:{S['bodyb']} !important", C)
     c += _r("#kjump .kjg a", f"font:{S['body']} !important;height:31px;line-height:31px !important", C)
@@ -236,7 +268,7 @@ def _css():
     c += _r("#mkt>div>span", "display:block !important;max-width:none !important;padding:0 !important;text-align:left !important;white-space:normal !important")
     c += _r("#mkt>div>span:first-child", f"font:{S['label']} !important;{SC};{OLD}")
     c += _r("#kcont", f"font:{S['caption']} !important", C)
-    c += _r(".kmain .kend .kbig, .kend .kbig, .kresume", "background-repeat:no-repeat !important;background-position:0 0 !important;background-size:100% 100% !important;padding:10px 20px !important")
+    c += _r(".kend .kbig, .kresume", f"{BG};padding:{t + 4}px {r + 4}px {b + 4}px {l + 4}px !important")
     # the fit ladder may tighten space, never the type: the roles above are fixed and outrank it
     return c
 
@@ -409,24 +441,31 @@ def full_fonts(out):
 
 # ---------------------------------------------------------------- frames: compose, rasterise, attach
 def compose(role, w, h, seed=0, variant="plain"):
-    """The studio's frame for this role at exactly w x h CSS px (an <svg> string), or None."""
+    """The studio's frame for this role at exactly w x h CSS px (an <svg> string), or None.
+    solar/frames/<role>.frame(w, h, ctx) first (claude/engrave-frames), then scroll.compose, then a plain stand-in."""
+    import importlib
     try:
-        from solar import scroll  # the studio's composer (claude/engrave-frames)
-        return scroll.compose(w, h, role, seed=seed, variant=variant)
+        mod = importlib.import_module(f"solar.frames.{role}")
     except ImportError:
-        pass
+        mod = None
+    if mod is not None:
+        try:
+            return mod.frame(w, h, {"variant": variant, "seed": seed})
+        except Exception as e:  # noqa: BLE001
+            print(f"kindle_ornate: frames.{role}.frame({w}x{h}) failed: {e!r}", file=sys.stderr)
+            return None
+    try:
+        from solar import scroll
+        if hasattr(scroll, "compose"):
+            return scroll.compose(w, h, role, seed=seed, variant=variant)
     except Exception as e:  # noqa: BLE001
         print(f"kindle_ornate: scroll.compose({role}, {w}x{h}) failed: {e!r}", file=sys.stderr)
-        return None
-    try:
-        import importlib
-        mod = importlib.import_module(f"solar.frames.{role}")
-        return mod.frame(w, h, {"variant": variant, "seed": seed})
-    except ImportError:
-        return standin(role, w, h, variant)
-    except Exception as e:  # noqa: BLE001
-        print(f"kindle_ornate: frames.{role}.frame({w}x{h}) failed: {e!r}", file=sys.stderr)
-        return None
+    return standin(role, w, h, variant)
+
+
+def _compose_key(k):
+    role, w, h, seed, v = k
+    return compose(role, w, h, seed, v)
 
 
 def standin(role, w, h, variant="plain"):
@@ -455,7 +494,7 @@ MEASURE_JS = r"""(F) => {
     const [sel, fixed, lit] = F[role]; const L = [];
     for (const el of document.querySelectorAll(sel)) {
       const b = el.getBoundingClientRect(); let w = Math.round(b.width), h = Math.round(b.height);
-      if (role === 'barbase') h = 14;
+      if (role === 'barbase') h = F[role][3];
       if (fixed) { w = fixed[0]; h = fixed[1]; }
       const v = lit && el.matches(lit) ? 'lit' : 'plain';
       L.push(w >= 8 && h >= 6 ? [w, h, v, (el.textContent || '').trim().slice(0, 40)] : null);
@@ -476,8 +515,13 @@ class _Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
+class _Srv(http.server.ThreadingHTTPServer):
+    def handle_error(self, request, client_address):   # a browser hanging up early is not news
+        pass
+
+
 def _serve(out):
-    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
+    srv = _Srv(("127.0.0.1", 0), functools.partial(_Quiet, directory=out))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
 
@@ -535,7 +579,7 @@ def frames(out):
         return None
     pages = sorted(os.path.basename(p)[:-5] for p in os.listdir(out) if p.endswith(".html"))
     pages = [p for p in pages if os.path.exists(os.path.join(out, p + ".html"))]
-    F = {role: [f[0], list(f[2]) if isinstance(f[2], tuple) else None, f[3]] for role, f in FAMILIES.items()}
+    F = {role: [f[0], list(f[2]) if isinstance(f[2], tuple) else None, f[3], NOMINAL.get(role, (0, 0))[1]] for role, f in FAMILIES.items()}
     odir = os.path.join(out, "orn", "kf")
     os.makedirs(odir, exist_ok=True)
     srv, base = _serve(out)
@@ -545,28 +589,43 @@ def frames(out):
             async with async_playwright() as pw:
                 br = await pw.chromium.launch(executable_path=os.environ.get("KINDLE_CHROMIUM") or None)
                 meas = await _measure_all(br, base, [p.replace(".html", "") for p in pages], F)
-                jobs, plan = {}, {}
+                keys, plan = {}, {}
                 for p, roles in meas.items():
                     plan[p] = {}
                     for role, L in roles.items():
-                        urls = []
+                        ks = []
                         for i, it in enumerate(L):
                             if not it:
-                                urls.append(0)
+                                ks.append(None)
                                 continue
                             w, h, v, _t = it
                             seed = zlib.crc32(f"{p}:{role}:{i}".encode()) & 0xffff if FAMILIES[role][4] else 0
-                            svg = compose(role, w, h, seed, v)
-                            if not svg:
-                                urls.append(0)
-                                stats["missing"] += 1
-                                continue
-                            name = f"{role}-{w}x{h}-{v[0]}-{hashlib.sha1(svg.encode()).hexdigest()[:8]}.png"
-                            jobs.setdefault(name, (svg, w, h))
-                            urls.append(name)
-                            stats["frames"] += 1
+                            k = (role, w, h, seed, v)
+                            keys[k] = None
+                            ks.append(k)
+                        plan[p][role] = ks
+                # compose every distinct frame once, on every core (the studio's engine is pure Python)
+                from concurrent.futures import ProcessPoolExecutor
+                ks = list(keys)
+                with ProcessPoolExecutor(max_workers=max(1, min(8, os.cpu_count() or 1))) as ex:
+                    svgs = list(ex.map(_compose_key, ks, chunksize=8))
+                jobs = {}
+                for k, svg in zip(ks, svgs):
+                    if not svg:
+                        stats["missing"] += 1
+                        continue
+                    role, w, h, seed, v = k
+                    name = f"{role}-{w}x{h}-{v[0]}-{hashlib.sha1(svg.encode()).hexdigest()[:8]}.png"
+                    jobs.setdefault(name, (svg, w, h))
+                    keys[k] = name
+                for p in plan:
+                    for role in list(plan[p]):
+                        urls = [keys.get(k) or 0 if k else 0 for k in plan[p][role]]
+                        stats["frames"] += sum(1 for u in urls if u)
                         if any(urls):
                             plan[p][role] = urls
+                        else:
+                            del plan[p][role]
                 await _raster(br, {n: j for n, j in jobs.items() if not os.path.exists(os.path.join(odir, n))}, odir)
                 stats["pngs"] = len(jobs)
                 await br.close()
@@ -687,6 +746,15 @@ def _summary(res):
             "no_kpre": [p for p, v in res.items() if not v["kpre"]], "sizes": sizes.most_common()}
 
 
+def frame_source():
+    """Where the frames come from in this build (for the contact sheet and the build log)."""
+    try:
+        import solar.frames  # noqa: F401
+        return "Frames drawn by the engraving studio (solar/frames/, composed per element by solar/scroll.py)."
+    except ImportError:
+        return "STAND-INS: the studio's art (solar/frames/) is not in this build; plain double rules mark where each frame goes."
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 2 and sys.argv[1] == "check":
         r = check(sys.argv[2], sys.argv[3] if len(sys.argv) > 3 and sys.argv[3] != "-" else None,
@@ -701,16 +769,3 @@ if __name__ == "__main__":
     else:
         print(json.dumps({"css_bytes": len(CSS)}))
 
-
-def frame_source():
-    """Where the frames come from in this build (for the contact sheet and the build log)."""
-    try:
-        from solar import scroll  # noqa: F401
-        return "Frames by the engraving studio (solar/scroll.py, composed per element)."
-    except ImportError:
-        pass
-    try:
-        import solar.frames  # noqa: F401
-        return "Frames by the engraving studio (solar/frames/)."
-    except ImportError:
-        return "STAND-INS: the studio's art (solar/scroll.py) is not in this build; plain double rules mark where each frame goes."

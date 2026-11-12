@@ -339,6 +339,10 @@ def run(out, exe=None):
         stats = asyncio.run(_run(out, base, exe))
     finally:
         srv.shutdown()
+    try:
+        stats["fonts"] = subset_fonts(out)
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_fast: fonts left whole ({e!r})", file=sys.stderr)
     print(f"kindle_fast: {stats} in {time.time() - t0:.1f}s")
 
 
@@ -504,8 +508,14 @@ def _write_pre(out, visits):
         # a picture still on the web may be a different size on the Kindle than here: measure there
         if re.search(r'<main id="kmain">.*<img\b[^>]*\ssrc="(https?:)?//', s, re.S):
             continue
-        data = _html.escape(json.dumps(v["snap"], separators=(",", ":")), quote=True)
-        _rewrite(fp, lambda t, data=data: _set_attr(t, "html", "data-kpre", data))
+        # as raw JSON in a data block, not an escaped attribute: about a third smaller, and no entity decoding
+        data = json.dumps(v["snap"], separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
+
+        def put(t, data=data):
+            t = re.sub(r'<script type="application/json" id="kpre">.*?</script>', "", t, flags=re.S)
+            m = re.search(r"<body\b[^>]*>", t)
+            return t[:m.end()] + f'<script type="application/json" id="kpre">{data}</script>' + t[m.end():]
+        _rewrite(fp, put)
         done += 1
     return done
 
@@ -630,6 +640,61 @@ def _swap_urls(css, base, swap):
         u = raw if raw.startswith("data:") else urllib.parse.urljoin(base + "kindle.css", raw)
         return f"url({swap[u]})" if u in swap else m.group(0)
     return re.sub(r"""url\(\s*(?:("([^"]*)")|'([^']*)'|([^)"']*))\s*\)""", fix, css)
+
+
+# ---------------------------------------------------------------- 4. fonts
+
+EXTRA_CHARS = ("\u2018\u2019\u201c\u201d\u2013\u2014\u2026\u2022\u00b7\u2039\u203a\u00ab\u00bb\u2190\u2192\u2191\u2193"
+               "\u25be\u00b0\u00d7\u00bd\u00bc\u00be\u2032\u2033\u00a0\u00e9\u00e8\u00e0\u00f1\u00fc\u00f6\u00e7")
+
+
+def subset_fonts(out):
+    """Each web font cut to the characters this edition prints (all of printable ASCII and common punctuation
+    always), every OpenType feature and both variation axes kept; saved under a name that changes with the
+    cut, so a cached cut from an earlier edition is never used for new text."""
+    import hashlib
+    from fontTools import subset
+    text = set(chr(c) for c in range(0x20, 0x7f)) | set(EXTRA_CHARS)
+    for fp in glob.glob(os.path.join(out, "*.html")) + glob.glob(os.path.join(out, "*.css")) + glob.glob(os.path.join(out, "*.js")):
+        text |= set(_html.unescape(open(fp, encoding="utf-8").read()))
+    for fp in glob.glob(os.path.join(out, "*.css")):   # content:'\2192' and the like
+        for m in re.findall(r"\\([0-9a-fA-F]{2,6})", open(fp, encoding="utf-8").read()):
+            text.add(chr(int(m, 16)))
+    css_path = os.path.join(out, "kindle.css")
+    css = open(css_path, encoding="utf-8").read()
+    fonts = sorted(set(re.findall(r"url\((fonts/[\w.-]+\.woff2)\)", css)))
+    renamed, before, after = {}, 0, 0
+    for rel in fonts:
+        src = os.path.join(out, rel)
+        if not os.path.exists(src):
+            continue
+        opts = subset.Options()
+        opts.layout_features = ["*"]
+        opts.flavor = "woff2"
+        opts.notdef_outline = True
+        opts.name_IDs = ["*"]
+        f = subset.load_font(src, opts)
+        sub = subset.Subsetter(opts)
+        sub.populate(text="".join(sorted(text)))
+        sub.subset(f)
+        import io
+        buf = io.BytesIO()
+        subset.save_font(f, buf, opts)
+        data = buf.getvalue()
+        name = re.sub(r"(-[0-9a-f]{8})?\.woff2$", "", rel) + "-" + hashlib.sha1(data).hexdigest()[:8] + ".woff2"
+        with open(os.path.join(out, name), "wb") as fh:
+            fh.write(data)
+        before += os.path.getsize(src)
+        after += len(data)
+        renamed[rel] = name
+    if not renamed:
+        return None
+    for fp in glob.glob(os.path.join(out, "*.html")) + [css_path]:
+        _rewrite(fp, lambda s: re.sub(r"fonts/[\w.-]+\.woff2", lambda m: renamed.get(m.group(0), m.group(0)), s))
+    for rel, name in renamed.items():
+        if rel != name:
+            os.remove(os.path.join(out, rel))
+    return f"{len(text)} chars, {before} -> {after} bytes"
 
 
 if __name__ == "__main__":

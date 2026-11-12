@@ -515,6 +515,24 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
                     arcs.append(seg)
                 k += 1
                 rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            # the lit crown is not left bare: open arcs follow the dome round the top, widening
+            # toward the light and broken only at a small highlight (upper left)
+            hx, hy = bx - br * .35, by - br * .45
+            rr = br * .97
+            while rr > br * .2:
+                seg = []
+                for i in range(19):
+                    a = _SPI * (1.02 + .96 * i / 18)
+                    px, py = bx + rr * _m.cos(a), by + rr * _m.sin(a) * .92
+                    if (px - hx) ** 2 + (py - hy) ** 2 < (br * .22 + 1.5) ** 2 or py > cy:
+                        if len(seg) > 1:
+                            arcs.append(seg)
+                        seg = []
+                    else:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                rr -= 4.5
             cv.hair(arcs)
             sh = [(x, max(y, cy - br * .3)) for x, y in circ]
             cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
@@ -950,18 +968,38 @@ def _offset_poly(poly, d):
 
 
 def bead_ring(poly, r=1.5, gap=1.):
-    """Beads set along a closed path, cut as dashed strokes (3 elements whatever the count):
-    a black ring, the white bead, and a black shading crescent toward lower right."""
-    L = sum(_m.hypot(poly[(i + 1) % len(poly)][0] - poly[i][0], poly[(i + 1) % len(poly)][1] - poly[i][1])
-            for i in range(len(poly)))
+    """Beads set along a closed path, each a drawn pearl: a white bead ringed in a hairline, a
+    swelling crescent of shade toward the lower right and a lit eye left white (two paths)."""
+    n = len(poly)
+    segs = []
+    L = 0.
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        s = _m.hypot(b[0] - a[0], b[1] - a[1])
+        segs.append((a, b, s, L))
+        L += s
     nb = max(3, int(L / (2 * r + gap)))
     P = L / nb
-    d = _SD(poly + [poly[0]], tol=.05)
-    da = f'stroke-dasharray="0 {_SN(P)}" stroke-linecap="round" fill="none"'
-    sh = _SD([(x + r * .35, y + r * .35) for x, y in poly] + [(poly[0][0] + r * .35, poly[0][1] + r * .35)], tol=.05)
-    return (f'<path d="{d}" stroke="#000" stroke-width="{_SN(2 * r + 1)}" {da}/>'
-            f'<path d="{d}" stroke="#fff" stroke-width="{_SN(2 * r)}" {da}/>'
-            f'<path d="{sh}" stroke="#000" stroke-width="{_SN(max(1., r * .8))}" {da}/>')
+    beads, shade = [], []
+    k = 0
+    for i in range(nb):
+        t = i * P
+        while k < len(segs) - 1 and segs[k][3] + segs[k][2] < t:
+            k += 1
+        a, b, s, l0 = segs[k]
+        u = (t - l0) / (s or 1)
+        x, y = a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u
+        m = 10 if r > 1.2 else 8
+        beads.append([(x + r * _m.cos(2 * _SPI * j / m), y + r * _m.sin(2 * _SPI * j / m)) for j in range(m)])
+        if r >= .9:
+            outer = [(x + r * _m.cos(a_), y + r * _m.sin(a_)) for a_ in [-.4 + 2.4 * j / 6 for j in range(7)]]
+            inner = [(x + r * .25 + r * .7 * _m.cos(a_), y + r * .25 + r * .7 * _m.sin(a_))
+                     for a_ in [2. - 2.4 * j / 6 for j in range(7)]]
+            shade.append(outer + inner)
+    o = f'<path d="{"".join(_SD(p, True, 0) for p in beads)}" fill="#fff" stroke="#000" stroke-width="{".5" if r < 1.2 else "1"}"/>'
+    if shade:
+        o += f'<path d="{"".join(_SD(p, True, 0) for p in shade)}" fill="#000"/>'
+    return o
 
 
 def _kell(cx, cy, rx, ry, n=72):
@@ -1099,6 +1137,153 @@ class KCanvas(_C.Canvas):
         finally:
             C._Q = q
         return "".join(res)
+
+
+# ------------------------------------------------------------------------------------------------
+# Depth (art direction, Nov 12 second pass): swelling lines and form-following tone. Every stroke
+# stays 0.5 / 1 / 1.5 px; a swell is built the burin's way, a 1 px cut flanked by hair cuts laid
+# tight against it on the shadow side over the middle of its run, so it thickens and tapers.
+# ------------------------------------------------------------------------------------------------
+
+def _offset_pl(pts, d):
+    out = []
+    n = len(pts)
+    for i in range(n):
+        a = pts[max(0, i - 1)]
+        b = pts[min(n - 1, i + 1)]
+        tx, ty = b[0] - a[0], b[1] - a[1]
+        L = _m.hypot(tx, ty) or 1.
+        out.append((pts[i][0] - ty / L * d, pts[i][1] + tx / L * d))
+    return out
+
+
+def _sub(pts, t0, t1):
+    n = len(pts)
+    i0, i1 = int(t0 * (n - 1)), int(_m.ceil(t1 * (n - 1)))
+    return pts[i0:i1 + 1]
+
+
+def _resample(pts, step=1.5):
+    out = [pts[0]]
+    for a, b in zip(pts, pts[1:]):
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / step))
+        for j in range(1, k + 1):
+            out.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    return out
+
+
+def swell(cv, pts, side=1, weight=2):
+    """A swelling cut along pts: 1 px throughout, thickened on `side` (+1 left of travel, -1 right)
+    over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
+    if len(pts) < 2:
+        return
+    pts = _resample(pts, 1.5)
+    cv.line(pts)
+    spans = ((.12, .88), (.25, .75), (.38, .62))
+    for k in range(min(3, weight)):
+        sub = _sub(pts, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def swell_outline(cv, poly, light=(-1., -1.), weight=2):
+    """Outline a closed form with a swelling contour: thin where it faces the light, swelling on
+    the side away from it (the engraver's shadow line)."""
+    n = len(poly)
+    if n < 3:
+        return
+    cx = sum(p[0] for p in poly) / n
+    cy = sum(p[1] for p in poly) / n
+    lx, ly = light
+    L = _m.hypot(lx, ly) or 1.
+    lx, ly = lx / L, ly / L
+    run = []
+    pts = _resample(poly + [poly[0]], 1.5)
+    for p in pts:
+        dx, dy = p[0] - cx, p[1] - cy
+        dl = _m.hypot(dx, dy) or 1.
+        if (dx * lx + dy * ly) / dl < -.15:
+            run.append(p)
+        else:
+            if len(run) > 3:
+                _swell_in(cv, run, cx, cy, weight)
+            run = []
+    if len(run) > 3:
+        _swell_in(cv, run, cx, cy, weight)
+
+
+def _swell_in(cv, run, cx, cy, weight):
+    # thicken toward the inside of the form
+    a, b = run[0], run[-1]
+    m = run[len(run) // 2]
+    tx, ty = b[0] - a[0], b[1] - a[1]
+    side = 1 if (-ty * (cx - m[0]) + tx * (cy - m[1])) > 0 else -1
+    spans = ((.08, .92), (.22, .78), (.36, .64))
+    for k in range(min(3, weight)):
+        sub = _sub(run, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def form_hatch(poly, cx, cy, r0, r1, pitch=2., a0=0., a1=2 * _m.pi, sq=1., n=28):
+    """Hatch that follows a rounded form: arcs about (cx, cy) from radius r0 to r1 every `pitch`,
+    clipped to poly (the lit side is left to the caller by choosing a0..a1)."""
+    out = []
+    r = r0
+    while r <= r1:
+        arc = [(cx + r * _m.cos(a0 + (a1 - a0) * i / n), cy + r * sq * _m.sin(a0 + (a1 - a0) * i / n))
+               for i in range(n + 1)]
+        out += _clip_pl_poly(arc, poly)
+        r += pitch
+    return out
+
+
+def _in_poly(x, y, poly):
+    c = False
+    n = len(poly)
+    j = n - 1
+    for i in range(n):
+        xi, yi = poly[i]
+        xj, yj = poly[j]
+        if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / ((yj - yi) or 1e-9) + xi:
+            c = not c
+        j = i
+    return c
+
+
+def _clip_pl_poly(pl, poly):
+    out, run = [], []
+    for p in _resample(pl, 1.):
+        if _in_poly(p[0], p[1], poly):
+            run.append(p)
+        else:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+    if len(run) > 1:
+        out.append(run)
+    return out
+
+
+def stipple(poly, pitch, seed=0, r=.35):
+    """Dots on a jittered grid inside poly, as tiny closed ticks (a stroke of 1 px, ~1 px long)."""
+    rng = _r.Random(seed)
+    xs = [p[0] for p in poly]
+    ys = [p[1] for p in poly]
+    out = []
+    y = min(ys)
+    row = 0
+    while y < max(ys):
+        x = min(xs) + (pitch / 2 if row % 2 else 0)
+        while x < max(xs):
+            px, py = x + rng.uniform(-.3, .3) * pitch, y + rng.uniform(-.3, .3) * pitch
+            if _in_poly(px, py, poly):
+                out.append([(px, py), (px + .6, py + .3)])
+            x += pitch
+        y += pitch * .87
+        row += 1
+    return out
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1558,7 +1743,7 @@ def _form_geom(form, shape, w, h):
         sw = w * (.96 if form == "headpiece" else .6)
         sh = min(sh, sw * .32)
     else:
-        sw = {"headpiece": w * .97, "tailpiece": w * .6}.get(form, min(w * .7, sh * 1.8))
+        sw = {"headpiece": w * .97, "tailpiece": min(w * .6, sh * 3.4)}.get(form, min(w * .7, sh * 1.8))
         sh = min(sh, sw * .95)
     return w / 2, h / 2, sw, sh
 
@@ -1628,7 +1813,7 @@ def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=Fal
         o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
         o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
         o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
-    return _C.svg_doc(w, h, "".join(o))
+    return _tidy(_C.svg_doc(w, h, "".join(o)))
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1782,6 +1967,107 @@ def egg_kranok(cv, x, y, r):
     cv.hair([_P(x, y, r, -.2, .45), _P(x, y, r, -.2, .0), _P(x, y, r, 0, -.3)])
     cv.hair([_P(x, y, r, .05, .45), _P(x, y, r, .1, .1), _P(x, y, r, .25, -.05)])
     spiral_eye(cv, x - r * .05, y + r * .25, r * .14, 1)
+
+
+# ------------------------------------------------------------------------------------------------
+# The finished plate (house rules of Nov 12): stroke widths 0.5 / 1 / 1.5 only, no scale
+# transforms, no dash arrays. Canvas paths are written in quarter or half px under a scale();
+# here they are rewritten in plain px (half-px grid, drift-free) and their widths set to the px
+# they actually print at. Unused house patterns are dropped.
+# ------------------------------------------------------------------------------------------------
+
+import re as _re
+_TOK = _re.compile(r"[A-Za-z]|-?(?:\d+\.?\d*|\.\d+)")
+
+
+def _rescale_d(d, k):
+    """Path data d (M m L l H h V v Z z only) scaled by k onto a half-px grid, written relative."""
+    toks = _TOK.findall(d)
+    out = []
+    i = 0
+    cx = cy = 0.        # current point, source units
+    sx = sy = 0.
+    px = py = 0          # last emitted point, half px
+    cmd = None
+    first = True
+
+    def emit(c, ax, ay):
+        nonlocal px, py, first
+        hx, hy = int(round(ax * k * 2)), int(round(ay * k * 2))
+        if first:
+            out.append(("M", f"{_SN(hx / 2)} {_SN(hy / 2)}"))
+            first = False
+        else:
+            dx, dy = (hx - px) / 2, (hy - py) / 2
+            out.append((c, f"{_SN(dx)} {_SN(dy)}"))
+        px, py = hx, hy
+
+    while i < len(toks):
+        t = toks[i]
+        if t.isalpha():
+            cmd = t
+            i += 1
+            if t in "Zz":
+                out.append(("z", ""))
+                cx, cy = sx, sy
+                px, py = int(round(sx * k * 2)), int(round(sy * k * 2))
+                continue
+            continue
+        if cmd in "Mm":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "m" and not first:
+                x, y = cx + x, cy + y
+            cx, cy = x, y; sx, sy = x, y
+            emit("m", x, y)
+            cmd = "l" if cmd == "m" else "L"
+        elif cmd in "Ll":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "l":
+                x, y = cx + x, cy + y
+            cx, cy = x, y
+            emit("l", x, y)
+        elif cmd in "HhVv":
+            v = float(toks[i]); i += 1
+            if cmd == "H": cx = v
+            elif cmd == "h": cx += v
+            elif cmd == "V": cy = v
+            else: cy += v
+            emit("l", cx, cy)
+        else:
+            raise ValueError("path command " + str(cmd))
+    res = []
+    prev = None
+    for c, v in out:
+        if c == "l" and prev in ("l", "m"):
+            res.append(" " + v)
+        else:
+            res.append(c + v)
+        prev = c
+    return "".join(res).replace(" -", "-")
+
+
+def _snapw(v):
+    return min((.5, 1., 1.5), key=lambda c: abs(c - v))
+
+
+def _tidy(svg):
+    def one(m):
+        tag = m.group(0)
+        sc = _re.search(r' transform="scale\(([\d.]+)\)"', tag)
+        k = 1.
+        if sc:
+            k = float(sc.group(1))
+            tag = tag.replace(sc.group(0), "")
+            tag = _re.sub(r' d="([^"]*)"', lambda q: f' d="{_rescale_d(q.group(1), k)}"', tag, 1)
+        tag = _re.sub(r'stroke-width="([\d.]+)"', lambda q: f'stroke-width="{_SN(_snapw(float(q.group(1)) * k))}"', tag)
+        return tag
+
+    svg = _re.sub(r"<path\b[^>]*>", one, svg)
+    used = set(_re.findall(r"url\(#([^)]+)\)", svg))
+    svg = _re.sub(r'<pattern id="([^"]+)".*?</pattern>', lambda q: q.group(0) if q.group(1) in used else "", svg,
+                  flags=_re.S)
+    svg = svg.replace("<defs></defs>", "")
+    return svg
 # ---- end studio helpers ----
 
 
@@ -2547,4 +2833,4 @@ def plate(w, h, ctx):
     # the edition plan: a headpiece of about 8% of the sheet, a row of book spines. The books
     # themselves are the plate: no frame, no ground; outside them it is transparent.
     pad = 2.
-    return C.svg_doc(w, h, shelf(pad, pad, w - 2 * pad, h - 2 * pad, seed, [title, "SOMASTER"]))
+    return _tidy(C.svg_doc(w, h, shelf(pad, pad, w - 2 * pad, h - 2 * pad, seed, [title, "SOMASTER"])))

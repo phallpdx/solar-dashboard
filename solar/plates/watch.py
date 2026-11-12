@@ -515,6 +515,24 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
                     arcs.append(seg)
                 k += 1
                 rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            # the lit crown is not left bare: open arcs follow the dome round the top, widening
+            # toward the light and broken only at a small highlight (upper left)
+            hx, hy = bx - br * .35, by - br * .45
+            rr = br * .97
+            while rr > br * .2:
+                seg = []
+                for i in range(19):
+                    a = _SPI * (1.02 + .96 * i / 18)
+                    px, py = bx + rr * _m.cos(a), by + rr * _m.sin(a) * .92
+                    if (px - hx) ** 2 + (py - hy) ** 2 < (br * .22 + 1.5) ** 2 or py > cy:
+                        if len(seg) > 1:
+                            arcs.append(seg)
+                        seg = []
+                    else:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                rr -= 4.5
             cv.hair(arcs)
             sh = [(x, max(y, cy - br * .3)) for x, y in circ]
             cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
@@ -950,18 +968,38 @@ def _offset_poly(poly, d):
 
 
 def bead_ring(poly, r=1.5, gap=1.):
-    """Beads set along a closed path, cut as dashed strokes (3 elements whatever the count):
-    a black ring, the white bead, and a black shading crescent toward lower right."""
-    L = sum(_m.hypot(poly[(i + 1) % len(poly)][0] - poly[i][0], poly[(i + 1) % len(poly)][1] - poly[i][1])
-            for i in range(len(poly)))
+    """Beads set along a closed path, each a drawn pearl: a white bead ringed in a hairline, a
+    swelling crescent of shade toward the lower right and a lit eye left white (two paths)."""
+    n = len(poly)
+    segs = []
+    L = 0.
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        s = _m.hypot(b[0] - a[0], b[1] - a[1])
+        segs.append((a, b, s, L))
+        L += s
     nb = max(3, int(L / (2 * r + gap)))
     P = L / nb
-    d = _SD(poly + [poly[0]], tol=.05)
-    da = f'stroke-dasharray="0 {_SN(P)}" stroke-linecap="round" fill="none"'
-    sh = _SD([(x + r * .35, y + r * .35) for x, y in poly] + [(poly[0][0] + r * .35, poly[0][1] + r * .35)], tol=.05)
-    return (f'<path d="{d}" stroke="#000" stroke-width="{_SN(2 * r + 1)}" {da}/>'
-            f'<path d="{d}" stroke="#fff" stroke-width="{_SN(2 * r)}" {da}/>'
-            f'<path d="{sh}" stroke="#000" stroke-width="{_SN(max(1., r * .8))}" {da}/>')
+    beads, shade = [], []
+    k = 0
+    for i in range(nb):
+        t = i * P
+        while k < len(segs) - 1 and segs[k][3] + segs[k][2] < t:
+            k += 1
+        a, b, s, l0 = segs[k]
+        u = (t - l0) / (s or 1)
+        x, y = a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u
+        m = 10 if r > 1.2 else 8
+        beads.append([(x + r * _m.cos(2 * _SPI * j / m), y + r * _m.sin(2 * _SPI * j / m)) for j in range(m)])
+        if r >= .9:
+            outer = [(x + r * _m.cos(a_), y + r * _m.sin(a_)) for a_ in [-.4 + 2.4 * j / 6 for j in range(7)]]
+            inner = [(x + r * .25 + r * .7 * _m.cos(a_), y + r * .25 + r * .7 * _m.sin(a_))
+                     for a_ in [2. - 2.4 * j / 6 for j in range(7)]]
+            shade.append(outer + inner)
+    o = f'<path d="{"".join(_SD(p, True, 0) for p in beads)}" fill="#fff" stroke="#000" stroke-width="{".5" if r < 1.2 else "1"}"/>'
+    if shade:
+        o += f'<path d="{"".join(_SD(p, True, 0) for p in shade)}" fill="#000"/>'
+    return o
 
 
 def _kell(cx, cy, rx, ry, n=72):
@@ -1099,6 +1137,153 @@ class KCanvas(_C.Canvas):
         finally:
             C._Q = q
         return "".join(res)
+
+
+# ------------------------------------------------------------------------------------------------
+# Depth (art direction, Nov 12 second pass): swelling lines and form-following tone. Every stroke
+# stays 0.5 / 1 / 1.5 px; a swell is built the burin's way, a 1 px cut flanked by hair cuts laid
+# tight against it on the shadow side over the middle of its run, so it thickens and tapers.
+# ------------------------------------------------------------------------------------------------
+
+def _offset_pl(pts, d):
+    out = []
+    n = len(pts)
+    for i in range(n):
+        a = pts[max(0, i - 1)]
+        b = pts[min(n - 1, i + 1)]
+        tx, ty = b[0] - a[0], b[1] - a[1]
+        L = _m.hypot(tx, ty) or 1.
+        out.append((pts[i][0] - ty / L * d, pts[i][1] + tx / L * d))
+    return out
+
+
+def _sub(pts, t0, t1):
+    n = len(pts)
+    i0, i1 = int(t0 * (n - 1)), int(_m.ceil(t1 * (n - 1)))
+    return pts[i0:i1 + 1]
+
+
+def _resample(pts, step=1.5):
+    out = [pts[0]]
+    for a, b in zip(pts, pts[1:]):
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / step))
+        for j in range(1, k + 1):
+            out.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    return out
+
+
+def swell(cv, pts, side=1, weight=2):
+    """A swelling cut along pts: 1 px throughout, thickened on `side` (+1 left of travel, -1 right)
+    over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
+    if len(pts) < 2:
+        return
+    pts = _resample(pts, 1.5)
+    cv.line(pts)
+    spans = ((.12, .88), (.25, .75), (.38, .62))
+    for k in range(min(3, weight)):
+        sub = _sub(pts, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def swell_outline(cv, poly, light=(-1., -1.), weight=2):
+    """Outline a closed form with a swelling contour: thin where it faces the light, swelling on
+    the side away from it (the engraver's shadow line)."""
+    n = len(poly)
+    if n < 3:
+        return
+    cx = sum(p[0] for p in poly) / n
+    cy = sum(p[1] for p in poly) / n
+    lx, ly = light
+    L = _m.hypot(lx, ly) or 1.
+    lx, ly = lx / L, ly / L
+    run = []
+    pts = _resample(poly + [poly[0]], 1.5)
+    for p in pts:
+        dx, dy = p[0] - cx, p[1] - cy
+        dl = _m.hypot(dx, dy) or 1.
+        if (dx * lx + dy * ly) / dl < -.15:
+            run.append(p)
+        else:
+            if len(run) > 3:
+                _swell_in(cv, run, cx, cy, weight)
+            run = []
+    if len(run) > 3:
+        _swell_in(cv, run, cx, cy, weight)
+
+
+def _swell_in(cv, run, cx, cy, weight):
+    # thicken toward the inside of the form
+    a, b = run[0], run[-1]
+    m = run[len(run) // 2]
+    tx, ty = b[0] - a[0], b[1] - a[1]
+    side = 1 if (-ty * (cx - m[0]) + tx * (cy - m[1])) > 0 else -1
+    spans = ((.08, .92), (.22, .78), (.36, .64))
+    for k in range(min(3, weight)):
+        sub = _sub(run, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def form_hatch(poly, cx, cy, r0, r1, pitch=2., a0=0., a1=2 * _m.pi, sq=1., n=28):
+    """Hatch that follows a rounded form: arcs about (cx, cy) from radius r0 to r1 every `pitch`,
+    clipped to poly (the lit side is left to the caller by choosing a0..a1)."""
+    out = []
+    r = r0
+    while r <= r1:
+        arc = [(cx + r * _m.cos(a0 + (a1 - a0) * i / n), cy + r * sq * _m.sin(a0 + (a1 - a0) * i / n))
+               for i in range(n + 1)]
+        out += _clip_pl_poly(arc, poly)
+        r += pitch
+    return out
+
+
+def _in_poly(x, y, poly):
+    c = False
+    n = len(poly)
+    j = n - 1
+    for i in range(n):
+        xi, yi = poly[i]
+        xj, yj = poly[j]
+        if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / ((yj - yi) or 1e-9) + xi:
+            c = not c
+        j = i
+    return c
+
+
+def _clip_pl_poly(pl, poly):
+    out, run = [], []
+    for p in _resample(pl, 1.):
+        if _in_poly(p[0], p[1], poly):
+            run.append(p)
+        else:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+    if len(run) > 1:
+        out.append(run)
+    return out
+
+
+def stipple(poly, pitch, seed=0, r=.35):
+    """Dots on a jittered grid inside poly, as tiny closed ticks (a stroke of 1 px, ~1 px long)."""
+    rng = _r.Random(seed)
+    xs = [p[0] for p in poly]
+    ys = [p[1] for p in poly]
+    out = []
+    y = min(ys)
+    row = 0
+    while y < max(ys):
+        x = min(xs) + (pitch / 2 if row % 2 else 0)
+        while x < max(xs):
+            px, py = x + rng.uniform(-.3, .3) * pitch, y + rng.uniform(-.3, .3) * pitch
+            if _in_poly(px, py, poly):
+                out.append([(px, py), (px + .6, py + .3)])
+            x += pitch
+        y += pitch * .87
+        row += 1
+    return out
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1558,7 +1743,7 @@ def _form_geom(form, shape, w, h):
         sw = w * (.96 if form == "headpiece" else .6)
         sh = min(sh, sw * .32)
     else:
-        sw = {"headpiece": w * .97, "tailpiece": w * .6}.get(form, min(w * .7, sh * 1.8))
+        sw = {"headpiece": w * .97, "tailpiece": min(w * .6, sh * 3.4)}.get(form, min(w * .7, sh * 1.8))
         sh = min(sh, sw * .95)
     return w / 2, h / 2, sw, sh
 
@@ -1628,7 +1813,7 @@ def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=Fal
         o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
         o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
         o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
-    return _C.svg_doc(w, h, "".join(o))
+    return _tidy(_C.svg_doc(w, h, "".join(o)))
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1782,6 +1967,107 @@ def egg_kranok(cv, x, y, r):
     cv.hair([_P(x, y, r, -.2, .45), _P(x, y, r, -.2, .0), _P(x, y, r, 0, -.3)])
     cv.hair([_P(x, y, r, .05, .45), _P(x, y, r, .1, .1), _P(x, y, r, .25, -.05)])
     spiral_eye(cv, x - r * .05, y + r * .25, r * .14, 1)
+
+
+# ------------------------------------------------------------------------------------------------
+# The finished plate (house rules of Nov 12): stroke widths 0.5 / 1 / 1.5 only, no scale
+# transforms, no dash arrays. Canvas paths are written in quarter or half px under a scale();
+# here they are rewritten in plain px (half-px grid, drift-free) and their widths set to the px
+# they actually print at. Unused house patterns are dropped.
+# ------------------------------------------------------------------------------------------------
+
+import re as _re
+_TOK = _re.compile(r"[A-Za-z]|-?(?:\d+\.?\d*|\.\d+)")
+
+
+def _rescale_d(d, k):
+    """Path data d (M m L l H h V v Z z only) scaled by k onto a half-px grid, written relative."""
+    toks = _TOK.findall(d)
+    out = []
+    i = 0
+    cx = cy = 0.        # current point, source units
+    sx = sy = 0.
+    px = py = 0          # last emitted point, half px
+    cmd = None
+    first = True
+
+    def emit(c, ax, ay):
+        nonlocal px, py, first
+        hx, hy = int(round(ax * k * 2)), int(round(ay * k * 2))
+        if first:
+            out.append(("M", f"{_SN(hx / 2)} {_SN(hy / 2)}"))
+            first = False
+        else:
+            dx, dy = (hx - px) / 2, (hy - py) / 2
+            out.append((c, f"{_SN(dx)} {_SN(dy)}"))
+        px, py = hx, hy
+
+    while i < len(toks):
+        t = toks[i]
+        if t.isalpha():
+            cmd = t
+            i += 1
+            if t in "Zz":
+                out.append(("z", ""))
+                cx, cy = sx, sy
+                px, py = int(round(sx * k * 2)), int(round(sy * k * 2))
+                continue
+            continue
+        if cmd in "Mm":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "m" and not first:
+                x, y = cx + x, cy + y
+            cx, cy = x, y; sx, sy = x, y
+            emit("m", x, y)
+            cmd = "l" if cmd == "m" else "L"
+        elif cmd in "Ll":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "l":
+                x, y = cx + x, cy + y
+            cx, cy = x, y
+            emit("l", x, y)
+        elif cmd in "HhVv":
+            v = float(toks[i]); i += 1
+            if cmd == "H": cx = v
+            elif cmd == "h": cx += v
+            elif cmd == "V": cy = v
+            else: cy += v
+            emit("l", cx, cy)
+        else:
+            raise ValueError("path command " + str(cmd))
+    res = []
+    prev = None
+    for c, v in out:
+        if c == "l" and prev in ("l", "m"):
+            res.append(" " + v)
+        else:
+            res.append(c + v)
+        prev = c
+    return "".join(res).replace(" -", "-")
+
+
+def _snapw(v):
+    return min((.5, 1., 1.5), key=lambda c: abs(c - v))
+
+
+def _tidy(svg):
+    def one(m):
+        tag = m.group(0)
+        sc = _re.search(r' transform="scale\(([\d.]+)\)"', tag)
+        k = 1.
+        if sc:
+            k = float(sc.group(1))
+            tag = tag.replace(sc.group(0), "")
+            tag = _re.sub(r' d="([^"]*)"', lambda q: f' d="{_rescale_d(q.group(1), k)}"', tag, 1)
+        tag = _re.sub(r'stroke-width="([\d.]+)"', lambda q: f'stroke-width="{_SN(_snapw(float(q.group(1)) * k))}"', tag)
+        return tag
+
+    svg = _re.sub(r"<path\b[^>]*>", one, svg)
+    used = set(_re.findall(r"url\(#([^)]+)\)", svg))
+    svg = _re.sub(r'<pattern id="([^"]+)".*?</pattern>', lambda q: q.group(0) if q.group(1) in used else "", svg,
+                  flags=_re.S)
+    svg = svg.replace("<defs></defs>", "")
+    return svg
 # ---- end studio helpers ----
 
 
@@ -2035,12 +2321,163 @@ def _valance(cv, x, y, w, h, n=5):
         cv.hair(C.hatch_poly(disc, 45, 1.5, inset=0))
 
 
+def _screen_picture(sx0, sy0, sw, sh, ctx, seed):
+    """What is showing: a moonlit hill with the old house, the motel at its foot, a heron across
+    the moon, all cut in line and modelled (moonlight from the upper right): lit faces in open
+    hair, shadowed faces crossed, every form edged in a swelling contour. No flat silhouettes."""
+    cv = KCanvas()
+    sx1, sy1 = sx0 + sw, sy0 + sh
+    scr = [(sx0, sy0), (sx1, sy0), (sx1, sy1), (sx0, sy1)]
+    # the moulded surround: three cut lines and a hatched cove
+    fr = [(sx0 - 3.5, sy0 - 3.5), (sx1 + 3.5, sy0 - 3.5), (sx1 + 3.5, sy1 + 3.5), (sx0 - 3.5, sy1 + 3.5)]
+    cv.obj([fr], 1.)
+    cv.hair(C.hatch_poly(fr, 45, 1.5))
+    cv.obj([scr], .5)
+    mr = sh * .19
+    mx, my = sx0 + sw * .72, sy0 + sh * .3
+    # night sky: graded hair lines, closest at the top, parting round the moon's halo
+    y = sy0 + .75
+    sky = []
+    while y < sy0 + sh * .8:
+        t = (y - sy0) / sh
+        run = []
+        xx = sx0
+        while xx <= sx1:
+            d = math.hypot(xx - mx, y - my)
+            if d < mr + 2.5 + (1.5 if t > .2 else 0):
+                if len(run) > 1:
+                    sky.append(run)
+                run = []
+            else:
+                run.append((xx, y + .3 * math.sin(xx * .2 + y)))
+            xx += 2.
+        if len(run) > 1:
+            sky.append(run)
+        y += 1.2 if t < .15 else 1.6 if t < .4 else 2.2
+    cv.hair(sky)
+    # halo rings
+    cv.hair([_ell(mx, my, mr + 4 + 2.5 * k, mr + 4 + 2.5 * k, 48) for k in range(2)])
+    # the moon: lit disc, the dark of its phase turned in arcs, craters with cast shadow
+    disc = _ell(mx, my, mr, mr, 40)[:-1]
+    cv.obj([disc], .5)
+    age = _moon_age(ctx.get("date", ""))
+    ph = (1 - math.cos(TAU * age / 29.53)) / 2
+    waxing = age < 14.77
+    term = 1 - 2 * ph
+    sg = -1 if waxing else 1
+    dark = [(mx + sg * mr * math.cos(-PI / 2 + PI * i / 40), my + mr * math.sin(-PI / 2 + PI * i / 40)) for i in range(41)]
+    dark += [(mx + sg * mr * term * math.cos(PI / 2 - PI * i / 40), my + mr * math.sin(PI / 2 - PI * i / 40)) for i in range(41)]
+    if ph < .97:
+        cv.hair(C.hatch_poly(dark, 80, 1.3))
+        cv.hair(C.hatch_poly(dark, 20, 2.2))
+    # the lit face turned in open arcs about a point toward the light, the seas stippled
+    cv.hair(form_hatch(disc, mx + mr * .45, my - mr * .35, mr * .35, mr * 2., 3.2, 0, TAU, 1., 40))
+    for a_, b_, c_ in ((-.2, .1, .3), (.3, -.3, .2)):
+        cv.hair(stipple(_ell(mx + mr * a_, my + mr * b_, mr * c_, mr * c_ * .8, 14)[:-1], 1.6, seed))
+    for a_, b_, c_ in ((-.3, -.25, .18), (.25, .2, .14), (.1, -.45, .09), (-.45, .3, .1)):
+        cr = _ell(mx + mr * a_, my + mr * b_, mr * c_, mr * c_ * .85, 12)[:-1]
+        cv.hair([cr])
+        cv.hair([_ell(mx + mr * a_ + .4, my + mr * b_ + .4, mr * c_ * .75, mr * c_ * .6, 10, .2, 2.4)])
+    swell(cv, _ell(mx, my, mr, mr, 30, PI * .15, PI * .95), -1, 2)
+    # the heron across the moon: a body of feather lines, its wing turned in arcs, rim-lit
+    hp = _heron(mx - mr * .1, my + mr * .05, mr * .5)
+    cv.obj([hp], .5)
+    cv.hair(C.hatch_poly(hp, -12, 1.))
+    cv.hair(C.hatch_poly(hp, 60, 1.6))
+    swell_outline(cv, hp, (1., -1.), 1)
+    # the hill: contour cuts that follow the slope, closing toward the foot, crossed in the hollow
+    crest_x = sx0 + sw * .3
+    ridge = []
+    for i in range(25):
+        u = i / 24
+        xx = _lerp(sx0, sx1, u)
+        yy = sy0 + sh * (.6 + .34 * (u - .3) ** 2 * (1 if u > .3 else 2.2)) - sh * .02 * math.sin(u * 19)
+        ridge.append((xx, yy))
+    hill = [(sx0, sy1), (sx0, sy0 + sh * .72)] + ridge + [(sx1, sy1)]
+    cv.obj([hill], 1.)
+    k = 0
+    cont = []
+    d = 1.2
+    while d < sh * .45:
+        cont.append([(xx, yy + d) for xx, yy in ridge])
+        k += 1
+        d += 1.1 + .25 * k
+    cv.hair(cont)
+    hollow = [(sx0, sy1), (sx0, sy0 + sh * .8)] + [(xx, yy + sh * .16) for xx, yy in ridge] + [(sx1, sy1)]
+    cv.hair(C.hatch_poly(hollow, 62, 1.8))
+    swell(cv, ridge, -1, 2)
+    # the old house on the crest: lit walls (to the moon, right) in open hair, shaded walls crossed,
+    # roofs in courses, windows dark but one lit
+    u = sw * .3 / 11
+    hb = sy0 + sh * .6 + 1
+    blk, win, lit = _house(crest_x - 4 * u, hb, u)
+    for i, p in enumerate(blk):
+        cv.obj([p], .5)
+        xs_ = [q[0] for q in p]
+        tri = len(p) < 4 or abs(p[0][1] - p[1][1]) < .01 and len(set(round(q[1], 1) for q in p)) > 2 and len(p) == 3
+        if len(p) == 3:
+            # a gable: the lit pitch to the right in sparse lines, the far pitch dark
+            apex = min(p, key=lambda q: q[1])
+            lft = [p[0], apex, (apex[0], max(q[1] for q in p))]
+            cv.hair(C.hatch_poly(p, 90, 1.2))
+            cv.hair(C.hatch_poly(lft, 30, 1.2))
+        elif abs(p[0][1] - p[3][1]) > 0 and abs(p[0][0] - p[3][0]) > .5:
+            # a hipped roof band: courses along it, crossed
+            cv.hair(C.hatch_poly(p, 0, 1.1))
+            cv.hair(C.hatch_poly(p, 70, 2.))
+        else:
+            # a wall: clapboard courses, the shaded part crossed
+            cv.hair(C.hatch_poly(p, 0, 1.3))
+            w_ = max(xs_) - min(xs_)
+            sh_ = [(min(xs_), min(q[1] for q in p)), (min(xs_) + w_ * .55, min(q[1] for q in p)),
+                   (min(xs_) + w_ * .55, max(q[1] for q in p)), (min(xs_), max(q[1] for q in p))]
+            cv.hair(C.hatch_poly(sh_, 90, 1.3))
+    for q in win:
+        cv.obj([q], .5)
+        if q not in lit:
+            cv.hair(C.hatch_poly(q, 0, .9))
+        else:
+            xs_ = [p_[0] for p_ in q]; ys_ = [p_[1] for p_ in q]
+            cv.hair([[((min(xs_) + max(xs_)) / 2, min(ys_)), ((min(xs_) + max(xs_)) / 2, max(ys_))],
+                     [(min(xs_), (min(ys_) + max(ys_)) / 2), (max(xs_), (min(ys_) + max(ys_)) / 2)]])
+    # the stair down the hill: treads lit, risers cut
+    for kk in range(1, 7):
+        x0_, y0_ = crest_x + 2 * u + kk * u * .7, hb + kk * u * .55
+        cv.line([(x0_, y0_), (x0_ + u * .45, y0_)])
+    # the motel: a long low block, its roof a dark eave, doors alternately lit, a cast shadow
+    my0 = sy1 - sh * .06
+    mx0, mx1 = sx0 + sw * .52, sx1 - sw * .04
+    shadow = [(mx0 - sw * .04, my0 + sh * .045), (mx1 - sw * .02, my0 + sh * .045), (mx1, my0), (mx0, my0)]
+    cv.obj([shadow], 0)
+    cv.hair(C.hatch_poly(shadow, 0, 1.))
+    wall = [(mx0, my0), (mx1, my0), (mx1, my0 - sh * .09), (mx0, my0 - sh * .09)]
+    cv.obj([wall], .5)
+    cv.hair(C.hatch_poly(wall, 90, 1.6))
+    roof = [(sx0 + sw * .5, my0 - sh * .09), (sx1 - sw * .02, my0 - sh * .09), (sx1 - sw * .06, my0 - sh * .13), (sx0 + sw * .54, my0 - sh * .13)]
+    cv.obj([roof], 1.)
+    cv.hair(C.hatch_poly(roof, 0, 1.))
+    cv.hair(C.hatch_poly(roof, 60, 1.5))
+    for kk in range(7):
+        dx = _lerp(mx0 + sw * .03, mx1 - sw * .05, kk / 6)
+        dw = max(1.5, sw * .018)
+        door = [(dx, my0 - sh * .065), (dx + dw, my0 - sh * .065), (dx + dw, my0 - sh * .005), (dx, my0 - sh * .005)]
+        cv.obj([door], .5)
+        if kk % 2 == 0:
+            cv.hair(C.hatch_poly(door, 0, .9))
+    # the corners of the picture darkened, as an old print burns in
+    for cxs, cys in ((sx0, sy0), (sx1, sy0), (sx0, sy1), (sx1, sy1)):
+        tri = [(cxs, cys), (cxs + (sw * .12 if cxs == sx0 else -sw * .12), cys), (cxs, cys + (sh * .18 if cys == sy0 else -sh * .18))]
+        cv.obj([tri], 0)
+        cv.hair(C.hatch_poly(tri, 45 if (cxs == sx0) == (cys == sy0) else -45, 1.3))
+    return cv.svg()
+
+
 def theatre(x, y, w, h, clip_d, ctx, seed=0):
     """The picture palace, filling the box (x, y, w, h), clipped to clip_d."""
     rng = random.Random(seed)
     hall = [(x - 2, y - 2), (x + w + 2, y - 2), (x + w + 2, y + h + 2), (x - 2, y + h + 2)]
     # the darkened hall, in line: upright cuts crossed by a slanting set, not a fill
-    o = [f'<path d="{C.hatch_d(hall, 90, 2)}{C.hatch_d(hall, 30, 3)}" stroke="#000" stroke-width=".5" fill="none"/>']
+    o = [f'<path d="{C.hatch_d(hall, 90, 2.5)}{C.hatch_d(hall, 30, 4)}" stroke="#000" stroke-width=".5" fill="none"/>']
     S = min(w, h)
     # screen
     sx0, sx1 = x + w * .21, x + w * .79
@@ -2055,71 +2492,8 @@ def theatre(x, y, w, h, clip_d, ctx, seed=0):
         t = (i + .5) / 15
         rays.append(_d([(ox, oy), (_lerp(sx0, sx1, t), sy1 + 1)], tol=0))
     o.append(f'<path d="{"".join(rays)}" stroke="#000" stroke-width=".5"/>')
-    # screen surround: black, then sky
-    o.append(_poly_path([[(sx0 - 3, sy0 - 3), (sx1 + 3, sy0 - 3), (sx1 + 3, sy1 + 3), (sx0 - 3, sy1 + 3)]], fill="#000"))
-    scr = [(sx0, sy0), (sx1, sy0), (sx1, sy1), (sx0, sy1)]
-    o.append(_poly_path([scr], fill="#fff", stroke="#fff", stroke_width="1"))
-    nsky = [(sx0, sy0), (sx1, sy0), (sx1, sy0 + sh * .62), (sx0, sy0 + sh * .62)]
-    o.append(f'<path d="{C.hatch_d(nsky, 0, 1.5)}{C.hatch_d([(sx0, sy0), (sx1, sy0), (sx1, sy0 + sh * .25), (sx0, sy0 + sh * .25)], 0, 1.5, .75)}" stroke="#000" stroke-width=".5" fill="none"/>')
-    # moon with the date's phase, and the heron crossing it
-    mr = sh * .19
-    mx, my = sx0 + sw * .72, sy0 + sh * .3
-    disc = _ell(mx, my, mr, mr, 40)
-    o.append(_poly_path([_ell(mx, my, mr + 2, mr + 2, 40)], fill="#000"))
-    o.append(_poly_path([disc], fill="#fff", stroke="#000", stroke_width=".5"))
-    age = _moon_age(ctx.get("date", ""))
-    ph = (1 - math.cos(TAU * age / 29.53)) / 2  # illuminated fraction
-    waxing = age < 14.77
-    term = 1 - 2 * ph  # terminator ellipse x-scale
-    dark = []
-    for i in range(41):
-        a = -PI / 2 + PI * i / 40
-        dark.append((mx + (-1 if waxing else 1) * mr * math.cos(a), my + mr * math.sin(a)))
-    for i in range(41):
-        a = PI / 2 - PI * i / 40
-        dark.append((mx + (-1 if waxing else 1) * mr * term * math.cos(a), my + mr * math.sin(a)))
-    if ph < .97:
-        o.append(f'<path d="{C.hatch_d(dark, 45, 1.5)}" stroke="#000" stroke-width=".5"/>')
-    # craters
-    cr = "".join(_d(_ell(mx + mr * a, my + mr * b, mr * c, mr * c, 10), True, 0) for a, b, c in ((-.3, -.25, .18), (.25, .2, .14), (.1, -.45, .09)))
-    o.append(f'<path d="{cr}" stroke="#000" stroke-width=".5" fill="none"/>')
-    o.append(_poly_path([_heron(mx - mr * .1, my + mr * .05, mr * .5)], fill="#000"))
-    # the hill and the old house
-    crest_x = sx0 + sw * .3
-    hill = [(sx0, sy1), (sx0, sy0 + sh * .72)]
-    for i in range(25):
-        u = i / 24
-        xx = _lerp(sx0, sx1, u)
-        yy = sy0 + sh * (.6 + .34 * (u - .3) ** 2 * (1 if u > .3 else 2.2)) - sh * .02 * math.sin(u * 19)
-        hill.append((xx, yy))
-    hill.append((sx1, sy1))
-    o.append(_poly_path([hill], fill="#fff", stroke="#000", stroke_width="1"))
-    o.append(f'<path d="{C.hatch_d(hill, -30, 2)}{C.hatch_d(hill, 60, 3)}" stroke="#000" stroke-width=".5" fill="none"/>')
-    u = sw * .3 / 11
-    hb = sy0 + sh * .6 + 1
-    blk, win, lit = _house(crest_x - 4 * u, hb, u)
-    o.append(_poly_path(blk, fill="#000"))
-    o.append(_poly_path([q for q in win if q not in lit], fill="#fff"))
-    o.append(_poly_path(lit, fill="#fff"))
-    # a stair down the hill and the long low motel at its foot
-    stair = "".join(_d([(crest_x + 2 * u + k * u * .7, hb + k * u * .55), (crest_x + 2 * u + k * u * .7 + u * .45, hb + k * u * .55)], tol=0) for k in range(1, 7))
-    o.append(f'<path d="{stair}" stroke="#fff" stroke-width=".5"/>')
-    my0 = sy1 - sh * .06
-    motel = [(sx0 + sw * .52, my0), (sx1 - sw * .04, my0), (sx1 - sw * .04, my0 - sh * .09), (sx0 + sw * .52, my0 - sh * .09)]
-    roof = [(sx0 + sw * .5, my0 - sh * .09), (sx1 - sw * .02, my0 - sh * .09), (sx1 - sw * .06, my0 - sh * .13), (sx0 + sw * .54, my0 - sh * .13)]
-    o.append(_poly_path([motel, roof], fill="#000"))
-    doors = []
-    for k in range(7):
-        dx = _lerp(sx0 + sw * .55, sx1 - sw * .09, k / 6)
-        doors.append([(dx, my0 - sh * .065), (dx + max(1.5, sw * .018), my0 - sh * .065), (dx + max(1.5, sw * .018), my0 - sh * .02), (dx, my0 - sh * .02)])
-    o.append(_poly_path(doors[1::2], fill="#fff"))
-    o.append(f'<path d="{"".join(C.hatch_d(dd, 0, 1) for dd in doors[0::2])}" stroke="#000" stroke-width=".5" fill="none"/>')
-    # a scratch of film grain / vignette on the screen corners
-    vg = []
-    for cxs, cys, a in ((sx0, sy0, 45), (sx1, sy0, -45), (sx0, sy1, -45), (sx1, sy1, 45)):
-        tri = [(cxs, cys), (cxs + (sw * .14 if cxs == sx0 else -sw * .14), cys), (cxs, cys + (sh * .2 if cys == sy0 else -sh * .2))]
-        vg.append(C.hatch_d(tri, a, 1.5))
-    o.append(f'<path d="{"".join(vg)}" stroke="#000" stroke-width=".5"/>')
+    # the picture on the screen: engraved, modelled, its light coming out of the dark
+    o.append(_screen_picture(sx0, sy0, sw, sh, ctx, seed))
 
     # proscenium: curtains and valance (engraved relief on a canvas)
     cv = C.Canvas()
@@ -2133,7 +2507,8 @@ def theatre(x, y, w, h, clip_d, ctx, seed=0):
     # stage lip with footlights under the screen
     ly = y + h * .64
     o.append(_poly_path([[(x + w * .17, ly), (x + w * .83, ly), (x + w * .86, ly + 4), (x + w * .14, ly + 4)]], fill="#000"))
-    o.append(f'<path d="M{_n(x + w * .17)},{_n(ly + .5)}h{_n(w * .66)}" stroke="#fff" stroke-width=".5" stroke-dasharray="1.5 2.5"/>')
+    lamps = "".join(_d([(xx, ly + 1.2), (xx + 1.5, ly + 1.2)], tol=0) for xx in [x + w * .18 + 4 * i for i in range(int(w * .64 / 4))])
+    o.append(f'<path d="{lamps}" stroke="#fff" stroke-width="1"/>')
 
     # the audience, seen from behind, rim-lit by the beam
     def row(yh, r, n, x0, x1, specials):
@@ -2164,8 +2539,8 @@ def theatre(x, y, w, h, clip_d, ctx, seed=0):
                               (hx + rr * .7, hy - rr * 1.7), (hx - rr * .7, hy - rr * 1.7), (hx - rr * .8, hy - rr * .8)])
         # silhouettes against the beam, cut in close contour lines rather than flooded
         out = _poly_path(heads, fill="#fff", stroke="#000", stroke_width=".5")
-        out += f'<path d="{"".join(C.hatch_d(hp, 80, 1.5) for hp in heads)}" stroke="#000" stroke-width=".5" fill="none"/>'
-        out += f'<path d="{"".join(C.hatch_d(hp, -10, 2) for hp in heads)}" stroke="#000" stroke-width=".5" fill="none"/>' 
+        out += f'<path d="{"".join(C.hatch_d(hp, 80, 1.8) for hp in heads)}" stroke="#000" stroke-width=".5" fill="none"/>'
+        out += f'<path d="{"".join(C.hatch_d(hp, -10, 2.6) for hp in heads)}" stroke="#000" stroke-width=".5" fill="none"/>' 
         out += f'<path d="{"".join(rims)}" stroke="#fff" stroke-width="1" fill="none"/>'
         out += f'<path d="{"".join(outl)}" stroke="#fff" stroke-width=".5" fill="none"/>'
         return out
@@ -2186,7 +2561,7 @@ def theatre(x, y, w, h, clip_d, ctx, seed=0):
         seats.append((x - 2 + (w + 4) * u, seat_y - (rf * .45 if i % 2 else 0)))
     seats.append((x + w + 2, y + h + 4))
     o.append(_poly_path([seats], fill="#fff"))
-    o.append(f'<path d="{C.hatch_d(seats, 0, 1.5)}{C.hatch_d(seats, 75, 3)}" stroke="#000" stroke-width=".5" fill="none"/>')
+    o.append(f'<path d="{C.hatch_d(seats, 0, 1.8)}{C.hatch_d(seats, 75, 3.5)}" stroke="#000" stroke-width=".5" fill="none"/>')
     o.append(f'<path d="{_d(seats[1:-1], tol=0)}" stroke="#fff" stroke-width=".5"/>')
     cid = C._uid("thr", x, y, w, h)
     return f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">' + "".join(o) + "</g>"
@@ -2332,7 +2707,7 @@ def _filmstrip_ring(cx, cy, sw, sh, outer, inner, mode, ft=8.):
     k = .5
     while k < ft - .5:
         rings.append(_d(_ell(cx, cy, rx - k, ry - k, 120), True, .1))
-        k += 1.2
+        k += 1.7
     o.append(f'<path d="{_d(outer, True, .1)}{_d(_ell(cx, cy, rx - ft, ry - ft, 120)[::-1], True, .1)}" fill="none" stroke="#000" stroke-width="1"/>')
     o.append(f'<path d="{"".join(rings)}" fill="none" stroke="#000" stroke-width=".5"/>')
     o.append(f'<path d="{_d(_ell(cx, cy, rx - ft, ry - ft, 120), True, .1)}" fill="none" stroke="#000" stroke-width="1"/>')

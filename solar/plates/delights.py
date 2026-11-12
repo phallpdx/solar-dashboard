@@ -515,6 +515,24 @@ def engraved_sky(cv, X, Y, W, H, seed=0, clouds=3, sun=None, maxc=6):
                     arcs.append(seg)
                 k += 1
                 rr -= 1.5 if k < 3 else 2. if k < 6 else 3.
+            # the lit crown is not left bare: open arcs follow the dome round the top, widening
+            # toward the light and broken only at a small highlight (upper left)
+            hx, hy = bx - br * .35, by - br * .45
+            rr = br * .97
+            while rr > br * .2:
+                seg = []
+                for i in range(19):
+                    a = _SPI * (1.02 + .96 * i / 18)
+                    px, py = bx + rr * _m.cos(a), by + rr * _m.sin(a) * .92
+                    if (px - hx) ** 2 + (py - hy) ** 2 < (br * .22 + 1.5) ** 2 or py > cy:
+                        if len(seg) > 1:
+                            arcs.append(seg)
+                        seg = []
+                    else:
+                        seg.append((px, py))
+                if len(seg) > 1:
+                    arcs.append(seg)
+                rr -= 4.5
             cv.hair(arcs)
             sh = [(x, max(y, cy - br * .3)) for x, y in circ]
             cv.hair(_C.hatch_poly(sh, 0, 1.5, .3))
@@ -950,18 +968,38 @@ def _offset_poly(poly, d):
 
 
 def bead_ring(poly, r=1.5, gap=1.):
-    """Beads set along a closed path, cut as dashed strokes (3 elements whatever the count):
-    a black ring, the white bead, and a black shading crescent toward lower right."""
-    L = sum(_m.hypot(poly[(i + 1) % len(poly)][0] - poly[i][0], poly[(i + 1) % len(poly)][1] - poly[i][1])
-            for i in range(len(poly)))
+    """Beads set along a closed path, each a drawn pearl: a white bead ringed in a hairline, a
+    swelling crescent of shade toward the lower right and a lit eye left white (two paths)."""
+    n = len(poly)
+    segs = []
+    L = 0.
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        s = _m.hypot(b[0] - a[0], b[1] - a[1])
+        segs.append((a, b, s, L))
+        L += s
     nb = max(3, int(L / (2 * r + gap)))
     P = L / nb
-    d = _SD(poly + [poly[0]], tol=.05)
-    da = f'stroke-dasharray="0 {_SN(P)}" stroke-linecap="round" fill="none"'
-    sh = _SD([(x + r * .35, y + r * .35) for x, y in poly] + [(poly[0][0] + r * .35, poly[0][1] + r * .35)], tol=.05)
-    return (f'<path d="{d}" stroke="#000" stroke-width="{_SN(2 * r + 1)}" {da}/>'
-            f'<path d="{d}" stroke="#fff" stroke-width="{_SN(2 * r)}" {da}/>'
-            f'<path d="{sh}" stroke="#000" stroke-width="{_SN(max(1., r * .8))}" {da}/>')
+    beads, shade = [], []
+    k = 0
+    for i in range(nb):
+        t = i * P
+        while k < len(segs) - 1 and segs[k][3] + segs[k][2] < t:
+            k += 1
+        a, b, s, l0 = segs[k]
+        u = (t - l0) / (s or 1)
+        x, y = a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u
+        m = 10 if r > 1.2 else 8
+        beads.append([(x + r * _m.cos(2 * _SPI * j / m), y + r * _m.sin(2 * _SPI * j / m)) for j in range(m)])
+        if r >= .9:
+            outer = [(x + r * _m.cos(a_), y + r * _m.sin(a_)) for a_ in [-.4 + 2.4 * j / 6 for j in range(7)]]
+            inner = [(x + r * .25 + r * .7 * _m.cos(a_), y + r * .25 + r * .7 * _m.sin(a_))
+                     for a_ in [2. - 2.4 * j / 6 for j in range(7)]]
+            shade.append(outer + inner)
+    o = f'<path d="{"".join(_SD(p, True, 0) for p in beads)}" fill="#fff" stroke="#000" stroke-width="{".5" if r < 1.2 else "1"}"/>'
+    if shade:
+        o += f'<path d="{"".join(_SD(p, True, 0) for p in shade)}" fill="#000"/>'
+    return o
 
 
 def _kell(cx, cy, rx, ry, n=72):
@@ -1099,6 +1137,153 @@ class KCanvas(_C.Canvas):
         finally:
             C._Q = q
         return "".join(res)
+
+
+# ------------------------------------------------------------------------------------------------
+# Depth (art direction, Nov 12 second pass): swelling lines and form-following tone. Every stroke
+# stays 0.5 / 1 / 1.5 px; a swell is built the burin's way, a 1 px cut flanked by hair cuts laid
+# tight against it on the shadow side over the middle of its run, so it thickens and tapers.
+# ------------------------------------------------------------------------------------------------
+
+def _offset_pl(pts, d):
+    out = []
+    n = len(pts)
+    for i in range(n):
+        a = pts[max(0, i - 1)]
+        b = pts[min(n - 1, i + 1)]
+        tx, ty = b[0] - a[0], b[1] - a[1]
+        L = _m.hypot(tx, ty) or 1.
+        out.append((pts[i][0] - ty / L * d, pts[i][1] + tx / L * d))
+    return out
+
+
+def _sub(pts, t0, t1):
+    n = len(pts)
+    i0, i1 = int(t0 * (n - 1)), int(_m.ceil(t1 * (n - 1)))
+    return pts[i0:i1 + 1]
+
+
+def _resample(pts, step=1.5):
+    out = [pts[0]]
+    for a, b in zip(pts, pts[1:]):
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / step))
+        for j in range(1, k + 1):
+            out.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    return out
+
+
+def swell(cv, pts, side=1, weight=2):
+    """A swelling cut along pts: 1 px throughout, thickened on `side` (+1 left of travel, -1 right)
+    over its middle by `weight` (1-3) hair cuts set .55 px apart, each shorter than the last."""
+    if len(pts) < 2:
+        return
+    pts = _resample(pts, 1.5)
+    cv.line(pts)
+    spans = ((.12, .88), (.25, .75), (.38, .62))
+    for k in range(min(3, weight)):
+        sub = _sub(pts, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def swell_outline(cv, poly, light=(-1., -1.), weight=2):
+    """Outline a closed form with a swelling contour: thin where it faces the light, swelling on
+    the side away from it (the engraver's shadow line)."""
+    n = len(poly)
+    if n < 3:
+        return
+    cx = sum(p[0] for p in poly) / n
+    cy = sum(p[1] for p in poly) / n
+    lx, ly = light
+    L = _m.hypot(lx, ly) or 1.
+    lx, ly = lx / L, ly / L
+    run = []
+    pts = _resample(poly + [poly[0]], 1.5)
+    for p in pts:
+        dx, dy = p[0] - cx, p[1] - cy
+        dl = _m.hypot(dx, dy) or 1.
+        if (dx * lx + dy * ly) / dl < -.15:
+            run.append(p)
+        else:
+            if len(run) > 3:
+                _swell_in(cv, run, cx, cy, weight)
+            run = []
+    if len(run) > 3:
+        _swell_in(cv, run, cx, cy, weight)
+
+
+def _swell_in(cv, run, cx, cy, weight):
+    # thicken toward the inside of the form
+    a, b = run[0], run[-1]
+    m = run[len(run) // 2]
+    tx, ty = b[0] - a[0], b[1] - a[1]
+    side = 1 if (-ty * (cx - m[0]) + tx * (cy - m[1])) > 0 else -1
+    spans = ((.08, .92), (.22, .78), (.36, .64))
+    for k in range(min(3, weight)):
+        sub = _sub(run, *spans[k])
+        if len(sub) > 1:
+            cv.hair(_offset_pl(sub, side * .55 * (k + 1)))
+
+
+def form_hatch(poly, cx, cy, r0, r1, pitch=2., a0=0., a1=2 * _m.pi, sq=1., n=28):
+    """Hatch that follows a rounded form: arcs about (cx, cy) from radius r0 to r1 every `pitch`,
+    clipped to poly (the lit side is left to the caller by choosing a0..a1)."""
+    out = []
+    r = r0
+    while r <= r1:
+        arc = [(cx + r * _m.cos(a0 + (a1 - a0) * i / n), cy + r * sq * _m.sin(a0 + (a1 - a0) * i / n))
+               for i in range(n + 1)]
+        out += _clip_pl_poly(arc, poly)
+        r += pitch
+    return out
+
+
+def _in_poly(x, y, poly):
+    c = False
+    n = len(poly)
+    j = n - 1
+    for i in range(n):
+        xi, yi = poly[i]
+        xj, yj = poly[j]
+        if (yi > y) != (yj > y) and x < (xj - xi) * (y - yi) / ((yj - yi) or 1e-9) + xi:
+            c = not c
+        j = i
+    return c
+
+
+def _clip_pl_poly(pl, poly):
+    out, run = [], []
+    for p in _resample(pl, 1.):
+        if _in_poly(p[0], p[1], poly):
+            run.append(p)
+        else:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+    if len(run) > 1:
+        out.append(run)
+    return out
+
+
+def stipple(poly, pitch, seed=0, r=.35):
+    """Dots on a jittered grid inside poly, as tiny closed ticks (a stroke of 1 px, ~1 px long)."""
+    rng = _r.Random(seed)
+    xs = [p[0] for p in poly]
+    ys = [p[1] for p in poly]
+    out = []
+    y = min(ys)
+    row = 0
+    while y < max(ys):
+        x = min(xs) + (pitch / 2 if row % 2 else 0)
+        while x < max(xs):
+            px, py = x + rng.uniform(-.3, .3) * pitch, y + rng.uniform(-.3, .3) * pitch
+            if _in_poly(px, py, poly):
+                out.append([(px, py), (px + .6, py + .3)])
+            x += pitch
+        y += pitch * .87
+        row += 1
+    return out
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1628,7 +1813,7 @@ def form_plate(w, h, ctx, scene, shape="oval", form="vignette", seed=0, arms=Fal
         o.append(f'<path d="{_SD(plq, True, .1)}" fill="#fff" stroke="#000" stroke-width="1"/>')
         o.append(bead_ring(_kell(cx, ay + ah / 2, aw / 2 + 2.2, ah / 2 + .8, 64), .75, .7))
         o.append(f'<g transform="translate({_SN(ax)} {_SN(ay)})">{_A.arms(aw, ah, seed)}</g>')
-    return _C.svg_doc(w, h, "".join(o))
+    return _tidy(_C.svg_doc(w, h, "".join(o)))
 
 
 # ------------------------------------------------------------------------------------------------
@@ -1782,6 +1967,107 @@ def egg_kranok(cv, x, y, r):
     cv.hair([_P(x, y, r, -.2, .45), _P(x, y, r, -.2, .0), _P(x, y, r, 0, -.3)])
     cv.hair([_P(x, y, r, .05, .45), _P(x, y, r, .1, .1), _P(x, y, r, .25, -.05)])
     spiral_eye(cv, x - r * .05, y + r * .25, r * .14, 1)
+
+
+# ------------------------------------------------------------------------------------------------
+# The finished plate (house rules of Nov 12): stroke widths 0.5 / 1 / 1.5 only, no scale
+# transforms, no dash arrays. Canvas paths are written in quarter or half px under a scale();
+# here they are rewritten in plain px (half-px grid, drift-free) and their widths set to the px
+# they actually print at. Unused house patterns are dropped.
+# ------------------------------------------------------------------------------------------------
+
+import re as _re
+_TOK = _re.compile(r"[A-Za-z]|-?(?:\d+\.?\d*|\.\d+)")
+
+
+def _rescale_d(d, k):
+    """Path data d (M m L l H h V v Z z only) scaled by k onto a half-px grid, written relative."""
+    toks = _TOK.findall(d)
+    out = []
+    i = 0
+    cx = cy = 0.        # current point, source units
+    sx = sy = 0.
+    px = py = 0          # last emitted point, half px
+    cmd = None
+    first = True
+
+    def emit(c, ax, ay):
+        nonlocal px, py, first
+        hx, hy = int(round(ax * k * 2)), int(round(ay * k * 2))
+        if first:
+            out.append(("M", f"{_SN(hx / 2)} {_SN(hy / 2)}"))
+            first = False
+        else:
+            dx, dy = (hx - px) / 2, (hy - py) / 2
+            out.append((c, f"{_SN(dx)} {_SN(dy)}"))
+        px, py = hx, hy
+
+    while i < len(toks):
+        t = toks[i]
+        if t.isalpha():
+            cmd = t
+            i += 1
+            if t in "Zz":
+                out.append(("z", ""))
+                cx, cy = sx, sy
+                px, py = int(round(sx * k * 2)), int(round(sy * k * 2))
+                continue
+            continue
+        if cmd in "Mm":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "m" and not first:
+                x, y = cx + x, cy + y
+            cx, cy = x, y; sx, sy = x, y
+            emit("m", x, y)
+            cmd = "l" if cmd == "m" else "L"
+        elif cmd in "Ll":
+            x, y = float(toks[i]), float(toks[i + 1]); i += 2
+            if cmd == "l":
+                x, y = cx + x, cy + y
+            cx, cy = x, y
+            emit("l", x, y)
+        elif cmd in "HhVv":
+            v = float(toks[i]); i += 1
+            if cmd == "H": cx = v
+            elif cmd == "h": cx += v
+            elif cmd == "V": cy = v
+            else: cy += v
+            emit("l", cx, cy)
+        else:
+            raise ValueError("path command " + str(cmd))
+    res = []
+    prev = None
+    for c, v in out:
+        if c == "l" and prev in ("l", "m"):
+            res.append(" " + v)
+        else:
+            res.append(c + v)
+        prev = c
+    return "".join(res).replace(" -", "-")
+
+
+def _snapw(v):
+    return min((.5, 1., 1.5), key=lambda c: abs(c - v))
+
+
+def _tidy(svg):
+    def one(m):
+        tag = m.group(0)
+        sc = _re.search(r' transform="scale\(([\d.]+)\)"', tag)
+        k = 1.
+        if sc:
+            k = float(sc.group(1))
+            tag = tag.replace(sc.group(0), "")
+            tag = _re.sub(r' d="([^"]*)"', lambda q: f' d="{_rescale_d(q.group(1), k)}"', tag, 1)
+        tag = _re.sub(r'stroke-width="([\d.]+)"', lambda q: f'stroke-width="{_SN(_snapw(float(q.group(1)) * k))}"', tag)
+        return tag
+
+    svg = _re.sub(r"<path\b[^>]*>", one, svg)
+    used = set(_re.findall(r"url\(#([^)]+)\)", svg))
+    svg = _re.sub(r'<pattern id="([^"]+)".*?</pattern>', lambda q: q.group(0) if q.group(1) in used else "", svg,
+                  flags=_re.S)
+    svg = svg.replace("<defs></defs>", "")
+    return svg
 # ---- end studio helpers ----
 
 
@@ -2090,7 +2376,10 @@ def _globe(cv, x, base, s):
         yy = cy + r * f
         hw = r * math.sqrt(1 - f * f)
         cv.hair([(x - hw, yy), (x + hw, yy)])
-    cv.hair(C.hatch_poly([(x + r * math.cos(a), cy + r * math.sin(a)) for a in [-.9 + 2. * k / 12 for k in range(13)]], 60, 1.5))
+    g_ = _E(x, cy, r, r, 32)
+    cv.hair(form_hatch(g_, x - r * .45, cy - r * .45, r * .7, r * 2.2, 1.3, -.5, 2.1, 1., 24))
+    cv.hair(form_hatch(g_, x - r * .45, cy - r * .45, r * .25, r * .7, 3., 0, 2 * math.pi, 1., 24))
+    swell_outline(cv, g_, (-1., -1.), 2)
     cv.line([(x - r * 1.15 * math.cos(a), cy - r * 1.15 * math.sin(a)) for a in [-.4 + 3.9 * k / 24 for k in range(25)]])
 
 
@@ -2099,6 +2388,10 @@ def _bell_jar(cv, x, base, s):
     jar = [(x - w_, base)] + [(x - w_ * math.cos(a), base - h_ + w_ - w_ * math.sin(a)) for a in [math.pi * k / 16 for k in range(17)]] + [(x + w_, base)]
     cv.obj([jar], 1.)
     cv.hair([(x - w_ * .7, base - h_ * .3), (x - w_ * .55, base - h_ * .8)])
+    # the glass: its far wall seen through in open uprights, a hard glint, the shadow side closer
+    cv.hair(C.hatch_poly(jar, 90, 3.2))
+    cv.hair(C.hatch_poly([(x + w_ * .45, base), (x + w_, base), (x + w_, base - h_ + w_), (x + w_ * .45, base - h_ + w_ * .2)], 90, 3.2, 1.6))
+    swell_outline(cv, jar, (-1., -1.), 2)
     cv.obj([[(x - w_ * 1.1, base), (x + w_ * 1.1, base), (x + w_ * 1.1, base + s * .06), (x - w_ * 1.1, base + s * .06)]], 1.)
     # a butterfly pinned inside
     bx, by = x, base - h_ * .48
@@ -2122,7 +2415,10 @@ def _nautilus(cv, x, base, s):
         a = k * .55
         rr = r * .95 * math.exp(-.33 * a)
         cv.hair([(x + rr * math.cos(a), cy + rr * math.sin(a)), (x + rr * .45 * math.cos(a + .8), cy + rr * .45 * math.sin(a + .8))])
-    cv.hair(C.hatch_poly([(x, cy), (x + r, cy), (x + r * .7, cy + r * .7), (x, cy + r)], 45, 1.5))
+    n_ = _E(x, cy, r, r * .95, 30)
+    cv.hair(form_hatch(n_, x - r * .4, cy - r * .4, r * .75, r * 2.1, 1.3, -.4, 2.2, 1., 24))
+    cv.hair(form_hatch(n_, x - r * .4, cy - r * .4, r * .2, r * .75, 3.2, 0, 2 * math.pi, 1., 24))
+    swell_outline(cv, n_, (-1., -1.), 2)
 
 
 def _ammonite(cv, x, base, s):
@@ -2135,7 +2431,10 @@ def _ammonite(cv, x, base, s):
         p = sp[k]
         q = (x + (p[0] - x) * .78, cy + (p[1] - cy) * .78)
         cv.hair([p, q])
-    cv.hair(C.hatch_poly([(x, cy), (x + r, cy), (x, cy + r)], 30, 1.5))
+    a_ = _E(x, cy, r, r, 30)
+    cv.hair(form_hatch(a_, x - r * .4, cy - r * .4, r * .75, r * 2.1, 1.3, -.4, 2.2, 1., 24))
+    cv.hair(form_hatch(a_, x - r * .4, cy - r * .4, r * .2, r * .75, 3.2, 0, 2 * math.pi, 1., 24))
+    swell_outline(cv, a_, (-1., -1.), 2)
 
 
 def _coral(cv, x, base, s, rng):
@@ -2175,7 +2474,9 @@ def _elephant(cv, x, base, s):
             (x + 5.4 * k, base - 7.8 * k), (x + 4.4 * k, base - 6.6 * k), (x + 4 * k, base - 7.4 * k), (x + 3 * k, base - 3 * k),
             (x + 3 * k, base), (x + 1.8 * k, base), (x + 1.8 * k, base - 2.4 * k), (x - 2.4 * k, base - 2.4 * k), (x - 2.4 * k, base)]
     cv.obj([body], 1.)
-    cv.hair(C.hatch_poly([(p[0], max(p[1], base - 3.6 * k)) for p in body], 80, 1.5))
+    cv.hair(C.hatch_poly(body, 80, 2.2))
+    cv.hair(C.hatch_poly([(p[0], max(p[1], base - 3.6 * k)) for p in body], -20, 1.5))
+    swell_outline(cv, body, (-1., -1.), 2)
     ear = [(x + 1.4 * k, base - 6.2 * k), (x + 3 * k, base - 6.4 * k), (x + 3 * k, base - 3.8 * k), (x + 1.6 * k, base - 4.4 * k)]
     cv.obj([ear], .5)
     cv.hair(C.hatch_poly(ear, 60, 1.5))
@@ -2191,7 +2492,7 @@ def cabinet(X, Y, W, H, seed):
     cv = KCanvas()
     cw = min(W, H * 1.05)
     x0, x1 = X + (W - cw) / 2, X + (W + cw) / 2
-    top = Y + H * .16
+    top = Y + H * .26
     bot = Y + H * .93
     # the doors thrown open, seen in steep perspective, glazed with muntins and a glint
     for sg, xe in ((-1, x0), (1, x1)):
@@ -2204,35 +2505,137 @@ def cabinet(X, Y, W, H, seed):
             cv.hair([(inner[0][0] + (inner[3][0] - inner[0][0]) * f, inner[0][1] + (inner[3][1] - inner[0][1]) * f),
                      (inner[1][0] + (inner[2][0] - inner[1][0]) * f, inner[1][1] + (inner[2][1] - inner[1][1]) * f)])
         cv.hair([((inner[0][0] + inner[1][0]) / 2, (inner[0][1] + inner[1][1]) / 2), ((inner[3][0] + inner[2][0]) / 2, (inner[3][1] + inner[2][1]) / 2)])
-        for k in range(3):
-            cv.hair([(inner[0][0] + sg * dw * (.2 + k * .12), top + H * (.2 + k * .05)), (inner[0][0] + sg * dw * (.45 + k * .12), top + H * (.12 + k * .05))])
-    # the case: stiles in grain, the interior a ground of close cuts so the wonders stand out light
+        # the door's frame in grain, the glass taking the room's dark with a raking glint
+        cv.hair(C.hatch_poly(door, 90, 1.4))
+        cv.obj([inner], .5)
+        cv.hair(C.hatch_poly(inner, 90, 2.6))
+        cv.hair(C.hatch_poly(inner, 90 - sg * 50, 2.4))
+        for f in (.33, .66):
+            cv.line([(inner[0][0] + (inner[3][0] - inner[0][0]) * f, inner[0][1] + (inner[3][1] - inner[0][1]) * f),
+                     (inner[1][0] + (inner[2][0] - inner[1][0]) * f, inner[1][1] + (inner[2][1] - inner[1][1]) * f)])
+        cv.line([((inner[0][0] + inner[1][0]) / 2, (inner[0][1] + inner[1][1]) / 2), ((inner[3][0] + inner[2][0]) / 2, (inner[3][1] + inner[2][1]) / 2)])
+        swell(cv, [door[1], door[2]], sg, 2)
+    # the case: stiles in grain, the interior a ground of shadow out of which the wonders come
+    # light: darkest under each shelf and into the corners, opening toward the lit middle
     case = [(x0, bot), (x0, top), (x1, top), (x1, bot)]
     cv.obj([case], 1.)
-    back = [(x0 + cw * .05, top + H * .04), (x1 - cw * .05, top + H * .04), (x1 - cw * .05, bot - H * .05), (x0 + cw * .05, bot - H * .05)]
+    bx0, bx1 = x0 + cw * .05, x1 - cw * .05
+    by0, by1 = top + H * .04, bot - H * .05
+    # the frame in its grain: stiles upright, the rails across them
+    cv.hair(C.hatch_poly(case, 90, 2.4))
+    for ya, yb_ in ((top, by0), (by1, bot)):
+        rail = [(x0 + cw * .045, ya + .5), (x1 - cw * .045, ya + .5), (x1 - cw * .045, yb_ - .5), (x0 + cw * .045, yb_ - .5)]
+        cv.obj([rail], .5)
+        cv.hair(C.hatch_poly(rail, 0, 2.2))
+    back = [(bx0, by0), (bx1, by0), (bx1, by1), (bx0, by1)]
     cv.obj([back], .5)
-    cv.hair(C.hatch_poly(back, 90, 1.5))
-    cv.hair(C.hatch_poly(back, 0, 3))
+    cv.hair(C.hatch_poly(back, 90, 1.6))
+    ih_ = by1 - by0
+    for f0, f1 in ((0., .36), (.36, .69)):
+        ya, yb_ = by0 + ih_ * f0, by0 + ih_ * f1
+        # the shadow cast by the shelf above, a band crossed and closing toward it
+        band = [(bx0, ya), (bx1, ya), (bx1, ya + (yb_ - ya) * .38), (bx0, ya + (yb_ - ya) * .22)]
+        cv.hair(C.hatch_poly(band, 0, 1.8))
+        cv.hair(C.hatch_poly([(bx0, ya), (bx1, ya), (bx1, ya + (yb_ - ya) * .15), (bx0, ya + (yb_ - ya) * .1)], 0, 1.8, .9))
+        for sg_, xe in ((1, bx0), (-1, bx1)):
+            side = [(xe, ya), (xe + sg_ * cw * .09, ya), (xe + sg_ * cw * .05, yb_), (xe, yb_)]
+            cv.hair(C.hatch_poly(side, 35 * sg_, 2.))
     for sx in (x0 + cw * .025, x1 - cw * .025):
         cv.hair([[(sx + d, top + 1), (sx + d, bot - 1)] for d in (-1, 0, 1)])
-    # pediment: a broken scroll pediment with an urn finial
-    pd = [(x0 - cw * .03, top), (x0 - cw * .03, top - H * .03), (x1 + cw * .03, top - H * .03), (x1 + cw * .03, top)]
-    cv.obj([pd], 1.)
-    cv.hair(C.hatch_poly([(p[0], max(p[1], top - H * .012)) for p in pd], 0, 1.5))
+    # the pediment: an entablature (architrave, a frieze of dentils, the cornice standing out over
+    # its own shadow) under a broken swan-neck pediment whose necks roll into rosettes, the
+    # tympanum between them cut dark, and an urn on a plinth in the break
+    cxm = X + W / 2
+    ov = cw * .035
+    hu = max(1.2, H * .011)
+    ar = [(x0 - ov * .3, top), (x1 + ov * .3, top), (x1 + ov * .3, top - hu * 1.4), (x0 - ov * .3, top - hu * 1.4)]
+    fz = [(x0 - ov * .5, top - hu * 1.4), (x1 + ov * .5, top - hu * 1.4), (x1 + ov * .5, top - hu * 3.4), (x0 - ov * .5, top - hu * 3.4)]
+    cn = [(x0 - ov, top - hu * 3.4), (x1 + ov, top - hu * 3.4), (x1 + ov * .8, top - hu * 4.6), (x0 - ov * .8, top - hu * 4.6)]
+    cap = [(x0 - ov * .8, top - hu * 4.6), (x1 + ov * .8, top - hu * 4.6), (x1 + ov * .6, top - hu * 5.4), (x0 - ov * .6, top - hu * 5.4)]
+    ctop = top - hu * 5.4
+    # tympanum first, so the necks and urn stand in front of it
+    nk = []
     for sg in (-1, 1):
-        sx = X + W / 2 + sg * cw * .32
-        sc_ = [(X + W / 2 + sg * cw * .5, top - H * .03), (sx, top - H * .1), (X + W / 2 + sg * cw * .1, top - H * .12)]
-        R = C._Rib(sc_, [2.2, 2., 1.6], [2.2, 2., 1.6])
-        cv.obj([R.outline()], .5)
-        cv.hair(R.contour(.5, 0, 1))
-        ex, ey = sc_[-1]
-        cv.line(_spiral(ex, ey + H * .02, H * .025, 1.6, 24, -sg))
-    ux, uy = X + W / 2, top - H * .07
-    urn = [(ux - H * .025, uy + H * .04), (ux - H * .04, uy), (ux - H * .02, uy - H * .05), (ux + H * .02, uy - H * .05), (ux + H * .04, uy), (ux + H * .025, uy + H * .04)]
+        p0 = (cxm + sg * (cw * .5 + ov * .5), ctop)
+        p3 = (cxm + sg * cw * .12, Y + H * .06)
+        pts = []
+        for i in range(25):
+            t = i / 24
+            # an ogee: rising slowly off the corner, swelling up, curling over at the break
+            xx = p0[0] + (p3[0] - p0[0]) * (t - .12 * _m.sin(2 * _SPI * t))
+            yy = p0[1] + (p3[1] - p0[1]) * (.5 - .5 * _m.cos(_SPI * min(1., t * 1.15)))
+            pts.append((xx, yy))
+        nk.append((sg, pts))
+    tym = nk[0][1] + [(cxm - cw * .1, ctop)] + [(cxm + cw * .1, ctop)] + nk[1][1][::-1]
+    tym = [(cxm + (-1) * (cw * .5), ctop)] + nk[0][1] + [(cxm - cw * .13, ctop)]
+    for sg, pts in nk:
+        tp = [(cxm + sg * cw * .5, ctop)] + pts + [(cxm + sg * cw * .13, ctop)]
+        cv.obj([tp], .5)
+        cv.hair(C.hatch_poly(tp, 90, 1.3))
+        cv.hair(C.hatch_poly(tp, 30 * sg, 2.2))
+        # a carved shell in the tympanum, lit, radiating flutes
+        shx, shy = cxm + sg * cw * .3, ctop - (ctop - (Y + H * .06)) * .2
+        r_ = max(2.5, H * .03)
+        shell = [(shx + r_ * _m.cos(a_), shy - r_ * .8 * _m.sin(a_)) for a_ in [_SPI * i / 16 for i in range(17)]]
+        cv.obj([shell], .5)
+        cv.hair([[(shx, shy), (shx + r_ * _m.cos(a_), shy - r_ * .8 * _m.sin(a_))] for a_ in [_SPI * (i + .5) / 7 for i in range(7)]])
+    for sg, pts in nk:
+        th = [max(1.4, H * .014)] * len(pts)
+        R = C._Rib(pts, th, th)
+        # the neck's cast shadow on the tympanum, below it
+        shd = C._Rib([(x_ + sg * .6, y_ + th[0] * 1.6) for x_, y_ in pts], th, th)
+        cv.obj([shd.outline()], 0)
+        cv.hair(C.hatch_poly(shd.outline(), 0, 1.))
+        cv.obj([R.outline()], 1.)
+        cv.hair(R.contour(-.35, 0, 1))
+        cv.hair(R.contour(.3, 0, 1))
+        cv.hair(R.contour(.65, .05, .95))
+        swell(cv, R.contour(-.9, .05, 1)[0] if R.contour(-.9, .05, 1) else pts, 1, 2)
+        ex, ey = pts[-1]
+        ro = max(2.5, H * .028)
+        rc = (ex - sg * ro * .2, ey + ro * .9)
+        cv.obj([_E(rc[0], rc[1], ro, ro, 20)], 1.)
+        cv.line(_spiral(rc[0], rc[1], ro * .85, 2.2, 40, -sg))
+        cv.hair(form_hatch(_E(rc[0], rc[1], ro, ro, 20), rc[0] - ro * .4, rc[1] - ro * .4, ro * .9, ro * 1.8, 1.1, 0, 2 * _SPI, 1., 24))
+        cv.hair(form_hatch(_E(rc[0], rc[1], ro, ro, 20), rc[0] - ro * .4, rc[1] - ro * .4, ro * .3, ro * .9, 2.6, 0, 2 * _SPI, 1., 24))
+    # the entablature, painted bottom to top so each moulding overhangs the one below
+    cv.obj([ar], 1.)
+    cv.hair(C.hatch_poly(ar, 0, 1.6, .4))
+    cv.obj([fz], .5)
+    # dentils, lit faces and dark gaps, and the cornice's shadow along the frieze top
+    dn = max(2.2, cw * .02)
+    xx = fz[0][0] + dn * .5
+    while xx + dn * .6 < fz[1][0]:
+        g = [(xx + dn * .6, top - hu * 1.6), (xx + dn, top - hu * 1.6), (xx + dn, top - hu * 3.2), (xx + dn * .6, top - hu * 3.2)]
+        cv.hair(C.hatch_poly(g, 90, .8))
+        xx += dn
+    cv.hair(C.hatch_poly([(fz[0][0], top - hu * 3.4), (fz[1][0], top - hu * 3.4), (fz[1][0], top - hu * 2.8), (fz[0][0], top - hu * 2.8)], 0, .8))
+    cv.obj([cn], 1.)
+    cv.hair(C.hatch_poly(cn, 0, 1.2))
+    cv.obj([cap], .5)
+    cv.hair([[(cap[3][0] + 1, cap[3][1] + hu * .35), (cap[2][0] - 1, cap[2][1] + hu * .35)]])
+    swell(cv, [cn[0], cn[1]], 1, 2)
+    # the plinth and urn in the break: a turned urn, its belly turned in arcs on the shadow side
+    ux = cxm
+    pl_ = [(ux - cw * .06, ctop), (ux + cw * .06, ctop), (ux + cw * .06, ctop - H * .025), (ux - cw * .06, ctop - H * .025)]
+    cv.obj([pl_], 1.)
+    cv.hair(C.hatch_poly([(ux + cw * .015, ctop), (ux + cw * .06, ctop), (ux + cw * .06, ctop - H * .025), (ux + cw * .015, ctop - H * .025)], 90, 1.2))
+    ub = ctop - H * .025
+    uh = max(8., ub - (Y + H * .01))
+    ur = uh * .32
+    urn = [(ux - ur * .35, ub), (ux - ur * .5, ub - uh * .08), (ux - ur * .25, ub - uh * .16), (ux - ur, ub - uh * .4),
+           (ux - ur * .8, ub - uh * .6), (ux - ur * .45, ub - uh * .68), (ux - ur * .55, ub - uh * .74),
+           (ux + ur * .55, ub - uh * .74), (ux + ur * .45, ub - uh * .68), (ux + ur * .8, ub - uh * .6),
+           (ux + ur, ub - uh * .4), (ux + ur * .25, ub - uh * .16), (ux + ur * .5, ub - uh * .08), (ux + ur * .35, ub)]
     cv.obj([urn], 1.)
-    cv.hair(C.hatch_poly(urn, 90, 1.5))
-    cv.line([(ux, uy - H * .05), (ux, uy - H * .1)])
-    cv.obj([_E(ux, uy - H * .11, H * .015 + .5, H * .015 + .5, 8)], .5)
+    cv.hair(form_hatch(urn, ux - ur * .5, ub - uh * .48, ur * .6, ur * 2.2, 1.2, -1.2, 1.4, 1.3, 20))
+    cv.hair(form_hatch(urn, ux - ur * .5, ub - uh * .48, ur * .15, ur * .6, 3., 0, 2 * _SPI, 1.3, 24))
+    cv.hair(C.hatch_poly(pl_, 0, 3.))
+    cv.hair([[(ux - ur * .95, ub - uh * .42), (ux + ur * .95, ub - uh * .42)], [(ux - ur * .6, ub - uh * .62), (ux + ur * .6, ub - uh * .62)]])
+    swell_outline(cv, urn, (-1., -1.), 2)
+    fl = [(ux - ur * .3, ub - uh * .74), (ux + ur * .3, ub - uh * .74), (ux, ub - uh)]
+    cv.obj([fl], .5)
+    cv.hair(C.hatch_poly(fl, 70, 1.))
     # three shelves and their wonders
     ih = (bot - H * .05) - (top + H * .04)
     shelves = [top + H * .04 + ih * f for f in (.36, .69, 1.)]

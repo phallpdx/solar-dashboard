@@ -4377,6 +4377,11 @@ function renderMore() {
   }
 
   if (mk && mk.length) {
+    // The board's own biggest movers, so the lead never needs another session's story.
+    const movers = qs => { const big = qs.filter(q => q.kind !== 'yield' && q.kind !== 'index' && Math.abs(q.day_pct || 0) >= 1.5).sort((a, b) => Math.abs(b.day_pct) - Math.abs(a.day_pct)).slice(0, 2);
+      if (!big.length) return ''; const same = big.every(q => Math.sign(q.day_pct) === Math.sign(big[0].day_pct));
+      return same ? ` ${big.map(q => q.name).join(' and ')} ${big[0].day_pct < 0 ? 'fell' : 'rose'} hardest (${big.map(q => `${q.day_pct < 0 ? '−' : '+'}${Math.abs(q.day_pct).toFixed(1)}%`).join(', ')}).`
+        : ` Biggest moves: ${big.map(q => `${q.name} ${q.day_pct < 0 ? '−' : '+'}${Math.abs(q.day_pct).toFixed(1)}%`).join(', ')}.`; };
     const fmt = q => q.kind === 'yield' ? `${q.price.toFixed(2)}%` : q.price.toLocaleString(undefined, { maximumFractionDigits: q.price > 1000 ? 0 : 2 });
     const chg = v => v == null ? '' : `<span class="${v >= 0 ? 'up' : 'down'}">${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}%</span>`;
     const spx = mk.find(q => q.symbol === '^GSPC');
@@ -4389,7 +4394,7 @@ function renderMore() {
         (spx.ytd_pct != null ? `, ${spx.ytd_pct >= 0 ? 'up' : 'down'} ${Math.abs(spx.ytd_pct)}% this year` : '') +
         (off != null ? (off > -1 ? ', right near its 52-week high.' : `, ${Math.abs(off).toFixed(1)}% below its 52-week high.`) : '.') +
         (nas ? ` The Nasdaq is ${nas.day_pct >= 0 ? 'up' : 'down'} ${Math.abs(nas.day_pct).toFixed(1)}%.` : '') +
-        (tnx ? ` The 10-year Treasury yields ${tnx.price.toFixed(2)}%.` : '');
+        (tnx ? ` The 10-year Treasury yields ${tnx.price.toFixed(2)}%.` : '') + movers(mk);
       const pts = spx.spark || [];
       if (pts.length > 1) {
         const lo = Math.min(...pts), hi = Math.max(...pts), W = 600, H = 70;
@@ -4411,11 +4416,18 @@ async function renderBrief() {
   const asOf = br ? (br.updated_at ? localWhen(br.updated_at) : fmtDate(br.updated)) : '';
   const items = list => (list || []).slice(0, cap(5)).map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.what ? `<br><small>${esc(x.what)}</small>` : ''}${!x.what && x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`).join('');
   const stale = ageDays > 1 ? `<p class="meta">This analysis is from ${fmtDate(br.updated)}; today’s hasn’t landed yet.</p>` : '';
-  const a = br && br.analysis;
-  $('mkt-brief').innerHTML = a && ageDays <= 3 ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
+  // A market wrap prints only when it covers the same session as the quote board above it, and says which
+  // day that is; otherwise its numbers would disagree with the board's.
+  const a = br && br.analysis, sessionOf = (iso, closeHour) => { if (!iso) return null;
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(iso)).map(x => [x.type, x.value]));
+    const d = new Date(Date.UTC(+p.year, +p.month - 1, +p.day)); if (+p.hour * 60 + +p.minute < closeHour * 60) d.setUTCDate(d.getUTCDate() - 1);
+    while ([0, 6].includes(d.getUTCDay())) d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
+  const mk0 = (D.markets || [])[0], board = mk0 && sessionOf(mk0.as_of, 9.5), wrap = a && (a.session || sessionOf(br.updated_at, 16));
+  const sameSession = a && board && wrap === board, closeName = wrap ? new Date(wrap + 'T12:00').toLocaleDateString(undefined, { weekday: 'long' }) + '’s close' : '';
+  $('mkt-brief').innerHTML = a && ageDays <= 3 && sameSession ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
       ${(a.drivers || []).length ? `<h3 class="sub">What moved things</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.drivers.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
       ${(a.watch || []).length ? `<h3 class="sub">Worth watching</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.watch.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-      <p class="meta" style="margin:4px 0 0">Analysis as of ${asOf}</p>${cite(a.sources)}${stale}</div>` : '';
+      <p class="meta" style="margin:4px 0 0">${esc(closeName)} · analysis as of ${asOf}</p>${cite(a.sources)}${stale}</div>` : '';
   const section = (key, id, fallback) => {
     const b = br && br[key], fresh = b && ageDays <= 3;
     const body = fresh ? `<p class="summary">${b.headline ? `<b>${esc(b.headline)}</b> ` : ''}${esc(b.summary || '')}</p>

@@ -74,6 +74,35 @@ class _GPen:
         return "".join(self.o)
 
 
+
+def _g_clip_runs(pl, mask, x0, y0, W, H, out, step=1.4):
+    """engraving_codex._clip_runs, sampled every `step` px: the runs of pl not under mask."""
+    run = []
+    px, py = pl[0]
+    pts = [pl[0]]
+    for q in pl[1:]:
+        dx, dy = q[0] - px, q[1] - py
+        L = abs(dx) + abs(dy)
+        if L > step:
+            k = int(L / step)
+            ix, iy = dx / (k + 1), dy / (k + 1)
+            for j in range(1, k + 1):
+                pts.append((px + ix * j, py + iy * j))
+        pts.append(q)
+        px, py = q
+    for (x, y) in pts:
+        xi = int(x - x0)
+        yi = int(y - y0)
+        if 0 <= yi < H and 0 <= xi < W and mask[yi][xi]:
+            if len(run) > 1:
+                out.append(run)
+            run = []
+        else:
+            run.append((x, y))
+    if len(run) > 1:
+        out.append(run)
+
+
 class GmCanvas(C.Canvas):
     """engraving_codex.Canvas emitting half-px path data with a coarser simplification (about
     40 % smaller), same occlusion rules. clip=(x0, y0, x1, y1) drops everything outside."""
@@ -92,10 +121,10 @@ class GmCanvas(C.Canvas):
         for polys, ow, strokes in reversed(self.objs):
             for w, lines in strokes.items():
                 for pl in lines:
-                    C._clip_runs(pl, mask, x0, y0, W, H, out[w])
+                    _g_clip_runs(pl, mask, x0, y0, W, H, out[w])
             if ow:
                 for poly in polys:
-                    C._clip_runs(poly + [poly[0]], mask, x0, y0, W, H, out[float(ow)])
+                    _g_clip_runs(poly + [poly[0]], mask, x0, y0, W, H, out[float(ow)])
             for poly in polys:
                 C._fill_mask(poly, mask, x0, y0, W, H)
         if clip:
@@ -324,7 +353,11 @@ def gm_defs():
                 f'stroke-linecap="round" fill="none"/></pattern>')
     dark = [(7.5, 8.5), (9.0, 11.0), (1.0, 5.5), (11.0, 7.5), (10.5, 1.5), (5.5, 3.0), (3.5, 10.5), (0.5, 10.0), (2.0, 1.0), (4.0, 7.0), (8.0, 5.0)]
     lite = dark + [(5.5, 11.5), (10.0, 4.0), (2.5, 3.5), (6.0, 6.0), (7.5, 2.0), (1.5, 8.0)]
-    return "<defs>" + tile(_GPID + "d", dark) + tile(_GPID + "l", lite) + "</defs>"
+    grit = ("".join(f"M{x},{y}h0" for x, y in [(1.5, 1.5), (6.5, 2.5), (10.5, .5), (3.5, 6.0), (8.5, 7.5), (.5, 9.5), (5.5, 10.5), (11.0, 11.0), (9.5, 4.5)]))
+    gravel = (f'<pattern id="{_GPID}g" width="12" height="12" patternUnits="userSpaceOnUse">'
+              f'<path d="{grit}" stroke="#000" stroke-width="1" '
+              f'stroke-linecap="round" fill="none"/></pattern>')
+    return "<defs>" + tile(_GPID + "d", dark) + tile(_GPID + "l", lite) + gravel + "</defs>"
 
 
 def gm_ground(shape, tone="d"):
@@ -1339,7 +1372,7 @@ def gm_plate(w, h, ctx, P):
         ix0, iy0, ix1, iy1 = _g_bbox(inner)
         cx = w / 2
         # the copperplate scene: an arched panel
-        aw = (ix1 - ix0) * .41
+        aw = (ix1 - ix0) * P.get("panel", .41)
         top = iy0 + 14
         bot = iy0 + (iy1 - iy0) * (.62 + .06 * _Gsm(320, 548, h))
         a, b = aw, (bot - top) / 2
@@ -1406,6 +1439,23 @@ def gm_arms(cx, cy, r, seed=0):
     except Exception:
         gm_sun_drums(cv, cx, cy, r * 1.25, random.Random(7))
         return cv.svg()
+
+
+def gm_emblem(name, **kw):
+    """a tablet for the dedication oval: the named egg carved large on a field of fine rays."""
+    def tab(tx, ty, tw, th):
+        cx, cy = tx + tw / 2, ty + th / 2
+        r = min(tw, th) / 2
+        cv = GmCanvas()
+        for i in range(60):
+            a = _GTAU * i / 60
+            cv.hair([(cx + r * .5 * math.cos(a), cy + r * .5 * math.sin(a)), (cx + r * 1.8 * math.cos(a), cy + r * 1.8 * math.sin(a))])
+        GM_EGGS[name](cv, cx, cy, r * .78, **kw)
+        # the boss's ground punched with grit so no plain white is left round the device
+        rb = r * .78 * 1.05 - 1.2
+        grit = f'<path d="{_d(_Gel(cx, cy, rb, rb, 48), True, 0)}" fill="url(#{_GPID}g)"/>'
+        return cv.svg() + grit
+    return tab
 
 
 # ---------------------------------------------------------------------------------- sky and water

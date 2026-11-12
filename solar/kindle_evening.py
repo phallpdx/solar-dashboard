@@ -191,6 +191,8 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 html.kev body,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") repeat !important}
 html.kev,html.kev #kmain{background:transparent !important}
 html.kev #kmain h2.khed,html.kev #kmain h2.khed *,html.kev #kmain .kfname,html.kev #kmain .kdeg,html.kev #kmain .kname,html.kev #kmain .poem-title{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px -1.5px #fff,1.5px -1.5px #fff,-1.5px 1.5px #fff !important}
+/* on the soft ground the leading is clear, so a light 8-offset halo is enough (cheap to paint on the Kindle) */
+html.kev #kmain .kbody p,html.kev #kmain .kbody p *,html.kev #kmain .kbox p,html.kev #kmain .kbox p *,html.kev #kmain .kalm-lead,html.kev #kmain .kalm-lead *,html.kev #kmain .kplan,html.kev #kmain .kplan *,html.kev #kmain .kchoice,html.kev #kmain .kchoice *,html.kev #kmain .klater,html.kev #kmain .klater *,html.kev #kmain .kmoon p,html.kev #kmain .kmoon p *,html.kev #kmain .ksky li,html.kev #kmain .ksky li *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}
 html.kev .kendpage #kmain .kfill{margin:0 26px}
 /* body copy sits on a soft ground: one hairline wave per line of type, laid in the leading, so the letters stay clean */
 html.kev #kmain .kbody p,html.kev #kmain .kbox p.knextstep{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 24px repeat !important}
@@ -867,25 +869,26 @@ def _fill_stack(night, salt, seed, w, moon, budget=90000):
         meds = vigs = []
         defs = []
         pano = rose = ""
+    # one scale throughout: medallion rows ten across (~45 px, the head row's size), vignette rows six across
     if meds:
-        items.append(medrow(6, 0))
+        items.append(medrow(10, 0))
     if vigs:
-        items.append(vigrow(4, 0))
+        items.append(vigrow(6, 0))
     if pano:
         items.append((108, pano))
-    if rose:
-        items.append((84, rose))
-    if meds:
-        items.append(medrow(8, 3))
-    if vigs:
-        items.append(vigrow(6, 2))
     if meds:
         items.append(medrow(10, 5))
-        items.append(medrow(6, 4))
+    if rose:
+        items.append((84, rose))
     if vigs:
-        items.append(vigrow(4, 3))
+        items.append(vigrow(6, 3))
     if meds:
-        items.append(medrow(12, 1))
+        items.append(medrow(10, 3))
+        items.append(medrow(10, 7))
+    if vigs:
+        items.append(vigrow(6, 1))
+    if meds:
+        items.append(medrow(10, 1))
     if rib:
         items.append((20, f'<div class="kfi" data-h="20">{rib}</div>'))
     if defs:
@@ -905,6 +908,8 @@ FILL_JS = ("<script>(function(){var busy=0;function f(){var b=document.querySele
            "for(var pass=0;pass<2;pass++)for(i=0;i<it.length;i++){var h=+it[i].getAttribute('data-h');"
            "if(it[i].style.display!=='none')continue;if(pass===0&&h<=20&&on===0&&left>140)continue;"
            "if(h<=left){it[i].style.display=it[i].className.indexOf('kfrow')>=0?'-webkit-flex':'block';if(it[i].style.display!=='-webkit-flex'&&it[i].className.indexOf('kfrow')>=0)it[i].style.display='flex';left-=h;on++;}}}"
+           "var fl=document.querySelectorAll('#kmain .kft svg.kmu,#kmain .kft svg.kvu'),rows=0;for(i=0;i<it.length;i++)if(it[i].style.display&&it[i].style.display!=='none'&&+it[i].getAttribute('data-h')>30)rows++;"
+           "for(i=0;i<fl.length;i++)fl[i].style.display=rows?'none':'';"
            "try{window.dispatchEvent(new Event('resize'));}catch(e){}setTimeout(function(){busy=0;},50);}"
            "function go(){setTimeout(function(){if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);else f();},120);}"
            "window.addEventListener('load',go);})();</script>")
@@ -1593,16 +1598,19 @@ def _snap_strokes(doc):
         return doc
 
 
+_NREF = {}  # salt -> (medallions, vignettes) drawn in that page's filler defs
+
+
 def _muse(salt, i, size, cls=""):
     """A medallion from this page's filler set (drawn once in its hidden defs), placed by reference."""
     return (f'<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="kmu{cls}" viewBox="0 0 100 100" width="{size}" height="{size}" aria-hidden="true">'
-            f'<use xlink:href="#kmd{salt}{i % 4}" width="100" height="100"/></svg>')
+            f'<use xlink:href="#kmd{salt}{i % _NREF.get(salt, (4, 2))[0]}" width="100" height="100"/></svg>')
 
 
 def _vuse(salt, i, h, cls=""):
     """A vignette from this page's filler set, by reference, h px tall."""
     return (f'<svg xmlns:xlink="http://www.w3.org/1999/xlink" class="kvu{cls}" viewBox="0 0 120 80" width="{_n(h * 1.5)}" height="{h}" aria-hidden="true">'
-            f'<use xlink:href="#kvg{salt}{i % 2}" width="120" height="80"/></svg>')
+            f'<use xlink:href="#kvg{salt}{i % _NREF.get(salt, (4, 2))[1]}" width="120" height="80"/></svg>')
 
 
 def _dress(body, salt, close=False):
@@ -1629,7 +1637,7 @@ def _dress(body, salt, close=False):
             e = body.index("</div>", m.end())
             n = 2 if "kplate" in body else 3
             body = (body[:m.start()] + '<div class="khv kflank">' + "".join(_muse(salt, i, 40) for i in range(n)) + body[m.end():e]
-                    + "".join(_muse(salt, i + 2, 40) for i in range(n)) + '</div>' + body[e + 6:])
+                    + "".join(_muse(salt, i + n, 40) for i in range(n)) + '</div>' + body[e + 6:])
         if "kplate kframe" in body or close:
             col = lambda off: "".join(_muse(salt, off + i, 46) for i in range(8))
             cols = f'<div class="kcol kcol-l">{col(0)}</div><div class="kcol kcol-r">{col(2)}</div>'
@@ -1804,10 +1812,12 @@ def main(dash_path, ev_path, site):
             pg["body"] = f'<p class="kkick">{pg["kick"]}</p>' + pg["body"]
         if not pg.get("notail"):
             pg["body"] += ORNAMENTS["tail"]
-        pg["body"] = _dress(pg["body"], pg["file"].split(".")[0].replace("-", ""))
-        fill = _filler(night, pg["file"].split(".")[0].replace("-", ""),
-                       budget=PAGE_BYTES - 50000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
+        salt = pg["file"].split(".")[0].replace("-", "")
+        fill = _filler(night, salt,
+                       budget=PAGE_BYTES - 56000 - len(ORNAMENTS["defs"]) - len(pg["body"]),
                        moon=(phase[0] / 100 if phase and pg["file"] in ("tomorrow.html", "sky.html") else None))
+        _NREF[salt] = (len(re.findall(rf'id="kmd{salt}\d+"', fill)) or 4, len(re.findall(rf'id="kvg{salt}\d+"', fill)) or 2)
+        pg["body"] = _dress(pg["body"], salt)
         if not framed:
             pg["body"] = f'<div class="kframe klite">{ORNAMENTS["lite"]}{pg["body"]}{fill}</div>'
         elif ('kplate kframe' in pg["body"] or pg.get("close")) and pg["body"].endswith("</div>"):

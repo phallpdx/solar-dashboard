@@ -3177,7 +3177,7 @@ function renderYard() {
     : y.rain_ratio < 0.85 ? `Your gauge catches about ${Math.round((1 - y.rain_ratio) * 100)}% less rain than forecast.`
     : 'Your gauge catches about what the forecast says.';
   const rows = y.ahead.map(a => `<div class="yd"><span class="d">${a.date === todayIso() ? 'Today' : DOW[new Date(a.date + 'T12:00').getDay()]}</span>
-    <b>${a.hi}° <span>/ ${a.lo}°</span></b><small>forecast ${a.model_hi}° / ${a.model_lo}°</small>${a.rain_in >= 0.05 ? `<small class="r">~${a.rain_in.toFixed(2)} in</small>` : ''}</div>`).join('');
+    <b><span>Your yard </span>${a.hi}° <span>/ ${a.lo}°</span></b><small>forecast ${a.model_hi}° / ${a.model_lo}°</small>${a.rain_in >= 0.05 ? `<small class="r">~${a.rain_in.toFixed(2)} in</small>` : ''}</div>`).join('');
   $('yard').innerHTML = `<p class="summary">Afternoons here run <b>${warm(y.hi_bias)}</b>, nights <b>${warm(y.lo_bias)}</b>. ${rain}</p>
     ${y.frost ? `<p class="yard-alert">🥶 Frost risk ${y.frost.date === todayIso() ? 'tonight' : DOW[new Date(y.frost.date + 'T12:00').getDay()]}: your yard should hit about ${y.frost.lo}°. Cover tender plants.</p>` : ''}
     <div class="yds">${rows}</div><p class="note">Adjusted for your yard. These numbers sharpen as your station logs more days.</p>`;
@@ -3190,7 +3190,8 @@ function renderShades() {
   $('shade-meta').textContent = sh.indoor_f ? `Inside now ${sh.indoor_f}°` : '';
   const icon = s => s.do === 'open' ? (s.where === 'windows' ? '🪟' : '☀️') : '🌙';
   const modeWord = {heat: 'Heating day: use the sun, then hold the heat', cool: 'Cooling day: block the sun', mild: 'Mild day'};
-  $('shades').innerHTML = sh.plans.map(p => `<div class="shade-day"><span class="shade-k">${p.date === todayIso() ? 'Today' : 'Tomorrow'} · ${modeWord[p.mode]} · high ${p.high}°</span>
+  const mode = p => p.mode === 'heat' && !p.steps.some(s => s.do === 'open') ? 'Heating day: keep the heat in' : modeWord[p.mode];
+  $('shades').innerHTML = sh.plans.map(p => `<div class="shade-day"><span class="shade-k">${p.date === todayIso() ? 'Today' : 'Tomorrow'} · ${mode(p)} · forecast high ${p.forecast_high ?? p.high}°</span>
     ${p.steps.map(s => `<div class="shade-step"><span class="shade-ic" aria-hidden="true">${s.do === 'keep closed' ? '🌥️' : icon(s)}</span>
       <div><b>${s.do === 'keep closed' ? 'Keep shades closed' : `${s.do === 'open' ? 'Open' : 'Close'} ${s.where === 'all' ? 'all shades' : s.where === 'windows' ? 'the windows' : s.where + ' shades'}`} ${s.do === 'keep closed' ? '' : 'at ' + clock(s.time)}</b>
       <small>${esc(s.why)}</small></div></div>`).join('')}</div>`).join('');
@@ -3334,7 +3335,9 @@ function renderWeather() {
   }
   const ago = w.updated_ms ? Math.max(0, Math.round((Date.now() - w.updated_ms) / 60000)) : null;
   $('wx-meta').textContent = esc(w.station) + (ago != null ? ` · ${ago < 60 ? ago + ' min' : Math.round(ago / 60) + ' hr'} ago` : '');
-  const hilo = w.hi_f != null ? `High ${w.hi_f}° · low ${w.lo_f}°` : '';
+  // One "today's high" in the edition: the forecast high, labelled. The station's are readings so far.
+  const fc0 = D.outside && D.outside.days && D.outside.days[0];
+  const hilo = w.hi_f != null ? `So far today: high ${w.hi_f}°, low ${w.lo_f}°${fc0 && fc0.hi != null ? ` · forecast high ${fc0.hi}°` : ''}` : '';
   // Solar panels make less power as they heat up (roughly 0.4% per °C above 25 °C).
   const note = w.heat_loss_pct == null ? 'Solar panels lose some output when they get hot. Too little sun right now for that to matter.'
     : w.heat_loss_pct < 1 ? 'Solar panels lose some output when they get hot. Yours are cool right now, so they’re losing nothing to heat.'
@@ -3585,7 +3588,7 @@ function renderSunActivity() {
   $('sunact-meta').textContent = `NOAA SWPC daily indices for ${fmtDate(sa.date)}`;
   const flares = [sa.flares_x ? `${sa.flares_x} X-class` : '', sa.flares_m ? `${sa.flares_m} M-class` : '', sa.flares_c ? `${sa.flares_c} C-class` : ''].filter(Boolean);
   const quiet = sa.sunspots < 40 ? 'quiet' : sa.sunspots < 100 ? 'moderately active' : 'busy';
-  $('sunact-summary').textContent = `${sa.sunspots} sunspots today against a 30-day average of ${sa.sunspots_30d_avg}: a ${quiet} sun. ${flares.length ? `Flares in the last day: ${flares.join(', ')}.` : 'No flares reported in the last day.'}`;
+  $('sunact-summary').textContent = `${sa.sunspots} sunspots on ${sa.date === todayIso() ? 'today' : fmtDate(sa.date)} against a 30-day average of ${sa.sunspots_30d_avg}: a ${quiet} sun. ${flares.length ? `Flares in the last day: ${flares.join(', ')}.` : 'No flares reported in the last day.'}`;
   const facts = [['Sunspot number', sa.sunspots], ['30-day average', sa.sunspots_30d_avg], ['10.7 cm radio flux', `${sa.flux} <small>sfu</small>`], ['New regions', sa.new_regions]];
   $('sunact-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
   $('sunact-note').innerHTML = `The picture is the latest HMI intensitygram from NASA's Solar Dynamics Observatory: dark spots are sunspots. Sunspots and flux track the 11-year cycle; big flares can bring the aurora south (see The sky). ${cite([['NOAA SWPC daily solar indices', sa.url], ['NASA SDO', 'https://sdo.gsfc.nasa.gov/data/']])}`;
@@ -3748,11 +3751,17 @@ function renderSky(o) {
   const iss = o.iss || [];
   const nights = o.nights || [];
   const scale = (v, words) => words[Math.min(words.length - 1, Math.floor((v - 1) / 3))];
+  // A pass is rated with the night's clouds in: a high pass on a clouded-out night is "Clouded out", and
+  // the height words say what they mean ("High in the sky", not a bare "Low").
+  const nightOf = iso => { const t = new Date(iso); if (t.getHours() < 12) t.setDate(t.getDate() - 1); return t.toLocaleDateString('en-CA'); };
+  const passWord = p => { const n = nights.find(x => x.night === nightOf(p.utc));
+    if (n && /clouded out/i.test(n.verdict || '')) return 'Clouded out';
+    return p.max_alt >= 40 ? 'High, easy to see' : p.max_alt >= 25 ? 'Good height' : 'Low in the sky'; };
   $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
   const sats = o.satellites || [];
   $('sat-h').hidden = !sats.length;
   $('sats').innerHTML = sats.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> · ${localDay(p.utc)} at ${tm(p.utc)}<br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
+    <span style="white-space:nowrap;padding-left:12px">${passWord(p)}</span></div>`).join('');
   const neo = o.close_approaches || [];
   $('neo-h').hidden = !neo.length;
   $('neo').innerHTML = neo.slice(0, cap(4)).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b style="font-weight:700">${esc(x.name)}</b></a><br><small>${x.size_m ? `about ${x.size_m >= 1000 ? (x.size_m / 1000).toFixed(1) + ' km' : x.size_m + ' m'} across, ` : ''}${x.km_s} km/s</small></span>
@@ -3763,7 +3772,7 @@ function renderSky(o) {
   $('sky-note').innerHTML = `Passes count when the satellite is sunlit, at least 10° up and your sky is dark. ${cite(skySrc)}`;
   $('iss-h').hidden = !iss.length;
   $('iss').innerHTML = iss.map(p => `<div><span><b style="font-weight:700">${localDay(p.utc)} at ${tm(p.utc)}</b><br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high${p.bright ? ' · bright' : ''}</small></span>
-    <span style="white-space:nowrap;padding-left:12px">${p.max_alt >= 40 ? 'Great' : p.max_alt >= 25 ? 'Good' : 'Low'}</span></div>`).join('');
+    <span style="white-space:nowrap;padding-left:12px">${passWord(p)}</span></div>`).join('');
 }
 
 // A side view of a ship, drawn from its AIS type and to scale from its length (bow on the right).
@@ -4080,27 +4089,32 @@ async function renderCoast() {
       <b>${esc(x.event)}</b> <span class="src">· coast · ${x.ends ? 'until ' + localWhen(x.ends) : ''}</span>${x.headline ? `<p>${esc(x.headline)}</p>` : ''}
       ${x.description ? `<details><summary>Details</summary><p style="white-space:pre-line">${esc(x.description)}</p></details>` : ''}</div></div>`).join('');
   const parts = [];
+  // An active NWS marine warning (attached by solar/integrity.py) leads the page, before anything nice.
+  const warn = c.warning;
+  if (warn) parts.push(warnLine(warn));
   if (now.temperature_2m != null) parts.push(`${Math.round(now.temperature_2m)}° and ${wxName(now.weather_code).toLowerCase()} right now, wind ${Math.round(now.wind_speed_10m || 0)} mph.`);
   const windy = days.filter(d => d.gust >= 40);
   if (windy.length) parts.push(`Strong wind ${windy.map(d => DOW[new Date(d.date + 'T12:00').getDay()]).join(', ')} with gusts to ${Math.max(...windy.map(d => d.gust))} mph; good storm watching, and power outages are possible.`);
   const big = days.filter(d => (d.waves_ft || 0) >= 12);
-  if (big.length) parts.push(`Big surf up to ${Math.max(...big.map(d => d.waves_ft))} ft. Watch for sneaker waves and stay off logs.`);
+  if (big.length) parts.push(`Big surf this week${days[0] && days[0].surf_src === 'NWS' ? `, ${ftRange(days[0].surf_ft)} ft today by the NWS surf forecast` : ''}. Watch for sneaker waves and stay off logs.`);
   const wet = days.reduce((a, d) => a + (d.rain_in || 0), 0);
   parts.push(wet >= 0.5 ? `About ${wet.toFixed(1)} in of rain this week.` : 'Mostly dry week.');
-  const nice = days.filter(d => d.hi >= 62 && (d.rain_pct || 0) < 30);
+  // A beach day is dry, calm and under no warning.
+  const nice = days.filter(d => d.hi >= 62 && (d.rain_pct || 0) < 30 && !d.warning && (d.gust || 0) < 30 && (d.waves_ft || 0) < 12);
   if (nice.length) parts.push(`Best beach day: ${dayLabel(nice.sort((a, b) => b.hi - a.hi)[0].date)}.`);
+  else if (warn || days.some(d => d.warning || (d.gust || 0) >= 40)) parts.push('No good beach day this week.');
   $('coast-summary').textContent = parts.join(' ');
   $('coast-meta').textContent = c.tide_station ? `Tides at ${c.tide_station}` : '';
   const nextTide = (c.tides || []).find(x => new Date(x.t.replace(' ', 'T')) > new Date());
   const facts = [];
   if (c.water_f != null) facts.push(['Ocean temp', `${c.water_f}°`]);
-  if (days[0] && days[0].waves_ft != null) facts.push(['Waves today', `${days[0].waves_ft} <small>ft · ${days[0].period_s}s</small>`]);
+  if (days[0] && (days[0].surf_ft || days[0].waves_ft != null)) facts.push(['Surf today', `${ftRange(days[0].surf_ft || String(days[0].waves_ft))} <small>ft${days[0].surf_src === 'NWS' ? ' · NWS' : ''}</small>`]);
   if (nextTide) facts.push(['Next tide', `${nextTide.type} ${clock(nextTide.t.slice(11))} <small>${nextTide.ft} ft</small>`]);
   if (days[0]) facts.push(['Sunset', clock(days[0].sunset)]);
   $('coast-facts').innerHTML = facts.map(([a, b]) => `<div class="mini"><span class="k">${a}</span><span class="v">${b}</span></div>`).join('');
   $('coast-fc').innerHTML = days.map((d, i) => `<div class="fd"><span class="d">${i === 0 ? 'Today' : DOW[new Date(d.date + 'T12:00').getDay()]}</span>${wxIcon(d.code)}
     <span class="t">${d.hi}° <span>${d.lo}°</span></span><span class="r">${d.rain_pct != null ? d.rain_pct + '% rain' : ''}</span>
-    <span class="meta">${d.waves_ft != null ? d.waves_ft + ' ft waves' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust : ''}</span></div>`).join('');
+    <span class="meta">${d.surf_src === 'NWS' ? ftRange(d.surf_ft) + ' ft surf (NWS)' : d.waves_ft != null ? d.waves_ft + ' ft seas' : ''}${d.gust >= 30 ? '<br>gusts ' + d.gust + ' mph' : ''}${d.warning ? '<br>' + esc(d.warning) : ''}</span></div>`).join('');
   $('coast-tide').innerHTML = tideDoodle(c.tides, 43);
   $('minus').innerHTML = (c.minus_tides || []).map(t => `<div><span>${coastWhen(t.t)}</span><span>${t.ft} ft</span></div>`).join('')
     || '<div><span>No minus tides in the next two weeks</span><span></span></div>';
@@ -4113,12 +4127,22 @@ async function renderCoast() {
   $('coast-events-card').hidden = !list.length;
   if (list.length) {
     $('cev-meta').textContent = `Updated ${fmtDate(ev.updated)}`;
-    $('coast-events').innerHTML = list.map(x => `<div class="story"><span><b>${esc(x.name)}</b>
-      <small>${[dayLabel(x.date) + (x.end && x.end !== x.date ? ' – ' + dayLabel(x.end) : ''), x.town].filter(Boolean).map(esc).join(' · ')}</small>
-      ${x.summary ? `<p>${esc(x.summary)}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`).join('');
+    // Grouped by day under a date heading (the date can't be lost with the small print); events already
+    // running sit first as "Going on now". Shouting titles are set in title case; "Price not given" is dropped.
+    const today0 = todayIso(), title = t => t === t.toUpperCase() && /[A-Z]{3}/.test(t) ? t.toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase()) : t;
+    const dated = list.filter(x => x.date).sort((a, b) => (a.date < today0 ? today0 : a.date).localeCompare(b.date < today0 ? today0 : b.date) || a.date.localeCompare(b.date));
+    let lastHead = '';
+    $('coast-events').innerHTML = dated.map(x => { const on = x.date < today0 ? 'now' : x.date, head = on === 'now' ? 'Going on now' : dayLabel(x.date);
+      const h = head !== lastHead ? `<h3 class="sub">${esc(head)}</h3>` : ''; lastHead = head;
+      return h + `<div class="story"><span><b>${esc(title(x.name))}</b>
+      <small>${[x.end && x.end !== x.date ? (on === 'now' ? 'through ' : dayLabel(x.date) + ' – ') + dayLabel(x.end) : dayLabel(x.date), x.town].filter(Boolean).map(esc).join(' · ')}</small>
+      ${x.summary ? `<p>${esc(x.summary.replace(/\s*Price not given\.?/i, ''))}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`; }).join('');
   }
 }
 
+// "12-16" -> "12–16"; a marine warning as one plain sentence: "GALE WARNING until Fri 4 pm: seas 14–18 ft. Stay off the water."
+const ftRange = x => String(x || '').replace('-', '–');
+const warnLine = w => `${(w.event || 'Marine warning').toUpperCase()}${w.until ? ' until ' + new Date(w.until).toLocaleString(undefined, { weekday: 'short', hour: 'numeric' }) : ''}${w.seas_ft ? `: seas ${ftRange(w.seas_ft)} ft` : ''}. Stay off the water.`;
 const WIND_WORD = { light: 'light wind', offshore: 'offshore', cross: 'cross-shore', onshore: 'onshore', sheltered: 'sheltered from the wind' };
 const surfWind = x => x.wind === 'light' ? 'light wind' : `${x.wind_mph} mph ${x.wind_dir || ''} ${x.wind === 'sheltered' ? '(sheltered)' : WIND_WORD[x.wind] || ''}`.replace(/\s+/g, ' ').trim();
 function renderSurf() {
@@ -4129,12 +4153,16 @@ function renderSurf() {
   $('surf-meta').innerHTML = b ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.station)}</a> · ${localWhen(b.at)}` : '';
   const parts = [];
   const top = [...breaks].sort((x, y) => y.now.score - x.now.score)[0];
-  if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
+  if (s.warning) parts.push(warnLine(s.warning) + (s.official_ft ? ` Surf ${ftRange(s.official_ft)} ft today (NWS). Every break is rated Poor while it lasts.` : ' Every break is rated Poor while it lasts.'));
+  else if (top.now.score <= 0) parts.push('Flat right now everywhere nearby.');
   else parts.push(`Best bet right now: ${top.name}, ${top.now.rating.toLowerCase()} at ${top.now.surf_ft} ft (${top.now.period_s} s ${top.now.swell_dir || ''} swell, ${surfWind(top.now)}).`);
   const ahead = breaks.flatMap(x => x.days.map(d => ({ ...d, name: x.name }))).filter(d => d.score >= 3);
-  if (ahead.length) {
+  if (ahead.length && !s.warning) {
     const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
     parts.push(`Pick of the week: ${dayLabel(d.date)} at ${d.name}, ${d.rating.toLowerCase()} ${d.surf_ft} ft from about ${clock(d.from)} to ${clock(d.to)}.`);
+  } else if (ahead.length) {
+    const d = ahead.sort((x, y) => y.score - x.score || x.date.localeCompare(y.date))[0];
+    parts.push(`After the warning: ${dayLabel(d.date)} at ${d.name} looks ${d.rating.toLowerCase()}.`);
   } else parts.push('Nothing better than fair in the next five days.');
   $('surf-summary').textContent = parts.join(' ');
   const facts = [];
@@ -4203,7 +4231,7 @@ function renderFishing() {
   const dam = f.dam;
   const run = dam ? Object.entries(dam.week).filter(([, v]) => v > 0) : [];
   $('fish-season').innerHTML = run.map(([k, v]) => `<div><span><b style="font-weight:700">${esc(k)}</b></span><span>${v.toLocaleString()}</span></div>`).join('') || '<div><span>No dam counts right now</span><span></span></div>';
-  $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year, so check the rules below before you go.` : '';
+  $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year: check ODFW's current rules before you go.` : '';
   $('fish-links').innerHTML = 'Check seasons and rules before you go: ' + f.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ');
 }
 
@@ -4215,8 +4243,12 @@ function renderLive() {
   if (q) {
     $('quake-meta').textContent = `${q.count} within 190 miles · USGS`;
     const v = Object.entries(q.volcano_counts || {}).filter(([, n]) => n > 0);
-    $('volc').textContent = v.length ? 'Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : 'Quiet under the Cascade volcanoes this week.';
-    $('quakes').innerHTML = q.biggest.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${x.mag}</a> ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · felt by ${x.felt}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
+    const rows = q.biggest || [], top = [...rows].sort((a, b) => b.mag - a.mag)[0], m1 = x => Number(x.mag).toFixed(1);
+    const feel = rows.some(x => x.mag >= 3.5 || (x.mag >= 2.5 && x.miles <= 50) || x.felt >= 10);
+    // Verdict first, about these rows; the volcano tally follows as its own fact.
+    $('volc').textContent = (top ? `${feel ? 'One you may have felt.' : 'Nothing you’d feel.'} ${q.count} small quakes within 190 miles this week; the largest was M${m1(top)}, ${top.place.replace(/^\d+ km [NSEW]+ of /, 'near ')}, ${top.miles} miles away.` : 'No quakes nearby this week.') +
+      (v.length ? ' Under the volcanoes: ' + v.map(([n, c]) => `${n} ${c}`).join(', ') + '.' : ' Quiet under the Cascade volcanoes.');
+    $('quakes').innerHTML = [...rows].sort((a, b) => b.utc.localeCompare(a.utc)).map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">M${m1(x)}</a> · ${esc(x.place)}<br><small>${x.miles} miles away${x.felt ? ` · ${x.felt} felt report${x.felt > 1 ? 's' : ''}` : ''}</small></span><span style="white-space:nowrap;padding-left:12px">${localDay(x.utc)}</span></div>`).join('');
   }
   if (p) {
     $('plane-meta').textContent = `${p.count} planes within about 25 miles`;
@@ -4365,6 +4397,11 @@ function renderMore() {
   }
 
   if (mk && mk.length) {
+    // The board's own biggest movers, so the lead never needs another session's story.
+    const movers = qs => { const big = qs.filter(q => q.kind !== 'yield' && q.kind !== 'index' && Math.abs(q.day_pct || 0) >= 1.5).sort((a, b) => Math.abs(b.day_pct) - Math.abs(a.day_pct)).slice(0, 2);
+      if (!big.length) return ''; const same = big.every(q => Math.sign(q.day_pct) === Math.sign(big[0].day_pct));
+      return same ? ` ${big.map(q => q.name).join(' and ')} ${big[0].day_pct < 0 ? 'fell' : 'rose'} hardest (${big.map(q => `${q.day_pct < 0 ? '−' : '+'}${Math.abs(q.day_pct).toFixed(1)}%`).join(', ')}).`
+        : ` Biggest moves: ${big.map(q => `${q.name} ${q.day_pct < 0 ? '−' : '+'}${Math.abs(q.day_pct).toFixed(1)}%`).join(', ')}.`; };
     const fmt = q => q.kind === 'yield' ? `${q.price.toFixed(2)}%` : q.price.toLocaleString(undefined, { maximumFractionDigits: q.price > 1000 ? 0 : 2 });
     const chg = v => v == null ? '' : `<span class="${v >= 0 ? 'up' : 'down'}">${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}%</span>`;
     const spx = mk.find(q => q.symbol === '^GSPC');
@@ -4377,7 +4414,7 @@ function renderMore() {
         (spx.ytd_pct != null ? `, ${spx.ytd_pct >= 0 ? 'up' : 'down'} ${Math.abs(spx.ytd_pct)}% this year` : '') +
         (off != null ? (off > -1 ? ', right near its 52-week high.' : `, ${Math.abs(off).toFixed(1)}% below its 52-week high.`) : '.') +
         (nas ? ` The Nasdaq is ${nas.day_pct >= 0 ? 'up' : 'down'} ${Math.abs(nas.day_pct).toFixed(1)}%.` : '') +
-        (tnx ? ` The 10-year Treasury yields ${tnx.price.toFixed(2)}%.` : '');
+        (tnx ? ` The 10-year Treasury yields ${tnx.price.toFixed(2)}%.` : '') + movers(mk);
       const pts = spx.spark || [];
       if (pts.length > 1) {
         const lo = Math.min(...pts), hi = Math.max(...pts), W = 600, H = 70;
@@ -4399,11 +4436,18 @@ async function renderBrief() {
   const asOf = br ? (br.updated_at ? localWhen(br.updated_at) : fmtDate(br.updated)) : '';
   const items = list => (list || []).slice(0, cap(5)).map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.what ? `<br><small>${esc(x.what)}</small>` : ''}${!x.what && x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${x.date ? fmtDate(x.date) : ''}</span></div>`).join('');
   const stale = ageDays > 1 ? `<p class="meta">This analysis is from ${fmtDate(br.updated)}; today’s hasn’t landed yet.</p>` : '';
-  const a = br && br.analysis;
-  $('mkt-brief').innerHTML = a && ageDays <= 3 ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
+  // A market wrap prints only when it covers the same session as the quote board above it, and says which
+  // day that is; otherwise its numbers would disagree with the board's.
+  const a = br && br.analysis, sessionOf = (iso, closeHour) => { if (!iso) return null;
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(iso)).map(x => [x.type, x.value]));
+    const d = new Date(Date.UTC(+p.year, +p.month - 1, +p.day)); if (+p.hour * 60 + +p.minute < closeHour * 60) d.setUTCDate(d.getUTCDate() - 1);
+    while ([0, 6].includes(d.getUTCDay())) d.setUTCDate(d.getUTCDate() - 1); return d.toISOString().slice(0, 10); };
+  const mk0 = (D.markets || [])[0], board = mk0 && sessionOf(mk0.as_of, 9.5), wrap = a && (a.session || sessionOf(br.updated_at, 16));
+  const sameSession = a && board && wrap === board, closeName = wrap ? new Date(wrap + 'T12:00').toLocaleDateString(undefined, { weekday: 'long' }) + '’s close' : '';
+  $('mkt-brief').innerHTML = a && ageDays <= 3 && sameSession ? `<div class="recap"><b>${esc(a.headline || '')}</b><p>${esc(a.summary || '')}</p>
       ${(a.drivers || []).length ? `<h3 class="sub">What moved things</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.drivers.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
       ${(a.watch || []).length ? `<h3 class="sub">Worth watching</h3><ul class="note" style="margin:4px 0 0;padding-left:18px">${a.watch.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-      <p class="meta" style="margin:4px 0 0">Analysis as of ${asOf}</p>${cite(a.sources)}${stale}</div>` : '';
+      <p class="meta" style="margin:4px 0 0">${esc(closeName)} · analysis as of ${asOf}</p>${cite(a.sources)}${stale}</div>` : '';
   const section = (key, id, fallback) => {
     const b = br && br[key], fresh = b && ageDays <= 3;
     const body = fresh ? `<p class="summary">${b.headline ? `<b>${esc(b.headline)}</b> ` : ''}${esc(b.summary || '')}</p>
@@ -4432,8 +4476,11 @@ function renderHealth() {
     <small>${arrow(x.trend)}</small></div>`).join('');
   const high = it.filter(x => (x.rank ?? 0) >= 3).map(x => x.name);
   const up = it.filter(x => x.trend === 'rising' && (x.rank ?? 0) >= 2).map(x => x.name);
-  $('bug-note').textContent = high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
-    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.';
+  const asOf = ` (CDC, week ending ${fmtDate(it[0].week_end)}${(h.stale_days || 0) > 3 ? ', the latest posted' : ''}.)`;
+  const byLevel = [...it].sort((a, b) => (b.rank ?? 0) - (a.rank ?? 0)), lead = byLevel[0];
+  const verdict = lead && (lead.rank ?? 0) >= 2 ? `${lead.name} is ${String(lead.level).toLowerCase()} in ${h.area} wastewater; ${byLevel.slice(1).map(x => `${x.name} ${String(x.level).toLowerCase()}`).join(', ')}.` : '';
+  $('bug-note').textContent = verdict ? verdict + asOf : high.length ? `${high.join(' and ')} ${high.length > 1 ? 'are' : 'is'} high around Portland right now. Extra handwashing after daycare, storytime and play spaces helps.`
+    : up.length ? `${up.join(' and ')} ${up.length > 1 ? 'are' : 'is'} climbing. Worth a heads-up before indoor play spaces.` : 'Nothing much going around right now.' + asOf;
 }
 
 function renderShellfish() {
@@ -4441,7 +4488,8 @@ function renderShellfish() {
   const items = (s && s.items) || [];
   $('shell-card').hidden = !items.length && !(s && s.crab_season);
   if ($('shell-card').hidden) return;
-  $('shell-meta').innerHTML = (s.updated ? `ODA biotoxin status, ${esc(s.updated)} · ` : '') + `<a href="${esc(s.url || '#')}" target="_blank" rel="noopener">Details</a>`;
+  // The ODA page's own date, printed plainly: a status posted days ago is still the latest, but it says so.
+  $('shell-meta').innerHTML = (s.updated ? `ODA biotoxin status as of ${s.as_of ? fmtDate(s.as_of) : esc(s.updated)}${(s.stale_days || 0) > 3 ? ' (its latest update)' : ''} · ` : '') + `<a href="${esc(s.url || '#')}" target="_blank" rel="noopener">Details</a>`;
   $('shells').innerHTML = items.map(x => `<div class="shell ${x.status === 'Open' ? 'ok' : 'no'}"><b>${esc(x.kind)}</b><span>${x.status === 'Open' ? 'Open, safe to eat' : 'Closed'}</span>${x.detail ? `<small>${esc(x.detail.charAt(0).toUpperCase() + x.detail.slice(1))}</small>` : ''}</div>`).join('');
   $('shell-note').textContent = [s.crab_season, 'Always gut crab and skip the butter. Call the hotline (1-800-448-2474) before you dig.'].filter(Boolean).join(' ');
 }
@@ -5045,8 +5093,8 @@ async function renderBriefing() {
   if (an && an.north_pct >= 30) add(64, 'nearby', `NOAA gives a ${an.north_pct}% chance of aurora to the north in the next half hour. ${say('aurora_now', 0, 'The north field is the darkest spot.')}`);
   const sat = (o.satellites || []).find(p => p.max_alt >= 40 && soon(isoLocal(new Date(p.utc)), 1));
   if (sat) add(36, 'nearby', `${esc(sat.name)} passes high overhead ${whenWord(isoLocal(new Date(sat.utc)))} at ${timeOf(sat.utc)}, from the ${esc(sat.from)} to the ${esc(sat.to)}.`);
-  const smk = (o.smoke || []).find(d => d.pm2_5 > 35);
-  if (smk) add(66, 'today', `Smoke is forecast ${smk.date === today ? 'today' : whenWord(smk.date)}: PM2.5 around ${smk.pm2_5} µg/m³, ${esc(smk.word.toLowerCase())}.`);
+  const smk = (o.smoke || []).find(d => d.aqi != null ? d.aqi > 100 : d.pm2_5 > 35.4);
+  if (smk) add(66, 'today', `Smoky air is forecast ${smk.date === today ? 'today' : whenWord(smk.date)}: air quality ${esc(smk.word.toLowerCase())}${smk.aqi != null ? ` (AQI up to ${smk.aqi})` : ` (PM2.5 around ${smk.pm2_5} µg/m³)`}.`);
 
   // Wildlife and the river
   const rare = (D.rare_birds || []).sort((a, b) => b.confirmed - a.confirmed)[0];
@@ -5302,17 +5350,20 @@ function renderCivics() {
     const n = Math.round((new Date(next.date + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
     const regOpen = next.register_by >= todayIso();
     $('elect').innerHTML = `<div class="elect-next"><div class="elect-count"><b>${n === 0 ? 'Today' : n}</b>${n === 0 ? '' : `<small>day${n === 1 ? '' : 's'}</small>`}</div>
-      <div><b>${esc(next.name)}</b> · ${DOW[new Date(next.date + 'T12:00').getDay()]} ${fmtDate(next.date)}
-      <p class="note">${regOpen ? `Register or update your address by ${fmtDate(next.register_by)}. Ballots go out around ${fmtDate(next.ballots_mailed)}.` : n <= 20 ? 'Your ballot should already be in the mail. Drop it off by 8 pm on election day.' : `Registration for this one closed ${fmtDate(next.register_by)}.`}</p></div></div>
+      <div><b>Next election: ${DOW[new Date(next.date + 'T12:00').getDay()]}, ${fmtDate(next.date)}, ${next.date.slice(0, 4)}</b> · ${esc(next.name)}
+      <p class="note">${regOpen ? `Register or update your address by ${fmtDate(next.register_by)}, ${next.register_by.slice(0, 4)}. Ballots go out around ${fmtDate(next.ballots_mailed)}.` : n <= 20 ? 'Your ballot should already be in the mail. Drop it off by 8 pm on election day.' : `Registration for this one closed ${fmtDate(next.register_by)}.`}</p></div></div>
       ${(next.contests || []).length ? `<h3 class="sub">On your ballot</h3><div class="lines">${next.contests.map(x => `<div><span>${x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>` : esc(x.title)}${x.subtitle ? `<br><small>${esc(x.subtitle)}</small>` : ''}${x.candidates ? `<br><small>${x.candidates.map(k => esc(k.name) + (k.party ? ` (${esc(k.party.replace(/ Party$/, ''))})` : '')).join(', ')}</small>` : ''}</span><span>${x.kind === 'measure' ? 'Measure' : ''}</span></div>`).join('')}</div>` : ''}
-      ${e.length > 1 ? `<h3 class="sub">After that</h3><div class="lines">${e.slice(1).map(x => `<div><span>${esc(x.name)}</span><span>${fmtDate(x.date)} ${x.date.slice(0, 4)}</span></div>`).join('')}</div>` : ''}
+      ${e.length > 1 ? `<h3 class="sub">After that</h3><div class="lines">${e.slice(1).map(x => `<div><span>${esc(x.name)}</span><span>${fmtDate(x.date)}, ${x.date.slice(0, 4)}</span></div>`).join('')}</div>` : ''}
       <p class="note">${srcLinks(c.links)}</p>`;
   }
+  const said = v => ({ yea: 'YES', yes: 'YES', aye: 'YES', nay: 'NO', no: 'NO' })[(v.vote || '').toLowerCase()] || (v.vote || '').toUpperCase();
+  const outcome = v => v.outcome === 'passed' ? (/confirm/i.test(v.result || '') ? 'confirmed' : 'passed') : v.outcome === 'failed' ? 'failed' : (v.result || '').toLowerCase();
+  const voteLine = (p, v) => `<div><span><b style="font-weight:700">${esc(p.name.split(' ').slice(-1)[0])} voted ${esc(said(v))}</b> on ${esc(v.plain || v.desc || v.question || '')}${v.bill && !/^PN/.test(v.bill) ? ` (${esc(v.bill.replace(/^H\.?\s?R\.?\s?/, 'H.R. ').replace(/^S\.?\s?(\d)/, 'S. $1'))})` : ''}. ${outcome(v) ? `${outcome(v) === 'confirmed' ? 'Confirmed' : 'It ' + esc(outcome(v))}${v.date && /^\d{4}-/.test(v.date) ? ', ' + fmtDate(v.date) : ''}.` : ''}${(v.steps || []).length ? ` <small>(${v.steps.length} procedural vote${v.steps.length > 1 ? 's' : ''} folded in)</small>` : ''} <small><a href="${esc(v.url)}" target="_blank" rel="noopener">Roll call</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(said(v))}</span></div>`;
   const voteRow = v => `<div><span>${v.bill ? `<b style="font-weight:700">${esc(v.bill)}</b> ` : ''}${esc(v.desc || v.question || '')}<br><small>${esc(v.question || '')}${v.result ? ' · ' + esc(v.result) : ''} · <a href="${esc(v.url)}" target="_blank" rel="noopener">${v.date && /^\d{4}-/.test(v.date) ? fmtDate(v.date) : esc(v.date || 'Details')}</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(v.vote)}</span></div>`;
   $('reps').innerHTML = c.people.map(p => `<div class="rep">
       <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>
         <div class="rep-links">${p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : ''}${p.phone ? ` · <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : ''}${p.email ? ` · <a href="mailto:${esc(p.email)}">Email</a>` : ''}${p.url && p.url !== p.contact ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''}</div></div>
-      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3><div class="lines">${p.votes.slice(0, cap(4)).map(voteRow).join('')}</div>` : ''}
+      ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3>${p.vote_summary ? `<p class="summary">${esc(p.vote_summary)}</p>` : ''}<div class="lines">${p.votes.slice(0, cap(4)).map(v => v.plain != null ? voteLine(p, v) : voteRow(v)).join('')}</div>` : ''}
       ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, cap(3)).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
       ${p.news.length ? `<h3 class="sub">In the news</h3><div class="lines">${p.news.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${x.date ? fmtDate(x.date) : ''}</small></span></div>`).join('')}</div>` : ''}
     </div>`).join('');

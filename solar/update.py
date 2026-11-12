@@ -1023,7 +1023,8 @@ def shades_view(state, now_utc, yard):
                 continue  # today's sun is done; tomorrow's plan is what matters
             steps = [s for s in steps if s["time"] >= now.strftime("%H:%M") or s["do"] == "keep closed"]
         if steps:
-            plans.append({"date": day, "mode": mode, "high": round(hi), "steps": steps})
+            # "high" stays the yard-adjusted figure the plan used; pages print forecast_high, the edition's one high.
+            plans.append({"date": day, "mode": mode, "high": round(hi), "forecast_high": round(daily["temperature_2m_max"][i] or 0), "steps": steps})
     return {"indoor_f": round(indoor) if indoor else None, "plans": plans} if plans else None
 
 

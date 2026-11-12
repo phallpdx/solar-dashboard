@@ -60,15 +60,41 @@ def smoke(lat, lon, tz):
     """PM2.5 forecast for the next 3 days (Open-Meteo air quality, which carries the HRRR/CAMS smoke forecast):
     the daily peak and an EPA-style word for it."""
     data = _get("https://air-quality-api.open-meteo.com/v1/air-quality", latitude=lat, longitude=lon,
-                hourly="pm2_5", forecast_days=3, timezone=tz)
-    h = data.get("hourly") or {}
-    days = {}
+                hourly="pm2_5,us_aqi", forecast_days=3, timezone=tz)
+    return smoke_days(data.get("hourly") or {})
+
+
+def aqi_word(aqi):
+    """The EPA category for a US AQI value: the one scale every air line in the edition uses."""
+    return ("Good" if aqi <= 50 else "Moderate" if aqi <= 100 else "Unhealthy for sensitive groups" if aqi <= 150
+            else "Unhealthy" if aqi <= 200 else "Very unhealthy" if aqi <= 300 else "Hazardous")
+
+
+def smoke_days(h):
+    """Daily peaks. The word comes from the US AQI (24-hour averaged, as "Air quality is moderate (AQI 77)" is),
+    not from a raw hourly PM2.5 spike, so the two lines can't contradict each other."""
+    pm, aq = {}, {}
     for t, v in zip(h.get("time") or [], h.get("pm2_5") or []):
         if v is not None:
-            days[t[:10]] = max(days.get(t[:10], 0), v)
-    word = lambda v: ("Good" if v <= 12 else "Moderate" if v <= 35.4 else "Unhealthy for sensitive groups" if v <= 55.4
-                      else "Unhealthy" if v <= 150.4 else "Very unhealthy")
-    return [{"date": d, "pm2_5": round(v), "word": word(v)} for d, v in sorted(days.items())]
+            pm[t[:10]] = max(pm.get(t[:10], 0), v)
+    for t, v in zip(h.get("time") or [], h.get("us_aqi") or []):
+        if v is not None:
+            aq[t[:10]] = max(aq.get(t[:10], 0), v)
+    out = []
+    for d, v in sorted(pm.items()):
+        a = aq.get(d)
+        out.append({"date": d, "pm2_5": round(v), "aqi": round(a) if a is not None else None,
+                    "word": aqi_word(a) if a is not None else aqi_word(_pm_to_aqi(v))})
+    return out
+
+
+def _pm_to_aqi(pm):
+    """EPA 2024 PM2.5 breakpoints (24-hour µg/m³ -> AQI), for when the AQI series is missing."""
+    bp = [(0, 9.0, 0, 50), (9.1, 35.4, 51, 100), (35.5, 55.4, 101, 150), (55.5, 125.4, 151, 200), (125.5, 225.4, 201, 300)]
+    for lo, hi, alo, ahi in bp:
+        if pm <= hi:
+            return round(alo + (ahi - alo) * (max(pm, lo) - lo) / (hi - lo))
+    return 301
 
 
 def tide_station(lat, lon, max_km=25.0):

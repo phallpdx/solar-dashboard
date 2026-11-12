@@ -1479,7 +1479,7 @@ def fast_inside(poly):
     return ok
 
 
-def shape_poly(form, w, h):
+def shape_poly(form, w, h, maxk=9.):
     """The plate outline (screen coords) for a planned form."""
     if form == "roundel":
         r = min(w, h) / 2 - 1
@@ -1500,7 +1500,7 @@ def shape_poly(form, w, h):
         R = min(w / 2 - 1, h - 2)
         return [(w / 2 + R * math.cos(PI + PI * i / 80), h - 1 + R * math.sin(PI + PI * i / 80)) for i in range(81)]
     if form == "banner":
-        bw = min(w - 2, h * 9)
+        bw = min(w - 2, h * maxk)
         x0 = (w - bw) / 2
         nd = min(h * .32, 18)
         return [(x0, 1), (x0 + bw, 1), (x0 + bw - nd, h / 2), (x0 + bw, h - 1), (x0, h - 1), (x0 + nd, h / 2)]
@@ -1547,7 +1547,7 @@ def shaped_frame(w, h, ctx, scene, opts):
     seed = opts.get("seed", 1)
     egg = EGGS.get(opts.get("egg")) if opts.get("egg") else None
     o = [matte_defs(pid)]
-    if form in ("banner", "frieze") or h < 56:
+    if form in ("banner", "frieze", "headpiece") or h < 56:
         o += _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form)
     else:
         P = shape_poly(form, w, h)
@@ -1567,7 +1567,7 @@ def shaped_frame(w, h, ctx, scene, opts):
         elif form == "lunette":
             mcx, mcy, mrx, mry = cx, Y1 - PH * .42, PW * .3, PH * .38
         else:
-            mcx, mcy, mrx, mry = cx, Y0 + PH * .56, min(PW * .3, PH * .52), PH * .38
+            mcx, mcy, mrx, mry = cx, Y0 + PH * .57, min(PW * .36, PH * .78), PH * .4
         o.append(matte(_d(P, True, 0), pid))
         inner = offset_poly(P, -6)
         okP = fast_inside(inner)
@@ -1610,7 +1610,7 @@ def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
     """Headpiece / tailpiece banner (swallowtailed ribbon) or a gap frieze: a running scroll from
     both ends into a central cartouche holding the scene."""
     o = []
-    P = shape_poly("banner" if form == "banner" else "rect", w, h)
+    P = shape_poly("banner" if form == "banner" else "rect", w, h, opts.get("maxk", 9.))
     xs = [p[0] for p in P]
     bx0, bx1 = min(xs), max(xs)
     bw = bx1 - bx0
@@ -1621,7 +1621,7 @@ def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
     y0, y1 = top, h - top
     gh = y1 - y0
     mry = h / 2 - 1
-    mrx = min(bw * .22, mry * (5. if form == "frieze" else 2.2))
+    mrx = min(bw * .22, mry * opts.get("mk", 5. if form == "frieze" else 2.2))
     rmin = max(3., gh * .085)
     nd = min(h * .32, 18) if form == "banner" else 0
     okP = fast_inside(offset_poly(P, -3))
@@ -1848,4 +1848,4 @@ def plate(w, h, ctx):
         return scene(x, y, sw, sh, seed, mode)
 
     # planned form: a tailpiece, about 8% of the sheet, a banner (the convention center)
-    return shaped_frame(w, h, ctx, sc, dict(form="banner", pid="lo", seed=seed, egg="pinwheel"))
+    return shaped_frame(w, h, ctx, sc, dict(form="banner", maxk=5.5, pid="lo", seed=seed, egg="pinwheel"))

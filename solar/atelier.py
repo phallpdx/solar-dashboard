@@ -6,8 +6,8 @@ each is called through an adapter with a plain fallback, so a page always builds
 
 The rules of the page:
 
-* Two grounds. The page field (between plaques) is a light single hatch; inside ornament the cut-away
-  ground is a darker matte. Both can be met by a straight edge anywhere, so nothing is ever chopped.
+* The page's ground is one whole engraving of foliage the size of the screen. Plaques and plates are laid
+  over it with room between them, so every box is bordered by drawing and no room is left as a tint.
 * One moulding everywhere: heavy rule, a light gap, fine rule. Text plaques carry it as CSS rings;
   art panels, cartouches, the frame and the initial draw the same three lines.
 * Scrollwork lives only in regions whose shape is known when it is drawn: the four bands of the frame
@@ -42,10 +42,16 @@ def data_uri(svg):
     return 'url("data:image/svg+xml,%s")' % quote(svg.replace('"', "'"), safe=" =:/,.-'()<>;!*+@?&_~")
 
 
+_MISSING = set()
+
+
 def _mod(name):
     try:
         return importlib.import_module(f".{name}", __package__)
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
+        if name not in _MISSING:   # say so once: a page without its engraver still builds, but it is not the page
+            _MISSING.add(name)
+            print(f"atelier: {name} could not be loaded ({e!r}); its art is left out")
         return None
 
 
@@ -452,6 +458,15 @@ def initial(size=66, seed=0):
             + ground(m, m, s, s) + art + '</svg>')
 
 
+# ---- the page's ground ---------------------------------------------------------------------------
+def page_field(w=PAGE_W, h=714, seed=0):
+    """The page's ground: one whole engraving of leaves, fronds and blossom the size of the screen.
+    Plaques and plates are laid over it, so whatever room a page leaves shows drawing, never a tint."""
+    m = _mod("engraving_hand")
+    art = m.forest_fill(w, h, seed=seed, creatures=("bird", "paw", "p")) if m else ""
+    return f'<svg {XMLNS} width="{w}" height="{h}" viewBox="0 0 {w} {h}"><rect width="{w}" height="{h}"/>{art}</svg>'
+
+
 # ---- files and CSS ----------------------------------------------------------------------------------
 RINGS = "0 0 0 2.5px #fff,0 0 0 3px #000,0 0 0 4.5px #fff,0 0 0 6px #000"
 ART = "art"
@@ -474,7 +489,6 @@ def page_css(out_dir, seed=0, inner_h=618, cover_h=646):
     """Draw the shared art (field, frames, friezes, bead, initial) and return the CSS that places it.
     Page-independent pieces go into kindle.css as data URIs while they fit CSS_ART_BUDGET (so they cost
     no page bytes and no extra requests); anything beyond that is written to the art folder."""
-    tile, tw, th = field_tile()
     spent = [0]
 
     def u(name, svg):
@@ -483,13 +497,16 @@ def page_css(out_dir, seed=0, inner_h=618, cover_h=646):
             spent[0] += len(d)
             return d
         return f"url({write(out_dir, name, svg)})"
-    pieces = {  # smallest first, so the budget carries as many as it can
-        "field": ("field.svg", tile),
+    fh = max(inner_h + 44, cover_h) + 52
+    pieces = {
+        "field": ("field.svg", page_field(PAGE_W, fh, seed)),
+        "field1": ("field-1.svg", page_field(PAGE_W, fh, seed + 101)), "field2": ("field-2.svg", page_field(PAGE_W, fh, seed + 202)),
         "frame": ("frame.svg", border(PAGE_W, inner_h, seed)), "cover": ("frame-cover.svg", border(PAGE_W, cover_h, seed)),
     }
     url = {k: u(*v) for k, v in sorted(pieces.items(), key=lambda kv: len(kv[1][1]))}
     return (
-        f"html:root.kev{{background:{url['field']} 0 0/{tw}px {th}px repeat,#fff !important}}\n"
+        f"html:root.kev{{background:#000 {url['field']} 0 0/{PAGE_W}px {fh}px no-repeat !important}}\n"
+        f"html:root.kev.kf1{{background-image:{url['field1']} !important}}html:root.kev.kf2{{background-image:{url['field2']} !important}}\n"
         f"html.kev body:not(.kcontents){{background:{url['frame']} 0 44px/{PAGE_W}px {inner_h}px no-repeat !important}}\n"
         f"html.kev body.kcontents{{background:{url['cover']} 0 0/{PAGE_W}px {cover_h}px no-repeat !important}}\n"
     )

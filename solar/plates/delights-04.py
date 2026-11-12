@@ -1300,6 +1300,9 @@ def bumps(specs):
     return g
 
 
+TONE_K = [1.]   # a global tone scale: the free vignettes lighten every ground (black budget)
+
+
 def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=2.5, phase=0., cross=None):
     """Lines y + g(x, y) = level, `pitch` apart, from x0..x1 within y0..y1. tone(x, y) in [0, 1]
     sets each stretch's weight (under .1 the line breaks: a highlight; .1-.42 a .5 px cut; .42-.72
@@ -1319,7 +1322,7 @@ def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=2
             if y < y0 or y > y1 or (ok and not ok(x, y)):
                 t = -1
             else:
-                t = tone(x, y)
+                t = tone(x, y) * TONE_K[0]
             w = None if t < .1 else (.5 if t < .42 else (1. if t < .72 else 1.5))
             if w != cw:
                 if cw and len(cur) > 1:
@@ -1343,7 +1346,7 @@ def burin_field(cv, x0, x1, y0, y1, g=None, tone=None, pitch=3., ok=None, step=2
             run = []
             for k in range(m + 1):
                 px, py = ax + (bx - ax) * k / m, ay + (by - ay) * k / m
-                if (not ok or ok(px, py)) and tone(px, py) > cross:
+                if (not ok or ok(px, py)) and tone(px, py) * TONE_K[0] > cross:
                     run.append((px, py))
                 else:
                     if len(run) > 1:
@@ -1481,7 +1484,7 @@ def fast_inside(poly):
     return ok
 
 
-def shape_poly(form, w, h):
+def shape_poly(form, w, h, maxk=9.):
     """The plate outline (screen coords) for a planned form."""
     if form == "roundel":
         r = min(w, h) / 2 - 1
@@ -1502,7 +1505,7 @@ def shape_poly(form, w, h):
         R = min(w / 2 - 1, h - 2)
         return [(w / 2 + R * math.cos(PI + PI * i / 80), h - 1 + R * math.sin(PI + PI * i / 80)) for i in range(81)]
     if form == "banner":
-        bw = min(w - 2, h * 9)
+        bw = min(w - 2, h * maxk)
         x0 = (w - bw) / 2
         nd = min(h * .32, 18)
         return [(x0, 1), (x0 + bw, 1), (x0 + bw - nd, h / 2), (x0 + bw, h - 1), (x0, h - 1), (x0 + nd, h / 2)]
@@ -1549,7 +1552,7 @@ def shaped_frame(w, h, ctx, scene, opts):
     seed = opts.get("seed", 1)
     egg = EGGS.get(opts.get("egg")) if opts.get("egg") else None
     o = [matte_defs(pid)]
-    if form in ("banner", "frieze") or h < 56:
+    if form in ("banner", "frieze", "headpiece") or h < 56:
         o += _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form)
     else:
         P = shape_poly(form, w, h)
@@ -1569,7 +1572,7 @@ def shaped_frame(w, h, ctx, scene, opts):
         elif form == "lunette":
             mcx, mcy, mrx, mry = cx, Y1 - PH * .42, PW * .3, PH * .38
         else:
-            mcx, mcy, mrx, mry = cx, Y0 + PH * .56, min(PW * .3, PH * .52), PH * .38
+            mcx, mcy, mrx, mry = cx, Y0 + PH * .57, min(PW * .36, PH * .78), PH * .4
         o.append(matte(_d(P, True, 0), pid))
         inner = offset_poly(P, -6)
         okP = fast_inside(inner)
@@ -1612,7 +1615,7 @@ def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
     """Headpiece / tailpiece banner (swallowtailed ribbon) or a gap frieze: a running scroll from
     both ends into a central cartouche holding the scene."""
     o = []
-    P = shape_poly("banner" if form == "banner" else "rect", w, h)
+    P = shape_poly("banner" if form == "banner" else "rect", w, h, opts.get("maxk", 9.))
     xs = [p[0] for p in P]
     bx0, bx1 = min(xs), max(xs)
     bw = bx1 - bx0
@@ -1623,7 +1626,7 @@ def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
     y0, y1 = top, h - top
     gh = y1 - y0
     mry = h / 2 - 1
-    mrx = min(bw * .22, mry * (5. if form == "frieze" else 2.2))
+    mrx = min(bw * .22, mry * opts.get("mk", 5. if form == "frieze" else 2.2))
     rmin = max(3., gh * .085)
     nd = min(h * .32, 18) if form == "banner" else 0
     okP = fast_inside(offset_poly(P, -3))
@@ -1653,6 +1656,81 @@ def _banner_form(w, h, ctx, scene, opts, pid, seed, egg, form):
     o.append(clip_g(f"{pid}bq", _d(inner, True, 0), scene(min(ix), min(iy), max(ix) - min(ix), max(iy) - min(iy), _d(inner, True, 0), "band")))
     o.append(ring)
     return o
+
+
+# ----------------------------------------------------------------------------------------------
+# free vignettes (art direction, batch review): the subject IS the plate. A shaped engraved scene
+# standing free on the page, its edge dissolving into the paper the way Bewick's tailpieces do
+# (white cuts that break the lines up more and more toward the rim), no black field, no generic
+# scroll. Structure comes from the subject's own motifs (opts['motifs']) and a lettered ribbon.
+# ----------------------------------------------------------------------------------------------
+
+def _ragged(P, amp, seed):
+    rng = random.Random(seed)
+    n = len(P)
+    cx = sum(p[0] for p in P) / n
+    cy = sum(p[1] for p in P) / n
+    out = []
+    ph = [rng.uniform(0, 6) for _ in range(3)]
+    for i, (x, y) in enumerate(P):
+        t = i / n * TAU
+        k = 1 - amp * (.5 + .25 * math.sin(7 * t + ph[0]) + .15 * math.sin(13 * t + ph[1]) + .1 * math.sin(29 * t + ph[2]))
+        out.append((cx + (x - cx) * k, cy + (y - cy) * k))
+    return out
+
+
+def strip_poly(w, h, maxk=9.):
+    """A long lens for headpieces and tailpieces: the scene runs out to points at both ends."""
+    bw = min(w - 2, h * maxk)
+    x0 = (w - bw) / 2
+    pts = []
+    for i in range(61):
+        t = i / 60
+        pts.append((x0 + bw * t, h / 2 - (h / 2 - 1) * math.sin(PI * t) ** .35))
+    for i in range(61):
+        t = 1 - i / 60
+        pts.append((x0 + bw * t, h / 2 + (h / 2 - 1) * math.sin(PI * t) ** .35))
+    return pts
+
+
+def free_vignette(w, h, ctx, scene, opts):
+    form = opts.get("form", "oval")
+    pid = opts.get("pid", "p")
+    seed = opts.get("seed", 1)
+    TONE_K[0] = opts.get("tone", .74)
+    if form == "strip":
+        P = strip_poly(w, h, opts.get("maxk", 9.))
+    else:
+        P = shape_poly(form, w, h)
+    xs = [p[0] for p in P]
+    ys = [p[1] for p in P]
+    X0, X1, Y0, Y1 = min(xs), max(xs), min(ys), max(ys)
+    R = _ragged(P, min(.05, 6. / max(1., min(X1 - X0, Y1 - Y0))), seed)
+    o = []
+    mode = "band" if (form == "strip" or Y1 - Y0 < 70) else ("medium" if Y1 - Y0 < 200 else "tall")
+    body = scene(X0, Y0, X1 - X0, Y1 - Y0, _d(R, True, 0), mode)
+    o.append(clip_g(f"{pid}fv", _d(R, True, 0), f'<path d="{_d(R, True, 0)}" fill="#fff"/>' + body))
+    # the dissolving edge: white cuts laid over the rim, closer together toward the paper
+    m = min(X1 - X0, Y1 - Y0)
+    rings = ((1.2, 2.6, None), (3.4, 1.5, "4 1.2"), (5.6, 1.5, "2 2"), (8., 1., "1.2 3.2"), (10.5, 1., ".8 5"))
+    for d, sw, da in rings:
+        if d > m * .18:
+            break
+        ring = offset_poly(R, -d)
+        dash = f' stroke-dasharray="{da}" stroke-dashoffset="{_n(d * 1.7)}"' if da else ""
+        o.append(f'<path d="{_d(ring + [ring[0]], False, 0)}" stroke="#fff" stroke-width="{_n(sw)}" fill="none"{dash}/>')
+    if opts.get("motifs"):
+        o.append(opts["motifs"](w, h, (X0, Y0, X1, Y1), R))
+    if opts.get("banner") and (Y1 - Y0) >= 150:
+        bh = min(16., (Y1 - Y0) * .07)
+        bsvg, _ = banner(w / 2, Y1 - bh * .9, min((X1 - X0) * .62, 360), bh, opts["banner"], .04, None, seed)
+        o.append(bsvg)
+    if opts.get("extra"):
+        o.append(opts["extra"](w, h, None, P))
+    TONE_K[0] = 1.
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{_n(w)}" height="{_n(h)}" viewBox="0 0 {_n(w)} {_n(h)}" '
+            f'fill="none" stroke="#000" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            + C.codex_defs() + "".join(o) + "</svg>")
 
 
 
@@ -1925,6 +2003,7 @@ def _inside(poly, x, y):
 
 def _clip_in(pls, poly, step=1.2):
     """Keep only the parts of polylines inside poly."""
+    _ok = _ins_fast(poly)
     out = []
     for pl in pls:
         run = []
@@ -1935,7 +2014,7 @@ def _clip_in(pls, poly, step=1.2):
                 k = int(math.hypot(bx - ax, by - ay) / step)
                 pts += [(ax + (bx - ax) * j / (k + 1), ay + (by - ay) * j / (k + 1)) for j in range(1, k + 1)]
             for p in pts:
-                if _inside(poly, p[0], p[1]):
+                if _ok(p[0], p[1]):
                     run.append(p)
                 else:
                     if len(run) > 1:
@@ -2032,7 +2111,7 @@ def _stack(cv, rr, xc, wb, wt, top, base, arch=None):
     hw = wb / 2 + 1
     # bowed contour lines round the column: swelling on the shadow side, breaking on the lit edge
     burin_field(cv, x0 - 3, x1 + 3, top - 3, base + 1, lambda x, y: -1.6 * max(0., 1 - ((x - xc) / hw) ** 2),
-                lambda x, y: .15 + .8 * max(0., min(1., (xc + wb * .32 - x) / wb)), 1.5, step=1.5,
+                lambda x, y: .15 + .8 * max(0., min(1., (xc + wb * .32 - x) / wb)), 1.5, step=2.5,
                 ok=_ins_fast(poly), cross=.72)
     cv.hair(crown)
     cv.hair(_clip_in([[(x0 - 2, top + (base - top) * f + rr.uniform(-1, 1)), (x1 + 2, top + (base - top) * f + rr.uniform(-1, 1))]
@@ -2182,7 +2261,7 @@ def _coast_rest(cv, X, Y, W, H, hz, rng, seed, detail):
         burin_field(cv, min(xs) - 2, max(xs) + 2, top_y - 2, max(ys) + 2,
                     lambda x, y: r0y - (rf(x) or r0y),
                     lambda x, y: min(1., .3 + .75 * (y - (rf(x) or r0y)) / max(1., hz - top_y) + .1 * math.sin(x * .7)),
-                    1.5 if H < 120 else 2., step=2., ok=_ins_fast(poly), cross=.8)
+                    1.5 if H < 120 else 2., step=3., ok=_ins_fast(poly), cross=.8)
         for j in range(int((max(xs) - min(xs)) / 7)):  # fissures in the cliff
             fx = min(xs) + 3 + j * 7 + rng.uniform(-2, 2)
             fy = shore(fx) - H * rng.uniform(.04, .1)
@@ -2323,4 +2402,4 @@ def plate(w, h, ctx):
         return scene(x, y, sw, sh, seed, 1. if sh > 200 else .8)
 
     # planned form: a small tailpiece, about 8% of the sheet, an oval (a sunrise)
-    return shaped_frame(w, h, ctx, sc, dict(form="oval", pid="de", seed=seed, egg="dog", banner="HIGHWAY CI · A CENTURY"))
+    return free_vignette(w, h, ctx, sc, dict(form="oval", pid="de", seed=seed, egg="dog", banner="HIGHWAY CI · A CENTURY"))

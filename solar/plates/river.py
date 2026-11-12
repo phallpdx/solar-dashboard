@@ -1927,7 +1927,7 @@ def crown(cx, cy, w, h, rng, n=None, kind="round"):
     for i in range(n):
         t = i / max(1, n - 1)
         if kind == "tall":
-            y = cy - h / 2 + h * (.12 + .8 * rng.random())
+            y = cy - h / 2 + h * (.12 + .8 * (i + rng.random()) / n)
             x = cx + (w / 2) * (rng.random() - .5) * 1.4 * (1 - .4 * abs(y - cy) / h * 2)
             r = min(w, h) * rng.uniform(.18, .3)
         else:
@@ -1943,8 +1943,8 @@ def crown(cx, cy, w, h, rng, n=None, kind="round"):
 
 def tree(cv, x, base, w, h, rng, kind="tall", light=(-.62, -.62), seed=0, dark=1.):
     """A modelled deciduous tree: trunk and limbs in swelling cuts, crown in leaf masses."""
-    ct = base - h * .58
-    cl = crown(x, ct, w, h * .8, rng, kind=kind)
+    ct = base - h * .56
+    cl = crown(x, ct, w, h * .84, rng, n=max(7, int((w * h) ** .5 / 5)), kind=kind)
     tw = max(1.2, w * .06)
     trunk = [(x - tw, base), (x - tw * .6, ct + h * .1), (x + tw * .6, ct + h * .1), (x + tw, base)]
     cv.obj([trunk], 1.)
@@ -2034,20 +2034,26 @@ def water(cv, x0, x1, y0, y1, tone, rng, pitch=2., ok=None, persp=True, wav=.6):
             L = rng.uniform(10, 46) * (1.3 - d) + 3
             gp = rng.uniform(.8, 2.4) * (.4 + d)
             amp = wav * (.2 + d * .8)
-            seg = []
             n = max(2, int(L / 2))
+            sgn = 1 if (int(x) % 2) else -1
+            cur, cw = [], None
             for i in range(n + 1):
                 px = x + L * i / n
-                py = y + amp * math.sin(i / n * PI) * (1 if (int(x) % 2) else -1)
-                seg.append((px, py))
-            mx, my = x + L / 2, y
-            if ok and not ok(mx, my):
-                t = -1
-            else:
-                t = tone(mx, my) * K
-            w = None if t < .1 else (.5 if t < .42 else (1. if t < .72 else (1.5 if pitch >= 3 else 1.)))
-            if w:
-                ws[w].append(seg)
+                py = y + amp * math.sin(i / n * PI) * sgn
+                if ok and not ok(px, py):
+                    t = -1
+                else:
+                    t = tone(px, py) * K
+                w = None if t < .1 else (.5 if t < .42 else (1. if t < .72 else (1.5 if pitch >= 3 else 1.)))
+                if w != cw:
+                    if cw and len(cur) > 1:
+                        ws[cw].append(cur)
+                    cur = [cur[-1]] if (cur and w and cw) else []
+                    cw = w
+                if w:
+                    cur.append((px, py))
+            if cw and len(cur) > 1:
+                ws[cw].append(cur)
             x += L + gp
         y += pitch
     cv.hair(ws[.5])
@@ -2234,7 +2240,7 @@ def forest(cv, x0, x1, ground, hmin, hmax, rng, ybot, tone=.6, pitch=1.5, light_
     return P
 
 
-def peak(cv, cx, base, top, hw, rng, pitch=1.5, flat=0., snow=.55, tone=1.):
+def peak(cv, cx, base, top, hw, rng, pitch=1.5, flat=0., snow=.55, tone=1., east_lit=False, sharp=False):
     """A distant volcano in hachures: fall-line cuts fanning from the crown, opened white on the
     lit west flank and on the snowfields, swelling dark into the east flank and the gullies."""
     MH = base - top
@@ -2242,7 +2248,7 @@ def peak(cv, cx, base, top, hw, rng, pitch=1.5, flat=0., snow=.55, tone=1.):
     sil = []
     for i in range(n + 1):
         u = -1 + 2 * i / n
-        v = max(0., 1 - abs(u) ** 1.6) if abs(u) > flat else 1.
+        v = (max(0., 1 - abs(u)) ** 1.45 * (1 + .04 * math.sin(u * 23)) if sharp else max(0., 1 - abs(u) ** 1.6)) if abs(u) > flat else 1.
         v = min(1., v * (1 + flat * 1.5))
         sil.append((cx + u * hw, base - MH * v + (rng.uniform(-.4, .4) if 0 < i < n else 0)))
     P = sil + [(cx + hw, base + 1), (cx - hw, base + 1)]
@@ -2253,9 +2259,9 @@ def peak(cv, cx, base, top, hw, rng, pitch=1.5, flat=0., snow=.55, tone=1.):
     def t(x, y):
         u = (x - cx) / hw
         tt = (y - top) / MH
-        v = .05 + .55 * max(0., u + .15)
+        v = .05 + .55 * max(0., (-u if east_lit else u) + .15)
         for g in gul:
-            d = u / max(.15, tt + .1) - g / 1.1
+            d = (-1 if east_lit else 1) * (u / max(.15, tt + .1) - g / 1.1)
             if 0 < d < .12:
                 v += .45 * (1 - d / .12)
         if tt < snow:

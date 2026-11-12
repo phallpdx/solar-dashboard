@@ -1997,7 +1997,12 @@ PAGER_JS = r"""
           if (l.bottom > any) { any = l.bottom; anyHead = l.head ? l.top : null; }
           if (l.bottom > cut && !splits(us, l.bottom)) { cut = l.bottom; lastHead = l.head ? l.top : null; }
         } }
-      if (cut <= start + 40 || (cut - start < 0.6 * (limit - start) && any - cut > 0.25 * (limit - start))) { cut = any; lastHead = anyHead; }  // never leave half a screen empty
+      if (cut <= start + 40 || (cut - start < 0.6 * (limit - start) && any - cut > 0.25 * (limit - start))) {   // never leave half a screen empty
+        var small = [], half = 0.5 * (limit - start), cut2 = start, h2 = null;   /* but split a big container, never a small unit (one tile, one row) */
+        for (var u = 0; u < us.length; u++) if (us[u].bottom - us[u].top < half) small.push(us[u]);
+        for (var i2 = 0; i2 < ls.length; i2++) { var l2 = ls[i2];
+          if (l2.top >= start - 1 && l2.bottom <= limit && l2.bottom > cut2 && !splits(small, l2.bottom)) { cut2 = l2.bottom; h2 = l2.head ? l2.top : null; } }
+        if (cut2 > start + 40) { cut = cut2; lastHead = h2; } else { cut = any; lastHead = anyHead; } }
       if (lastHead !== null && lastHead > start + 40) cut = lastHead;    // never leave a heading at the foot
       for (var hh = 0; hh < heads.length; hh++) { var hd = heads[hh];
         if (hd.top > start + 40 && hd.top < cut && cut - hd.top < 90 && cut < total - 20) { cut = hd.top; break; } }
@@ -2014,7 +2019,7 @@ PAGER_JS = r"""
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
   function sig() { var f = document.fonts ? document.fonts.status : '', im = main.getElementsByTagName('img'), c = 0;
-    for (var q = 0; q < im.length; q++) if (im[q].complete) c++;
+    for (var q = 0; q < im.length; q++) if (im[q].complete || / kslot /.test(' ' + im[q].parentNode.className + ' ')) c++;   /* a plate slot is sized in the page: its load moves nothing */
     return window.innerWidth + 'x' + window.innerHeight + f + c + (root.getAttribute('data-kev') || ''); }   // data-kev: a page's own script changed its layout
   // The build's answer for this page at this screen size (solar/kindle_fast.py): fit classes, sheet cuts and each
   // sheet's labels, plate and ornaments, applied without measuring; checked once the fonts are in.
@@ -2149,30 +2154,33 @@ PAGER_JS = r"""
         for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
           if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
             ke.style.setProperty('background-color', 'transparent', 'important'); } }
-      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className + (document.fonts ? ' ' + document.fonts.status : '');
+      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className + ' ' + (document.fonts ? document.fonts.status : '') + ' ' + cuts.join(',');
       if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
-        /* text blocks print on clean white labels set into the engraved paper: the line boxes of each block
-           (paragraph, stat cell, list) are united, neighbours a line apart merge, and each label gets a fine
-           double rule; charts and pictures keep a plain white ground */
-        var kr = [], rg = document.createRange(), tw = document.createTreeWalker(main, 4, null, false), tn, PX = 7, PY = 5;
+        /* panels, not labels: every block the reader reads prints on ONE white panel the full width of the
+           column (the .kpanel contract; until a page has .kpanel, each top-level card, list or note), so all
+           panels share one left and one right edge and ornament lives only in the gaps between them */
+        var kr = [], tw = document.createTreeWalker(main, 4, null, false), tn, PY = 4, mw0 = main.offsetWidth;
+        var hasP = !!main.querySelector('.kpanel'), PSEL = hasP ? '.kpanel' : 'section.card,nav,.kverdict,.kmast,.ktoc,.kfhead,.kend,.kendsrc,.kbrief>p';
+        function panelOf(pe) { var bk = pe.closest ? pe.closest(PSEL) : null;
+          if (!bk || !main.contains(bk)) { bk = pe; while (bk.parentNode !== main && bk.parentNode && !/\b(sec-body|kbrief|group)\b/.test(bk.parentNode.className || '')) bk = bk.parentNode; }
+          return bk; }
+        function grow(bk, t, d) {   /* a panel spans what is printed in its block: its lines, charts and pictures, never its empty margins */
+          if (hasP) { var pr = bk.getBoundingClientRect(); t = pr.top + PY; d = pr.bottom - PY; }   /* a panel's white is its own box: the gap between two stays the layout's */
+          for (var rj = 0; rj < kr.length; rj++) if (kr[rj].b === bk) { kr[rj].t = Math.min(kr[rj].t, t - mr.top - PY); kr[rj].d = Math.max(kr[rj].d, d - mr.top + PY); return; }
+          kr.push({ b: bk, l: -1.5, t: t - mr.top - PY, r: mw0 + 1.5, d: d - mr.top + PY }); }
+        var rg = document.createRange();
         while ((tn = tw.nextNode())) {
           if (!/\S/.test(tn.nodeValue)) continue;
-          var pe = tn.parentNode; if (pe.closest && pe.closest('svg,script,style,.kchart,table')) continue;
-          var bk = pe; while (bk !== main && !blockish(bk)) bk = bk.parentNode;
-          rg.selectNodeContents(tn); var cr = rg.getClientRects(), pb = pe.getBoundingClientRect();
-          for (var ci = 0; ci < cr.length; ci++) { var c0 = cr[ci], cl = Math.max(c0.left, pb.left), cw = Math.min(c0.right, pb.right) - cl;
-            if (cw < 1 || c0.height < 1) continue;   /* clipped to its element: an ellipsis never leaves white beyond it */
-            var x0 = cl - mr.left, y0b = c0.top - mr.top, hit = null;
-            for (var rj = 0; rj < kr.length; rj++) if (kr[rj].b === bk) { hit = kr[rj]; break; }
-            if (!hit) kr.push({ b: bk, l: x0, t: y0b, r: x0 + cw, d: y0b + c0.height });
-            else { hit.l = Math.min(hit.l, x0); hit.t = Math.min(hit.t, y0b); hit.r = Math.max(hit.r, x0 + cw); hit.d = Math.max(hit.d, y0b + c0.height); } } }
-        for (var ra = 0; ra < kr.length; ra++) { kr[ra].l -= PX; kr[ra].r += PX; kr[ra].t -= PY; kr[ra].d += PY; }
+          var pe = tn.parentNode; if (pe.closest && pe.closest('svg,script,style')) continue;
+          rg.selectNodeContents(tn); var cr = rg.getClientRects();
+          for (var ci = 0; ci < cr.length; ci++) if (cr[ci].width >= 1 && cr[ci].height >= 1) grow(panelOf(pe), cr[ci].top, cr[ci].bottom); }
+        var kq0 = main.querySelectorAll('img,.kchart,.bars,.rain,.mix,table,figure,svg');
+        for (var q0 = 0; q0 < kq0.length; q0++) { var qr0 = kq0[q0].getBoundingClientRect(); if (qr0.width >= 1 && qr0.height >= 1 && !(kq0[q0].parentNode.closest && kq0[q0].parentNode.closest('svg,.kslot'))) grow(panelOf(kq0[q0]), qr0.top, qr0.bottom); }
         var merged = true;
         while (merged) { merged = false;
           for (var m1 = 0; m1 < kr.length && !merged; m1++) for (var m2 = m1 + 1; m2 < kr.length; m2++) { var A = kr[m1], Bq = kr[m2];
-            var ox = Math.min(A.r, Bq.r) - Math.max(A.l, Bq.l), oy = Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t);
-            if ((ox > 0 && oy > -6) || (oy > 0 && ox > -6)) {   /* touching or a line apart: one label */
-              A.l = Math.min(A.l, Bq.l); A.t = Math.min(A.t, Bq.t); A.r = Math.max(A.r, Bq.r); A.d = Math.max(A.d, Bq.d); kr.splice(m2, 1); merged = true; break; } } }
+            if (Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t) > (hasP ? 0 : -10)) {   /* overlapping (or, before .kpanel, nearly touching): one panel */
+              A.t = Math.min(A.t, Bq.t); A.d = Math.max(A.d, Bq.d); kr.splice(m2, 1); merged = true; break; } } }
         var mw = main.offsetWidth, kl = [];
         for (var rb = 0; rb < kr.length; rb++) { var L0 = kr[rb], t0 = L0.t;   /* never across a sheet cut: each sheet's part is its own label */
           L0.l = Math.max(L0.l, -1.5); L0.r = Math.min(L0.r, mw + 1.5);
@@ -2183,6 +2191,7 @@ PAGER_JS = r"""
         var kq = main.querySelectorAll('img,.kchart,.bars,.rain,.mix,table,figure,svg');
         for (var qi = 0; qi < kq.length; qi++) { var qr = kq[qi].getBoundingClientRect(); if (qr.width < 1 || qr.height < 1) continue;
           if (kq[qi].tagName.toLowerCase() === 'svg' && kq[qi].closest('.kchart,figure')) continue;
+          if (kq[qi].closest('.kslot')) continue;   /* a placed plate prints on its own engraved ground */
           kh += '<i style="left:' + Math.floor(qr.left - mr.left) + 'px;top:' + Math.floor(qr.top - mr.top) + 'px;width:' + Math.ceil(qr.width + 1) + 'px;height:' + Math.ceil(qr.height + 1) + 'px"></i>'; }
         ko.innerHTML = kh; }
       ko.style.top = main.style.top; ko.style.left = main.offsetLeft + 'px';
@@ -2190,19 +2199,12 @@ PAGER_JS = r"""
       var kf = document.getElementById('kkf'), fsig = window.innerWidth + ' ' + sig + ' ' + (kcont && kcont.style.display) + (kcont ? kcont.textContent : '') + (more ? more.textContent + more.style.display : '') + (pos ? pos.textContent : '');
         if (!kf) { kf = document.createElement('div'); kf.id = 'kkf'; kf.setAttribute('aria-hidden', 'true'); document.body.appendChild(kf); }
         if (kf.getAttribute('data-sig') !== fsig) { kf.setAttribute('data-sig', fsig);   /* the running head, the bar, "continued": white only under their words */
-          var fh = '', fls = [], fr = document.createRange(), fq = [run, bar, kcont];
-          for (var fi = 0; fi < fq.length; fi++) { if (!fq[fi] || fq[fi].offsetParent === null) continue;
-            var fw = document.createTreeWalker(fq[fi], 4, null, false), fn;
-            while ((fn = fw.nextNode())) { if (!/\S/.test(fn.nodeValue) || fn.parentNode.offsetParent === null || (fn.parentNode.closest && fn.parentNode.closest('#kmore'))) continue; fr.selectNodeContents(fn);
-              var fc = fr.getClientRects(), fb = fn.parentNode.getBoundingClientRect();
-              for (var fj = 0; fj < fc.length; fj++) { var f0 = fc[fj], fl = Math.max(f0.left, fb.left), fw2 = Math.min(f0.right, fb.right) - fl; if (fw2 < 1) continue;
-                var fx = [fl - 6, f0.top - 3, fl + fw2 + 6, f0.bottom + 3], fm = false;
-              for (var fk = 0; fk < fls.length; fk++) { var G = fls[fk]; if (fx[0] < G[2] + 10 && fx[2] > G[0] - 10 && fx[1] < G[3] && fx[3] > G[1]) {
-                G[0] = Math.min(G[0], fx[0]); G[1] = Math.min(G[1], fx[1]); G[2] = Math.max(G[2], fx[2]); G[3] = Math.max(G[3], fx[3]); fm = true; break; } }
-              if (!fm) fls.push(fx); } } }
-          for (var fk2 = 0; fk2 < fls.length; fk2++) fh += '<i class="kl" style="left:' + Math.floor(fls[fk2][0]) + 'px;top:' + Math.floor(fls[fk2][1]) + 'px;width:' + Math.ceil(fls[fk2][2] - fls[fk2][0]) + 'px;height:' + Math.ceil(fls[fk2][3] - fls[fk2][1]) + 'px"></i>';
-          if (more && more.offsetParent !== null) { var mb2 = more.getBoundingClientRect(); fh += '<i style="left:' + Math.floor(mb2.left) + 'px;top:' + Math.floor(mb2.top) + 'px;width:' + Math.ceil(mb2.width) + 'px;height:' + Math.ceil(mb2.height) + 'px"></i>'; }
+          var fh = '', fq = [run, bar, kcont];   /* the running head, the bar, "continued": each one full-width panel */
+          for (var fi = 0; fi < fq.length; fi++) { if (!fq[fi] || fq[fi].offsetParent === null || !/\S/.test(fq[fi].textContent)) continue;
+            var fb = fq[fi].getBoundingClientRect(), vb = view.getBoundingClientRect(); if (fb.height < 1) continue;
+            fh += '<i class="kl" style="left:' + Math.floor(vb.left - 1.5) + 'px;top:' + Math.floor(fb.top - 2) + 'px;width:' + Math.ceil(vb.width + 3) + 'px;height:' + Math.ceil(fb.height + 4) + 'px"></i>'; }
           kf.innerHTML = fh; }
+        if (!PRE && kfillDue === sheet) { kfillDue = -1; kfill(sheet); }   /* the fill's one check, with the labels: no later repaint */
       }, 0); }
     if (tl) {   /* fill what this sheet leaves empty: art beside #kmain, never in it, so it never adds a sheet */
       var t2 = document.getElementById('ktail2');
@@ -2219,22 +2221,26 @@ PAGER_JS = r"""
       var vr = view.getBoundingClientRect();
       window.KROOM = { sheet: i, sheets: n, x: Math.round(vr.left), y: Math.round(vr.top + y0), w: Math.round(vr.width), h: Math.round(room) };
       var kp = kme && room >= 40 && document.body.getAttribute('data-kplates'), pk = null;
+      if (kp && i < n - 1) {   /* no plate after a panel the cut leaves open: it continues on the next sheet */
+        var opn = main.querySelectorAll('.kpanel'), mt1 = main.getBoundingClientRect().top;
+        for (var oq = 0; oq < opn.length; oq++) { var orr = opn[oq].getBoundingClientRect(); if (orr.top - mt1 < end - 2 && orr.bottom - mt1 > end + 2) { kp = null; break; } } }
       if (kp) { try { kp = JSON.parse(kp); } catch (e) { kp = []; }   /* this page's plates: [sheet, h, w], cut to this morning's rooms */
-        for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && kp[pi][1] <= room + 2 && kp[pi][1] >= room - 16) pk = kp[pi];
-        if (!pk) for (pi = 0; pi < kp.length; pi++) if (kp[pi][1] <= room && (!pk || kp[pi][1] > pk[1])) pk = kp[pi]; }
+        for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && kp[pi][1] <= room + 2 && (kp[pi][1] >= room - 16 || kp[pi][3])) pk = kp[pi];
+        if (!pk && !(kp.length && kp[0][3])) for (pi = 0; pi < kp.length; pi++) if (kp[pi][1] <= room && (!pk || kp[pi][1] > pk[1])) pk = kp[pi]; }
       if (pk) {   /* ONE bespoke engraved plate fills the free space: a fixed-size <img>, outside #kmain, so it never adds a sheet */
         var slug = location.pathname.split('/').pop().replace(/\.html$/, ''), im = t2.firstChild;
         if (!im) { im = document.createElement('img'); im.alt = ''; t2.appendChild(im); }
         var src = 'orn/plate-' + slug + '-' + pk[0] + (document.body.getAttribute('data-kpx') || '.svg');
         if (im.getAttribute('src') !== src) im.setAttribute('src', src);
         im.width = pk[2]; im.height = pk[1]; t2.className = 'kplate';
-        t2.style.top = (y0 + Math.max(0, room - pk[1]) / 2) + 'px'; t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; 
+        t2.style.top = (y0 + (pk[3] ? Math.min(12, Math.max(0, room - pk[1])) : Math.max(0, room - pk[1]) / 2)) + 'px';   /* a planned plate sits under the last panel; the room below it is frame */ t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; 
         setTimeout(function () {   /* after the sheet settles: if any visible line of type reaches under the plate, move the plate below it, or drop it */
           var tr = t2.getBoundingClientRect(), vr2 = view.getBoundingClientRect(), cb = document.getElementById('kclip').getBoundingClientRect(), tw = document.createTreeWalker(main, 4, null, false), tn, tb = 0;
           while ((tn = tw.nextNode())) { if (!/\S/.test(tn.nodeValue)) continue; var rg = document.createRange(); rg.selectNodeContents(tn); var rs = rg.getClientRects();
             for (var ri = 0; ri < rs.length; ri++) { var q = rs[ri]; if (q.height && q.bottom > cb.top + 1 && q.top < cb.bottom - 1 && q.top < vr2.bottom - 1 && q.bottom > tb) tb = Math.min(q.bottom, cb.bottom, vr2.bottom); } }
           if (tb > tr.top - 4) { var d = tb + 6 - tr.top, lim = vr2.top + H - 6;
-            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none'; }
+            if (tr.bottom + d <= lim) t2.style.top = (parseFloat(t2.style.top) + d) + 'px'; else t2.style.display = 'none';
+            if (!PRE && kme) { kfillSeen = {}; kfill(sheet); } }   /* the plate moved: the fill is checked again */
         }, 60); }
     }
     var gq = view.querySelectorAll('.kgap');   /* and the gaps between blocks: a fleuron in each, never over print */
@@ -2253,6 +2259,8 @@ PAGER_JS = r"""
           var gh = Math.min(gi.top - mb - 10, 120); gd.style.top = (mb - top + (gi.top - mb - gh) / 2) + 'px'; gd.style.height = gh + 'px'; view.appendChild(gd); }
         if (mb === null || gi.bottom > mb) mb = gi.bottom; } }
     }
+    if (PRE) { if (PRE.s[i] && PRE.s[i].fill !== undefined) kfillPre(PRE.s[i].fill); }   /* the build's answer: no measure */
+    else if (kme) kfillDue = i;   /* checked in the labels' 0 ms pass */
     if (!PRE || pre0) unscroll();   // a fresh page is not scrolled: never force a layout just to say so
     pre0 = 1;
     if (more) {
@@ -2267,6 +2275,55 @@ PAGER_JS = r"""
     try { store['kme:' + location.pathname] = i;
       if (!FLOW && window.localStorage) localStorage.setItem('kme:last', JSON.stringify({ u: location.pathname.split('/').pop(), s: i, t: TITLE, ed: root.getAttribute('data-ed') || '' })); } catch (e) {}
   }
+  /* KLAB: what this sheet prints on, in viewport px: o = the white panels (text blocks, charts, the running
+     head and bar), p = the plates, d = drawn decorations (their own ground shows). The build
+     measures the same thing to cut each sheet's engraved fill (orn/fill-<page>-<sheet>.svg) */
+  window.KLAB = function () {
+    var o = [], d = [], p = [], cb = view.getBoundingClientRect(), q, k;
+    function add(a, r, clip) { var l = r.left, t = r.top, rr = r.right, b = r.bottom;
+      if (clip) { l = Math.max(l, cb.left); t = Math.max(t, cb.top); rr = Math.min(rr, cb.right); b = Math.min(b, cb.bottom); }
+      if (rr - l >= 1 && b - t >= 1) a.push([Math.round(l), Math.round(t), Math.round(rr - l), Math.round(b - t)]); }
+    q = document.querySelectorAll('#kko i'); for (k = 0; k < q.length; k++) add(o, q[k].getBoundingClientRect(), 1);
+    q = document.querySelectorAll('#kkf i'); for (k = 0; k < q.length; k++) add(o, q[k].getBoundingClientRect(), 0);
+    var t2 = document.getElementById('ktail2');
+    if (t2 && t2.style.display === 'block' && t2.firstChild) add(p, t2.firstChild.getBoundingClientRect(), 0);
+    q = main.querySelectorAll('.kslot img'); for (k = 0; k < q.length; k++) add(p, q[k].getBoundingClientRect(), 1);
+    q = main.querySelectorAll('.kfhead,.kmast,.kend,.kgl,.kendsrc,.ktoc,.kfnum'); for (k = 0; k < q.length; k++) add(d, q[k].getBoundingClientRect(), 1);
+    var by = function (a, b) { return a[1] - b[1] || a[0] - b[0] || a[2] - b[2]; };
+    o.sort(by); d.sort(by); p.sort(by);
+    return { o: o, d: d, p: p };
+  };
+  var kfillSeen = {}, kfillDue = -1;
+  function kfillPre(src) {   /* the fast path: the build recorded this sheet's fill (or none); the gaps' fleurons came with the sheet */
+    var fi = document.getElementById('kfill'); if (!fi) return;
+    if (src && fi.getAttribute('src') !== src) fi.setAttribute('src', src);
+    fi.style.visibility = src ? 'visible' : 'hidden';
+  }
+  function kfill(i) {   /* the engraved fill: measured once per sheet (and layout); shown only if that one measure matches the
+                           build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
+    var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
+    if (!fm || !fi || i !== sheet) return;
+    var key = i + '|' + cuts.join(',') + '|' + main.offsetHeight + '|' + (document.fonts ? document.fonts.status : ''), ok = kfillSeen[key];   /* a check made before the fonts were in is not kept */
+    if (ok === undefined) {
+      ok = false;
+      if (window.innerWidth === 618 && window.innerHeight === 714) {
+        try { fm = JSON.parse(fm); } catch (e) { fm = []; }
+        var want = null;
+        for (var k = 0; k < fm.length; k++) if (fm[k][0] === i) want = fm[k];
+        if (want) { var L = window.KLAB(), same = function (a, s) { var b = s ? s.split(' ') : []; if (a.length !== b.length) return false;
+            for (var j = 0; j < a.length; j++) { var v = b[j].split(','); for (var c = 0; c < 4; c++) if (Math.abs(a[j][c] - v[c]) > 4) return false; }
+            return true; };
+          ok = same(L.o, want[1]) && same(L.d, want[2]) && same(L.p, want[3] || ''); } }
+      kfillSeen[key] = ok; }
+    if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + (document.body.getAttribute('data-kfx') || '.svg');
+      if (fi.getAttribute('src') !== src) fi.setAttribute('src', src); }
+    fi.style.visibility = ok ? 'visible' : 'hidden';
+    var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside */
+    for (var g = 0; g < gq.length; g++) gq[g].style.visibility = ok ? 'hidden' : '';
+  }
+  if (document.body.getAttribute('data-kfills') && !document.getElementById('kfill')) {   /* made once, before the first layout */
+    var kfi = document.createElement('img'); kfi.id = 'kfill'; kfi.alt = ''; kfi.setAttribute('aria-hidden', 'true'); kfi.style.visibility = 'hidden';
+    document.body.insertBefore(kfi, document.body.firstChild); }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
     if (busy) return;
     if (++turns % FLASH_EVERY && !root.hasAttribute('data-flash')) { show(i); return; }
@@ -2354,6 +2411,7 @@ PAGER_JS = r"""
         var R = window.KROOM, r2 = {}; for (var x in R) r2[x] = R[x];
         P.s.push({ top: main.style.top, vh: view.style.height, kc: kcont ? kcont.innerHTML : '', kcd: kcont ? kcont.style.display : '',
           kf: kf ? kf.innerHTML : null, gaps: gh, room: R ? r2 : null,
+          fill: (function () { var fi = document.getElementById('kfill'); return fi && fi.style.visibility === 'visible' ? fi.getAttribute('src') : ''; })(),
           t2: t2 ? { d: t2.style.display, top: t2.style.top, h: t2.style.height, c: t2.className, src: im ? im.getAttribute('src') : '', w: im ? im.width : 0, ih: im ? im.height : 0 } : null });
         if (++i < n) step(); else { show(0); done(P); }
       }, 150); })();
@@ -2369,7 +2427,8 @@ PAGER_JS = r"""
       var ks = t.match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
       if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); }
       var kp = t.match(/data-kplates='([^']*)'/), slug = u.split('#')[0].split('/').pop().replace(/\.html$/, '');   // its plates too
-      if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {} };
+      if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {}
+      if (/ data-kfills='\[\[0,/.test(t) && / data-kfx="\.png"/.test(t)) { var iff = new Image(); iff.src = 'orn/fill-' + slug + '-0.png'; } };   // and its first sheet's fill
     x.send(); } catch (e) {} }
   setTimeout(function(){
     try { var sw = navigator.serviceWorker;

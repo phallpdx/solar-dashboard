@@ -7,6 +7,7 @@ the leaf (contour lines 1.5 px apart), a dark trough along the midrib, hair vein
 each lobe point. Stems are round-carved ribbons, lit on one edge, ruled on the other; every curl ends in a
 drilled eye. Pure standard library; deterministic; e-ink rules (eink-guide 1-2) built in."""
 import math
+import re
 import random
 
 TAU = 2 * math.pi
@@ -887,3 +888,577 @@ def gap_bar(w=232, h=20, seed=0):
                 f'<circle cx="{w / 2}" cy="{h / 2}" r="1.6" fill="#fff" stroke="#000" stroke-width=".5"/>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{h}" '
             f'viewBox="0 0 {w} {h}" stroke-linecap="round" stroke-linejoin="round">' + "".join(body) + "</svg>")
+
+
+# ================================================================================================
+# KING TIER: fine interlocking scroll on a punched matte ground, gold-line wire and beading
+# ================================================================================================
+# A punched matte: black, struck with a 1 px white punch every 2 px (no flat black anywhere).
+def _punch_tile(seed=11, size=8, n=15):
+    """A matte punched ground: a black tile struck with 1 px white punches at jittered places (no grid to
+    read, no flat black over 3 px), tiled at 8 px, which is too fine to read as a pattern."""
+    rng = random.Random(seed)
+    cells = [(x, y) for x in range(0, size, 2) for y in range(0, size, 2)]
+    rng.shuffle(cells)
+    d = "".join(f"M{x + rng.choice((0, .5)):g},{y + rng.choice((0, .5)):g}h1v1h-1z" for x, y in cells[:n])
+    return (f'<pattern id="hp" width="{size}" height="{size}" patternUnits="userSpaceOnUse">'
+            f'<rect width="{size}" height="{size}" fill="#000"/><path d="{d}" fill="#fff"/></pattern>')
+
+
+PUNCH = _punch_tile()
+
+
+def fine_leaf(ink, spine, wmax, lobes=3, shade=1, phase=0.):
+    """A small scroll leaf: white blade with a 0.5 px cut edge, shadow side cut with 0.5 px lines
+    1.5 px apart, a fine trough at the midrib. Leaves this small read as engraving, not clip art."""
+    pts, L = resample(spine, 1.)
+    N = normals(pts)
+    n = len(pts)
+    lit = -shade
+
+    def wid(u):
+        return wmax * (math.sin(math.pi * min(1, u ** .7)) ** .7) * (.4 + .6 * min(1, u * 5))
+    E = {1: [], -1: []}
+    for i in range(n):
+        u = i / (n - 1)
+        for s in (1, -1):
+            m = _lobe(u, lobes, phase + (0 if s == lit else .5)) if u > .1 else 1
+            if s != lit:
+                m = .8 + .2 * m
+            E[s].append((pts[i][0] + N[i][0] * s * wid(u) * m, pts[i][1] + N[i][1] * s * wid(u) * m))
+    ink.blade(_d(E[1] + E[-1][::-1], True), .5)
+    hd = []
+    for k in range(1, 5 if wmax > 3.2 else 2):
+        off = 1.5 * k - .5 if wmax > 3.2 else 1.
+        run = []
+        for i in range(n):
+            u = i / (n - 1)
+            if off <= wid(u) * .8 - .7 and u < .9:
+                run.append((pts[i][0] + N[i][0] * shade * off, pts[i][1] + N[i][1] * shade * off))
+            else:
+                if len(run) > 2:
+                    hd.append(_d(run))
+                run = []
+        if len(run) > 2:
+            hd.append(_d(run))
+    hd.append(_d([(p[0] + N[i][0] * shade * .3, p[1] + N[i][1] * shade * .3) for i, p in enumerate(pts) if .08 < i / (n - 1) < .8]))
+    ink.lines("".join(hd), .5)
+
+
+def fine_unit(B, P, seed):
+    """One unit of fine running scroll, flowing up a B x P box: a slender stem weaving from foot to head,
+    a true logarithmic volute curling into the bay with seven small shaded leaves sprouting along it,
+    a second, smaller curl on the stem's outer side, and leaves sheathing the stem. Mirrored units
+    interlock, so the scroll runs on with no gaps."""
+    rng = random.Random(seed)
+    ink = Ink()
+    cx = B / 2
+    stem = bez((cx, P + .3), (cx - B * .42, P * .7), (cx - B * .42, P * .3), (cx, -.3), 26)
+    node = stem[int(len(stem) * .45)]
+    vr = B * .3
+    vc = (cx + B * .2, P * .45)
+    a0 = math.atan2(node[1] - vc[1], node[0] - vc[0])
+    sp = spiral(vc[0], vc[1], vr, a0 + .3, 1.7, flip=False, end=.12)
+    branch = bez(node, (node[0] + 1.5, node[1] + 1), (sp[0][0] - 1, sp[0][1] + 1.5), sp[0], 8)[:-1] + sp
+    # small outer curl on the stem side, near the head
+    q = stem[int(len(stem) * .78)]
+    cc = (max(1.8 + B * .12, q[0] - B * .2), q[1] + P * .04)
+    sp2 = spiral(cc[0], cc[1], B * .14, math.atan2(q[1] - cc[1], q[0] - cc[0]), 1.4, flip=True, end=.15)
+    tw = [q] + sp2
+    # leaves sheathing the stem low down (deepest)
+    for u, side, ln in ((.12, 1, .55), (.28, -1, .5), (.62, -1, .5), (.88, 1, .45)):
+        p0 = stem[int(len(stem) * u)]
+        p1 = stem[int(len(stem) * u) + 3]
+        ang = math.atan2(p1[1] - p0[1], p1[0] - p0[0]) + side * .55
+        L = B * ln
+        sp_ = [(p0[0] + math.cos(ang + side * .9 * t * t) * L * t, p0[1] + math.sin(ang + side * .9 * t * t) * L * t) for t in [k / 10 for k in range(11)]]
+        fine_leaf(ink, sp_, B * .14, 3, -side, rng.random() * .3)
+    ribbon(ink, stem, 1.8, 1.5, shade=-1, eye=False)
+    ribbon(ink, tw, 1.3, .8, shade=1)
+    # leaves along the volute's outside, from the root toward the eye, each smaller and tighter
+    pts, Lsp = resample(branch, .7)
+    N = normals(pts)
+    nl = 8
+    for j in range(nl):
+        u = .04 + .7 * j / nl
+        i = int(u * (len(pts) - 1))
+        x, y = pts[i]
+        tx, ty = pts[i + 2][0] - x, pts[i + 2][1] - y
+        ta = math.atan2(ty, tx)
+        # outward = away from the volute centre
+        ox, oy = x - vc[0], y - vc[1]
+        side = 1 if (-ty * ox + tx * oy) < 0 else -1
+        L = B * (.52 - .3 * u) * rng.uniform(.9, 1.1)
+        ang = ta - side * .5
+        sp_ = [(x + math.cos(ang + side * 1.1 * t * t) * L * t, y + math.sin(ang + side * 1.1 * t * t) * L * t) for t in [k / 10 for k in range(11)]]
+        fine_leaf(ink, sp_, L * .32, rng.choice((2, 3)), side, rng.random() * .3)
+    ribbon(ink, branch, 1.6, .7, shade=1)
+    return ink.svg()
+
+
+def wire(x0, y0, x1, y1):
+    """A fine gold-line inlay: a 1 px white wire."""
+    return f'<path d="M{_n(x0)},{_n(y0)}L{_n(x1)},{_n(y1)}" stroke="#fff" stroke-width="1" fill="none"/>'
+
+
+def beads_d(x0, y0, x1, y1, r=1, pitch=3.):
+    """Path data for a row of round beads (white, struck on the black) from (x0,y0) to (x1,y1)."""
+    L = math.hypot(x1 - x0, y1 - y0)
+    n = max(1, int(L / pitch))
+    o = []
+    for k in range(n + 1):
+        t = k / n
+        x, y = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
+        o.append(f"M{x - r:.2f},{y:.2f}a{r},{r} 0 1 0 {2 * r},0a{r},{r} 0 1 0 {-2 * r},0")
+    return "".join(o)
+
+
+def king_frame(motif_key=None, seed=0, w=W, h=H):
+    """The master frame at king tier: each band a black field punched to a matte, a gold-line wire and a
+    row of beads along both its edges, and between them fine scroll flowing continuously round the
+    page; Parker's bosses at the corners ringed with beads; the section cartouche at the foot."""
+    S, T = SIDE, TOPB
+    bx0, bx1 = 3, S - 5            # side band 3..41
+    by0, by1 = 3, T - 4            # top band 3..22
+    o = [f'<rect x="1" y="1" width="{w - 2}" height="{h - 2}" fill="none" stroke="#000" stroke-width="1"/>']
+    gd = f"M{bx0},{by0}H{w - bx0}V{h - by0}H{bx0}Z" f"M{bx1},{by1}V{h - by1}H{w - bx1}V{by1}Z"
+    o.append(f'<path d="{gd}" fill="url(#hp)" fill-rule="evenodd"/>')
+    # edges: wire, beads, wire on the outside; beads and wire on the inside
+    ow, ob, iw, ib = 1.5, 4.0, 1.5, 4.0
+    # scroll field between the bead rows
+    sx0, sx1 = bx0 + 6.5, bx1 - 6.5            # side scroll: 9.5..34.5 (25 px)
+    sy0, sy1 = by0 + 4.5, by1 - 4.5            # top scroll: 7.5..17.5 (10 px)
+    Bs, Bt = sx1 - sx0, sy1 - sy0
+    o.append(f'<clipPath id="kcl"><path d="M{sx0},{sy0}H{w - sx0}V{h - sy0}H{sx0}Z M{sx1},{sy1}V{h - sy1}H{w - sx1}V{sy1}Z" clip-rule="evenodd"/></clipPath>')
+    o.append('<g clip-path="url(#kcl)">')
+    Ps, Pt = round(Bs * 1.5, 1), round(Bt * 2.2, 1)
+    o.append(_col(sx0, sy0 + 2, h - 2 * sy0 - 4, Bs, ["ks0", "ks1", "ks2"], Ps))
+    o.append(_col(w - sx1, sy0 + 2, h - 2 * sy0 - 4, Bs, ["ks2", "ks0", "ks1"], Ps, flip=True))
+    o.append(_row(sx1, sy0, w - 2 * sx1, Bt, ["kt0", "kt1"], Pt, True))
+    o.append(_row(sx1, h - sy1, (w - 2 * sx1) / 2, Bt, ["kt1", "kt0"], Pt, True))
+    o.append(_row(w / 2, h - sy1, (w - 2 * sx1) / 2, Bt, ["kt0", "kt1"], Pt, False))
+    o.append("</g>")
+    # gold-line wires and beads on both edges of every band
+    wd, bd = [], []
+    for (a0, b0, a1, b1) in ((bx0, by0, w - bx0, h - by0), (bx1, by1, w - bx1, h - by1)):
+        sg = 1 if a0 == bx0 else -1      # inward offset for the outer box, outward for the inner
+        for off, kind in ((ow, "w"), (ob, "b")):
+            x0, y0, x1, y1 = a0 + sg * off, b0 + sg * off, a1 - sg * off, b1 - sg * off
+            if kind == "w":
+                wd.append(f"M{_n(x0)},{_n(y0)}H{_n(x1)}V{_n(y1)}H{_n(x0)}Z")
+            else:
+                bd.append((x0, y0, x1, y1))
+    o.append(f'<path d="{"".join(wd)}" fill="none" stroke="#fff" stroke-width="1"/>')
+    # bead rows as pattern-filled strips (a bead every 3 px), each pattern registered on its own row
+    bp = []
+    for k, (x0, y0, x1, y1) in enumerate(bd):
+        for j, (rx, ry, rw, rh) in enumerate(((x0, y0 - 1.5, x1 - x0, 3), (x0, y1 - 1.5, x1 - x0, 3), (x0 - 1.5, y0, 3, y1 - y0), (x1 - 1.5, y0, 3, y1 - y0))):
+            pid = f"kb{k}{j}"
+            bp.append(f'<pattern id="{pid}" width="3" height="3" patternUnits="userSpaceOnUse" x="{_n(rx + (0 if j < 2 else 0))}" y="{_n(ry)}">'
+                      f'<circle cx="1.5" cy="1.5" r="1" fill="#fff"/></pattern>')
+            o.append(f'<rect x="{_n(rx)}" y="{_n(ry)}" width="{_n(rw)}" height="{_n(rh)}" fill="url(#{pid})"/>')
+    o.insert(0, "<defs>" + "".join(bp) + "</defs>")
+    # the reading panel's edge: a fine black double rule on the paper side
+    o.append(f'<path d="M{bx1 + .75},{by1 + .75}H{w - bx1 - .75}V{h - by1 - .75}H{bx1 + .75}Z" fill="none" stroke="#000" stroke-width=".5"/>')
+    o.append(f'<path d="M{bx1 + 2.25},{by1 + 2.25}H{w - bx1 - 2.25}V{h - by1 - 2.25}H{bx1 + 2.25}Z" fill="none" stroke="#000" stroke-width=".5"/>')
+    R = CORNER_R
+    for (cx, cy), f in (((S / 2 - 1, 30), fig_dog), ((w - S / 2 + 1, 30), fig_hood), ((S / 2 - 1, h - 30), fig_heron), ((w - S / 2 + 1, h - 30), fig_drums)):
+        o.append(king_roundel(cx, cy, R, f()))
+    if motif_key and motif_key in MOTIFS:
+        o.append(cartouche(w / 2, h - T / 2 - 1, 84, 24, MOTIFS[motif_key]()))
+    dfs = ("<defs>" + PUNCH + GROUND
+           + "".join(f'<g id="ks{k}">{fine_unit(Bs, Ps, seed * 10 + k)}</g>' for k in range(3))
+           + "".join(f'<g id="kt{k}">{fine_unit(Bt, Pt, seed * 10 + 5 + k)}</g>' for k in range(2)) + "</defs>")
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{h}" '
+            f'viewBox="0 0 {w} {h}" stroke-linecap="round" stroke-linejoin="round">' + dfs + "".join(o) + "</svg>")
+
+
+def king_roundel(cx, cy, r, fig):
+    """A boss ringed with beads between two gold-line wires, its ground punched, the figure standing up."""
+    o = f'<circle cx="{_n(cx)}" cy="{_n(cy)}" r="{_n(r + .5)}" fill="#000"/>'
+    o += f'<circle cx="{_n(cx)}" cy="{_n(cy)}" r="{_n(r - 1)}" fill="none" stroke="#fff" stroke-width="1"/>'
+    n = int(TAU * (r - 3.5) / 3)
+    o += '<path d="' + "".join(f"M{cx + (r - 3.5) * math.cos(TAU * k / n) - 1:.2f},{cy + (r - 3.5) * math.sin(TAU * k / n):.2f}a1,1 0 1 0 2,0a1,1 0 1 0 -2,0" for k in range(n)) + '" fill="#fff"/>'
+    o += f'<circle cx="{_n(cx)}" cy="{_n(cy)}" r="{_n(r - 6)}" fill="url(#hp)" stroke="#fff" stroke-width="1"/>'
+    s = (2 * (r - 6) - 3) / 30
+    o += f'<g transform="translate({_n(cx - 15 * s)},{_n(cy - 15 * s)}) scale({s:.4f})">{fig}</g>'
+    return o
+
+
+# The cut-away ground everywhere (bands, bosses, cartouches, gap bars) is the punched matte now.
+GROUND = PUNCH.replace('id="hp"', 'id="hg"')
+hunt_page_frame = page_frame
+page_frame = king_frame
+
+
+# ================================================================================================
+# FITTED FILLS: white-line Himmapan flora on black, cut to every free rectangle of a sheet
+# ================================================================================================
+
+def _f1(v):
+    return f"{v:.1f}".rstrip("0").rstrip(".")
+
+
+def _bird(x, y, s=1., flip=False):
+    """A small perching bird in white line (for the flora's hidden creatures), about 12 x 9 at s=1."""
+    k = -1 if flip else 1
+    P = lambda px, py: f"{_f1(x + k * px * s)},{_f1(y + py * s)}"
+    body = (f"M{P(0, 0)}C{P(2, -4)} {P(6, -5)} {P(8, -3)}L{P(10, -4.5)}L{P(9.5, -2.5)}C{P(9, 0)} {P(6, 2)} {P(2, 1.5)}"
+            f"L{P(-3, 3)}L{P(-1, .5)}Z")
+    return (f'<path d="{body}" fill="#fff"/><path d="M{P(3.5, -1)}C{P(5, -2)} {P(6.5, -1.5)} {P(7, -.5)}" stroke="#000" stroke-width=".5" fill="none"/>'
+            f'<circle cx="{_f1(x + k * 7.6 * s)}" cy="{_f1(y - 3 * s)}" r=".5" fill="#000"/>'
+            f'<path d="M{P(4, 1.6)}V{P(4, 4.5)[P(4, 4.5).index(",") + 1:]}M{P(5.5, 1.4)}L{P(6, 4.5)}" stroke="#fff" stroke-width="1" fill="none"/>')
+
+
+def _creature(kind, x, y, box):
+    """Hide one of Parker's creatures: the bird is drawn here; the dog and heron come from the frame's
+    bosses (white forms that read as silhouettes on the black)."""
+    if kind == "bird" or box < 30:
+        s = box / 14
+        return _bird(x + box * .1, y + box * .6, s, flip=bool(int(x) % 2))
+    f = fig_dog() if kind == "dog" else fig_heron()
+    return f'<g transform="translate({_f1(x)},{_f1(y)}) scale({box / 30:.3f})">{f}</g>'
+
+
+class _Pack:
+    """Circles already taken in a panel, bucketed for fast free-space tests."""
+
+    def __init__(self, cell=12.):
+        self.c, self.b = cell, {}
+
+    def add(self, x, y, r):
+        k = (int(x // self.c), int(y // self.c))
+        self.b.setdefault(k, []).append((x, y, r))
+
+    def free(self, x, y, r, gap=.6):
+        cx, cy = int(x // self.c), int(y // self.c)
+        rr = int((r + 16) // self.c) + 1
+        for j in range(cy - rr, cy + rr + 1):
+            for i in range(cx - rr, cx + rr + 1):
+                for (px, py, pr) in self.b.get((i, j), ()):
+                    d = r + pr + gap
+                    if (x - px) ** 2 + (y - py) ** 2 < d * d:
+                        return False
+        return True
+
+
+def _r1(v):
+    t = f"{v:.1f}"
+    if t in ("-0.0", "0.0"):
+        return "0"
+    t = t.rstrip("0").rstrip(".")
+    return t.replace("0.", ".", 1) if t.startswith(("0.", "-0.")) else t
+
+
+def _pts(pts):
+    """A polyline in relative coordinates, rounded to .1 px (the cheapest path text)."""
+    x0, y0 = round(pts[0][0], 1), round(pts[0][1], 1)
+    o = [f"M{_r1(x0)},{_r1(y0)}l"]
+    px, py = x0, y0
+    seg = []
+    for x, y in pts[1:]:
+        x, y = round(x, 1), round(y, 1)
+        dx, dy = _r1(x - px), _r1(y - py)
+        seg.append(dx + ("," if not dy.startswith("-") else "") + dy)
+        px, py = x, y
+    out = o[0] + "".join((" " if k and not v.startswith("-") else "") + v for k, v in enumerate(seg))
+    return out
+
+
+def _kranok(x, y, a, L, Wd, curl, side):
+    """A kranok flame leaf from (x, y) heading a: the spine bends by curl and hooks at the tip, the outer
+    edge (side +-1) breaks into two flames. Returns (outline pts, hatch polylines, spine pts)."""
+    n = 10
+    sp, nr = [], []
+    px, py, aa = x, y, a
+    for i in range(n + 1):
+        u = i / n
+        sp.append((px, py))
+        nr.append((-math.sin(aa), math.cos(aa)))
+        aa += curl * (.6 + 2.2 * u * u) / n
+        px += math.cos(aa) * L / n
+        py += math.sin(aa) * L / n
+    outer, inner = [], []
+    for i, ((sx, sy), (nx, ny)) in enumerate(zip(sp, nr)):
+        u = i / n
+        wv = Wd * math.sin(math.pi * min(1., u ** .75)) * (1 - .25 * u)
+        fl = 1 - .45 * abs(math.sin(u * 2.5 * math.pi)) ** 1.5 if u > .2 else 1.
+        outer.append((sx + side * nx * wv * fl, sy + side * ny * wv * fl))
+        inner.append((sx - side * nx * wv * .55, sy - side * ny * wv * .55))
+    hatch = []
+    # ribs: from the midrib out toward each flame of the outer edge, the leaf's modelling
+    if Wd >= 2.:
+        for i in range(2, n - 1, 2 if Wd < 4 else 1):
+            (sx, sy), (ox, oy) = sp[i], outer[i]
+            hatch.append([(sx + (ox - sx) * .15, sy + (oy - sy) * .15), (sx + (ox - sx) * .75 + (sp[i + 1][0] - sx) * .6, sy + (oy - sy) * .75 + (sp[i + 1][1] - sy) * .6)])
+    if Wd >= 3.:
+        for f in ((.45,) if Wd < 5 else (.3, .62)):
+            hatch.append([(sx + side * nx * Wd * f * math.sin(math.pi * min(1., (i / n) ** .75)) * (1 - .25 * i / n),
+                           sy + side * ny * Wd * f * math.sin(math.pi * min(1., (i / n) ** .75)) * (1 - .25 * i / n))
+                          for i, ((sx, sy), (nx, ny)) in enumerate(zip(sp, nr)) if .15 <= i / n <= .82])
+    return outer + inner[::-1], hatch, sp
+
+
+def flora(w, h, seed=0, grow="l", eggs=True, as_parts=False):
+    """White-line flora on black for a w x h panel, after the Thai Himmapan forest engravings: light
+    forms (kranok flame leaves, lotus and peony heads, palm fronds, buds) packed edge to edge on a black
+    ground, each cut with black-line detail. Stems spring from the `grow` edge (l, r, t, b: the side
+    that meets a text label) and lean away from it; whatever black is left is stippled with seed dots,
+    so no flat black is larger than a few px. Panel coordinates (0..w, 0..h)."""
+    rng = random.Random(seed)
+    P = _Pack()
+    m = min(w, h)
+    pad = 3.5 if m >= 24 else 1.
+    inside = lambda x, y, r: pad + r <= x <= w - pad - r and pad + r <= y <= h - pad - r
+    base = {"l": 0., "r": math.pi, "t": math.pi / 2, "b": -math.pi / 2}.get(grow, 0.)
+    L0 = max(6., min(28., m * .5))
+    stems, leaves, hatch, heads, hdet, hdark, blades, dots = [], [], [], [], [], [], [], []
+    extra = []
+    if eggs and w >= 60 and h >= 40 and rng.random() < .8:      # a hidden creature
+        box = min(30., h - 12, w / 3)
+        ex, ey = rng.uniform(pad + 2, w - box - pad - 2), rng.uniform(pad + 2, h - box - pad - 2)
+        extra.append(_creature(rng.choice(("bird", "bird", "dog", "heron")) if box >= 26 else "bird", ex, ey, box))
+        P.add(ex + box / 2, ey + box / 2, box * .5)
+
+    def leaf(x, y, a, L, side):
+        Wd = L * rng.uniform(.26, .34)
+        ol, ha, sp = _kranok(x, y, a, L, Wd, side * rng.uniform(.5, 1.1), side)
+        chk = sp[4::2]
+        for (sx, sy) in chk:
+            if not inside(sx, sy, .5) or not P.free(sx, sy, Wd * .5, .3):
+                return False
+        for (sx, sy) in chk:
+            P.add(sx, sy, Wd * .55)
+        leaves.append(_pts(ol) + "Z")
+        hatch.extend(_pts(hh) for hh in ha if len(hh) > 1)
+        return True
+
+    def head(x, y, r):
+        """A lotus (pointed petals) or a peony (round petals): white, its petals parted in black."""
+        a0 = rng.uniform(0, TAU)
+        if r >= 3.5 and rng.random() < .55:
+            n = rng.choice((6, 7, 8))
+            d = ""
+            cur = None
+            for k in range(n):
+                a = a0 + TAU * k / n
+                c, s_ = math.cos(a), math.sin(a)
+                hw = math.pi / n * .95
+                p0 = (round(x + math.cos(a - hw) * r * .3, 1), round(y + math.sin(a - hw) * r * .3, 1))
+                p1 = (round(x + math.cos(a + hw) * r * .3, 1), round(y + math.sin(a + hw) * r * .3, 1))
+                tip = (round(x + c * r, 1), round(y + s_ * r, 1))
+                cl = (round(x + math.cos(a - hw * .9) * r * .78, 1), round(y + math.sin(a - hw * .9) * r * .78, 1))
+                cr = (round(x + math.cos(a + hw * .9) * r * .78, 1), round(y + math.sin(a + hw * .9) * r * .78, 1))
+                if cur is None:
+                    d += f"M{_r1(p0[0])},{_r1(p0[1])}"
+                    cur = p0
+                elif (p0[0] - cur[0]) ** 2 + (p0[1] - cur[1]) ** 2 > .04:
+                    d += f"l{_r1(p0[0] - cur[0])},{_r1(p0[1] - cur[1])}"
+                rel = lambda q, o=None: f"{_r1(q[0] - (o or cur)[0])},{_r1(q[1] - (o or cur)[1])}"
+                d += f"q{rel(cl)} {rel(tip)}q{rel(cr, tip)} {rel(p1, tip)}"
+                cur = p1
+                if r >= 5:
+                    hdet.append(_pts([(x + c * r * .42, y + s_ * r * .42), (x + c * r * .8, y + s_ * r * .8)]))
+            heads.append(d + "z")
+            rc = r * .34
+            hdark.append(f"M{_f1(x - rc)},{_f1(y)}a{_f1(rc)},{_f1(rc)} 0 1 0 {_f1(2 * rc)},0a{_f1(rc)},{_f1(rc)} 0 1 0 {_f1(-2 * rc)},0")
+            if rc >= 1.6:
+                dots.append((x, y, .8))
+        else:
+            n = 5 if r < 5 else 7
+            pr = r * (.42 if n == 5 else .36)
+            for k in range(n):
+                a = a0 + TAU * k / n
+                cx_, cy_ = x + math.cos(a) * (r - pr), y + math.sin(a) * (r - pr)
+                heads.append(f"M{_r1(cx_ - pr)},{_r1(cy_)}a{_r1(pr)},{_r1(pr)} 0 1 0 {_r1(2 * pr)},0a{_r1(pr)},{_r1(pr)} 0 1 0 {_r1(-2 * pr)},0")
+            ri = r * .42
+            heads.append(f"M{_f1(x - ri)},{_f1(y)}a{_f1(ri)},{_f1(ri)} 0 1 0 {_f1(2 * ri)},0a{_f1(ri)},{_f1(ri)} 0 1 0 {_f1(-2 * ri)},0")
+            if ri >= 1.8:
+                rj = ri * .5
+                hdet.append(f"M{_f1(x - rj)},{_f1(y)}a{_f1(rj)},{_f1(rj)} 0 1 0 {_f1(2 * rj)},0")
+        P.add(x, y, r)
+
+    def frond(x, y, a, r):
+        """A palm spray: narrow white blades fanned about a."""
+        n = 5 if r < 7 else 7
+        for k in range(n):
+            b = a + (k / (n - 1) - .5) * 1.9
+            Lb = r * 2 * (1 - .25 * abs(k / (n - 1) - .5) * 2)
+            bw = max(1.1, r * .16)
+            bend = rng.uniform(-.25, .25)
+            p = [(x, y)]
+            pts_l, pts_r = [], []
+            for i in range(1, 5):
+                u = i / 4
+                bb = b + bend * u
+                cx_ = x + math.cos(bb) * Lb * u
+                cy_ = y + math.sin(bb) * Lb * u
+                ww = bw * math.sin(math.pi * min(1, u * 1.3)) * (1 - u * .6)
+                pts_l.append((cx_ - math.sin(bb) * ww, cy_ + math.cos(bb) * ww))
+                pts_r.append((cx_ + math.sin(bb) * ww, cy_ - math.cos(bb) * ww))
+            blades.append(_pts(p + pts_l + pts_r[::-1]) + "Z")
+        P.add(x + math.cos(a) * r, y + math.sin(a) * r, r)
+
+    def stem(x, y, a, L):
+        """A stem from the label edge: a white line that leans away and curls, leaves alternating along
+        it, a head at its end."""
+        pts = [(x, y)]
+        curl = rng.choice((-1, 1)) * rng.uniform(.01, .035)
+        step = 1.5
+        for t in range(int(L / step)):
+            a += curl * (1 + t * .01) + .04 * math.sin(t * .15 + seed) + rng.uniform(-.03, .03)
+            nx, ny = x + math.cos(a) * step, y + math.sin(a) * step
+            if not inside(nx, ny, .5) or (t > 2 and not P.free(nx + math.cos(a) * 2, ny + math.sin(a) * 2, .9, .4)):
+                break
+            x, y = nx, ny
+            pts.append((x, y))
+        if len(pts) < 6:
+            return
+        stems.append(_pts(pts))
+        sd = rng.choice((-1, 1))
+        Ls = max(5., min(L0, m * .45))
+        for k in range(3, len(pts) - 2, max(3, int(Ls * .45))):
+            (x0, y0), (x1, y1) = pts[k - 1], pts[k]
+            ta = math.atan2(y1 - y0, x1 - x0)
+            leaf(x1, y1, ta + sd * rng.uniform(.5, .9), Ls * rng.uniform(.75, 1.05), sd)
+            sd = -sd
+        for (sx, sy) in pts[1::2]:
+            P.add(sx, sy, .9)
+        ex_, ey_ = pts[-1]
+        rh = max(2.5, min(L0 * .45, m * .3))
+        for rr in (rh, rh * .7, rh * .5):
+            cx_, cy_ = ex_ + math.cos(a) * rr, ey_ + math.sin(a) * rr
+            if inside(cx_, cy_, rr) and P.free(cx_, cy_, rr, .2):
+                head(cx_, cy_, rr)
+                break
+    # stems from the label edge
+    gap = max(8., L0 * 1.3)
+    if grow in "lr":
+        ys = [pad + gap * .5 + k * gap for k in range(int((h - 2 * pad) / gap) + 1)]
+        for y in ys:
+            if y < h - pad:
+                stem(pad + 1 if grow == "l" else w - pad - 1, y, base + rng.uniform(-.5, .5), w * rng.uniform(.5, 1.))
+    else:
+        xs = [pad + gap * .5 + k * gap for k in range(int((w - 2 * pad) / gap) + 1)]
+        for x in xs:
+            if x < w - pad:
+                stem(x, pad + 1 if grow == "t" else h - pad - 1, base + rng.uniform(-.5, .5), h * rng.uniform(.5, 1.))
+    # then pack: heads, fronds, leaves, buds, seed dots, from large to small
+    for r in [rr for rr in (L0 * .55, L0 * .42, L0 * .32, 4.5, 3.4) if rr <= m * .42]:
+        sp_ = r * 1.6
+        cand = [(i * sp_ + rng.uniform(0, sp_), j * sp_ + rng.uniform(0, sp_)) for j in range(int(h / sp_) + 1) for i in range(int(w / sp_) + 1)]
+        rng.shuffle(cand)
+        for (x, y) in cand:
+            if not inside(x, y, r) or not P.free(x, y, r, .3):
+                continue
+            q = rng.random()
+            if r >= 4 and q < .3:
+                head(x, y, r)
+            elif r >= 4 and q < .5:
+                frond(x - math.cos(base) * r, y - math.sin(base) * r, base + rng.uniform(-.7, .7), r)
+            elif r >= 3:
+                aa = base + rng.uniform(-1.2, 1.2)
+                if not leaf(x - math.cos(aa) * r, y - math.sin(aa) * r, aa, 2 * r * 1.05, rng.choice((-1, 1))):
+                    head(x, y, r * .8)
+            else:
+                head(x, y, r)
+    # seed stipple in what black is left: enough that no flat black runs past a few px
+    sp_ = 3.5
+    for j in range(int(h / sp_) + 1):
+        for i in range(int(w / sp_) + 1):
+            x, y = i * sp_ + rng.randint(0, 1), j * sp_ + rng.randint(0, 1)
+            if inside(x, y, .6) and P.free(x, y, 1.6, 0):
+                dots.append((x, y, .55))
+                P.add(x, y, .6)
+    dd = ""
+    if dots:
+        ds = sorted(((round(x), round(y)) for x, y, r in dots), key=lambda d: (d[1], d[0]))
+        dd = f"M{ds[0][0]},{ds[0][1]}h0" + "".join(f"m{x - px},{y - py}h0" for (px, py), (x, y) in zip(ds, ds[1:]))
+    parts = {"stems": stems, "leaves": leaves, "hatch": hatch, "blades": blades, "heads": heads,
+             "hdet": hdet, "hdark": hdark, "dots": [dd] if dd else []}
+    if m >= 24:
+        parts["wire"] = [f"M1.5,1.5h{_f1(w - 3)}v{_f1(h - 3)}h{_f1(3 - w)}z"]
+    if as_parts:
+        return parts, extra
+    return _paint({k: v for k, v in parts.items()}, extra, [f"M0,0h{_f1(w)}v{_f1(h)}h{_f1(-w)}z"])
+
+
+# how each class of fill path is painted, in order
+_PAINT = (("wire", 'fill="none" stroke="#fff" stroke-width="1"'),
+          ("stems", 'fill="none" stroke="#fff" stroke-width="1.5"'),
+          ("leaves", 'fill="#fff" stroke="#000" stroke-width=".5"'),
+          ("hatch", 'fill="none" stroke="#000" stroke-width=".5"'),
+          ("blades", 'fill="#fff"'),
+          ("heads", 'fill="#fff" stroke="#000" stroke-width=".5"'),
+          ("hdet", 'fill="none" stroke="#000" stroke-width=".5"'),
+          ("hdark", 'fill="#000"'),
+          ("dots", 'fill="none" stroke="#fff" stroke-width="1"'),
+          ("beads", 'fill="#fff"'),
+          ("fillet", 'fill="none" stroke="#fff" stroke-width="1"'))
+
+
+def _paint(parts, extra, ground):
+    o = [f'<path d="{"".join(ground)}" fill="#000"/>'] if ground else []
+    for k, attrs in _PAINT:
+        if parts.get(k):
+            o.append(f'<path d="{"".join(parts[k])}" {attrs}/>')
+    return "".join(o) + "".join(extra)
+
+
+_LEAD = re.compile(r"^M(-?[\d.]+),(-?[\d.]+)")
+
+
+def _shift(sub, dx, dy):
+    """Move one subpath (absolute moveto first, relative after) by dx, dy."""
+    return _LEAD.sub(lambda m_: f"M{_r1(float(m_.group(1)) + dx)},{_r1(float(m_.group(2)) + dy)}", sub, count=1)
+
+
+def moulding(w, h):
+    """A strip too thin for flora: beading on black when there is room, else a black fillet with a
+    gold-line wire. Returns parts (subpaths with an absolute first moveto, strip coordinates)."""
+    t = min(w, h)
+    horiz = w >= h
+    if t >= 6:
+        r = min(2., (t - 3) / 2)
+        pitch = 2 * r + 1.5
+        n = int(((w if horiz else h) - 2) / pitch)
+        d = []
+        for k in range(n):
+            c = 1 + pitch / 2 + k * pitch
+            x, y = (c, h / 2) if horiz else (w / 2, c)
+            d.append(f"M{_r1(x - r)},{_r1(y)}a{_r1(r)},{_r1(r)} 0 1 0 {_r1(2 * r)},0a{_r1(r)},{_r1(r)} 0 1 0 {_r1(-2 * r)},0")
+        return {"beads": d}
+    if t >= 3:
+        return {"fillet": [f"M{_r1(1 if horiz else w / 2)},{_r1(h / 2 if horiz else 1)}" + (f"h{_r1(w - 2)}" if horiz else f"v{_r1(h - 2)}")]}
+    return {}
+
+
+def sheet_fill(panels, strips, seed=0, w=W, h=H, ground=(), matte=(), motif=None, extra_svg=""):
+    """One sheet's ornament layer, a single SVG, laid only where no panel is (edition plan 1.5 rule 8,
+    1.6 leftover space): `panels` [(x, y, w, h, grow)] get a carved Himmapan frieze (the plan puts one
+    in the largest gap between panels, with the page's `motif` small at its centre in a cartouche),
+    `strips` [(x, y, w, h)] a bead moulding, `matte` the frame's punched ground (frame margin below the
+    plate), `ground` plain black (slivers and the edges under labels). Paths are merged by kind across
+    the sheet, so the element count stays small."""
+    allp, extra = {}, []
+    gd = []
+    for k, (x, y, pw, ph, g) in enumerate(panels):
+        parts, ex = flora(pw, ph, seed * 101 + k * 7 + int(x) * 3 + int(y), g, as_parts=True)
+        for kk, v in parts.items():
+            allp.setdefault(kk, []).extend(_shift(sub, x, y) for sub in v)
+        extra += [f'<g transform="translate({_f1(x)},{_f1(y)})">{e}</g>' for e in ex]
+        if motif and motif in MOTIFS and ph >= 16 and pw >= ph * 4:
+            ch = ph - 4
+            extra.append(cartouche(x + pw / 2, y + ph / 2, ch * 3.2, ch, MOTIFS[motif]()))
+            motif = None
+    for (x, y, sw, sh) in strips:
+        for kk, v in moulding(sw, sh).items():
+            allp.setdefault(kk, []).extend(_shift(sub, x, y) for sub in v)
+    for (x, y, rw, rh) in list((p[0], p[1], p[2], p[3]) for p in panels) + list(strips) + list(ground):
+        gd.append(f"M{_r1(x)},{_r1(y)}h{_r1(rw)}v{_r1(rh)}h{_r1(-rw)}z")
+    mt = "".join(f"M{_r1(x)},{_r1(y)}h{_r1(rw)}v{_r1(rh)}h{_r1(-rw)}z" for (x, y, rw, rh) in matte)
+    body = _paint(allp, extra, gd)
+    if mt:
+        body = f'<path d="{mt}" fill="url(#hg)"/>' + body
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
+            f'stroke-linecap="round" stroke-linejoin="round"><defs>{GROUND}</defs>' + body + extra_svg + "</svg>")

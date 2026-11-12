@@ -1563,7 +1563,9 @@ def write_frames(out, seed, sun_text=""):
     open(os.path.join(d, "frame.svg"), "w").write(HF.page_frame(None, 0))
     for s in SECS + ["edition", "end"]:
         open(os.path.join(d, f"motif-{s}.svg"), "w").write(HF.motif_tablet(s if s in HF.MOTIFS else "edition"))
-        open(os.path.join(d, f"ground-{s}.svg"), "w").write(HF.paper_tint(seed=zlib.crc32(s.encode()) % 997))   # engraved banknote paper
+        # no hatched paper behind the panels (Parker: no cross hatching for backgrounds); the studio's scroll
+        # ground (solar/scroll.py) takes this place per sheet
+        open(os.path.join(d, f"ground-{s}.svg"), "w").write('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714"/>')
     open(os.path.join(d, "gap.svg"), "w").write(HF.gap_bar(232, 20, 1))
     snap_dir(d)
 
@@ -1943,7 +1945,7 @@ html.kme #kmain .mini .v small,html.kme #kmain .tile .u,html.kme #kmain .kdeg sm
 html.kme #kmain .tile .k,html.kme #kmain .mini .k{letter-spacing:.14em !important}
 
 /* Card head: an engraved oval of the section, set into the head like a bookplate. */
-html.kme.kme #kmain .sec-body>.card:first-child>.head:before,html.kme.kme #kmain>.head:first-child:before,
+html.kme.kme #kmain .sec-body>.card:first-child>.head:before,html.kme.kme #kmain>.head:first-child:before,html.kme.kme #kmain .kpanel:first-child>.head:before,
 html.kme.kme #kmain .sec-body>.card:first-child>.team-top:before{
   content:none;display:none}
 html.kme body.ksecfront #kmain .head:before{display:none}
@@ -2090,7 +2092,7 @@ html.kme body .kbar{border-top:.5px solid #000 !important;background:none !impor
 html.kme body .krun{border-bottom:0 !important;background:var(--orn-beads) repeat-x 0 100%/auto 10px !important;padding-bottom:12px !important;height:44px !important}
 
 /* Card titles in an engraved cartouche with scroll terminals */
-html.kme #kmain .sec-body>.card:first-child>.head,html.kme #kmain>.head:first-child,html.kme #kmain .sec-body>.card:first-child>.team-top{
+html.kme #kmain .sec-body>.card:first-child>.head,html.kme #kmain>.head:first-child,html.kme #kmain .sec-body>.card:first-child>.team-top,html.kme #kmain .kpanel:first-child>.head{
   position:relative;padding:12px 22px 12px !important;margin:0 0 8px !important;
   background:var(--orn-h-tl) no-repeat 0 0/30px 30px,var(--orn-h-tr) no-repeat 100% 0/30px 30px,
     var(--orn-h-bl) no-repeat 0 100%/30px 30px,var(--orn-h-br) no-repeat 100% 100%/30px 30px,
@@ -2099,7 +2101,18 @@ html.kme #kmain .sec-body>.card:first-child>.head,html.kme #kmain>.head:first-ch
     linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) calc(100% - 30px)/1.6px calc(50% - 47px),
     linear-gradient(#000,#000) no-repeat 30px 1.5px/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px 5px/calc(100% - 60px) 1px,
     linear-gradient(#000,#000) no-repeat 30px calc(100% - 1.5px)/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px calc(100% - 5px)/calc(100% - 60px) 1px}
-html.kme #kmain .sec-body>.card:first-child>.head:after,html.kme #kmain>.head:first-child:after,html.kme #kmain .sec-body>.card:first-child>.team-top:after{content:'';display:block;clear:both}
+/* note 5: the page's title cartouche on the first panel's head (over the panel rule that clears heads in panels) */
+html.kme.kfit3 #kmain .facts[data-n="4"],html.kme.kfit3 #kmain .facts[data-n="8"]{grid-template-columns:1fr 1fr !important}   /* the facts stay two to a row (today-01), even squeezed */
+html.kme{--kgap:28px}   /* Parker's scroll field needs 28 px of room between panels; a 40 px field round the page */
+html.kme #kview #kmain .kpanel:first-child>.head{position:relative !important;padding:12px 22px 12px !important;margin:0 0 8px !important;
+  background:var(--orn-h-tl) no-repeat 0 0/30px 30px,var(--orn-h-tr) no-repeat 100% 0/30px 30px,
+    var(--orn-h-bl) no-repeat 0 100%/30px 30px,var(--orn-h-br) no-repeat 100% 100%/30px 30px,
+    var(--orn-terml) no-repeat 0 50%/18px 34px,var(--orn-term) no-repeat 100% 50%/18px 34px,
+    linear-gradient(#000,#000) no-repeat 1.5px 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat 1.5px calc(100% - 30px)/1.6px calc(50% - 47px),
+    linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) 30px/1.6px calc(50% - 47px),linear-gradient(#000,#000) no-repeat calc(100% - 1.5px) calc(100% - 30px)/1.6px calc(50% - 47px),
+    linear-gradient(#000,#000) no-repeat 30px 1.5px/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px 5px/calc(100% - 60px) 1px,
+    linear-gradient(#000,#000) no-repeat 30px calc(100% - 1.5px)/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px calc(100% - 5px)/calc(100% - 60px) 1px !important}
+html.kme #kmain .sec-body>.card:first-child>.head:after,html.kme #kmain>.head:first-child:after,html.kme #kmain .sec-body>.card:first-child>.team-top:after,html.kme #kmain .kpanel:first-child>.head:after{content:'';display:block;clear:both}
 
 /* Dividers: dots and diamonds; the lists that lead somewhere carry a small fleuron at the centre */
 html.kme #kmain .lines>div,html.kme #kmain .story,html.kme #kmain .brief-rest>li{border-bottom:0 !important;background:var(--orn-dotrule) repeat-x 0 100%/auto 8px;padding-bottom:11px !important}
@@ -2154,10 +2167,10 @@ html.kme .kcontents #kmain .ktoc{position:relative;padding:4px 18px 8px !importa
 
 
 /* ================= ROUND THREE: the whole page inside an engraved frame ================= */
-html.kme{--m:46px;background:#fff}
+html.kme{--m:40px;background:#fff}
 /* the master frame (Hunt: bas-relief acanthus on a cut-away ground, Parker's figures in the corners), the
    section's carved cartouche, and the light foliage ground: one fixed layer, never re-rastered on a turn */
-html.kme body{background:transparent;padding:0 46px !important}
+html.kme body{background:transparent;padding:0 40px !important}
 html.kme body:before{content:"";position:fixed;left:0;top:0;width:100%;height:100%;z-index:-1;pointer-events:none;will-change:transform;
   background-image:url(orn/motif-edition.svg),url(orn/frame.svg),url(orn/ground-edition.svg);background-repeat:no-repeat;
   background-position:center bottom,0 0,0 0;background-size:86px 26px,100% 100%,100% 100%}
@@ -2166,22 +2179,29 @@ html.kme body .krun *,html.kme body .kbar *,html.kme #kcont *{background-color:t
 html.kme body .krun,html.kme body .kbar,html.kme #kcont{position:relative;z-index:1}
 html.kme #kkf{position:absolute;left:0;top:0;width:0;height:0;z-index:0;pointer-events:none}
 html.kme #kkf i{position:absolute;display:block;background:#fff}
+/* the engraved fill: one SVG per sheet, cut at build time to every free rectangle round the labels; the pager
+   shows it only when the sheet lays out as measured, else the light ground and the gap fleurons stay */
+html.kme #kfill{display:block;position:fixed;left:0;top:0;width:618px;height:714px;z-index:-1;pointer-events:none;border:0}
+/* a placed plate (solar/plate_slots.py): a fixed-size engraving in the flow, centred between panels */
+html.kme #kmain .kslot{display:block;margin:10px auto;overflow:hidden}
+html.kme #kmain .kslot img{display:block;border:0}
+html.kme .ksecfront #kmain .kfhead.khasslot:after{display:none !important}
 FRAMES
-html.kme body .krun{margin:26px 0 8px !important;padding-left:14px !important;padding-right:14px !important;border-bottom-color:transparent !important}
-html.kme.kpaged body .kbar{margin:0 0 26px !important;padding:0 14px !important;border-top-color:transparent !important}
-html.kme.kjumpopen #kjump{top:74px !important;bottom:80px !important;left:46px !important;right:46px !important}
+html.kme body .krun{margin:40px 0 28px !important;padding-left:14px !important;padding-right:14px !important;border-bottom-color:transparent !important}
+html.kme.kpaged body .kbar{margin:28px 0 40px !important;padding:0 14px !important;border-top-color:transparent !important}
+html.kme.kjumpopen #kjump{top:84px !important;bottom:96px !important;left:40px !important;right:40px !important}
 /* no white unless behind text: #kko holds a white knock-out under each line of text, chart and picture */
 html.kme #kview,html.kme #kclip{background:none !important}
 html.kme #kmain{z-index:1}
 html.kme #kko{position:absolute;left:0;top:0;width:100%;height:0;z-index:0;pointer-events:none}
 html.kme #kko i{position:absolute;display:block;background:#fff}
-html.kme #kko i.kl,html.kme #kkf i.kl{border:.5px solid #000;box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px #000 !important;box-sizing:border-box}
+html.kme #kko i.kl,html.kme #kkf i.kl{border:0;box-shadow:none !important;box-sizing:border-box}   /* the edge is the studio's inlay, drawn in the sheet's field */
 html.kme .kcontents #kmain .kgl:before{width:64px !important;height:64px !important;background-size:64px 64px !important}
 html.kme .kcontents #kmain .kgl:after{display:none}
 html.kme .kcontents #kmain .kgl .kdeg small{letter-spacing:.05em !important}
 html.kme #kmain .bars{padding-top:18px !important;box-sizing:content-box !important}
 /* the cover's reading area opens to the frame (570 px) so the plate prints at its native width; text keeps 10 px */
-html.kme body.kcontents{padding:0 46px !important}
+html.kme body.kcontents{padding:0 40px !important}
 html.kme .kcontents #kmain>*{margin-left:0 !important;margin-right:0 !important}
 html.kme .kcontents #kmain>.kmast{margin-left:0 !important;margin-right:0 !important}
 html.kme #kmain .kinl{background-color:#fff !important;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 4px}

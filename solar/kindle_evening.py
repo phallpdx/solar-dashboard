@@ -19,6 +19,7 @@ import math
 import os
 import re
 import sys
+import zlib
 
 from . import bedtime_poems, engraving, evening
 try:  # the engravers' optional pieces: every page renders without them
@@ -355,6 +356,7 @@ EVENING_CSS += (
     "html.kev body #kmain .kalm-t .kalm-lead{grid-column:2;grid-row:1/3;margin:0 0 0 18px !important;padding:0 0 0 18px !important;border-left:1px solid #000 !important;"
     "font:italic 430 22px/28px var(--k-serif) !important}\n"
     # one scale for the whole edition: 13 label, 15 note, 18 text, 22 lede, 30 headline, 44 title, 60 figure
+    "html.kev body #kmain .klet{display:block;margin:2px 0 0 !important;padding:0 !important}\n"
     "html.kev body .krun .ksecbtn{font-size:13px !important;line-height:13px !important}\n"
     "html.kev body #kmain .kpoem .poem-title{font-size:30px !important;line-height:34px !important}\n"
     "html.kev body #kmain .kendtxt h2.kfname{font-size:44px !important;line-height:48px !important}\n"
@@ -874,6 +876,32 @@ _THEME_FOR = {"cover": "river", "day1": "jazz", "day2": "river", "day3": "lotus"
 
 
 _ART = {"dir": None, "done": {}}
+
+
+def _lettered(text, width, size=30, align="left"):
+    """A headline written out by hand (solar/lettering.py), as a block the height of the writing with the
+    drawing as its background; None when the hand is not there or cannot letter this text, so the
+    caller keeps the type."""
+    try:
+        from . import lettering
+    except Exception:  # noqa: BLE001
+        return None
+    text = html.unescape(re.sub(r"<[^>]+>", "", str(text or ""))).strip()
+    if not text or not _ART["dir"]:
+        return None
+    seed = zlib.crc32(text.encode("utf-8")) & 0xffff
+    try:
+        svg = lettering.headline(text, width, size, seed, align=align)
+        m = re.search(r'<svg[^>]*?\swidth="([\d.]+)"[^>]*?\sheight="([\d.]+)"', svg)
+        w, h = float(m.group(1)), float(m.group(2))
+    except Exception as e:  # noqa: BLE001
+        print(f"LETTERING FALLBACK: {text!r} ({e!r})")
+        return None
+    url = _art(f"let-{seed:04x}-{int(width)}-{int(size)}.svg", lambda: svg)
+    pos = "50%" if align == "center" else "0"
+    return (f'<span class="klet" role="img" aria-label="{E(text)}" style="height:{_n(h)}px;'
+            f'background:url({url}) {pos} 0/{_n(w)}px {_n(h)}px no-repeat !important"></span>')
+
 
 
 def _art(name, make):
@@ -1689,7 +1717,7 @@ def poem_html(p):
     size = nlines + (len(stanzas) - 1) / 2  # a stanza gap is half a line
     body = '<div class="gap"></div>'.join("".join(f"<span>{E(smart(line.strip()))}</span>" for line in s.strip().split("\n")) for s in stanzas)
     by = E(p["poet"]) + (f" &middot; {p['year']}" if p.get("year") else "")
-    text = (f'<span class="poem-title">{E(p["title"])}</span><span class="poem-by">{by}</span>'
+    text = (f'<span class="poem-title">{_lettered(p["title"], 500, 30, "center") or E(p["title"])}</span><span class="poem-by">{by}</span>'
             f'<div class="poem-text">{body}</div>')
     return f'<div class="kplate{" klong" if size > 20 else ""}"><div class="kpoem">{text}</div></div>'
 
@@ -2142,7 +2170,7 @@ def main(dash_path, ev_path, site):
         lede = E(sky["clouds"]) + "."
     if rare and sky["headline"] and not clouded:
         lede = f'{lede} {E(smart(sky["headline"]))}.'
-    verdict = (f'<div class="kp"><p class="klb">{sky_lab}</p><h2>{E(sky_head)}</h2><p class="klede">{E(smart(lede.strip()))}</p></div>')
+    verdict = (f'<div class="kp"><p class="klb">{sky_lab}</p><h2>{_lettered(sky_head, 506) or E(sky_head)}</h2><p class="klede">{E(smart(lede.strip()))}</p></div>')
     moon_row = ""
     if phase:
         lit, waxing, name = phase
@@ -2200,7 +2228,7 @@ def main(dash_path, ev_path, site):
         recap = (f'<p class="krecap">Tomorrow: high {wx["hi"]}&deg;' + (f'. Sunrise {wx["sunrise"]}' if wx.get("sunrise") else "") + '.</p>')
     pages.append({"file": "goodnight.html", "title": "Goodnight", "part": "", "kick": "", "close": True, "notail": True, "band": datef, "nav": "Goodnight",
                   "body": '<div class="kframe"><div class="kend kendtxt"><p class="kkick">The Evening Edition</p>'
-                          '<h2 class="kfname">That&rsquo;s the day.</h2>'
+                          '<h2 class="kfname">' + (_lettered("That\u2019s the day.", 500, 44, "center") or "That&rsquo;s the day.") + '</h2>'
                           '<p class="kfsub">Everything else can wait until morning.</p>'
                           f'<p class="kquiet">Think of one good thing from today, then let it go.</p>{recap}</div></div>'})
 
@@ -2220,7 +2248,7 @@ def main(dash_path, ev_path, site):
                 else:
                     paras[0] = f'<p>{paras[0]}</p>'
                 paras[1:] = [f"<p>{x}</p>" for x in paras[1:]]
-            pg["body"] = (f'<h2 class="khed">{E(st["headline"])}</h2><div class="kbody">' + "".join(paras) + "</div>"
+            pg["body"] = (f'<h2 class="khed">{_lettered(st["headline"], 506) or E(st["headline"])}</h2><div class="kbody">' + "".join(paras) + "</div>"
                           + f'<div class="kp">{nxt}<p class="ksources{" khr" if nxt else ""}">{outlets_line(st)}</p>'
                           + (over if pg.get("over") else "") + '</div>')
         if pg.get("over") and not st:

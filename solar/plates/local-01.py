@@ -558,8 +558,23 @@ def still_life(cx, cy, a, b, seed):
     walnut(cv, cx - a * .62, ytop + ydep * .55 - a * .11, a * .12, -.3, random.Random(seed + 3))
     hop_cone(cv, cx + a * .8, ytop + ydep * .45 - a * .06, a * .26, a * .15, 1.35, random.Random(seed + 8))
     split_walnut(cv, cx + a * .17, ytop + ydep * 1.05 - a * .12, a * .13, random.Random(seed + 5))
+    thai_chili(cv, cx - a * .44, ytop + ydep * .95, a * .2, -.15, random.Random(seed + 6))
     o.append(cv.svg())
     return "".join(o)
+
+
+def thai_chili(cv, x, y, L, ang, rng):
+    """Easter egg: a prik kee noo, the little Thai chili, lying among the walnuts: a slim curved
+    pod, glossy, shaded along its belly, with its star calyx and crooked stem."""
+    pts = [(x + math.cos(ang + .35 * t * t) * L * t, y + math.sin(ang + .35 * t * t) * L * t) for t in [j / 12 for j in range(13)]]
+    wf = lambda t: max(.35, L * .11 * (1 - t ** 1.6))
+    Lt, Rt = _offset(pts, lambda t, i: wf(t))
+    cv.obj([Lt + Rt[::-1]], 1.)
+    cv.hair(C.hatch_poly(Rt + [(a[0] * .5 + b[0] * .5, a[1] * .5 + b[1] * .5) for a, b in zip(pts, Rt)][::-1], math.degrees(ang) + 60, 1.5, rng.random()))
+    cv.hair([(a[0] * .6 + b[0] * .4, a[1] * .6 + b[1] * .4) for a, b in zip(pts, Lt)][2:-3])
+    cx_, cy_ = pts[0]
+    cv.obj([[(cx_ + L * .1 * math.cos(ang + math.pi + k * .9 - 1.8), cy_ + L * .1 * math.sin(ang + math.pi + k * .9 - 1.8)) for k in range(5)] + [(cx_, cy_)]], .5)
+    cv.line([(cx_, cy_), (cx_ - L * .12 * math.cos(ang - .5), cy_ - L * .12 * math.sin(ang - .5)), (cx_ - L * .2 * math.cos(ang - .1), cy_ - L * .22 * math.sin(ang - .1))])
 
 
 def medallion_walnuts(cx, cy, rx, ry, seed):
@@ -2123,7 +2138,7 @@ def st_band(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2 + hk.get("dx", 0.), h / 2
-    ry = max(4., h / 2 - 8.5)
+    ry = max(4., h / 2 - 8.5) if h >= 40 else max(4., h / 2 - 7.2)
     rx = min(w * .2, max(ry * 1.5, ry * hk.get("aspect", 1.7)))
     if h < 40:
         ins = 5.

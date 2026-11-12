@@ -1850,7 +1850,7 @@ def st_band(w, h, seed, hk):
     o = [st_matte(st_rect_d(0, 0, w, h))]
     ins = 10.
     cx, cy = w / 2 + hk.get("dx", 0.), h / 2
-    ry = max(4., h / 2 - 8.5)
+    ry = max(4., h / 2 - 8.5) if h >= 40 else max(4., h / 2 - 7.2)
     rx = min(w * .2, max(ry * 1.5, ry * hk.get("aspect", 1.7)))
     if h < 40:
         ins = 5.
@@ -2085,5 +2085,5 @@ def plate(w, h, ctx):
     seed = sum(map(ord, ctx.get("date", ""))) + 7 * int(ctx.get("sheet", 0) or 0)
     name, tablet, period = facts(ctx)
     hk = dict(field=lambda fld, mode: _field(fld, mode, seed, ctx, period), egg=egg_pinwheel, shape="oval", aspect=1.9, cw=.27,
-              rmin=10.5, rmax=32., frieze=False, motto=name, tablet_lines=[tablet, "CLATSOP SPIT BUOY"] if tablet != "CLATSOP SPIT" else [tablet])
+              rmin=12., rmax=34., frieze=False, motto=name, tablet_lines=[tablet, "CLATSOP SPIT BUOY"] if tablet != "CLATSOP SPIT" else [tablet])
     return st_plate(w, h, seed, hk)

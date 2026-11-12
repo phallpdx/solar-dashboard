@@ -2016,6 +2016,55 @@ PAGER_JS = r"""
   function sig() { var f = document.fonts ? document.fonts.status : '', im = main.getElementsByTagName('img'), c = 0;
     for (var q = 0; q < im.length; q++) if (im[q].complete) c++;
     return window.innerWidth + 'x' + window.innerHeight + f + c + (root.getAttribute('data-kev') || ''); }   // data-kev: a page's own script changed its layout
+  // The build's answer for this page at this screen size (solar/kindle_fast.py): fit classes, sheet cuts and each
+  // sheet's labels, plate and ornaments, applied without measuring; checked once the fonts are in.
+  var PRE = null, pre0 = 0;
+  try { var kpj = document.getElementById('kpre'); PRE = JSON.parse(root.getAttribute('data-kpre') || (kpj && kpj.textContent) || 'null');   // matchMedia, not innerWidth: reading that forces a layout
+    if (PRE && !(window.matchMedia && window.matchMedia('(width: ' + PRE.vw + 'px) and (height: ' + PRE.vh + 'px)').matches)) PRE = null; } catch (e) { PRE = null; }
+  function el(id, parent, before) { var e = document.getElementById(id);
+    if (!e) { e = document.createElement('div'); e.id = id; e.setAttribute('aria-hidden', 'true'); if (before) parent.insertBefore(e, before); else parent.appendChild(e); } return e; }
+  function applyPre() {
+    cls('kpaged', true);
+    var fc = PRE.cls.split(' '); for (var q = 0; q < fc.length; q++) if (fc[q]) cls(fc[q], true);
+    if (PRE.zoom) main.style.zoom = PRE.zoom;
+    if (rail) rail.style.display = PRE.rail;
+    var kfl = PRE.kfl && main.querySelector('ol.kfl'); if (kfl) kfl.className = PRE.kfl;
+    H = PRE.H; C = PRE.C; cuts = PRE.cuts; tops = PRE.tops; heads = PRE.heads;
+    kview.style.height = H + 'px';
+    if (PRE.ko !== null) {
+      var ka = main.getElementsByTagName('*');
+      for (var k = 0; k < PRE.kink.length; k++) if (ka[PRE.kink[k]]) ka[PRE.kink[k]].style.setProperty('background-color', 'transparent', 'important');
+      main.setAttribute('data-kink', '1');
+      el('kko', view, main).innerHTML = PRE.ko;
+    }
+    root.setAttribute('data-kfit-now', PRE.fitnow || '');
+    show(Math.min(sheet, cuts.length - 2));
+    if (!hashDone) { hashDone = true;
+      var back2 = 0; try { back2 = performance.navigation.type === 2; } catch (e) {}
+      if (location.hash) toHash();
+      else if (back2 && store['kme:' + location.pathname]) show(Math.min(+store['kme:' + location.pathname] || 0, cuts.length - 2)); }
+  }
+  function showPre(i) {
+    var S = PRE.s[i], tl = document.getElementById('ktail');
+    main.style.top = S.top; view.style.height = S.vh;
+    if (kcont) { kcont.innerHTML = S.kc; kcont.style.display = S.kcd; }
+    var ko = document.getElementById('kko'); if (ko) { ko.style.top = S.top; ko.style.left = PRE.kol; }
+    if (S.kf !== null) el('kkf', document.body).innerHTML = S.kf;
+    if (tl) tl.style.display = 'none';
+    if (S.t2) { var t2 = el('ktail2', tl ? tl.parentNode : view); t2.className = S.t2.c; t2.style.top = S.t2.top; t2.style.height = S.t2.h; t2.style.display = S.t2.d;
+      if (S.t2.src) { var im = t2.firstChild; if (!im) { im = document.createElement('img'); im.alt = ''; t2.appendChild(im); }
+        if (im.getAttribute('src') !== S.t2.src) im.setAttribute('src', S.t2.src); im.width = S.t2.w; im.height = S.t2.ih; } }
+    var gq = view.querySelectorAll('.kgap'); for (var g = 0; g < gq.length; g++) view.removeChild(gq[g]);
+    if (S.gaps) view.insertAdjacentHTML('beforeend', S.gaps);
+    window.KROOM = S.room;
+  }
+  function verify() {   // the one measurement on the fast path, after the fonts are in: same page as at build time?
+    if (!PRE) return;
+    if (document.fonts && document.fonts.status === 'loading') return;
+    if (window.innerWidth === PRE.vw && window.innerHeight === PRE.vh && main.offsetHeight === PRE.mh
+        && (!run || run.offsetHeight === PRE.rh) && bar.offsetHeight === PRE.bh) return;
+    PRE = null; lastSig = ''; layout(true);
+  }
   var HINT = root.getAttribute('data-kfit');
   function hinted() {                       // the build's measured answer, checked once; null = run the ladder
     var m = /^([fp]):(.*)$/.exec(HINT || ''); if (!m || FLOW) return null;
@@ -2028,6 +2077,8 @@ PAGER_JS = r"""
     return { cuts: [0, drawn()], tops: [0], last: 0 };
   }
   function layout(force) {
+    if (PRE && !force) { try { applyPre(); return; } catch (e) { PRE = null; } }
+    PRE = null;
     var s0 = sig(); if (!force && s0 === lastSig) return; lastSig = s0;
     try {
       cls('kpaged', true);
@@ -2077,6 +2128,7 @@ PAGER_JS = r"""
   function show(i) {
     sheet = i;
     var top = tops[i], end = cuts[i + 1], n = cuts.length - 1, h = i ? H - C : H;
+    if (PRE) showPre(i); else {
     if (kcont) {
       if (i > 0 && !FLOW) {
         var sub = '';
@@ -2097,7 +2149,7 @@ PAGER_JS = r"""
         for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
           if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
             ke.style.setProperty('background-color', 'transparent', 'important'); } }
-      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className;
+      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className + (document.fonts ? ' ' + document.fonts.status : '');
       if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
         /* text blocks print on clean white labels set into the engraved paper: the line boxes of each block
            (paragraph, stat cell, list) are united, neighbours a line apart merge, and each label gets a fine
@@ -2173,7 +2225,7 @@ PAGER_JS = r"""
       if (pk) {   /* ONE bespoke engraved plate fills the free space: a fixed-size <img>, outside #kmain, so it never adds a sheet */
         var slug = location.pathname.split('/').pop().replace(/\.html$/, ''), im = t2.firstChild;
         if (!im) { im = document.createElement('img'); im.alt = ''; t2.appendChild(im); }
-        var src = 'orn/plate-' + slug + '-' + pk[0] + '.svg';
+        var src = 'orn/plate-' + slug + '-' + pk[0] + (document.body.getAttribute('data-kpx') || '.svg');
         if (im.getAttribute('src') !== src) im.setAttribute('src', src);
         im.width = pk[2]; im.height = pk[1]; t2.className = 'kplate';
         t2.style.top = (y0 + Math.max(0, room - pk[1]) / 2) + 'px'; t2.style.height = pk[1] + 'px'; t2.style.display = 'block'; 
@@ -2200,7 +2252,9 @@ PAGER_JS = r"""
           var gd = document.createElement('div'); gd.className = 'kgap' + (gi.top - mb > 110 ? ' kbig' : gi.top - mb < 64 ? ' kthin' : '');
           var gh = Math.min(gi.top - mb - 10, 120); gd.style.top = (mb - top + (gi.top - mb - gh) / 2) + 'px'; gd.style.height = gh + 'px'; view.appendChild(gd); }
         if (mb === null || gi.bottom > mb) mb = gi.bottom; } }
-    unscroll();
+    }
+    if (!PRE || pre0) unscroll();   // a fresh page is not scrolled: never force a layout just to say so
+    pre0 = 1;
     if (more) {
       more.style.display = (i < n - 1) ? '' : 'none';
       more.innerHTML = 'More &darr;<span class="kfol" hidden>' + (i + 1) + '/' + n + '</span>';
@@ -2221,8 +2275,7 @@ PAGER_JS = r"""
     f.style.cssText = 'position:fixed;left:0;top:0;width:100%;height:100%;background:#000;z-index:2147483647';
     document.body.appendChild(f);
     var raf = window.requestAnimationFrame || function(cb){ return setTimeout(cb, 16); };
-    raf(function(){ raf(function(){ setTimeout(function(){ f.style.background = '#fff';
-      setTimeout(function(){ show(i); document.body.removeChild(f); busy = false; }, 120); }, 420); }); });
+    raf(function(){ show(i); setTimeout(function(){ document.body.removeChild(f); busy = false; }, 120); });   // one short refresh
   }
   function go(url) { location.href = url || 'index.html'; }
   function forward() { var n = cuts.length - 1;
@@ -2247,9 +2300,9 @@ PAGER_JS = r"""
       var ld = main.querySelectorAll('.kleads > a'); if (ld.length > 2) ld[ld.length - 1].parentNode.removeChild(ld[ld.length - 1]);
       a.href = last.u + (last.ed === root.getAttribute('data-ed') && last.s ? '#s' + last.s : '');
       a.innerHTML = '<small>Pick up where you stopped</small><b>' + String(last.t).replace(/</g, '&lt;') + ' &rsaquo;</b>';
-      mast.parentNode.insertBefore(a, mast.nextSibling); }
+      mast.parentNode.insertBefore(a, mast.nextSibling); PRE = null; }
   } catch (e) {}
-  function later(e) { clearTimeout(timer); var force = !!(e && e.type === 'toggle'); timer = setTimeout(function(){ layout(force); }, 60); }
+  function later(e) { clearTimeout(timer); var force = !!(e && e.type === 'toggle'); timer = setTimeout(function(){ if (PRE && !force) verify(); else layout(force); }, 60); }
   if (more) more.onclick = function(e){ e.preventDefault(); e.stopPropagation(); if (on()) forward(); };
   document.addEventListener('click', function(e){
     if (!on() || swallow) return;
@@ -2271,7 +2324,8 @@ PAGER_JS = r"""
   window.addEventListener('resize', later, false);
   window.addEventListener('load', later, false);
   if (document.fonts) {
-    if (document.fonts.ready) document.fonts.ready.then(later);
+    var fw = function () { if (document.fonts.ready) document.fonts.ready.then(later); };   // .ready forces a style pass:
+    if (PRE && window.requestAnimationFrame) requestAnimationFrame(function () { setTimeout(fw, 0); }); else fw();   // after the first frame
     if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', later);
   }
   var imgs = main.getElementsByTagName('img');
@@ -2283,15 +2337,39 @@ PAGER_JS = r"""
     if (!imgs[k].complete) imgs[k].addEventListener('load', later, false);
     else if (!imgs[k].naturalWidth) { imgs[k].style.display = 'none'; var ip = imgs[k].parentNode; if (ip && ip !== main && !txt(ip)) ip.style.display = 'none'; }
   }
+  window.KPAGER = { show: function (i) { show(i); }, snap: function () { return new Promise(function (done) {
+    if (PRE || !on()) { done(null); return; }
+    var k0 = document.getElementById('kko'); if (k0) k0.removeAttribute('data-sig');   // labels drawn with the real fonts
+    var ka = main.getElementsByTagName('*'), kink = [], ko = document.getElementById('kko'), kfl = main.querySelector('ol.kfl');
+    for (var q = 0; q < ka.length; q++) if (ka[q].style.getPropertyValue('background-color') === 'transparent' && ka[q].style.getPropertyPriority('background-color') === 'important') kink.push(q);
+    var P = { vw: window.innerWidth, vh: window.innerHeight, mh: main.offsetHeight, rh: run ? run.offsetHeight : 0, bh: bar.offsetHeight,
+      cls: (root.className.match(/kfit\d/g) || []).join(' '), zoom: main.style.zoom, rail: rail ? rail.style.display : '', kfl: kfl ? kfl.className : '',
+      H: H, C: C, cuts: cuts, tops: tops, heads: heads, kink: kink, ko: ko ? ko.innerHTML : null, kol: ko ? ko.style.left : '',
+      fitnow: root.getAttribute('data-kfit-now'), s: [] };
+    var n = cuts.length - 1, i = 0;
+    (function step() { show(i);
+      setTimeout(function () {   // after the 0 ms label pass and the 60 ms plate check
+        var t2 = document.getElementById('ktail2'), im = t2 && t2.firstChild, kf = document.getElementById('kkf'), gs = view.querySelectorAll('.kgap'), gh = '';
+        for (var g = 0; g < gs.length; g++) gh += gs[g].outerHTML;
+        var R = window.KROOM, r2 = {}; for (var x in R) r2[x] = R[x];
+        P.s.push({ top: main.style.top, vh: view.style.height, kc: kcont ? kcont.innerHTML : '', kcd: kcont ? kcont.style.display : '',
+          kf: kf ? kf.innerHTML : null, gaps: gh, room: R ? r2 : null,
+          t2: t2 ? { d: t2.style.display, top: t2.style.top, h: t2.style.height, c: t2.className, src: im ? im.getAttribute('src') : '', w: im ? im.width : 0, ih: im ? im.height : 0 } : null });
+        if (++i < n) step(); else { show(0); done(P); }
+      }, 150); })();
+  }); } };
   layout();
   // The next page is fetched ahead into the browser cache. An offline copy
   // from an earlier version is removed.
-  var KART = ['orn/ground-%s.svg', 'orn/motif-%s.svg'];   // a section's CSS-background art, warmed before entry
+  var KART = ['orn/ground-%s.svg', 'orn/motif-%s' + (document.body.getAttribute('data-kbg') ? '.png' : '.svg')];   // a section's CSS-background art, warmed before entry
   function warm(u) { if (!u) return; try { var x = new XMLHttpRequest(); x.open('GET', u, true);
     x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
       for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); }
-      var ks = (x.responseText || '').match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
-      if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); } };
+      var t = x.responseText || '', px = t.match(/<body[^>]* data-kpx="([.\w]+)"/);
+      var ks = t.match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
+      if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); }
+      var kp = t.match(/data-kplates='([^']*)'/), slug = u.split('#')[0].split('/').pop().replace(/\.html$/, '');   // its plates too
+      if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {} };
     x.send(); } catch (e) {} }
   setTimeout(function(){
     try { var sw = navigator.serviceWorker;
@@ -2324,7 +2402,23 @@ def write_offline(out, ed):
 
 
 FONT_CSS = ("https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@"
-            "0,7..72,400..700;1,7..72,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=block")
+            "0,7..72,200..900;1,7..72,200..900&display=block")
+
+
+PAGER_FILE = [""]   # set by the Morning build: pages load the pager from this file instead of inline
+
+
+def write_pager(out):
+    """The pager as one file every page shares (named by its content, so a new pager is never served stale)."""
+    import hashlib
+    src = PAGER_JS.strip()
+    src = src[len("<script>"):-len("</script>")]
+    src = (src.replace("__NEXT__", "(document.body.getAttribute('data-knext') || '')")
+              .replace("__PREV__", "(document.body.getAttribute('data-kprev') || '')"))
+    name = f"pager-{hashlib.sha1(src.encode()).hexdigest()[:10]}.js"
+    with open(os.path.join(out, name), "w") as f:
+        f.write(src)
+    PAGER_FILE[0] = name
 
 
 BUILD = {}  # this edition's id, for the saved copy and "pick up where you stopped"
@@ -2347,12 +2441,17 @@ def page(title, body, html_class, body_class, prev=None, nxt=None, stamp="", run
     foot = (f'<footer class="kbar">{prev_link}<span class="kmid"><a id="kmore" href="#" role="button">More &darr;</a>'
             f'<span id="kpos"></span></span>{nxt_short}</footer>'
             f'<footer class="kfoot">{nxt_block}<div class="kmeta"><span></span><span>{stamp}</span></div></footer>')
-    js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
+    if PAGER_FILE[0]:   # the pager is one cached file; this page's neighbours ride on <body>
+        js = f'\n<script src="{PAGER_FILE[0]}"></script>'
+        sec_attr = f' data-knext="{esc(nxt or "")}" data-kprev="{esc(prev or "")}"'
+    else:
+        js = PAGER_JS.replace("__NEXT__", repr(nxt or "")).replace("__PREV__", repr(prev or ""))
+        sec_attr = ""
     return f"""<!doctype html>
 <html lang="en" class="{esc(html_class)}" data-ed="{esc(BUILD.get("id") or stamp)}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>{esc(title)}</title>{fonts}<link rel="stylesheet" href="kindle.css"></head>
-<body class="{esc(body_class)}"{f' data-ksec="{esc(sec)}"' if sec else ""}>
+<body class="{esc(body_class)}"{f' data-ksec="{esc(sec)}"' if sec else ""}{sec_attr}>
 {top}
 <div id="kview"><div id="kcont"></div><div id="kclip"><main id="kmain">{body}</main></div><div id="ktail" aria-hidden="true"></div></div>
 {nav}
@@ -2778,6 +2877,7 @@ def main(site):
     with open(os.path.join(out, "kindle.css"), "w") as f:
         f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS)
     kindle_orn.write_plates(out)
+    write_pager(out)
     me = (data["htmlClass"] + " kme").strip()
 
     by_id = {s["id"]: s for s in data["sections"] if s.get("cards")}
@@ -3179,6 +3279,11 @@ def main(site):
     except Exception as e:  # noqa: BLE001  -- never lose the edition over the art
         print(f"kindle_full: plates skipped: {e!r}", file=sys.stderr)
     write_offline(out, BUILD["id"])
+    try:  # last: raster art, trimmed stylesheet, each page's layout worked out here instead of on the Kindle
+        from . import kindle_fast
+        kindle_fast.run(out)
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_full: speed pass skipped: {e!r}", file=sys.stderr)
     n = len(pages)
     # The old bookmark (kindle.html) opens the edition.
     with open(os.path.join(site, "kindle.html"), "w") as f:

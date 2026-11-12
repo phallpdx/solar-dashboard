@@ -1615,10 +1615,14 @@ def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
     cv.obj([poly], 1.)
     ys = py + ph * snow
     # east face: fall lines from the summit ridge, crowding toward the shadowed foot
-    n = max(10, int(wr * .75 / 2.))
+    n = max(10, int(wr * .75 / 2.)) if ph >= 70 else 0
+    if ph < 70:
+        east = [(px + wr * .06 * t, py + ph * t) for t in [i / 12 for i in range(13)]][::-1] + R[1:]
+        cv.hair(C.hatch_poly(east, 62, 2.))
+        cv.hair(clip_in(C.hatch_poly(east, -20, 2.5), [(px - wr, ys), (px + 2 * wr, ys), (px + 2 * wr, base + 2), (px - wr, base + 2)]))
     for k in range(1, n + 1):
         f = k / n
-        t0 = .02 if k % 4 == 0 else (.1 if k % 2 == 0 else .22)
+        t0 = (.02 if k % 4 == 0 else (.1 if k % 2 == 0 else .22)) if ph >= 70 else (.12 if k % 2 else .3)
         pts = []
         for i in range(17):
             t = t0 + (1 - t0) * i / 16
@@ -1635,17 +1639,17 @@ def mountain(cv, x0, x1, base, px, ph, seed=0, snow=.6, forest=True, light=-1):
     cv.line([(px + wr * .06 * t + _m.sin(t * 9) * .5, py + ph * t) for t in [i / 12 for i in range(13)]])
     # west face: glacier ribs with short shadow ticks on their east side
     for k, f in enumerate((.18, .36, .55, .74)):
-        a = lp(.04 + .12 * f)
+        a = lp((.04 + .12 * f) if ph >= 70 else (.3 + .2 * f))
         b = lp(1.)
         b = (px - wl * .78 * f, base)
         rib = [(a[0] + (b[0] - a[0]) * t + _m.sin(t * 7 + k) * ph * .012, a[1] + (b[1] - a[1]) * t) for t in [i / 14 for i in range(15)]]
         cv.hair(rib)
-        for i in range(2, 14, 1 if k % 2 else 2):
+        for i in range(2, 14, (1 if k % 2 else 2) if ph >= 70 else 3):
             q = rib[i]
             ln = 1.5 + 2.5 * (i / 14)
             cv.hair([q, (q[0] + ln, q[1] + ln * .5)])
     # wind-scoured snow on the lit face: broken lines parallel to the west skyline
-    for k in range(1, 7):
+    for k in range(1, 7 if ph >= 70 else 1):
         d = k * ph * .06
         seg = []
         for i in range(25):
@@ -1717,6 +1721,62 @@ def fir(cv, x, base, h, rng, wfac=.36, snow=False):
             cv.hair(C.hatch_poly([(x, ya), (x, yb + droop * .25)] + Rf, -25, 2.))
         cv.heavy([(x - hw * .9, yb + droop * .2), (x - hw * .55, yb + droop * .05), (x, yb + droop * .25),
                   (x + hw * .55, yb + droop * .05), (x + hw * .9, yb + droop * .2)])
+
+
+# ---------------------------------------------------------------------------------------------
+# the free-standing vignette: a shaped scene whose edge dissolves (Bewick), framed only by
+# devices built from the page's own subject
+# ---------------------------------------------------------------------------------------------
+
+def ragged(poly, amp=3., seed=0):
+    """Wobble a closed shape's edge in and out so line work ends raggedly, the way a vignette's
+    tone dissolves into the paper."""
+    rng = _r.Random(seed)
+    ph = [rng.uniform(0, TAU) for _ in range(4)]
+    pts = resample(poly + [poly[0]], 2.)[:-1]
+    cx = sum(p[0] for p in pts) / len(pts)
+    cy = sum(p[1] for p in pts) / len(pts)
+    out = []
+    n = len(pts)
+    for i, (x, y) in enumerate(pts):
+        a = TAU * i / n
+        d = amp * (.45 * _m.sin(5 * a + ph[0]) + .3 * _m.sin(13 * a + ph[1]) + .25 * _m.sin(29 * a + ph[2])
+                   + .35 * _m.sin(61 * a + ph[3]) * rng.uniform(.3, 1.))
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1.
+        out.append((x + dx / L * d, y + dy / L * d))
+    return out
+
+
+def shape_poly(shape, x, y, w, h):
+    if shape in ("oval", "roundel"):
+        return ellipse_poly(x + w / 2, y + h / 2, w / 2, h / 2, 120)
+    if shape == "arch":
+        return arch_poly(x, y, w, h, 48)
+    if shape == "lunette":
+        return [(x + w / 2 - w / 2 * _m.cos(PI * i / 48), y + h - h * _m.sin(PI * i / 48)) for i in range(49)]
+    if shape == "cut":
+        return cut_poly(x, y, w, h, min(w, h) * .14)
+    return ellipse_poly(x + w / 2, y + h / 2, w / 2, h / 2, 120)
+
+
+def vignette_plate(w, h, ctx, spec):
+    """spec: shape, aspect (w/h of the shape), scene(x, y, w, h, clip_d, level) -> svg, frame(poly,
+    (x, y, w, h)) -> (back_svg, front_svg), seed, rag (edge amplitude), margins (l, t, r, b)."""
+    seed = spec.get("seed", 1)
+    STYLE[0] = spec.get("style", "acanthus")
+    ml, mt, mr, mb = spec.get("margins", (4, 4, 4, 4))
+    sh = h - mt - mb
+    sw = min(w - ml - mr, sh * spec.get("aspect", 1.6))
+    x = ml + (w - ml - mr - sw) / 2
+    y = mt
+    poly = shape_poly(spec.get("shape", "oval"), x, y, sw, sh)
+    rag = ragged(poly, spec.get("rag", 3.), seed)
+    back, front = ("", "")
+    if spec.get("frame"):
+        back, front = spec["frame"](poly, (x, y, sw, sh))
+    body = spec["scene"](x, y, sw, sh, _d(rag, True, 0), spec.get("level", 1))
+    return plate_doc(w, h, back + body + front, seed)
 # ==== end of studio kit ====
 
 import re
@@ -1960,11 +2020,24 @@ def tablet(x, y, w, h, ctx, seed):
     return "".join(o)
 
 
+def frame(poly, box, seed):
+    """The arch is held between two tall snow-laden firs that rise past its shoulders, their
+    roots in a drift that runs across the foot; a snow crystal hangs at the keystone."""
+    x, y, sw, sh = box
+    rng = random.Random(seed)
+    cv = Canvas()
+    for sg in (-1, 1):
+        fx = x + sw / 2 + sg * (sw / 2 + sh * .1)
+        fir(cv, fx, y + sh + 2, sh * 1.0, rng, .26, snow=True)
+        fir(cv, fx + sg * sh * .2, y + sh + 3, sh * .6, rng, .3, snow=True)
+    crystal(cv, x + sw / 2, y + 2, sh * .07)
+    return "", cv.svg()
+
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = (sum(map(ord, ctx.get("date", ""))) + 11) % 9973
-    spec = dict(scene=lambda x, y, ww, hh, clip, lv: scene(x, y, ww, hh, clip, ctx, lv, seed),
-                motif=lambda cx, cy, r, i: motif(cx, cy, r, i, seed),
-                tablet=lambda tx, ty, tw, th: tablet(tx, ty, tw, th, ctx, seed),
-                ribbon="MT HOOD", seed=seed, shape="arch", mw=.5)
-    return compose(w, h, ctx, spec)
+    spec = dict(shape="arch", aspect=1.35, seed=seed, rag=2.5, margins=(60, 10, 60, 6),
+                scene=lambda x, y, ww, hh, clip, lv: scene(x, y, ww, hh, clip, ctx, 1, seed),
+                frame=lambda poly, box: frame(poly, box, seed))
+    return vignette_plate(w, h, ctx, spec)

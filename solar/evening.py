@@ -14,8 +14,23 @@ SHORT = {"N": "north", "NNE": "north-northeast", "NE": "northeast", "ENE": "east
          "ESE": "east-southeast", "SE": "southeast", "SSE": "south-southeast", "S": "south", "SSW": "south-southwest",
          "SW": "southwest", "WSW": "west-southwest", "W": "west", "WNW": "west-northwest", "NW": "northwest",
          "NNW": "north-northwest"}
-BIG_SHOWERS = {"Quadrantids", "Perseids", "Geminids", "Eta Aquariids"}  # 50+ an hour: worth a late night
+# The two showers worth offering as a choice from 45.7 N: both are good in the evening, not only before dawn.
+BIG_SHOWERS = {
+    "Geminids": "The Geminids peak tonight, the year's best shower: dozens an hour from a dark spot after 9 pm. "
+                "If you'd rather sleep, ten minutes outside before bed will still show a few.",
+    "Perseids": "The Perseids peak tonight, the summer's best shower: a few an hour once it's dark, and dozens an hour "
+                "from a dark spot after midnight. If you'd rather sleep, ten minutes outside before bed will still show a few.",
+}
+# Showers that are strong on paper but belong to the hours before dawn here.
+DAWN_SHOWERS = {
+    "Quadrantids": "The Quadrantids peak tonight, a short, sharp shower that only gets going in the hours before dawn. "
+                   "Not one to stay up for.",
+    "Eta Aquariids": "The Eta Aquariids peak tonight, but from this far north only a few show, low in the east just before "
+                     "dawn. Not one to stay up for.",
+}
 LATE = dt.time(22, 30)  # after this, only rare things get a mention
+FIRST_BY = dt.time(22, 0)  # a planet first seen after this is left out
+HEADLINE_BY = dt.time(21, 0)  # a planet first up after this (and well after dark) doesn't lead the page
 
 
 def clock(t):
@@ -50,7 +65,6 @@ def _observer(lat, lon, when_utc):
     import ephem
     o = ephem.Observer()
     o.lat, o.lon, o.elevation = str(lat), str(lon), 5
-    o.pressure = 0  # no refraction: rise and set to the minute is plenty
     o.date = when_utc.replace(tzinfo=None)
     return o
 
@@ -72,11 +86,11 @@ def dusk(night, lat, lon):
 
 
 def planets(night, lat, lon):
-    """Bright planets up between dark and 11 pm: where to look, how high, when they set.
-    Brightest first."""
+    """Bright planets up between dark and 10:30 pm (first seen by 10 pm): where to look, how high,
+    when they set. Brightest first."""
     import ephem
     sunset, dark = dusk(night, lat, lon)
-    end = dt.datetime.combine(night, dt.time(23), TZ)
+    end = dt.datetime.combine(night, LATE, TZ)
     out = []
     for name, body in (("Venus", ephem.Venus()), ("Jupiter", ephem.Jupiter()), ("Mars", ephem.Mars()),
                        ("Saturn", ephem.Saturn()), ("Mercury", ephem.Mercury())):
@@ -94,6 +108,8 @@ def planets(night, lat, lon):
         if not seen:
             continue
         when, alt, az, mag = seen
+        if when > dt.datetime.combine(night, FIRST_BY, TZ):
+            continue
         if name == "Mercury" and mag > 0.5:
             continue
         if name == "Mars" and mag > 1.4:
@@ -109,7 +125,8 @@ def planets(night, lat, lon):
             look = when
         o = _observer(lat, lon, look.astimezone(dt.timezone.utc))
         body.compute(o)
-        out.append({"name": name, "mag": round(body.mag, 1), "first": when, "look": look,
+        late = when > max(dark + dt.timedelta(minutes=30), dt.datetime.combine(night, HEADLINE_BY, TZ))
+        out.append({"name": name, "mag": round(body.mag, 1), "first": when, "look": look, "late": late,
                     "alt": round(math.degrees(body.alt)), "dir": compass(math.degrees(body.az)),
                     "sets": sets if sets and sets.date() <= night + dt.timedelta(days=1) else None})
     out.sort(key=lambda p: p["mag"])
@@ -187,7 +204,10 @@ LOOKS = {"Venus": "the brightest light in the sky after the moon", "Jupiter": "a
 
 def planet_line(p, night):
     if p["look"].hour >= 21 and p["look"] == p["first"] and p["first"].hour >= 21 and p["first"].minute:
-        where = f"{p['dir'].capitalize()}, clearing the trees around {clock(p['first'].timetz())}"
+        if "east" in p["dir"]:  # rising: it has to get above the trees first
+            where = f"{p['dir'].capitalize()}, clearing the trees around {clock(p['first'].timetz())}"
+        else:
+            where = f"{p['dir'].capitalize()} once it's dark, about {clock(p['first'].timetz())}"
     else:
         where = f"{height(p['alt']).capitalize()} in the {p['dir']}" + (
             "" if p["look"].hour == 21 and not p["look"].minute else f" at {clock(p['look'].timetz())}")
@@ -198,6 +218,18 @@ def planet_line(p, night):
 
 def _parse_utc(s):
     return dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+
+
+def _dated_hours(d, now_local):
+    """The hourly strip runs 24 hours from the last update and carries only clock times; give each hour its date."""
+    base = dt.datetime.fromisoformat(d["generated_at"]).astimezone(TZ) if d.get("generated_at") else now_local
+    out, date, last = [], base.date(), None
+    for h in (d.get("outside") or {}).get("next_hours") or []:
+        if last is not None and h["t"] < last:
+            date += dt.timedelta(days=1)
+        last = h["t"]
+        out.append((date, h))
+    return out
 
 
 def tonight(d, now_local):
@@ -216,8 +248,8 @@ def tonight(d, now_local):
         pl = [p for p in planets(night, lat, lon) if p["mag"] <= 1.5][:3]
         for p in pl:
             out["items"].append((p["name"], planet_line(p, night)))
-        if pl:
-            brightest = pl[0]
+        # Lead with a planet that is up in the evening, not one that only appears late.
+        brightest = next((p for p in pl if not p["late"]), None)
     except ImportError:
         pass
     except Exception as e:  # noqa: BLE001 - the rest of the sky still prints
@@ -233,6 +265,7 @@ def tonight(d, now_local):
                                  f"high and bright, about {p.get('minutes') or 4} minutes. A steady moving star, no blinking."))
             break
 
+    hidden = None  # the rare event, named, in case the clouds hide it
     for e in o.get("sky_events") or []:
         if e.get("kind") != "meteors":
             continue
@@ -242,9 +275,11 @@ def tonight(d, now_local):
         name = e["title"].replace(" meteor shower peak", "")
         m = re.search(r"about (\d+) an hour", e.get("detail", ""))
         rate = int(m.group(1)) if m else 0
-        if rate >= 50:
-            out["choice"] = (f"The {name} peak tonight, one of the best showers of the year: up to {rate} an hour from a dark "
-                             f"spot after 10 pm. If you'd rather sleep, ten minutes outside before bed still shows a few.")
+        if name in BIG_SHOWERS and rate >= 50:
+            out["choice"] = BIG_SHOWERS[name]
+            hidden = f"The {name} peak tonight behind the clouds."
+        elif name in DAWN_SHOWERS:
+            out["items"].append(("Meteors", DAWN_SHOWERS[name]))
         else:
             out["items"].append(("Meteors", f"The {name} peak tonight, a light shower of a few an hour, mostly before dawn. "
                                             "Not one to stay up for."))
@@ -253,13 +288,15 @@ def tonight(d, now_local):
     if (au.get("here_pct") or 0) >= 30 or (au.get("north_pct") or 0) >= 50:
         out["choice"] = ((out["choice"] + " ") if out["choice"] else "") + (
             "There's a real chance of northern lights tonight. Look low over the northern horizon from somewhere dark; "
-            "a phone camera picks up more colour than your eyes. Ten minutes outside is enough to know.")
+            "a phone camera picks up more color than your eyes. Ten minutes outside is enough to know.")
+        hidden = hidden or "A chance of northern lights tonight, behind the clouds."
 
     nights = o.get("nights") or []
     tn = next((n for n in nights if n.get("night") == night.isoformat()), None)
     verdict = tn.get("verdict") if tn else None
     if not verdict:
-        hrs = [h.get("cloud") for h in o.get("next_hours") or [] if "19:00" <= h["t"] <= "23:00" and h.get("cloud") is not None]
+        hrs = [h.get("cloud") for dd, h in _dated_hours(d, now_local)
+               if dd == night and "19:00" <= h["t"] <= "23:00" and h.get("cloud") is not None]
         if hrs:
             c = sum(hrs) / len(hrs)
             verdict = "Clouded out" if c >= 85 else "Some gaps" if c >= 40 else "Clear"
@@ -271,10 +308,10 @@ def tonight(d, now_local):
             label = "Tomorrow night" if day == night + dt.timedelta(days=1) else day.strftime("%A night")
             out["later"] = f"{label} looks clearer."
         else:
-            out["later"] = "The next few nights stay cloudy."
+            out["later"] = "No clear night in the forecast yet."
         out["headline"] = "Clouded out tonight"
-        if out["choice"]:  # a rare event behind cloud: say so once, gently
-            out["later"] = "It would have been a good night for a look up, but the clouds have it. " + out["later"]
+        if out["choice"]:  # a rare event behind cloud: name it once, plainly
+            out["later"] = f"{hidden} {out['later']}"
             out["choice"] = None
         return out
     star = brightest["name"] if brightest else ("the moon" if any(k == "Moon" for k, _ in out["items"]) else None)
@@ -311,47 +348,67 @@ def tomorrow(d, now_local):
     f = next((x for x in o.get("days") or [] if x.get("date") == day.isoformat()), None)
     if not f:
         return None
-    # The hourly strip runs 24 hours from the last update; give each hour its date.
-    hours, cur = [], None
-    base = dt.datetime.fromisoformat(d["generated_at"]).astimezone(TZ) if d.get("generated_at") else now_local
-    date, last = base.date(), None
-    for h in o.get("next_hours") or []:
-        if last is not None and h["t"] < last:
-            date += dt.timedelta(days=1)
-        last = h["t"]
-        hours.append((date, h))
-    wet = [h for dd, h in hours if dd == day and "06:00" <= h["t"] <= "21:00" and (h.get("rain_pct") or 0) >= 50]
+    # Hourly rain chances for tomorrow's daylight hours. The strip only reaches 24 hours past the last
+    # update, so tomorrow evening may be missing: never claim the rain eases at the edge of the data.
+    day_hours = [h for dd, h in _dated_hours(d, now_local) if dd == day]
+    covered_to = day_hours[-1]["t"] if day_hours else "00:00"
+    wet = [h for h in day_hours if "06:00" <= h["t"] <= "21:00" and (h.get("rain_pct") or 0) >= 50]
     rain_in = f.get("rain_in") or 0
+    rain_pct = f.get("rain_pct") or 0
     hi, lo = round(f["hi"]), round(f["lo"])
     sky = WMO.get(f.get("code"), "")
-    if rain_in >= 0.05 or (f.get("rain_pct") or 0) >= 60:
+    gust = f.get("gust") or 0
+    sunset = hhmm(f["sunset"]) if f.get("sunset") else None
+    dry_plan = (f"A good day for anything outside; it's dark by {sunset}." if sunset
+                else "A good day for anything outside.")
+    timing = amount = None
+    if rain_in >= 0.05 or rain_pct >= 60:
         if wet and wet[0]["t"] > "08:00":
-            lead = f"Dry morning, rain from about {hhmm(wet[0]['t'])}; bring a hood."
-            timing = f"Rain from about {hhmm(wet[0]['t'])}" + (f", easing by {hhmm(wet[-1]['t'])}" if wet[-1]["t"] < "20:00" else ", on and off into the evening") + "."
+            start = hhmm(wet[0]["t"])
+            lead = f"Dry morning, rain from about {start}; bring a hood."
+            last = wet[-1]["t"]
+            if last < "20:00" and last < covered_to:
+                ease = f"{int(last[:2]) + 1:02d}:00"
+                timing = f"Rain from about {start}, easing by {hhmm(ease)}."
+            else:
+                timing = f"Rain from about {start}, on and off into the evening."
+            plan = (f"Outdoor jobs go best before {start}." if wet[0]["t"] > "10:00" else
+                    "An indoor kind of day." if rain_in >= 0.25 else "Rain gear handles it.")
         else:
             lead = "Rain on and off through the day; bring a hood."
-            timing = None
-        amount = f"About {_inches(rain_in)} in all." if rain_in >= 0.1 else "Not much of it."
+            plan = "An indoor kind of day." if rain_in >= 0.25 else "Rain gear handles it."
+        amount = f"About {_inches(rain_in)} in all." if rain_in >= 0.1 else "Only a little, under a tenth of an inch."
     elif (f.get("snow_in") or 0) > 0.1:
-        lead, timing, amount = "Snow is possible; allow extra time on the bridge.", None, None
+        lead = "Snow is possible; allow extra time on the bridge."
+        plan = "Leave early for anything on the road."
+    elif rain_pct >= 40:
+        lead = "Mostly dry, with a chance of a shower; keep a hood handy."
+        plan = "Rain gear handles it."
     else:
-        lead = {"clear": "A clear, dry day.", "mostly clear": "Mostly sunny and dry.", "partly cloudy": "A dry day with some sun.",
-                "cloudy": "Grey but dry.", "foggy": "A foggy start, then dry."}.get(sky, "A dry day.")
-        timing, amount = None, None
-    wind = None
-    gust = f.get("gust") or 0
+        lead = {"clear": "Dry and sunny all day; no umbrella needed.",
+                "mostly clear": "Dry and sunny all day; no umbrella needed.",
+                "partly cloudy": "Dry all day with some sun; no umbrella needed.",
+                "cloudy": "Dry all day under grey skies; no umbrella needed.",
+                "foggy": "A foggy start, then dry; no umbrella needed.",
+                "foggy with frost": "A foggy, frosty start, then dry; no umbrella needed."}.get(
+                    sky, "Dry all day; no umbrella needed.")
+        plan = dry_plan if gust < 30 else (
+            f"Dry until dark at {sunset}, but save ladder and roof jobs for a calmer day." if sunset
+            else "Dry, but save ladder and roof jobs for a calmer day.")
+    extra = []
     if gust >= 30:
-        wind = f"Gusty, up to {round(gust, -1):.0f} mph; tie down anything loose tonight."
+        extra.append(f"Gusty, up to {round(gust, -1):.0f} mph; tie down anything loose tonight.")
     elif (f.get("wind") or 0) >= 15:
-        wind = f"Breezy, around {round(f['wind'])} mph."
-    plan = ("Good for getting outside." if rain_in < 0.05 and (f.get("rain_pct") or 0) < 40 and gust < 30 else
-            f"Outdoor jobs go best before {hhmm(wet[0]['t'])}." if wet and wet[0]["t"] > "10:00" else
-            "An indoor kind of day." if rain_in >= 0.25 else "Rain gear handles it.")
+        extra.append(f"Breezy, around {round(f['wind'])} mph.")
+    frost = "Frost likely by morning; leave time to clear the windshield." if lo <= 33 else None
+    if frost:
+        extra.append(frost)
+    wind = " ".join(extra) or None  # the renderer prints this as its own paragraph
     alerts = [a.get("event") or a.get("headline") for a in (d.get("alerts") or {}).get("official") or []
               if (a.get("event") or a.get("headline"))]
     return {"date": day, "hi": hi, "lo": lo, "sky": sky, "lead": lead, "timing": timing, "amount": amount, "wind": wind,
-            "sunrise": hhmm(f["sunrise"]) if f.get("sunrise") else None, "sunset": hhmm(f["sunset"]) if f.get("sunset") else None,
-            "plan": plan, "alerts": alerts[:1], "rain_pct": f.get("rain_pct"), "rain_in": rain_in}
+            "sunrise": hhmm(f["sunrise"]) if f.get("sunrise") else None, "sunset": sunset,
+            "plan": plan, "alerts": alerts[:1], "rain_pct": f.get("rain_pct"), "rain_in": rain_in, "frost": frost}
 
 
 def _inches(x):

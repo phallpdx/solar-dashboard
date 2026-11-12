@@ -1708,16 +1708,21 @@ def free_vignette(w, h, ctx, scene, opts):
     o = []
     mode = "band" if (form == "strip" or Y1 - Y0 < 70) else ("medium" if Y1 - Y0 < 200 else "tall")
     body = scene(X0, Y0, X1 - X0, Y1 - Y0, _d(R, True, 0), mode)
-    o.append(clip_g(f"{pid}fv", _d(R, True, 0), f'<path d="{_d(R, True, 0)}" fill="#fff"/>' + body))
-    # the dissolving edge: white cuts laid over the rim, closer together toward the paper
+    # the dissolving edge: white cuts laid over the rim, closer together toward the paper. They
+    # sit inside the clip with the scene, so nothing outside the cut is painted (the frame's
+    # engraved ground shows through there: Parker's "no white unless behind text").
     m = min(X1 - X0, Y1 - Y0)
     rings = ((1.2, 2.6, None), (3.4, 1.5, "4 1.2"), (5.6, 1.5, "2 2"), (8., 1., "1.2 3.2"), (10.5, 1., ".8 5"))
+    rs = []
     for d, sw, da in rings:
         if d > m * .18:
             break
         ring = offset_poly(R, -d)
+        if not inside(R, *ring[0]):
+            ring = offset_poly(R, d)
         dash = f' stroke-dasharray="{da}" stroke-dashoffset="{_n(d * 1.7)}"' if da else ""
-        o.append(f'<path d="{_d(ring + [ring[0]], False, 0)}" stroke="#fff" stroke-width="{_n(sw)}" fill="none"{dash}/>')
+        rs.append(f'<path d="{_d(ring + [ring[0]], False, 0)}" stroke="#fff" stroke-width="{_n(sw)}" fill="none"{dash}/>')
+    o.append(clip_g(f"{pid}fv", _d(R, True, 0), f'<path d="{_d(R, True, 0)}" fill="#fff"/>' + body + "".join(rs)))
     if opts.get("motifs"):
         o.append(opts["motifs"](w, h, (X0, Y0, X1, Y1), R))
     if opts.get("banner") and (Y1 - Y0) >= 150:
@@ -1882,36 +1887,42 @@ def clump_poly(cx, cy, r, rng, n=None, frill=.12):
     return pts
 
 
-def foliage(cv, clumps, rng, light=(-.62, -.62), pitch=2., dark=1., angle=-28., seed=0, outline=.5):
-    """A crown of leaf masses. clumps: [(cx, cy, r)], painted back to front (top first). Each is
-    lit as a ball; its lines run at `angle` and break into leaf flecks that open up in the light."""
-    fl = flecks(seed, 2.6, .55)
-    fl2 = flecks(seed + 9, 3.4, .5, 1.3)
+def foliage(cv, clumps, rng, light=(-.62, -.62), pitch=2., dark=1., angle=-28., seed=0, outline=0.):
+    """A crown of leaf masses (Bewick's leaf touch). clumps: [(cx, cy, r)], painted back to front.
+    Each clump is lit as a ball: its shadow side laid in fine hatching, then the whole clump
+    covered in small scalloped leaf touches - crowded and heavy in the shadow, thinning to a few
+    fine ones toward the light, with a scalloped rim on the shadow edge."""
+    a0 = math.atan2(-light[1], -light[0])
     for cx, cy, r in clumps:
-        P = clump_poly(cx, cy, r, rng)
+        P = clump_poly(cx, cy, r, rng, frill=.18)
         cv.obj([P], outline)
         b = shade_ball(cx, cy - r * .1, r * 1.05, light)
         okP = fast_inside(P)
-
-        def tone(x, y, b=b):
-            v = b(x, y)
-            t = (1 - v) * 1.15 * dark
-            if t < .55 and fl(x, y):
-                return 0.
-            if t < .3 and fl2(x, y):
-                return 0.
-            return t + .05
-        hatch(cv, cx - r * 1.2, cx + r * 1.2, cy - r * 1.2, cy + r * 1.2, angle, tone, pitch, ok=okP, step=1.5)
-        # the shadow quarter crossed again
-        hatch(cv, cx - r * 1.2, cx + r * 1.2, cy - r * 1.2, cy + r * 1.2, angle + 75,
-              lambda x, y, b=b: .5 if b(x, y) < .32 * dark and not fl2(x, y) else 0., 3., ok=okP, step=1.5)
-        # sprays of single leaves flicked along the lit rim
-        for i in range(int(r * .9)):
-            t = rng.uniform(math.atan2(light[1], light[0]) - 1.3, math.atan2(light[1], light[0]) + 1.3)
-            rr = r * rng.uniform(.6, .95)
-            x, y = cx + rr * math.cos(t), cy + rr * .9 * math.sin(t)
-            L = rng.uniform(1.5, 2.8)
-            cv.hair([(x, y), (x + L * .8, y + L * .5), (x + L * 1.3, y + L * .2)])
+        hatch(cv, cx - r * 1.2, cx + r * 1.2, cy - r * 1.2, cy + r * 1.2, angle,
+              lambda x, y, b=b: (.5 if b(x, y) < .25 else (.3 if b(x, y) < .5 else 0.)) * dark, pitch, ok=okP, step=1.5)
+        cv.hair([(px, py) for px, py in P if (px - cx) * math.cos(a0) + (py - cy) * math.sin(a0) > r * .3])
+        sp = 2.6
+        hv, hn = [], []
+        yy = cy - r
+        j = 0
+        while yy < cy + r:
+            xx = cx - r + (j % 2) * sp * .5
+            while xx < cx + r:
+                x = xx + rng.uniform(-.6, .6)
+                y = yy + rng.uniform(-.5, .5)
+                if okP(x, y):
+                    v = b(x, y)
+                    t = (1 - v) * dark
+                    if rng.random() < .25 + t * 1.1:
+                        q = 1.1 + rng.uniform(0, .5)
+                        tilt = rng.uniform(-.5, .5)
+                        arc = [(x + q * math.cos(PI * k / 4 + tilt), y + q * .8 * math.sin(PI * k / 4 + tilt)) for k in range(5)]
+                        (hv if t > .62 else hn).append(arc)
+                xx += sp
+            yy += sp * .8
+            j += 1
+        cv.line(hv)
+        cv.hair(hn)
 
 
 def crown(cx, cy, w, h, rng, n=None, kind="round"):
@@ -1922,7 +1933,7 @@ def crown(cx, cy, w, h, rng, n=None, kind="round"):
     for i in range(n):
         t = i / max(1, n - 1)
         if kind == "tall":
-            y = cy - h / 2 + h * (.12 + .8 * rng.random())
+            y = cy - h / 2 + h * (.12 + .8 * (i + rng.random()) / n)
             x = cx + (w / 2) * (rng.random() - .5) * 1.4 * (1 - .4 * abs(y - cy) / h * 2)
             r = min(w, h) * rng.uniform(.18, .3)
         else:
@@ -1938,16 +1949,16 @@ def crown(cx, cy, w, h, rng, n=None, kind="round"):
 
 def tree(cv, x, base, w, h, rng, kind="tall", light=(-.62, -.62), seed=0, dark=1.):
     """A modelled deciduous tree: trunk and limbs in swelling cuts, crown in leaf masses."""
-    ct = base - h * .58
-    cl = crown(x, ct, w, h * .8, rng, kind=kind)
+    ct = base - h * .56
+    cl = crown(x, ct, w, h * .84, rng, n=max(7, int((w * h) ** .5 / 5)), kind=kind)
     tw = max(1.2, w * .06)
     trunk = [(x - tw, base), (x - tw * .6, ct + h * .1), (x + tw * .6, ct + h * .1), (x + tw, base)]
     cv.obj([trunk], 1.)
     hatch(cv, x - tw, x + tw, ct, base, 90, lambda px, py: .3 if px < x - tw * .2 else .8, 1.5, ok=fast_inside(trunk), step=2.)
     for k in range(3):
         a = -PI / 2 + rng.uniform(-.8, .8)
-        L = h * rng.uniform(.18, .3)
-        sx, sy = x, ct + h * .15 + k * 2
+        L = h * rng.uniform(.1, .16)
+        sx, sy = x, ct + h * .2 + k * 2
         cv.line([(sx, sy), (sx + L * .5 * math.cos(a), sy + L * .5 * math.sin(a)), (sx + L * math.cos(a), sy + L * math.sin(a))])
     foliage(cv, cl, rng, light, 2., dark, seed=seed)
     return cl
@@ -2026,23 +2037,29 @@ def water(cv, x0, x1, y0, y1, tone, rng, pitch=2., ok=None, persp=True, wav=.6):
         d = (y - y0) / max(1., y1 - y0) if persp else .5
         x = x0 - rng.uniform(0, 8)
         while x < x1:
-            L = rng.uniform(6, 26) * (1.4 - d) + 2
-            gp = rng.uniform(.8, 3.2) * (.5 + d)
-            amp = wav * (.3 + d)
-            seg = []
+            L = rng.uniform(10, 46) * (1.3 - d) + 3
+            gp = rng.uniform(.8, 2.4) * (.4 + d)
+            amp = wav * (.2 + d * .8)
             n = max(2, int(L / 2))
+            sgn = 1 if (int(x) % 2) else -1
+            cur, cw = [], None
             for i in range(n + 1):
                 px = x + L * i / n
-                py = y + amp * math.sin(i / n * PI) * (1 if (int(x) % 2) else -1)
-                seg.append((px, py))
-            mx, my = x + L / 2, y
-            if ok and not ok(mx, my):
-                t = -1
-            else:
-                t = tone(mx, my) * K
-            w = None if t < .1 else (.5 if t < .42 else (1. if t < .72 else (1.5 if pitch >= 3 else 1.)))
-            if w:
-                ws[w].append(seg)
+                py = y + amp * math.sin(i / n * PI) * sgn
+                if ok and not ok(px, py):
+                    t = -1
+                else:
+                    t = tone(px, py) * K
+                w = None if t < .1 else (.5 if t < .42 else (1. if t < .72 else (1.5 if pitch >= 3 else 1.)))
+                if w != cw:
+                    if cw and len(cur) > 1:
+                        ws[cw].append(cur)
+                    cur = [cur[-1]] if (cur and w and cw) else []
+                    cw = w
+                if w:
+                    cur.append((px, py))
+            if cw and len(cur) > 1:
+                ws[cw].append(cur)
             x += L + gp
         y += pitch
     cv.hair(ws[.5])
@@ -2227,6 +2244,118 @@ def forest(cv, x0, x1, ground, hmin, hmax, rng, ybot, tone=.6, pitch=1.5, light_
     hatch(cv, x0 - 2, x1 + 2, min(s[1] for s in spires) - 2, ybot, 86, t, pitch, ok=okp, step=1.5,
           wob=lambda x, y: .35 * math.sin(y * .9 + x * .2))
     return P
+
+
+def peak(cv, cx, base, top, hw, rng, pitch=1.5, flat=0., snow=.55, tone=1., east_lit=False, sharp=False):
+    """A distant volcano in hachures: fall-line cuts fanning from the crown, opened white on the
+    lit west flank and on the snowfields, swelling dark into the east flank and the gullies."""
+    MH = base - top
+    n = 40
+    sil = []
+    for i in range(n + 1):
+        u = -1 + 2 * i / n
+        v = (max(0., 1 - abs(u)) ** 1.45 * (1 + .04 * math.sin(u * 23)) if sharp else max(0., 1 - abs(u) ** 1.6)) if abs(u) > flat else 1.
+        v = min(1., v * (1 + flat * 1.5))
+        sil.append((cx + u * hw, base - MH * v + (rng.uniform(-.4, .4) if 0 < i < n else 0)))
+    P = sil + [(cx + hw, base + 1), (cx - hw, base + 1)]
+    cv.obj([P], .5)
+    okp = fast_inside(P)
+    gul = [rng.uniform(-.9, .9) for _ in range(int(hw / 4) + 3)]
+
+    def t(x, y):
+        u = (x - cx) / hw
+        tt = (y - top) / MH
+        v = .05 + .55 * max(0., (-u if east_lit else u) + .15)
+        for g in gul:
+            d = (-1 if east_lit else 1) * (u / max(.15, tt + .1) - g / 1.1)
+            if 0 < d < .12:
+                v += .45 * (1 - d / .12)
+        if tt < snow:
+            v *= .7
+        else:
+            v += .2
+        return v * tone
+    hatch(cv, cx - hw, cx + hw, top - 1, base + 1, 90, t, pitch, g=lambda x, y: -(x - cx) * .5 * max(0., (y - top) / MH),
+          ok=okp, step=1.5)
+    return P
+
+
+def ship(cv, x0, x1, wl, H, rng, pitch=1.5):
+    """A bulk carrier at anchor, bow to the right: hull cut dark in swelling lines with the light
+    along the sheer, white deckhouse aft with its windows, four deck cranes, hatch covers."""
+    L = x1 - x0
+    fb = max(3., H * .07)
+    hull = [(x0, wl - fb), (x1 - L * .04, wl - fb), (x1 + L * .02, wl - fb * 1.25), (x1, wl), (x0 + L * .03, wl)]
+    cv.obj([hull], 1.)
+    hatch(cv, x0, x1 + L * .03, wl - fb * 1.3, wl, 0, lambda x, y: .9 if y > wl - fb * .45 else (.6 if y > wl - fb * .8 else .3),
+          pitch, ok=fast_inside(hull), step=2.)
+    cv.line([(x0 + 2, wl - fb * .45), (x1 - 2, wl - fb * .45)])
+    for k in range(int(L / 9)):
+        xx = x0 + L * .05 + k * 9
+        cv.hair([(xx, wl - fb + .5), (xx, wl - fb * .55)])
+    dh = [(x0 + L * .02, wl - fb), (x0 + L * .02, wl - fb * 2.9), (x0 + L * .14, wl - fb * 2.9), (x0 + L * .14, wl - fb)]
+    cv.obj([dh], 1.)
+    hatch(cv, x0 + L * .1, x0 + L * .14, wl - fb * 2.9, wl - fb, 90, lambda x, y: .45, 1.5, ok=fast_inside(dh))
+    for k in range(4):
+        yy = wl - fb * (1.3 + .42 * k)
+        cv.line([[(x0 + L * (.03 + .018 * i), yy), (x0 + L * (.038 + .018 * i), yy)] for i in range(4)])
+    fun = [(x0 + L * .05, wl - fb * 2.9), (x0 + L * .06, wl - fb * 3.8), (x0 + L * .1, wl - fb * 3.8), (x0 + L * .1, wl - fb * 2.9)]
+    cv.obj([fun], 1.)
+    hatch(cv, x0 + L * .05, x0 + L * .1, wl - fb * 3.8, wl - fb * 2.9, 0, lambda x, y: .8, 1.5, ok=fast_inside(fun))
+    for k in range(5):
+        hx = x0 + L * (.2 + .15 * k)
+        hc = [(hx, wl - fb), (hx, wl - fb * 1.35), (hx + L * .1, wl - fb * 1.35), (hx + L * .1, wl - fb)]
+        cv.obj([hc], .5)
+        hatch(cv, hx, hx + L * .1, wl - fb * 1.4, wl - fb, 90, lambda x, y: .35, 1.5, ok=fast_inside(hc))
+    for k in range(4):
+        cx = x0 + L * (.28 + .15 * k)
+        cv.heavy([(cx, wl - fb * 1.35), (cx, wl - fb * 2.7)])
+        cv.line([(cx, wl - fb * 2.5), (cx + L * .08, wl - fb * 1.6)])
+        cv.hair([(cx + L * .08, wl - fb * 1.6), (cx + L * .08, wl - fb * 1.35)])
+    cv.hair([(x0 + L * .08, wl - fb * 3.8), (x0 + L * .08, wl - fb * 4.6)])
+    cv.hair([(x1 - L * .01, wl - fb * 1.25), (x1 - L * .01, wl - fb * 2.4)])
+    cv.line([(x1 + L * .005, wl - fb), (x1 + L * .05, wl + fb * .9)])     # anchor chain
+    return hull
+
+
+def drape(cv, x0, x1, y0, y1, period, rng, light=None, pitch=2., swag=True, dark=1.):
+    """A hanging curtain in deep folds: near-vertical cuts that follow each fold, swelling into
+    the troughs (lit from the left, so each crest's left flank opens to the paper) and crossed in
+    the deepest; a festooned valance of swags at the head. light(x, y) in 0..1 scales the tone."""
+    ph = [rng.uniform(-.4, .4) for _ in range(int((x1 - x0) / period) + 4)]
+
+    def phase(x, y):
+        t = (y - y0) / max(1., y1 - y0)
+        p = period * (1 + .25 * t)
+        u = (x - x0) / p
+        k = int(u)
+        return u + .12 * math.sin(t * 3 + ph[min(len(ph) - 1, max(0, k))]) * t
+
+    def br(x, y):
+        return .5 + .5 * math.cos(TAU * phase(x, y) + .7)
+
+    def tone(x, y):
+        L = light(x, y) if light else 1.
+        return ((1 - br(x, y)) * .95 + .1) * dark * (1.3 - 1. * L)
+    cv.obj([[(x0, y0), (x1, y0), (x1, y1), (x0, y1)]], 0)
+    hatch(cv, x0, x1, y0, y1, 90, tone, pitch, g=lambda x, y: .8 * math.sin(TAU * phase(x, y)), step=2.)
+    hatch(cv, x0, x1, y0, y1, 20, lambda x, y: .5 if tone(x, y) > .85 else 0., 3., step=2.)
+    if swag:
+        sw = period * 2
+        n = int((x1 - x0) / sw) + 2
+        sh = period * .9
+        for i in range(n):
+            a = x0 + i * sw - sw * .3
+            P = [(a + sw * j / 16, y0 + sh * math.sin(PI * j / 16)) for j in range(17)] + [(a + sw, y0 - 2), (a, y0 - 2)]
+            cv.obj([P], 1.)
+            for k in range(1, 6):
+                f = k / 6
+                arc = [(a + sw * j / 16, y0 + sh * f * math.sin(PI * j / 16)) for j in range(17)]
+                (cv.line if k > 3 else cv.hair)(arc)
+            # tassel at the join
+            tx = a + sw
+            cv.obj([[(tx - 1.2, y0 + sh * .2), (tx + 1.2, y0 + sh * .2), (tx + 2, y0 + sh * 1.2), (tx - 2, y0 + sh * 1.2)]], .5)
+            cv.hair([[(tx + d * .7, y0 + sh * .5), (tx + d, y0 + sh * 1.2)] for d in (-1.5, -.5, .5, 1.5)])
 
 
 import re

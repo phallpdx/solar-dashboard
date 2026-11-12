@@ -1704,16 +1704,21 @@ def free_vignette(w, h, ctx, scene, opts):
     o = []
     mode = "band" if (form == "strip" or Y1 - Y0 < 70) else ("medium" if Y1 - Y0 < 200 else "tall")
     body = scene(X0, Y0, X1 - X0, Y1 - Y0, _d(R, True, 0), mode)
-    o.append(clip_g(f"{pid}fv", _d(R, True, 0), f'<path d="{_d(R, True, 0)}" fill="#fff"/>' + body))
-    # the dissolving edge: white cuts laid over the rim, closer together toward the paper
+    # the dissolving edge: white cuts laid over the rim, closer together toward the paper. They
+    # sit inside the clip with the scene, so nothing outside the cut is painted (the frame's
+    # engraved ground shows through there: Parker's "no white unless behind text").
     m = min(X1 - X0, Y1 - Y0)
     rings = ((1.2, 2.6, None), (3.4, 1.5, "4 1.2"), (5.6, 1.5, "2 2"), (8., 1., "1.2 3.2"), (10.5, 1., ".8 5"))
+    rs = []
     for d, sw, da in rings:
         if d > m * .18:
             break
         ring = offset_poly(R, -d)
+        if not inside(R, *ring[0]):
+            ring = offset_poly(R, d)
         dash = f' stroke-dasharray="{da}" stroke-dashoffset="{_n(d * 1.7)}"' if da else ""
-        o.append(f'<path d="{_d(ring + [ring[0]], False, 0)}" stroke="#fff" stroke-width="{_n(sw)}" fill="none"{dash}/>')
+        rs.append(f'<path d="{_d(ring + [ring[0]], False, 0)}" stroke="#fff" stroke-width="{_n(sw)}" fill="none"{dash}/>')
+    o.append(clip_g(f"{pid}fv", _d(R, True, 0), f'<path d="{_d(R, True, 0)}" fill="#fff"/>' + body + "".join(rs)))
     if opts.get("motifs"):
         o.append(opts["motifs"](w, h, (X0, Y0, X1, Y1), R))
     if opts.get("banner") and (Y1 - Y0) >= 150:
@@ -2309,6 +2314,46 @@ def ship(cv, x0, x1, wl, H, rng, pitch=1.5):
     return hull
 
 
+def drape(cv, x0, x1, y0, y1, period, rng, light=None, pitch=2., swag=True, dark=1.):
+    """A hanging curtain in deep folds: near-vertical cuts that follow each fold, swelling into
+    the troughs (lit from the left, so each crest's left flank opens to the paper) and crossed in
+    the deepest; a festooned valance of swags at the head. light(x, y) in 0..1 scales the tone."""
+    ph = [rng.uniform(-.4, .4) for _ in range(int((x1 - x0) / period) + 4)]
+
+    def phase(x, y):
+        t = (y - y0) / max(1., y1 - y0)
+        p = period * (1 + .25 * t)
+        u = (x - x0) / p
+        k = int(u)
+        return u + .12 * math.sin(t * 3 + ph[min(len(ph) - 1, max(0, k))]) * t
+
+    def br(x, y):
+        return .5 + .5 * math.cos(TAU * phase(x, y) + .7)
+
+    def tone(x, y):
+        L = light(x, y) if light else 1.
+        return ((1 - br(x, y)) * .95 + .1) * dark * (1.3 - 1. * L)
+    cv.obj([[(x0, y0), (x1, y0), (x1, y1), (x0, y1)]], 0)
+    hatch(cv, x0, x1, y0, y1, 90, tone, pitch, g=lambda x, y: .8 * math.sin(TAU * phase(x, y)), step=2.)
+    hatch(cv, x0, x1, y0, y1, 20, lambda x, y: .5 if tone(x, y) > .85 else 0., 3., step=2.)
+    if swag:
+        sw = period * 2
+        n = int((x1 - x0) / sw) + 2
+        sh = period * .9
+        for i in range(n):
+            a = x0 + i * sw - sw * .3
+            P = [(a + sw * j / 16, y0 + sh * math.sin(PI * j / 16)) for j in range(17)] + [(a + sw, y0 - 2), (a, y0 - 2)]
+            cv.obj([P], 1.)
+            for k in range(1, 6):
+                f = k / 6
+                arc = [(a + sw * j / 16, y0 + sh * f * math.sin(PI * j / 16)) for j in range(17)]
+                (cv.line if k > 3 else cv.hair)(arc)
+            # tassel at the join
+            tx = a + sw
+            cv.obj([[(tx - 1.2, y0 + sh * .2), (tx + 1.2, y0 + sh * .2), (tx + 2, y0 + sh * 1.2), (tx - 2, y0 + sh * 1.2)]], .5)
+            cv.hair([[(tx + d * .7, y0 + sh * .5), (tx + d, y0 + sh * 1.2)] for d in (-1.5, -.5, .5, 1.5)])
+
+
 import datetime
 
 _ell = C._ell_pts
@@ -2533,5 +2578,5 @@ def plate(w, h, ctx):
         return _scene(x, y, sw, sh, ctx, "band" if mode == "band" else ("tall" if sh > 150 else "medium"))
 
     # planned form: a full-width plate, about 35% of the sheet, in a roundel
-    return free_vignette(w, h, ctx, scene, dict(form="roundel", pid="nb", seed=seed, egg="dog",
+    return free_vignette(w, h, ctx, scene, dict(tone=.66, form="roundel", pid="nb", seed=seed, egg="dog",
                                                banner="MOON WATCH · IV PER CENT LIT"))

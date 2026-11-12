@@ -11,22 +11,6 @@
       "url": "https://pdxparent.com/series/chrysanthemum-festival-3/"
     },
     {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "Spanish Story & Play Time with Adventures in Spanish",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Portland area",
-      "detail": "A joyful hour of stories, songs, and play in Spanish for young children. Price not listed.",
-      "url": "https://pdxparent.com/series/spanish-story-play-time/"
-    },
-    {
       "title": "Sing, Sign & Play @ SWPMA PLAY! at The Multnomah Arts Center",
       "date": "2026-11-12",
       "ends": null,
@@ -43,52 +27,12 @@
       "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
     },
     {
-      "title": "Little Explorers: Toddler & Pre-K Drop-In",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Beaverton",
-      "detail": "Hands-on play with art, sensory materials, and STEAM activities. $25.00.",
-      "url": "https://pdxparent.com/series/little-explorers-toddler-pre-k-drop-in/"
-    },
-    {
-      "title": "Gabby’s Dollhouse at The FLIP Children’s Museum of Hillsboro",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Hillsboro",
-      "detail": "Discovery days featuring crafts, a scavenger hunt, and character photo ops. $10.",
-      "url": "https://pdxparent.com/series/gabbys-dollhouse-at-the-flip-childrens-museum-of-hillsboro-2/"
-    },
-    {
-      "title": "Family Ninjas (Martial Arts) For Ages 2/3 @ SWPMA PLAY!",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A family martial arts experience on a matted space. $15 – $25.",
-      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
-    },
-    {
-      "title": "CHAP Art Club",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Hillsboro",
-      "detail": "Art workshops designed for children with medical challenges. Price: Not specified.",
-      "url": "https://pdxparent.com/series/chap-art-club/"
-    },
-    {
       "title": "Morning Music with Mr. Ben at ModHaus",
       "date": "2026-11-12",
       "ends": null,
       "where": "Portland",
       "detail": "Interactive singalong for babies, toddlers, and preschoolers. Price: Free; tips appreciated.",
       "url": "https://pdxparent.com/series/morning-music-with-mr-ben-at-modhaus/"
-    },
-    {
-      "title": "Visit Leach Botanical Garden",
-      "date": "2026-11-12",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Explore gardens with an aerial tree walk and meadow. Price: Free – $8.",
-      "url": "https://pdxparent.com/series/visit-leach-botanical-garden/"
     },
     {
       "title": "Curiosity Kids: Sasquatch Science Team",
@@ -107,20 +51,28 @@
       "url": "https://www.travelportland.com/event/68f14265d6b9f4033114e411/"
     },
     {
-      "title": "ZooLights Sensory-Friendly",
-      "date": "2026-11-16",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "Guests with sensory processing needs and families can enjoy ZooLights from 4:30 to 8:30 p.m.",
-      "url": "https://www.oregonzoo.org/sensory-night"
-    },
-    {
       "title": "ZooLights",
       "date": "2026-11-20",
       "ends": "2027-01-03",
       "where": "Oregon Zoo, Portland",
       "detail": "Wildlife-themed holiday lights. A third-party guide reports Nov. 20, 2026 to Jan. 3, 2027, opening at 4:30 p.m., with tickets for specific dates; the zoo hasn't fully posted its 2026 calendar. Go early in the evening with little ones.",
       "url": "https://thrillzing.com/seasonal-events/zoolights-2026-oregon-zoo/"
+    },
+    {
+      "title": "U-cut Christmas trees at Sauvie Island Farms",
+      "date": "2026-11-21",
+      "ends": "2026-12-24",
+      "where": "Sauvie Island Farms, Sauvie Island",
+      "detail": "The farm's blog says its U-cut tree field opens Nov. 21 to Dec. 24, 9 a.m. to 5 p.m., self-serve on the honor system; all trees $60, cash or Venmo.",
+      "url": "https://sifarms.blogspot.com/"
+    },
+    {
+      "title": "Topaz Farm Holiday Market and Christmas trees",
+      "date": "2026-11-26",
+      "ends": null,
+      "where": "Topaz Farm, Sauvie Island",
+      "detail": "Holiday market with Christmas trees, wreaths and garlands; a community event listing reports opening day Thursday, Nov. 26, 2026, 10 a.m. to noon. Season hours not yet confirmed by the farm.",
+      "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-26"
     },
     {
       "title": "Winter Wonderland drive-through lights",
@@ -161,6 +113,14 @@
       "where": "Pioneer Courthouse Square, downtown Portland",
       "detail": "Free annual tree lighting and singalong the day after Thanksgiving. The Nov. 27 date comes from an event listing; The Square hasn't posted its 2026 page yet.",
       "url": "https://ma.to/event/annual-tree-lighting-27-nov-2026"
+    },
+    {
+      "title": "Seaside Yuletide Parade of Lights",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Downtown Seaside",
+      "detail": "Lighted holiday parade that ends at the downtown tree-lighting ceremony; Visit the Oregon Coast lists Nov. 27, 2026. Start time not yet confirmed by the organizer.",
+      "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
     },
     {
       "title": "Curiosity Kids: Design and Discover",

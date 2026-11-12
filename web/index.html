@@ -3588,7 +3588,7 @@ function renderSunActivity() {
   $('sunact-meta').textContent = `NOAA SWPC daily indices for ${fmtDate(sa.date)}`;
   const flares = [sa.flares_x ? `${sa.flares_x} X-class` : '', sa.flares_m ? `${sa.flares_m} M-class` : '', sa.flares_c ? `${sa.flares_c} C-class` : ''].filter(Boolean);
   const quiet = sa.sunspots < 40 ? 'quiet' : sa.sunspots < 100 ? 'moderately active' : 'busy';
-  $('sunact-summary').textContent = `${sa.sunspots} sunspots today against a 30-day average of ${sa.sunspots_30d_avg}: a ${quiet} sun. ${flares.length ? `Flares in the last day: ${flares.join(', ')}.` : 'No flares reported in the last day.'}`;
+  $('sunact-summary').textContent = `${sa.sunspots} sunspots on ${sa.date === todayIso() ? 'today' : fmtDate(sa.date)} against a 30-day average of ${sa.sunspots_30d_avg}: a ${quiet} sun. ${flares.length ? `Flares in the last day: ${flares.join(', ')}.` : 'No flares reported in the last day.'}`;
   const facts = [['Sunspot number', sa.sunspots], ['30-day average', sa.sunspots_30d_avg], ['10.7 cm radio flux', `${sa.flux} <small>sfu</small>`], ['New regions', sa.new_regions]];
   $('sunact-facts').innerHTML = facts.map(([k, v]) => `<div class="mini"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
   $('sunact-note').innerHTML = `The picture is the latest HMI intensitygram from NASA's Solar Dynamics Observatory: dark spots are sunspots. Sunspots and flux track the 11-year cycle; big flares can bring the aurora south (see The sky). ${cite([['NOAA SWPC daily solar indices', sa.url], ['NASA SDO', 'https://sdo.gsfc.nasa.gov/data/']])}`;
@@ -4225,7 +4225,7 @@ function renderFishing() {
   const dam = f.dam;
   const run = dam ? Object.entries(dam.week).filter(([, v]) => v > 0) : [];
   $('fish-season').innerHTML = run.map(([k, v]) => `<div><span><b style="font-weight:700">${esc(k)}</b></span><span>${v.toLocaleString()}</span></div>`).join('') || '<div><span>No dam counts right now</span><span></span></div>';
-  $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year, so check the rules below before you go.` : '';
+  $('fish-dam').textContent = run.length ? `Adult fish counted over Bonneville Dam in the last ${dam.days} days, through ${dam.through}. They've already passed Sauvie Island on the way upriver. Seasons open and close during the year: check ODFW's current rules before you go.` : '';
   $('fish-links').innerHTML = 'Check seasons and rules before you go: ' + f.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.name)}</a>`).join(' · ');
 }
 

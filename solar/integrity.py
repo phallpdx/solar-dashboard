@@ -346,6 +346,17 @@ def fresh(d, feeds, now):
         if len(keep) != len(al["trails"]):
             log(f"fresh: trail reports, {len(al['trails']) - len(keep)} older than {SHELF['trail_reports']} days dropped")
             al["trails"] = keep
+    # "Happy news" is happy, and today's: no rescues from disaster, no yesterday's "Good News in History".
+    gn = d.get("good_news")
+    if isinstance(gn, list):
+        grim = re.compile(r"\b(killed|kills|dies|died|dead|death|shot|shooting|washed|swept|injur\w*|attack\w*|crash\w*|missing|rescue\w*)\b", re.I)
+        def stale_history(x):
+            m = re.search(r"in History, (\w+ \d{1,2})", x.get("title") or "")
+            return bool(m) and m.group(1) != f"{today:%B} {today.day}"
+        keep = [x for x in gn if not grim.search(x.get("title") or "") and not stale_history(x)]
+        if len(keep) != len(gn):
+            log(f"fresh: good news, {len(gn) - len(keep)} grim or dated items dropped")
+            d["good_news"] = keep
     # Data that is days old says so: pages print "as of" from these.
     sh = d.get("shellfish")
     if sh and _date(sh.get("updated")):

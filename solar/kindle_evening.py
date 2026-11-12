@@ -190,8 +190,19 @@ html.kev #kmain svg text.khb{font:600 12px var(--k-serif) !important;letter-spac
 /* no white page: a fine engraved ground under everything, banknote style; type knocked out in white */
 html.kev body,html.kev #kmain .kframe{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2210%22 viewBox=%220 0 48 10%22%3E%3Cpath d=%22M0,2.5 C6,0.5 18,0.5 24,2.5 S42,4.5 48,2.5 M0,7.5 C6,5.5 18,5.5 24,7.5 S42,9.5 48,7.5%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") repeat !important}
 html.kev,html.kev #kmain{background:transparent !important}
+html.kev #kmain h2.khed,html.kev #kmain h2.khed *,html.kev #kmain .kfname,html.kev #kmain .kdeg,html.kev #kmain .kname,html.kev #kmain .poem-title{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff,2px 0 #fff,-2px 0 #fff,0 2px #fff,0 -2px #fff,1.5px 1.5px #fff,-1.5px -1.5px #fff,1.5px -1.5px #fff,-1.5px 1.5px #fff !important}
+html.kev .kendpage #kmain .kfill{margin:0 26px}
+/* body copy sits on a soft ground: one hairline wave per line of type, laid in the leading, so the letters stay clean */
+html.kev #kmain .kbody p,html.kev #kmain .kbox p.knextstep{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 24px repeat !important}
+html.kev #kmain .kbox p.ksources{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 20px repeat !important}
+html.kev #kmain .kalm-lead,html.kev #kmain .kplan,html.kev #kmain .kchoice,html.kev #kmain .klater{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 26px repeat !important}
+html.kev #kmain .kmoon p.kmname{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 28px repeat !important}
+html.kev #kmain .kmoon p:not(.kmname),html.kev #kmain .ksky li{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 21px repeat !important}
+html.kev #kmain .poem-text{background:transparent !important}
+html.kev #kmain .poem-text span{background:#fff url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2224%22 viewBox=%220 0 48 24%22 preserveAspectRatio=%22none%22%3E%3Cpath d=%22M0,1.2 C6,0.2 18,0.2 24,1.2 S42,2.2 48,1.2%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%22.5%22/%3E%3C/svg%3E") 0 0/48px 100% repeat-x !important}
+html.kev #kmain .kbox p.knextstep{background-position:0 16px !important}html.kev #kmain .kbox p.ksources{background-position:0 6px !important}
 /* kindle_full sets html body *{text-shadow:none !important}; the knockout must out-rank it, on text-bearing elements and their children */
-html.kev #kmain h1,html.kev #kmain h1 *,html.kev #kmain h2,html.kev #kmain h2 *,html.kev #kmain h3,html.kev #kmain h3 *,html.kev #kmain p,html.kev #kmain p *,html.kev #kmain li,html.kev #kmain li *,html.kev #kmain td,html.kev #kmain td *,html.kev #kmain th,html.kev #kmain th *,html.kev #kmain .kkick,html.kev #kmain .kkick *,html.kev #kmain .kdeg,html.kev #kmain .kdeg *,html.kev #kmain .ksun3 div,html.kev #kmain .ksun3 div *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *,html.kev #kmain .poem-title,html.kev #kmain .poem-title *,html.kev #kmain .poem-by,html.kev #kmain .poem-by *,html.kev #kmain .kleads a,html.kev #kmain .kleads a *,html.kev .kbar,html.kev .kbar *,html.kev .krun,html.kev .krun *{text-shadow:1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff !important}
+html.kev #kmain h1,html.kev #kmain h1 *,html.kev #kmain h2,html.kev #kmain h2 *,html.kev #kmain h3,html.kev #kmain h3 *,html.kev #kmain p,html.kev #kmain p *,html.kev #kmain li,html.kev #kmain li *,html.kev #kmain td,html.kev #kmain td *,html.kev #kmain th,html.kev #kmain th *,html.kev #kmain .kkick,html.kev #kmain .kkick *,html.kev #kmain .kdeg,html.kev #kmain .kdeg *,html.kev #kmain .ksun3 div,html.kev #kmain .ksun3 div *,html.kev #kmain .poem-text,html.kev #kmain .poem-text *,html.kev #kmain .poem-title,html.kev #kmain .poem-title *,html.kev #kmain .poem-by,html.kev #kmain .poem-by *,html.kev #kmain .kleads a,html.kev #kmain .kleads a *,html.kev .kbar,html.kev .kbar *,html.kev .krun,html.kev .krun *{text-shadow:.5px 0 #fff,-.5px 0 #fff,0 .5px #fff,0 -.5px #fff,1px 0 #fff,-1px 0 #fff,0 1px #fff,0 -1px #fff,1px 1px #fff,-1px -1px #fff,1px -1px #fff,-1px 1px #fff,1.5px 0 #fff,-1.5px 0 #fff,0 1.5px #fff,0 -1.5px #fff !important}
 
 /* margins dressed in engraving: medallion flanks and columns, by reference to the page's filler set */
 #kmain .kflank{display:-webkit-flex;display:flex;-webkit-justify-content:center;justify-content:center;-webkit-align-items:center;align-items:center}
@@ -200,8 +211,12 @@ html.kev #kmain h1,html.kev #kmain h1 *,html.kev #kmain h2,html.kev #kmain h2 *,
 #kmain .kft{margin:var(--s3) auto 0}#kmain .kft .ktail{margin:0 8px !important}
 #kmain .kcol{position:absolute;top:150px;bottom:70px;width:48px;overflow:hidden;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-around;justify-content:space-around;-webkit-align-items:center;align-items:center}
 #kmain .kcol svg{flex:none}
+#kmain .kastrow{margin:0 0 var(--s2)}#kmain .kastrow svg.kastb{width:200px;height:12px;flex:0 1 auto;min-width:0}
+#kmain .kastrow svg.kastr{-webkit-transform:scaleX(-1) !important;transform:scaleX(-1) !important}
+#kmain .kmoon .kmoonm,#kmain .kalm .kdegm{flex:none;margin-left:auto}#kmain .kalm .kdegm{float:right;margin:0 0 0 8px}#kmain .kalm .kdegm svg{display:block;margin:0 0 6px}
 #kmain .kgcol{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:space-around;justify-content:space-around;height:150px;margin:0 14px}
 #kmain .kcol-l{left:34px}#kmain .kcol-r{right:34px}
+html.kev .kendpage #kmain .kegg{bottom:auto;top:30px;right:72px}
 /* the close */
 html.kev .kendpage #kmain .kend{text-align:center}
 html.kev .kendpage #kmain .kframe{-webkit-box-sizing:border-box;box-sizing:border-box;display:-webkit-flex;display:flex;
@@ -1596,15 +1611,25 @@ def _dress(body, salt, close=False):
     try:
         tail = ORNAMENTS["tail"]
         if tail in body:
-            row = (f'<div class="kflank kft">{_vuse(salt, 0, 28)}{_muse(salt, 2, 28)}{_muse(salt, 3, 28)}{tail}'
-                   f'{_muse(salt, 0, 28)}{_muse(salt, 1, 28)}{_vuse(salt, 1, 28)}</div>')
+            t = 34
+            row = (f'<div class="kflank kft">{_vuse(salt, 0, t)}{_muse(salt, 2, t)}{_muse(salt, 3, t)}{tail}'
+                   f'{_muse(salt, 0, t)}{_muse(salt, 1, t)}{_vuse(salt, 1, t)}</div>')
             body = body[::-1].replace(tail[::-1], row[::-1], 1)[::-1]
+        ast = ORNAMENTS["asterism"]
+        if ast in body and engraving_thai:
+            try:
+                kb = engraving_thai.kranok_band(200, 14, sum(map(ord, salt)) + 7)
+                l = kb.replace("<svg ", '<svg class="kastb" preserveAspectRatio="none" aria-hidden="true" ', 1)
+                r = kb.replace("<svg ", '<svg class="kastb kastr" preserveAspectRatio="none" aria-hidden="true" ', 1)
+                body = body.replace(ast, f'<div class="kflank kastrow">{l}{ast}{r}</div>', 1)
+            except Exception:  # noqa: BLE001
+                pass
         m = re.search(r'<div class="khv">', body)
         if m:
             e = body.index("</div>", m.end())
             n = 2 if "kplate" in body else 3
-            body = (body[:m.start()] + '<div class="khv kflank">' + "".join(_muse(salt, i, 44) for i in range(n)) + body[m.end():e]
-                    + "".join(_muse(salt, i + 2, 44) for i in range(n)) + '</div>' + body[e + 6:])
+            body = (body[:m.start()] + '<div class="khv kflank">' + "".join(_muse(salt, i, 40) for i in range(n)) + body[m.end():e]
+                    + "".join(_muse(salt, i + 2, 40) for i in range(n)) + '</div>' + body[e + 6:])
         if "kplate kframe" in body or close:
             col = lambda off: "".join(_muse(salt, off + i, 46) for i in range(8))
             cols = f'<div class="kcol kcol-l">{col(0)}</div><div class="kcol kcol-r">{col(2)}</div>'
@@ -1679,7 +1704,7 @@ def main(dash_path, ev_path, site):
         cells = "".join(f'<div><span class="k">{lab}</span><b>{E(v)}</b></div>' for lab, v in
                         (("Sunrise", (wx["sunrise"] or "").replace(" am", "")), ("Daylight", light),
                          ("Sunset", (wx["sunset"] or "").replace(" pm", ""))) if v)
-        body = (f'<div class="kalm">{_vig_weather(wx_kind(wx))}<div class="kalm-t"><div class="kdeg">{wx["hi"]}&deg;</div>'
+        body = (f'<div class="kalm">{_vig_weather(wx_kind(wx))}<div class="kalm-t"><span class="kdegm">{_muse("tomorrow", 0, 50)}{_muse("tomorrow", 1, 50)}</span><div class="kdeg">{wx["hi"]}&deg;</div>'
                 f'<small>high {wx["hi"]}&deg; &middot; low {wx["lo"]}&deg;</small><p class="kalm-lead">{E(smart(wx["lead"]))}</p></div></div>'
                 + "".join(f"<p>{E(smart(x))}</p>" for x in lines)
                 + (f'<div class="ksun3">{cells}</div>' if cells else "") + warn
@@ -1710,7 +1735,8 @@ def main(dash_path, ev_path, site):
         lit, waxing, name = phase
         note = moon_line or ("No moon tonight: the darkest sky of the month." if lit < 3 else "Below the horizon this evening.")
         moon_block = (f'<div class="kmoon">{_moon_plate(lit, waxing)}'
-                      f'<div><b>The moon</b><p class="kmname">{E(name)}, {lit}% lit</p><p>{E(smart(note))}</p></div></div>')
+                      f'<div><b>The moon</b><p class="kmname">{E(name)}, {lit}% lit</p><p>{E(smart(note))}</p></div>'
+                      f'<span class="kmoonm">{_muse("sky", 1, 84)}</span></div>')
     # The chart takes the room the words leave, between 150 and 222 px tall.
     used = (22 + _tall(sky["headline"], 36, 34) + 13 + (_tall(sky["later"], 60, 26) + 13 if clouded and sky["later"] else 0)
             + (126 if moon_block else 0) + 34

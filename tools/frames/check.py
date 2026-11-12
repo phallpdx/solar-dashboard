@@ -32,8 +32,9 @@ def audit(svgp):
         if sl.size and (sl < 0.98).mean() > 0.001: iss.append('slot not clean (%.2f%%)' % ((sl < 0.98).mean() * 100))
     band = (alpha > 0.5) & ~slot
     bshare = ink[band].mean() if band.any() else 0
+    tone = (1 - lum)[band].mean() if band.any() else 0  # ink coverage: mean darkness over the band
     wshare = ink.mean()
-    if bshare > 0.45: iss.append('band black %.0f%%' % (bshare * 100))
+    if tone > 0.45: iss.append('band ink %.0f%%' % (tone * 100))
     # largest all-white square outside the slot (opaque white), via DP
     white = (lum > 0.9) & (alpha > 0.5) & ~slot
     dp = np.zeros((H + 1, W + 1), int); best = 0
@@ -45,13 +46,13 @@ def audit(svgp):
             if v > best: best = v
     if best / 2 > 12: iss.append('white patch %.0fpx' % (best / 2))
     edge_alpha = max(alpha[0, 0], alpha[0, -1], alpha[-1, 0], alpha[-1, -1])
-    return dict(kb=kb, band=bshare, whole=wshare, white=best / 2, corner_alpha=edge_alpha, issues=iss)
+    return dict(kb=kb, band=bshare, tone=tone, whole=wshare, white=best / 2, corner_alpha=edge_alpha, issues=iss)
 
 if __name__ == '__main__':
     bad = 0
     for p in sorted(glob.glob(os.path.join(sys.argv[1], '*.svg'))):
         r = audit(p)
-        print('%-28s %6.1fKB band %3.0f%% whole %3.0f%% white %4.1fpx  %s' % (
-            os.path.basename(p), r['kb'], r['band'] * 100, r['whole'] * 100, r['white'], '; '.join(r['issues']) or 'ok'))
+        print('%-28s %6.1fKB band ink %3.0f%% (px<50%%: %3.0f%%) whole %3.0f%% white %4.1fpx  %s' % (
+            os.path.basename(p), r['kb'], r['tone'] * 100, r['band'] * 100, r['whole'] * 100, r['white'], '; '.join(r['issues']) or 'ok'))
         bad += bool(r['issues'])
     sys.exit(1 if bad else 0)

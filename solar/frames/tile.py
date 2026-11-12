@@ -2,7 +2,7 @@
 fine scroll on every side and a rosette boss at the head."""
 from ._common import scroll, ctx_of, seed_of, band, canvas
 
-DEFAULT = (8, 8, 8, 8)
+DEFAULT = (14, 14, 14, 14)
 
 
 def insets(w, h, ctx=None):

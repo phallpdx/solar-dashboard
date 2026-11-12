@@ -5,18 +5,20 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'solar'))
 import importlib
 out = sys.argv[1]; os.makedirs(out, exist_ok=True)
 CASES = [
-    ('chip', 96, 26, {}), ('chip', 70, 26, {'variant': 'lit', 'seed': 2}), ('chip', 140, 26, {'seed': 3}),
-    ('button', 150, 38, {}), ('button', 84, 38, {'seed': 2}), ('button', 220, 38, {'seed': 3}),
-    ('sections', 104, 28, {}),
-    ('runhead', 90, 28, {}), ('runhead', 250, 28, {'seed': 2}),
-    ('banner', 460, 40, {}),
-    ('tile', 254, 62, {}), ('tile', 210, 58, {'seed': 2}),
-    ('tablehead', 526, 26, {}),
-    ('barbase', 506, 12, {}),
-    ('gauge', 80, 12, {}),
-    ('divider', 526, 14, {}),
-    ('initial', 46, 46, {}),
-    ('kpanel', 547, 160, {}), ('kpanel', 547, 120, {'open_bottom': True, 'seed': 2}),
+    ('chip', 96, 30, {}), ('chip', 80, 30, {'variant': 'lit', 'seed': 2}), ('chip', 140, 30, {'seed': 3}),
+    ('button', 200, 40, {'point': 'left'}), ('button', 200, 40, {'point': 'right', 'seed': 2}), ('button', 96, 40, {'seed': 3}),
+    ('button', 300, 52, {'seed': 4}),
+    ('sections', 118, 26, {}),
+    ('runhead', 110, 26, {}), ('runhead', 132, 26, {'seed': 2}),
+    ('banner', 526, 80, {}),
+    ('tile', 250, 110, {}), ('tile', 506, 100, {'seed': 2}),
+    ('tablehead', 506, 34, {}),
+    ('barbase', 506, 14, {}),
+    ('gauge', 88, 12, {}),
+    ('divider', 140, 16, {}),
+    ('initial', 74, 74, {}),
+    ('kpanel', 547 + 36, 160 + 36, {'band': 18}), ('kpanel', 547 + 36, 120 + 36, {'band': 18, 'open_bottom': True, 'seed': 2}),
+    ('kpanel', 529 + 36, 560 + 36, {'band': 18, 'seed': 5}),
 ]
 meta = []
 for i, (fam, w, h, ctx) in enumerate(CASES):

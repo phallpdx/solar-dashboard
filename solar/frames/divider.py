@@ -28,6 +28,6 @@ def frame(w, h, ctx=None):
             pts = [(ua, cy), (ub, cy)] if side > 0 else [(ub, cy), (ua, cy)]
             run = scroll.Run(pts, H)
             scroll.strip(cv, run, (sd, side, k), flip=side < 0, ground=True)
-    cv.add("K", "M%s %sH%sV%sH%sZ" % (f(w / 2 - mid / 2), f(0.5), f(w / 2 + mid / 2), f(h - 0.5), f(w / 2 - mid / 2)))
+    cv.add("M", "M%s %sH%sV%sH%sZ" % (f(w / 2 - mid / 2), f(0.5), f(w / 2 + mid / 2), f(h - 0.5), f(w / 2 - mid / 2)))
     scroll.fleuron(cv, w / 2, h - 1, h * 0.9, up=(0, -1), rng=rng)
     return cv.svg()

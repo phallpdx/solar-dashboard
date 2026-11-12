@@ -19,6 +19,7 @@ Public API (all sizes CSS px; strokes are 0.5 / 1 / 1.5 only; no transforms, tex
 Pure standard library, deterministic for (args, seed).
 """
 import math
+import re
 import random
 import zlib
 
@@ -38,21 +39,36 @@ def _f(x):
     return "0" if s in ("", "-", "-0") else s
 
 
-def _pts(pts):
+TOL = 0.08  # path simplification tolerance, CSS px (0.16 device px at DPR 2)
+
+
+def _dp(q, tol):
+    keep = [False] * len(q)
+    keep[0] = keep[-1] = True
+    stack = [(0, len(q) - 1)]
+    while stack:
+        i0, i1 = stack.pop()
+        (ax, ay), (cx, cy) = q[i0], q[i1]
+        dx, dy = cx - ax, cy - ay
+        d = math.sqrt(dx * dx + dy * dy)
+        best, bi = -1.0, -1
+        for i in range(i0 + 1, i1):
+            bx, by = q[i]
+            e = abs((bx - ax) * dy - (by - ay) * dx) / d if d else math.hypot(bx - ax, by - ay)
+            if e > best:
+                best, bi = e, i
+        if bi > 0 and best > tol:
+            keep[bi] = True
+            stack.append((i0, bi))
+            stack.append((bi, i1))
+    return [p for p, k in zip(q, keep) if k]
+
+
+def _pts(pts, tol=TOL):
     """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
     q = [(round(x * 10), round(y * 10)) for x, y in pts]
-    if len(q) > 3:  # drop points that lie within 0.06 px of the chord through their neighbours
-        keep = [q[0]]
-        for i in range(1, len(q) - 1):
-            (ax, ay), (bx, by), (cx, cy) = keep[-1], q[i], q[i + 1]
-            dx, dy = cx - ax, cy - ay
-            d2 = dx * dx + dy * dy
-            if d2 and abs((bx - ax) * dy - (by - ay) * dx) / math.sqrt(d2) < 0.6 and \
-                    (bx - ax) * dx + (by - ay) * dy > 0 and (cx - bx) * dx + (cy - by) * dy > 0:
-                continue
-            keep.append(q[i])
-        keep.append(q[-1])
-        q = keep
+    if len(q) > 2:  # Douglas-Peucker: drop points within TOL px of the simplified path
+        q = _dp(q, tol * 10)
     out = [_j(q[0][0] / 10, q[0][1] / 10)]
     rel = []
     px, py = q[0]
@@ -80,8 +96,9 @@ def _cat(items):
 
 STYLE = {
     "K": 'fill="#000"',
+    "M": 'fill="url(#mt)"',
     "W": 'fill="#fff"',
-    "WO": 'fill="#fff" stroke="#000" stroke-width=".5" stroke-linejoin="round"',
+    "WO": 'fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round" paint-order="stroke"',
     "G": 'fill="#fff" fill-rule="evenodd"',
     "C05": 'fill="none" stroke="#000" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round"',
     "C1": 'fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"',
@@ -130,7 +147,7 @@ class Canvas:
 
     def poly(self, key, pts, close=True):
         if len(pts) > 1:
-            self.add(key, "M" + _pts(pts) + ("Z" if close else ""))
+            self.add(key, "M" + _pts(pts, getattr(self, "tol", TOL)) + ("Z" if close else ""))
 
     def line(self, key, pts):
         self.poly(key, pts, close=False)
@@ -144,6 +161,19 @@ class Canvas:
             self.ops[-1][1].append((x, y))
         else:
             self.ops.append(("D", [(x, y)]))
+
+    MATTE = (29, 23)  # the stipple tile: odd sizes, random pricks; nothing in the scroll shares its period
+
+    def _matte(self):
+        """The cut-away ground: black, finely and irregularly pricked (1 device px pricks, ~2 per CSS px^2),
+        as one small random tile.  At 37 x 29 px of pure noise its period cannot be seen."""
+        tw, th = self.MATTE
+        rng = random.Random(zlib.crc32(("matte", self.w, self.h).encode() if False else repr(("matte", self.w, self.h)).encode()))
+        ds = []
+        for _ in range(int(tw * th * DENSITY)):
+            ds.append((rng.uniform(0, tw), rng.uniform(0, th)))
+        return ('<defs><pattern id="mt" width="%d" height="%d" patternUnits="userSpaceOnUse">'
+                '<path fill="#000" d="M0 0H%dV%dH0Z"/><path class="d" d="%s"/></pattern></defs>' % (tw, th, tw, th, self._dots(ds)))
 
     @staticmethod
     def _dots(ds):
@@ -159,10 +189,12 @@ class Canvas:
         return "".join(out)
 
     def body(self):
-        ops = self.ops + self.top
-        used = sorted({k for k, _ in ops})
+        ops = _batch(self.ops) + self.top
+        used = sorted({k for k, _ in ops} | ({"D"} if any(k == "M" for k, _ in ops) else set()))
         css = "".join(".%s{%s}" % (k.lower(), CSS[k]) for k in used)
         body = "".join('<path class="%s" d="%s"/>' % (k.lower(), self._dots(ds) if k == "D" else "".join(ds)) for k, ds in ops)
+        if any(k == "M" for k, _ in ops):
+            body = self._matte() + body
         if self.clip:
             cid = "c%x" % (zlib.crc32(self.clip.encode()) & 0xffffff)
             body = '<clipPath id="%s"><path d="%s"/></clipPath><g clip-path="url(#%s)">%s</g>' % (cid, self.clip, cid, body)
@@ -172,6 +204,78 @@ class Canvas:
         slot = ' data-slot="%s"' % " ".join(_f(v) for v in self.slot) if self.slot else ""
         return ('<svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s"%s>%s</svg>'
                 % (_f(self.w), _f(self.h), _f(self.w), _f(self.h), slot, self.body()))
+
+
+_TOK = re.compile(r"[MmlhHVaZ]|-?(?:\d+\.?\d*|\.\d+)")
+
+
+def _bbox(d):
+    """Bounding box of one of our own path strings (M, l, h, H, V, a, Z), or None if it can't be read."""
+    t = _TOK.findall(d)
+    xs, ys = [], []
+    x = y = 0.0
+    i, cmd, n = 0, None, len(t)
+    try:
+        while i < n:
+            if t[i].isalpha():
+                cmd = t[i]
+                i += 1
+                if cmd == "Z":
+                    continue
+            if cmd == "M":
+                x, y = float(t[i]), float(t[i + 1]); i += 2; cmd = "l" if False else "L_"
+            elif cmd in ("l", "L_"):
+                if cmd == "l":
+                    x += float(t[i]); y += float(t[i + 1])
+                else:
+                    cmd = "l"; continue
+                i += 2
+            elif cmd == "h":
+                x += float(t[i]); i += 1
+            elif cmd == "H":
+                x = float(t[i]); i += 1
+            elif cmd == "V":
+                y = float(t[i]); i += 1
+            elif cmd == "a":
+                r = float(t[i]); x += float(t[i + 5]); y += float(t[i + 6]); i += 7
+                xs += [x - 2 * r, x + 2 * r]; ys += [y - 2 * r, y + 2 * r]
+            else:
+                return None
+            xs.append(x); ys.append(y)
+    except (IndexError, ValueError):
+        return None
+    if not xs:
+        return None
+    return (min(xs) - 1, min(ys) - 1, max(xs) + 1, max(ys) + 1)
+
+
+def _hit(a, b):
+    return a is None or b is None or not (a[2] < b[0] or b[2] < a[0] or a[3] < b[1] or b[3] < a[1])
+
+
+def _batch(ops, depth=60):
+    """Merge each path into an earlier group of its own class when nothing drawn in between overlaps it,
+    so the file has far fewer <path> elements.  Painting order between overlapping shapes is kept."""
+    out = []  # [key, [d...], [bbox...]]
+    for key, ds in ops:
+        if key in ("D", "M"):
+            out.append([key, list(ds), [None]])
+            continue
+        for d in ds:
+            bb = _bbox(d)
+            tgt = None
+            for g in range(len(out) - 1, max(-1, len(out) - 1 - depth), -1):
+                if out[g][0] == key:
+                    tgt = g
+                    break
+                if any(_hit(bb, o) for o in out[g][2]):
+                    break
+            if tgt is None:
+                out.append([key, [d], [bb]])
+            else:
+                out[tgt][1].append(d)
+                out[tgt][2].append(bb)
+    return [(k, ds) for k, ds, _ in out]
 
 
 def rng_for(*parts):
@@ -467,25 +571,26 @@ class Mapped:
 
 
 class Scroll:
-    """One spiral scroll in a y-down frame: centre, outer radius, winding dirn (+1 clockwise on screen),
-    start angle a0 (screen angle, radians, y down) where its stem joins."""
+    """One scroll in a y-down frame: footprint radius R, winding dirn (+1 clockwise on screen), start
+    angle a0 (screen radians) where its stem joins.  The outer turn stays nearly round; the last part
+    tightens into a small volute eye."""
 
-    def __init__(self, cx, cy, r, dirn, a0, turns=1.5, decay=0.18):
-        self.cx, self.cy, self.r, self.dirn, self.a0 = cx, cy, r, dirn, a0
-        self.turns, self.decay = turns, decay
+    def __init__(self, cx, cy, R, dirn, a0, turns=1.35, eye=0.17):
+        self.cx, self.cy, self.R, self.dirn, self.a0 = cx, cy, R, dirn, a0
+        self.turns, self.eye = turns, eye
+        self.r = R
+
+    def rad(self, f):
+        u = min(max(f / self.turns, 0.0), 1.0)
+        return self.R * (1.0 - (1.0 - self.eye) * u ** 1.3)
 
     def point(self, f, rscale=1.0):
         th = self.a0 + self.dirn * TAU * f
         r = self.rad(f) * rscale
         return (self.cx + r * math.cos(th), self.cy + r * math.sin(th))
 
-    def rad(self, f):
-        """Radius at turn-fraction f: nearly round through the first turn, tightening into the eye."""
-        u = min(max(f / self.turns, 0.0), 1.0)
-        return self.r * (1.0 - (1.0 - self.decay) * u ** 1.5)
-
     def tangent_at(self, f):
-        a, b = self.point(f - 0.01), self.point(f + 0.01)
+        a, b = self.point(f - 0.005), self.point(f + 0.005)
         return _norm(b[0] - a[0], b[1] - a[1])
 
     def start(self):
@@ -495,160 +600,424 @@ class Scroll:
         return self.tangent_at(0)
 
     def arc(self, f0, f1, rscale=1.0, n=None):
-        n = n or max(8, int(abs(f1 - f0) * 5.0 * max(self.r, 2.0)))
+        n = n or max(8, int(abs(f1 - f0) * 4.5 * max(self.R, 2.0)))
         return [self.point(f0 + (f1 - f0) * i / n, rscale) for i in range(n + 1)]
 
     def pts(self):
         return self.arc(0, self.turns)
 
 
-def wrap_leaf(cv, sc, R, f0, f1, rng, lobes=None, cuts=True):
-    """The scroll's big acanthus leaf, wrapped round the outside of its backbone from turn-fraction f0 to
-    f1: inner edge riding the backbone, outer edge scalloped into pointed lobes out to radius R, the tip
-    curling off the circle.  Shaded with concentric bulino cuts that follow the curl, darkest next to the
-    backbone and running out before the lit outer edge; each lobe divided by a notch cut."""
-    lobes = lobes or max(2, int((f1 - f0) * 6.5))
-    n = max(16, int((f1 - f0) * 90 * max(1.0, R / 6)))
-    ph = rng.uniform(0.0, 0.2)
-    inner, outer = [], []
-    rad = []
-    for i in range(n + 1):
-        t = i / n
-        f = f0 + (f1 - f0) * t
-        th = sc.a0 + sc.dirn * TAU * f
-        rb = sc.r * (sc.decay ** (f / sc.turns)) + 0.55
-        q = (t * lobes + ph) % 1.0
-        lob = 0.5 + 0.5 * (math.sin(math.pi / 2 * min(1.0, q / 0.85)) ** 1.4 if q < 0.85 else 1 - (q - 0.85) / 0.15 * 0.85)
-        grow = min(1.0, t / 0.18) ** 0.7
-        tip = 1.0 if t < 0.8 else max(0.0, 1 - (t - 0.8) / 0.2) ** 0.6
-        ro = rb + (R - rb) * grow * tip * lob
-        if t > 0.85:  # tip curls outward beyond the backbone
-            ro += (R - rb) * 0.25 * (t - 0.85) / 0.15
-        inner.append((sc.cx + rb * math.cos(th), sc.cy + rb * math.sin(th)))
-        tho = th - sc.dirn * 0.45 * (ro - rb) / max(R, 1.0) * (0.3 + q)
-        outer.append((sc.cx + ro * math.cos(tho), sc.cy + ro * math.sin(tho)))
-        rad.append((th, rb, ro, q))
-    cv.poly("WO", inner + outer[::-1])
-    if not cuts:
-        return
-    # concentric cuts (pitch 1.0 from the backbone), each running out earlier: dark in, bright out
-    k = 1
-    while True:
-        d = k * 1.05
-        seg = []
-        stop = 0.9 - 0.22 * k + rng.uniform(-0.05, 0.05)
-        if stop < 0.2:
-            break
-        for i, (th, rb, ro, q) in enumerate(rad):
-            t = i / n
-            if ro - rb > d + 0.7 and 0.04 < t < stop:
-                seg.append((sc.cx + (rb + d) * math.cos(th), sc.cy + (rb + d) * math.sin(th)))
-            elif seg:
-                if len(seg) > 2:
-                    cv.line("C05", seg)
-                seg = []
-        if len(seg) > 2:
-            cv.line("C05", seg)
-        k += 1
-        if k > 4:
-            break
-    # notch cuts between lobes
-    for i, (th, rb, ro, q) in enumerate(rad):
-        if 0 < i < n and rad[i - 1][3] > q and 0.1 < i / n < 0.9:
-            a = (sc.cx + ro * math.cos(th), sc.cy + ro * math.sin(th))
-            m = rb + (ro - rb) * 0.35
-            cv.line("C05", [a, (sc.cx + m * math.cos(th + sc.dirn * 0.12), sc.cy + m * math.sin(th + sc.dirn * 0.12))])
+def lobe(cv, spine, width, shade=1, cuts=True, tip=True):
+    """One acanthus lobe along the polyline `spine` (base to tip): a pointed blade, widest a third of the
+    way, crisp outline, bright face; fine cuts along its curve on the shadow side only (shade=+1 the left
+    of travel, -1 the right), longest next to the edge; the tip turned over (a short cut back along the
+    lit edge) and a vein cut from the base."""
+    spine = _resample(spine, max(0.8, min(1.6, width * 0.28)))
+    n = len(spine)
+    if n < 4:
+        return None
+    nm = _normals(spine)
+    hw = width / 2
+    sg = 1 if shade > 0 else -1
 
+    def env(t, s):
+        e = math.sin(math.pi * min(1.0, t ** 0.72)) ** 0.85 * (1.0 - 0.2 * t)
+        return e * (0.82 if s == sg else 1.0)  # shadow flank a little narrower: the lobe leans to the light
 
-def curl_fill(cv, sc, wmax=1.5):
-    """The leaf rolled up inside the scroll: fills the gap between the outer turn and the next one in,
-    tapering at both ends, with one cut following the curl near its outer (shadow) edge."""
-    fa, fb = 0.12, sc.turns - 1.0 - 0.05
-    if fb <= fa + 0.1:
-        return
-    n = max(8, int((fb - fa) * 4.5 * sc.r))
-    outer, inner, cut = [], [], []
-    for i in range(n + 1):
-        t = i / n
-        f = fa + (fb - fa) * t
-        th = sc.a0 + sc.dirn * TAU * f
-        ro = sc.rad(f) - wmax * 0.5 - 0.35
-        ri = sc.rad(f + 1) + 0.75
-        mid = (ro + ri) / 2
-        k = min(1.0, t / 0.2, (1 - t) / 0.25) ** 0.6
-        a, b = mid + (ro - mid) * k, mid + (ri - mid) * k
-        outer.append((sc.cx + a * math.cos(th), sc.cy + a * math.sin(th)))
-        inner.append((sc.cx + b * math.cos(th), sc.cy + b * math.sin(th)))
-        if a - b > 2.2 and 0.1 < t < 0.8:
-            c = a - 1.0
-            cut.append((sc.cx + c * math.cos(th), sc.cy + c * math.sin(th)))
-    cv.poly("WO", outer + inner[::-1])
-    if len(cut) > 2:
-        cv.line("C05", cut)
-
-
-def inner_leaf(cv, sc, wmax, rng, fs=0.03, fe=None):
-    """The scroll's acanthus leaf: springs from outside the backbone just before the fork, turns over
-    across it and rolls into the scroll, filling the gap between the outer turn and the next one in, its
-    inner edge cut into forward-pointing lobes, its tip curling short of the eye.  Shaded by cuts that
-    follow the curl along the backbone side (into the shadow), so the lit inner lobes stay bright."""
-    fe = fe if fe is not None else min(sc.turns - 0.55, rng.uniform(0.85, 1.0))
-    n = max(10, int((fe - fs) * 4.5 * sc.r))
-    lob = max(2, int((fe - fs) * rng.uniform(3.2, 4.2)))
-    ph = rng.uniform(0, 0.3)
-    outer, inner, rows = [], [], []
-    for i in range(n + 1):
-        t = i / n
-        f = fs + (fe - fs) * t
-        th = sc.a0 + sc.dirn * TAU * f
-        rad = sc.rad(max(f, 0.0))
-        nxt = sc.rad(max(f, 0.0) + 1)
-        if f < 0.04:  # outside, turning over the backbone
-            k = (0.04 - f) / (0.04 - fs)
-            ro = rad + wmax * 0.5 + sc.r * 0.38 * math.sin(math.pi * min(1.0, k * 1.1)) ** 0.8
-        else:
-            ro = rad - wmax * 0.5 - 0.25
-        ri0 = nxt + 0.7
-        env = min(1.0, (1 - t) / 0.3) ** 0.7 if t > 0.7 else 1.0
-        q = (t * lob + ph) % 1.0
-        saw = 0.7 + 0.3 * q ** 1.2 if 0.1 < t < 0.95 else 1.0
-        env *= min(1.0, t / 0.12) ** 0.6
-        ri = ro - (ro - ri0) * env * saw
-        if f < 0.04:
-            ri = max(ri0, rad - sc.r * 0.25 * (1 - (0.04 - f) / (0.04 - fs)))
-        outer.append((sc.cx + ro * math.cos(th), sc.cy + ro * math.sin(th)))
-        inner.append((sc.cx + ri * math.cos(th), sc.cy + ri * math.sin(th)))
-        rows.append((th, ro, ri, q, t))
-    cv.poly("WO", outer + inner[::-1])
-    # cuts following the curl from the backbone side
-    for c in (1, 2):
-        d = c * 1.5 - 0.5
-        seg = []
-        stop = 0.8 - 0.25 * c
-        for th, ro, ri, q, t in rows:
-            if 0.12 < t < stop and ro - ri > d + 1.2:
-                rr = ro - d
-                seg.append((sc.cx + rr * math.cos(th), sc.cy + rr * math.sin(th)))
-            elif seg:
+    Sd, Lt = [], []
+    for i, (p, q) in enumerate(zip(spine, nm)):
+        t = i / (n - 1)
+        a, b = hw * env(t, sg), hw * env(t, -sg)
+        Sd.append((p[0] + sg * q[0] * a, p[1] + sg * q[1] * a))
+        Lt.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
+    poly = Sd + Lt[::-1][1:-1]
+    cv.poly("WO", poly)
+    if cuts and width >= 2.8:
+        k = 1
+        while True:
+            d = k * 1.5 - 0.6
+            if d > hw * 0.85:
                 break
+            stop = 0.72 - 0.18 * k
+            seg = []
+            for i in range(n):
+                t = i / (n - 1)
+                a = hw * env(t, sg)
+                if 0.06 < t < stop and a - d > 0.45:
+                    o = a - d
+                    seg.append((spine[i][0] + sg * nm[i][0] * o, spine[i][1] + sg * nm[i][1] * o))
+                elif seg:
+                    break
+            if len(seg) > 2:
+                cv.line("C05", seg)
+            k += 1
+            if k > (2 if width < 5 else 3):
+                break
+    if tip and width >= 2.0 and n >= 6:
+        j0 = int((n - 1) * 0.8)
+        seg = []
+        for i in range(j0, n - 1):
+            t = i / (n - 1)
+            b = hw * env(t, -sg) * 0.55
+            seg.append((spine[i][0] - sg * nm[i][0] * b, spine[i][1] - sg * nm[i][1] * b))
+        seg.append(spine[-1])
         if len(seg) > 2:
             cv.line("C05", seg)
-    # lobe notches
-    for i in range(1, len(rows)):
-        th, ro, ri, q, t = rows[i]
-        if q < rows[i - 1][3] and 0.12 < t < 0.9 and ro - ri > 1.6:
-            m = ri + (ro - ri) * 0.45
-            cv.line("C05", [(sc.cx + ri * math.cos(th), sc.cy + ri * math.sin(th)),
-                            (sc.cx + m * math.cos(th - sc.dirn * 0.15), sc.cy + m * math.sin(th - sc.dirn * 0.15))])
+    return poly
 
 
-def draw_scroll(cv, sc, rng, wmax=1.5, R=None):
-    """A scroll: backbone, the acanthus leaf rolled into it, the bud at its eye."""
-    backbone(cv, sc.pts(), w0=wmax, w1=0.5)
-    e = sc.point(sc.turns)
-    bud(cv, e[0], e[1], max(0.6, sc.r * 0.12))
-    if sc.r >= 2.4:
-        inner_leaf(cv, sc, wmax, rng)
+def _curve(base, ang, length, bend, n=10, hook=0.0):
+    """A smooth curve from base heading `ang`, turning by `bend` radians over its length, the last fifth
+    turning a further `hook` (the lobe's turned tip)."""
+    pts = [base]
+    x, y = base
+    for i in range(1, n + 1):
+        t = (i - 0.5) / n
+        a = ang + bend * t + (hook * ((t - 0.8) / 0.2) if t > 0.8 else 0.0)
+        x += math.cos(a) * length / n
+        y += math.sin(a) * length / n
+        pts.append((x, y))
+    return pts
+
+
+def fan(cv, base, ang, length, width, n, side, rng, bend=0.6, spread=0.9, order="back"):
+    """An acanthus leaf as a fan of n overlapping pointed lobes springing from `base`: the first runs
+    along `ang`, the others splay out to `side` (+1 clockwise on screen) and curl back toward the flow;
+    each sits on the one behind it, its shadow flank toward it."""
+    lobes = []
+    for i in range(n):
+        u = i / max(1, n - 1)
+        a = ang + side * spread * u * rng.uniform(0.85, 1.1)
+        ln = length * (1.0 - 0.32 * u) * rng.uniform(0.9, 1.08)
+        wd = width * (1.0 - 0.25 * u) * rng.uniform(0.9, 1.1)
+        b0 = (base[0] + math.cos(a) * width * 0.15, base[1] + math.sin(a) * width * 0.15)
+        lobes.append((_curve(b0, a, ln, -side * bend * rng.uniform(0.8, 1.2), 10, -side * 0.5), wd))
+    seq = lobes[::-1] if order == "back" else lobes
+    for sp, wd in seq:
+        lobe(cv, sp, wd, shade=-side)
+
+
+def acanthus(cv, spine, width, side, rng, lobes=3):
+    """A compound acanthus leaf along `spine`: a long main lobe, and side lobes springing from its `side`
+    flank (+1 left of travel) that sweep back alongside it, each smaller toward the tip, layered behind
+    the main lobe so its crisp edge reads over them."""
+    sp = _resample(spine, 0.8)
+    if len(sp) < 5:
+        return
+    s = _arclen(sp)
+    Ltot = s[-1]
+    nm = _normals(sp)
+    side_lobes = []
+    for j in range(lobes):
+        t = 0.18 + 0.55 * j / max(1, lobes) + rng.uniform(-0.04, 0.04)
+        (bx, by), (tx, ty) = _at(sp, s, t)
+        nx, ny = -ty * side, tx * side
+        a = math.atan2(ty, tx)
+        out = math.atan2(ny, nx)
+        # leave splayed out, then swing back to run with the leaf, tip curling out
+        ang = a + (out - a) * 0.0
+        spread = 0.75 - 0.15 * j
+        start = math.atan2(math.sin(a) * math.cos(spread) + ny * math.sin(spread),
+                           math.cos(a) * math.cos(spread) + nx * math.sin(spread))
+        ln = Ltot * (0.6 - 0.12 * j) * rng.uniform(0.9, 1.1)
+        turn = a - start
+        turn = (turn + math.pi) % TAU - math.pi
+        b0 = (bx + nx * width * 0.2, by + ny * width * 0.2)
+        side_lobes.append((_curve(b0, start, ln, turn * 1.2, 10, -turn * 0.6), width * (0.72 - 0.1 * j)))
+    for spn, wd in side_lobes[::-1]:
+        lobe(cv, spn, wd, shade=-side)
+    lobe(cv, sp, width, shade=-side)
+
+
+def draw_scroll(cv, sc, rng, bw=None, R=None, inner=True):
+    """A scroll: a broad bright backbone ribbon with a groove cut along its inner side, winding into a
+    tight volute that ends in a round button; a lobe rolled into the curl."""
+    R = sc.R
+    bw = bw or max(1.5, min(5.0, R * 0.5))
+    pts = _resample(sc.pts(), max(0.8, R * 0.12))
+    n = len(pts)
+    if n < 4:
+        return
+    nm = _normals(pts)
+    L, Rr = [], []
+    for i, (p, q) in enumerate(zip(pts, nm)):
+        t = i / (n - 1)
+        h = bw / 2 * (1.0 - 0.55 * t)
+        L.append((p[0] + q[0] * h, p[1] + q[1] * h))
+        Rr.append((p[0] - q[0] * h, p[1] - q[1] * h))
+    if inner and R >= 3.5:
+        # two lobes rolled into the curl, the second lying over the first
+        lobe(cv, sc.arc(0.04, 0.78, rscale=0.6), R * 0.8, shade=sc.dirn)
+        if R >= 6.5:
+            lobe(cv, sc.arc(0.5, 1.02, rscale=0.6), R * 0.44, shade=sc.dirn)
+    cv.poly("WO", L + Rr[::-1])
+    # groove cut along the inner side of the ribbon (toward the centre: the shadow)
+    if bw >= 2.0:
+        gi = []
+        for i, (p, q) in enumerate(zip(pts, nm)):
+            t = i / (n - 1)
+            if 0.04 < t < 0.8:
+                h = bw / 2 * (1.0 - 0.55 * t)
+                # which normal side faces the centre?
+                cx, cy = sc.cx - p[0], sc.cy - p[1]
+                s = 1 if q[0] * cx + q[1] * cy > 0 else -1
+                o = s * max(0.0, h - 0.75)
+                gi.append((p[0] + q[0] * o, p[1] + q[1] * o))
+        if len(gi) > 2:
+            cv.line("C05", gi)
+    e = pts[-1]
+    rb = max(0.75, sc.rad(sc.turns) * 0.95)
+    if rb <= 0.8:
+        cv.line("S15", [e, (e[0] + 0.01, e[1])])
+    else:
+        cv.circle("W", e[0], e[1], rb)
+
+
+def _scroll_from(p, tdir, centre, R, rng, turns=None):
+    """A scroll of radius R centred at `centre` whose stem arrives at p heading tdir: start angle from the
+    centre toward p, winding chosen so it carries on the way the stem was going."""
+    a0 = math.atan2(p[1] - centre[1], p[0] - centre[0])
+    best = None
+    for d in (1, -1):
+        sc = Scroll(centre[0], centre[1], R, d, a0, turns or rng.uniform(1.25, 1.5), rng.uniform(0.14, 0.2))
+        tx, ty = sc.tangent()
+        score = tx * tdir[0] + ty * tdir[1]
+        if best is None or score > best[0]:
+            best = (score, sc)
+    return best[1]
+
+
+def _stem(cv, p0, t0, p3, t3, w, k=0.42):
+    d = math.hypot(p3[0] - p0[0], p3[1] - p0[1]) * k
+    pts = _bez(p0, (p0[0] + t0[0] * d, p0[1] + t0[1] * d), (p3[0] - t3[0] * d, p3[1] - t3[1] * d), p3, 16)
+    pts = _resample(pts, 1.0)
+    poly, _, _ = _ribbon(pts, [w / 2] * len(pts))
+    cv.poly("W", poly)
+    return pts
+
+
+def lane(cv, L, H, rng, start_side=1, **kw):
+    """Compose fine scroll in the lane x in [0, L], y in [-H/2, H/2] (y down).
+
+    Big scrolls dominate, alternating side and size; between each pair the stem crosses the lane, and the
+    two pockets it leaves are filled one with a subordinate scroll (2-3x smaller, branching off the stem and
+    winding against its neighbours) and one with an acanthus fan; leftover ground gets single lobes."""
+    hb = H / 2 - 0.4
+    if L < H * 0.7:
+        # too short for a run: one scroll and a fan
+        R = min(hb, L / 2 - 0.3)
+        sc = Scroll(L / 2, 0, R, 1 if start_side > 0 else -1, math.pi / 2, 1.35, 0.17)
+        draw_scroll(cv, sc, rng)
+        return [sc]
+    bigs = []
+    side = start_side
+    k = 0
+    x = 0.0
+    while True:
+        # a dominant scroll every third place, the two between it smaller and unequal (no two alike)
+        Rb = H * (0.49, 0.31, 0.39)[k % 3] * rng.uniform(0.95, 1.03)
+        Rb = min(Rb, hb)
+        cy = -side * (hb - Rb)
+        if not bigs:
+            x = Rb + H * rng.uniform(0.04, 0.2)
+        else:
+            px, pcy, pR, ps = bigs[-1]
+            x = px + pR + Rb + H * (rng.uniform(0.5, 0.75) if (k - 1) % 3 == 0 else rng.uniform(0.26, 0.4))
+        if x + Rb > L - 0.3:
+            break
+        bigs.append((x, cy, Rb, side))
+        side = -side
+        k += 1
+    if not bigs:
+        R = min(hb, L / 2 - 0.3)
+        sc = Scroll(L / 2, 0, R, 1, math.pi / 2, 1.35, 0.17)
+        draw_scroll(cv, sc, rng)
+        return [sc]
+    slack = L - 0.3 - (bigs[-1][0] + bigs[-1][2])
+    if slack > 0 and len(bigs) > 1:
+        bigs = [(x + slack * (i / (len(bigs) - 1)) * 0.95, cy, R, s) for i, (x, cy, R, s) in enumerate(bigs)]
+    elif slack > 0:
+        bigs = [(x + slack / 2, cy, R, s) for x, cy, R, s in bigs]
+    scrolls = []
+    for x, cy, R, s in bigs:
+        # top scroll (s=+1): starts at its bottom heading +x -> winds counter-clockwise on screen (dirn -1)
+        if s > 0:
+            sc = Scroll(x, cy, R, -1, math.pi / 2, rng.uniform(1.15, 1.32), rng.uniform(0.16, 0.22))
+        else:
+            sc = Scroll(x, cy, R, 1, -math.pi / 2, rng.uniform(1.15, 1.32), rng.uniform(0.16, 0.22))
+        scrolls.append(sc)
+    sw = max(1.2, min(2.4, H * 0.1))
+    subs, fans, stems = [], [], []
+    # lead-in from the lane start
+    s0 = scrolls[0]
+    p3 = s0.start()
+    stems.append(((0.0, p3[1] * 0.5), (1.0, 0.0), p3, s0.tangent()))
+    for i, (a, b) in enumerate(zip(scrolls, scrolls[1:])):
+        stems.append((a.start(), a.tangent(), b.start(), b.tangent()))
+    # tail-out past the last scroll
+    sl = scrolls[-1]
+    p0 = sl.start()
+    if L - p0[0] > H * 0.25:
+        stems.append((p0, sl.tangent(), (L, p0[1] * 0.4), (1.0, 0.0)))
+    drawn = []
+    for j, (p0, t0, p3, t3) in enumerate(stems):
+        pts = _bez(p0, (p0[0] + t0[0] * 4, p0[1] + t0[1] * 4), (p3[0] - t3[0] * 4, p3[1] - t3[1] * 4), p3, 16)
+        drawn.append(pts)
+    # pockets between consecutive bigs
+    for i, (a, b) in enumerate(zip(scrolls, scrolls[1:])):
+        pts = drawn[i + 1]
+        gx0, gx1 = a.cx + a.R, b.cx - b.R
+        gap = gx1 - gx0
+        if gap < 1.5:
+            continue
+        top_first = (i + (1 if rng.random() < 0.25 else 0)) % 2 == 0
+        # the two pockets: near a on the side away from a's start, and near b on the side away from b's start
+        pa = (gx0 + gap * 0.35, -math.copysign(hb * 0.55, a.start()[1] - a.cy))
+        pb = (gx1 - gap * 0.35, -math.copysign(hb * 0.55, b.start()[1] - b.cy))
+        for which, pc in ((0, pa), (1, pb)):
+            if (which == 0) == top_first:
+                rs = max(1.6, min(gap * 0.5, hb * 0.55) * rng.uniform(0.82, 0.98))
+                cx = max(gx0 + rs * 0.6, min(gx1 - rs * 0.6, pc[0]))
+                cy = math.copysign(hb - rs, pc[1])
+                # branch point on the stem nearest that pocket
+                bi = min(range(len(pts)), key=lambda q: math.hypot(pts[q][0] - cx, pts[q][1] - cy))
+                bp = pts[bi]
+                tdir = _norm(cx - bp[0], cy - bp[1])
+                sc2 = _scroll_from((cx + (bp[0] - cx) * 0.0, cy), (0, 0), (cx, cy), rs, rng)
+                # start of the sub scroll faces the stem
+                a0 = math.atan2(bp[1] - cy, bp[0] - cx)
+                d = -a.dirn if which == 0 else -b.dirn
+                sc2 = Scroll(cx, cy, rs, d, a0, rng.uniform(1.2, 1.45), rng.uniform(0.16, 0.22))
+                subs.append((bp, _norm(pts[min(bi + 1, len(pts) - 1)][0] - pts[max(bi - 1, 0)][0],
+                                       pts[min(bi + 1, len(pts) - 1)][1] - pts[max(bi - 1, 0)][1]), sc2))
+            else:
+                bi = min(range(len(pts)), key=lambda q: math.hypot(pts[q][0] - pc[0], pts[q][1] - pc[1]))
+                bp = pts[bi]
+                ang = math.atan2(pc[1] - bp[1], pc[0] - bp[0])
+                dist = math.hypot(pc[0] - bp[0], pc[1] - bp[1])
+                fans.append((bp, ang, max(3.0, min(H * 0.95, dist * 2.6)), (which, i)))
+    # draw: fans (behind), stems, sub scrolls, big scrolls; lobes fill what is left
+    for bp, ang, ln, key in fans:
+        sd = 1 if rng.random() < 0.5 else -1
+        spn = _curve(bp, ang - sd * 0.5, ln, sd * 1.3, 14, sd * 0.6)
+        spn = [(x, max(-hb + 0.6, min(hb - 0.6, y))) for x, y in spn]
+        acanthus(cv, spn, max(2.2, ln * 0.3), -sd, rng, lobes=3 if ln > 8 else 2)
+    anchors = []
+    for p0, t0, p3, t3 in stems:
+        sp_ = _stem(cv, p0, t0, p3, t3, sw)
+        for q in range(1, len(sp_) - 1, 2):
+            tx, ty = _norm(sp_[q + 1][0] - sp_[q - 1][0], sp_[q + 1][1] - sp_[q - 1][1])
+            anchors.append((sp_[q][0], sp_[q][1], tx, ty))
+    base = _base(cv)
+    i_scroll = len(base.ops)
+    for bp, tdir, sc2 in subs:
+        p3 = sc2.start()
+        t3 = sc2.tangent()
+        dd = math.hypot(p3[0] - bp[0], p3[1] - bp[1])
+        if tdir[0] * (p3[0] - bp[0]) + tdir[1] * (p3[1] - bp[1]) < 0:
+            tdir = (-tdir[0], -tdir[1])
+        if dd > 0.5:
+            _stem(cv, bp, tdir, p3, t3, sw * 0.8, k=0.5)
+        draw_scroll(cv, sc2, rng, bw=max(1.2, sw * 0.9))
+    for sc in scrolls:
+        # a fan where the stem meets the scroll, its lobes riding the outer turn
+        if sc.R > 3.5:
+            st = sc.start()
+            t = sc.tangent()
+            ang = math.atan2(-t[1], -t[0])
+            side = -sc.dirn
+            fan(cv, st, ang + side * 0.25, sc.R * 1.35, sc.R * 0.5, 3, side, rng, bend=1.0, spread=0.6, order="front")
+        draw_scroll(cv, sc, rng)
+    for sc in scrolls + [s_ for _, _, s_ in subs]:
+        for f in (0.15, 0.3, 0.45, 0.6, 0.75):
+            p = sc.point(f)
+            t = sc.tangent_at(f)
+            anchors.append((p[0], p[1], t[0], t[1]))
+    i_fill = len(base.ops)
+    _fill_gaps(cv, L, H, rng, scrolls + [s_ for _, _, s_ in subs], anchors)
+    # the pocket leaves sit behind the scrolls, so every scroll keeps its crisp edge
+    chunk = base.ops[i_fill:]
+    del base.ops[i_fill:]
+    base.ops[i_scroll:i_scroll] = chunk
+    return scrolls
+
+
+def _dt(occ):
+    """Chamfer distance (in px) from every free cell to the nearest occupied cell or lane edge."""
+    nx, ny, c = occ.nx, occ.ny, occ.c
+    INF = 1e9
+    d = [[0.0 if occ.g[j][i] or j in (0, ny - 1) else INF for i in range(nx)] for j in range(ny)]
+    a, b = c, c * 1.4142
+    for j in range(1, ny):
+        row, up = d[j], d[j - 1]
+        for i in range(nx):
+            v = row[i]
+            if v:
+                v = min(v, up[i] + a, (up[i - 1] + b) if i else INF, (up[i + 1] + b) if i + 1 < nx else INF,
+                        (row[i - 1] + a) if i else INF)
+                row[i] = v
+    for j in range(ny - 2, -1, -1):
+        row, dn = d[j], d[j + 1]
+        for i in range(nx - 1, -1, -1):
+            v = row[i]
+            if v:
+                v = min(v, dn[i] + a, (dn[i - 1] + b) if i else INF, (dn[i + 1] + b) if i + 1 < nx else INF,
+                        (row[i + 1] + a) if i + 1 < nx else INF)
+                row[i] = v
+    return d
+
+
+def _fill_gaps(cv, L, H, rng, scrolls, anchors=()):
+    """Grow leaves into the ground left between the scrolls: find the open pockets (a distance transform
+    of what is drawn), and into each send an acanthus leaf from the nearest stem or scroll, sized to the
+    pocket and sweeping with the flow, so the dark shows only as narrow channels between leaves."""
+    occ = getattr(cv, "occ", None)
+    if occ is None:
+        return
+    gmin = getattr(_base(cv), "gap_min", 1.4)
+    d = _dt(occ)
+    c = occ.c
+    cells = []
+    for j in range(occ.ny):
+        for i in range(occ.nx):
+            v = d[j][i]
+            if gmin <= v < 1e8:
+                cells.append((v, occ.x0 + (i + 0.5) * c, occ.y0 + (j + 0.5) * c))
+    cells.sort(reverse=True)
+    chosen = []
+    for v, x, y in cells:
+        if not (0.5 < x < L - 0.5):
+            continue
+        if any(math.hypot(x - X, y - Y) < (v + V) * 1.0 for V, X, Y in chosen):
+            continue
+        chosen.append((v, x, y))
+    hb = H / 2 - 0.5
+    for v, x, y in chosen:
+        best = None
+        for ax, ay, tx, ty in anchors:
+            dd = math.hypot(ax - x, ay - y)
+            if best is None or dd < best[0]:
+                best = (dd, ax, ay, tx, ty)
+        sd = rng.choice((-1, 1))
+        if best and best[0] < v * 3.2 + 2:
+            dd, ax, ay, tx, ty = best
+            ang = math.atan2(y - ay, x - ax)
+            # sweep with the stem: lean the leaf toward the stem's direction of travel
+            flow = math.atan2(ty, tx)
+            dl = (flow - ang + math.pi) % TAU - math.pi
+            sd = 1 if dl > 0 else -1
+            ln = dd + v * 1.8
+            spn = _curve((ax, ay), ang - sd * 0.35, ln, sd * 1.0, 12, sd * 0.6)
+        else:
+            near = min(scrolls, key=lambda s_: math.hypot(s_.cx - x, s_.cy - y) - s_.R) if scrolls else None
+            ang = (math.atan2(y - near.cy, x - near.cx) + near.dirn * math.pi / 2) if near else 0.0
+            ln = v * 2.6
+            spn = _curve((x - math.cos(ang) * ln * 0.5, y - math.sin(ang) * ln * 0.5), ang - sd * 0.3, ln, sd * 0.7, 10, sd * 0.5)
+        spn = [(px, max(-hb, min(hb, py))) for px, py in spn]
+        if v >= 2.6:
+            acanthus(cv, spn, v * 2.1, -sd, rng, lobes=1 if v < 3.2 else 2 if v < 4.5 else 3)
+        else:
+            lobe(cv, spn, v * 2.25, shade=-sd)
 
 
 class Run:
@@ -687,244 +1056,13 @@ class Run:
 def _ground_in_run(cv, run, u0, u1, v0, v1, rng, density=2.0):
     """Cut-away ground in a run: black, with a fine irregular stipple of 1-device-px pricks."""
     m = Mapped(cv, lambda x, y: run.p(x, y))
-    m.poly("K", [(u0, v0), (u1, v0), (u1, v1), (u0, v1)])
-    n = int((u1 - u0) * (v1 - v0) * density)
+    m.poly("M", [(u0, v0), (u1, v0), (u1, v1), (u0, v1)])
+    n = 0
     for _ in range(n):
         m.dot(rng.uniform(u0 + 0.3, u1 - 0.3), rng.uniform(v0 + 0.4, v1 - 0.4))
 
 
 # ---------------------------------------------------------------- lanes (a band of scroll in local coords)
-
-def lane(cv, L, H, rng, start_side=1, wmax=None, rmin=0.44, rmax=0.56, lead=None):
-    """Compose fine scroll in the lane x in [0, L], y in [-H/2, H/2] (y down) of canvas-like `cv`.
-
-    A running stem dips alternately to each side; at each turn a scroll forks off and tucks into a tight
-    curl; big acanthus leaves sweep back from each fork over the trough; small flame leaves and secondary
-    curls fill what room is left.  Radii, spacing, winding and leaf shapes vary with the seed, so no two
-    stretches are alike.
-    """
-    if L < H * 0.8:
-        return []
-    if H < 6.5:
-        return vine(cv, L, H, rng, start_side)
-    wmax = wmax or (1.5 if H >= 12 else 1.0)
-    plan = []
-    side = start_side
-    x = 0.0
-    while True:
-        r = H * (rmin + (rmax - rmin) * rng.random() ** 0.8)
-        if plan and rng.random() < 0.3:
-            r = H * rng.uniform(rmin * 0.6, rmin * 0.85)  # a small scroll between big ones
-        m = max(0.5, H * 0.05)
-        cy = side * (H / 2 - r - m) * -1  # side +1 -> scroll sits toward -y (outer), its fork below it
-        if not plan:
-            x = r + H * rng.uniform(0.10, 0.25)
-        else:
-            px, py, pr, _ = plan[-1]
-            need = (r + pr) * rng.uniform(0.95, 1.1)
-            dy = abs(cy - py)
-            x = px + math.sqrt(max(need * need - dy * dy, (0.95 * (r + pr)) ** 2))
-        if x + r > L - H * 0.05:
-            break
-        plan.append((x, cy, r, side))
-        if not (r < H * rmin * 0.9 and rng.random() < 0.5):
-            side = -side  # a small scroll may be followed by another on the same side
-    if not plan:
-        return []
-    slack = L - (plan[-1][0] + plan[-1][2]) - H * 0.05
-    if len(plan) > 1 and slack > 0:
-        plan = [(x + slack * (0.1 + 0.85 * i / (len(plan) - 1)), cy, r, sd) for i, (x, cy, r, sd) in enumerate(plan)]
-    scrolls = []
-    for x, cy, r, side in plan:
-        # side +1 (outer, -y): starts at its bottom (angle +90deg, y down) heading +x, winds counter-clockwise
-        rb = r * rng.uniform(0.86, 0.94)
-        if side > 0:
-            sc = Scroll(x, cy, rb, -1, math.pi / 2, rng.uniform(1.55, 1.8), rng.uniform(0.16, 0.22))
-        else:
-            sc = Scroll(x, cy, rb, 1, -math.pi / 2, rng.uniform(1.55, 1.8), rng.uniform(0.16, 0.22))
-        sc.R = r
-        scrolls.append(sc)
-    # the running stem
-    stems = []
-    if lead is not None:
-        stems.append((lead[0], lead[1], scrolls[0]))
-    else:
-        s0 = scrolls[0]
-        p3 = s0.start()
-        stems.append(((0.0, p3[1] * 0.3), (1.0, 0.0), s0))
-    for a, b in zip(scrolls, scrolls[1:]):
-        stems.append((a.start(), a.tangent(), b))
-    stem_pts = []
-    for p0, t0, b in stems:
-        p3, t3 = b.start(), b.tangent()
-        d = math.hypot(p3[0] - p0[0], p3[1] - p0[1])
-        k = d * 0.45
-        pts = _bez(p0, (p0[0] + t0[0] * k, p0[1] + t0[1] * k), (p3[0] - t3[0] * k, p3[1] - t3[1] * k), p3, 20)
-        stem_pts.append(pts)
-    # trailing stem out to the end of the lane, ending in a small curl
-    last = scrolls[-1]
-    hb = H / 2 - 0.6
-    # the trough behind each fork: a sweeping leaf, or a secondary scroll branching off with its own leaf
-    secondary = []
-    for i, sc in enumerate(scrolls):
-        if sc.R < 2.2:
-            continue
-        sx, sy = sc.start()
-        up = -1 if sc.cy > sy else 1  # direction from the fork away from its own scroll
-        room = H / 2 - up * sy - 0.6  # free depth toward the far edge
-        prevx = scrolls[i - 1].cx + scrolls[i - 1].r if i else 0.0
-        span = sx - prevx
-        if room > H * 0.3 and span > H * 0.35 and rng.random() < 0.55 and H >= 8:
-            r2 = min(room * 0.48, span * 0.42) * rng.uniform(0.85, 1.0)
-            cx2 = sx - span * rng.uniform(0.35, 0.5)
-            cy2 = sy + up * (room - r2 - 0.2)
-            # branch: leaves the fork backward and curls the opposite way to its parent
-            d2 = -sc.dirn
-            a2 = math.atan2(sy - cy2, sx - cx2)
-            sc2 = Scroll(cx2, cy2, r2, d2, a2, rng.uniform(1.2, 1.5), rng.uniform(0.15, 0.25))
-            secondary.append(sc2)
-            leaf(cv, _bez((sx, sy), (sx - span * 0.3, sy + up * room * 0.1), (cx2 + r2 * 1.4, cy2 - up * r2 * 0.6),
-                          (cx2 + r2 * 0.2, cy2 - up * r2 * 0.95), 12),
-                 width=r2 * 0.9, lobes=2, shade=up, rng=rng, side=-up)
-            continue
-        ln = sc.R * rng.uniform(1.35, 1.8)
-        bend = rng.uniform(0.9, 1.5)
-        pts = []
-        for j in range(15):
-            t = j / 14
-            ang = math.pi + up * (0.35 + bend * t * t)
-            pts.append((sx + math.cos(ang) * ln * t, sy + math.sin(ang) * ln * t * 0.85))
-        dev = max(abs(py - sy) for _, py in pts) or 1.0
-        f = min(1.0, max(0.3, room - sc.R * 0.3) / dev)
-        pts = [(px, sy + (py - sy) * f) for px, py in pts]
-        leaf(cv, pts, width=sc.R * rng.uniform(1.1, 1.3), lobes=2, shade=-up, rng=rng, side=up)
-    for pts in stem_pts:
-        backbone(cv, pts, w0=wmax, w1=wmax)
-    # stem leaves: from each fork a long acanthus blade hugs the stem on the side away from its scroll,
-    # toothed edge out, running toward the next scroll; a shorter one answers it from the far end
-    pairs = []
-    if lead is None:
-        pairs = [(None, scrolls[0])]
-    pairs += list(zip(scrolls, scrolls[1:]))
-    for (a_, b_), pts in zip(pairs, stem_pts):
-        if len(pts) < 8 or H < 6:
-            continue
-        nm = _normals(pts)
-        for which, sc, t0, t1 in (("a", a_, 0.04, rng.uniform(0.55, 0.7)), ("b", b_, rng.uniform(0.5, 0.62), 0.96)):
-            if sc is None:
-                continue
-            i0, i1 = int(t0 * (len(pts) - 1)), int(t1 * (len(pts) - 1))
-            seg = pts[i0:i1 + 1]
-            if len(seg) < 4:
-                continue
-            mx, my = seg[len(seg) // 2]
-            k = len(seg) // 2 + i0
-            # side away from this scroll's centre
-            sd = 1 if (nm[k][0] * (mx - sc.cx) + nm[k][1] * (my - sc.cy)) > 0 else -1
-            room = H * rng.uniform(0.36, 0.46)
-            off = []
-            for j, (px, py) in enumerate(seg):
-                q = nm[i0 + j]
-                tt = j / (len(seg) - 1)
-                o = (wmax * 0.5 + room * 0.42 * math.sin(math.pi * min(1.0, tt * 1.15)) ** 0.7)
-                off.append((px + sd * q[0] * o, py + sd * q[1] * o))
-            if which == "b":
-                off = off[::-1]
-            off = [(px, max(-hb + 0.4, min(hb - 0.4, py))) for px, py in off]
-            finger(cv, off, room, shade=sd if which == "a" else -sd, cuts=2, cover=0.3)
-    for sc in secondary:
-        draw_scroll(cv, sc, rng, wmax=wmax * 0.8, R=sc.r * 1.5)
-    for sc in scrolls:
-        draw_scroll(cv, sc, rng, wmax=wmax, R=sc.R)
-    _fill_gaps(cv, L, H, rng, scrolls + secondary)
-    return scrolls
-
-
-def _fill_gaps(cv, L, H, rng, scrolls):
-    """Fill the ground left between scrolls with small curled leaves and tendril curls, each springing
-    toward the nearest scroll's flow, so no pocket of bare ground is larger than a leaf."""
-    occ = getattr(cv, "occ", None)
-    if occ is None:
-        return
-    hb = H / 2
-    pts = []
-    step = 1.2
-    y = -hb + step * 0.6
-    while y < hb:
-        x = step * rng.uniform(0.3, 0.8)
-        while x < L:
-            pts.append((x + rng.uniform(-0.4, 0.4) * step, y + rng.uniform(-0.3, 0.3) * step))
-            x += step
-        y += step * 0.8
-    rng.shuffle(pts)
-    for x, y in pts:
-        rr = 1.6
-        if not (-hb + rr < y < hb - rr) or not occ.free(x, y, rr):
-            continue
-        # grow to the room available
-        while rr < H * 0.3 and occ.free(x, y, rr + 0.5):
-            rr += 0.5
-        near = min(scrolls, key=lambda s: math.hypot(s.cx - x, s.cy - y)) if scrolls else None
-        if near is not None:
-            ang = math.atan2(y - near.cy, x - near.cx) + near.dirn * math.pi / 2
-        else:
-            ang = rng.uniform(0, TAU)
-        ln = rr * 2.0
-        if rr >= 2.2 and rng.random() < 0.45:
-            # a tendril curl with its leaf
-            d = rng.choice((-1, 1))
-            sc = Scroll(x, y, rr * 0.55, d, ang + math.pi, rng.uniform(1.2, 1.5), 0.25)
-            draw_scroll(cv, sc, rng, wmax=0.9, R=rr * 0.95)
-        else:
-            bend = rng.uniform(-0.9, 0.9)
-            sp = []
-            for q in range(9):
-                t = q / 8
-                a = ang + bend * t
-                sp.append((x - math.cos(ang) * ln * 0.5 + math.cos(a) * ln * t, y - math.sin(ang) * ln * 0.5 + math.sin(a) * ln * t))
-            finger(cv, sp, rr * 1.15, shade=1 if bend > 0 else -1, cuts=1, cover=0.4)
-
-
-def vine(cv, L, H, rng, start_side=1):
-    """For lanes too narrow for leafed scroll (under 6.5 px): a running wave scroll cut as one bright
-    1 px line.  The line dips to each side in turn and rolls into a tight curl ending in a bud; curl
-    size and spacing vary, and now and then a curl is skipped for a longer sweep, so it never ticks."""
-    hb = H / 2 - 0.6
-    rr0 = max(0.9, hb * 0.62)
-    x = rr0 + 0.5
-    side = start_side
-    plan = []
-    while x < L - rr0 - 0.3:
-        rr = rr0 * rng.uniform(0.8, 1.05)
-        plan.append((x, side * (hb - rr) * -1, rr, side))
-        x += rr * 2 + rng.uniform(0.9, 1.9) * rr0
-        side = -side
-    scrolls = []
-    for x, cy, rr, side in plan:
-        if side > 0:
-            sc = Scroll(x, cy, rr, -1, math.pi / 2, rng.uniform(1.05, 1.3), 0.3)
-        else:
-            sc = Scroll(x, cy, rr, 1, -math.pi / 2, rng.uniform(1.05, 1.3), 0.3)
-        scrolls.append(sc)
-    prev = None
-    for sc in scrolls:
-        p3, t3 = sc.start(), sc.tangent()
-        if prev is None:
-            p0, t0 = (0.0, p3[1] * 0.2), (1.0, 0.0)
-        else:
-            p0, t0 = prev.start(), prev.tangent()
-        d = math.hypot(p3[0] - p0[0], p3[1] - p0[1]) * 0.45
-        cv.line("S1", _bez(p0, (p0[0] + t0[0] * d, p0[1] + t0[1] * d), (p3[0] - t3[0] * d, p3[1] - t3[1] * d), p3, 10))
-        cv.line("S1", sc.pts())
-        if H >= 4.5:
-            e = sc.point(sc.turns)
-            bud(cv, e[0], e[1], 0.75)
-        prev = sc
-    if prev is not None:
-        p0, t0 = prev.start(), prev.tangent()
-        cv.line("S1", _bez(p0, (p0[0] + t0[0] * 2, p0[1] + t0[1] * 2), (L - 1.0, p0[1] * 0.2), (L, p0[1] * 0.2), 8))
-    return scrolls
-
 
 def _run_map(run, flip=False, u0=0.0):
     def f(x, y):
@@ -935,7 +1073,7 @@ def _run_map(run, flip=False, u0=0.0):
     return f
 
 
-DENSITY = 2.0  # white pricks per CSS px^2 of visible ground (0.5 px pricks: a fine dark matte, ~60 % ink)
+DENSITY = 2.3  # white pricks per CSS px^2 of visible ground (0.5 px pricks: a fine dark matte, ~60 % ink)
 
 
 def _base(cv):
@@ -962,19 +1100,9 @@ def strip(cv, run, seed, u0=0.0, u1=None, flip=False, start_side=1, ground=True,
     m = Mapped(cv, f, occ)
     base = _base(cv)
     if ground is True:
-        m.poly("K", [(0, -H / 2), (L, -H / 2), (L, H / 2), (0, H / 2)])
+        m.poly("M", [(0, -H / 2), (L, -H / 2), (L, H / 2), (0, H / 2)])
         occ.g = [bytearray(occ.nx) for _ in range(occ.ny)]
-    idx = len(base.ops)
     out = lane(m, L, H, rng, start_side, **kw)
-    if ground:
-        dots = []
-        for _ in range(int(L * H * density)):
-            x, y = rng.uniform(0.25, L - 0.25), rng.uniform(-H / 2 + 0.3, H / 2 - 0.3)
-            i, j = int((x + 2) / occ.c), int((y + H / 2) / occ.c)
-            if 0 <= j < occ.ny and 0 <= i < occ.nx and occ.g[j][i]:
-                continue
-            dots.append(f(x, y))
-        base.ops.insert(idx, ("D", dots))
     return out
 
 
@@ -1062,15 +1190,15 @@ def inlay(cv, x, y, w, h, outer=True):
         cv.add("R1", "M%s %sH%sV%sH%sZ" % (_f(x + 2), _f(y + 2), _f(x + w - 2), _f(y + h - 2), _f(x + 2)))
 
 
-def volute(cv, cx, cy, R, dirn, a0, rng, wmax=1.2, turns=None):
+def volute(cv, cx, cy, R, dirn, a0, rng, wmax=None, turns=None):
     """A free-standing scroll of footprint radius R, its stem joining at screen angle a0."""
-    rb = R * rng.uniform(0.6, 0.68)
-    sc = Scroll(cx, cy, rb, dirn, a0, turns or rng.uniform(1.4, 1.7), rng.uniform(0.13, 0.2))
-    draw_scroll(cv, sc, rng, wmax=wmax, R=R)
+    sc = Scroll(cx, cy, R, dirn, a0, turns or rng.uniform(1.3, 1.5), rng.uniform(0.14, 0.19))
+    draw_scroll(cv, sc, rng)
     return sc
 
 
 def _stipple_rect(cv, x0, y0, x1, y1, rng, density=2.0):
+    return  # the matte pattern under the band does this now
     n = int(max(0.0, x1 - x0) * max(0.0, y1 - y0) * density)
     for _ in range(n):
         cv.dot(rng.uniform(x0 + 0.3, x1 - 0.3), rng.uniform(y0 + 0.3, y1 - 0.3))
@@ -1081,23 +1209,19 @@ def _rect_d(x0, y0, x1, y1):
 
 
 def corner(cv, x, y, s, quad, seed, rng=None):
-    """Corner piece in the s x s lane square at (x, y): a volute turning the corner, the acanthus rolled
-    into it, and a leaf tip pointing out along the diagonal.  quad: 'tl', 'tr', 'br', 'bl'."""
+    """Corner piece in the s x s square at (x, y): a dominant volute turning the corner with an acanthus
+    fan springing from its foot toward the outer corner.  quad: 'tl', 'tr', 'br', 'bl'."""
     rng = rng or rng_for("corner", seed, quad)
     sx = 1 if quad in ("tl", "bl") else -1
     sy = 1 if quad in ("tl", "tr") else -1
     ox = x if sx > 0 else x + s
     oy = y if sy > 0 else y + s
     m = Mapped(cv, lambda a, b: (ox + sx * a, oy + sy * b))
-    if s < 4:
+    if s < 5:
         return
-    # leaf tip toward the outer corner
-    if s >= 7:
-        finger(m, [(s * (0.55 - 0.47 * t), s * (0.55 - 0.47 * t) + s * 0.06 * math.sin(t * 3.0)) for t in
-                   [k / 8 for k in range(9)]], s * 0.36, shade=1, cuts=1, cover=0.35)
-    # the volute: stem enters from the inner side, winds clockwise (in quad-local coords) toward the corner
-    sc = Scroll(s * 0.56, s * 0.56, s * 0.4, 1, math.pi * 0.25, 1.6, 0.2)
-    draw_scroll(m, sc, rng, wmax=1.5 if s >= 10 else 1.0)
+    fan(m, (s * 0.62, s * 0.62), math.radians(225), s * 0.62, s * 0.3, 3, 1, rng, bend=0.8, spread=0.7)
+    sc = Scroll(s * 0.58, s * 0.58, s * 0.38, 1, math.radians(200), 1.4, 0.16)
+    draw_scroll(m, sc, rng)
 
 
 def _lane_rects(x, y, w, h, ins, o=1.5, i=2.0):
@@ -1135,7 +1259,7 @@ def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None)
         cv.clip = _rect_d(x, cy0, x + w, cy1)
         _terminals(cv, x, y, w, h, ins, open_sides, seed)
     # ground and the outer rule as one black frame
-    cv.add("K", _rect_d(x, y, x + w, y + h))
+    cv.add("M", _rect_d(x, y, x + w, y + h))
     top = getattr(cv, "over", cv.add)
     if hasattr(cv, "clip") and cv.clip is None:
         cv.clip = _rect_d(x, y, x + w, y + h)
@@ -1168,7 +1292,7 @@ def band_rect(cv, x, y, w, h, ins, seed, centre=("fleuron", None, "shell", None)
     if o > 1:
         top("S1", _rect_d(x + 1, y + 1, x + w - 1, y + h - 1))
     top("S1", _rect_d(x + l - 1.5, y + t - 1.5, x + w - r + 1.5, y + h - b + 1.5))
-    top("R1", _rect_d(x + l - 0.5, y + t - 0.5, x + w - r + 0.5, y + h - b + 0.5))
+    top("R05", _rect_d(x + l - 0.25, y + t - 0.25, x + w - r + 0.25, y + h - b + 0.25))
     if corners:
         for quad, (cx0, cy0, cx1, cy1) in (("tl", (x + o, y + o, x + l - i, y + t - i)),
                                            ("tr", (x + w - r + i, y + o, x + w - o, y + t - i)),
@@ -1191,8 +1315,7 @@ def _compose_side(cv, run, seed, motif, k, density=None, motif_min=5.0):
     strip(cv, run, (seed, "a"), 0, half, flip=True, ground="dots", start_side=1, density=density)
     strip(cv, run, (seed, "b"), 0, half, flip=False, ground="dots", start_side=-1, density=density)
     m = Mapped(cv, lambda u, v: run.p(u, v))
-    for _ in range(int(msz * H * density)):
-        m.dot(rng.uniform(half + 0.2, half + msz - 0.2), rng.uniform(-H / 2 + 0.3, H / 2 - 0.3))
+
     cx, cy = run.p(L / 2, 0)
     ox, oy = run.p(L / 2, -H / 2)  # inner edge of the lane
     ux, uy = _norm(ox - cx, oy - cy)
@@ -1269,12 +1392,12 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind, lit=False,
     Rp = end_outline(False)
     outline = [(x + l, y)] + [(px, py) for px, py in Lp[::-1]][::-1][:0] + []
     outline = [(x + l, y), (x + w - r, y)] + Rp + [(x + w - r, y + h), (x + l, y + h)] + Lp[::-1]
-    cv.poly("K", outline)
+    cv.poly("M", outline)
     cv.poly("C05", outline)
     if hasattr(cv, "clip") and cv.clip is None:
         cv.clip = "M" + _pts(outline) + "Z"
     # stipple, only inside the outline
-    n = 0 if lit else int((l + r) * h * density)
+    n = 0
     for _ in range(n):
         px = rng.uniform(0, l + r)
         px = x + px if px < l else x + w - (px - l)
@@ -1322,7 +1445,7 @@ def _band_with_ends(cv, x, y, w, h, ins, seed, centre, density, kind, lit=False,
     top = getattr(cv, "over", cv.add)
     top("W", _rect_d(x + l, y + t, x + w - r, y + h - b))
     top("S1", _rect_d(x + l - 1.5, y + t - 1.5, x + w - r + 1.5, y + h - b + 1.5))
-    top("R1", _rect_d(x + l - 0.5, y + t - 0.5, x + w - r + 0.5, y + h - b + 0.5))
+    top("R05", _rect_d(x + l - 0.25, y + t - 0.25, x + w - r + 0.25, y + h - b + 0.25))
     if lit:
         top("R05", _rect_d(x + l - 2.75, y + t - 2.75, x + w - r + 2.75, y + h - b + 2.75))
     cv.line("S1", [(x + l * 0.6, y + 1), (x + w - r * 0.6, y + 1)])
@@ -1337,7 +1460,7 @@ def ring(cv, cx, cy, rx, ry, band, seed, density=2.0):
     rng = rng_for("ring", seed)
     outer = [run.p(run.L * i / n, band / 2) for i in range(n + 1)]
     inner_ = [run.p(run.L * i / n, -band / 2) for i in range(n + 1)]
-    cv.add("K", "M" + _pts(outer) + "ZM" + _pts(inner_[::-1]) + "Z")
+    cv.add("M", "M" + _pts(outer) + "ZM" + _pts(inner_[::-1]) + "Z")
     inner = Run(pts, band - 5.5)
     strip(cv, inner, (seed, "ring-a"), 0, run.L / 2, flip=True, ground="dots", density=density)
     strip(cv, inner, (seed, "ring-b"), 0, run.L / 2, ground="dots", start_side=-1, density=density)
@@ -1355,3 +1478,153 @@ def fill_rect(cv, x, y, w, h, seed, row=None, density=2.0):
         run = Run([(x, yy), (x + w, yy)], rh)
         strip(cv, run, (seed, "row", i), flip=bool(i % 2), start_side=1 if i % 2 else -1, density=density)
     return cv
+
+
+# ---------------------------------------------------------------- plaques with scrolled ears (small frames)
+
+def _ear_outline(kind, e, h, n=28):
+    """Outline of one ear in local coords: u from 0 (the slot side) to e (the tip), v in [-h/2, h/2]."""
+    pts = []
+    for j in range(n + 1):
+        q = j / n
+        v = -h / 2 + h * q
+        d = abs(q - 0.5) * 2  # 1 at top and bottom, 0 at the middle
+        if kind == "point":      # ogee point
+            u = e * (1.0 - 0.78 * d ** 1.35)
+        elif kind == "tail":     # swallow-tail: notched in the middle
+            u = e * (0.55 + 0.45 * d ** 0.7)
+        elif kind == "scroll":   # twin lobes with a waist
+            u = e * (0.72 + 0.28 * math.sin(math.pi * d) ** 0.8 - 0.25 * d ** 6)
+        elif kind == "round":    # half round cap
+            u = e * math.sqrt(max(0.0, 1 - d * d)) * 0.95 + e * 0.05
+        else:                    # 'roll': rounded tab with a shallow notch
+            u = e * (0.86 + 0.14 * math.cos(q * TAU * 2) * 0.4 - 0.5 * d ** 4)
+        pts.append((max(0.0, u), v))
+    return [(0.0, h / 2)] + pts[::-1] + [(0.0, -h / 2)]
+
+
+def ear(cv, e, h, rng, kind="roll", lit=False):
+    """Compose the scroll cluster in one ear (local coords, u outward from the slot, v down): a dominant
+    volute, a subordinate scroll 2-3x smaller winding against it, an acanthus leaf springing from the
+    volute's foot back toward the slot, and leaves grown into what ground is left."""
+    hb = h / 2
+    occ = Occ(-1, -hb, e + 1, hb, cell=0.5)
+    m = Mapped(cv.cv, cv.f, occ) if isinstance(cv, Mapped) else Mapped(cv, lambda u, v: (u, v), occ)
+    outline = _ear_outline(kind, e, h)
+    # cells outside the ear count as occupied so leaves stay inside
+    for j in range(occ.ny):
+        y = occ.y0 + (j + 0.5) * occ.c
+        for i in range(occ.nx):
+            x = occ.x0 + (i + 0.5) * occ.c
+            if not _inside(outline, x, y, 0.9):
+                occ.g[j][i] = 1
+    anchors = []
+    scrolls = []
+    # a tall ear (the banner's tails) carries two clusters, mirrored; a short one carries one
+    if h > 2.1 * e:
+        halves = [(-h / 4, h / 4, 1), (h / 4, h / 4, -1)]
+    else:
+        halves = [(0.0, hb, rng.choice((-1, 1)))]
+    for v0, hh, up in halves:
+        R = min(e * 0.4, hh * 0.82)
+        cu = e * (0.48 if len(halves) == 1 else 0.56)
+        cv_ = v0 + up * min(hh * 0.12, max(0.0, hh - R - 0.6))
+        big = Scroll(cu, cv_, R, 1 if up > 0 else -1, math.atan2(hh, -e) if up > 0 else math.atan2(-hh, -e),
+                     rng.uniform(1.15, 1.3), 0.18)
+        r2 = R * rng.uniform(0.38, 0.48)
+        su, sv = min(e - r2 - 0.8, cu + R * 0.55), v0 - up * (hh - r2 - 0.8)
+        small = Scroll(su, sv, r2, -big.dirn, math.atan2(cv_ - sv, cu - su), rng.uniform(1.1, 1.3), 0.22)
+        p3, t3 = big.start(), big.tangent()
+        sp = _stem(m, (0.0, v0 - up * hh * 0.25), (1.0, up * 0.3), p3, t3, max(1.2, R * 0.28))
+        for q in range(1, len(sp) - 1):
+            tx, ty = _norm(sp[q + 1][0] - sp[q - 1][0], sp[q + 1][1] - sp[q - 1][1])
+            anchors.append((sp[q][0], sp[q][1], tx, ty))
+        bi = len(sp) // 2
+        _stem(m, sp[bi], _norm(sp[bi + 1][0] - sp[bi - 1][0], sp[bi + 1][1] - sp[bi - 1][1]), small.start(),
+              small.tangent(), max(1.0, r2 * 0.4), k=0.5)
+        if hh * 2 >= 14:
+            acanthus(m, _curve(sp[1], math.atan2(up * 1.0, 0.3), min(hh * 0.9, e * 0.9), -up * 1.6, 12, -up * 0.5),
+                     max(2.2, R * 0.55), up, rng, lobes=2)
+        scrolls += [small, big]
+    base = _base(cv)
+    i0 = len(base.ops)
+    for sc in scrolls:
+        draw_scroll(m, sc, rng)
+    for sc in scrolls:
+        for f in (0.1, 0.3, 0.5, 0.7):
+            p = sc.point(f)
+            t = sc.tangent_at(f)
+            anchors.append((p[0], p[1], t[0], t[1]))
+    i1 = len(base.ops)
+    _fill_gaps(m, e, h, rng, scrolls, anchors)
+    chunk = base.ops[i1:]
+    del base.ops[i1:]
+    base.ops[i0:i0] = chunk
+    if lit:
+        bud(m, e * 0.9, 0.0, 1.2)
+    return outline
+
+
+def plaque(cv, x, y, w, h, ears, t, seed, kind="roll", lit=False, centre=None):
+    """A small frame whose scroll lives in its ears: left and right ears of width ears = (el, er) hold the
+    composed scroll clusters; the long edges are crisp double inlay lines of width t (no thin scroll band).
+    The slot between is white.  Outside the outline stays transparent."""
+    el, er = ears
+    kl, kr = (kind, kind) if isinstance(kind, str) else kind
+    rng = rng_for("plaque", seed)
+    # outline of the whole plaque, clockwise from top-left of the body
+    L = [(x + el - u, y + h / 2 + v) for u, v in _ear_outline(kl, el, h)]
+    Rr = [(x + w - er + u, y + h / 2 + v) for u, v in _ear_outline(kr, er, h)]
+    outline = [(x + el, y), (x + w - er, y)] + Rr[::-1] + [(x + w - er, y + h), (x + el, y + h)] + L
+    # Rr runs from (0, +h/2) to (0, -h/2) in local order: reversed gives top to bottom on the right
+    if hasattr(cv, "clip") and cv.clip is None:
+        cv.clip = "M" + _pts(outline) + "Z"
+    cv.poly("M", outline)
+    for side, e, kind in ((-1, el, kl), (1, er, kr)):
+        X = x + el if side < 0 else x + w - er
+        f = (lambda u, v, X=X, s=side: (X + s * u, y + h / 2 + v))
+        ear(Mapped(cv, f), e, h, rng_for("ear", seed, side), kind=kind, lit=lit)
+    top = getattr(cv, "over", cv.add)
+    cv.slot = (x + el, y + t, w - el - er, h - 2 * t)
+    if t >= 10:
+        # a wide plaque (the banner): head and foot carry true scroll lanes between the ears
+        o, i_ = 1.5, 2.0
+        for k, name in ((0, "top"), (2, "bottom")):
+            if name == "top":
+                y0, y1 = y + o, y + t - i_
+                pts = [(x + el, (y0 + y1) / 2), (x + w - er, (y0 + y1) / 2)]
+            else:
+                y0, y1 = y + h - t + i_, y + h - o
+                pts = [(x + w - er, (y0 + y1) / 2), (x + el, (y0 + y1) / 2)]
+            _compose_side(cv, Run(pts, y1 - y0), (seed, name), (centre or (None,) * 4)[k], k, motif_min=6)
+        top("W", _rect_d(x + el, y + t, x + w - er, y + h - t))
+        top("R05", "M%s %sH%s" % (_f(x + el), _f(y + t - i_ + 0.25), _f(x + w - er)) +
+            "M%s %sH%s" % (_f(x + el), _f(y + h - t + i_ - 0.25), _f(x + w - er)))
+    else:
+        # long edges: no thin scroll, just a double inlay (black edge, white fillet, black slot rule)
+        top("W", _rect_d(x + el, y, x + w - er, y + h))
+    top("C1", "M" + _pts(_inset(outline, 0.5)) + "Z")
+    top("S1", "M" + _pts(_inset(outline, 1.75)) + "Z")
+    top("S1", _rect_d(x + el - 1.5, y + t - 1.5, x + w - er + 1.5, y + h - t + 1.5))
+    top("R05", _rect_d(x + el - 0.25, y + t - 0.25, x + w - er + 0.25, y + h - t + 0.25))
+    if lit:
+        top("R05", _rect_d(x + el - 2.75, y + t - 2.75, x + w - er + 2.75, y + h - t + 2.75))
+    return outline
+
+
+def _inset(poly, d):
+    """Offset a closed polygon inward by d (simple vertex-normal offset; fine for these smooth outlines)."""
+    n = len(poly)
+    area = sum(poly[i][0] * poly[(i + 1) % n][1] - poly[(i + 1) % n][0] * poly[i][1] for i in range(n))
+    sgn = 1 if area > 0 else -1
+    out = []
+    for i in range(n):
+        ax, ay = poly[i - 1]
+        bx, by = poly[i]
+        cx, cy = poly[(i + 1) % n]
+        t1 = _norm(bx - ax, by - ay)
+        t2 = _norm(cx - bx, cy - by)
+        nx, ny = -(t1[1] + t2[1]), t1[0] + t2[0]
+        nx, ny = _norm(nx, ny)
+        out.append((bx + sgn * nx * d, by + sgn * ny * d))
+    return out

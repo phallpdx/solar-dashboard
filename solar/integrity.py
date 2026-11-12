@@ -458,8 +458,9 @@ def _outcome(result):
 def _plain(v):
     """A short plain line for the vote: the clerk's text without the procedural wrapper."""
     t = v.get("desc") or v.get("question") or ""
-    t = re.sub(r"^(Motion to Invoke Cloture|Cloture Motion|Motion to Proceed)(:| to)\s*", "", t, flags=re.I)
-    t = re.sub(r"^(Motion to Proceed to )?[HS]\.\s?R\.?\s?\d+;\s*", "", t)
+    # "Motion to Invoke Cloture on the Motion to Proceed to H.R. 9340; A bill to …" -> "amend …"
+    t = re.sub(r"^(?:(?:Motion to Invoke Cloture|Cloture Motion|Cloture|Motion to Proceed|Motion to Table)\b(?: on)?(?: the)?\s*:?\s*(?:to\s*)?)+", "", t, flags=re.I)
+    t = re.sub(r"^(?:Motion to Proceed\s*(?:to|:)\s*)?[HS]\.?\s?(?:R|J|RES|Res)?\.?\s?(?:Res\.?\s?)?\d+\s*[;:]\s*", "", t)
     t = re.sub(r"^A (bill|joint resolution|resolution) to\s+", "", t, flags=re.I)
     t = re.sub(r"\bthe Internal Revenue Code of 1986 to\s+", "the tax code to ", t)
     t = re.sub(r"^Confirmation:\s*", "confirming ", t)

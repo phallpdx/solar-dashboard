@@ -192,12 +192,21 @@ def run(out, date_iso, exe=None):
         if re.search(r"-s\d+\.png$", f):
             os.remove(f)
     try:
-        made = _pass(pages, out, od, base, date_iso, exe)
+        nw = _nworkers()
+        if nw > 1 and len(pages) > 1:   # pages are independent: each worker measures and engraves its share with its own browser
+            import multiprocessing as _mp
+            from concurrent.futures import ProcessPoolExecutor
+            heavy = sorted(pages, key=lambda s_: -os.path.getsize(os.path.join(PLATES, s_ + ".py")))
+            with ProcessPoolExecutor(max_workers=nw, mp_context=_mp.get_context("spawn")) as px:
+                made = sum(px.map(_pass_chunk, [(heavy[i::nw], out, od, base, date_iso, exe) for i in range(nw) if heavy[i::nw]]))
+        else:
+            made = _pass(pages, out, od, base, date_iso, exe)
         print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
         t1 = time.time()
         try:
             del SPACE[:]
             nf = _fills(pages, out, od, base, date_iso, exe)
+            SPACE.sort(key=lambda e: (e["page"], e["sheet"]))   # measured in parallel: a stable order
             with open(os.path.join(out, "space-map.json"), "w") as f:
                 json.dump(dict(date=date_iso, sheet=[618, 714], note="CSS px; rooms are open rectangles after panels and plates, "
                                "kind gap = between panels, room = elsewhere (foot of the sheet), strip = thin bands", sheets=SPACE), f, indent=1)
@@ -225,6 +234,16 @@ class _QuietServer(_hs.ThreadingHTTPServer):
 class _Quiet(_hs.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
+
+
+def _nworkers():
+    return max(1, int(os.environ.get("KINDLE_FIELD_WORKERS") or (4 if os.environ.get("CI") else min(8, os.cpu_count() or 1))))
+
+
+def _pass_chunk(job):
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    return _pass(*job)
 
 
 def _pass(pages, out, od, base, date_iso, exe):
@@ -485,28 +504,18 @@ SPACE = []   # filled by _fills; written to orn/space-map.json
 
 
 def _fills(pages, out, od, base, date_iso, exe):
-    from playwright.sync_api import sync_playwright
     import zlib
     from concurrent.futures import ProcessPoolExecutor
     made, jobs, fmaps = 0, [], {}
-    nw = int(os.environ.get("KINDLE_FIELD_WORKERS") or (4 if os.environ.get("CI") else min(8, os.cpu_count() or 1)))
+    nw = _nworkers()
     import multiprocessing as _mp
     pool = ProcessPoolExecutor(max_workers=max(1, nw), mp_context=_mp.get_context("spawn"))   # a field is 1-3 s a sheet: drawn in parallel processes
-    with sync_playwright() as pw:
-        br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
-        for slug in pages:
-            cx = br.new_context(viewport={"width": 618, "height": 714}, has_touch=True)
-            pg = cx.new_page()
-            fp = os.path.join(out, slug + ".html")
-            try:
-                pg.goto(base + slug + ".html", wait_until="load")
-                pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
-                res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
-                title = pg.evaluate("(() => { const e = document.querySelector('#kmain h2, #kmain .kftitle'); return e ? e.textContent.trim().replace(/\\s+/g, ' ') : document.title; })()")
-            except Exception as e:  # noqa: BLE001
-                print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
-                res = None
-            cx.close()
+    from concurrent.futures import as_completed
+    if True:   # each page is measured in a worker too (its own browser): the fields are queued as pages come back
+        meas = {pool.submit(_fill_measure, (slug, base, exe)): slug for slug in pages}
+        for fu in as_completed(meas):
+            slug = meas[fu]
+            res, title = fu.result()
             fmap = []
             sec = slug.split("-")[0]
             for r in res or []:   # the space map: every open room on the sheet, for the studio to draw bespoke art to
@@ -539,7 +548,6 @@ def _fills(pages, out, od, base, date_iso, exe):
                 enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
                 fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
             fmaps[slug] = fmap
-        br.close()
     done = {k: f.result() for k, f in jobs}
     pool.shutdown()
     for f in glob.glob(os.path.join(od, "plate-*-m.svg")):   # the devices are in the fields now
@@ -584,13 +592,14 @@ def _motif(name):
 _WPG = []
 
 
-def _worker_page(exe):
-    """One browser per worker process, kept for all its sheets: the field is drawn and rasterised in the worker."""
-    if not _WPG:
+def _worker_browser(exe):
+    """One playwright and one browser per worker process (sync playwright allows one per process), kept for
+    all its jobs: page measures and field rasters."""
+    if not _WBR:
         from playwright.sync_api import sync_playwright
         pw = sync_playwright().start()
         br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
-        _WPG.append(br.new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
+        _WBR.append(br)
         import atexit
         from multiprocessing import util as _mu
 
@@ -602,6 +611,16 @@ def _worker_page(exe):
                 pass
         atexit.register(_close)
         _mu.Finalize(None, _close, exitpriority=10)
+    return _WBR[0]
+
+
+_WBR = []
+
+
+def _worker_page(exe):
+    """The worker's 2x page: the field is drawn and rasterised in the worker."""
+    if not _WPG:
+        _WPG.append(_worker_browser(exe).new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
     return _WPG[0]
 
 
@@ -643,6 +662,25 @@ def _field_png(im):
         if len(out) <= FIELD_MAX:
             break
     return out
+
+
+def _fill_measure(job):
+    """One page's sheets, measured as the pager lays them out (window.KLAB), in a worker's own browser."""
+    slug, base, exe = job
+    try:
+        cx = _worker_browser(exe).new_context(viewport={"width": 618, "height": 714}, has_touch=True)
+        try:
+            pg = cx.new_page()
+            pg.goto(base + slug + ".html", wait_until="load")
+            pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+            res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
+            title = pg.evaluate("(() => { const e = document.querySelector('#kmain h2, #kmain .kftitle'); return e ? e.textContent.trim().replace(/\\s+/g, ' ') : document.title; })()")
+        finally:
+            cx.close()
+        return res, title
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
+        return None, ""
 
 
 def _field_svg(job):

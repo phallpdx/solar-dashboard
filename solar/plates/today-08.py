@@ -359,8 +359,12 @@ def _day_glyph(cv, cx, cy, r, cond, kwh):
     for i in range(12):
         a = TAU * i / 12
         cv.hair([(sx + sr * 1.3 * math.cos(a), sy + sr * 1.3 * math.sin(a)), (sx + sr * 1.75 * math.cos(a), sy + sr * 1.75 * math.sin(a))])
-    cv.obj([_circ(sx, sy, sr, 18)], .5)
-    cv.hair(_hrule(_circ(sx, sy, sr, 18), 1.5, .2) if sr > 2 else [])
+    disc = _circ(sx, sy, sr, 18)
+    if sr > 2:
+        # the sun as a lit ball: cuts swelling into its lower right
+        bu_form(cv, disc, bu_sph(sx, sy, sr, sr, .05, .7), 0., 1.5, 0, None, .5)
+    else:
+        cv.obj([disc], .5)
     # cloud
     if "clear" not in c and "sun" not in c:
         cl = []
@@ -368,8 +372,8 @@ def _day_glyph(cv, cx, cy, r, cond, kwh):
             cl.append((cx + px * r, cy + py * r, pr * r))
         for px, py, pr in cl:
             q = _circ(px, py, pr, 18)
-            cv.obj([q], .5)
-            cv.hair([l for l in _hrule(q, 1.5, .5) if l[0][1] > py])
+            # each puff modelled: paper at its lit crown, cuts thickening into its underside
+            bu_form(cv, q, lambda x, y, px=px, py=py, pr=pr: .05 + .8 * max(0., (y - py + pr * .35) / (pr * 1.35)) ** 1.3, 0., 1.5, 0, None, .5)
         if wet:
             cv.obj([], 0)
             nn = 3 if "drizzle" in c else 4
@@ -1971,9 +1975,12 @@ def _dog_umbrella(cv, cx, cy, r):
 def _week_ribbon(cv, X, Y, W, H, wk):
     """The headpiece: the ribbon's face ruled as sky, the seven days set along it as beaded
     roundels joined by a running line, the wettest day given over to the dog's umbrella."""
-    kk_sky(cv, X, Y, W, Y + H, 0, 0)
     n = len(wk)
     cy = Y + H * .5
+    # the ribbon's face is a shallow carved cove: sky cuts swelling toward both edges where the
+    # face turns away, opening to paper along its lit middle
+    hh = max(1., H * .5)
+    bu_sky(cv, X - 2, Y, W + 4, H, lambda x, y: .2 + .42 * (abs(y - cy - hh * .1) / hh) ** 1.6, seed=5, pitch=2.)
     step = W * .92 / n
     r = max(6., min(H * .36, step * .36))
     wi = _wettest(wk)

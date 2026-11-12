@@ -12,12 +12,14 @@ import os
 import re
 import sys
 import time
+import zlib
 
 from . import plate_slots
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PLATES = os.path.join(HERE, "plates")
 MIN_H = 40   # below this a sheet gets no plate
+MIN_SCENE = 90   # a planned plate is never set shorter than this (or than its own planned height, if smaller)
 
 MEASURE = """async (n0) => {
   const wait = (f, ms) => new Promise(r => { const t0 = Date.now(); (function k() { if (f() || Date.now() - t0 > ms) r(); else setTimeout(k, 30); })(); });
@@ -190,12 +192,21 @@ def run(out, date_iso, exe=None):
         if re.search(r"-s\d+\.png$", f):
             os.remove(f)
     try:
-        made = _pass(pages, out, od, base, date_iso, exe)
+        nw = _nworkers()
+        if nw > 1 and len(pages) > 1:   # pages are independent: each worker measures and engraves its share with its own browser
+            import multiprocessing as _mp
+            from concurrent.futures import ProcessPoolExecutor
+            heavy = sorted(pages, key=lambda s_: -os.path.getsize(os.path.join(PLATES, s_ + ".py")))
+            with ProcessPoolExecutor(max_workers=nw, mp_context=_mp.get_context("spawn")) as px:
+                made = sum(px.map(_pass_chunk, [(heavy[i::nw], out, od, base, date_iso, exe) for i in range(nw) if heavy[i::nw]]))
+        else:
+            made = _pass(pages, out, od, base, date_iso, exe)
         print(f"kindle_plates: {made} plates on {len(pages)} pages in {time.time() - t0:.1f}s")
         t1 = time.time()
         try:
             del SPACE[:]
             nf = _fills(pages, out, od, base, date_iso, exe)
+            SPACE.sort(key=lambda e: (e["page"], e["sheet"]))   # measured in parallel: a stable order
             with open(os.path.join(out, "space-map.json"), "w") as f:
                 json.dump(dict(date=date_iso, sheet=[618, 714], note="CSS px; rooms are open rectangles after panels and plates, "
                                "kind gap = between panels, room = elsewhere (foot of the sheet), strip = thin bands", sheets=SPACE), f, indent=1)
@@ -223,6 +234,16 @@ class _QuietServer(_hs.ThreadingHTTPServer):
 class _Quiet(_hs.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
+
+
+def _nworkers():
+    return max(1, int(os.environ.get("KINDLE_FIELD_WORKERS") or (4 if os.environ.get("CI") else min(8, os.cpu_count() or 1))))
+
+
+def _pass_chunk(job):
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    return _pass(*job)
 
 
 def _pass(pages, out, od, base, date_iso, exe):
@@ -264,10 +285,14 @@ def _pass(pages, out, od, base, date_iso, exe):
                     # in-flow art never reflows the data: no extra sheet and no tighter type than the page had
                     # without it; else the slot steps down (100, 80, 65 %) and is dropped if it still does not fit
                     base0, n0, ok = res, len(res["rooms"]), False
-                    for sc in ((1., .8, .65, .5) if any(sl["form"] == "front" for _, sl in flow) else (1., .8, .65)):
-                        trial = [dict(sl, w=int(sl["w"] * (sc if sl["form"] == "front" else 1)), h=int(sl["h"] * sc)) for sl in slots]
-                        if any(sl["form"] == "headpiece" and sl["h"] < 60 for sl in trial):   # a headpiece band is 60px or none
-                            continue
+                    for sc in (1., .8, .65, .5):
+                        # a slot keeps its shape: width and height step down together, never under MIN_SCENE
+                        # tall (a squashed band cannot read); a full-width headpiece does not step down at all
+                        trial = [sl if (k, sl) not in flow else
+                                 dict(sl, w=int(sl["w"] * (1 if sl["form"] == "headpiece" else sc)), h=int(sl["h"] * (1 if sl["form"] == "headpiece" else sc)))
+                                 for k, sl in enumerate(slots)]
+                        if sc < 1 and any(sl["form"] == "headpiece" or sl["h"] < min(MIN_SCENE, slots[k]["h"]) for k, sl in flow):
+                            break
                         for k, sl in enumerate(trial):   # a stand-in at each slot's path: a missing image lays out unlike the plate
                             with open(os.path.join(od, f"plate-{slug}-s{k}.svg"), "w") as f:
                                 f.write(f'<svg xmlns="http://www.w3.org/2000/svg" width="{sl["w"]}" height="{sl["h"]}"/>')
@@ -278,8 +303,9 @@ def _pass(pages, out, od, base, date_iso, exe):
                             slots, res, ok = trial, r2, True
                             flow = [(k, sl) for k, sl in enumerate(slots) if sl["pos"] not in ("tail", "margin")]
                             break
-                    if not ok:
-                        print(f"kindle_plates: {slug}: no room for its {flow[0][1]['form']} without reflowing the page; dropped", file=sys.stderr)
+                    if not ok:   # no room in the flow: the plate moves to a sheet with room after its last panel
+                        print(f"kindle_plates: {slug}: no room for its {flow[0][1]['form']} in the flow; set in a sheet's open room instead", file=sys.stderr)
+                        tails = tails + [dict(sl, pos="tail", sheet=None) for _, sl in flow]
                         flow, res = [], meas(src_orig)
             except Exception as e:  # noqa: BLE001
                 print(f"kindle_plates: {slug}: measure failed ({e!r})", file=sys.stderr)
@@ -309,15 +335,38 @@ def _pass(pages, out, od, base, date_iso, exe):
                     print(f"kindle_plates: {slug}: device failed ({e!r})", file=sys.stderr)
             kmap = []
             nsh = len(res["rooms"])
+            place = {}   # sheet -> (room, spec): each planned tail art in a room that holds it unsquashed
+
+            def seat(spec):
+                fit = []
+                for r in res["rooms"]:
+                    sc = min(1., r["h"] / spec["h"], r["w"] / spec["w"])   # never enlarged; shrunk only whole
+                    if r["sheet"] in place or spec["h"] * sc < min(MIN_SCENE, spec["h"]) or r["h"] < MIN_H:
+                        continue
+                    own = spec.get("sheet") is not None and (spec["sheet"] % nsh) == r["sheet"]
+                    fit.append((not own, sc < 1, -r["sheet"], r, sc))   # its own sheet, then whole, then the later sheet
+                if not fit:
+                    return False
+                _, _, _, r, sc = min(fit, key=lambda f: f[:3])
+                place[r["sheet"]] = (dict(r, w=int(spec["w"] * sc), h=int(spec["h"] * sc)), spec)
+                return True
+            for spec in tails:
+                if seat(spec):
+                    continue
+                if spec["form"] not in ("tailpiece", "device"):   # else the plan's smaller form, at its own size
+                    w_, h_ = plate_slots._size("tailpiece", .08, spec["shape"])
+                    if seat(dict(spec, form="tailpiece", w=w_, h=h_)):
+                        print(f"kindle_plates: {slug}: its {spec['form']} set as a tailpiece (no open room holds it unsquashed)", file=sys.stderr)
+                        continue
+                print(f"kindle_plates: {slug}: no open room holds its {spec['form']} unsquashed; left out", file=sys.stderr)
             for r in res["rooms"]:
                 if r["h"] < MIN_H:
                     continue
                 spec = None
-                if tails:   # a planned tailpiece, vignette or plate: its own size and shape, on its own sheet
-                    spec = next((t for t in tails if (t.get("sheet", -1) % nsh) == r["sheet"]), None)
-                    if not spec:
+                if tails:   # a planned tailpiece, vignette or plate: its own size and shape, in a room that holds it
+                    if r["sheet"] not in place:
                         continue
-                    r = dict(r, w=min(r["w"], spec["w"]), h=min(r["h"], spec["h"]))
+                    r, spec = place[r["sheet"]]
                 elif planned:
                     continue    # planned art only: never a plate cut to the leftover room
                 ctx = dict(res["ctx"], slug=slug, date=date_iso, sheet=r["sheet"])
@@ -455,28 +504,18 @@ SPACE = []   # filled by _fills; written to orn/space-map.json
 
 
 def _fills(pages, out, od, base, date_iso, exe):
-    from playwright.sync_api import sync_playwright
     import zlib
     from concurrent.futures import ProcessPoolExecutor
     made, jobs, fmaps = 0, [], {}
-    nw = int(os.environ.get("KINDLE_FIELD_WORKERS") or (4 if os.environ.get("CI") else min(8, os.cpu_count() or 1)))
+    nw = _nworkers()
     import multiprocessing as _mp
     pool = ProcessPoolExecutor(max_workers=max(1, nw), mp_context=_mp.get_context("spawn"))   # a field is 1-3 s a sheet: drawn in parallel processes
-    with sync_playwright() as pw:
-        br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
-        for slug in pages:
-            cx = br.new_context(viewport={"width": 618, "height": 714}, has_touch=True)
-            pg = cx.new_page()
-            fp = os.path.join(out, slug + ".html")
-            try:
-                pg.goto(base + slug + ".html", wait_until="load")
-                pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
-                res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
-                title = pg.evaluate("(() => { const e = document.querySelector('#kmain h2, #kmain .kftitle'); return e ? e.textContent.trim().replace(/\\s+/g, ' ') : document.title; })()")
-            except Exception as e:  # noqa: BLE001
-                print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
-                res = None
-            cx.close()
+    from concurrent.futures import as_completed
+    if True:   # each page is measured in a worker too (its own browser): the fields are queued as pages come back
+        meas = {pool.submit(_fill_measure, (slug, base, exe)): slug for slug in pages}
+        for fu in as_completed(meas):
+            slug = meas[fu]
+            res, title = fu.result()
             fmap = []
             sec = slug.split("-")[0]
             for r in res or []:   # the space map: every open room on the sheet, for the studio to draw bespoke art to
@@ -498,13 +537,21 @@ def _fills(pages, out, od, base, date_iso, exe):
                     ob = white and r["sheet"] < r["n"] - 1 and y + h >= vb - 1
                     edges.append((x, y, w, h, ot, ob))
                 seed = zlib.crc32(f"{slug}/{r['sheet']}".encode()) % 100003   # no date: an unchanged sheet reuses its cached field
-                jobs.append(((slug, r["sheet"]), pool.submit(_field_svg, (slug, r["sheet"], edges, seed, MOTIF_OF(slug), od, exe))))   # drawn while the browser measures on
+                dev = None
+                dp = os.path.join(od, f"plate-{slug}-m.svg")
+                if r["sheet"] == 0 and os.path.exists(dp):   # the plan's marginal device: a roundel on the frame band, beside the widest panel gap
+                    ob = sorted(r["o"], key=lambda q: q[1])
+                    gaps = [(b2[1] - (a2[1] + a2[3]), a2[1] + a2[3] + (b2[1] - (a2[1] + a2[3])) / 2) for a2, b2 in zip(ob, ob[1:])]
+                    gy = max(gaps)[1] if gaps and max(gaps)[0] > 0 else (vt + vb) / 2
+                    dev = (open(dp).read(), 1, int(min(max(gy - 19, FY0), FY1 - 38)))
+                jobs.append(((slug, r["sheet"]), pool.submit(_field_svg, (slug, r["sheet"], edges, seed, MOTIF_OF(slug), od, exe, dev))))   # drawn while the browser measures on
                 enc = lambda L: " ".join(",".join(str(v) for v in q) for q in L)
                 fmap.append([r["sheet"], enc(r["o"]), enc(r["d"]), enc(r["p"])])
             fmaps[slug] = fmap
-        br.close()
     done = {k: f.result() for k, f in jobs}
     pool.shutdown()
+    for f in glob.glob(os.path.join(od, "plate-*-m.svg")):   # the devices are in the fields now
+        os.remove(f)
     for slug, fmap in fmaps.items():
         fmap = [e for e in fmap if done.get((slug, e[0]))]
         fp = os.path.join(out, slug + ".html")
@@ -519,21 +566,40 @@ def _fills(pages, out, od, base, date_iso, exe):
 
 
 def MOTIF_OF(slug):
-    """The centre motif of a section's field (the studio's set until each section has its own)."""
-    import zlib
-    return ("fleuron", "shell", "rosette")[zlib.crc32(slug.split("-")[0].encode()) % 3]
+    """The centre motif of a section's field, by name (resolved in the worker by _motif): the section's own
+    when the studio's field module carries it (SECTION_MOTIFS[section], a callable(cv, x, y, size)), else
+    one of its stock set, fixed per section."""
+    sec = slug.split("-")[0]
+    if _section_motif(sec):
+        return "sec:" + sec
+    return ("fleuron", "shell", "rosette")[zlib.crc32(sec.encode()) % 3]
+
+
+def _section_motif(sec):
+    try:
+        from .frames import field as FF
+    except Exception:  # noqa: BLE001
+        return None
+    m = getattr(FF, "SECTION_MOTIFS", None) or getattr(FF.scroll, "SECTION_MOTIFS", None) or {}
+    f = m.get(sec)
+    return f if callable(f) else None
+
+
+def _motif(name):
+    return (_section_motif(name[4:]) or "fleuron") if name.startswith("sec:") else name
 
 
 _WPG = []
 
 
-def _worker_page(exe):
-    """One browser per worker process, kept for all its sheets: the field is drawn and rasterised in the worker."""
-    if not _WPG:
+def _worker_browser(exe):
+    """One playwright and one browser per worker process (sync playwright allows one per process), kept for
+    all its jobs: page measures and field rasters."""
+    if not _WBR:
         from playwright.sync_api import sync_playwright
         pw = sync_playwright().start()
         br = pw.chromium.launch(executable_path=exe or os.environ.get("KINDLE_CHROMIUM") or None)
-        _WPG.append(br.new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
+        _WBR.append(br)
         import atexit
         from multiprocessing import util as _mu
 
@@ -545,34 +611,113 @@ def _worker_page(exe):
                 pass
         atexit.register(_close)
         _mu.Finalize(None, _close, exitpriority=10)
+    return _WBR[0]
+
+
+_WBR = []
+
+
+def _worker_page(exe):
+    """The worker's 2x page: the field is drawn and rasterised in the worker."""
+    if not _WPG:
+        _WPG.append(_worker_browser(exe).new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
     return _WPG[0]
+
+
+FIELD_MAX = 100 * 1024
+FIELD_GREYS = ((0, 136, 204, 255), (0, 204, 255), (0, 255))   # tried in turn until the sheet fits FIELD_MAX
+
+
+def _field_png(im):
+    """The field as the smallest-level PNG that fits: 4 greys (2-bit), else 3 greys (2-bit), else 1 bit. Studio
+    greys map to #ccc/#bbb -> light, #aaa/#888 -> mid. Rows unfiltered with Z_FILTERED deflate: on this art that
+    beats PIL's adaptive filters by ~12%."""
+    import numpy as np
+    import struct
+    v = np.asarray(im.convert("L"))
+    h, w = v.shape
+    out = b""
+    for pal in FIELD_GREYS:
+        if len(pal) == 4:
+            idx = np.select([v < 68, v <= 170, v < 230], [0, 1, 2], 3)
+        elif len(pal) == 3:
+            idx = np.select([v < 102, v < 230], [0, 1], 2)
+        else:
+            idx = (v >= 128).astype(np.uint8)
+        idx = idx.astype(np.uint8)
+        bits = 1 if len(pal) == 2 else 2
+        per = 8 // bits
+        a = np.pad(idx, ((0, 0), (0, (-w) % per)))
+        packed = np.zeros((h, a.shape[1] // per), np.uint8)
+        for k in range(per):
+            packed |= a[:, k::per] << (8 - bits * (k + 1))
+        raw = np.concatenate([np.zeros((h, 1), np.uint8), packed], axis=1).tobytes()
+        c = zlib.compressobj(9, zlib.DEFLATED, 15, 9, zlib.Z_FILTERED)
+        z = c.compress(raw) + c.flush()
+
+        def chunk(t, d):
+            return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+        out = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, bits, 3, 0, 0, 0))
+               + chunk(b"PLTE", b"".join(bytes((g, g, g)) for g in pal)) + chunk(b"IDAT", z) + chunk(b"IEND", b""))
+        if len(out) <= FIELD_MAX:
+            break
+    return out
+
+
+def _fill_measure(job):
+    """One page's sheets, measured as the pager lays them out (window.KLAB), in a worker's own browser."""
+    slug, base, exe = job
+    try:
+        cx = _worker_browser(exe).new_context(viewport={"width": 618, "height": 714}, has_touch=True)
+        try:
+            pg = cx.new_page()
+            pg.goto(base + slug + ".html", wait_until="load")
+            pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+            res = pg.evaluate(FILL_MEASURE, [FX0, FY0, FX1, FY1, FC])
+            title = pg.evaluate("(() => { const e = document.querySelector('#kmain h2, #kmain .kftitle'); return e ? e.textContent.trim().replace(/\\s+/g, ' ') : document.title; })()")
+        finally:
+            cx.close()
+        return res, title
+    except Exception as e:  # noqa: BLE001
+        print(f"kindle_plates: {slug}: fill measure failed ({e!r})", file=sys.stderr)
+        return None, ""
 
 
 def _field_svg(job):
     """One sheet's ground: the studio's scroll field with a hole round every white box (its box plus the 4 px
     inlay), and the bright double inlay edge of each box. Rasterised later; the SVG is never shipped."""
-    slug, sheet, edges, seed, motif, od, exe = job
+    slug, sheet, edges, seed, motif, od, exe, dev = job
     try:
         from .frames import field as FF, kpanel as KP
         B = 4
         holes = [(max(0, x - B), max(0, y - B), min(618, x + w + B) - max(0, x - B), min(714, y + h + B) - max(0, y - B))
                  for x, y, w, h, ot, ob in edges]
-        fsv = FF.field(618, 714, holes, seed, motif=motif, border=True)
+        fsv = FF.field(618, 714, holes, seed, motif=_motif(motif), border=True)
         parts = []
         for k, (x, y, w, h, ot, ob) in enumerate(edges):
             esv = KP.panel_edge(w, h, ot, ob, seed + k, b=B)
             esv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", esv)
             parts.append(re.sub(r"<svg\b", f'<svg x="{x - B}" y="{y - B}"', esv, count=1))
         fsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", fsv)
-        svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714">' + fsv + "".join(parts) + "</svg>")
+        if dev:   # set on a white roundel over the band's scrollwork
+            dsv, dx, dy = dev
+            dsv = re.sub(r"^\s*<\?xml[^>]*>\s*", "", dsv).replace("kshape", "kdevshape")
+            dsv = re.sub(r'<svg\b([^>]*?)\swidth="[^"]*"', r"<svg\1", dsv, count=1)
+            dsv = re.sub(r'<svg\b([^>]*?)\sheight="[^"]*"', r"<svg\1", dsv, count=1)
+            parts.append(f'<circle cx="{dx + 19}" cy="{dy + 19}" r="19" fill="#fff" stroke="#000" stroke-width="1"/>'
+                         + re.sub(r"<svg\b", f'<svg x="{dx}" y="{dy}" width="38" height="38"', dsv, count=1))
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="618" height="714" viewBox="0 0 618 714" shape-rendering="crispEdges">'
+               + fsv + "".join(parts) + "</svg>")   # crisp: no anti-alias greys, so the four levels below are exact
         import io
         from PIL import Image
         pg = _worker_page(exe)
         pg.set_content('<!doctype html><html style="background:transparent"><body style="margin:0;background:#fff">' + svg + "</body></html>")
-        # one bit at 2x, like the Evening's art: the field is pure line and punch, and a sheet comes to 60-90 KB
-        # (16 greys cost 300 KB). Opaque: the holes print white under the white panels anyway.
+        # four greys at 2x (white, light, mid, black): the studio's silver modelling survives, in a 2-bit PNG.
+        # A sheet over FIELD_MAX falls back to three greys, then to one bit. Opaque: the holes print white under
+        # the white panels anyway.
         im = Image.open(io.BytesIO(pg.screenshot(clip={"x": 0, "y": 0, "width": 618, "height": 714}))).convert("L")
-        im.point(lambda v: 255 if v >= 128 else 0).convert("1").save(os.path.join(od, f"fill-{slug}-{sheet}.png"), optimize=True)
+        with open(os.path.join(od, f"fill-{slug}-{sheet}.png"), "wb") as f:
+            f.write(_field_png(im))
         return True
     except Exception as e:  # noqa: BLE001
         print(f"kindle_plates: {slug}~{sheet + 1}: field failed ({e!r})", file=sys.stderr)

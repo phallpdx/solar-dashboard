@@ -456,6 +456,118 @@ def paw(blk, x, y, s):
 # the scene
 # ----------------------------------------------------------------------------------------------
 
+def _crown(cv, rng, cx, cy, rx, ry, q, tone=1.):
+    """One rounded crown of the hedge, cut in the burin manner: the outline broken into leaf
+    clusters, small leaf flicks laid thicker on the shadow side (light from the upper left), and
+    a ruled shade under the right-hand belly."""
+    pts = []
+    n = max(18, int((rx + ry) * .5))
+    for i in range(n):
+        a = TAU * i / n
+        k = 1 + .09 * math.sin(a * 7 + rx) + .05 * math.sin(a * 13 + ry)
+        pts.append((cx + rx * k * math.cos(a), cy + ry * k * math.sin(a)))
+    cv.obj([pts], .5)
+    sh = [(cx + rx * .2 + (x - cx) * .78, cy + ry * .22 + (y - cy) * .78) for x, y in pts]
+    hatch(cv, sh, 35, 2.4 * q / tone)
+    hatch(cv, [(cx + rx * .32 + (x - cx) * .5, cy + ry * .38 + (y - cy) * .5) for x, y in pts], -40, 2.4 * q)
+    m = int(rx * ry / (14. * q * q))
+    for _ in range(m):
+        a = rng.uniform(0, TAU)
+        r = math.sqrt(rng.random())
+        x, y = cx + rx * r * math.cos(a), cy + ry * r * math.sin(a)
+        lit = (x - cx) / rx * -.6 + (y - cy) / ry * -.8
+        if lit > .45 and rng.random() < .75:
+            continue
+        L = rng.uniform(1.2, 2.2) * q
+        b = rng.uniform(-.8, .8) + (.4 if x > cx else -.4)
+        cv.hair([(x - L * math.cos(b), y - L * math.sin(b) * .5), (x, y + L * .35), (x + L * math.cos(b), y - L * math.sin(b) * .5)])
+
+
+def _stool(cv, rng, bx, by, H, S):
+    """A coppiced hazel stool: a fan of straight rods from one knuckled base, forked toward the
+    tips and hung with this year's catkins; two late yellow leaves cling on."""
+    tips = []
+    nrod = 6
+    for i in range(nrod):
+        u = (i - (nrod - 1) / 2) / ((nrod - 1) / 2)
+        a = -math.pi / 2 + u * .38 + rng.uniform(-.05, .05)
+        L = H * rng.uniform(.78, 1.) * (1 - .12 * abs(u))
+        x0 = bx + u * S * .03
+        bend = u * .55 + rng.uniform(-.1, .1)
+        P = []
+        for j in range(21):
+            t = j / 20
+            aa = a + bend * t * t
+            P.append((x0 + L * t * math.cos(a) + L * .35 * t * t * (math.cos(aa) - math.cos(a)), by + L * t * math.sin(a) + L * .35 * t * t * (math.sin(aa) - math.sin(a))))
+        R = Rib(P, taper(len(P), max(1.2, S * .014), .45, .8))
+        cv.obj([R.poly()], .5)
+        cv.hair(R.side(.45))
+        for j in range(3, 17, 4):
+            cv.hair([R.side(.6)[j], R.side(.95)[j]])
+        tips.append((P, a, L))
+        fk = int(len(P) * rng.uniform(.55, .7))
+        fa = a + bend * .5 + rng.choice((-1, 1)) * rng.uniform(.35, .55)
+        F = [(P[fk][0] + math.cos(fa) * L * .22 * t, P[fk][1] + math.sin(fa) * L * .22 * t) for t in [j / 8 for j in range(9)]]
+        cv.obj([], 0)
+        cv.hair(F)
+        for (x, y) in (F[-1], P[-1]):
+            for k in range(rng.choice((1, 2, 2))):
+                catkin(cv, x + k * 1.6 - .8, y + 1, S * rng.uniform(.05, .075), rng.uniform(-1.5, 2), rng)
+    base = ell(bx, by, S * .07, S * .025, 20)
+    cv.obj([base], 1.)
+    hatch(cv, base, 20, 1.5)
+    for P, a, L in tips[1::3]:
+        hazel_leaf(cv, P[12][0], P[12][1], S * .085, math.degrees(a) + 70, rng)
+    return tips
+
+
+def hedge_scene(fx, fy, fw, fh, clip_d, cid, date, seed):
+    """The food-forest hedge, close to: elder, serviceberry and dogwood crowns massed behind, three
+    coppiced hazel stools in front, their bare rods hung with November's catkins, a chickadee on a
+    rod, the leaf litter at the foot, and the dog's paw print pressed into the soil."""
+    rng = random.Random(seed)
+    cv = C.Canvas()
+    blk = []
+    S = min(fh, fw * .5)
+    q = max(1., fh / 210.) ** .7
+    gb = fy + fh * .86                    # the soil line
+    # the sky, pale and lightly ruled where it shows between the crowns
+    sky = [(fx, fy), (fx + fw, fy), (fx + fw, gb), (fx, gb)]
+    cv.obj([sky], 0)
+    hatch(cv, sky, 0, 3.2 * q)
+    # back crowns, then front crowns, down to the soil
+    rows = ((.2, .17, .9), (.42, .19, 1.1), (.62, .2, 1.3))
+    for yf, rf, tone in rows:
+        x = fx - fw * .02
+        while x < fx + fw * 1.02:
+            rx = fh * rf * rng.uniform(.85, 1.25)
+            ry = rx * rng.uniform(.62, .8)
+            _crown(cv, rng, x + rx * .8, fy + fh * yf + rng.uniform(-.05, .05) * fh, rx, ry, q, tone)
+            x += rx * rng.uniform(1.25, 1.6)
+    # soil and leaf litter
+    soil = [(fx - 2, gb), (fx + fw + 2, gb), (fx + fw + 2, fy + fh + 2), (fx - 2, fy + fh + 2)]
+    cv.obj([soil], 1.)
+    hatch(cv, soil, 0, 1.6 * q)
+    for _ in range(int(fw / 7)):
+        x, y = fx + rng.uniform(0, fw), gb + rng.uniform(1, fh * .12)
+        lf = ell(x, y, rng.uniform(1.8, 3.2), rng.uniform(.9, 1.5), 10)[:-1]
+        cv.obj([lf], .5)
+    # the three hazel stools
+    tips = []
+    for xf, hf in ((.2, .72), (.52, .82), (.82, .7)):
+        tips += _stool(cv, rng, fx + fw * xf, gb + 1, fh * hf, S)
+    # a chickadee on a rod of the middle stool
+    P, a, L = tips[9]
+    chickadee(cv, blk, P[11][0] + 1, P[11][1], S * .11, 1)
+    # Easter egg: the dog's paw print in the soil at the right
+    paw(blk, fx + fw * .66, gb + fh * .07, S * .035)
+    paw(blk, fx + fw * .7, gb + fh * .1, S * .035)
+    body = cv.svg()
+    bd = "".join(_d(p, True, .15) for p in blk)
+    return (f'<clipPath id="{cid}"><path d="{clip_d}"/></clipPath><g clip-path="url(#{cid})">'
+            f'{body}<path d="{bd}" fill="#000" stroke="none"/></g>')
+
+
 def scene(fx, fy, fw, fh, clip_d, cid, date, seed, mode="full"):
     """Engrave the Sauvie Island morning into the box, clipped to clip_d."""
     rng = random.Random(seed)
@@ -2174,6 +2286,36 @@ def st_dissolve(poly, seed, depth=9., step=1.25):
     return "".join(o)
 
 
+def st_ragged(poly, seed, depth=7.):
+    """The vignette's dissolving rim as a cut: the outline resampled finely and bitten inward by
+    layered noise and sharp nicks, so the scene's lines end raggedly in the surrounding ground
+    (nothing is painted over them; outside the cut the plate stays transparent)."""
+    rng = _rnd.Random(seed)
+    cx = sum(q[0] for q in poly) / len(poly)
+    cy = sum(q[1] for q in poly) / len(poly)
+    pts = []
+    n = len(poly)
+    for i in range(n):
+        a, b = poly[i], poly[(i + 1) % n]
+        L = _m.hypot(b[0] - a[0], b[1] - a[1])
+        k = max(1, int(L / 1.3))
+        for j in range(k):
+            pts.append((a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k))
+    m = len(pts)
+    ph = [rng.uniform(0, 6.3) for _ in range(4)]
+    out = []
+    for i, (x, y) in enumerate(pts):
+        u = i / m * _TAU
+        d = depth * (.45 + .2 * _m.sin(u * 7 + ph[0]) + .15 * _m.sin(u * 19 + ph[1]) + .1 * _m.sin(u * 53 + ph[2]))
+        if rng.random() < .22:
+            d += depth * rng.uniform(.2, .75)
+        d = max(.5, d)
+        dx, dy = x - cx, y - cy
+        L = _m.hypot(dx, dy) or 1
+        out.append((x - dx / L * d, y - dy / L * d))
+    return out
+
+
 def st_vignette(w, h, seed, hk):
     """The free-standing vignette: the scene itself is the plate, cut to its shape and crumbling
     out into the paper at the rim; any ornament is drawn from the subject (hk['frame'])."""
@@ -2188,16 +2330,15 @@ def st_vignette(w, h, seed, hk):
         s = max(max(abs(q[0] - cx) / (w / 2 - pad) for q in fld), max(abs(q[1] - cy) / (h / 2 - pad) for q in fld))
         fld = [(cx + (q[0] - cx) / s, cy + (q[1] - cy) / s) for q in fld]
     mode = "band" if h < 110 else ("medium" if h <= 260 else "tall")
-    o = [f'<path d="{st_rect_d(0, 0, w, h)}" fill="#fff"/>']
+    o = []
     if hk.get("under"):
         o.append(hk["under"](cx, cy, rx, ry, fld, mode))
-    o.append(st_clip_poly(f"s2v{w}x{h}", fld, hk["field"](fld, mode)))
-    o.append(st_dissolve(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025))))
+    rag = st_ragged(fld, seed, hk.get("dissolve", min(7., 3 + min(w, h) * .025)))
+    o.append(st_clip_poly(f"s2v{w}x{h}", rag, hk["field"](fld, mode)))
     if hk.get("frame"):
         o.append(hk["frame"](cx, cy, rx, ry, fld, mode))
     if hk.get("dedication") and h >= 110:
         dh = min(30., h * .16)
-        o.append(f'<path d="{st_ell_d(cx, h - dh / 2 - 1.5, dh * .62, dh * .55)}" fill="#fff"/>')
         o.append(st_dedication(cx, h - 1.5, dh))
     return "".join(o)
 
@@ -2237,12 +2378,13 @@ def plate(w, h, ctx):
         xs = [p[0] for p in fld]
         ys = [p[1] for p in fld]
         fx, fy = min(xs), min(ys)
-        sc = scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed,
-                   "mini" if mode == "band" else "full")
+        if mode == "band":
+            sc = scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed, "mini")
+        else:
+            sc = hedge_scene(fx, fy, max(xs) - fx, max(ys) - fy, _d(fld, True, 0), C._uid("gs", w, h, mode), date, seed)
         return sc
 
     hk = dict(vignette=True, pad=3., max_aspect=2.6, shape_fn=hedge_shape,
-              frame=lambda cx, cy, rx, ry, fld, mode: _hazel(fld, seed) if mode != "band" else "",
-              shape="irregular", dedication=True, frieze=False, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
+                            shape="irregular", dedication=True, frieze=False, field=field, egg=egg_dog, aspect=2.6, cw=.26, rmin=9.5, rmax=30., motto="SAUVIE ISLAND",
               tablet_lines=["WALK THE LAND · BURN DAY · BIRDS", "SOW · BLOOMS · MUSHROOMS"])
     return st_plate(w, h, seed, hk)

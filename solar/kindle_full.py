@@ -2019,7 +2019,7 @@ PAGER_JS = r"""
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
   function sig() { var f = document.fonts ? document.fonts.status : '', im = main.getElementsByTagName('img'), c = 0;
-    for (var q = 0; q < im.length; q++) if (im[q].complete) c++;
+    for (var q = 0; q < im.length; q++) if (im[q].complete || / kslot /.test(' ' + im[q].parentNode.className + ' ')) c++;   /* a plate slot is sized in the page: its load moves nothing */
     return window.innerWidth + 'x' + window.innerHeight + f + c; }
   var HINT = root.getAttribute('data-kfit');
   function hinted() {                       // the build's measured answer, checked once; null = run the ladder
@@ -2102,7 +2102,7 @@ PAGER_JS = r"""
         for (var ki = 0; ki < ka.length; ki++) { var ke = ka[ki];
           if (getComputedStyle(ke).backgroundColor === 'rgb(255, 255, 255)' && !(ke.closest && ke.closest('.bars,.rain,.mix,.kchart,figure,table,svg,.kpanel')))
             ke.style.setProperty('background-color', 'transparent', 'important'); } }
-      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className.replace(' kfilled', '') + ' ' + (document.fonts ? document.fonts.status : '') + ' ' + cuts.join(',');
+      var mr = main.getBoundingClientRect(), sig = Math.round(mr.width) + 'x' + main.offsetHeight + ' ' + root.className + ' ' + (document.fonts ? document.fonts.status : '') + ' ' + cuts.join(',');
       if (ko.getAttribute('data-sig') !== sig) { ko.setAttribute('data-sig', sig);
         /* panels, not labels: every block the reader reads prints on ONE white panel the full width of the
            column (the .kpanel contract; until a page has .kpanel, each top-level card, list or note), so all
@@ -2127,7 +2127,7 @@ PAGER_JS = r"""
         var merged = true;
         while (merged) { merged = false;
           for (var m1 = 0; m1 < kr.length && !merged; m1++) for (var m2 = m1 + 1; m2 < kr.length; m2++) { var A = kr[m1], Bq = kr[m2];
-            if (Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t) > -10) {   /* touching or nearly: one panel */
+            if (Math.min(A.d, Bq.d) - Math.max(A.t, Bq.t) > (hasP ? 0 : -10)) {   /* overlapping (or, before .kpanel, nearly touching): one panel */
               A.t = Math.min(A.t, Bq.t); A.d = Math.max(A.d, Bq.d); kr.splice(m2, 1); merged = true; break; } } }
         var mw = main.offsetWidth, kl = [];
         for (var rb = 0; rb < kr.length; rb++) { var L0 = kr[rb], t0 = L0.t;   /* never across a sheet cut: each sheet's part is its own label */
@@ -2168,6 +2168,9 @@ PAGER_JS = r"""
       var vr = view.getBoundingClientRect();
       window.KROOM = { sheet: i, sheets: n, x: Math.round(vr.left), y: Math.round(vr.top + y0), w: Math.round(vr.width), h: Math.round(room) };
       var kp = kme && room >= 40 && document.body.getAttribute('data-kplates'), pk = null;
+      if (kp && i < n - 1) {   /* no plate after a panel the cut leaves open: it continues on the next sheet */
+        var opn = main.querySelectorAll('.kpanel'), mt1 = main.getBoundingClientRect().top;
+        for (var oq = 0; oq < opn.length; oq++) { var orr = opn[oq].getBoundingClientRect(); if (orr.top - mt1 < end - 2 && orr.bottom - mt1 > end + 2) { kp = null; break; } } }
       if (kp) { try { kp = JSON.parse(kp); } catch (e) { kp = []; }   /* this page's plates: [sheet, h, w], cut to this morning's rooms */
         for (var pi = 0; pi < kp.length; pi++) if (kp[pi][0] === i && kp[pi][1] <= room + 2 && (kp[pi][1] >= room - 16 || kp[pi][3])) pk = kp[pi];
         if (!pk && !(kp.length && kp[0][3])) for (pi = 0; pi < kp.length; pi++) if (kp[pi][1] <= room && (!pk || kp[pi][1] > pk[1])) pk = kp[pi]; }
@@ -2246,8 +2249,10 @@ PAGER_JS = r"""
     if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + '.svg';
       if (!fi) { fi = document.createElement('img'); fi.id = 'kfill'; fi.alt = ''; fi.setAttribute('aria-hidden', 'true'); document.body.insertBefore(fi, document.body.firstChild); }
       if (fi.getAttribute('src') !== src) fi.setAttribute('src', src);
-      fi.style.display = 'block'; if (!/ kfilled /.test(' ' + root.className + ' ')) root.className += ' kfilled'; }
-    else { if (fi) fi.style.display = 'none'; root.className = (' ' + root.className + ' ').replace(' kfilled ', ' ').replace(/^ +| +$/g, ''); }
+      if (fi.style.display !== 'block') fi.style.display = 'block'; }
+    else if (fi && fi.style.display !== 'none') fi.style.display = 'none';
+    var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside (no class on the root: no restyle of the page) */
+    for (var g = 0; g < gq.length; g++) gq[g].style.display = ok ? 'none' : '';
   }
   function turn(i) {                            // in-page turns are partial e-ink updates: flash now and then
     if (busy) return;

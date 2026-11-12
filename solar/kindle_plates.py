@@ -342,7 +342,7 @@ FILL_MEASURE = """async (P) => {
       if (b[2] > 3 * b[3]) g = 'l'; else if (b[3] > 3 * b[2]) g = 't';   // a gap between panels runs as a frieze
       take(b); panels.push(px(b).concat([g])); }
     while ((b = best(2, 7)) && strips.length < 120) { take(b); strips.push(px(b)); }
-    for (let j = 0; j < gh; j++) { let i = 0;   // the slivers: plain black, run by run
+    for (let j = 0; j < gh && false; j++) { let i = 0;   // (slivers keep the light ground)
       while (i < gw) { if (occ[j * gw + i]) { i++; continue; } let e = i; while (e < gw && !occ[j * gw + e]) e++;
         const last = ground.length && ground[ground.length - 1];
         if (last && last[0] === X0 + i * C && last[2] === (e - i) * C && last[1] + last[3] === Y0 + j * C) last[3] += C;
@@ -394,8 +394,7 @@ def _fills(pages, out, od, base, date_iso, exe):
                     continue
                 seed = zlib.crc32(f"{slug}/{r['sheet']}/{date_iso}".encode()) % 100003
                 # the plan's leftover order: one carved frieze (18-36 px) in the largest gap between panels,
-                # beading in the other gaps, and the frame's punched ground everywhere else (margins, the
-                # room below a plate). Never flora beside a plate or out in the margin.
+                # beading in the other gaps. Never flora beside a plate or out in the margin.
                 fr, beads, matte = [], [], []
                 gaps = sorted([p for p in r["panels"] if p[5]], key=lambda p: -min(p[3], 36) * p[2])
                 for k, p in enumerate(gaps):
@@ -408,10 +407,9 @@ def _fills(pages, out, od, base, date_iso, exe):
                         beads.append((x, y + (ph - hf) / 2, pw, hf))
                     if ph > hf:
                         matte += [(x, y, pw, (ph - hf) / 2), (x, y + (ph + hf) / 2, pw, (ph - hf) / 2)]
-                matte += [tuple(p[:4]) for p in r["panels"] if not p[5]]
-                matte += [tuple(q) for q in r["p"]]
+                # margins, the tailpiece room and the ground behind every plate keep the frame's light engraved
+                # ground (the plates are free-standing vignettes that dissolve into it): nothing drawn there
                 beads += [tuple(p[:4]) for p in r["strips"] if p[4]]
-                matte += [tuple(p[:4]) for p in r["strips"] if not p[4]]
                 dev = ""
                 if r["sheet"] == len(res) - 1 and os.path.exists(os.path.join(od, f"plate-{slug}-m.svg")):
                     gy = [p for p in r["panels"] if p[5]] + [p for p in r["strips"] if p[4]]

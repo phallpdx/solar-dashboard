@@ -138,7 +138,12 @@ def for_page(slug, html=""):
     """The slots for one page: its section front's vignette, or the plan's entry for the cards it carries."""
     if slug in FRONTS:
         shape, subject = FRONTS[slug]
-        w, h = _size("vignette", .27, shape)
+        import re
+        m = re.search(r'class="kfhead[^"]*" data-n="(\d+)"|data-n="(\d+)"', html)
+        n = int(next(g for g in m.groups() if g)) if m else 6
+        # a front is one sheet: the vignette takes what the teaser list leaves (as the stock head plate did)
+        h = 150 if n <= 3 else 118 if n <= 5 else 100 if n <= 7 else 84
+        w = int(min(COLUMN, {"oval": 1.6, "circle": 1., "arch": 1.3, "lunette": 2.2, "irregular": 1.5}.get(shape, 1.6) * h))
         return [dict(form="front", pos="after:.kfhead", w=w, h=h, shape=shape, subject=subject, egg="", arms=True)]
     hit = next((spec for ids, spec in CARDS if any(f'id="{i}"' in html for i in ids)), None) \
         or next((spec for key, spec in SLUGS if slug == key or (key.endswith("-") and slug.startswith(key))), None)

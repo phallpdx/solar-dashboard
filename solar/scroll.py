@@ -64,22 +64,43 @@ def _dp(q, tol):
     return [p for p, k in zip(q, keep) if k]
 
 
-def _pts(pts, tol=TOL):
-    """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
+def _fi(v):
+    """An integer count of tenths as our shortest decimal: 5 -> '.5', -15 -> '-1.5', 20 -> '2'."""
+    if not v:
+        return "0"
+    a = -v if v < 0 else v
+    i, d = divmod(a, 10)
+    t = (str(i) if i else "") + ("." + str(d) if d else "")
+    return "-" + t if v < 0 else t
+
+
+def _simp(pts, tol=TOL):
     q = [(round(x * 10), round(y * 10)) for x, y in pts]
-    if len(q) > 2:  # Douglas-Peucker: drop points within TOL px of the simplified path
+    if len(q) > 6:  # Douglas-Peucker: drop points within TOL px of the simplified path
         q = _dp(q, tol * 10)
-    out = [_j(q[0][0] / 10, q[0][1] / 10)]
+    return q
+
+
+def _enc(q):
+    x0, y0 = q[0]
+    b = _fi(y0)
+    out = _fi(x0) + ("" if b[0] == "-" else " ") + b
     rel = []
-    px, py = q[0]
+    px, py = x0, y0
     for x, y in q[1:]:
         if x == px and y == py:
             continue
-        rel.append(_j((x - px) / 10, (y - py) / 10))
+        a, b = _fi(x - px), _fi(y - py)
+        rel.append(a + ("" if b[0] == "-" else " ") + b)
         px, py = x, y
     if rel:
-        out.append("l" + _cat(rel))
-    return "".join(out)
+        out += "l" + _cat(rel)
+    return out
+
+
+def _pts(pts, tol=TOL):
+    """Absolute first point, then relative lineto deltas computed on the rounded grid (no drift)."""
+    return _enc(_simp(pts, tol))
 
 
 def _j(a, b):
@@ -104,6 +125,7 @@ STYLE = {
     "GA": 'fill="#aaa"',
     "G2": 'fill="#888"',
     "WO": 'fill="#fff" stroke="#000" stroke-width="1" stroke-linejoin="round" paint-order="stroke"',
+    "WG": 'fill="#ccc" stroke="#000" stroke-width="1" stroke-linejoin="round" paint-order="stroke"',
     "G": 'fill="#fff" fill-rule="evenodd"',
     "C05": 'fill="none" stroke="#000" stroke-width=".5" stroke-linecap="round" stroke-linejoin="round"',
     "C1": 'fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"',
@@ -150,9 +172,17 @@ class Canvas:
         else:
             self.top.append((key, [d]))
 
-    def poly(self, key, pts, close=True):
+    def poly(self, key, pts, close=True, mirror=None):
         if len(pts) > 1:
-            self.add(key, "M" + _pts(pts, getattr(self, "tol", TOL)) + ("Z" if close else ""))
+            q = _simp(pts, getattr(self, "tol", TOL))
+            z = "Z" if close else ""
+            xs = [x for x, _ in q]
+            ys = [y for _, y in q]
+            x0, x1, y0, y1 = min(xs) / 10 - 1, max(xs) / 10 + 1, min(ys) / 10 - 1, max(ys) / 10 + 1
+            self.add(key, ("M" + _enc(q) + z, (x0, y0, x1, y1)))
+            if mirror is not None:
+                W = round(mirror * 10)
+                self.add(key, ("M" + _enc([(W - x, y) for x, y in q]) + z, (mirror - x1, y0, mirror - x0, y1)))
 
     def line(self, key, pts):
         self.poly(key, pts, close=False)
@@ -264,10 +294,13 @@ def _batch(ops, depth=60):
     out = []  # [key, [d...], [bbox...]]
     for key, ds in ops:
         if key in ("D", "M"):
-            out.append([key, list(ds), [None]])
+            out.append([key, [d[0] if isinstance(d, tuple) else d for d in ds] if key == "M" else list(ds), [None]])
             continue
         for d in ds:
-            bb = _bbox(d)
+            if isinstance(d, tuple):
+                d, bb = d
+            else:
+                bb = _bbox(d)
             tgt = None
             for g in range(len(out) - 1, max(-1, len(out) - 1 - depth), -1):
                 if out[g][0] == key:
@@ -553,7 +586,7 @@ class Mapped:
         self.cv, self.f, self.occ = cv, f, occ
 
     def poly(self, key, pts, close=True):
-        if self.occ is not None and key in ("WO", "W") and close:
+        if self.occ is not None and key in ("WO", "WG", "W") and close:
             self.occ.fill(pts)
         elif self.occ is not None and key in ("S1", "S15") and len(pts) > 1:
             self.occ.fill(_ribbon(pts, [0.75 if key == "S15" else 0.5] * len(pts))[0])
@@ -619,7 +652,7 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
     lit edge) and a vein cut from the base."""
     step = max(0.8, min(1.6, width * 0.28))
     if teeth:
-        step = min(step, max(0.5, _arclen(spine)[-1] / (teeth * 5 + 4)))
+        step = min(step, max(0.75, _arclen(spine)[-1] / (teeth * 5 + 4)))
     spine = _resample(spine, step)
     n = len(spine)
     if n < 4:
@@ -645,24 +678,21 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
         Sd.append((p[0] + sg * q[0] * a, p[1] + sg * q[1] * a))
         Lt.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
     poly = Sd + Lt[::-1][1:-1]
-    cv.poly("WO", poly)
     model = getattr(_base(cv), "model", False) and width >= 2.6
+    cv.poly("WG" if model else "WO", poly)
     if model:
-        # silver: the face light grey with only a narrow white lit edge, darkening toward the root on the
-        # shadow flank; the black cuts carry the rest of the modelling
-        face_o, face_i = [], []
+        # silver: the face light grey (the fill) with only a narrow white lit edge, darkening toward the root
+        # on the shadow flank; the black cuts carry the rest of the modelling
+        lit = []
         for i, (p, q) in enumerate(zip(spine, nm)):
             t = i / (n - 1)
-            a = hw * env(t, sg) - 0.1
-            b = hw * env(t, -sg) - 0.6
-            if a + b < 0.4:
-                continue
-            face_o.append((p[0] + sg * q[0] * a, p[1] + sg * q[1] * a))
-            face_i.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
-        if len(face_o) > 2:
-            cv.poly("G0", face_o + face_i[::-1])
+            b = hw * env(t, -sg) - 0.35
+            if b > 0.3 and 0.04 < t < 0.97:
+                lit.append((p[0] - sg * q[0] * b, p[1] - sg * q[1] * b))
+        if len(lit) > 2:
+            cv.line("S05", lit)
         outer, inner = [], []
-        for i, (p, q) in enumerate(zip(spine, nm)):
+        for i, (p, q) in enumerate(zip(spine, nm) if width >= 4.5 else ()):
             t = i / (n - 1)
             if t > 0.6:
                 break
@@ -695,7 +725,7 @@ def lobe(cv, spine, width, shade=1, cuts=True, tip=True, teeth=0, rib=False):
             if len(seg) > 2:
                 cv.line("C05", seg)
             k += 1
-            if k > ((2 if width < 5 else 3 if width < 8 else 5) if not model else (3 if width < 5 else 5 if width < 8 else 8)):
+            if k > ((2 if width < 5 else 3 if width < 8 else 5) if not model else (2 if width < 5 else 3 if width < 8 else 4)):
                 break
     if rib and width >= 3.0 and n >= 6:
         cv.line("C05", spine[int(n * 0.1):int(n * 0.78)])
@@ -1680,8 +1710,15 @@ class Mirror(Mapped):
         self.w = w
 
     def poly(self, key, pts, close=True):
-        Mapped.poly(self, key, pts, close)
-        self.cv.poly(key, [(self.w - x, y) for x, y in pts], close)
+        if self.occ is not None and key in ("WO", "WG", "W") and close:
+            self.occ.fill(pts)
+        elif self.occ is not None and key in ("S1", "S15") and len(pts) > 1:
+            self.occ.fill(_ribbon(pts, [0.75 if key == "S15" else 0.5] * len(pts))[0])
+        if isinstance(self.cv, Canvas):
+            self.cv.poly(key, pts, close, mirror=self.w)
+        else:
+            self.cv.poly(key, pts, close)
+            self.cv.poly(key, [(self.w - x, y) for x, y in pts], close)
 
     def circle(self, key, x, y, r):
         Mapped.circle(self, key, x, y, r)
@@ -1752,9 +1789,9 @@ def _field_fill(dc, occ, rng, anchors, gmin, wcap, spread=1.0):
     d = _dt(occ)
     c = occ.c
     cells = []
-    for j in range(occ.ny):
+    for j in range(0, occ.ny, 2):
         row = d[j]
-        for i in range(occ.nx):
+        for i in range(0, occ.nx, 2):
             v = row[i]
             if gmin <= v < 1e8:
                 cells.append((v + rng.random() * 0.3, (i + 0.5) * c + occ.x0, (j + 0.5) * c + occ.y0))
@@ -1832,7 +1869,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
     """A deeply lobed acanthus leaf fanned like a hand: a palm and 3-5 long pointed finger lobes splaying a
     little from it and all sweeping over toward `curl` (+1 / -1), each with a serrated outline and its own
     midrib cut; the outer fingers lie behind, the middle one on top."""
-    n = fingers or (3 if width < 7 else 4 if width < 11 else 5)
+    n = min(4, fingers or (3 if width < 7 else 4))
     palm = _fit(cv, lambda f: _curve(base, ang, length * 0.34, (-1 if f else 1) * curl * 0.2, 8), width * 0.7)
     if len(palm) < 3:
         return
@@ -1844,7 +1881,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
         a = math.atan2(ty, tx) + u * 0.8 * rng.uniform(0.9, 1.1)
         ln = length * (0.86 - 0.42 * abs(u)) * rng.uniform(0.92, 1.06)
         bend = curl * 0.75 + u * 0.35
-        wd = width * (0.52 - 0.16 * abs(u))
+        wd = width * (0.64 - 0.2 * abs(u))
         items.append((abs(u), (rx, ry), a, ln, bend, wd, 1 if u > 0 else -1))
     out = []
     for _, root, a, ln, bend, wd, sh in sorted(items, key=lambda it: -it[0]):
@@ -1856,7 +1893,7 @@ def hand_leaf(cv, base, ang, length, width, curl, rng, fingers=None):
         if out:
             lobe(cv, out[0][0], out[0][1], shade=out[0][2], teeth=3 if out[0][1] >= 3.5 else 0, rib=True)
         return
-    lobe(cv, palm, width * 0.6, shade=curl, cuts=False)
+    lobe(cv, palm, min(width * 0.55, 6.0), shade=curl, cuts=False)
     for sp, wd, sh in out:
         lobe(cv, sp, wd, shade=sh, teeth=3 if wd >= 3.5 else 0, rib=True)
 
@@ -1913,28 +1950,16 @@ def running_scroll(cv, run, rng):
 
 
 def spray(cv, S, rng, f0=0.0, f1=0.42, n=None):
-    """A long serrated acanthus spray along the outer curve of scroll S: overlapping pointed leaves springing
-    from the backbone one after another, each leaning out and sweeping on round the scroll with it, tips
-    turned out, so the outer edge reads as a serrated leaf following the curve."""
+    """One big acanthus hand leaf per scroll turn: it springs from the backbone where the stem joins, leans
+    out and sweeps on round the outside of the scroll with it, fingers fanned and turned out."""
     R = S.R
-    n = n or max(2, min(4, int(R / 5)))
-    leaves = []
-    for k in range(n):
-        u = k / max(1, n - 1)
-        f = f0 + (f1 - f0) * u
-        bx, by = S.point(f, rscale=1.04)
-        tx, ty = S.tangent_at(f)
-        ox, oy = -S.dirn * -ty, -S.dirn * tx  # outward normal
-        lean = 0.55 - 0.15 * u
-        ang = math.atan2(ty + lean * oy, tx + lean * ox)
-        ln = R * (1.05 - 0.45 * u) * rng.uniform(0.9, 1.08)
-        turn = S.dirn * ln / (R * 1.35)
-        wd = R * (0.36 - 0.1 * u) * rng.uniform(0.92, 1.06)
-        leaves.append((_curve((bx, by), ang, ln, turn, 12, -S.dirn * 0.55), wd))
-    for spn, wd in leaves[::-1]:
-        a = math.atan2(spn[1][1] - spn[0][1], spn[1][0] - spn[0][0])
-        ln = _arclen(spn)[-1]
-        hand_leaf(cv, spn[0], a, ln, wd * 1.5, S.dirn, rng, fingers=3 if wd < 5 else 4)
+    f = f0 + 0.04
+    bx, by = S.point(f, rscale=1.04)
+    tx, ty = S.tangent_at(f)
+    ox, oy = -S.dirn * -ty, -S.dirn * tx  # outward normal
+    ang = math.atan2(ty + 0.5 * oy, tx + 0.5 * ox)
+    hand_leaf(cv, (bx, by), ang, R * 1.5 * rng.uniform(0.92, 1.08), R * 0.72, S.dirn, rng,
+              fingers=4 if R < 14 else 5)
 
 
 def _draw_motif(cv, motif, x, y, s, rng):
@@ -2053,6 +2078,8 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
     scrolls = []
     sg_ = _Grid(24.0)
 
+    taken = {}
+
     def place(rmin, rmax, step, gap, extra=0.0):
         cand = []
         for j in range(0, occ.ny, step):
@@ -2063,6 +2090,8 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
                     cand.append((v + rng.random() * 2.0, (i + 0.5) * C, (j + 0.5) * C, v))
         cand.sort(reverse=True)
         for _, x, y, v in cand:
+            if taken.get((int(x // 4), int(y // 4))):
+                continue
             R = min(v - gap, rng.uniform(rmin, rmax)) * (0.66 if rng.random() < 0.45 else 1.0)
             if R < rmin * 0.62:
                 continue
@@ -2075,9 +2104,14 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
                 S = Scroll(x, y, R, 1, 0.0)
                 scrolls.append(S)
                 sg_.add(x, y, S)
+                rr = R + rmin * 0.6
+                for gx in range(int((x - rr) // 4), int((x + rr) // 4) + 1):
+                    for gy in range(int((y - rr) // 4), int((y + rr) // 4) + 1):
+                        if math.hypot(gx * 4 + 2 - x, gy * 4 + 2 - y) < rr - 3:
+                            taken[(gx, gy)] = 1
 
-    place(14 * scale, 24 * scale, 3, 3.0)
-    place(6.5 * scale, 11 * scale, 2, 2.0, extra=7.0 * scale)
+    place(14 * scale, 24 * scale, 4, 3.0)
+    place(6.5 * scale, 11 * scale, 3, 2.0, extra=7.0 * scale)
     # join them: largest first, each to the nearest open attach point (motif flank, scroll turn, stem)
     att = _Grid(24.0)
     for r in roots:
@@ -2162,27 +2196,28 @@ def compose_field(cv, w, h, holes, seed, motif="fleuron", border=True, scale=1.0
     for r in roots:
         anchors.append(r[:4])
     i1 = len(base.ops)
-    _field_fill(dc, occ, rng, anchors, 3.0, 14 * scale, spread=1.1)
-    _field_fill(dc, occ, rng, anchors, 2.2, 9 * scale, spread=1.2)
+    _field_fill(dc, occ, rng, anchors, 4.0 if sym else 6.0, 18 * scale, spread=1.3 if sym else 1.5)
     chunk = base.ops[i1:]
     del base.ops[i1:]
     base.ops[i_back:i_back] = chunk
     # the punched ground: fine white dots on what ground still shows, at least a cell clear of every cut
     p = punch * C * C
     g = occ.g
+    imax = int(w / 2 / C) if sym else occ.nx - 1
     for j in range(1, occ.ny - 1):
         y = (j + 0.5) * C
-        for i in range(1, occ.nx - 1):
+        for i in range(1, imax):
             x = (i + 0.5) * C
-            ii = i if not sym or x < w / 2 else int((w - x) / C)
-            if ii < 1 or ii >= occ.nx - 1:
-                continue
+            ii = i
             if g[j][ii] or g[j - 1][ii] or g[j + 1][ii] or g[j][ii - 1] or g[j][ii + 1]:
                 continue
             if any(hx - 1 <= x <= hx + hw + 1 and hy - 1 <= y <= hy + hh + 1 for hx, hy, hw, hh in holes):
                 continue
             if rng.random() < p:
-                cv.dot(x + rng.uniform(-0.45, 0.45), y + rng.uniform(-0.45, 0.45))
+                dx, dy = x + rng.uniform(-0.45, 0.45), y + rng.uniform(-0.45, 0.45)
+                cv.dot(dx, dy)
+                if sym:
+                    cv.dot(w - dx, dy)
     if border:
         cv.over("S1", _rect_d(1.0, 1.0, w - 1.0, h - 1.0))
         cv.over("S05", _rect_d(2.75, 2.75, w - 2.75, h - 2.75))

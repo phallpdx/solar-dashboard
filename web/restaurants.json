@@ -1,6 +1,57 @@
 {
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "restaurants": [
+    {
+      "name": "OK Chicken & Khao Soi",
+      "neighborhood": "",
+      "cuisine": "Curry and fries",
+      "price": "",
+      "opened": "",
+      "summary": "Dunking fries in curry is heavily encouraged.",
+      "reviews": [
+        {
+          "outlet": "The Infatuation",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-10-29",
+          "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFAtY3l5ZHpFb05pRVV6Y2VFNXlqWlJobUlVSlp1SEc2bGJaR2MwSmN0YTNPLTEtSWNIcVBYUHFkX1ptSGtkN3Uwa29wWEdKc3pVRms4aG8wZFhoSnZpYndfSmd3ZlhEWGRtNHdHeWIya01QVjZhdGQ3QXJObw?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "A new Pearl District bar",
+      "neighborhood": "Pearl District",
+      "cuisine": "1940s Americana",
+      "price": "",
+      "opened": "",
+      "summary": "Channeling 1940s Americana.",
+      "reviews": [
+        {
+          "outlet": "OregonLive.com",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-10",
+          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQeVJGbHBLbnVGaXVuYW03TWhyTWVhMHB6cnFncnZiR0RXVWgtTVEzek5jLVRiaTZjS1NsbjhCcE5uQkJMMGo0T2FWaXZhRW91cUkwamFVRHAtTGhtd3QyRmFKeGJySE1TZ0gtX3BHNlBqcHR5MGIwcDNrM3NIckNkcFlyNU5BY2VncTVOck02TmZpYV91QXhUU1lNNFJEek9sZWwwU1Voa2JQcjVnYThEcnV1STdxUHZsSlNZcktOT05TWmhQQTFZWFhGWXI2UQ?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Double Down Lounge + Morchella 2.0",
+      "neighborhood": "Arriving 3 Doors Down",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "Coming soon to the neighborhood.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-05",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOTlhldU9BSHIzbnZDYW5IRXNqZ0I4WEJ4WTQ0WDVHMkRUSHlFUWlwdUUxZ2IwWUt5eWZoUG1WU1dtN0VQV25hRjlnenQzLTdKTEtGeG1MOWJGLXQtNVV0bU5tU3Z1Wk1icFoyNUpxNjR3ZTQ3eURJZG5FMnNpZlJTSHNwZVF2UmtUakc1REFtSC1KYTMzekNjbmdsSFhrYWR1YmpRZVFmWExEMmRqdHlN?oc=5"
+        }
+      ]
+    },
     {
       "name": "The Balboa",
       "neighborhood": "Pearl District",
@@ -376,64 +427,6 @@
           "verdict": "",
           "date": "2026-10-07",
           "url": "https://www.wweek.com/food/2026/10/07/mount-hood-food-truck-cobra-dogs-to-open-portland-brick-and-mortar/"
-        }
-      ]
-    },
-    {
-      "name": "A vegan Mexican bakery",
-      "neighborhood": "Eliot",
-      "cuisine": "Vegan Mexican",
-      "price": "",
-      "opened": "2026-10-28",
-      "summary": "Family-run business serving conchas and pan de muerto in a community gathering space.",
-      "reviews": [
-        {
-          "outlet": "OregonLive.com",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-28",
-          "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPR1hFYVpxQVFHU184LWZGMEsxVm9KMGhjWVpWTnc3UGdia3dnWkRzSW5CTlIxT0xvUVdjTnNtaGhZb05PczF1RVhsMlFLTVdmanIxb2R1bTdOYWNGUy1MNV9hLW5zc0xEUTd4TTl5R25ZampWUDMwZU5Od29sSHN1RlZ6OHh1MkVDX1RmTU83bVhWel9RLVlaQTUtOHFVMDFWSExwOWNlZ0U5LWxjQTJBRjVSaHktWHVPLXZRM1VlenNTdWR0UXN4Y3VNelRKSnJWUGJMeVNvbndFaTI1M3pQU091TncxcU5MdHFJ?oc=5"
-        },
-        {
-          "outlet": "The Oregonian food",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-28",
-          "url": "https://www.oregonlive.com/dining/2026/10/this-was-always-supposed-to-happen-vegan-mexican-bakery-is-opening-a-storefront-that-finally-feels-like-home.html"
-        }
-      ]
-    },
-    {
-      "name": "Patufet",
-      "neighborhood": "Southeast Portland",
-      "cuisine": "Spanish cafe",
-      "price": "",
-      "opened": "Oct 2026",
-      "summary": "A Spanish-style cafe that opened Oct. 8 in a hand-painted historic house, pouring wine and caffè con panna alongside candied fennel almonds and fig ricotta cake.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "Brings Spanish cafe culture to Southeast",
-          "date": "",
-          "url": "https://www.portlandmercury.com/food-and-drink/restaurant-openings/patufet-brings-spanish-cafe-culture-to-southeast/"
-        }
-      ]
-    },
-    {
-      "name": "Maddoggs",
-      "neighborhood": "Sumner (NE Sandy Blvd, at My-O-My)",
-      "cuisine": "Hot dogs (food cart)",
-      "price": "",
-      "opened": "",
-      "summary": "A mustard-yellow cart on the back patio of the bar My-O-My; The Infatuation recommends the Colombian-style Perro Caliente with pineapple sauce and crushed potato chips, and says the fries are worth ordering on their own.",
-      "reviews": [
-        {
-          "outlet": "The Infatuation",
-          "critic": "",
-          "verdict": "Added to the Portland Hit List",
-          "date": "",
-          "url": "https://www.theinfatuation.com/portland/reviews/maddoggs"
         }
       ]
     }

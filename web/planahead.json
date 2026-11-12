@@ -2,6 +2,34 @@
   "updated": "2026-11-11",
   "items": [
     {
+      "title": "WWE Friday Night SmackDown, Moda Center (Jan 29, 2027)",
+      "kind": "Tickets",
+      "action": "Tickets go on sale Wed, Nov 11 at 10 a.m. local through Ticketmaster.",
+      "starts": "2026-11-11",
+      "by": null,
+      "why": "One of 11 new early-2027 WWE dates announced by WWE.",
+      "sources": [
+        {
+          "name": "WWE announcement",
+          "url": "https://www.wwe.com/article/wwe-announces-11-new-event-dates-to-kick-off-2027"
+        }
+      ]
+    },
+    {
+      "title": "Kathy Griffin tickets",
+      "kind": "Tickets",
+      "action": "Buy Kathy Griffin tickets at Aladdin Theater",
+      "starts": "2026-11-11",
+      "by": null,
+      "why": "On sale in Portland",
+      "sources": [
+        {
+          "name": "Portland on-sale news",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQVThvdC1kYnY3aXE3c3FMVU56SDVKRkhaZnRPMEFiODZNc1FiT3VSRHlXYkF6TzREWFNYTXlBV0k1ZGNrejJIaU9EYVllWFlyX3ZSLVYySmJCcHlWRnFwWW9qeWJsUzh6OFhGLV9PM2R4VXN0ZFlFY1RCR3AtNUdPNmZlLWhBS19sbWdZa2hEdHFxMXBocG1mdHc0NlQ?oc=5"
+        }
+      ]
+    },
+    {
       "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
       "kind": "Tickets",
       "action": "Last chance: buy face value from the Oregon Symphony for Thursday's show at the Arlene Schnitzer Concert Hall, not resale.",
@@ -38,16 +66,16 @@
       ]
     },
     {
-      "title": "WWE Friday Night SmackDown, Moda Center (Jan 29, 2027)",
+      "title": "Royal Blood with Bodega, Revolution Hall (Apr 18, 2027)",
       "kind": "Tickets",
-      "action": "Tickets go on sale Wed, Nov 11 at 10 a.m. local through Ticketmaster.",
-      "starts": "2026-11-11",
+      "action": "Presale Thu, Nov 12 at 10 a.m. via Ticketmaster; general on-sale Fri, Nov 13 at 10 a.m.",
+      "starts": "2026-11-12",
       "by": null,
-      "why": "One of 11 new early-2027 WWE dates announced by WWE.",
+      "why": "Newly announced 2027 North American tour stop at Revolution Hall with Bodega opening.",
       "sources": [
         {
-          "name": "WWE announcement",
-          "url": "https://www.wwe.com/article/wwe-announces-11-new-event-dates-to-kick-off-2027"
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/royal-blood-2027-north-american-tour/"
         }
       ]
     },
@@ -66,6 +94,24 @@
         {
           "name": "Discotech listing",
           "url": "https://app.discotech.me/events/38312370-ricky-montgomery-the-monty-tour-at-crystal-ballroom"
+        }
+      ]
+    },
+    {
+      "title": "King Gizzard & The Lizard Wizard, Portland (Aug 19, 2027)",
+      "kind": "Tickets",
+      "action": "Mailing-list presale started Nov 11; general on-sale Fri, Nov 13 at 9 a.m. Pacific. Venue not yet announced.",
+      "starts": "2026-11-13",
+      "by": null,
+      "why": "New album Entropy and two 2027 North American legs; the Portland venue is listed as TBD.",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/king-gizzard-and-the-lizard-wizard-entropy-2027-tours/"
+        },
+        {
+          "name": "Glide Magazine",
+          "url": "https://glidemagazine.com/332952/king-gizzard-the-lizard-wizard-announce-new-album-entropy-two-north-american-tours/"
         }
       ]
     },
@@ -202,6 +248,24 @@
       ]
     },
     {
+      "title": "Barnes & Noble Criterion 50% off sale (through Dec 6)",
+      "kind": "Buy",
+      "action": "Buy Criterion 4K wish-list titles now, online or in store; the sale ends Dec 6.",
+      "starts": null,
+      "by": "2026-12-06",
+      "why": "Criterion says all in-stock discs are half off at B&N through Dec 6; B&N notes it doesn't combine with the Premium Member discount.",
+      "sources": [
+        {
+          "name": "Criterion on X",
+          "url": "https://x.com/Criterion/status/2118728293608493316"
+        },
+        {
+          "name": "Barnes & Noble Criterion page",
+          "url": "https://www.barnesandnoble.com/collections/movies-tv/the-criterion-collection"
+        }
+      ]
+    },
+    {
       "title": "Ikon Pass final sales window",
       "kind": "Deadline",
       "action": "Buy by Dec 10 at the current $1,529 adult price.",
@@ -256,24 +320,6 @@
         {
           "name": "Cape Lookout State Park",
           "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"
-        }
-      ]
-    },
-    {
-      "title": "Barnes & Noble Criterion 50% off sale (through Dec 6)",
-      "kind": "Buy",
-      "action": "Buy Criterion 4K wish-list titles now, online or in store; the sale ends Dec 6.",
-      "starts": null,
-      "by": "2026-12-06",
-      "why": "Criterion says all in-stock discs are half off at B&N through Dec 6; B&N notes it doesn't combine with the Premium Member discount.",
-      "sources": [
-        {
-          "name": "Criterion on X",
-          "url": "https://x.com/Criterion/status/2118728293608493316"
-        },
-        {
-          "name": "Barnes & Noble Criterion page",
-          "url": "https://www.barnesandnoble.com/collections/movies-tv/the-criterion-collection"
         }
       ]
     },
@@ -386,56 +432,6 @@
         {
           "name": "mxdwn",
           "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
-        }
-      ]
-    },
-    {
-      "title": "Nothing But Thieves, Crystal Ballroom (Apr 1, 2027)",
-      "kind": "Tickets",
-      "action": "Check Live Nation for the Crystal Ballroom date and buy face value there rather than resale.",
-      "starts": null,
-      "by": null,
-      "why": "Spring 2027 North American tour behind the new album Stray Dogs; the Portland on-sale and presale dates weren't confirmed in the sources found.",
-      "sources": [
-        {
-          "name": "Live Nation",
-          "url": "https://www.livenation.com/event/vvG1HZ_5cqhwrb/nothing-but-thieves-the-stray-dogs-world-tour"
-        },
-        {
-          "name": "JamBase tour announcement",
-          "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
-        }
-      ]
-    },
-    {
-      "title": "Royal Blood with Bodega, Revolution Hall (Apr 18, 2027)",
-      "kind": "Tickets",
-      "action": "Presale Thu, Nov 12 at 10 a.m. via Ticketmaster; general on-sale Fri, Nov 13 at 10 a.m.",
-      "starts": "2026-11-12",
-      "by": null,
-      "why": "Newly announced 2027 North American tour stop at Revolution Hall with Bodega opening.",
-      "sources": [
-        {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/royal-blood-2027-north-american-tour/"
-        }
-      ]
-    },
-    {
-      "title": "King Gizzard & The Lizard Wizard, Portland (Aug 19, 2027)",
-      "kind": "Tickets",
-      "action": "Mailing-list presale started Nov 11; general on-sale Fri, Nov 13 at 9 a.m. Pacific. Venue not yet announced.",
-      "starts": "2026-11-13",
-      "by": null,
-      "why": "New album Entropy and two 2027 North American legs; the Portland venue is listed as TBD.",
-      "sources": [
-        {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/king-gizzard-and-the-lizard-wizard-entropy-2027-tours/"
-        },
-        {
-          "name": "Glide Magazine",
-          "url": "https://glidemagazine.com/332952/king-gizzard-the-lizard-wizard-announce-new-album-entropy-two-north-american-tours/"
         }
       ]
     }

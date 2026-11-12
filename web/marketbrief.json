@@ -1,236 +1,161 @@
 {
   "updated": "2026-11-11",
-  "updated_at": "2026-11-11T13:20:16Z",
+  "updated_at": "2026-11-12T07:32:45Z",
   "analysis": {
-    "headline": "Stocks slipped Tuesday after a hotter-than-expected October CPI report (S&P 500 -0.38%, Nasdaq -0.74%, Dow -0.30%), and this morning futures point to a tech-led rebound, with Nasdaq-100 futures up about 1.5% early on, while the bond market is closed for Veterans Day.",
-    "summary": "The Bureau of Labor Statistics said consumer prices rose 0.4% in October and core prices 0.3%, both a tenth above the Dow Jones consensus, though cooler than September's 0.6% headline gain; the BLS published no year-over-year rate because October 2025 prices were never collected during the 2025 shutdown. Traders read the report as locking in a December Fed rate hike, and some now price a half-point move, since core at 0.3% meets the bar Fed Governor Waller set for weighing a 50-basis-point hike (Stock Titan, investingLive). That sent the 2-year Treasury yield up about 18 basis points to roughly 4.73% and the 10-year up about 10 basis points to near 4.98%, briefly above 5%. Higher yields and a firmer dollar knocked gold futures down about 2% to settle near $4,030 and pushed Bitcoin to about $73,800, near a three-month low, while Brent crude eased 1.2% to $91.49, briefly dipping under $90 for the first time since August as President Trump said the Iran war could end soon. Nvidia's 5.5% drop made tech the weakest sector, but CoreWeave's raised 2026 revenue forecast is lifting tech futures this morning (MLQ.ai).",
-    "drivers": [
-      "October CPI: +0.4% headline and +0.3% core month over month, vs. 0.3% and 0.2% expected, raising odds of a December Fed hike (BLS, CNBC).",
-      "Treasury selloff: the 2-year yield jumped about 18 basis points and the 10-year briefly topped 5% (investingLive).",
-      "Nvidia fell about 5.5% and dragged the Nasdaq, as tech was the S&P 500's weakest sector (TradingKey).",
-      "Gold fell about 2% and Bitcoin slid toward a three-month low on higher yields and a stronger dollar, while Brent eased on hopes the Iran war could end (Mining.com, Closing Look)."
-    ],
-    "watch": [
-      "Today (Wed): Veterans Day, so U.S. stock markets are open but the bond market and the Fed are closed (investingLive).",
-      "Thu Nov 12: weekly jobless claims (forecast near 195,000 after 189,000), Cisco and Applied Materials earnings after the close, and Fed speakers including Hammack, Barr, Goolsbee, Daly, Schmid and Williams (Yahoo Finance, MLQ.ai).",
-      "Fri Nov 13, 8:30 a.m. ET: October producer price index, expected +0.4% headline and +0.3% core, plus Fed speakers Collins, Bowman, Daly and Jefferson (Yahoo Finance)."
-    ],
+    "headline": "Major indexes rose as easing AI anxiety drew dip buyers into tech stocks.",
+    "summary": "Stocks surged driven by CoreWeave results easing AI spending worries. Bonds saw yields rise with the 10-year Treasury up. Oil prices increased while gold and Bitcoin both declined. The broader trend shows a rally in major indexes despite Nvidia's internal uncertainty.",
     "sources": [
       {
-        "name": "BLS: Consumer Price Index News Release, October 2026",
-        "url": "https://www.bls.gov/news.release/cpi.htm"
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNTWhFb0Z4UU5tNk9GTTVCYW9hallXVDZiRkhNMjFubzVVbmt1RXY4ekdtSFdZSTV4cEhqYkNrMlM0TW9keklFMHBOUDVzTTNhNXhJX2ZuVWRjSTFheURwb1NlU1F5b3Q0SXJWaGdzMzlEZHE5N3UzeE5jSzJIbkpoc2tqdkNKZG0zczBSYndTNm5GUFVUeEM1OHB2LUlnRktreFhueUxleGRwTWp0S1RZcWFQRQ?oc=5"
       },
       {
-        "name": "CNBC: CPI inflation report, October 2026",
-        "url": "https://www.cnbc.com/2026/11/10/cpi-inflation-report-october-2026.html"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNc0NzMVRVZjloM3pod2ZMMzE2UnBBTjF3ZjZET0t1ektJb1VycmxDdFJqbjNISzU4bXc0ZmxJY21pcDdldzFTRkhBSFZCWlVZTDlGOWYxaUV3NTRYcXlJZEowdzAtb3U1c1QzRUNMNXdKa2tBYlltMkxSMng5VU9JWlpYWWpaUmhqZGl3SFVZNm9xbmRPVkh1Qi1CZGRmSEREVF9yVGxsZGZhU3l2YnNkRWZEanpUVzM3ZVBSWkpGcDU?oc=5"
       },
       {
-        "name": "Stock Titan: Core prices up 0.3% again, hitting Waller's line for weighing a half-point hike",
-        "url": "https://www.stocktitan.net/articles/october-2026-cpi-inflation-report"
-      },
-      {
-        "name": "TradingKey: Nasdaq falls 0.74% as sticky October inflation stokes December rate-hike bets",
-        "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262299537-us-october-cpi-tops-forecasts-nasdaq-falls-nvidia-stock-drops-tradingkey"
-      },
-      {
-        "name": "Seeking Alpha: Wall Street ends in the red after the October CPI print",
-        "url": "https://seekingalpha.com/news/4670094-wall-street-ends-in-the-red-after-the-october-cpi-print"
-      },
-      {
-        "name": "investingLive: Americas FX news wrap 10 Nov, hot US CPI puts a bigger Fed hike in play",
-        "url": "https://investinglive.com/news/investinglive-americas-fx-news-wrap-10-nov-it-s-a-wrap-hot-us-cpi-puts-a-bigger-fed-hike-in-play/"
-      },
-      {
-        "name": "Mining.com: Gold price falls as CPI tops forecasts, lifting dollar and yields",
-        "url": "https://www.mining.com/web/gold-price-falls-nearly-3-as-cpi-tops-forecasts-lifting-dollar-and-yields/"
-      },
-      {
-        "name": "Closing Look: Tuesday, November 10, 2026",
-        "url": "https://cappnotes.substack.com/p/closing-look-tuesday-november-10"
-      },
-      {
-        "name": "ChainCatcher: Bitget UEX Daily Report, inflation exceeds expectations",
-        "url": "https://www.chaincatcher.com/en/article/2303590"
-      },
-      {
-        "name": "MLQ.ai: Nasdaq futures jump as CoreWeave surges 13% on Veterans Day",
-        "url": "https://mlq.ai/news/nasdaq-futures-jump-as-coreweave-surges-13-and-european-stocks-rise-on-veterans-day/"
-      },
-      {
-        "name": "investingLive: US bond market closed for Veterans Day as stocks face a hot CPI hangover",
-        "url": "https://investinglive.com/news/heads-up-us-bond-market-closed-for-veterans-day-as-stocks-face-a-hot-cpi-hangover/"
-      },
-      {
-        "name": "Yahoo Finance: What to expect in markets this week (CRWV, CSCO, CPI, Fed speeches)",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/expect-markets-week-crwv-csco-105942813.html"
-      },
-      {
-        "name": "MLQ.ai: What markets are watching this week",
-        "url": "https://mlq.ai/news/what-markets-are-watching-this-week-october-cpi-a-veterans-day-bond-market-close-coreweave-and-cisco/"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNeFBDd1BMekwxVkZzbWVvMGpCRE5oZUFmTnRVZU1hOTRVdDVyT3p4VnZuc1BEUHhnVHpOMUNBWEN3RUEwN2xPRjUtZ1J4SzBzYkIzdUI4MEpJTlRUMmczS2x6bzNZOUhYZnlDU0RtMXJCU3c1RnBrU1V1eEU3VnhEM3Q2Mk9uZzhNUk05RFpZT1pyNXMyb3hxbVFfYWpGaUhuY2g3Q2FxbU10Sm9jdFY4dEtTbzlvajczb05aVm40N0hwZ3ZoYkM3a2xSS21FZw?oc=5"
       }
-    ]
+    ],
+    "by": "local model",
+    "drivers": [
+      "CoreWeave revenue beat estimates and raised outlook",
+      "#Easing AI anxiety drawing dip buyers"
+    ],
+    "watch": []
   },
   "helium": {
-    "headline": "North American Helium's new Stewart Valley plant, officially opened Oct. 15 as Canada's largest helium purification facility, is ramping up just as Ottawa moves to give helium oil-and-gas-style tax treatment and helium prices run hot.",
-    "summary": "NAH said its Stewart Valley purification plant in southwest Saskatchewan came onstream on Sept. 20, 2026, producing about 73 million cubic feet of helium a year from a field Ryder Scott credits with 1.1 billion cubic feet of reserves, and the province says it will lift Saskatchewan's helium output by more than 40%. The project went from discovery well to production in 13 months, and local news reports a possible $100 million helium liquefier in Swift Current, which the company says is not finalized. The 2026 federal budget proposes treating helium exploration and development costs like conventional oil and gas for expenses from Nov. 5, 2026 (Prince Albert Daily Herald, Nov. 7). In the U.S. market NAH sells into, the Department of Energy named helium a critical material on Oct. 23, and law firm Mintz says spot helium prices have nearly tripled since March 2026.",
-    "items": [
-      {
-        "date": "2026-11-07",
-        "title": "Federal helium tax changes boost Saskatchewan growth hopes",
-        "what": "The proposed federal budget would give helium exploration and development the same tax treatment as oil and gas, and the article highlights NAH's Stewart Valley plant.",
-        "url": "https://paherald.sk.ca/federal-helium-tax-changes-boost-saskatchewan-growth-hopes"
-      },
-      {
-        "date": "2026-11-02",
-        "title": "Washington Update: helium named a critical material",
-        "what": "Mintz reports the DOE designated helium a critical material on Oct. 23 and that spot prices have nearly tripled since March.",
-        "url": "https://www.mintz.com/insights-center/viewpoints/2151/2026-11-02-washington-update-sustainable-energy-infrastructure"
-      },
-      {
-        "date": "2026-10-16",
-        "title": "Swift Current could be home to $100 million helium liquefier",
-        "what": "NAH is weighing a helium liquefier in Swift Current, though nothing is finalized.",
-        "url": "https://www.cjme.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
-      },
-      {
-        "date": "2026-10-15",
-        "title": "Canada's largest helium purification facility opens in southwest Saskatchewan",
-        "what": "The Saskatchewan government marked the official opening of NAH's Stewart Valley plant, saying it raises provincial helium output by more than 40%.",
-        "url": "https://www.saskatchewan.ca/government/news-and-media/2026/october/15/canadas-largest-helium-purification-facility-opens-in-southwest-saskatchewan"
-      },
-      {
-        "date": "2026-09-22",
-        "title": "North American Helium starts production at Canada's largest helium field",
-        "what": "NAH announced Stewart Valley came onstream Sept. 20 at about 73 MMcf of helium per year.",
-        "url": "https://www.newsfilecorp.com/release/315362/North-American-Helium-Starts-Production-at-Canadas-Largest-Helium-Field"
-      }
-    ],
+    "headline": "North American Helium has started production at Canada's largest helium field.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. Swift Current could host a $100 million helium liquefier. Global helium supply is tightening.",
     "sources": [
       {
-        "name": "Prince Albert Daily Herald: Federal helium tax changes boost Saskatchewan growth hopes",
-        "url": "https://paherald.sk.ca/federal-helium-tax-changes-boost-saskatchewan-growth-hopes"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUEU5ZDdHSzN0WU0tZ3pCa3pDWTVRb3MwYzZITGZPZUM3MzVvaWNiV2hKZHMyZThYX2MybGJ2eXBTQjVuSF8ySVVaRk1iMy1QbVRPdFJkaTR6NnFKRkQ5QnVOR3hIS2t5SThKNXJ0OHlXY1ExS1N5NUJhTmdIRzNCNW1fbm1EMXdTNDNvTGNHanNtdU5WWGZDVDdRUHU?oc=5"
       },
       {
-        "name": "Government of Saskatchewan: Canada's largest helium purification facility opens",
-        "url": "https://www.saskatchewan.ca/government/news-and-media/2026/october/15/canadas-largest-helium-purification-facility-opens-in-southwest-saskatchewan"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNNUJ4VHZCSkFUZFFDY0pmVFRMV0pOaDN0ZnBWcXUzVXl5SEUwRzJtQk52MV8yZW9nQkt0aGo0NUNfZnBCZldFMUYzTlc2UUdnRUdVVnNKdXpDMFR4QTZ1X01XSi1TS3M5WG1zbWZJc0taTUl4d2YxLVlGQmhVYUdVazFHb2d0cFVnZGQydTFEUFFRTzF3V0FZQWZfWUM0bkRnel9hdzFTNnZMb3lHZEttbUx3?oc=5"
       },
       {
-        "name": "SaskToday: Helium purification facility begins operation near Stewart Valley",
-        "url": "https://www.sasktoday.ca/southwest/canadas-largest-helium-purification-facility-begins-operation-near-stewart-valley-12899324"
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQWFNN09zMzdJSWZ3aFpGSkdyeEktb1VLLTZwY0FBMVAtaE45dHR4M0I3Y0dzVWptV2FoMHZqNWoxTzBIREkzemtBS1EwRV9kOTdPZTJEUVIzdEF1dzU0UldMOE54bnhWeEs4bHZIN0kyUmlPQkRQR2hNcG15ZVYyRTFrOF9VTUhjSVRWcHV4UlFDZ1lYamYwNHhzZWVsYjdLRVE2ZFBub0dWTmdMUjJlRGdEdWhDY0M1bzVieS0xTk8?oc=5"
       },
       {
-        "name": "Newsfile: North American Helium Starts Production at Canada's Largest Helium Field",
-        "url": "https://www.newsfilecorp.com/release/315362/North-American-Helium-Starts-Production-at-Canadas-Largest-Helium-Field"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
       },
       {
-        "name": "CJME: Swift Current could be home to $100 million helium liquefier",
-        "url": "https://www.cjme.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
       },
       {
-        "name": "Mintz: Washington Update, Sustainable Energy & Infrastructure, November 2026",
-        "url": "https://www.mintz.com/insights-center/viewpoints/2151/2026-11-02-washington-update-sustainable-energy-infrastructure"
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNU3ZZdEZSdEowbHpPUUk2N0MwZk9tMWJaVTMxenJGVDZLeXV6aHdmc1hFRnplcld3dWF1ZV9zcmc2c2dEM011Tmc2alBXMUJfZXlkMHNTQ24tUUktMHlFMmlROTVZdmJYdjFsV1NfOVJBaG9hTnB2OE8ydjBsZlVBVGhLYWlFTVZ6TWNlal9oZ3RWM1A1WEZBMG1SQVdTM0VOTW80azc1OFlNZXZvczJ6cFBMZ1lTSGd1bHFPc25FZ3JaZzZ2cDlvRy1LQk5lY2lfQ0cybEh4SGQtdw?oc=5"
+      }
+    ],
+    "by": "local model",
+    "items": [
+      {
+        "title": "Saskatchewan helium industry heats up as Crown permits attract nearly $5 million in bids",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5",
+        "source": "Google News: helium market"
       },
       {
-        "name": "Gasworld: Saskatchewan raises CAD 4.9m in third helium public offering",
-        "url": "https://gasworld.com/story/saskatchewan-raises-cad-4-9m-in-third-helium-public-offering/2263807.article"
+        "title": "Saskatchewan raises CAD $4.9m in third helium public offering",
+        "date": "2026-11-09",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "A big win for Saskatchewan helium in federal budget",
+        "date": "2026-11-09",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdE8xSTRXWWUxci1tX2dZZ0Z1LUVOZnpuSUVsMVY2d3V1YVVjOFc3LXh4ak4wcmVJNURFNnM3cnFyRVhscnFVZjI5eVFiU29aWWJyaTloYWk5Q1MycFdJTDhickU5bkstakFLX2pPSF80d0EweTJKQW1FOUtfMWxOTWQxS28?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "Federal helium tax changes boost Saskatchewan growth hopes",
+        "date": "2026-11-06",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcHpWdUpsSlZVMU9Ec2hBVHdjZnJ2TlZxXzRUYTBWc3BIVGlaZllfbG1DZmdEd1Z0WEZOQzhfZ3RMRi1UVTdtcEY3VVhGUFRXdUtsemZsMS1DSDlGd0R6VHJhRk5QM1RETC00bVpYYS1pdFNRelBVbFN2NWxQdUpSdXF4eHVzN3FpWkp3ZDN2Ny1IcW5jUEVtNFl3?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "North American Helium lifts SWFF past $5.5 million raised",
+        "date": "2026-11-04",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPLXIzSDl3clVoQldJOElfREVSQXpqMEZsZDVaREVzd3dOVE5hVFhUTzhFb3hKdnhxd0E3c1k0WjV2blhEbjc0djNQS2xaMmxoUW5ON1E1ZVJRSzhIaHE5TUZOaDAyQnVuTWthaG5mcFY2eFBhLUxXZFd0VmJtX1I4VlByMGlLTFY4cFpCWUg5VzhGdEh5LW5NUlctcW1mcEtl?oc=5",
+        "source": "Google News: North American Helium"
       }
     ]
   },
   "realestate": {
-    "headline": "Portland-area home prices are holding roughly flat, with RMLS data showing an October metro median of $545,000 (up 0.9% from a year ago), while new listings shrink and mortgage rates sit just above 7%.",
-    "summary": "RMLS figures summarized by RE/MAX put the Portland metro median sale price at $545,000 in October, up 0.9% from October 2025, and the year-to-date median at $549,000, down 0.2%; homes took 67 days of total market time, two fewer than a year ago, and new listings fell about 12% year over year. Redfin's city-only measure is softer, with a $518,000 median for the three months ending September, down 2.2% from a year earlier, and Realtor.com data on FRED shows a metro median listing price of $580,000 in October. Freddie Mac's 30-year fixed rate eased for a third straight week to 7.18% on Nov. 5, still well above 6.22% a year ago. On rents, CBRE says the average Portland apartment rent was about $1,764 at the end of the third quarter, up roughly 0.7% from the prior quarter, with occupancy near 95%; none of these sources broke out North Portland, St. Johns or Sauvie Island.",
-    "stats": [
-      {
-        "label": "Median sale price (Portland metro, October)",
-        "value": "$545,000",
-        "change": "+0.9% vs October 2025",
-        "source": "RE/MAX (Thom Butts), RMLS data",
-        "url": "https://thombutts.remax.com/blog.php"
-      },
-      {
-        "label": "Median sale price, year to date (Portland metro, Jan to Oct)",
-        "value": "$549,000",
-        "change": "-0.2% vs same period 2025",
-        "source": "RE/MAX (Thom Butts), RMLS data",
-        "url": "https://thombutts.remax.com/blog.php"
-      },
-      {
-        "label": "Total market time (Portland metro, October)",
-        "value": "67 days",
-        "change": "2 days shorter than October 2025",
-        "source": "RE/MAX (Thom Butts), RMLS data",
-        "url": "https://thombutts.remax.com/blog.php"
-      },
-      {
-        "label": "New listings (Portland metro, October)",
-        "value": "down about 12%",
-        "change": "vs October 2025",
-        "source": "RE/MAX (Thom Butts), RMLS data",
-        "url": "https://thombutts.remax.com/blog.php"
-      },
-      {
-        "label": "Median sale price (City of Portland, 3 months ending September)",
-        "value": "$518,000",
-        "change": "-2.2% vs a year earlier",
-        "source": "Redfin",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
-      },
-      {
-        "label": "Median listing price (Portland-Vancouver-Hillsboro, October)",
-        "value": "$580,000",
-        "change": "",
-        "source": "Realtor.com via FRED",
-        "url": "https://fred.stlouisfed.org/series/MEDLISPRI38900"
-      },
-      {
-        "label": "30-year fixed mortgage rate (Freddie Mac, week of Nov 5)",
-        "value": "7.18%",
-        "change": "down from 7.24% a week earlier; 6.22% a year ago",
-        "source": "Freddie Mac via AP (WCAX)",
-        "url": "https://www.wcax.com/2026/11/05/average-us-30-year-mortgage-rate-falls-718-this-week-its-third-straight-decline/"
-      },
-      {
-        "label": "Average apartment rent (Portland, Q3 2026)",
-        "value": "about $1,764/month",
-        "change": "+0.7% vs Q2 2026",
-        "source": "CBRE",
-        "url": "https://www.cbre.com/insights/figures/q3-2026-portland-multifamily-figures"
-      }
-    ],
-    "items": [
-      {
-        "date": "2026-11-05",
-        "title": "Average 30-year mortgage rate falls to 7.18%, its third straight decline",
-        "what": "Freddie Mac's weekly survey showed rates down six basis points from the prior week but about a point higher than a year ago.",
-        "url": "https://www.wcax.com/2026/11/05/average-us-30-year-mortgage-rate-falls-718-this-week-its-third-straight-decline/"
-      },
-      {
-        "date": "2026-10-29",
-        "title": "CBRE: Q3 2026 Portland multifamily figures",
-        "what": "Average rent ended the third quarter near $1,764 with occupancy around 95.2% and 1,097 new units delivered.",
-        "url": "https://www.cbre.com/insights/figures/q3-2026-portland-multifamily-figures"
-      }
-    ],
+    "headline": "Home sales show slight uptick but face mortgage rate threats.",
+    "summary": "Sellers are lowering prices to help buyers in a stagnant market. Renters are being squeezed by the housing market. Mortgage rates have seen sharp declines and recent jumps. Portland homebuyers are backing out of deals.",
     "sources": [
       {
-        "name": "RE/MAX (Thom Butts): What's Next for the Portland-Vancouver Housing Market?",
-        "url": "https://thombutts.remax.com/blog.php"
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPMnd1QnhKLU56LXM4S180RkRzTVhzVEFSYWdZX2tEZ2drU1VTVGZqNXJOSnkxQ1l4MlZndE94T1FQYkk2ODVXUGk0RmFLQzhRb18ySFR5aGZlQXloUmxqZWozOU50YTlBZlFiRndTc3kyZ0l5SEtPZXBIclRSazBycEgwNEJjclFJNy00Xzc0UVFUYU53aVVieHFaQ1RBOVhRLUlWQ0Y0bzc5TkQtRWpB?oc=5"
       },
       {
-        "name": "Redfin: Portland Housing Market",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNRDdRR201dE1lemNSVE0tc2VDd21HbDdVR0Z4VzV2LV9JRU43Y0lMYWpiLXdiNXoyTVFYZC1IMFFBLXNuM256WXlSOHl2c2QxVU43cnRTcW1jZFB5WC04ZjVOZjNyNzlGZWZhc1VRSVhBOG5yX2RNTmRFSUNKX2VBdlVaM2o?oc=5"
       },
       {
-        "name": "FRED: Median Listing Price in Portland-Vancouver-Hillsboro (Realtor.com)",
-        "url": "https://fred.stlouisfed.org/series/MEDLISPRI38900"
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
       },
       {
-        "name": "WCAX/AP: Average US 30-year mortgage rate falls to 7.18%",
-        "url": "https://www.wcax.com/2026/11/05/average-us-30-year-mortgage-rate-falls-718-this-week-its-third-straight-decline/"
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
+      }
+    ],
+    "by": "local model",
+    "items": [
+      {
+        "title": "High Housing Costs Keep Homeowners Locked-In",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE01ZGRGS2RpLV8tME5ONEJmQXZiWV9QX2E3TDdfOGlvMmFybmJNMWZyTXF2VzE3OTl5UG5FalVJVW5waVR5Y2tGTGtrQ0hQUE1DRzJKV1BrbUR0Njd6cUdlWHMyYW8wekdrSFFUUUZWOA?oc=5",
+        "source": "Google News: Portland housing"
       },
       {
-        "name": "CBRE: Q3 2026 Portland Multifamily Figures",
-        "url": "https://www.cbre.com/insights/figures/q3-2026-portland-multifamily-figures"
+        "title": "Buying a Median-Priced Home Would Cost Typical Mortgage Holders About $1,100 More a Month",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOTnlmbF9KOExsMDFOaFpiU09SVWVFbFlUa19yRnBoSkVIaG9MeG1jV3N5b1IxcGhOMjkxdFo3cWtfS0ZMY09CY3hqWEQtOW9ibmpCLWthY3FKT0FYZlV3Z2RpZ09DdHhOUkxFLVk1eXp6c3BYNG84bGNOUnlkeDd0Qmg3YXowa29sSWZ0d1lPMS1wNmFGYmc4M3l3Y3lxS19GSVl1NUpQeDN4UUNJd3g2Nkp2X0Vva09WYW5CVnlyUi1uSkYxdklnR3FfcEtsdTNUMW9xaW0xdVhRNzhnS0JsYVpsOA?oc=5",
+        "source": "Google News: Portland housing"
+      },
+      {
+        "title": "Mortgage rates jump sharply higher, after easing for four straight weeks. Here's why",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPdUZxa3hUQnZocTljMEFidmJheXdlMVpXbnc5TEx2M1pBQ2VacWVDQU81REoyV0RjTmhaMFlMdkxPdnpkMVNOeGpfUGRpVUE5ejY3Y18xdFlHdXUtbEIwOXlkTmp2UkFsbTZhYUd4UUFSME93ckFtMkVIUHJfUFc0alhCUzdCbkRndTRfdFk5Y2lUZkpuTmZBLWpHOVV1clFvTzl4eUZFVWo?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Today's Current Mortgage Rates: November 11, 2026",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rdmpsVUwtTnZNcjlIbUQ5a0oyZDlUSV9IV1ZYQy0yOHViOEttMVlsTXlfUVEwcXBibVcycFRJZTY2WEhfM2Voby0xbVpIVUtMZ05j?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage rates today, Nov. 11, 2026: Rates tick up a little after recent dip",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9OWmZZQkpIVjRIMmxzSmdvZW4wRGlPcVFOQ3IyRld3bWFDUGJvNnF5NUVxVjN4NmNPNTl6ZmhoeDZyYmhvb043VG9IZmlvSWdubWpGeFF3cnRaX0w5cjBGYm5IMnloQmV1ZkFtZTgyZw?oc=5",
+        "source": "Google News: mortgage rates"
+      }
+    ],
+    "stats": [
+      {
+        "label": "30-Year mortgage rate (US, November)",
+        "value": "7.20%",
+        "change": null,
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNVTgyU3NXLWZTZ3RMWDVPUGg4SjF5cDNRcnRBOVJCQWhSa3o2ajh1UTY1ay1RM0tOa3JYZ2JLZkszSElLdGlxUUhoVzdIdEpJV1h1UHFOZXVvcnlXTlZTM3lMemd1ckNZV1M4UzdWbzlIMHVLTi1PSlBFNkd5anc2TnhhUnY0bVhodi1iTQ?oc=5"
+      },
+      {
+        "label": "Average US 30-year mortgage rate (US, November)",
+        "value": "7.18%",
+        "change": "third straight decline",
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
       }
     ]
   }

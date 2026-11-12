@@ -1,56 +1,101 @@
 {
   "updated": "2026-11-11",
-  "updated_at": "2026-11-11T13:16:14Z",
+  "updated_at": "2026-11-12T07:30:59Z",
   "teams": {
     "blazers": {
-      "mood": "Relieved",
-      "pulse": "Skid over. Portland handled the Thunder 123-103 at home on Tuesday to get to 7-3, ending OKC's four-game win streak. The lineup shakeup paid off right away, and they get OKC again tonight at Moda.",
+      "mood": "optimistic and celebratory",
+      "pulse": "Fans are celebrating consecutive wins over the Thunder. They feel the team is building strong winning habits.",
       "storylines": [
-        "Beat OKC 123-103: Lillard had 25 (13 in the third), Avdija added 24 points and 8 assists, and a 38-21 third quarter broke it open.",
-        "Sidy Cissoko got his first start of the season in place of Scoot Henderson and scored 17 with three threes; Henderson had 11 off the bench on 3-of-12.",
-        "SGA scored 26 but went 0-for-4 from three, and OKC was missing Jalen Williams, Chet Holmgren and Cason Wallace, so temper the celebration a bit.",
-        "Back-to-back home set: the rematch with the Thunder is Wednesday night, and there's no word yet on who starts."
+        "Back-to-back victories against OKC",
+        "Vit Krejci out at least 8 weeks",
+        "Chris Youngblood has a foot bone bruise",
+        "Damian Lillard passed Clyde Drexler in FGA"
       ],
       "sources": [
-        {"name": "ESPN (Thunder recap)", "url": "https://www.espn.com/nba/recap?gameId=401909965"},
-        {"name": "Yahoo / AP recap", "url": "https://sports.yahoo.com/articles/damian-lillard-scores-25-points-065238034.html"},
-        {"name": "Yahoo: Six reasons", "url": "https://sports.yahoo.com/articles/six-reasons-why-trail-blazers-063653374.html"},
-        {"name": "Blazer's Edge (lineup)", "url": "https://www.blazersedge.com/trail-blazers-news/118225/blazers-move-scoot-henderson-out-of-starting-lineup-versus-thunder"},
-        {"name": "ClutchPoints (Scoot to bench)", "url": "https://clutchpoints.com/nba/portland-trail-blazers/blazers-news-scoot-henderson-returning-bench-favor-sidy-cissoko"}
+        {
+          "name": "ESPN (Thunder recap)",
+          "url": "https://www.espn.com/nba/recap?gameId=401909965"
+        },
+        {
+          "name": "Yahoo / AP recap",
+          "url": "https://sports.yahoo.com/articles/damian-lillard-scores-25-points-065238034.html"
+        },
+        {
+          "name": "Yahoo: Six reasons",
+          "url": "https://sports.yahoo.com/articles/six-reasons-why-trail-blazers-063653374.html"
+        },
+        {
+          "name": "Blazer's Edge (lineup)",
+          "url": "https://www.blazersedge.com/trail-blazers-news/118225/blazers-move-scoot-henderson-out-of-starting-lineup-versus-thunder"
+        },
+        {
+          "name": "ClutchPoints (Scoot to bench)",
+          "url": "https://clutchpoints.com/nba/portland-trail-blazers/blazers-news-scoot-henderson-returning-bench-favor-sidy-cissoko"
+        }
       ]
     },
     "timbers": {
-      "mood": "Fired up",
-      "pulse": "Still riding the Decision Day high after the 2-0 win at Austin that locked up the No. 7 seed. Now it's a long wait: the playoff series with No. 2 FC Dallas doesn't start until Nov. 21.",
+      "mood": "growing confidence",
+      "pulse": "Fans feel momentum building after reaching the highest Western Conference spot in five years. Confidence is rising following a critical win over Austin.",
       "storylines": [
-        "Game 1 is Saturday, Nov. 21 at 1 p.m. Pacific in Frisco (Apple TV); Game 2 is at Providence Park on Nov. 28; a Game 3, if needed, is back in Dallas on Dec. 2.",
-        "Portland closed the regular season with four straight wins to finish 13-14-7 with 46 points.",
-        "Dallas striker Petar Musa (22 goals, 6 assists) is the guy to stop; Dallas topped 60 goals for the first time in club history.",
-        "Martí Cifuentes has the Timbers in the playoffs for a third straight year, and Pantemis says they've been in playoff mode for weeks."
+        "Timbers secured an Audi 2026 MLS Cup Playoff spot",
+        "Playoffs feature a three-game series against Dallas",
+        "#James Pantemis up for 2026 MLS Save of the Year vote",
+        "#T2 lost 1-0 to Ventura County in Western Conference Semifinals"
       ],
       "sources": [
-        {"name": "KPTV (schedule)", "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"},
-        {"name": "FCDallas.com (dates)", "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"},
-        {"name": "Timbers.com (clinch)", "url": "https://www.timbers.com/news/timbers-clinch-spot-in-audi-2026-mls-cup-playoffs-as-no-7-seed"},
-        {"name": "MLSsoccer.com (hot streak)", "url": "https://www.mlssoccer.com/news/portland-timbers-ride-hot-streak-into-audi-mls-cup-playoffs"},
-        {"name": "Yahoo (hot streak)", "url": "https://sports.yahoo.com/articles/portland-timbers-ride-hot-streak-041300702.html"}
+        {
+          "name": "KPTV (schedule)",
+          "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"
+        },
+        {
+          "name": "FCDallas.com (dates)",
+          "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"
+        },
+        {
+          "name": "Timbers.com (clinch)",
+          "url": "https://www.timbers.com/news/timbers-clinch-spot-in-audi-2026-mls-cup-playoffs-as-no-7-seed"
+        },
+        {
+          "name": "MLSsoccer.com (hot streak)",
+          "url": "https://www.mlssoccer.com/news/portland-timbers-ride-hot-streak-into-audi-mls-cup-playoffs"
+        },
+        {
+          "name": "Yahoo (hot streak)",
+          "url": "https://sports.yahoo.com/articles/portland-timbers-ride-hot-streak-041300702.html"
+        }
       ]
     },
     "f1": {
-      "mood": "Spicy",
-      "pulse": "Both titles are done, so the fight is now for second: Verstappen leads Russell by 17 points with Vegas, Qatar and Abu Dhabi left. Wolff saying Mercedes wants Russell second has fans arguing about whether Antonelli will be asked to help.",
+      "mood": "Divided and intense",
+      "pulse": "Fans are debating Ferrari's radio strategy and Lewis Hamilton's political activism. Interest is high regarding Kimi Antonelli's profile.",
       "storylines": [
-        "Standings: Verstappen 279, Russell 262, Hamilton one point behind Russell, with 75 points still on the table.",
-        "Wolff says Mercedes wants Russell to finish second, but reports say no team-order policy has actually been confirmed.",
-        "Verstappen has outscored Russell by 90 points over the last five races, capped by his drive from 21st to 2nd in Brazil.",
-        "Las Vegas is next: qualifying Friday, Nov. 20 and the race Saturday night, Nov. 21."
+        "Mercedes secured the 2026 Constructors' Championship.",
+        "Lando Norris won the Sao Paulo Grand Prix.",
+        "Pirelli is revising 2027 wet-weather tyres.",
+        "Umamusume to sponsor Japanese GP corner renaming."
       ],
       "sources": [
-        {"name": "RacingNews365 (Wolff)", "url": "https://racingnews365.com/toto-wolff-addresses-prospect-of-mercedes-imposing-team-orders-on-kimi-antonelli"},
-        {"name": "Yahoo (Russell plays it down)", "url": "https://sports.yahoo.com/articles/russell-plays-down-verstappen-chase-163000472.html"},
-        {"name": "Grande Prêmio (P2 fight)", "url": "https://grandepremio.com/en/f1/mercedes-considers-helping-russell-beat-verstappen-to-f1-runner-up-spot-after-90-point-collapse/"},
-        {"name": "Grande Prêmio (last five races)", "url": "https://grandepremio.com/en/f1/verstappen-leads-last-five-races-as-mercedes-dominance-fades-despite-2026-titles"},
-        {"name": "McLaren (Vegas schedule)", "url": "https://www.mclaren.com/racing/formula-1/2026/las-vegas-grand-prix/"}
+        {
+          "name": "RacingNews365 (Wolff)",
+          "url": "https://racingnews365.com/toto-wolff-addresses-prospect-of-mercedes-imposing-team-orders-on-kimi-antonelli"
+        },
+        {
+          "name": "Yahoo (Russell plays it down)",
+          "url": "https://sports.yahoo.com/articles/russell-plays-down-verstappen-chase-163000472.html"
+        },
+        {
+          "name": "Grande Prêmio (P2 fight)",
+          "url": "https://grandepremio.com/en/f1/mercedes-considers-helping-russell-beat-verstappen-to-f1-runner-up-spot-after-90-point-collapse/"
+        },
+        {
+          "name": "Grande Prêmio (last five races)",
+          "url": "https://grandepremio.com/en/f1/verstappen-leads-last-five-races-as-mercedes-dominance-fades-despite-2026-titles"
+        },
+        {
+          "name": "McLaren (Vegas schedule)",
+          "url": "https://www.mclaren.com/racing/formula-1/2026/las-vegas-grand-prix/"
+        }
       ]
     }
   }

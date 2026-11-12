@@ -11,12 +11,100 @@
       "url": "https://oregonzoo.org/events/veterans-day"
     },
     {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-11",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
+    },
+    {
+      "title": "Chrysanthemum Festival",
+      "date": "2026-11-11",
+      "ends": "2026-11-17",
+      "where": "Portland",
+      "detail": "A floral design showcase with illuminated evenings at Lan Su Chinese Garden. $18.00.",
+      "url": "https://pdxparent.com/series/chrysanthemum-festival-3/"
+    },
+    {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
+    },
+    {
+      "title": "Spanish Story & Play Time with Adventures in Spanish",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Portland area",
+      "detail": "A joyful hour of stories, songs, and play in Spanish for young children. Price not listed.",
+      "url": "https://pdxparent.com/series/spanish-story-play-time/"
+    },
+    {
+      "title": "Sing, Sign & Play @ SWPMA PLAY! at The Multnomah Arts Center",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Playtime involving singing, sign language, and movement in a soft space. $5 – $25.",
+      "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
+    },
+    {
+      "title": "Mini Movers at Laurelhurst Park!",
+      "date": "2026-11-12",
+      "ends": "2026-12-08",
+      "where": "Portland",
+      "detail": "A playful class using props and storytelling to get toddlers moving. $18.",
+      "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
+    },
+    {
+      "title": "Little Explorers: Toddler & Pre-K Drop-In",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Beaverton",
+      "detail": "Hands-on play with art, sensory materials, and STEAM activities. $25.00.",
+      "url": "https://pdxparent.com/series/little-explorers-toddler-pre-k-drop-in/"
+    },
+    {
+      "title": "Gabby’s Dollhouse at The FLIP Children’s Museum of Hillsboro",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Hillsboro",
+      "detail": "Discovery days featuring crafts, a scavenger hunt, and character photo ops. $10.",
+      "url": "https://pdxparent.com/series/gabbys-dollhouse-at-the-flip-childrens-museum-of-hillsboro-2/"
+    },
+    {
+      "title": "Family Ninjas (Martial Arts) For Ages 2/3 @ SWPMA PLAY!",
+      "date": "2026-11-12",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A family martial arts experience on a matted space. $15 – $25.",
+      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
+    },
+    {
+      "title": "Curiosity Kids: Sasquatch Science Team",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "A science activity for kids from 9 am to 10 am.",
+      "url": "https://omsi.edu/events/curiosity-kids-sasquatch-science-team/"
+    },
+    {
       "title": "Pittock Mansion: Home for the Holidays",
       "date": "2026-11-16",
       "ends": "2027-01-10",
       "where": "Pittock Mansion, Portland",
       "detail": "The mansion decorated for 'Holidays from Around the World'; Travel Portland lists Nov. 16, 2026 to Jan. 10, 2027, with days and times that vary.",
       "url": "https://www.travelportland.com/event/68f14265d6b9f4033114e411/"
+    },
+    {
+      "title": "ZooLights Sensory-Friendly",
+      "date": "2026-11-16",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "Guests with sensory processing needs and families can enjoy ZooLights from 4:30 to 8:30 p.m.",
+      "url": "https://www.oregonzoo.org/sensory-night"
     },
     {
       "title": "ZooLights",
@@ -67,20 +155,20 @@
       "url": "https://ma.to/event/annual-tree-lighting-27-nov-2026"
     },
     {
+      "title": "Curiosity Kids: Design and Discover",
+      "date": "2026-11-28",
+      "ends": "2026-12-05",
+      "where": "Portland, OR",
+      "detail": "A design activity for kids from 9 am to 10 am.",
+      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
+    },
+    {
       "title": "Christmas Ships Parade",
       "date": "2026-12-03",
       "ends": "2026-12-20",
       "where": "Columbia and Willamette rivers",
       "detail": "Lighted boat parades on both rivers; Carnifest reports Dec. 3 to 20, 2026. Nightly routes are posted on christmasships.org, and parades can be cancelled for weather.",
       "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
-    },
-    {
-      "title": "Washougal Lighted Christmas Parade and Tree Lighting",
-      "date": "2026-12-03",
-      "ends": null,
-      "where": "Downtown Washougal, WA",
-      "detail": "The city says the lighted parade starts at 6 p.m., followed right away by the tree lighting ceremony.",
-      "url": "https://cityofwashougal.us/727/Washougal-Lighted-Christmas-Parade-and-T"
     },
     {
       "title": "La Center Christmas Festival",
@@ -105,6 +193,14 @@
       "where": "Firstenburg Community Center, Vancouver WA",
       "detail": "City of Vancouver event, 6 to 8 p.m.; registration required, $12 for Vancouver residents.",
       "url": "https://www.cityofvancouver.us/?p=74306"
+    },
+    {
+      "title": "The Polar Express",
+      "date": "2026-12-11",
+      "ends": "2026-12-16",
+      "where": "Portland, OR",
+      "detail": "An event featuring The Polar Express experience.",
+      "url": "https://tickets.omsi.edu/oregonmuseumofscienceandindustry/events/5c72a103-d2d0-af25-e935-3afe47a0623c"
     }
   ]
 }

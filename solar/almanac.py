@@ -132,39 +132,70 @@ def _text(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s))).strip()
 
 
+MONTHS = {m: i for i, m in enumerate("jan feb mar apr may jun jul aug sep oct nov dec".split(), 1)}
+
+
+def _trim(s, n=280):
+    return (s[:n - 3].rsplit(" ", 1)[0] + "…") if s and len(s) > n else s or None
+
+
 def _reports(page):
-    """Trip report links (their URLs carry the hike date) and the text after each one."""
+    """Trip reports in a hike's @@related_tripreport_listing: one <div class="item"> each, with the
+    hike date in the title (the report URL carries the date it was filed), the author and the full text."""
     out = []
-    marks = list(re.finditer(r'href="(https://www\.wta\.org/go-hiking/trip-reports/trip_report-(\d{4}-\d\d-\d\d)[^"]*)"', page))
-    for i, m in enumerate(marks):
-        if any(r["url"] == m.group(1) for r in out):
+    for item in re.split(r'<div class="item">', page)[1:]:
+        m = re.search(r'class="listitem-title">\s*<a href="(https://www\.wta\.org/go-hiking/trip-reports/'
+                      r'trip_report-(\d{4}-\d\d-\d\d)[^"]*)"[^>]*>(.*?)</a>', item, re.S)
+        if not m or any(r["url"] == m.group(1) for r in out):
             continue
-        chunk = page[m.end():marks[i + 1].start() if i + 1 < len(marks) else m.end() + 4000]
-        body = re.search(r'class="[^"]*report-text[^"]*"[^>]*>(.*?)</div>', chunk, re.S)
-        by = re.search(r'class="[^"]*\b(?:wta-icon-headline__text|CreatorInfo)[^"]*"[^>]*>(.*?)</', chunk, re.S)
-        issues = re.search(r'class="[^"]*trail-issues[^"]*"[^>]*>(.*?)</div>', chunk, re.S)
-        snippet = _text(body.group(1)) if body else ""
-        out.append({"url": m.group(1), "date": m.group(2), "by": _text(by.group(1)) if by else None,
-                    "issues": _text(issues.group(1)) or None if issues else None,
-                    "text": (snippet[:277] + "…") if len(snippet) > 280 else snippet or None})
+        date = m.group(2)
+        d = re.search(r"\b([A-Z][a-z]{2})[a-z]*\.? (\d{1,2}), (\d{4})\s*$", _text(m.group(3)))
+        if d and d.group(1).lower() in MONTHS:
+            date = dt.date(int(d.group(3)), MONTHS[d.group(1).lower()], int(d.group(2))).isoformat()
+        by = re.search(r'class="wta-icon-headline__text"[^>]*>(.*?)</span>', item, re.S)
+        body = re.search(r'class="trip-report-full-text"[^>]*>(.*?)</div>', item, re.S)
+        out.append({"url": m.group(1), "date": date, "by": _text(by.group(1)) or None if by else None,
+                    "issues": None, "text": _trim(_text(body.group(1))) if body else None})
     return sorted(out, key=lambda r: r["date"], reverse=True)
 
 
+def _report_page(page):
+    """One trip report's own page: the condition tags (Trail Conditions, Road, Bugs, Snow, Type of
+    Hike) and, in case the listing lacked them, the author and the text."""
+    conditions = {_text(k): _text(v) for k, v in re.findall(
+        r'class="trip-condition">\s*<h4>(.*?)</h4>\s*<span>(.*?)</span>', page, re.S)}
+    by = re.search(r'itemprop="author".*?class="wta-icon-headline__text"[^>]*>(.*?)</span>', page, re.S)
+    body = re.search(r'id="tripreport-body-text"[^>]*>(.*?)</div>', page, re.S)
+    return {"conditions": {k: v for k, v in conditions.items() if k and v} or None,
+            "by": _text(by.group(1)) or None if by else None,
+            "text": _trim(_text(body.group(1))) if body else None}
+
+
 def trip_reports(today):
-    """Latest trip reports for a few Gorge hikes, newest first, from the last three weeks."""
+    """Latest trip reports for a few Gorge hikes, newest first, from the last three weeks. One listing
+    request per hike, plus one for the newest recent report's own page, which holds the conditions."""
     hikes, errors = [], []
     for slug, name in HIKES:
-        reports = []
-        for url in (f"{WTA}{slug}/@@related_tripreport_listing", f"{WTA}{slug}"):
-            try:
-                reports = _reports(_get(url, as_json=False))
-            except Exception as e:
-                errors.append(f"{name}: {e}")
-            if reports:
-                break
+        try:
+            reports = _reports(_get(f"{WTA}{slug}/@@related_tripreport_listing", as_json=False))
+        except Exception as e:
+            errors.append(f"{name}: {e}")
+            continue
         recent = [r for r in reports if (today - dt.date.fromisoformat(r["date"])).days <= 21]
-        if recent:
-            hikes.append({"hike": name, "url": WTA + slug, "count": len(recent), "latest": recent[0]})
+        if not recent:
+            continue
+        latest = recent[0]
+        try:
+            extra = _report_page(_get(latest["url"], as_json=False))
+            latest["by"] = latest["by"] or extra["by"]
+            latest["text"] = latest["text"] or extra["text"]
+            latest["conditions"] = extra["conditions"]
+            # The tags as one line for the card, the hike type left out: "Trail in good condition; Snow free".
+            tags = [v for k, v in (extra["conditions"] or {}).items() if k != "Type of Hike"]
+            latest["issues"] = "; ".join(tags) or None
+        except Exception as e:
+            errors.append(f"{name} report: {e}")
+        hikes.append({"hike": name, "url": WTA + slug, "count": len(recent), "latest": latest})
     if not hikes and errors:
         raise RuntimeError("; ".join(errors[:3]))
     return sorted(hikes, key=lambda h: h["latest"]["date"], reverse=True)

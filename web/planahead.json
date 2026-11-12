@@ -18,7 +18,7 @@
     {
       "title": "Fall Out Boy, Providence Park (Aug 26, 2027)",
       "kind": "Tickets",
-      "action": "Artist presale opened Wed, Nov 11 at 10 a.m. (sign up at twilightofthepunkstour.com); general on-sale is Thu, Nov 12 at 10 a.m. PT.",
+      "action": "General on-sale today, Thu Nov 12 at 10 a.m. PT; buy face value through the official seller rather than resale.",
       "starts": "2026-11-12",
       "by": null,
       "why": "Newly announced stadium stop on the Twilight of the Punks tour with The Offspring, Good Charlotte and The Story So Far; the Timbers say general sale opens Nov 12 at 10 a.m. PT.",
@@ -40,7 +40,7 @@
     {
       "title": "Royal Blood with Bodega, Revolution Hall (Apr 18, 2027)",
       "kind": "Tickets",
-      "action": "Presale Thu, Nov 12 at 10 a.m. via Ticketmaster; general on-sale Fri, Nov 13 at 10 a.m.",
+      "action": "Ticketmaster presale today, Thu Nov 12 at 10 a.m.; general on-sale Fri, Nov 13 at 10 a.m.",
       "starts": "2026-11-12",
       "by": null,
       "why": "Newly announced 2027 North American tour stop at Revolution Hall with Bodega opening.",
@@ -120,20 +120,6 @@
       ]
     },
     {
-      "title": "Jonah Kagen ticket presale",
-      "kind": "Tickets",
-      "action": "Ticket presale live",
-      "starts": "2026-11-19",
-      "by": null,
-      "why": "Portland tour date",
-      "sources": [
-        {
-          "name": "Web search: Portland presales",
-          "url": "https://www.facebook.com/jonahkagen/posts/alright-i-heard-ya-portland-added-a-date-on-my-tour-just-for-yall-this-march-tic/1442460347887781"
-        }
-      ]
-    },
-    {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
       "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
@@ -172,6 +158,24 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Timberline Mt. Hood Fusion Pass last day to buy (Nov 29)",
+      "kind": "Deadline",
+      "action": "Buy a Fusion Pass by Sun, Nov 29; Timberline's page says it isn't sold after that.",
+      "starts": null,
+      "by": "2026-11-29",
+      "why": "Timberline's season pass page says Fusion Passes are only available through Nov. 29, and Freeskier reports prices rise the longer you wait.",
+      "sources": [
+        {
+          "name": "Timberline season passes",
+          "url": "https://timberlinelodge.com/mountain/season-passes/"
+        },
+        {
+          "name": "Freeskier",
+          "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
         }
       ]
     },

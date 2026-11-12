@@ -1924,17 +1924,14 @@ def _studio5():
         if kind == "culdelampe":
             top, bot = cy - B, cy + B
             pts = []
-            m = n // 3
-            for i in range(m + 1):                      # right side down to the point
-                u = i / m
-                pts.append((cx + A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m + 1):                   # left side back up
-                u = 1 - i / m
-                pts.append((cx - A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m):                       # arched top, left to right
-                u = i / m
-                x = cx - A + 2 * A * u
-                pts.append((x, top - B * .12 * _m.sin(_PI * u)))
+            for i in range(n):
+                t = _TAU * i / n
+                c, sn = _m.cos(t), _m.sin(t)
+                if sn >= 0:
+                    y = top + max(7., (bot - top) * (1 - abs(c)) ** 1.45)
+                else:
+                    y = top - (bot - top) * .08 * (1 - c * c)
+                pts.append((cx + A * c, y))
             return pts
         return _shape(kind, cx, cy, A, B, n)
 
@@ -2017,8 +2014,8 @@ def _studio5():
         arches gently, the ends fold under into swallow tails ribbed with silk lines."""
         st = Studio(bw, bh, P.get("seed", 1))
         cv = C.Canvas()
-        tail_w = _clamp(bw * .1, 14., 60.)
-        fw = bw - 2 * tail_w * .9
+        tail_w = _clamp(bw * .07, 12., 40.)
+        fw = bw - 2 * tail_w * .95
         fh = bh * .7
         cx = bw / 2
         x0, x1 = cx - fw / 2, cx + fw / 2
@@ -2033,21 +2030,20 @@ def _studio5():
             ey = yc(ex)
             tx0 = ex - side * tail_w * .3
             tx1 = ex + side * tail_w * .9
-            dy = fh * .28
+            dy = fh * .2
             top0, bot0 = (tx0, ey - fh / 2 + dy), (tx0, ey + fh / 2 + dy)
             top1, bot1 = (tx1, ey - fh / 2 + dy - fh * .12), (tx1 - side * fh * .1, ey + fh / 2 + dy)
             notch = (tx1 - side * fh * .45, ey + dy + fh * .05)
             tail = [top0, top1, notch, bot1, bot0]
             cv.obj([tail], 1.)
-            for k in range(1, 12):
-                f = k / 12.
-                if f < .35 and k % 2:
+            nk = max(8, int(fh / 1.6))
+            for k in range(1, nk):
+                f = k / nk
+                if f < .3 and k % 2:
                     continue
                 a = _lerp(top0, bot0, f)
-                b = _lerp(top1, bot1, f)
-                if f > .4:
-                    b = _lerp(b, notch, (f - .4) * 1.4)
-                cv.hair([a, b])
+                b = _lerp(top1, notch, f / .5) if f < .5 else _lerp(notch, bot1, (f - .5) / .5)
+                (cv.line if f > .8 else cv.hair)([a, b])
             fold = [(ex, ey - fh / 2), (ex, ey + fh / 2), (tx0, ey + fh / 2 + dy), (tx0, ey - fh / 2 + dy)]
             cv.obj([fold], 1.)
             cv.hair(C.hatch_poly(fold, 45 * side, 1.5))
@@ -2098,19 +2094,27 @@ def _studio5():
             kind = P.get("silhouette", "lens")
             cx = bw / 2
             if kind == "culdelampe":
-                sil = silhouette(kind, cx, bh * .55, bw / 2 - .5, bh * .43)
-                mb = bh * .3
-                med = (P.get("shape_tail", "oval"), cx, bh * .34, mb * 1.25, mb)
+                bw = min(w, bh * 2.9)
+                cx = bw / 2
+                sil = silhouette(kind, cx, bh * .54, bw / 2 - .5, bh * .44)
+                mb = bh * .34
+                med = (P.get("shape_tail", "oval"), cx, bh * .4, mb * 1.3, mb)
             else:
                 sil = silhouette(kind, cx, bh / 2, bw / 2 - .5, bh / 2 - .5)
                 mb = bh / 2 - 1.
                 med = (P.get("shape_tail", "oval"), cx, bh / 2, mb * P.get("tail_aspect", 1.45), mb)
             def lens_src(g):
                 L = g["mx"] - g["ma"] - 4
-                R0 = min(bh * .3, L * .32)
-                return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
-                         {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
-            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src if kind == "lens" else None, ring_r=.9)
+                if kind == "lens":
+                    R0 = min(bh * .3, L * .32)
+                    return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
+                             {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
+                R0 = min(bh * .17, L * .3)
+                return [((g["mx"] - g["ma"] * .9, g["my"] - g["mb"] * .45), _PI - .05, R0, -1,
+                         {"lead": max(2., L - R0 * 2.2), "lead_k": .001}),
+                        ((g["mx"] - g["ma"] * .55, g["my"] + g["mb"] * .85), _PI * .8, R0 * .7, 1,
+                         {"lead": max(2., L * .35), "lead_k": .003})]
+            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src, ring_r=.9)
             return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
         if form == "device":
             D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
@@ -2628,6 +2632,72 @@ def _tablet(tx, ty, tw, th, acres, seed):
 # layouts (adapted from engraving_codex so the vignette fills the whole cartouche field)
 
 
+
+def _seismo(x0, x1, base, amp, seed):
+    """The ridge as a seismograph trace: a quiet line, and on the beats bursts of swing rhythm, a big
+    stroke on the beat and a smaller one two-thirds through it (long-short, the swung eighth)."""
+    rng = random.Random(seed)
+    W = x1 - x0
+    beat = W / 7.
+    hits = []
+    for b in range(8):
+        hits.append((x0 + beat * (b + .25), amp * (1. if b % 2 == 0 else .8)))
+        hits.append((x0 + beat * (b + .25 + 2 / 3), amp * .45))
+    pts = []
+    x = x0 - 2
+    while x <= x1 + 2:
+        u = (x - x0) / W
+        y = base - amp * .55 * (math.sin(u * 3.1 + .4) * .6 + math.sin(u * 7.3 + 1.1) * .25) + rng.uniform(-.25, .25)
+        for hx, a in hits:
+            d = x - hx
+            if 0 <= d < beat * .32:
+                y -= a * math.exp(-d / (beat * .09)) * math.sin(d / (beat * .032) * math.pi)
+        pts.append((x, y))
+        x += .6
+    return pts, hits
+
+
+def roads_banner(x, y, w, h, yc, seed):
+    """Hazards: a fire lookout on a ridge whose crest is carved as a seismograph trace (its bursts
+    keep swing time: Parker's Easter egg), the Grasshopper smoke rising beyond, firs on the slopes."""
+    rng = random.Random(seed)
+    cv = ST5.Cv()
+    base = y + h * .62
+    skysvg = ST5.sky(cv, x - 2, y - 2, x + w + 2, base - h * .1, seed, clouds=1)
+    # the smoke column far off on the right, leaning east
+    bl = []
+    for i in range(14):
+        t = i / 13
+        bl.append((base - h * .1 - h * .6 * t, x + w * (.78 + .05 * t * t) + rng.uniform(-1, 1) * h * .08 * t, h * (.06 + .1 * t) * rng.uniform(.85, 1.15), max(0., .7 - t), rng.uniform(-.2, .2)))
+    _plume(cv, sorted(bl))
+    trace, hits = _seismo(x, x + w, base, h * .24, seed)
+    lx = x + w * .17
+    # a level knoll for the lookout
+    ky = min(py for px, py in trace if abs(px - lx) < w * .035) if trace else base
+    trace = [(px, py if abs(px - lx) > w * .035 else ky) for px, py in trace]
+    land = trace + [(x + w + 2, y + h + 4), (x - 2, y + h + 4)]
+    cv.obj([land], 0)
+    cv.line(trace)
+    # slope shading under the trace: fall-line cuts that follow the bursts down, crossed in the deep
+    cuts = []
+    for i in range(0, len(trace) - 1, 3):
+        px, py = trace[i]
+        L = (base - py) * .5 + h * .2
+        cuts.append([(px, py + 1.2), (px + L * .25, py + 1.2 + L)])
+    cv.hair(cuts)
+    deep = []
+    for i in range(0, len(trace) - 1, 5):
+        px, py = trace[i]
+        deep.append([(px + h * .1, py + h * .2), (px + h * .3, y + h + 2)])
+    cv.hair(deep)
+    for k in range(int(w / 7)):
+        fx = x + 4 + k * 7 + rng.uniform(-2, 2)
+        if abs(fx - lx) < w * .06:
+            continue
+        _fir(cv, fx, y + h + 1, h * rng.uniform(.28, .42))
+    _lookout(cv, lx, base - h * .02, h * .5)
+    return skysvg + cv.svg()
+
 def _first_fire(ctx):
     s = (ctx or {}).get("sample", "") or ""
     m = re.search(r"NIFC\s+([A-Z][\w' ]+? Fire)\s+([A-Z][\w ]+? County)", s)
@@ -2641,7 +2711,9 @@ def plate(w, h, ctx):
     seed = sum(map(ord, ctx.get("date", ""))) * 7 + 5
     acres = _acres(ctx)
 
-    def sc(x, y, fw, fh, lod):
+    def sc(x, y, fw, fh, lod, yc=None):
+        if yc is not None:
+            return roads_banner(x, y, fw, fh, yc, seed)
         cid = ST5._uidp("rs", x, y, fw, fh, lod)
         d = C._d([(x, y), (x + fw, y), (x + fw, y + fh), (x, y + fh)], True, 0)
         if lod == 0:
@@ -2651,7 +2723,7 @@ def plate(w, h, ctx):
     def crest(st, cv, x, y, size):
         # a kranok flame rising from the crest leaves
         _flame(cv, x, y + 1, size * .9, random.Random(seed), 0., 3)
-    P = dict(seed=seed, shape="lozenge", shape_medium="oval", shape_band="oval", stems=3, med_aspect=.82,
+    P = dict(seed=seed, form="tailpiece", ribbon=True, shape="lozenge", shape_medium="oval", shape_band="oval", stems=3, med_aspect=.82,
              band_aspect=2.1, leaf_k=1.08, rmin_k=1.05, legend=_first_fire(ctx), tablet="",
              tablet_fn=lambda tx, ty, tw, th: _tablet(tx, ty, tw, th, acres, seed), crest=crest, scene=sc)
-    return ST5.compose(w, h, ctx, P)
+    return ST5.compose_form(w, h, ctx, P)

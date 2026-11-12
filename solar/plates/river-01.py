@@ -1920,17 +1920,14 @@ def _studio5():
         if kind == "culdelampe":
             top, bot = cy - B, cy + B
             pts = []
-            m = n // 3
-            for i in range(m + 1):                      # right side down to the point
-                u = i / m
-                pts.append((cx + A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m + 1):                   # left side back up
-                u = 1 - i / m
-                pts.append((cx - A * (1 - u) ** 1.7 * (1 - .15 * _m.sin(_PI * u)), top + (bot - top) * u))
-            for i in range(1, m):                       # arched top, left to right
-                u = i / m
-                x = cx - A + 2 * A * u
-                pts.append((x, top - B * .12 * _m.sin(_PI * u)))
+            for i in range(n):
+                t = _TAU * i / n
+                c, sn = _m.cos(t), _m.sin(t)
+                if sn >= 0:
+                    y = top + max(7., (bot - top) * (1 - abs(c)) ** 1.45)
+                else:
+                    y = top - (bot - top) * .08 * (1 - c * c)
+                pts.append((cx + A * c, y))
             return pts
         return _shape(kind, cx, cy, A, B, n)
 
@@ -2013,8 +2010,8 @@ def _studio5():
         arches gently, the ends fold under into swallow tails ribbed with silk lines."""
         st = Studio(bw, bh, P.get("seed", 1))
         cv = C.Canvas()
-        tail_w = _clamp(bw * .1, 14., 60.)
-        fw = bw - 2 * tail_w * .9
+        tail_w = _clamp(bw * .07, 12., 40.)
+        fw = bw - 2 * tail_w * .95
         fh = bh * .7
         cx = bw / 2
         x0, x1 = cx - fw / 2, cx + fw / 2
@@ -2029,21 +2026,20 @@ def _studio5():
             ey = yc(ex)
             tx0 = ex - side * tail_w * .3
             tx1 = ex + side * tail_w * .9
-            dy = fh * .28
+            dy = fh * .2
             top0, bot0 = (tx0, ey - fh / 2 + dy), (tx0, ey + fh / 2 + dy)
             top1, bot1 = (tx1, ey - fh / 2 + dy - fh * .12), (tx1 - side * fh * .1, ey + fh / 2 + dy)
             notch = (tx1 - side * fh * .45, ey + dy + fh * .05)
             tail = [top0, top1, notch, bot1, bot0]
             cv.obj([tail], 1.)
-            for k in range(1, 12):
-                f = k / 12.
-                if f < .35 and k % 2:
+            nk = max(8, int(fh / 1.6))
+            for k in range(1, nk):
+                f = k / nk
+                if f < .3 and k % 2:
                     continue
                 a = _lerp(top0, bot0, f)
-                b = _lerp(top1, bot1, f)
-                if f > .4:
-                    b = _lerp(b, notch, (f - .4) * 1.4)
-                cv.hair([a, b])
+                b = _lerp(top1, notch, f / .5) if f < .5 else _lerp(notch, bot1, (f - .5) / .5)
+                (cv.line if f > .8 else cv.hair)([a, b])
             fold = [(ex, ey - fh / 2), (ex, ey + fh / 2), (tx0, ey + fh / 2 + dy), (tx0, ey - fh / 2 + dy)]
             cv.obj([fold], 1.)
             cv.hair(C.hatch_poly(fold, 45 * side, 1.5))
@@ -2094,19 +2090,27 @@ def _studio5():
             kind = P.get("silhouette", "lens")
             cx = bw / 2
             if kind == "culdelampe":
-                sil = silhouette(kind, cx, bh * .55, bw / 2 - .5, bh * .43)
-                mb = bh * .3
-                med = (P.get("shape_tail", "oval"), cx, bh * .34, mb * 1.25, mb)
+                bw = min(w, bh * 2.9)
+                cx = bw / 2
+                sil = silhouette(kind, cx, bh * .54, bw / 2 - .5, bh * .44)
+                mb = bh * .34
+                med = (P.get("shape_tail", "oval"), cx, bh * .4, mb * 1.3, mb)
             else:
                 sil = silhouette(kind, cx, bh / 2, bw / 2 - .5, bh / 2 - .5)
                 mb = bh / 2 - 1.
                 med = (P.get("shape_tail", "oval"), cx, bh / 2, mb * P.get("tail_aspect", 1.45), mb)
             def lens_src(g):
                 L = g["mx"] - g["ma"] - 4
-                R0 = min(bh * .3, L * .32)
-                return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
-                         {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
-            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src if kind == "lens" else None, ring_r=.9)
+                if kind == "lens":
+                    R0 = min(bh * .3, L * .32)
+                    return [((g["mx"] - g["ma"] + 2, g["my"] + bh * .08), _PI + .12, R0, 1,
+                             {"lead": max(2., L - R0 * 2.4), "lead_k": .002})]
+                R0 = min(bh * .17, L * .3)
+                return [((g["mx"] - g["ma"] * .9, g["my"] - g["mb"] * .45), _PI - .05, R0, -1,
+                         {"lead": max(2., L - R0 * 2.2), "lead_k": .001}),
+                        ((g["mx"] - g["ma"] * .55, g["my"] + g["mb"] * .85), _PI * .8, R0 * .7, 1,
+                         {"lead": max(2., L * .35), "lead_k": .003})]
+            body = _shaped_plate(bw, bh, P, sil, med, 0, sources=lens_src, ring_r=.9)
             return plate_doc(w, h, f'<g transform="translate({_N((w - bw) / 2)},{_N((h - bh) / 2)})">{body}</g>')
         if form == "device":
             D = _clamp(min(w, h), 40., 60.) if min(w, h) >= 40 else min(w, h)
@@ -2710,6 +2714,89 @@ def _above(seg, f):
 # frame layouts (the house layouts, re-cut for this page)
 
 
+
+def _st_johns(cv, x0, x1, deck, top):
+    """The St. Johns Bridge far off: two gothic-arched towers, the main cables in catenary, the deck."""
+    tw = max(1.6, (x1 - x0) * .035)
+    for tx in (x0, x1):
+        twr = [(tx - tw, deck + 3), (tx - tw * .7, top + 2), (tx, top - 1.5), (tx + tw * .7, top + 2), (tx + tw, deck + 3)]
+        cv.obj([twr], .5)
+        cv.hair([[(tx, top + 2), (tx, deck + 2)]])
+    span = x1 - x0
+    cab = [(x0 + span * t, top + 1 + (deck - top - 2) * (1 - (2 * t - 1) ** 2)) for t in [i / 24 for i in range(25)]]
+    cv.line(cab)
+    for side, xe in ((-1, x0), (1, x1)):
+        cv.line([(xe, top + 1), (xe + side * span * .32, deck)])
+    cv.line([(x0 - span * .4, deck), (x1 + span * .4, deck)])
+    cv.hair([[(x0 + span * t, deck) , (x0 + span * t, cab[int(t * 24)][1])] for t in [i / 16 for i in range(1, 16)]])
+
+
+def river_banner(x, y, w, h, yc, info, seed):
+    """The Columbia as a ribbon of moving water: a far bank of firs with the St. Johns Bridge small
+    in the distance (Easter egg), swells in rows that open and steepen toward the viewer, each crest
+    lit and its back slope cut in curving shade; a bulk carrier only when one is moored."""
+    rng = random.Random(seed)
+    cv = ST5.Cv()
+    cyc = lambda xx: yc(xx) - yc(x + w / 2)
+    bank = y + h * .38
+    skysvg = ST5.sky(cv, x - 2, y - 2, x + w + 2, bank, seed, clouds=2 if w > 300 else 1)
+    # far bank: Sauvie's cottonwoods and the Washington hills, the bridge off to the east
+    hills = [(x - 2, bank + 1)] + [(x + w * t, bank - h * (.05 + .035 * math.sin(t * 7 + seed % 5) + .02 * math.sin(t * 19)) + cyc(x + w * t)) for t in [i / 60 for i in range(61)]] + [(x + w + 2, bank + 1)]
+    cv.obj([hills], .5)
+    cv.hair(C.hatch_poly(hills, 0, 1.5))
+    ST5.firline(cv, x - 2, x + w + 2, bank + 1 + cyc(x + w * .5), max(2.5, h * .07), seed + 3, 2.4)
+    bx0 = x + w * .7
+    _st_johns(cv, bx0, bx0 + w * .1, bank - h * .03 + cyc(bx0), bank - h * .27 + cyc(bx0))
+    out = [skysvg]
+    # water: rows of swells
+    wv = ST5.Cv()
+    wv.obj([[(x - 2, bank + 1.5), (x + w + 2, bank + 1.5), (x + w + 2, y + h + 4), (x - 2, y + h + 4)]], 0)
+    yy = bank + 2.5
+    r = 0
+    while yy < y + h + 2:
+        t = (yy - bank) / (h * .62)
+        lam = 6 + 26 * t
+        amp = .4 + 2.2 * t
+        ph = rng.uniform(0, 6.3)
+        crest, back = [], []
+        xx = x - 2
+        while xx < x + w + 2:
+            u = (xx - x) / lam * (2 * PI) + ph
+            off = cyc(xx) * (1 - t)
+            yv = yy - amp * abs(math.sin(u / 2)) ** 1.6 + off
+            crest.append((xx, yv))
+            xx += 1.2
+        # break crests into strokes so the light plays on the water
+        seg = []
+        bo = rng.randrange(0, 30)
+        for i, p in enumerate(crest):
+            if ((i + bo) // int(4 + 6 * t)) % 3 == 2 and t > .2:
+                if len(seg) > 1:
+                    (wv.line if t > .45 else wv.hair)(seg)
+                seg = []
+            else:
+                seg.append(p)
+        if len(seg) > 1:
+            (wv.line if t > .45 else wv.hair)(seg)
+        if t > .3:
+            # back slopes: short curved cuts under each crest, the shade of the swell
+            k = 0
+            while k < len(crest) - 3:
+                p = crest[k]
+                u = ((p[0] - x) / lam * (2 * PI) + ph) % (2 * PI)
+                if 2.2 < u < 4.4:
+                    wv.hair([(p[0], p[1] + 1.5), (p[0] + 2.4, p[1] + 2.2)])
+                k += 2
+        yy += 1.5 + 3.2 * t
+        r += 1
+    out.append(cv.svg())
+    out.append(wv.svg())
+    if info[3]:
+        lay = {k: Layer() for k in ("hull", "deck", "super", "funnel")}
+        ship(lay, x + w * .3, bank + h * .2, w * .34, False, rng)
+        out.append("".join(lay[k].svg() for k in ("hull", "deck", "super", "funnel")))
+    return "".join(out)
+
 def plate(w, h, ctx):
     ctx = ctx or {}
     seed = sum(map(ord, ctx.get("date", ""))) + 17
@@ -2733,6 +2820,9 @@ def plate(w, h, ctx):
             ex = x + sx * 4.6 * k * math.cos(.15 * PI)
             ey = y - 6 * k + 4.6 * k * math.sin(.15 * PI)
             cv.obj([[(ex, ey - 1.6 * k), (ex + sx * 1.4 * k, ey + .2 * k), (ex - sx * .4 * k, ey + .4 * k)]], 1.)
-    P = dict(seed=seed, shape="super", shape_medium="oval", shape_band="oval", stems=1, med_aspect=.86,
+    if True:
+        def sc(x, y, fw, fh, lod, yc=None):
+            return river_banner(x, y, fw, fh, yc or (lambda q: y + fh / 2), info, seed)
+    P = dict(seed=seed, form="headpiece", ribbon=True, shape="super", shape_medium="oval", shape_band="oval", stems=1, med_aspect=.86,
              leaf_k=.9, rmin_k=.95, legend="The Columbia · Sauvie Island", tablet=tab, crest=crest, scene=sc)
-    return ST5.compose(w, h, ctx, P)
+    return ST5.compose_form(w, h, ctx, P)

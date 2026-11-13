@@ -2017,7 +2017,7 @@ PAGER_JS = r"""
       if (nt > cut + 80 || nt >= total) nt = cut;
       c.push(cut); t.push(nt); start = nt;
     }
-    if (c.length > 2 && b.lb - start < 8) { c.pop(); t.pop(); start = t[t.length - 1]; }
+    if (c.length > 1 && b.lb - start < 8) { c.pop(); t.pop(); start = t[t.length - 1]; }   // nothing printed past the last cut (only a panel's foot padding): no blank sheet
     c.push(Math.max(total, start + 1));
     return { cuts: c, tops: t, last: Math.max(total, start + 1) - start };
   }
@@ -2267,6 +2267,7 @@ PAGER_JS = r"""
     else if (kme) kfillDue = i;   /* checked in the labels' 0 ms pass */
     if (!PRE || pre0) unscroll();   // a fresh page is not scrolled: never force a layout just to say so
     pre0 = 1;
+    if (!warmed && i === n - 1) setTimeout(warmLast, 900);   // on the last sheet: warm the next page
     if (more) {
       more.style.display = (i < n - 1) ? '' : 'none';
       more.innerHTML = 'More &darr;<span class="kfol" hidden>' + (i + 1) + '/' + n + '</span>';
@@ -2304,7 +2305,10 @@ PAGER_JS = r"""
     var fi = document.getElementById('kfill'); if (!fi) return;
     if (src && fi.getAttribute('src') !== src) fi.setAttribute('src', src);
     fi.style.visibility = src ? 'visible' : 'hidden';
+    knofill(!src);
   }
+  function knofill(on) {   /* no field on this sheet: the frame and motif under it are fetched and shown instead */
+    var b = document.body; if (/ knofill /.test(' ' + b.className + ' ') !== on) b.className = on ? (b.className + ' knofill').replace(/^ /, '') : b.className.replace(/(^| )knofill( |$)/, ' ').replace(/^ | $/g, ''); }
   function kfill(i) {   /* the engraved fill: measured once per sheet (and layout); shown only if that one measure matches the
                            build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
     var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
@@ -2324,6 +2328,7 @@ PAGER_JS = r"""
     if (ok) { var slug = location.pathname.split('/').pop().replace(/\.html$/, '') || 'index', src = 'orn/fill-' + slug + '-' + i + (document.body.getAttribute('data-kfx') || '.svg');
       if (fi.getAttribute('src') !== src) fi.setAttribute('src', src); }
     fi.style.visibility = ok ? 'visible' : 'hidden';
+    knofill(!ok);
     var gq = view.querySelectorAll('.kgap');   /* the fill carves the gaps itself: the fleurons step aside */
     for (var g = 0; g < gq.length; g++) gq[g].style.visibility = ok ? 'hidden' : '';
   }
@@ -2426,6 +2431,9 @@ PAGER_JS = r"""
   // The next page is fetched ahead into the browser cache. An offline copy
   // from an earlier version is removed.
   var KART = ['orn/motif-%s' + (document.body.getAttribute('data-kbg') ? '.png' : '.svg')];   // a section's CSS-background art, warmed before entry
+  var warmed = 0;
+  function warmLast() {   /* the next page is fetched once the reader is on this page's last sheet: the next turn goes there */
+    if (warmed || sheet < cuts.length - 2) return; warmed = 1; warm(NEXT_URL); }
   function warm(u) { if (!u) return; try { var x = new XMLHttpRequest(); x.open('GET', u, true);
     x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
       for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); }
@@ -2441,7 +2449,7 @@ PAGER_JS = r"""
       if (sw && sw.getRegistrations) sw.getRegistrations().then(function(rs){ for (var i = 0; i < rs.length; i++) rs[i].unregister(); }).catch(function(){});
       if (window.caches && caches.keys) caches.keys().then(function(ks){ for (var i = 0; i < ks.length; i++) if (/^kme-/.test(ks[i])) caches['delete'](ks[i]); }).catch(function(){});
     } catch (e) {}
-    warm(NEXT_URL);
+    warmLast();
   }, 900);
 })();
 </script>

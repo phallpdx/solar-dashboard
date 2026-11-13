@@ -589,7 +589,7 @@ def _motif(name):
     return (_section_motif(name[4:]) or "fleuron") if name.startswith("sec:") else name
 
 
-_WPG = []
+_WPG = {}
 
 
 def _worker_browser(exe):
@@ -617,51 +617,63 @@ def _worker_browser(exe):
 _WBR = []
 
 
-def _worker_page(exe):
-    """The worker's 2x page: the field is drawn and rasterised in the worker."""
-    if not _WPG:
-        _WPG.append(_worker_browser(exe).new_context(device_scale_factor=2, viewport={"width": 618, "height": 714}).new_page())
-    return _WPG[0]
+def _worker_page(exe, dsf=2):
+    """The worker's page at a device scale: the field is drawn and rasterised in the worker."""
+    if dsf not in _WPG:
+        _WPG[dsf] = _worker_browser(exe).new_context(device_scale_factor=dsf, viewport={"width": 618, "height": 714}).new_page()
+    return _WPG[dsf]
 
 
 FIELD_MAX = 100 * 1024
-FIELD_GREYS = ((0, 136, 204, 255), (0, 204, 255), (0, 255))   # tried in turn until the sheet fits FIELD_MAX
+# tried in turn until the sheet fits FIELD_MAX: (device scale of the render, greys). Four greys at 2x first; a
+# dense sheet keeps its greys rendered natively at 1.5x (crisp, not resampled) before it drops to one bit.
+FIELD_LADDER = ((2, (0, 136, 204, 255)), (2, (0, 204, 255)), (1.5, (0, 136, 204, 255)), (1.5, (0, 204, 255)),
+                (2, (0, 255)), (1.5, (0, 255)), (1, (0, 255)))
 
 
-def _field_png(im):
-    """The field as the smallest-level PNG that fits: 4 greys (2-bit), else 3 greys (2-bit), else 1 bit. Studio
-    greys map to #ccc/#bbb -> light, #aaa/#888 -> mid. Rows unfiltered with Z_FILTERED deflate: on this art that
-    beats PIL's adaptive filters by ~12%."""
+def _field_png(render):
+    """The field as the first rung of FIELD_LADDER that fits FIELD_MAX (else the smallest): a palette PNG of
+    2 bits (3-4 greys) or 1 bit. render(dsf) gives the sheet's greyscale render at that device scale. Studio
+    greys map #ccc/#bbb -> light, #aaa/#888 -> mid. The <img> is a fixed 618x714, so a sheet set at a lower
+    resolution is drawn the same size."""
+    best, ims = None, {}
+    for dsf, pal in FIELD_LADDER:
+        if dsf not in ims:
+            ims[dsf] = render(dsf).convert("L")
+        out = _pal_field(ims[dsf], pal)
+        if best is None or len(out) < len(best):
+            best = out
+        if len(out) <= FIELD_MAX:
+            return out
+    return best
+
+
+def _pal_field(im, pal):
     import numpy as np
     import struct
-    v = np.asarray(im.convert("L"))
+    v = np.asarray(im)
     h, w = v.shape
-    out = b""
-    for pal in FIELD_GREYS:
-        if len(pal) == 4:
-            idx = np.select([v < 68, v <= 170, v < 230], [0, 1, 2], 3)
-        elif len(pal) == 3:
-            idx = np.select([v < 102, v < 230], [0, 1], 2)
-        else:
-            idx = (v >= 128).astype(np.uint8)
-        idx = idx.astype(np.uint8)
-        bits = 1 if len(pal) == 2 else 2
-        per = 8 // bits
-        a = np.pad(idx, ((0, 0), (0, (-w) % per)))
-        packed = np.zeros((h, a.shape[1] // per), np.uint8)
-        for k in range(per):
-            packed |= a[:, k::per] << (8 - bits * (k + 1))
-        raw = np.concatenate([np.zeros((h, 1), np.uint8), packed], axis=1).tobytes()
-        c = zlib.compressobj(9, zlib.DEFLATED, 15, 9, zlib.Z_FILTERED)
-        z = c.compress(raw) + c.flush()
+    if len(pal) == 4:
+        idx = np.select([v < 68, v <= 170, v < 230], [0, 1, 2], 3)
+    elif len(pal) == 3:
+        idx = np.select([v < 102, v < 230], [0, 1], 2)
+    else:
+        idx = (v >= 128)
+    idx = idx.astype(np.uint8)
+    bits = 1 if len(pal) == 2 else 2
+    per = 8 // bits
+    a = np.pad(idx, ((0, 0), (0, (-w) % per)))
+    packed = np.zeros((h, a.shape[1] // per), np.uint8)
+    for k in range(per):
+        packed |= a[:, k::per] << (8 - bits * (k + 1))
+    raw = np.concatenate([np.zeros((h, 1), np.uint8), packed], axis=1).tobytes()
+    c = zlib.compressobj(9, zlib.DEFLATED, 15, 9, zlib.Z_FILTERED)
+    z = c.compress(raw) + c.flush()
 
-        def chunk(t, d):
-            return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
-        out = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, bits, 3, 0, 0, 0))
-               + chunk(b"PLTE", b"".join(bytes((g, g, g)) for g in pal)) + chunk(b"IDAT", z) + chunk(b"IEND", b""))
-        if len(out) <= FIELD_MAX:
-            break
-    return out
+    def chunk(t, d):
+        return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, bits, 3, 0, 0, 0))
+            + chunk(b"PLTE", b"".join(bytes((g, g, g)) for g in pal)) + chunk(b"IDAT", z) + chunk(b"IEND", b""))
 
 
 def _fill_measure(job):
@@ -710,14 +722,24 @@ def _field_svg(job):
                + fsv + "".join(parts) + "</svg>")   # crisp: no anti-alias greys, so the four levels below are exact
         import io
         from PIL import Image
-        pg = _worker_page(exe)
-        pg.set_content('<!doctype html><html style="background:transparent"><body style="margin:0;background:#fff">' + svg + "</body></html>")
-        # four greys at 2x (white, light, mid, black): the studio's silver modelling survives, in a 2-bit PNG.
-        # A sheet over FIELD_MAX falls back to three greys, then to one bit. Opaque: the holes print white under
-        # the white panels anyway.
-        im = Image.open(io.BytesIO(pg.screenshot(clip={"x": 0, "y": 0, "width": 618, "height": 714}))).convert("L")
+        doc = '<!doctype html><html style="background:transparent"><body style="margin:0;background:#fff">' + svg + "</body></html>"
+
+        def render(dsf):   # opaque: the holes print white under the white panels anyway
+            for k in range(3):   # a capture can fail once on a busy runner: a fresh page, and again
+                try:
+                    pg = _worker_page(exe, dsf)
+                    pg.set_content(doc)
+                    return Image.open(io.BytesIO(pg.screenshot(clip={"x": 0, "y": 0, "width": 618, "height": 714})))
+                except Exception:  # noqa: BLE001
+                    if k == 2:
+                        raise
+                    try:
+                        _WPG.pop(dsf).context.close()
+                    except Exception:  # noqa: BLE001
+                        pass
+        png = _field_png(render)   # made before the file is opened: a failed sheet leaves no empty file
         with open(os.path.join(od, f"fill-{slug}-{sheet}.png"), "wb") as f:
-            f.write(_field_png(im))
+            f.write(png)
         return True
     except Exception as e:  # noqa: BLE001
         print(f"kindle_plates: {slug}~{sheet + 1}: field failed ({e!r})", file=sys.stderr)

@@ -1519,6 +1519,7 @@ EVENING_GRAPHIC = re.compile(r"\b(kill(s|ed|ing)?|dead|deaths?|dies|died|murder\
 EVENING_PREFER = ["NPR", "PBS NewsHour", "AP", "Associated Press", "BBC", "The Guardian", "Al Jazeera", "CBS News",
                   "ABC News", "NBC News", "Axios", "Politico", "OPB", "KGW", "KOIN", "KATU", "KPTV", "The Oregonian"]
 EVENING_NO_NEXT = "No date is set yet."
+EVENING_RETIRED = True  # the Kindle editions are no longer built
 EVENING_STOP = {"about", "after", "again", "against", "amid", "before", "being", "between", "could", "during", "from",
                 "have", "into", "just", "more", "most", "news", "over", "said", "says", "their", "there", "these",
                 "they", "this", "those", "through", "under", "until", "what", "when", "where", "which", "while",
@@ -1612,7 +1613,12 @@ def _evening_story(st, major):
 def refresh_evening(data, sources):
     """The Evening Edition's stories: the day's three biggest, plus one from Portland, each rewritten by the
     model into a calm what-happened, where-it-stands, what's-next. Runs in the early evening (local\\setup.ps1);
-    the overnight runs leave it alone."""
+    the overnight runs leave it alone.
+
+    Retired with the Kindle editions: it now leaves the stories as they are, so a leftover 7 pm task does nothing."""
+    if EVENING_RETIRED:
+        log("  the Evening Edition is retired; skipping")
+        return data
     if dt.datetime.now().hour < 15:
         log("  only runs in the evening")
         return data

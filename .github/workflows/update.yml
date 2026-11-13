@@ -72,6 +72,25 @@ jobs:
           DATA_DIR: data
         run: python -m solar.thai_audio --check || { pip install --quiet edge-tts && python -m solar.thai_audio; }
 
+      - name: Build site
+        run: |
+          mkdir -p _site
+          cp web/* _site/
+          cp data/dashboard.json _site/
+          # One pass over everything the page shows: one value per fact, each item once, nothing stale.
+          python -m solar.integrity _site || echo "integrity pass failed; building from the raw data"
+          if [ -d data/thai ]; then cp -r data/thai _site/; fi
+
+      # What each section shows today, saved once a day per section (data/freshness.json) so the page can put
+      # the sections with the most new items first. Uses the Chrome GitHub's runners already have.
+      # The Kindle editions (solar/kindle*.py, solar/art_raster.py) are retired and no longer built.
+      - name: Note what's new in each section
+        continue-on-error: true
+        timeout-minutes: 4
+        run: |
+          pip install --quiet playwright
+          python -m solar.freshness _site data/freshness.json
+
       - name: Save data
         working-directory: data
         run: |
@@ -87,54 +106,6 @@ jobs:
             [ "$wait" = 0 ] && exit 1
             echo "Push failed, trying again in ${wait}s"; sleep "$wait"
           done
-
-      - name: Build site
-        run: |
-          mkdir -p _site
-          cp web/* _site/
-          cp data/dashboard.json _site/
-          # One pass over everything the editions print: one value per fact, each item once, nothing stale.
-          python -m solar.integrity _site || echo "integrity pass failed; building from the raw data"
-          python -m solar.kindle _site/dashboard.json _site/kindle.html
-          if [ -d data/thai ]; then cp -r data/thai _site/; fi
-
-      # The Evening Edition: a short bedtime read for the Kindle (evening.html). Built every run, so
-      # tonight's sky and tomorrow's weather stay current; the stories come from web/evening.json,
-      # which Parker's PC writes at 7 pm.
-      - name: Build the Evening Edition
-        continue-on-error: true
-        timeout-minutes: 6
-        run: |
-          pip install --quiet ephem numpy  # numpy: the engraver (solar/engraving_hand.py) needs it, or the pages build without their scrollwork
-          python -m solar.kindle_evening data/dashboard.json web/evening.json _site
-
-      # Paged, e-ink friendly copy of the full dashboard for the Kindle browser.
-      # If this fails, kindle.html stays the simple morning page.
-      # The Morning's engraved sheet grounds (solar/scroll.py field) are cached by layout: a sheet whose panels
-      # did not move since the last run reuses its field instead of composing it again (about 1-2 s a sheet).
-      - name: Restore the engraved field cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/solar-field
-          key: solar-field-${{ hashFiles('solar/scroll.py') }}-${{ github.run_id }}
-          restore-keys: |
-            solar-field-${{ hashFiles('solar/scroll.py') }}-
-            solar-field-
-
-      - name: Build Kindle pages
-        continue-on-error: true
-        timeout-minutes: 14
-        run: |
-          pip install --quiet playwright pillow numpy fonttools brotli
-          python -m playwright install --with-deps chromium >/dev/null
-          python -m solar.kindle_full _site
-
-      # The Evening Edition's engravings are drawn as SVG; the Kindle paints one-bit PNGs far faster.
-      # Uses the browser installed just above. If it fails the pages keep their SVGs and still work.
-      - name: Engrave the Evening Edition's art as PNG
-        continue-on-error: true
-        timeout-minutes: 5
-        run: python -m solar.art_raster _site
 
       - uses: actions/upload-pages-artifact@v3
         with:

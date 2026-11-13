@@ -1463,7 +1463,6 @@ def write_plates(out):
         open(os.path.join(d, f"{s}-tail.svg"), "w").write(t_ or tailpiece(v, DIALECT[s]))
     open(os.path.join(d, "alfred.svg"), "w").write(medallion(V["alfred"], 150, 106))
     open(os.path.join(d, "end.svg"), "w").write(banner(V["end"], "acanthus"))
-    open(os.path.join(d, "fin.svg"), "w").write(tailpiece(V["end"], "acanthus"))
     W, H, body = panorama()
     open(os.path.join(d, "pano.svg"), "w").write(svg(W, H, body))
     wg = eng("engraving_instruments", "weather_glyph")
@@ -2184,6 +2183,7 @@ html.kme #kmain .kslot{display:block;margin:10px auto;overflow:hidden}
 html.kme #kmain .kslot img{display:block;border:0}
 html.kme .ksecfront #kmain .kfhead.khasslot:after{display:none !important}
 FRAMES
+html.kme body[data-kfills]:not(.knofill):before{background-image:none !important}   /* the sheet's field covers frame and motif: fetched only where a sheet shows no field */
 html.kme body .krun{margin:40px 0 28px !important;padding-left:14px !important;padding-right:14px !important;border-bottom-color:transparent !important}
 html.kme.kpaged body .kbar{margin:28px 0 40px !important;padding:0 14px !important;border-top-color:transparent !important}
 html.kme.kjumpopen #kjump{top:84px !important;bottom:96px !important;left:40px !important;right:40px !important}
@@ -2212,7 +2212,6 @@ html.kme #ktail,html.kme #ktail2{position:absolute;left:0;right:0;z-index:2}
 html.kme #ktail2{background:none;border:0;overflow:hidden;contain:strict;text-align:center}
 html.kme #ktail2 img{display:block;margin:0 auto;border:0}
 html.kme .kcontents #kmain .kgl .kink{outline:0 !important}
-html.kme #ktail{background:var(--tail,url(orn/fin.svg)) no-repeat center center/contain}
 html.kme #kclip .kgap.kthin{left:25%;right:25%;background:url(orn/gap.svg) no-repeat 50% 50%/auto 14px}
 #kclip .kgap{display:none}
 html.kme #kclip .kgap{display:block;position:absolute;left:25%;right:25%;z-index:2;background:url(orn/gap.svg) no-repeat 50% 50%/auto 20px}

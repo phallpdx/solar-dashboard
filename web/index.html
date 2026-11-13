@@ -3065,7 +3065,7 @@ function renderApod() {
   const kind = a.video_kind || (a.video ? (/\.(mp4|webm|mov)(\?|$)/i.test(a.video) ? 'file' : 'embed') : null);
   const media = kind === 'file'
     ? `<div class="apod-img apod-video"><video src="${esc(a.video)}" controls playsinline muted loop preload="metadata"${a.image ? ` poster="${esc(a.image)}"` : ''}></video></div>`
-    : kind === 'embed'
+    : kind === 'embed' && !KINDLE   // the Kindle snapshot never plays it, and a third-party player's own errors land in the build log
     ? `<div class="apod-img apod-video"><iframe src="${esc(a.video)}" title="${esc(a.title)}" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
     : `<a href="${esc(a.page)}" target="_blank" rel="noopener" class="apod-img"><img src="${esc(a.image)}" alt="${esc(a.title)}" loading="lazy" ${hide}></a>`;
   $('apod').innerHTML = media + `
@@ -3625,7 +3625,7 @@ function renderArchives() {
   $('show-card').hidden = !show;
   if (show) {
     $('show-meta').textContent = show.when && show.when.length === 10 ? `Internet Archive · ${fmtDate(show.when)}, ${show.when.slice(0, 4)}` : 'Internet Archive';
-    $('show').innerHTML = `<iframe src="${esc(show.embed)}?playlist=1&list_height=150" style="width:100%;height:200px;border:0;border-radius:10px" loading="lazy" title="${esc(show.title)}" allow="autoplay"></iframe>
+    $('show').innerHTML = (KINDLE ? '' : `<iframe src="${esc(show.embed)}?playlist=1&list_height=150" style="width:100%;height:200px;border:0;border-radius:10px" loading="lazy" title="${esc(show.title)}" allow="autoplay"></iframe>`) + `
       <p class="arch-cap"><b>${esc(show.artist || show.title)}</b>${show.venue ? ` at ${esc(show.venue)}` : ''}<small><a href="${esc(show.url)}" target="_blank" rel="noopener">${esc(show.title)}</a>${show.count ? ` · one of ${show.count.toLocaleString()} Portland shows in the Live Music Archive` : ''}</small></p>
       ${cite([['Internet Archive Live Music Archive', 'https://archive.org/details/etree']])}`;
   }

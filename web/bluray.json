@@ -2,25 +2,18 @@
   "updated": "2026-11-13",
   "deals": [
     {
-      "title": "Mars Attacks!",
-      "store": "Amazon",
-      "detail": "$12.99, 4K Ultra HD + Digital 4K",
-      "ends": "2026-11-13",
-      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
+      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Blue Velvet, Paris, Texas and Trainspotting; Seven Samurai 4K is $29.99 and The Complete Kubrick 4K set is $299.99. Amazon is matching many Criterion 4Ks (see below).",
+      "ends": "2026-12-06",
+      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
     },
     {
-      "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
-      "store": "Amazon Italy",
-      "detail": "£7.29 per a UK deal site; deal listed through Nov. 21. UK pricing, US shipping not confirmed.",
-      "ends": "2026-11-21",
-      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
-    },
-    {
-      "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
-      "store": "Amazon UK",
-      "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
-      "ends": "2026-11-23",
-      "url": "https://www.hotukdeals.com/deals/30-days-of-night-4k-uhd-limited-etd-steelbook-5029340"
+      "title": "GRUV 4K UHD sale: new releases $12.99 or less (Walmart and Gruv)",
+      "store": "GRUV via Walmart / Gruv.com",
+      "detail": "Slickdeals post (Nov. 12) lists 100+ 4K Blu-rays at $13 or less, mostly sold by GRUV through Walmart's marketplace, including Superman, F1: The Movie, Mortal Kombat II and Wuthering Heights at $12.99; a commenter says they go on sale on Gruv's own site Nov. 13.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
     },
     {
       "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
@@ -30,18 +23,11 @@
       "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
     },
     {
-      "title": "Battlestar Galactica 4K UHD",
-      "store": "UK retailer (pre-order)",
-      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
-    },
-    {
-      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
-      "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Blue Velvet, Paris, Texas and Trainspotting; Seven Samurai 4K is $29.99 and The Complete Kubrick 4K set is $299.99. Amazon is matching many Criterion 4Ks (see below).",
-      "ends": "2026-12-06",
-      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+      "title": "Mars Attacks!",
+      "store": "Amazon",
+      "detail": "$12.99, 4K Ultra HD + Digital 4K",
+      "ends": "2026-11-13",
+      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
     },
     {
       "title": "Interview with the Vampire: The Vampire Chronicles (1994)",
@@ -58,11 +44,11 @@
       "url": "https://slickdeals.net/f/20296710-12-99-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
     },
     {
-      "title": "Star Trek: The Original 4-Movie Collection",
+      "title": "Cinderella (1950)",
       "store": "Amazon",
-      "detail": "$21, 4K Ultra HD + Blu-Ray + Digital",
+      "detail": "$15.20, 4K UHD + Blu-Ray + Digital",
       "ends": null,
-      "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
+      "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
     },
     {
       "title": "Whiplash (2014)",
@@ -72,18 +58,11 @@
       "url": "https://slickdeals.net/f/20276370-whiplash-4k-blu-ray-digital-15-36-amazon-com"
     },
     {
-      "title": "Cinderella (1950)",
+      "title": "Star Trek: The Original 4-Movie Collection",
       "store": "Amazon",
-      "detail": "$15.20, 4K UHD + Blu-Ray + Digital",
+      "detail": "$21, 4K Ultra HD + Blu-Ray + Digital",
       "ends": null,
-      "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
-    },
-    {
-      "title": "The Hunger Games 4-Film Collection",
-      "store": "Amazon",
-      "detail": "$34.41 (4K Ultra HD + Blu-ray + Digital)",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
+      "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
     },
     {
       "title": "No Country for Old Men The Criterion Collection",
@@ -93,11 +72,60 @@
       "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
     },
     {
-      "title": "Shout 4K/Steelbook Sale",
-      "store": "Shout",
-      "detail": "Sale",
+      "title": "The Hunger Games 4-Film Collection",
+      "store": "Amazon",
+      "detail": "$34.41 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
-      "url": "https://fanfare.metafilter.com/26392/Physical-Media-Sales-An-Incomplete-Guide"
+      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
+    },
+    {
+      "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
+      "store": "Amazon Italy",
+      "detail": "£7.29 per a UK deal site; deal listed through Nov. 21. UK pricing, US shipping not confirmed.",
+      "ends": "2026-11-21",
+      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
+    },
+    {
+      "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
+      "store": "Amazon UK",
+      "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
+      "ends": "2026-11-23",
+      "url": "https://www.hotukdeals.com/deals/30-days-of-night-4k-uhd-limited-etd-steelbook-5029340"
+    },
+    {
+      "title": "Battlestar Galactica 4K UHD",
+      "store": "UK retailer (pre-order)",
+      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+    },
+    {
+      "title": "The Toxic Avenger 4K UHD + Blu-ray SteelBook",
+      "store": "Amazon Italy",
+      "detail": "£10.80 plus £2.65 postage to the UK, per a UK deal site. UK pricing; US shipping not confirmed.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/the-toxic-avenger-4k-uhd-blu-ray-steelbook-5022741"
+    },
+    {
+      "title": "Bugonia 4K UHD + Blu-ray Limited Edition SteelBook",
+      "store": "Amazon Italy",
+      "detail": "£21.24 plus £2.64 postage to the UK, per a UK deal site, which says it's about £10 under the earlier SteelBook. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/bugonia-4k-ultra-hd-blu-ray-limited-edition-steelbook-5022756"
+    },
+    {
+      "title": "Home Alone 4K Ultra HD",
+      "store": "Rarewaves (UK)",
+      "detail": "£15.49 (was £20.91), free UK delivery, per a UK deal site. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/home-alone-4k-ultra-hd-5027343"
+    },
+    {
+      "title": "Scrooged 4K Ultra HD",
+      "store": "Rarewaves (UK)",
+      "detail": "£15.49 at Rarewaves, per a UK deal site. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/scrooged-4k-ultra-hd-5028692"
     }
   ],
   "upcoming": [
@@ -115,6 +143,11 @@
       "title": "Vinegar Syndrome Black Friday",
       "detail": "Main Black Friday sale reported to start Nov 27 at 12:01 a.m. ET, after a Nov 1 to 4 flash pre-order event.",
       "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
+    },
+    {
+      "title": "Walmart Black Friday deals",
+      "detail": "Walmart's Early Black Friday deals run Nov. 12 to 15, with the main Black Friday deals Nov. 23 to 29 (online at 12:01 a.m. ET, Walmart+ members get some online deals 24 hours early). Disc deals not detailed.",
+      "url": "https://cordcuttersnews.com/walmart-announces-three-major-2026-holiday-shopping-events-with-extended-black-friday-and-cyber-monday-savings/?amp=1"
     }
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"

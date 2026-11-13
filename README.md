@@ -51,41 +51,20 @@ python -m solar.update          # writes data/dashboard.json
 cp data/dashboard.json web/ && python -m http.server -d web 8000
 ```
 
-## Kindle edition
+## What's new comes first
 
-Each site build also renders the full dashboard once in headless Chromium and
-saves "The Morning Edition" in `kindle/`, laid out for the Kindle Paperwhite
-11 browser (618 x 714 CSS px, Chrome 75, black-and-white e-ink). It is made by
-`solar/kindle_full.py`:
+The page sorts its sections by how much of what they show is new. Each section's headlines, links and list
+rows are reduced to short fingerprints (numbers taken out, so a new temperature doesn't count as news), one
+set per day. A section's score is the share of today's items that weren't there the day before, plus half of
+yesterday's share, a quarter of the day before's, and so on. Today stays first, pinned sections (📌) come
+next, then the rest from most new to least, under "What's new", "A bit new" and "Not much new".
 
-- **Cover** (`index.html`): masthead, today's temperature, the top three
-  stories, and "Pick up where you stopped"; the contents on the next screen.
-- **Reading order** for the first half hour awake: your day (Good morning,
-  Alfred's plan for the day, calendar, tickets, roads, the little one), then
-  home and land, then the news, then music and screen, then the back pages,
-  ending on Thailand and, last of all, the beach.
-- **Section fronts** (`today.html`, ...): a big section number and every
-  story with a line of news.
-- **One card per page** (`today-01.html`, ...). Nothing scrolls. A page that
-  is a little too long is set tighter until it fits; a long one is cut into
-  screens at whole items. Tap the right of the screen (or swipe) to keep
-  reading, the left to go back; the bar's right link skips to the next
-  page. The **Sections** button at the top opens the navigator: skip the
-  whole section in one tap, jump to any page in it, or to any section.
-- **Quicker turns**: each page fetches the next one ahead into the browser
-  cache.
-- **Nothing printed twice**: an item already printed earlier in the edition
-  is taken out of the later page, and Alfred only says what no other page
-  does.
-- **Designed data pages**: verdict lines, a surf grid, an hourly
-  temperature strip, a markets quote board, scoreboards, bill and grid
-  charts.
-- Sources and credits sit on one page at the back (`sources.html`); the
-  edition ends on `end.html`.
-- The dashboard loads with `?kindle`; an editorial pass drops controls,
-  feed noise and long tails of lists, and sets house style.
-- One serif (Literata, saved alongside the pages), a fixed type scale, black
-  and greys only, and pictures saved as small greyscale JPEGs.
+Every cloud update saves the day's fingerprints (`solar/freshness.py`, which opens the built page in headless
+Chrome) to `freshness.json` on the `data` branch and the site, so every device sorts the same way. Until
+there's an earlier day to compare with, the page keeps its usual order.
 
-`kindle.html` redirects there, so bookmark `<your Pages URL>/kindle.html`.
-If the step fails, `kindle.html` stays the simple text-only morning page.
+## Kindle editions (retired)
+
+The Morning and Evening Kindle editions are no longer built. Their code (`solar/kindle*.py`,
+`solar/engraving*.py`, `solar/art_raster.py` and friends) is left in place but nothing runs it. The PC's
+7 pm "Solar dashboard evening" task now exits straight away, and running `local\setup.ps1` again removes it.

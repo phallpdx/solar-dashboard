@@ -15,6 +15,14 @@ try {
     "git pull exit code: $($pull.ExitCode)"
 } catch { "git pull failed: $_" }
 
+# The Evening Edition is retired. A 7 pm task left from an older setup stops here, before LM Studio
+# loads; running setup.ps1 again removes that task.
+if (($args -join ' ') -eq '--only evening') {
+    'The Evening Edition is retired; nothing to do.'
+    Stop-Transcript | Out-Null
+    exit 0
+}
+
 $cfg = Get-Content (Join-Path $here 'sources.json') -Raw | ConvertFrom-Json
 $model = $cfg.lmstudio.model
 

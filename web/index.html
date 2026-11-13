@@ -1291,6 +1291,12 @@ body{background-color:#8F5A32;
 .group[data-tier] .sec-sub::before{display:inline-block;margin-right:8px;padding:1px 7px;border:1.5px solid currentColor;border-radius:999px;font:700 11px/1.4 var(--type);letter-spacing:.08em;vertical-align:1px}
 .group[data-tier=home] .sec-sub::before{content:"A" counter(track)}.group[data-tier=fun] .sec-sub::before{content:"B" counter(track)}
 .group[data-tier=town] .sec-sub::before{content:"C" counter(track)}.group[data-tier=world] .sec-sub::before{content:"D" counter(track)}
+/* Sorted by what's new, the sides follow the freshness bands instead: A what's new, B a bit new, C not much new */
+.group[data-band]{counter-increment:track}
+.group[data-band=pin] .sec-sub::before{content:"P" counter(track)}.group[data-band=new] .sec-sub::before{content:"A" counter(track)}
+.group[data-band=some] .sec-sub::before{content:"B" counter(track)}.group[data-band=same] .sec-sub::before{content:"C" counter(track)}
+.tier-pin::after{content:"Your\A picks";--lbl:var(--orange)}.tier-new::after{content:"Side\A A"}
+.tier-some::after{content:"Side\A B";--lbl:#5FA59C}.tier-same::after{content:"Side\A C";--lbl:#C9B79A}
 
 /* Music: the section sign is a sleeve with the record half pulled out */
 .group[data-sec=music] .sec-head{position:relative}
@@ -2084,7 +2090,7 @@ body{background-color:#8F5A32;
   </div>
 </section>
   <footer class="learn" id="learn">
-    <p><b>This page learns what you read.</b> It notices which sections you spend time on and tap, and moves your favorites up. Today always stays first. Use 📌 to keep a section up top, or the arrow to fold or open one. Your reading habits are saved only in this browser, never sent anywhere, so each device learns on its own.</p>
+    <p><b>What's new comes first.</b> Each section is compared with what it showed on earlier days, and the ones with the most new items move up; lists that barely changed sink to the bottom. Today always stays first. Use 📌 to keep a section up top no matter what, or the arrow to fold or open one. Until there's an earlier day to compare with, sections keep their usual order and the page learns what you read instead (saved only in this browser).</p>
     <p id="learn-state"></p>
     <button type="button" class="mini" id="learn-reset">Reset layout</button>
   </footer>
@@ -2917,7 +2923,7 @@ function render() {
   renderOutings();
   waits.push(renderRecords().then(renderBriefing));
   syncGroups();
-  Promise.allSettled(waits).then(syncGroups).then(clampLong);
+  Promise.allSettled(waits).then(syncGroups).then(clampLong).then(sortByFreshness);
   setTimeout(() => { syncGroups(); clampLong(); }, 4000);
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
     `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
@@ -4911,8 +4917,91 @@ function ageHabits() {
   local.set(HABITS, habits);
 }
 
+// ------------------------------------------------------------------ freshness
+// Sections whose content is newest come first. A section's "prints" are short hashes of every headline, link,
+// title and list row in it, with numbers taken out so a new temperature or a ticking clock doesn't count as news.
+// One set is kept per day; each day scores the share of its prints that weren't there the day before, and the
+// days add up with yesterday counting half, the day before a quarter, and so on. The cloud update saves the same
+// prints every run (freshness.json, written by solar/freshness.py), so every device sorts alike from the start;
+// this browser's own history fills in any day the cloud missed.
+const FRESH = 'dash-fresh-v1';
+const freshness = {scores: (local.get(FRESH, {}) || {}).scores || null};
+const BANDS = {
+  pin: '<span aria-hidden="true">📌</span><span><b>Pinned</b><small>Kept up top, new or not</small></span>',
+  new: '<span aria-hidden="true">🆕</span><span><b>What’s new</b><small>Lots here you haven’t seen before</small></span>',
+  some: '<span aria-hidden="true">🔄</span><span><b>A bit new</b><small>A few changes since the last day or two</small></span>',
+  same: '<span aria-hidden="true">💤</span><span><b>Not much new</b><small>About the same as before</small></span>',
+};
+const band = g => g.dataset.sec === 'today' ? null : habits.pins[g.dataset.sec] ? 'pin' : (freshness.scores[g.dataset.sec] || 0) >= 0.2 ? 'new' : (freshness.scores[g.dataset.sec] || 0) >= 0.05 ? 'some' : 'same';
+function hashText(t) {
+  let h = 2166136261;
+  for (let i = 0; i < t.length; i++) h = Math.imul(h ^ t.charCodeAt(i), 16777619);
+  return (h >>> 0).toString(36);
+}
+function sectionPrints(g) {
+  const out = new Set(), body = g.querySelector('.sec-body');
+  if (!body) return [];
+  for (const el of body.querySelectorAll('a[href], h3, b, strong, .story, .lines > div, li, .rec, img[src], .idea, .deal')) {
+    const h = el.closest('[hidden]');
+    if ((h && body.contains(h)) || el.closest('.src-line, .sec-tools')) continue;
+    const t = (el.tagName === 'IMG' ? el.getAttribute('src') : el.tagName === 'A' ? el.getAttribute('href') + ' ' + el.textContent : el.textContent)
+      .toLowerCase().replace(/\?.*$/, m => el.tagName === 'IMG' ? '' : m).replace(/[\d.,:%°]+/g, '#').replace(/\s+/g, ' ').trim().slice(0, 200);
+    if (/[a-z]{3}/.test(t)) out.add(hashText(t));
+  }
+  return [...out].sort();
+}
+// Also called by the cloud update (solar/freshness.py) to save today's prints for every device.
+window.sectionSnapshot = () => ({day: todayIso(), prints: Object.fromEntries(groups().map(g => [g.dataset.sec, sectionPrints(g)]))});
+
+async function updateFreshness() {
+  const server = await getJson('freshness.json');
+  const mine = local.get(FRESH, {}) || {}, hist = mine.days || {}, now = window.sectionSnapshot(), t = now.day;
+  const oldest = isoLocal(new Date(new Date(t + 'T12:00').getTime() - 8 * 864e5));
+  const scores = {};
+  let compared = false;
+  for (const [sec, prints] of Object.entries(now.prints)) {
+    const days = {...(hist[sec] || {}), ...((server && server.sections && server.sections[sec]) || {}), [t]: prints};
+    for (const d of Object.keys(days)) if (d < oldest || d > t) delete days[d];
+    hist[sec] = days;
+    const list = Object.keys(days).sort();
+    let s = 0;
+    for (let i = 1; i < list.length; i++) {
+      const before = new Set(days[list[i - 1]]), cur = days[list[i]];
+      if (!cur.length) continue;
+      const ago = Math.round((new Date(t + 'T12:00') - new Date(list[i] + 'T12:00')) / 864e5);
+      s += cur.filter(p => !before.has(p)).length / cur.length * Math.pow(0.5, ago);
+      compared = true;
+    }
+    scores[sec] = Math.round(s * 1000) / 1000;
+  }
+  freshness.scores = compared ? scores : null;
+  local.set(FRESH, {days: hist, scores: freshness.scores});
+  return freshness.scores;
+}
+
+// Once everything has loaded: work out what's new and sort by it. Later refreshes only re-sort
+// while you're near the top of the page, so nothing jumps around under you while reading.
+let sortedOnce = false;
+async function sortByFreshness() {
+  await updateFreshness();
+  window.__printsReady = true;
+  if (sortedOnce && scrollY > 200) return;
+  sortedOnce = true;
+  arrange(); buildNav();
+}
+
 function arrange() {
   const foot = $('learn'), all = groups(), base = all.map(g => g.dataset.sec);
+  if (freshness.scores) {
+    // Today first, then pins, then the most new first; ties keep the usual order.
+    const rank = g => g.dataset.sec === 'today' ? -2 : habits.pins[g.dataset.sec] ? -1 : 0;
+    const order = [...all].sort((a, b) => rank(a) - rank(b) || (freshness.scores[b.dataset.sec] || 0) - (freshness.scores[a.dataset.sec] || 0) ||
+      base.indexOf(a.dataset.sec) - base.indexOf(b.dataset.sec));
+    order.forEach(g => { foot.parentNode.insertBefore(g, foot); const k = band(g); if (k) g.dataset.band = k; else delete g.dataset.band; g.dataset.fresh = freshness.scores[g.dataset.sec] || 0; });
+    for (const g of all) setFold(g, habits.folds[g.dataset.sec] === 'folded', false);
+    return;
+  }
+  all.forEach(g => delete g.dataset.band);
   const order = [...all].sort((a, b) => {
     // Your own world first: home and family, then the daily fun, then town, then the wider world.
     // Within a tier, pins come first and then what you read most.
@@ -5398,18 +5487,19 @@ function syncGroups() {
   buildNav();
 }
 
-// A heading above the first showing section of each tier.
+// A heading above the first showing section of each tier, or of each freshness band once sorted by what's new.
 function tierLabels(live) {
   document.querySelectorAll('.tier-h').forEach(h => h.remove());
   let tier = null;
   for (const g of live) {
-    if (g.dataset.tier !== tier && TIER_LABEL[g.dataset.tier]) {
+    const k = freshness.scores ? g.dataset.band : g.dataset.tier, labels = freshness.scores ? BANDS : TIER_LABEL;
+    if (k !== tier && labels[k]) {
       const h = document.createElement('div');
-      h.className = 'tier-h tier-' + g.dataset.tier;
-      h.innerHTML = TIER_LABEL[g.dataset.tier];
+      h.className = 'tier-h tier-' + k;
+      h.innerHTML = labels[k];
       g.before(h);
     }
-    tier = g.dataset.tier;
+    tier = k;
   }
 }
 
@@ -5425,6 +5515,12 @@ function buildNav() {
     g.scrollIntoView({behavior: 'smooth'});
   });
   markNav(current);
+  if (freshness.scores) {
+    const top = live.filter(g => g.dataset.sec !== 'today').sort((a, b) => (freshness.scores[b.dataset.sec] || 0) - (freshness.scores[a.dataset.sec] || 0));
+    const most = top.slice(0, 3).map(g => NAV[g.dataset.sec]), least = top.slice(-2).map(g => NAV[g.dataset.sec]);
+    $('learn-state').textContent = `Most new lately: ${most.join(', ')}. Least changed: ${least.join(' and ')}.`;
+    return;
+  }
   const parts = Object.entries(habits.score).filter(([k]) => NAV[k]).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => NAV[k]);
   $('learn-state').textContent = !parts.length ? 'Nothing learned yet.' :
     (learned() ? 'Read most lately: ' : `Still learning (${habits.days} of 3 days so far). Read most so far: `) + parts.join(', ') + '.';

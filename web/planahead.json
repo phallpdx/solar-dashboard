@@ -38,6 +38,24 @@
       ]
     },
     {
+      "title": "Conversations With Nick Cave, Arlene Schnitzer Concert Hall (Apr 12, 2027)",
+      "kind": "Tickets",
+      "action": "General sale Fri, Nov 13 at 10 a.m. local; buy from the official seller linked at nickcave.com rather than resale sites.",
+      "starts": "2026-11-13",
+      "by": null,
+      "why": "A spring 2027 North American run of audience Q&A and solo piano, with Portland among the stops.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/nick-cave-plots-5-date-north-american-conversations-tour-for-2027/"
+        },
+        {
+          "name": "mxdwn",
+          "url": "https://music.mxdwn.com/2026/11/06/news/nick-cave-announces-spring-2027-conversations-with-nick-cave-an-evening-of-talk-music-tour-dates/amp/"
+        }
+      ]
+    },
+    {
       "title": "Epic Pass price increase",
       "kind": "Deadline",
       "action": "Buy before Nov 15 to beat the next price step; sales end Dec 6.",
@@ -70,20 +88,6 @@
       ]
     },
     {
-      "title": "Jonah Kagen ticket presale",
-      "kind": "Tickets",
-      "action": "Ticket presale live",
-      "starts": "2026-11-19",
-      "by": null,
-      "why": "Portland tour date",
-      "sources": [
-        {
-          "name": "Web search: Portland presales",
-          "url": "https://www.facebook.com/jonahkagen/posts/alright-i-heard-ya-portland-added-a-date-on-my-tour-just-for-yall-this-march-tic/1442460347887781"
-        }
-      ]
-    },
-    {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
       "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
@@ -94,6 +98,28 @@
         {
           "name": "Oregon Zoo",
           "url": "https://www.oregonzoo.org/lights"
+        }
+      ]
+    },
+    {
+      "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
+      "kind": "Tickets",
+      "action": "Presale starts Wed, Nov 18; general sale Fri, Nov 20 at 10 a.m. Watch the artist's site for presale sign-up.",
+      "starts": "2026-11-18",
+      "by": "2026-11-20",
+      "why": "Portland opens the newly announced 2027 Lost Tour leg, and Grouper opens only the Portland and Spokane nights.",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/phoebe-bridgers-the-lost-tour-2027-dates/"
+        },
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/phoebe-bridgers-2027-lost-tour-dates-presales/"
+        },
+        {
+          "name": "Pollstar",
+          "url": "https://news.pollstar.com/2026/11/12/phoebe-bridgers-extends-the-lost-tour-with-2027-dates/"
         }
       ]
     },
@@ -126,20 +152,6 @@
       ]
     },
     {
-      "title": "Boogie Belgique: Arcade Tour 2027",
-      "kind": "Tickets",
-      "action": "Tickets on sale",
-      "starts": "2026-11-27",
-      "by": null,
-      "why": "Portland show",
-      "sources": [
-        {
-          "name": "Web search: Portland presales",
-          "url": "https://www.holocene.org/calendar"
-        }
-      ]
-    },
-    {
       "title": "Timberline Mt. Hood Fusion Pass last day to buy (Nov 29)",
       "kind": "Deadline",
       "action": "Buy a Fusion Pass by Sun, Nov 29; Timberline's page says it isn't sold after that.",
@@ -154,6 +166,20 @@
         {
           "name": "Freeskier",
           "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
+        }
+      ]
+    },
+    {
+      "title": "Topaz Farm holiday market and trees, Sauvie Island (from Nov 29)",
+      "kind": "Buy",
+      "action": "Plan a tree trip on Sauvie Island; Santa visits on weekends Nov 28 to Dec 13.",
+      "starts": "2026-11-29",
+      "by": null,
+      "why": "An event listing says the holiday market and Christmas trees open Nov 29; this is a listing, not the farm's own page, and it doesn't say the trees are U-cut.",
+      "sources": [
+        {
+          "name": "ma.to event listing",
+          "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-29"
         }
       ]
     },
@@ -400,6 +426,24 @@
         {
           "name": "mxdwn",
           "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
+        }
+      ]
+    },
+    {
+      "title": "Fall Out Boy with The Offspring, Providence Park (Aug 26, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Thu, Nov 12 at 10 a.m.; buy face value through the official tour site's ticket link.",
+      "starts": null,
+      "by": null,
+      "why": "Twilight of the Punks stadium tour with The Offspring, Good Charlotte and The Story So Far; the Timbers announced the Providence Park date.",
+      "sources": [
+        {
+          "name": "Portland Timbers",
+          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
+        },
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/fall-out-boy-announces-36-date-twilight-of-the-punks-world-tour-for-2027/"
         }
       ]
     }

@@ -2430,7 +2430,6 @@ PAGER_JS = r"""
   layout();
   // The next page is fetched ahead into the browser cache. An offline copy
   // from an earlier version is removed.
-  var KART = ['orn/motif-%s' + (document.body.getAttribute('data-kbg') ? '.png' : '.svg')];   // a section's CSS-background art, warmed before entry
   var warmed = 0;
   function warmLast() {   /* the next page is fetched once the reader is on this page's last sheet: the next turn goes there */
     if (warmed || sheet < cuts.length - 2) return; warmed = 1; warm(NEXT_URL); }
@@ -2438,8 +2437,6 @@ PAGER_JS = r"""
     x.onload = function(){ var m = (x.responseText || '').match(/<img[^>]+src="[^"]+"/g) || [];
       for (var i = 0; i < m.length && i < 4; i++) { var im = new Image(); im.src = m[i].replace(/^.*src="/, '').replace(/"$/, ''); }
       var t = x.responseText || '', px = t.match(/<body[^>]* data-kpx="([.\w]+)"/);
-      var ks = t.match(/data-ksec="([\w-]+)"/), here = document.body.getAttribute('data-ksec');
-      if (ks && ks[1] !== here) for (var a = 0; a < KART.length; a++) { var ia = new Image(); ia.src = KART[a].replace('%s', ks[1]); }
       var kp = t.match(/data-kplates='([^']*)'/), slug = u.split('#')[0].split('/').pop().replace(/\.html$/, '');   // its plates too
       if (kp) try { kp = JSON.parse(kp[1].replace(/&quot;/g, '"')); for (var p = 0; p < kp.length && p < 4; p++) { var ip = new Image(); ip.src = 'orn/plate-' + slug + '-' + kp[p][0] + (px ? px[1] : '.svg'); } } catch (e) {}
       if (/ data-kfills='\[\[0,/.test(t) && / data-kfx="\.png"/.test(t)) { var iff = new Image(); iff.src = 'orn/fill-' + slug + '-0.png'; } };   // and its first sheet's fill

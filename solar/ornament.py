@@ -2099,7 +2099,7 @@ html.kme #kmain .sec-body>.card:first-child>.head,html.kme #kmain>.head:first-ch
     linear-gradient(#000,#000) no-repeat 30px calc(100% - 1.5px)/calc(100% - 60px) 1.6px,linear-gradient(#000,#000) no-repeat 30px calc(100% - 5px)/calc(100% - 60px) 1px}
 /* note 5: the page's title cartouche on the first panel's head (over the panel rule that clears heads in panels) */
 html.kme.kfit3 #kmain .facts[data-n="4"],html.kme.kfit3 #kmain .facts[data-n="8"]{grid-template-columns:1fr 1fr !important}   /* the facts stay two to a row (today-01), even squeezed */
-html.kme{--kgap:28px}   /* Parker's scroll field needs 28 px of room between panels; a 40 px field round the page */
+html.kme{--kgap:28px}html.kme.ktight2{--kgap:14px}html.kme.kcompact body .krun{margin-bottom:14px !important}html.kme.kpaged.kcompact body .kbar{margin-top:14px !important}   /* the sheet budget (kindle_plates.TIGHT): 14 px bands, panels split freely */   /* Parker's scroll field needs 28 px of room between panels; a 40 px field round the page */
 html.kme #kview #kmain .kpanel:first-child>.head,html.kme #kview #kmain .kslot:first-child+.kpanel>.head{position:relative !important;padding:12px 22px 12px !important;margin:0 0 8px !important;
   background:var(--orn-h-tl) no-repeat 0 0/30px 30px,var(--orn-h-tr) no-repeat 100% 0/30px 30px,
     var(--orn-h-bl) no-repeat 0 100%/30px 30px,var(--orn-h-br) no-repeat 100% 100%/30px 30px,

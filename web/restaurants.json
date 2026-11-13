@@ -2,6 +2,23 @@
   "updated": "2026-11-12",
   "restaurants": [
     {
+      "name": "Marée",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-12",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOS2FsSnIydFl5eWR6S3N3S1NXcXVaNGNuMXpWNHh2OFl6S1FpbGtneUtLUXEzaGdHNjQxekFnZThpZFFjWFNTQXRyLW9JZEpJNmNzZVREcjFQVmdnbTNsNXB3SUNDaFFtMDlJc083UTVQYy16aWUtc2pKV0MyUUFaQjVvbi1sX3BfN0xiTEFpWGRNSTdXWWFDRmMweXhKbVlCY1I1OG1R?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Louie on Lombard",
       "neighborhood": "Old Garrison Bar Space",
       "cuisine": "",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-10-20",
           "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOdHFZTGxza1p1YlNlWlkwVEtjLTBxM1NqYTdONlN6MGF4elQ2WnN0NUk5QTU4V3RpZU1mZ0c0Wjg1NXJiVnBkeDdMUTE1UXQtRG9TeFBtYXJrY1UwVkg5WkQyS3FVWmI1S2g1aU52eXI2Y09XQ0VPeGZsaFhLYkFwblBXWDM3Q3UxUTZR?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "AYA Cafe",
-      "neighborhood": "NE Alberta",
-      "cuisine": "",
-      "price": "",
-      "opened": "2026-10-20",
-      "summary": "Cafe bringing love to NE Alberta.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-20",
-          "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOUDBIX1djb3VrRDFqczlIcDhabHhnMW42VFVQaXJUNXlzSld6R3NQYk9vT0FEamhJRHN0V3ZrOW5wZTdqc0Vqdmd3RVdJd3Rsc1R5SVNWdHRxc2htRndkVzN0cUpoZVZFbHVZNmZMZFpxemZ0anJUQlppQzFxYjJHU3lxNDluMkdRUnEzbzlXdS1sSXk4YmF1Yg?oc=5"
         }
       ]
     }

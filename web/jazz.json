@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-12",
   "shows": [
     {
       "artist": "Mel Brown B3 Organ Group",
@@ -89,6 +89,22 @@
       "venue": "The 1905's",
       "price": "$30",
       "what": "A performance featuring drummer Christopher Brown and vocalist Gina Saputo.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
+      "artist": "Bridgetown Sextet",
+      "kind": "Local",
+      "date": "2026-11-15",
+      "time": "05:30 pm",
+      "venue": "The 1905",
+      "price": "$25",
+      "what": "Performing music by icons of early jazz.",
       "tickets": "https://the1905.turntabletickets.com/",
       "sources": [
         {

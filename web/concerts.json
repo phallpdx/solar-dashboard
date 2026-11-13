@@ -148,6 +148,14 @@
       "why": "No Portland date announced"
     },
     {
+      "artist": "Armand Hammer",
+      "album": "Snakes & Ladders",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/armand-hammer-snakes-and-ladders/",
+      "why": "No Portland date found yet"
+    },
+    {
       "artist": "Baby Osamaa",
       "album": "On Tha Run",
       "score": null,
@@ -201,14 +209,6 @@
       "score": null,
       "score_source": "Pitchfork Best New Music",
       "score_url": "https://pitchfork.com/reviews/albums/djrum-dj-kicks/",
-      "why": "No Portland date found yet"
-    },
-    {
-      "artist": "At Sign",
-      "album": "Autosmile",
-      "score": null,
-      "score_source": "Pitchfork Best New Music",
-      "score_url": "https://pitchfork.com/reviews/albums/at-sign-autosmile/",
       "why": "No Portland date found yet"
     }
   ]

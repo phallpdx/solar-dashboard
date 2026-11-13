@@ -120,6 +120,20 @@
       ]
     },
     {
+      "title": "Jonah Kagen ticket presale",
+      "kind": "Tickets",
+      "action": "Ticket presale live",
+      "starts": "2026-11-19",
+      "by": null,
+      "why": "Portland tour date",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://www.facebook.com/jonahkagen/posts/alright-i-heard-ya-portland-added-a-date-on-my-tour-just-for-yall-this-march-tic/1442460347887781"
+        }
+      ]
+    },
+    {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
       "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",

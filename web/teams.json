@@ -1,15 +1,16 @@
 {
   "updated": "2026-11-12",
-  "updated_at": "2026-11-12T11:13:18Z",
+  "updated_at": "2026-11-13T07:26:58Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and celebratory",
-      "pulse": "Fans are celebrating a second straight win over OKC. They feel the team is building winning habits through teamwork.",
+      "pulse": "Fans are celebrating a strong 8-3 start and back-to-back wins over OKC. There is excitement around the team's balance and coaching.",
       "storylines": [
-        "Blazers beat Thunder 118-108",
-        "Vit Krejci out at least 8 weeks",
-        "Chris Youngblood has foot bone bruise",
-        "Damian Lillard passed Clyde Drexler in attempts"
+        "Blazers defeated Thunder 118-108",
+        "Deni Avdija recorded 28 points and 4 steals",
+        "Vit Krejci out at least 8 weeks (ankle surgery)",
+        "Chris Youngblood sidelined with foot bone bruise",
+        "Next game: Blazers @ Kings on 2026-11-13"
       ],
       "sources": [
         {
@@ -35,12 +36,13 @@
       ]
     },
     "timbers": {
-      "mood": "growing confidence",
-      "pulse": "Fans feel momentum after four consecutive wins and securing a playoff spot. There is excitement regarding the three-game series against Dallas.",
+      "mood": "Underdog mentality",
+      "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoffs against Dallas.",
       "storylines": [
-        "Timbers earned an Audi 2026 MLS Cup Playoff spot",
-        "James Pantemis up for 2026 MLS Save of the Year vote",
-        "Playoffs: Timbers face a three-game series against Dallas"
+        "Four-game winning streak heading into playoffs",
+        "Playoff matchup against Dallas",
+        "James Pantemis up for 2026 MLS Save of the Year",
+        "Timbers2 lost 1-0 in MLS NEXT Pro Semifinals"
       ],
       "sources": [
         {
@@ -66,13 +68,11 @@
       ]
     },
     "f1": {
-      "mood": "Mixed and celebratory",
-      "pulse": "Fans are celebrating Mercedes' championship win and Norris' victory in Brazil. Concerns exist regarding Ferrari's radio communication and Honda reliability issues.",
+      "mood": "Speculative and celebratory",
+      "pulse": "Fans are debating 2027 driver lineups following Racing Bulls' retention of Lawson and Lindblad. Mercedes fans are celebrating their 2026 Constructors' Championship victory.",
       "storylines": [
-        "Mercedes secured the 2026 Constructors' Championship.",
-        "Lando Norris won the Sao Paulo Grand Prix.",
-        "George Russell launched the GR63 Karting Academy.",
-        "Pirelli is revising 2027 wet-weather tyres due to complaints."
+        "Racing Bulls retain Lawson and Lindblad for 2027",
+        "Mercedes wins 2026 Constructors' Championship"
       ],
       "sources": [
         {

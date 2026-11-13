@@ -1,56 +1,6 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "items": [
-    {
-      "title": "Portugal. The Man with the Oregon Symphony (Nov 11 and 12)",
-      "kind": "Tickets",
-      "action": "Last chance: buy face value from the Oregon Symphony for Thursday's show at the Arlene Schnitzer Concert Hall, not resale.",
-      "starts": null,
-      "by": "2026-11-12",
-      "why": "Two concerts with the band backed by its hometown orchestra, per the Oregon Symphony.",
-      "sources": [
-        {
-          "name": "Oregon Symphony",
-          "url": "https://orsymphony.org/productions/2627/portugal-the-man-with-the-oregon-symphony/"
-        }
-      ]
-    },
-    {
-      "title": "Fall Out Boy, Providence Park (Aug 26, 2027)",
-      "kind": "Tickets",
-      "action": "General on-sale today, Thu Nov 12 at 10 a.m. PT; buy face value through the official seller rather than resale.",
-      "starts": "2026-11-12",
-      "by": null,
-      "why": "Newly announced stadium stop on the Twilight of the Punks tour with The Offspring, Good Charlotte and The Story So Far; the Timbers say general sale opens Nov 12 at 10 a.m. PT.",
-      "sources": [
-        {
-          "name": "Portland Timbers",
-          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
-        },
-        {
-          "name": "Live Nation Entertainment",
-          "url": "https://news.livenationentertainment.com/news/fall-out-boy-announces-2027-twilight-of-the-punks-headline-world-tour-returns-with-highly-anticipated-new-single-aces"
-        },
-        {
-          "name": "Grimy Goods presale guide",
-          "url": "https://www.grimygoods.com/2026/11/09/fall-out-boy-2027-tour-presale-code/"
-        }
-      ]
-    },
-    {
-      "title": "Royal Blood with Bodega, Revolution Hall (Apr 18, 2027)",
-      "kind": "Tickets",
-      "action": "Ticketmaster presale today, Thu Nov 12 at 10 a.m.; general on-sale Fri, Nov 13 at 10 a.m.",
-      "starts": "2026-11-12",
-      "by": null,
-      "why": "Newly announced 2027 North American tour stop at Revolution Hall with Bodega opening.",
-      "sources": [
-        {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/royal-blood-2027-north-american-tour/"
-        }
-      ]
-    },
     {
       "title": "Ricky Montgomery, Crystal Ballroom (May 3, 2027)",
       "kind": "Tickets",
@@ -172,6 +122,20 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Boogie Belgique: Arcade Tour 2027",
+      "kind": "Tickets",
+      "action": "Tickets on sale",
+      "starts": "2026-11-27",
+      "by": null,
+      "why": "Portland show",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://www.holocene.org/calendar"
         }
       ]
     },

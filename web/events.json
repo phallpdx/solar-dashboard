@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-13",
   "events": [
     {
       "title": "Kumoricon 2026",
@@ -34,6 +34,20 @@
         {
           "name": "OSAA 2026-27 calendar",
           "url": "https://www.osaa.org/docs/calendar/26-27ActivityCalendar.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Portland Cheese and Meat Festival",
+      "date": "2026-11-14",
+      "ends": "2026-11-14",
+      "venue": "Montgomery Park",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
         }
       ]
     },
@@ -94,6 +108,20 @@
         {
           "name": "Oregon Convention Center",
           "url": "https://www.oregoncc.org/attend/events/2026/11/major-league-table-tennis"
+        }
+      ]
+    },
+    {
+      "title": "JSTSTANCE - Portland",
+      "date": "2026-11-21",
+      "ends": "2026-11-21",
+      "venue": "Portland Expo Center",
+      "kind": "Convention",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.expocenter.org/calendar"
         }
       ]
     },
@@ -234,6 +262,62 @@
         {
           "name": "Discotech",
           "url": "https://app.discotech.me/events/38256060-the-wolfs-nice-christmas-show-at-veterans-memorial-coliseum"
+        }
+      ]
+    },
+    {
+      "title": "Portland Holiday Brew Fest",
+      "date": "2026-12-11",
+      "ends": "2026-12-12",
+      "venue": "Pioneer Courthouse Square",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
+        }
+      ]
+    },
+    {
+      "title": "CEVA Power League Qualifier",
+      "date": "2026-12-12",
+      "ends": "2026-12-13",
+      "venue": "",
+      "kind": "Sports",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.expocenter.org/calendar"
+        }
+      ]
+    },
+    {
+      "title": "The Jinkx & DeLa Holiday Show",
+      "date": "2026-12-17",
+      "ends": "2026-12-17",
+      "venue": "Arlene Schnitzer Concert Hall",
+      "kind": "Concert",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
+        }
+      ]
+    },
+    {
+      "title": "Portland Boat Show",
+      "date": "2027-01-13",
+      "ends": "2027-01-17",
+      "venue": "Expo Center",
+      "kind": "Convention",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.expocenter.org/calendar"
         }
       ]
     },

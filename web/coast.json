@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,22 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Justin Curry: Violin Portraits live at The Lyons Den",
-      "date": "2026-11-12",
-      "end": "2026-11-12",
-      "town": "Seaside",
-      "summary": "Violin portraits from 7:00 pm to 9:00 pm for $5.00.",
-      "url": "https://www.seasideor.com/event/justin-curry-violin-portraits-live-at-the-lyons-den-2/"
-    },
-    {
-      "name": "Psilocybin Therapy Educational Event",
-      "date": "2026-11-12",
-      "end": null,
-      "town": "Manzanita",
-      "summary": "Free educational event at Pine Grove House.",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBxVFc2WmJ5Qk40c2N1eWctYjZPb1BpWWs1WV9KLTlfcllBZnY1VTZOVHdnRGxzeDNPQVRleDF3TldJRjBsUmE0RVRnaXVCNXduZmlaOWlsNnhaNTA?oc=5"
     },
     {
       "name": "Let’s Go Birding! Coffenbury Lake Bird Walk",

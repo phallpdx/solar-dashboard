@@ -1,20 +1,6 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "deals": [
-    {
-      "title": "Interview with the Vampire: The Vampire Chronicles (1994)",
-      "store": "Amazon",
-      "detail": "$12.99, 4K Ultra HD + Digital",
-      "ends": "2026-11-12",
-      "url": "https://slickdeals.net/f/20298036-interview-with-the-vampire-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "Obsession: Collector's Edition",
-      "store": "Amazon",
-      "detail": "$12.99, 4K Ultra HD + Blu-ray + Digital 4K",
-      "ends": "2026-11-12",
-      "url": "https://slickdeals.net/f/20296710-12-99-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
-    },
     {
       "title": "Mars Attacks!",
       "store": "Amazon",
@@ -58,6 +44,27 @@
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
     },
     {
+      "title": "Interview with the Vampire: The Vampire Chronicles (1994)",
+      "store": "Amazon",
+      "detail": "$12.99 (4K UHD + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20298036-interview-with-the-vampire-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "Obsession: Collector's Edition",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Blu-ray + Digital 4K)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20296710-12-99-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
+    },
+    {
+      "title": "Star Trek: The Original 4-Movie Collection",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-Ray + Digital",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
+    },
+    {
       "title": "Whiplash (2014)",
       "store": "Amazon",
       "detail": "$15.36 (4K + Blu-Ray + Digital)",
@@ -67,86 +74,30 @@
     {
       "title": "The Hunger Games 4-Film Collection",
       "store": "Amazon",
-      "detail": "$34.41 (4K Ultra HD + Blu-ray + Digital)",
+      "detail": "$34.40 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
     },
     {
+      "title": "Cinderella (1950)",
+      "store": "Amazon",
+      "detail": "$15.20 (4K UHD + Blu-Ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
+    },
+    {
       "title": "No Country for Old Men The Criterion Collection",
       "store": "Amazon",
-      "detail": "$24.98 (4K UHD Blu-ray)",
+      "detail": "$24.99 (4K UHD Blu-ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
     },
     {
-      "title": "Rambo: 1-5",
-      "store": "Amazon",
-      "detail": "Digital, 4K ULTRA HD -24% $75.58",
+      "title": "Shout 4K/Steelbook Sale",
+      "store": "Shout",
+      "detail": "Sale",
       "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "Essential Holiday 4-Film Collection",
-      "store": "Amazon",
-      "detail": "(4K Ultra HD) -6% $61.20",
-      "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "Scrooged (Limited Edition Steelbook)",
-      "store": "Amazon",
-      "detail": "[4K UHD + Blu-Ray + Digital Copy] -19% $29.99",
-      "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "The Frighteners [Limited Edition]",
-      "store": "Amazon",
-      "detail": "[4K Ultra HD] -42% $28.78",
-      "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "KPop Demon Hunters (The Criterion Collection)",
-      "store": "Amazon",
-      "detail": "[4K UHD] -50% $24.98",
-      "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "Frankenstein (The Criterion Collection)",
-      "store": "Amazon",
-      "detail": "[4K UHD] -29% $29.98",
-      "ends": null,
-      "url": "https://www.youtube.com/watch?v=8cjiArFGjqw"
-    },
-    {
-      "title": "4K Witness",
-      "store": "Arrow Video US",
-      "detail": "$35.00 RRP: $49.99",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/uhd-deals"
-    },
-    {
-      "title": "4K Conan The Destroyer",
-      "store": "Arrow Video US",
-      "detail": "$35.00 RRP: $49.99",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/uhd-deals"
-    },
-    {
-      "title": "4K 12 Monkeys",
-      "store": "Arrow Video US",
-      "detail": "$35.00 RRP: $49.95",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/uhd-deals"
-    },
-    {
-      "title": "Shrek 4-Movie 4K Collection",
-      "store": "r/4KBlurayDeals",
-      "detail": "$23.49",
-      "ends": null,
-      "url": "https://www.reddit.com/r/4KBlurayDeals"
+      "url": "https://fanfare.metafilter.com/26392/Physical-Media-Sales-An-Incomplete-Guide"
     }
   ],
   "upcoming": [

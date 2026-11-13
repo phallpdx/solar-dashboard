@@ -1,38 +1,6 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "shows": [
-    {
-      "artist": "Mel Brown B3 Organ Group",
-      "kind": "Local",
-      "date": "2026-11-12",
-      "time": "7:00 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
-      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862453?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862453?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
-      "artist": "Trio of Boom",
-      "kind": "Local",
-      "date": "2026-11-12",
-      "time": "06:30 PM",
-      "venue": "The 1905's",
-      "price": "$25",
-      "what": "An organ trio featuring Hammond organ-based funk.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Shelly Rudolph: Swank Snow",
       "kind": "Vocal",

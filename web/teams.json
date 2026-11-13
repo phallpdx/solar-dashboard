@@ -1,15 +1,15 @@
 {
   "updated": "2026-11-13",
-  "updated_at": "2026-11-13T09:23:24Z",
+  "updated_at": "2026-11-13T11:19:55Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and celebratory",
-      "pulse": "Fans are celebrating a strong 8-3 start and back-to-back wins against OKC. There is excitement around team balance and star performances despite some injury concerns.",
+      "pulse": "Fans are celebrating a strong 8-3 start and back-to-back wins over OKC. There is excitement around team balance and Damian Lillard's impact.",
       "storylines": [
-        "Defeated Thunder twice in back-to-back games",
-        "Vit Krejci out at least 8 weeks after ankle surgery",
+        "Defeated OKC Thunder twice in recent games",
+        "Vit Krejci out at least eight weeks after ankle surgery",
         "Chris Youngblood sidelined with foot bone bruise",
-        "Next game: Blazers @ Kings on 2026-11-13"
+        "Next game against Kings on 2026-11-13"
       ],
       "sources": [
         {
@@ -39,7 +39,7 @@
       "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoff action against Dallas.",
       "storylines": [
         "Four-game winning streak heading into playoffs",
-        "Playoff matchup against Dallas",
+        "Playoff matchup upcoming against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
         "Timbers2 lost 1-0 in MLS NEXT Pro Semifinals"
       ],
@@ -67,12 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "Speculative and celebratory",
-      "pulse": "Fans are focused on the 2027 driver market shifts. Mercedes' championship win also dominates discussions.",
+      "mood": "speculative and uncertain",
+      "pulse": "Fans are focused on the 2027 driver market shifts. Uncertainty surrounds remaining grid seats and team personnel decisions.",
       "storylines": [
-        "Racing Bulls retain Lawson and Lindblad for 2027",
-        "Mercedes wins 2026 Constructors' Championship",
-        "Nikola Tsolov joins Red Bull/Racing Bulls as reserve driver"
+        "Racing Bulls retain Lawson and Lindblad for 2027.",
+        "Nikola Tsolov named Red Bull/Racing Bulls reserve.",
+        "Mercedes staff may skip Middle East races.",
+        "Kimi Antonelli receives high honors in San Marino."
       ],
       "sources": [
         {

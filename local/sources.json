@@ -3,7 +3,7 @@
     "url": "http://localhost:1234",
     "model": "gemma-4-26b-a4b-it-qat",
     "context_length": 16384,
-    "gpu_offload": 0.85,
+    "gpu_offload": 0.6,
     "max_chars_per_page": 12000,
     "timeout_seconds": 900
   },

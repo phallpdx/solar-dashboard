@@ -1964,6 +1964,7 @@ PAGER_JS = r"""
     if (window.pageYOffset || window.pageXOffset) window.scrollTo(0, 0); }
   // Design to fit: tighten leading, then type, then set short lists in two
   // columns. Only if none of that fits is the card paged at full size.
+  var SPLIT = / ksplit /.test(' ' + root.className + ' ') ? 0.9 : 0.6;
   var LADDER = ['', 'kfit1', 'kfit1 kfit2', 'kfit1 kfit2 kfit3', 'kfit1 kfit2 kfit3 kfit4'];
   function fits() { if (drawn() > H) return false; var b = boxes(); var off = main.getBoundingClientRect().top - view.getBoundingClientRect().top; return !b.lb || b.lb + off + 4 <= H && main.scrollHeight + off <= H + 2; }
   function fit() {
@@ -2000,8 +2001,8 @@ PAGER_JS = r"""
           if (l.bottom > any) { any = l.bottom; anyHead = l.head ? l.top : null; }
           if (l.bottom > cut && !splits(us, l.bottom)) { cut = l.bottom; lastHead = l.head ? l.top : null; }
         } }
-      if (cut <= start + 40 || (cut - start < 0.6 * (limit - start) && any - cut > 0.25 * (limit - start))) {   // never leave half a screen empty
-        var small = [], half = 0.5 * (limit - start), cut2 = start, h2 = null;   /* but split a big container, never a small unit (one tile, one row) */
+      if (cut <= start + 40 || (cut - start < SPLIT * (limit - start) && any - cut > (SPLIT > .8 ? .08 : .25) * (limit - start))) {   // never leave half a screen empty (html.ksplit, the build's sheet budget: a tenth)
+        var small = [], half = (SPLIT > .8 ? .2 : .5) * (limit - start), cut2 = start, h2 = null;   /* but split a big container, never a small unit (one tile, one row) */
         for (var u = 0; u < us.length; u++) if (us[u].bottom - us[u].top < half) small.push(us[u]);
         for (var i2 = 0; i2 < ls.length; i2++) { var l2 = ls[i2];
           if (l2.top >= start - 1 && l2.bottom <= limit && l2.bottom > cut2 && !splits(small, l2.bottom)) { cut2 = l2.bottom; h2 = l2.head ? l2.top : null; } }
@@ -2310,7 +2311,8 @@ PAGER_JS = r"""
   function knofill(on) {   /* no field on this sheet: the frame and motif under it are fetched and shown instead */
     var b = document.body; if (/ knofill /.test(' ' + b.className + ' ') !== on) b.className = on ? (b.className + ' knofill').replace(/^ /, '') : b.className.replace(/(^| )knofill( |$)/, ' ').replace(/^ | $/g, ''); }
   function kfill(i) {   /* the engraved fill: measured once per sheet (and layout); shown only if that one measure matches the
-                           build's within 4 px, else dropped. Visibility only, never display: showing it moves no box */
+                           build's: the same boxes, within 4 px across and 24 px down (the device's Chromium wraps a line or
+                           two differently from the build's; the white panels cover the drift). Visibility only, never display */
     var fm = document.body.getAttribute('data-kfills'), fi = document.getElementById('kfill');
     if (!fm || !fi || i !== sheet) return;
     var key = i + '|' + cuts.join(',') + '|' + main.offsetHeight + '|' + (document.fonts ? document.fonts.status : ''), ok = kfillSeen[key];   /* a check made before the fonts were in is not kept */
@@ -2321,7 +2323,7 @@ PAGER_JS = r"""
         var want = null;
         for (var k = 0; k < fm.length; k++) if (fm[k][0] === i) want = fm[k];
         if (want) { var L = window.KLAB(), same = function (a, s) { var b = s ? s.split(' ') : []; if (a.length !== b.length) return false;
-            for (var j = 0; j < a.length; j++) { var v = b[j].split(','); for (var c = 0; c < 4; c++) if (Math.abs(a[j][c] - v[c]) > 4) return false; }
+            for (var j = 0; j < a.length; j++) { var v = b[j].split(','); for (var c = 0; c < 4; c++) if (Math.abs(a[j][c] - v[c]) > (c & 1 ? 24 : 4)) return false; }
             return true; };
           ok = same(L.o, want[1]) && same(L.d, want[2]) && same(L.p, want[3] || ''); } }
       kfillSeen[key] = ok; }
@@ -2885,6 +2887,42 @@ def dedupe(pages, titles):
         print(f"kindle_full: dedupe skipped: {e}", file=sys.stderr)
 
 
+def no_flex_gap(css):
+    """Chromium 75 (the Kindle) ignores gap on flex boxes; the build's newer Chromium applies it. EXTRACT turns
+    the gaps it sees into margins, but a box that was hidden then, or turned flex by the edition's own CSS,
+    keeps its gap: the build then lays the page out taller than the Kindle does and the sheet's engraved
+    field, cut to the build's layout, is refused on the device. Every flex rule with a gap gets gap 0 here,
+    so the build lays out as the Kindle does (the Kindle's look is unchanged)."""
+    import re
+    sels = []
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", css):
+        sel, body = m.group(1).strip(), m.group(2)
+        if sel.startswith("@") or "%" in sel:
+            continue
+        if re.search(r"display\s*:\s*(inline-)?flex", body) and re.search(r"(^|;)\s*(row-|column-)?gap\s*:\s*(?!0(px)?\s*(!important)?\s*(;|$))", body):
+            sels += ["html.kme " + s_.strip() for s_ in sel.split(",") if s_.strip()]
+    return ("\n/* flex gap off, as on the Kindle's Chromium 75 (kindle_full.no_flex_gap) */\n" + ",".join(sels) + "{gap:0 !important}\n") if sels else ""
+
+
+def kindle_safe_font(data):
+    """A variable woff2 the Kindle's Chromium 75 sets right: without HVAR. That engine reads a subset's HVAR
+    advances wrongly, so bold and display weights print with collapsed advances (letters overlap and word
+    spaces vanish); without HVAR it takes each glyph's advance from gvar's phantom points, which is exact."""
+    try:
+        import io
+        from fontTools.ttLib import TTFont
+        f = TTFont(io.BytesIO(data))
+        if "HVAR" not in f:
+            return data
+        del f["HVAR"]
+        b = io.BytesIO()
+        f.flavor = "woff2"
+        f.save(b)
+        return b.getvalue()
+    except Exception:  # noqa: BLE001  -- no fontTools: the font as served
+        return data
+
+
 def self_host_fonts(out):
     """Save Literata next to the pages so the Kindle never paints a fallback
     font and refreshes again. Falls back to Google Fonts if this fails."""
@@ -2904,7 +2942,7 @@ def self_host_fonts(out):
             fam = re.search(r"font-family:\s*'([^']+)'", blk).group(1).lower().replace(" ", "-")
             name = f"{fam}-{re.search(r'font-style:\s*(\w+)', blk).group(1)}.woff2"
             with open(os.path.join(out, "fonts", name), "wb") as f:
-                f.write(urllib.request.urlopen(url, timeout=30).read())
+                f.write(kindle_safe_font(urllib.request.urlopen(url, timeout=30).read()))
             local.append(blk.replace(url, f"fonts/{name}"))
             preload.append(f'<link rel="preload" href="fonts/{name}" as="font" type="font/woff2" crossorigin>')
         return "\n".join(local), "".join(preload)
@@ -2946,7 +2984,7 @@ def main(site):
     font_css, font_links = self_host_fonts(out)
     kindle_ornate.full_fonts(out)   # the full Literata: true small caps, old-style figures
     with open(os.path.join(out, "kindle.css"), "w") as f:
-        f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS)
+        f.write(font_css + "\n" + data["css"] + "\n" + EINK_CSS + no_flex_gap(data["css"]))
     kindle_orn.write_plates(out)
     write_pager(out)
     me = (data["htmlClass"] + " kme").strip()

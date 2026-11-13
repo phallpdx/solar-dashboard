@@ -192,6 +192,10 @@ def run(out, date_iso, exe=None):
         if re.search(r"-s\d+\.png$", f):
             os.remove(f)
     try:
+        try:
+            _budget(out, base, exe)
+        except Exception as e:  # noqa: BLE001
+            print(f"kindle_plates: sheet budget skipped ({e!r})", file=sys.stderr)
         nw = _nworkers()
         if nw > 1 and len(pages) > 1:   # pages are independent: each worker measures and engraves its share with its own browser
             import multiprocessing as _mp
@@ -234,6 +238,79 @@ class _QuietServer(_hs.ThreadingHTTPServer):
 class _Quiet(_hs.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
+
+
+SHEET_BUDGET = int(os.environ.get("KINDLE_SHEET_BUDGET") or 212)   # the edition's cap is 215: a little headroom for the device
+TIGHT = ("ksplit", "ksplit kcompact", "ksplit kcompact ktight2")   # html classes: a big panel splits across sheets rather than leave a tenth of one
+# empty (the pager's plan), then 14 px bands under the running head and over the bar, then 14 px panel gaps
+# (ornament.py); no content is cut
+
+
+def _sheets(job):
+    """How many sheets a page lays out to, as is and with each TIGHT step (a copy of the page per step)."""
+    slug, out, base, exe, steps = job
+    fp = os.path.join(out, slug + ".html")
+    src = open(fp, encoding="utf-8").read()
+    res = []
+    for k, cls in enumerate(("",) + TIGHT if steps else ("",)):
+        name = slug + (f".kt{k}" if cls else "") + ".html"
+        if cls:
+            with open(os.path.join(out, name), "w", encoding="utf-8") as f:
+                f.write(re.sub(r'(<html\b[^>]*\bclass=")', r"\1" + cls + " ", src, count=1))
+        try:
+            cx = _worker_browser(exe).new_context(viewport={"width": 618, "height": 714}, has_touch=True)
+            try:
+                pg = cx.new_page()
+                pg.goto(base + name, wait_until="load")
+                pg.evaluate("document.fonts ? document.fonts.ready.then(() => 0) : 0")
+                pg.wait_for_function("!!window.KROOM", timeout=4000)
+                pg.wait_for_timeout(300)
+                res.append(pg.evaluate("window.KROOM.sheets"))
+            finally:
+                cx.close()
+        except Exception:  # noqa: BLE001
+            res.append(None)
+        finally:
+            if cls:
+                os.remove(os.path.join(out, name))
+        if res[0] is None or res[0] <= 1:
+            break
+    return slug, res
+
+
+def _budget(out, base, exe):
+    """Hold the edition to SHEET_BUDGET sheets on any day: when it runs over, the pages that lose a sheet by
+    tightening their panel gaps (TIGHT) get the step, most sheets saved first, until the edition fits."""
+    import multiprocessing as _mp
+    from concurrent.futures import ProcessPoolExecutor
+    slugs = sorted(os.path.basename(p)[:-5] for p in glob.glob(os.path.join(out, "*.html")) if "." not in os.path.basename(p)[:-5])
+    t0 = time.time()
+    with ProcessPoolExecutor(max_workers=_nworkers(), mp_context=_mp.get_context("spawn")) as px:
+        got = dict(px.map(_sheets, [(s_, out, base, exe, False) for s_ in slugs]))
+        total = sum(v[0] or 1 for v in got.values())
+        if total > SHEET_BUDGET:   # over: what each step saves, on every page of two sheets or more
+            got.update(px.map(_sheets, [(s_, out, base, exe, True) for s_ in slugs if (got[s_][0] or 1) > 1]))
+    over, picked, saved = total - SHEET_BUDGET, {}, 0
+    if over > 0:
+        def gain(s_, step):
+            v = got[s_]
+            return v[0] - v[step] if len(v) > step and v[step] else 0
+        for step in range(1, len(TIGHT) + 1):   # the lightest step wherever it saves a sheet, then tighter ones, most saved first
+            for g, s_ in sorted(((gain(s_, step) - gain(s_, picked.get(s_, 0)), s_) for s_ in got), reverse=True):
+                if over <= 0 or g <= 0:
+                    break
+                picked[s_] = step
+                over -= g
+                saved += g
+        for s_, step in picked.items():
+            fp = os.path.join(out, s_ + ".html")
+            src = open(fp, encoding="utf-8").read()
+            with open(fp, "w", encoding="utf-8") as f:
+                f.write(re.sub(r'(<html\b[^>]*\bclass=")', r"\1" + TIGHT[step - 1] + " ", src, count=1))
+    print(f"kindle_plates: {total} sheets on {len(got)} pages (budget {SHEET_BUDGET}); "
+          f"{len(picked)} tightened, {saved} sheets saved, in {time.time() - t0:.1f}s")
+    if over > 0:
+        print(f"kindle_plates: still {over} sheets over budget after tightening", file=sys.stderr)
 
 
 def _nworkers():

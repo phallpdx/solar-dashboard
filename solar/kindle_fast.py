@@ -708,6 +708,8 @@ def subset_fonts(out):
         sub = subset.Subsetter(opts)
         sub.populate(text="".join(sorted(text)))
         sub.subset(f)
+        if "HVAR" in f:   # Chromium 75 misreads a subset's HVAR: advances from gvar instead (kindle_full.kindle_safe_font)
+            del f["HVAR"]
         import io
         buf = io.BytesIO()
         subset.save_font(f, buf, opts)

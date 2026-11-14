@@ -1,4 +1,4 @@
-"""Next games and standings: Trail Blazers, Timbers (ESPN), and Formula 1 (Jolpica/Ergast)."""
+"""Next games and standings: Trail Blazers, Timbers, Oregon Ducks and 49ers (ESPN), and Formula 1 (Jolpica/Ergast)."""
 import datetime as dt
 import json
 import re

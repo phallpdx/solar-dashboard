@@ -242,6 +242,26 @@
           "name": "r/formula1",
           "url": "https://www.reddit.com/r/formula1/top/.rss?t=day"
         }
+      ],
+      "ducks": [
+        {
+          "name": "Addicted To Quack",
+          "url": "https://www.addictedtoquack.com/rss/index.xml"
+        },
+        {
+          "name": "r/ducks",
+          "url": "https://www.reddit.com/r/ducks/top/.rss?t=day"
+        }
+      ],
+      "niners": [
+        {
+          "name": "Niners Nation",
+          "url": "https://www.ninersnation.com/rss/index.xml"
+        },
+        {
+          "name": "r/49ers",
+          "url": "https://www.reddit.com/r/49ers/top/.rss?t=day"
+        }
       ]
     },
     "marketbrief": {

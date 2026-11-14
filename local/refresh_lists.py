@@ -1094,7 +1094,8 @@ def refresh_teams(data, team_sources):
         "storylines": {"type": "array", "items": S},
         "source_urls": {"type": "array", "items": S}},
         "required": ["mood", "pulse", "storylines", "source_urls"], "additionalProperties": False}
-    names = {"blazers": "Portland Trail Blazers (NBA)", "timbers": "Portland Timbers (MLS)", "f1": "Formula 1"}
+    names = {"blazers": "Portland Trail Blazers (NBA)", "timbers": "Portland Timbers (MLS)", "f1": "Formula 1",
+             "ducks": "Oregon Ducks football (college, Big Ten)", "niners": "San Francisco 49ers (NFL)"}
     changed = False
     for team, sources in team_sources.items():
         texts, links, names_by_url = [], set(), {}

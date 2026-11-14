@@ -720,8 +720,11 @@ def fetch_sports(state, now_utc):
     # The two Division I programs in town. ESPN's college basketball calls them Portland State Vikings and Portland Pilots.
     _refresh(store, "psu", lambda: sports.team("basketball/mens-college-basketball", "Portland State"), every("psu"), now_utc, errors)
     _refresh(store, "pilots", lambda: sports.team("basketball/mens-college-basketball", "Portland Pilots"), every("pilots"), now_utc, errors)
+    # The family's football teams, so game times show up before anyone plans a get-together.
+    _refresh(store, "ducks", lambda: sports.team("football/college-football", "Oregon Ducks"), every("ducks"), now_utc, errors)
+    _refresh(store, "niners", lambda: sports.team("football/nfl", "49ers", 3), every("niners"), now_utc, errors)
     reddit = store.setdefault("reddit", {})
-    for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1")):
+    for key, sub in (("blazers", "ripcity"), ("timbers", "timbers"), ("f1", "formula1"), ("ducks", "ducks"), ("niners", "49ers")):
         if reddit.get(key + "_at") is None or (now_utc - dt.datetime.fromisoformat(reddit[key + "_at"])).total_seconds() >= 7200:
             time.sleep(4)
         _refresh(reddit, key, lambda sub=sub: sports.reddit(sub), 2, now_utc, errors)

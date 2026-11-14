@@ -1945,7 +1945,7 @@ body{background-color:#8F5A32;
   </section>
 
   <section class="group" data-sec="sports" data-tier="town" id="more" aria-labelledby="sports-h">
-    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, the Vikings and Pilots, F1, the markets, helium and Portland real estate</p></div></div>
+    <div class="sec-head"><span class="sec-icon" aria-hidden="true">🏀</span><div class="sec-titles"><h2 class="sec-h" id="sports-h">Games and markets</h2><p class="sec-sub">Blazers, Timbers, Ducks and 49ers, the Vikings and Pilots, F1, the markets, helium and Portland real estate</p></div></div>
     <div class="sec-body">
       <div class="teams" id="teams"></div>
       <div class="row">
@@ -4365,7 +4365,7 @@ function renderMore() {
   const sp = D.sports, mk = D.markets;
   $('more').hidden = !sp && !mk;
   const teams = [];
-  for (const key of ['blazers', 'timbers', 'psu', 'pilots']) {
+  for (const key of ['blazers', 'timbers', 'ducks', 'niners', 'psu', 'pilots']) {
     const t = sp && sp[key];
     if (!t) continue;
     const g = t.next, l = t.last;
@@ -5156,11 +5156,13 @@ async function renderBriefing() {
 
   // Sports
   const sp = D.sports || {};
-  for (const [key, label] of [['blazers', 'the Blazers'], ['timbers', 'the Timbers']]) {
+  for (const [key, label] of [['blazers', 'the Blazers'], ['timbers', 'the Timbers'], ['ducks', 'the Ducks'], ['niners', 'the 49ers']]) {
     const t = sp[key];
     if (!t) continue;
-    if (t.next && t.next.utc && soon(isoLocal(new Date(t.next.utc)), 1))
-      add(daysTo(isoLocal(new Date(t.next.utc))) === 0 ? 64 : 46, 'more', `${label[0].toUpperCase() + label.slice(1)} play ${t.next.home ? 'host to ' : 'at '}${esc(t.next.opponent)} ${whenWord(isoLocal(new Date(t.next.utc)))} at ${timeOf(t.next.utc)}${t.next.tv ? ' on ' + esc(t.next.tv.split(',')[0]) : ''}.`);
+    // Football is the family's: flag those games a few days out, so nobody books a get-together over one.
+    const fam = key === 'ducks' || key === 'niners';
+    if (t.next && t.next.utc && soon(isoLocal(new Date(t.next.utc)), fam ? 3 : 1))
+      add(daysTo(isoLocal(new Date(t.next.utc))) === 0 ? 64 : 46, 'more', `${label[0].toUpperCase() + label.slice(1)} play ${t.next.home ? 'host to ' : 'at '}${esc(t.next.opponent)} ${whenWord(isoLocal(new Date(t.next.utc)))} at ${timeOf(t.next.utc)}${t.next.tv ? ' on ' + esc(t.next.tv.split(',')[0]) : ''}.${fam ? ' Best not to plan family things then.' : ''}`);
     if (t.last && t.last.completed && (now - new Date(t.last.utc)) < 2 * 864e5)
       add(42, 'more', `${t.last.won ? say('win_lead', 0, 'Good news') : say('loss_lead', 0, 'I regret to report')}: ${label} ${t.last.won ? 'beat' : 'lost to'} ${esc(t.last.opponent)} ${t.last.us}–${t.last.them}.${t.recap && t.recap.headline ? ' ' + esc(t.recap.headline) + '.' : ''}`);
   }
@@ -5322,8 +5324,8 @@ async function renderBriefing() {
   const ce = ((coastEv && coastEv.events) || []).find(e => soon(e.date, 2) || (e.end && e.date <= today && e.end >= today));
   if (ce) add(37, 'coast-events-card', `At the coast ${daysTo(ce.date) <= 0 ? 'today' : whenWord(ce.date)}: ${esc(ce.name)} in ${esc(ce.town)}.`);
   const pulseFresh = fans && fans.updated_at && (now - new Date(fans.updated_at)) < 30 * 3600e3;
-  if (pulseFresh) { const k = ['blazers', 'timbers', 'f1'][dayNo % 3], f = fans.teams && fans.teams[k];
-    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
+  if (pulseFresh) { const ks = ['blazers', 'timbers', 'f1', 'ducks', 'niners'].filter(x => fans.teams && fans.teams[x]), k = ks[dayNo % ks.length], f = fans.teams && fans.teams[k];
+    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock', ducks: 'Ducks faithful', niners: '49ers Faithful'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
   if (brief && brief.updated === today && brief.analysis && brief.analysis.headline)
     add(53, 'more', `${say('markets_lead', 0, 'On the markets')}: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
   if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)

@@ -2,6 +2,41 @@
   "updated": "2026-11-14",
   "deals": [
     {
+      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (see below).",
+      "ends": "2026-12-06",
+      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+    },
+    {
+      "title": "100+ 4K UHD discs at $13 or less (Wuthering Heights, Mortal Kombat II, Superman, Akira)",
+      "store": "Walmart (sold by GRUV)",
+      "detail": "Select 4K Blu-rays for about $13 or less with free shipping, sold by GRUV through Walmart; the poster says the same sale went live on GRUV's own site Nov. 13.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
+      "store": "Amazon Italy",
+      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout; example: The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
+      "ends": "2026-11-29",
+      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
+    },
+    {
+      "title": "No Country for Old Men (Criterion 4K UHD)",
+      "store": "Amazon",
+      "detail": "Criterion 4K UHD edition for $24.99 (list $49.99), matching the Barnes & Noble Criterion sale price.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
+    },
+    {
+      "title": "The Hunger Games: Complete 4-Film Collection SteelBook (4K)",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital SteelBook set, $34.42 (posted Nov. 8).",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
+    },
+    {
       "title": "V for Vendetta",
       "store": "Amazon",
       "detail": "4K Ultra HD + Blu-ray + Digital, $13",
@@ -16,53 +51,11 @@
       "url": "https://slickdeals.net/f/20302908-12-99-evil-dead-burn-4k-ultra-hd-digital-4k-at-amazon"
     },
     {
-      "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
-      "store": "Amazon Italy",
-      "detail": "£7.29 per a UK deal site; deal listed through Nov. 21. UK pricing, US shipping not confirmed.",
-      "ends": "2026-11-21",
-      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
-    },
-    {
-      "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
-      "store": "Amazon UK",
-      "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
-      "ends": "2026-11-23",
-      "url": "https://www.hotukdeals.com/deals/30-days-of-night-4k-uhd-limited-etd-steelbook-5029340"
-    },
-    {
-      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
-      "store": "Amazon Italy",
-      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout; example: The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
-      "ends": "2026-11-29",
-      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
-    },
-    {
-      "title": "Battlestar Galactica 4K UHD",
-      "store": "UK retailer (pre-order)",
-      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
-    },
-    {
-      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
-      "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Blue Velvet, Paris, Texas and Trainspotting; Seven Samurai 4K is $29.99 and The Complete Kubrick 4K set is $299.99. Amazon is matching many Criterion 4Ks (see below).",
-      "ends": "2026-12-06",
-      "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
-    },
-    {
       "title": "Mars Attacks!",
       "store": "Amazon",
       "detail": "4K Ultra HD + Digital 4K, $12.99",
       "ends": null,
       "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
-    },
-    {
-      "title": "Wuthering Heights, Mortal Kombat II, Superman & More",
-      "store": "Walmart",
-      "detail": "Select 4K Blu-rays for $13 or less",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
     },
     {
       "title": "Raya and the Last Dragon",
@@ -105,6 +98,41 @@
       "detail": "$15.20 (4K UHD + Blu-Ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
+    },
+    {
+      "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
+      "store": "Amazon Italy",
+      "detail": "£7.29 per a UK deal site; deal listed through Nov. 21. UK pricing, US shipping not confirmed.",
+      "ends": "2026-11-21",
+      "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
+    },
+    {
+      "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
+      "store": "Amazon UK",
+      "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
+      "ends": "2026-11-23",
+      "url": "https://www.hotukdeals.com/deals/30-days-of-night-4k-uhd-limited-etd-steelbook-5029340"
+    },
+    {
+      "title": "Battlestar Galactica 4K UHD",
+      "store": "UK retailer (pre-order)",
+      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+    },
+    {
+      "title": "How the Grinch Stole Christmas: 25th Anniversary Edition (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£16.99 per a UK deal site, listed as part of Amazon's Black Friday sale through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/dr-seuss-how-the-grinch-stole-christmas-25th-anniversary-edition-4k-uhd-blu-ray-5031323"
+    },
+    {
+      "title": "Back to the Future Trilogy (4K Ultra HD)",
+      "store": "Rarewaves (UK)",
+      "detail": "£35.87 with code TREAT10 (from £39.85), sold by Rarewaves per a UK deal site; listing says it ends Monday. UK pricing.",
+      "ends": "2026-11-16",
+      "url": "https://www.hotukdeals.com/deals/back-to-the-future-trilogy-4k-ultra-hd-wcode-5032292"
     }
   ],
   "upcoming": [

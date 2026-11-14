@@ -18,11 +18,15 @@
     {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
-      "action": "Presale starts Wed, Nov 18; general sale Fri, Nov 20 at 10 a.m. Watch the artist's site for presale sign-up.",
+      "action": "Register on Phoebe Bridgers' official site by Sun, Nov 15 at 11:59 p.m. for the Day 1 random draw; artist presales Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",
       "starts": "2026-11-18",
-      "by": "2026-11-20",
-      "why": "Portland opens the newly announced 2027 Lost Tour leg, and Grouper opens only the Portland and Spokane nights.",
+      "by": "2026-11-15",
+      "why": "Portland opens the 2027 Lost Tour leg (Grouper opens here); registrants are randomly assigned a presale day, late sign-ups get Day 2, and registering doesn't guarantee tickets. BroadwayWorld lists a later Nov 19 cutoff, so confirm on the official site.",
       "sources": [
+        {
+          "name": "Variety",
+          "url": "https://variety.com/2026/music/news/phoebe-bridgers-extends-lost-tour-north-america-2027-1236946343/"
+        },
         {
           "name": "Consequence",
           "url": "https://consequence.net/2026/11/phoebe-bridgers-the-lost-tour-2027-dates/"
@@ -34,6 +38,10 @@
         {
           "name": "Pollstar",
           "url": "https://news.pollstar.com/2026/11/12/phoebe-bridgers-extends-the-lost-tour-with-2027-dates/"
+        },
+        {
+          "name": "BroadwayWorld",
+          "url": "https://www.broadwayworld.com/bwwmusic/article/Phoebe-Bridgers-Announces-Additional-2027-North-American-Dates-for-The-Lost-Tour-20261112"
         }
       ]
     },
@@ -94,20 +102,6 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
-        }
-      ]
-    },
-    {
-      "title": "Boogie Belgique: Arcade Tour 2027",
-      "kind": "Tickets",
-      "action": "Tickets on sale",
-      "starts": "2026-11-27",
-      "by": null,
-      "why": "Portland show",
-      "sources": [
-        {
-          "name": "Web search: Portland presales",
-          "url": "https://www.holocene.org/calendar"
         }
       ]
     },
@@ -386,6 +380,42 @@
         {
           "name": "mxdwn",
           "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
+        }
+      ]
+    },
+    {
+      "title": "Conversations With Nick Cave, Arlene Schnitzer Concert Hall (Apr 12, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Fri, Nov 13 at 10 a.m.; buy face value through the official links at nickcave.com rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "One of only five North American dates on his 2027 talk-and-piano tour; presale registration ran Nov 11 to 12.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/nick-cave-plots-5-date-north-american-conversations-tour-for-2027/"
+        },
+        {
+          "name": "Music Times",
+          "url": "https://www.musictimes.com/articles/113235/20261108/nick-cave-brings-his-unfiltered-q-piano-tour-back-north-america.htm"
+        }
+      ]
+    },
+    {
+      "title": "Fall Out Boy with The Offspring, Providence Park (Aug 26, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Thu, Nov 12; buy face value through Providence Park's official ticketing rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "Portland closes the North American leg of the Twilight of the Punks tour, with Good Charlotte and The Story So Far also on the bill.",
+      "sources": [
+        {
+          "name": "Portland Timbers / Providence Park",
+          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
+        },
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/fall-out-boy-announces-36-date-twilight-of-the-punks-world-tour-for-2027/"
         }
       ]
     }

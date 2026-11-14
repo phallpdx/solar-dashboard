@@ -1,14 +1,13 @@
 {
   "updated": "2026-11-14",
-  "updated_at": "2026-11-14T11:23:55Z",
+  "updated_at": "2026-11-14T13:11:37Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are riding high after a strong 8-3 start and recent wins over Sacramento. However, concerns exist regarding upcoming road trips and arena lease negotiations.",
+      "pulse": "Fans are riding high after a strong 8-3 start and recent wins over Sacramento and OKC. The worry now is a tough six-game road trip.",
       "storylines": [
         "Blazers hold an 8-3 record following victories over Kings and Thunder.",
         "Deni Avdija ranks #12 on the latest MVP ladder.",
-        "Ownership is stalling on Moda Center lease agreement negotiations.",
         "A tough six-game road trip begins for the team."
       ],
       "sources": [
@@ -68,12 +67,11 @@
     },
     "f1": {
       "mood": "celebratory yet tense",
-      "pulse": "Fans celebrate Antonelli's title and Mercedes' ninth championship. Tension arises from a Daily Mail boycott and driver market uncertainty.",
+      "pulse": "Fans are celebrating Antonelli's title and Mercedes' big season. The talk now is Verstappen's late-season surge and whether Mercedes helps Russell hold off Max for runner-up.",
       "storylines": [
         "Kimi Antonelli crowned 2026 World Champion",
         "Mercedes wins ninth Constructors' Championship",
-        "Daily Mail announces F1 boycott",
-        "Williams drops 2026 upgrades for 2027"
+        "Russell and Verstappen fighting for P2 in the standings"
       ],
       "sources": [
         {
@@ -99,25 +97,78 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic and focused",
-      "pulse": "Fans are celebrating a blowout victory in the Big House. They are eyeing playoff implications via the USC-Indiana game.",
+      "mood": "Fired up",
+      "pulse": "Ducks fans are buzzing after Oregon stormed back from two touchdowns down to beat Ohio State 41-28 in Columbus, scoring 38 straight. It's a second straight win since Dante Moore's season-ending concussion, and Dylan Raiola has the offense rolling into today's Michigan game with playoff hopes alive.",
       "storylines": [
-        "Dixon led Ducks to a blowout win over Michigan",
-        "Playoff hopes depend on USC beating Indiana",
-        "Uniforms for Michigan game revealed as black jerseys"
+        "Next game: TODAY, Sat Nov 14 vs. Michigan at Autzen, 12:30 PM PT on FS1 (Ducks favored by about 10)",
+        "Beat No. 11 Ohio State 41-28 last Saturday; Raiola threw for 257 yards and Dierre Hill Jr. ran for two TDs",
+        "Oregon is 6-3 (4-2 Big Ten) and back in the CFP rankings",
+        "Keys vs. Michigan: keep Raiola clean against the nation's No. 4 total defense",
+        "After that: Fri Nov 20 at Michigan State, 5:00 PM PT on FOX"
       ],
-      "sources": []
+      "sources": [
+        {
+          "name": "ESPN (Ohio State recap)",
+          "url": "https://www.espn.com/college-football/recap?gameId=401858514"
+        },
+        {
+          "name": "CBS Sports / AP (box score)",
+          "url": "https://www.cbssports.com/college-football/gametracker/boxscore/NCAAF_20261107_OREG@OHIOST/"
+        },
+        {
+          "name": "SI (Michigan TV and time)",
+          "url": "https://www.si.com/college/oregon/football/oregon-ducks-michigan-wolverines-preview-tv-channel-betting-odds"
+        },
+        {
+          "name": "Yahoo (kickoff, TV)",
+          "url": "https://sports.yahoo.com/articles/kickoff-time-tv-channel-announced-222142407.html"
+        },
+        {
+          "name": "Yahoo (Michigan defense)",
+          "url": "https://sports.yahoo.com/articles/one-single-matchup-gives-michigan-184903571.html"
+        },
+        {
+          "name": "GoDucks (kickoff times)",
+          "url": "https://goducks.com/news/2026/5/27/multiple-kickoff-times-tv-announced-for-2026-oregon-football-season"
+        }
+      ]
     },
     "niners": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans are excited for the rivalry game against Dallas following a blowout win. However, injuries to key players cause concern.",
+      "mood": "Confident",
+      "pulse": "Niners fans feel great at 7-1 after a 38-17 rout of the Raiders, with the defense forcing five second-half takeaways and Purdy getting MVP buzz. The worry is injuries heading into Sunday's trip to Dallas.",
       "storylines": [
-        "Upcoming road game against Dallas Cowboys",
-        "Mike Evans ruled out with Achilles injury",
-        "Trent Williams and Dre Greenlaw questionable",
-        "Brock Purdy in MVP conversation"
+        "Next game: Sun Nov 15 at Dallas, 1:25 PM PT on FOX (49ers favored by about 4.5)",
+        "Beat the Raiders 38-17; Purdy had three total TDs, including his 100th career TD pass",
+        "Mike Evans (Achilles) out again; Trent Williams and Dre Greenlaw questionable",
+        "Jordan Watkins stepping up with injuries thinning the receiver room",
+        "After Dallas: Sun Nov 22 vs. Vikings, 5:20 PM PT on NBC"
       ],
-      "sources": []
+      "sources": [
+        {
+          "name": "ESPN (injury report)",
+          "url": "https://www.espn.com/nfl/story/_/id/50475033/49ers-williams-greenlaw-questionable-evans-vs-cowboys"
+        },
+        {
+          "name": "Yahoo (game time, TV)",
+          "url": "https://sports.yahoo.com/articles/cowboys-vs-49ers-game-time-012650586.html"
+        },
+        {
+          "name": "Goal.com (kickoff PT)",
+          "url": "https://www.goal.com/en/news/live-stream-online-tv-where-to-watch-dallas-cowboys-v-san-francisco-49ers/blt56187d72557115d0"
+        },
+        {
+          "name": "CBS Sports (Purdy Week 9)",
+          "url": "https://www.cbssports.com/fantasy/football/news/49ers-brock-purdy-three-total-tds-in-week-9-win/"
+        },
+        {
+          "name": "49ers Hub (report card)",
+          "url": "https://49ershub.substack.com/p/raiders-wk9-grades"
+        },
+        {
+          "name": "49ers.com (schedule)",
+          "url": "https://www.49ers.com/schedule/"
+        }
+      ]
     }
   }
 }

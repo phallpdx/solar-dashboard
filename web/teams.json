@@ -1,15 +1,12 @@
 {
-  "updated": "2026-11-13",
-  "updated_at": "2026-11-14T07:29:13Z",
+  "updated": "2026-11-14",
+  "updated_at": "2026-11-14T09:27:18Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are riding high after an 8-3 start and a win over Sacramento. However, concerns exist regarding injuries and arena lease negotiations.",
+      "pulse": "Fans are riding a high after an 8-3 start and recent wins. However, concerns exist regarding the Moda Center lease and upcoming road trip difficulty.",
       "storylines": [
-        "Blazers hold a 9-3 record following victory over the Kings.",
-        "Deni Avdija ranked #12 on recent MVP ladder.",
-        "Uncertainty surrounds Scoot Henderson's contract extension status.",
-        "Moda Center lease agreement negotiations have stalled."
+        "Blazers hold 9-3 record after beating Kings"
       ],
       "sources": [
         {
@@ -35,13 +32,12 @@
       ]
     },
     "timbers": {
-      "mood": "Optimistic underdog energy",
-      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is high anticipation for the upcoming playoff matchup against Dallas.",
+      "mood": "Underdog optimism",
+      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is high anticipation for the playoff matchup against Dallas.",
       "storylines": [
         "Clinching the 7th seed in Audi 2026 MLS Cup Playoffs",
         "Upcoming playoff matchup against Dallas",
-        "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 eliminated in MLS NEXT Pro Semifinals"
+        "James Pantemis up for 2026 MLS Save of the Year"
       ],
       "sources": [
         {
@@ -67,13 +63,13 @@
       ]
     },
     "f1": {
-      "mood": "Speculative and nostalgic",
-      "pulse": "Fans are discussing the 2027 driver market and Antonelli's title defense. Nostalgia for legends like Lauda and Schumacher is high.",
+      "mood": "celebratory yet tense",
+      "pulse": "Fans are celebrating Kimi Antonelli's championship and Mercedes' ninth title. Tension rises due to a Daily Mail boycott.",
       "storylines": [
-        "Kimi Antonelli identifies Max Verstappen as his biggest 2027 threat.",
-        "Mercedes claims their ninth Constructors' Championship in 2026.",
-        "The Daily Mail announces a boycott of Formula 1.",
-        "Williams drops 2026 upgrades to prioritize 2027 development."
+        "Kimi Antonelli crowned 2026 World Champion",
+        "Mercedes wins ninth Constructors' Championship",
+        "Daily Mail announces F1 boycott",
+        "Alisha Palmowski joins FREC for 2027"
       ],
       "sources": [
         {
@@ -100,24 +96,22 @@
     },
     "ducks": {
       "mood": "optimistic and expectant",
-      "pulse": "Fans are celebrating a blowout victory in the Big House. They are focused on beating Michigan to keep playoff dreams alive.",
+      "pulse": "Fans are celebrating a blowout victory in the Big House. Playoff hopes depend on USC beating Indiana.",
       "storylines": [
-        "Ducks secured second straight victory in the Big House",
-        "Playoff implications depend on USC/Indiana result",
-        "Next game vs Michigan airing on FOX",
-        "Hampton's playing status is uncertain"
+        "Dixon led Ducks to a blowout win against Michigan",
+        "Oregon faces Michigan again with black jerseys revealed",
+        "Playoff hopes depend on USC beating Indiana",
+        "Hampton's playing status remains uncertain"
       ],
       "sources": []
     },
     "niners": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited for the Dallas rivalry and Purdy's MVP candidacy. Injuries to Mike Evans and Trent Williams cause concern.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are excited for the rivalry game against Dallas following a blowout win. However, injuries to key players cause concern.",
       "storylines": [
-        "Offense is producing at a historic rate under Kyle Shanahan.",
-        "Mike Evans ruled out with an Achilles injury.",
-        "Trent Williams is dealing with a shoulder injury.",
-        "Upcoming rivalry game against the Dallas Cowboys.",
-        "Brock Purdy remains a midseason MVP frontrunner."
+        "Looking to improve to 8-1 against the Cowboys",
+        "Mike Evans ruled out with Achilles injury",
+        "Trent Williams and Dre Greenlaw questionable"
       ],
       "sources": []
     }

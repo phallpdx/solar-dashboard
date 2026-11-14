@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -10,12 +10,12 @@
       "url": "https://www.cannonbeach.org/haystackholidays/"
     },
     {
-      "name": "Let’s Go Birding! Coffenbury Lake Bird Walk",
-      "date": "2026-11-13",
-      "end": "2026-11-13",
-      "town": "Seaside",
-      "summary": "Bird walk around Coffenbury Lake from 9:30 am - 10:30 am. Free.",
-      "url": "https://www.seasideor.com/event/lets-go-birding-coffenbury-lake-bird-walk-6/"
+      "name": "Live Glass Blowing Demonstration",
+      "date": "2026-11-12",
+      "end": "2026-11-16",
+      "town": "Cannon Beach",
+      "summary": "Glass blowing demonstration at Icefire Glassworks from 10AM to 5PM.",
+      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
     },
     {
       "name": "Holiday Bazaar",
@@ -24,14 +24,6 @@
       "town": "Seaside",
       "summary": "Gourmet food and holiday fun at Calvary Episcopal Church. Price not given.",
       "url": "https://www.seasideor.com/event/holiday-bazaar-3/"
-    },
-    {
-      "name": "A Strange Bird w/Bikehouse live at The Lyons Den",
-      "date": "2026-11-13",
-      "end": "2026-11-13",
-      "town": "Seaside",
-      "summary": "Indie/Soul/R&B music from 7:00 pm to 9:00 pm for $5.00.",
-      "url": "https://www.seasideor.com/event/a-strange-bird-w-bikehouse-live-at-the-lyons-den/"
     },
     {
       "name": "Film Screening – The Taking of Pelham One Two Three",
@@ -48,6 +40,30 @@
       "town": "Seaside",
       "summary": "Roots/Country music from 7:00 pm to 9:00 pm for $5.00.",
       "url": "https://www.seasideor.com/event/a-town-called-home-live-at-the-lyons-den/"
+    },
+    {
+      "name": "Holiday Bazaar",
+      "date": "2026-11-14",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Enjoy gourmet food and holiday fun from 10 am to 3 pm.",
+      "url": "https://www.seasideor.com/event/holiday-bazaar-3/"
+    },
+    {
+      "name": "Astoria's Artwalk",
+      "date": "2026-11-14",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Galleries host opening of curated visual art exhibitions from 12:00PM to 8:00PM.",
+      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
+    },
+    {
+      "name": "McMinnville Short Film Festival Pop Up!",
+      "date": "2026-11-14",
+      "end": null,
+      "town": "Cannon Beach",
+      "summary": "Six short films shown at Coaster Theatre from 7:00-9:00PM.",
+      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
     },
     {
       "name": "Beach Towel Tuesdays",

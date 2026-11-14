@@ -1,54 +1,6 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "shows": [
-    {
-      "artist": "Shelly Rudolph: Swank Snow",
-      "kind": "Vocal",
-      "date": "2026-11-13",
-      "time": "8:00 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Portland jazz singer Shelly Rudolph's holiday-themed set, with new songs from her upcoming album Wild Darling; tickets also get you into the Burly-Q Revue afterward.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/shelly-rudolph/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/shelly-rudolph/"
-        }
-      ]
-    },
-    {
-      "artist": "The Breaks",
-      "kind": "Local",
-      "date": "2026-11-13",
-      "time": null,
-      "venue": "Web search: touring jazz in Portland",
-      "price": null,
-      "what": "The Breaks concert performance.",
-      "tickets": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz",
-      "sources": [
-        {
-          "name": "Web search: touring jazz in Portland",
-          "url": "https://www.songkick.com/metro-areas/12283-us-portland/2026/genre/jazz"
-        }
-      ]
-    },
-    {
-      "artist": "Keith Brown Quartet",
-      "kind": "Touring",
-      "date": "2026-11-13",
-      "time": null,
-      "venue": "The 1905's",
-      "price": "$30",
-      "what": "A distinguished pianist and composer performing contemporary jazz.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Christopher Brown and Friends Featuring Gina Saputo",
       "kind": "Local",

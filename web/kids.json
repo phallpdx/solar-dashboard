@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "note": "Toddler-friendly events near North Portland, Vancouver and the coast, soonest first. Many holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
@@ -19,68 +19,12 @@
       "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
     },
     {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Various storytimes including Toddler Times are available. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
       "title": "Santa Photos | An Elf™ Christmas Experience at Vancouver Mall",
       "date": "2026-11-13",
       "ends": "2026-12-24",
       "where": "Vancouver, WA",
       "detail": "Magical holiday photo experience with Santa. Price not listed.",
       "url": "https://pdxparent.com/series/santa-photos-an-elf-christmas-experience-at-vancouver-mall/"
-    },
-    {
-      "title": "Toddler Time – Learning Italian Together",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Free parent-child playgroup for ages 2-4 to learn through crafts and play. Free.",
-      "url": "https://pdxparent.com/series/toddler-time-learning-italian-together/"
-    },
-    {
-      "title": "Guidepost Montessori Open House",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Beaverton",
-      "detail": "Tour classrooms and meet educators at this open house. Free.",
-      "url": "https://pdxparent.com/series/guidepost-montessori-open-house-2/"
-    },
-    {
-      "title": "Open Play at Laurelhurst Studio!",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Drop-in playtime for families from 9:00 am to 12:00 pm. $10.",
-      "url": "https://pdxparent.com/series/open-play-at-laurelhurst-studio/"
-    },
-    {
-      "title": "Gabby’s Dollhouse at The FLIP Children’s Museum of Hillsboro",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Hillsboro",
-      "detail": "Discovery days with crafts, scavenger hunts, and character photo ops. $10.",
-      "url": "https://pdxparent.com/series/gabbys-dollhouse-at-the-flip-childrens-museum-of-hillsboro-2/"
-    },
-    {
-      "title": "Tiny Tumble and Play",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Clackamas",
-      "detail": "An active open gym event designed for children ages 0 to 5 from 10:00 am to 12:00 pm for $15.",
-      "url": "https://pdxparent.com/series/tiny-tumble-and-play-2/"
-    },
-    {
-      "title": "Red Yarn at Sellwood Community House!",
-      "date": "2026-11-13",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Folk songs and puppets followed by open play from 10:30 am to 12:15 pm for $1-$15.",
-      "url": "https://pdxparent.com/series/red-yarn-at-sellwood-community-house-2/"
     },
     {
       "title": "Curiosity Kids: Sasquatch Science Team",
@@ -155,6 +99,38 @@
       "url": "https://pdxparent.com/event-single/the-portland-princess-ball/"
     },
     {
+      "title": "Santa at Clackamas Town Center",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Clackamas",
+      "detail": "Photo opportunities with Santa at Macy's Home Court for $20.",
+      "url": "https://pdxparent.com/series/santa-at-clackamas-town-center/"
+    },
+    {
+      "title": "Creative Movement Dance Class for 2 Year Olds",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Beaverton",
+      "detail": "A dance class for two-year-olds to explore movement from 9am to 9:45am.",
+      "url": "https://pdxparent.com/series/creative-movement-dance-class-for-2-year-olds-2/"
+    },
+    {
+      "title": "Open Play at Laurelhurst Studio!",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Drop-in playtime for families from 9am to 12pm for $10.",
+      "url": "https://pdxparent.com/series/open-play-at-laurelhurst-studio/"
+    },
+    {
+      "title": "St. Johns Farmers Market",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A market featuring over 80 local vendors and artisan goods from 9am to 2pm.",
+      "url": "https://pdxparent.com/series/st-johns-farmers-market-3/"
+    },
+    {
       "title": "Pittock Mansion: Home for the Holidays",
       "date": "2026-11-16",
       "ends": "2027-01-10",
@@ -201,6 +177,22 @@
       "where": "Portland International Raceway, North Portland",
       "detail": "Drive-through holiday light show benefiting Sunshine Division; a BringFido listing gives Nov. 27 to Dec. 31, 2026 with evening hours. Easy with a toddler since you stay in the car.",
       "url": "https://www.bringfido.ca/event/43627"
+    },
+    {
+      "title": "Curiosity Kids: Design and Discover",
+      "date": "2026-11-28",
+      "ends": "2026-12-05",
+      "where": "Portland, OR",
+      "detail": "A science activity for kids from 9 am to 10 am.",
+      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
+    },
+    {
+      "title": "The Polar Express",
+      "date": "2026-12-11",
+      "ends": "2026-12-16",
+      "where": "Portland, OR",
+      "detail": "An event themed around The Polar Express.",
+      "url": "https://tickets.omsi.edu/oregonmuseumofscienceandindustry/events/5c72a103-d2d0-af25-e935-3afe47a0623c"
     }
   ]
 }

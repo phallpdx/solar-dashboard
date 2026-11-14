@@ -1,6 +1,125 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "restaurants": [
+    {
+      "name": "Fukami",
+      "neighborhood": "Downtown Portland",
+      "cuisine": "Omakase sushi",
+      "price": "",
+      "opened": "2025-09-18",
+      "summary": "A refined, eight-seat omakase sushi bar.",
+      "reviews": [
+        {
+          "outlet": "Eater Portland",
+          "critic": "Katrina Yentch",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://pdx.eater.com"
+        }
+      ]
+    },
+    {
+      "name": "Richmond Club",
+      "neighborhood": "Division Street",
+      "cuisine": "French bistro-style bar food",
+      "price": "",
+      "opened": "2025-09-03",
+      "summary": "A French bistro-style space serving upscale bar food.",
+      "reviews": [
+        {
+          "outlet": "Eater Portland",
+          "critic": "Ben Coleman",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://pdx.eater.com/maps/new-restaurant-openings-portland-oregon"
+        }
+      ]
+    },
+    {
+      "name": "Pretty Ugly",
+      "neighborhood": "Portland",
+      "cuisine": "Burgers and cocktails",
+      "price": "",
+      "opened": "empty",
+      "summary": "A spot serving burgers and fancy cocktails.",
+      "reviews": [
+        {
+          "outlet": "Resy",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
+        }
+      ]
+    },
+    {
+      "name": "Wolf Fusion",
+      "neighborhood": "Portland",
+      "cuisine": "Fusion",
+      "price": "",
+      "opened": "empty",
+      "summary": "A fusion restaurant in Portland.",
+      "reviews": [
+        {
+          "outlet": "Resy",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
+        }
+      ]
+    },
+    {
+      "name": "Bistro Alder",
+      "neighborhood": "SW Portland",
+      "cuisine": "Bistro",
+      "price": "",
+      "opened": "empty",
+      "summary": "A bistro located in SW Portland.",
+      "reviews": [
+        {
+          "outlet": "Resy",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
+        }
+      ]
+    },
+    {
+      "name": "23rd Champagne Poetry",
+      "neighborhood": "Nob Hill",
+      "cuisine": "Modern Pan-Asian",
+      "price": "",
+      "opened": "empty",
+      "summary": "A champagne bar with Italian wines and imported salumi.",
+      "reviews": [
+        {
+          "outlet": "Resy",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
+        }
+      ]
+    },
+    {
+      "name": "Jade Rabbit",
+      "neighborhood": "Hawthorne",
+      "cuisine": "Vegan",
+      "price": "",
+      "opened": "empty",
+      "summary": "A vegan restaurant in Hawthorne.",
+      "reviews": [
+        {
+          "outlet": "Resy",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-14",
+          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
+        }
+      ]
+    },
     {
       "name": "Le Petit Chef at The Mindaro hotel",
       "neighborhood": "",
@@ -301,125 +420,6 @@
           "verdict": "",
           "date": "2026-10-30",
           "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOWWU3dWlTTUpaTUlzeEk3THpyd1NDektCXzVkQkwtdW9FN1AxaVNkOVk4M2xjR3JiZDRia19XbVl3U2tiRFRsckxDTkFPeElpckJJdzBJOUFyY1VQSDM0OEJLRVFEYTJFalF5UFBTVkRkWm9xaWdsSWppQi1ERm1mVjFLUks?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Wildwood",
-      "neighborhood": "Portland",
-      "cuisine": "Restaurant",
-      "price": "",
-      "opened": "2026-10-27",
-      "summary": "A review of the restaurant Wildwood.",
-      "reviews": [
-        {
-          "outlet": "Willamette Week",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-27",
-          "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQVGpmNHUyWXp5b3ZvRDl4dnVhQktjd0YyaHIzX3E2OVlwWjJqemZnbERZWjNoendDWVJ0LU0yc2NDb1FUTDVTWjFxYTRfOHF0VzhNSWxrTUU1Wm5SaUNiQXRyb1d3b1hIRzlUa3ZWcVJ4c18wMTZ4Uk1qWnNUMzdaVDdwWEJ2MDlfTlpfcQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Mossback",
-      "neighborhood": "Gladstone",
-      "cuisine": "Pizza and Drinks",
-      "price": "",
-      "opened": "2026-10-29",
-      "summary": "New pizza and drinks spot opening on Gladstone.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-29",
-          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Ethiopian Coffee Shop",
-      "neighborhood": "Central Eastside",
-      "cuisine": "Coffee/Cocktails",
-      "price": "",
-      "opened": "2026-10-28",
-      "summary": "An Ethiopian coffee shop with evening cocktails.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-28",
-          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPM280dW9vTGpKVnYtY0h1NkpENGI2dmpvUVAwSkJMT2hlYlVuckV5S1hFVEY4M01ZRDN6SjNyX1ZiaHk3NUpzM09rNDkxZW4tUnFmcW9UQjA2czJNaU84dzBCZTlUVDhaUXg3ZUZlYWxoSy1td0UxLXZrdXhzbGdHckhYMC0tYkFaZUhfS3JhbThtay0tMXB6b25FS3dwV1F3bzR3ekxsbm10SmxsR1JUemFFbw?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "La Casa de Mamá",
-      "neighborhood": "North Portland",
-      "cuisine": "Vegan Mexican bakery",
-      "price": "",
-      "opened": "2026-10-30",
-      "summary": "A vegan Mexican bakery opening its first storefront.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-30",
-          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZk1WYVZDd3Q2VGJRN0g0dHlfa1Rtdi0wbnNaV3Vpc2VLZGY4aTlKYlZQc2oxQUhJRkFBN1pyYzE2V29NMnljN2o2dklVcGVHZmg3UkJuQnBGakliQnBJMnFrc3R3NTRvZ2g0TzNqcWNkTTNQRlZvQ3VXczRDeG1RWGpuUmdZTDBxS0g0clZ2UlNrSHJXcTZoZ1Z4M21BNTQ2T0s5S3ptVUxERXI2UHVNakZWWFEtVUdqTzRwclR5dTE?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "pFriem Family Brewers",
-      "neighborhood": "Portland",
-      "cuisine": "Brewery",
-      "price": "",
-      "opened": "2026-10-24",
-      "summary": "First official Portland location for the brewery.",
-      "reviews": [
-        {
-          "outlet": "newschoolbeer.com",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-24",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQd1FFbEx1UjNoMUE1OGJRSk5SbFo5NEJNZEFQOXJsN0JJTE5ESFNmeFBxUms2QUdSd3N0OXpadDlFYTl1UlA3YWp4V3JvbzJ6YkJjNC1BVnI3bURsOGw4QVQ3bzcwc0VpUWtFV0lVcS05MnhxeDM5YzRmNE1WR1NkMjJNX0lxanBRMG5QUHJyWHNwWmRHYnkyRThnanc4U2g3d25XVVprcw?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Love Crumble",
-      "neighborhood": "Northwest Portland",
-      "cuisine": "",
-      "price": "",
-      "opened": "2026-10-28",
-      "summary": "New location opening in Northwest Portland.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-28",
-          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQd2JsUjA4dW5qNzBHNjZ5MzVnZGNwY3E2WWF6WnBSbXd2a3R0ZHlyRTJqeXZFLXA0Y29RdWdXZ2U0WV9LMkk0ZkVVTHRyd1VuZFNSaGtFUnNReG1Ma3J2LWhFUERjdmtWUWVieG9YaDNicnFOSTd0Q011N0toVjJTTEpCWUxTX0w2c3liaHVmSTNfZUlPZWc?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Bar Sprezzatura Portland",
-      "neighborhood": "The Heathman Hotel",
-      "cuisine": "",
-      "price": "",
-      "opened": "2026-10-19",
-      "summary": "First taste of Bar Sprezzatura at The Heathman Hotel.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-19",
-          "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWENmSGcxenhVVnVCZWFCaUtPbEFENWNWSTJfS295ZUZXSHFGSmQzR3ZBUmZCUzN0Sk1hNXh2MFpvNks1OFdmNHdxWDlyeGdxTWtaa1lvamVlVWpRbFJKU2JxY2hwcHFNMGhIaUxDOHRZVnNQc25Jelg1ZDJHOWFYcW5Ta3JtT1NlM0cxazBZT2tqWUVpZXZCMmJ2emx3WGlkWHhLTG5KY1Y?oc=5"
         }
       ]
     }

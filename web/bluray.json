@@ -1,34 +1,6 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "deals": [
-    {
-      "title": "Mars Attacks!",
-      "store": "Amazon",
-      "detail": "$12.99, 4K Ultra HD + Digital 4K",
-      "ends": "2026-11-13",
-      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
-    },
-    {
-      "title": "Wuthering Heights, Mortal Kombat II, Superman",
-      "store": "Walmart",
-      "detail": "Select 4K Blu-rays for $13 or less",
-      "ends": "2026-11-13",
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
-    },
-    {
-      "title": "Raya and the Last Dragon",
-      "store": "Walmart",
-      "detail": "4K UHD + Blu-ray + Digital, $9.75",
-      "ends": "2026-11-13",
-      "url": "https://slickdeals.net/f/20299629-raya-and-the-last-dragon-4k-uhd-blu-ray-digital-9-75-free-shipping-w-walmart-or-on-35"
-    },
-    {
-      "title": "Various 4K Ultra HD Blu-ray Films",
-      "store": "GRUV Entertainment via Walmart",
-      "detail": "$13 or less",
-      "ends": "2026-11-13",
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
-    },
     {
       "title": "V for Vendetta",
       "store": "Amazon",
@@ -79,11 +51,67 @@
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
     },
     {
-      "title": "Shout 4K/Steelbook Sale",
-      "store": "Shout",
-      "detail": "Sale",
+      "title": "Mars Attacks!",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Digital 4K, $12.99",
       "ends": null,
-      "url": "https://fanfare.metafilter.com/26392/Physical-Media-Sales-An-Incomplete-Guide"
+      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
+    },
+    {
+      "title": "Various 4K Ultra HD Blu-ray Films",
+      "store": "Walmart",
+      "detail": "Wuthering Heights, Mortal Kombat II, Superman and more, $13 or less",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "Raya and the Last Dragon",
+      "store": "Walmart",
+      "detail": "4K UHD + Blu-ray + Digital, $9.75",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299629-raya-and-the-last-dragon-4k-uhd-blu-ray-digital-9-75-free-shipping-w-walmart-or-on-35"
+    },
+    {
+      "title": "Interview with the Vampire: The Vampire Chronicles (1994)",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Digital, $12.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20298036-interview-with-the-vampire-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "Obsession: Collector's Edition",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital 4K, $12.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20296710-12-99-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
+    },
+    {
+      "title": "Wuthering Heights, Mortal Kombat II, Superman",
+      "store": "Walmart",
+      "detail": "$13 or less 4K Blu-rays",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "Star Trek: The Original 4-Movie Collection",
+      "store": "Amazon",
+      "detail": "$21 (4K Ultra HD + Blu-Ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20278449-star-trek-the-original-4-movie-collection-4k-blu-ray-digital-20-99-amazon-com"
+    },
+    {
+      "title": "Whiplash (2014)",
+      "store": "Amazon",
+      "detail": "$15.35 (4K + Blu-Ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20276370-whiplash-4k-blu-ray-digital-15-36-amazon-com"
+    },
+    {
+      "title": "Cinderella (1950)",
+      "store": "Amazon",
+      "detail": "$15.20 (4K UHD + Blu-Ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
     }
   ],
   "upcoming": [

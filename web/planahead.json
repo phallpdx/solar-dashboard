@@ -1,60 +1,6 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "items": [
-    {
-      "title": "Ricky Montgomery, Crystal Ballroom (May 3, 2027)",
-      "kind": "Tickets",
-      "action": "General sale Fri, Nov 13 at 10 a.m.; buy face value through Etix/Cascade Tickets, the ballroom's official seller.",
-      "starts": "2026-11-13",
-      "by": null,
-      "why": "Listings call it his first Portland show since 2024; date comes from ticket listings, not an official artist page.",
-      "sources": [
-        {
-          "name": "Eventworld listing",
-          "url": "https://www.eventworld.com/ricky-montgomery-portland-tickets-05-03-2027/event/604977"
-        },
-        {
-          "name": "Discotech listing",
-          "url": "https://app.discotech.me/events/38312370-ricky-montgomery-the-monty-tour-at-crystal-ballroom"
-        }
-      ]
-    },
-    {
-      "title": "King Gizzard & The Lizard Wizard, Portland (Aug 19, 2027)",
-      "kind": "Tickets",
-      "action": "Mailing-list presale started Nov 11; general on-sale Fri, Nov 13 at 9 a.m. Pacific. Venue not yet announced.",
-      "starts": "2026-11-13",
-      "by": null,
-      "why": "New album Entropy and two 2027 North American legs; the Portland venue is listed as TBD.",
-      "sources": [
-        {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/king-gizzard-and-the-lizard-wizard-entropy-2027-tours/"
-        },
-        {
-          "name": "Glide Magazine",
-          "url": "https://glidemagazine.com/332952/king-gizzard-the-lizard-wizard-announce-new-album-entropy-two-north-american-tours/"
-        }
-      ]
-    },
-    {
-      "title": "Conversations With Nick Cave, Arlene Schnitzer Concert Hall (Apr 12, 2027)",
-      "kind": "Tickets",
-      "action": "General sale Fri, Nov 13 at 10 a.m. local; buy from the official seller linked at nickcave.com rather than resale sites.",
-      "starts": "2026-11-13",
-      "by": null,
-      "why": "A spring 2027 North American run of audience Q&A and solo piano, with Portland among the stops.",
-      "sources": [
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/nick-cave-plots-5-date-north-american-conversations-tour-for-2027/"
-        },
-        {
-          "name": "mxdwn",
-          "url": "https://music.mxdwn.com/2026/11/06/news/nick-cave-announces-spring-2027-conversations-with-nick-cave-an-evening-of-talk-music-tour-dates/amp/"
-        }
-      ]
-    },
     {
       "title": "Epic Pass price increase",
       "kind": "Deadline",

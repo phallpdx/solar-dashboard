@@ -2,6 +2,23 @@
   "updated": "2026-11-14",
   "restaurants": [
     {
+      "name": "Steelhead Music Venue",
+      "neighborhood": "Central Eastside",
+      "cuisine": "Music venue",
+      "price": "",
+      "opened": "Summer 2027",
+      "summary": "Moving toward a summer 2027 opening.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-13",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxObDhCaldNUjQ1TmFSTnYwTFJqbzVpenUtVG15OGY1Wkp5VXZkRU52R3dqZXgtbVRZNW1OWmRBTkJLN0Eyb0xCM3dCMFFQbVBic3p5LTczSXhSdThIWl9kVXU1Y3oxb0NtMDZBWFgzeTZUTUExTHNERU1UME1lWlBhNGYtYmJCZEpNdWxSb2g4Mnh3RVh5OTNQMG93SHVaLW5LUkNETDVSN1U3a1M2RkJpMENKM2FmZUU?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Fukami",
       "neighborhood": "Downtown Portland",
       "cuisine": "Omakase sushi",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-10-30",
           "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNdWNvaXdXdkI3bUx4WGxsSWhPSmppY2J2OWJCSUVtN0xHRjFVNk9POWVIVVAwdk90YndpMFR4VGtQb19jbFU1UmhKRUo3WEM0SmN6TzRxOE9sQ1AtUnlyWl9mYTJtajlzT1dqSVh3TmNQRURTa0VuOW9rcENvSlROU3dBQnNtUlRtbnNjU0tDNEh1MWpEYUpxX1JOM3JmdHg3QW5sSDhNbC1tcTNzVF9veEcybXlIUQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "The Mindaro, JdV by Hyatt",
-      "neighborhood": "Portland",
-      "cuisine": "Hotel/Dining",
-      "price": "",
-      "opened": "2026-10-30",
-      "summary": "A new hotel opening in Portland.",
-      "reviews": [
-        {
-          "outlet": "LODGING Magazine",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-30",
-          "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOWWU3dWlTTUpaTUlzeEk3THpyd1NDektCXzVkQkwtdW9FN1AxaVNkOVk4M2xjR3JiZDRia19XbVl3U2tiRFRsckxDTkFPeElpckJJdzBJOUFyY1VQSDM0OEJLRVFEYTJFalF5UFBTVkRkWm9xaWdsSWppQi1ERm1mVjFLUks?oc=5"
         }
       ]
     }

@@ -1,12 +1,15 @@
 {
   "updated": "2026-11-14",
-  "updated_at": "2026-11-14T09:27:18Z",
+  "updated_at": "2026-11-14T11:23:55Z",
   "teams": {
     "blazers": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are riding a high after an 8-3 start and recent wins. However, concerns exist regarding the Moda Center lease and upcoming road trip difficulty.",
+      "pulse": "Fans are riding high after a strong 8-3 start and recent wins over Sacramento. However, concerns exist regarding upcoming road trips and arena lease negotiations.",
       "storylines": [
-        "Blazers hold 9-3 record after beating Kings"
+        "Blazers hold an 8-3 record following victories over Kings and Thunder.",
+        "Deni Avdija ranks #12 on the latest MVP ladder.",
+        "Ownership is stalling on Moda Center lease agreement negotiations.",
+        "A tough six-game road trip begins for the team."
       ],
       "sources": [
         {
@@ -32,12 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog optimism",
-      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is high anticipation for the playoff matchup against Dallas.",
+      "mood": "Underdog energy",
+      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is anticipation for the playoff matchup against Dallas.",
       "storylines": [
         "Clinching the 7th seed in Audi 2026 MLS Cup Playoffs",
         "Upcoming playoff matchup against Dallas",
-        "James Pantemis up for 2026 MLS Save of the Year"
+        "James Pantemis up for 2026 MLS Save of the Year",
+        "Timbers2 eliminated from MLS NEXT Pro playoffs"
       ],
       "sources": [
         {
@@ -64,12 +68,12 @@
     },
     "f1": {
       "mood": "celebratory yet tense",
-      "pulse": "Fans are celebrating Kimi Antonelli's championship and Mercedes' ninth title. Tension rises due to a Daily Mail boycott.",
+      "pulse": "Fans celebrate Antonelli's title and Mercedes' ninth championship. Tension arises from a Daily Mail boycott and driver market uncertainty.",
       "storylines": [
         "Kimi Antonelli crowned 2026 World Champion",
         "Mercedes wins ninth Constructors' Championship",
         "Daily Mail announces F1 boycott",
-        "Alisha Palmowski joins FREC for 2027"
+        "Williams drops 2026 upgrades for 2027"
       ],
       "sources": [
         {
@@ -95,13 +99,12 @@
       ]
     },
     "ducks": {
-      "mood": "optimistic and expectant",
-      "pulse": "Fans are celebrating a blowout victory in the Big House. Playoff hopes depend on USC beating Indiana.",
+      "mood": "Optimistic and focused",
+      "pulse": "Fans are celebrating a blowout victory in the Big House. They are eyeing playoff implications via the USC-Indiana game.",
       "storylines": [
-        "Dixon led Ducks to a blowout win against Michigan",
-        "Oregon faces Michigan again with black jerseys revealed",
+        "Dixon led Ducks to a blowout win over Michigan",
         "Playoff hopes depend on USC beating Indiana",
-        "Hampton's playing status remains uncertain"
+        "Uniforms for Michigan game revealed as black jerseys"
       ],
       "sources": []
     },
@@ -109,9 +112,10 @@
       "mood": "Optimistic but cautious",
       "pulse": "Fans are excited for the rivalry game against Dallas following a blowout win. However, injuries to key players cause concern.",
       "storylines": [
-        "Looking to improve to 8-1 against the Cowboys",
+        "Upcoming road game against Dallas Cowboys",
         "Mike Evans ruled out with Achilles injury",
-        "Trent Williams and Dre Greenlaw questionable"
+        "Trent Williams and Dre Greenlaw questionable",
+        "Brock Purdy in MVP conversation"
       ],
       "sources": []
     }

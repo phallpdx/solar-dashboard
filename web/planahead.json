@@ -70,6 +70,28 @@
       ]
     },
     {
+      "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
+      "kind": "Tickets",
+      "action": "Presale starts Wed, Nov 18; general sale Fri, Nov 20 at 10 a.m. Watch the artist's site for presale sign-up.",
+      "starts": "2026-11-18",
+      "by": "2026-11-20",
+      "why": "Portland opens the newly announced 2027 Lost Tour leg, and Grouper opens only the Portland and Spokane nights.",
+      "sources": [
+        {
+          "name": "Consequence",
+          "url": "https://consequence.net/2026/11/phoebe-bridgers-the-lost-tour-2027-dates/"
+        },
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/phoebe-bridgers-2027-lost-tour-dates-presales/"
+        },
+        {
+          "name": "Pollstar",
+          "url": "https://news.pollstar.com/2026/11/12/phoebe-bridgers-extends-the-lost-tour-with-2027-dates/"
+        }
+      ]
+    },
+    {
       "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
       "kind": "Tickets",
       "action": "On sale now through Ticketmaster and the Moda Center box office.",
@@ -102,28 +124,6 @@
       ]
     },
     {
-      "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
-      "kind": "Tickets",
-      "action": "Presale starts Wed, Nov 18; general sale Fri, Nov 20 at 10 a.m. Watch the artist's site for presale sign-up.",
-      "starts": "2026-11-18",
-      "by": "2026-11-20",
-      "why": "Portland opens the newly announced 2027 Lost Tour leg, and Grouper opens only the Portland and Spokane nights.",
-      "sources": [
-        {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/phoebe-bridgers-the-lost-tour-2027-dates/"
-        },
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/phoebe-bridgers-2027-lost-tour-dates-presales/"
-        },
-        {
-          "name": "Pollstar",
-          "url": "https://news.pollstar.com/2026/11/12/phoebe-bridgers-extends-the-lost-tour-with-2027-dates/"
-        }
-      ]
-    },
-    {
       "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
       "kind": "Buy",
       "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
@@ -148,6 +148,20 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Boogie Belgique: Arcade Tour 2027",
+      "kind": "Tickets",
+      "action": "Tickets on sale",
+      "starts": "2026-11-27",
+      "by": null,
+      "why": "Portland show",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://www.holocene.org/calendar"
         }
       ]
     },
@@ -426,24 +440,6 @@
         {
           "name": "mxdwn",
           "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
-        }
-      ]
-    },
-    {
-      "title": "Fall Out Boy with The Offspring, Providence Park (Aug 26, 2027)",
-      "kind": "Tickets",
-      "action": "General sale opened Thu, Nov 12 at 10 a.m.; buy face value through the official tour site's ticket link.",
-      "starts": null,
-      "by": null,
-      "why": "Twilight of the Punks stadium tour with The Offspring, Good Charlotte and The Story So Far; the Timbers announced the Providence Park date.",
-      "sources": [
-        {
-          "name": "Portland Timbers",
-          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
-        },
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/fall-out-boy-announces-36-date-twilight-of-the-punks-world-tour-for-2027/"
         }
       ]
     }

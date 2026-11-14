@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "restaurants": [
+    {
+      "name": "Le Petit Chef at The Mindaro hotel",
+      "neighborhood": "",
+      "cuisine": "3D dinner show",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "La Revue des Hôtels",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-07",
+          "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPRHRKODlMbnNIVXN1ZnRRVXZDLWdnbzljN0N4bjUzTnpjNThOcjZIV3VHQzlPM0MtdVJjdjRnVHdGbzNYTXdESWZUa3pJMGZIRWZwTkdUTXpkQW0zNERTbnY4Tm1VZUJuSENEVnJsZmcyamY1SmZsV2xzRHl2em80ajFoR2RVVTg?oc=5"
+        }
+      ]
+    },
     {
       "name": "Marée",
       "neighborhood": "",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-10-19",
           "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWENmSGcxenhVVnVCZWFCaUtPbEFENWNWSTJfS295ZUZXSHFGSmQzR3ZBUmZCUzN0Sk1hNXh2MFpvNks1OFdmNHdxWDlyeGdxTWtaa1lvamVlVWpRbFJKU2JxY2hwcHFNMGhIaUxDOHRZVnNQc25Jelg1ZDJHOWFYcW5Ta3JtT1NlM0cxazBZT2tqWUVpZXZCMmJ2emx3WGlkWHhLTG5KY1Y?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Unnamed SE Belmont Bar",
-      "neighborhood": "SE Belmont",
-      "cuisine": "Vermouth and almond tart",
-      "price": "",
-      "opened": "2026-10-20",
-      "summary": "New bar serving vermouth and almond tart.",
-      "reviews": [
-        {
-          "outlet": "Eater Portland",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-20",
-          "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOdHFZTGxza1p1YlNlWlkwVEtjLTBxM1NqYTdONlN6MGF4elQ2WnN0NUk5QTU4V3RpZU1mZ0c0Wjg1NXJiVnBkeDdMUTE1UXQtRG9TeFBtYXJrY1UwVkg5WkQyS3FVWmI1S2g1aU52eXI2Y09XQ0VPeGZsaFhLYkFwblBXWDM3Q3UxUTZR?oc=5"
         }
       ]
     }

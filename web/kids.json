@@ -91,6 +91,70 @@
       "url": "https://omsi.edu/events/curiosity-kids-sasquatch-science-team/"
     },
     {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Daily storytimes for various age groups including toddlers. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
+    },
+    {
+      "title": "CHAP Art Club",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Hillsboro",
+      "detail": "Art workshops designed for children with medical challenges. No price listed.",
+      "url": "https://pdxparent.com/series/chap-art-club/"
+    },
+    {
+      "title": "Spanish Story & Play Time with Adventures in Spanish",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland area",
+      "detail": "A joyful hour of stories, songs, and play in Spanish.",
+      "url": "https://pdxparent.com/series/spanish-story-play-time/"
+    },
+    {
+      "title": "Kennedy School’s 111th Birthday Bash",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Celebration featuring face painting and birthday fun. Free.",
+      "url": "https://pdxparent.com/event-single/kennedy-schools-111th-birthday-bash/"
+    },
+    {
+      "title": "Holiday Open House at The Nature Store",
+      "date": "2026-11-14",
+      "ends": "2026-11-15",
+      "where": "Portland",
+      "detail": "Annual holiday shopping kickoff event at the nature store.",
+      "url": "https://pdxparent.com/series/holiday-open-house-at-the-nature-store/"
+    },
+    {
+      "title": "OMSI On Ice",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Indoor synthetic ice skating for families. $8 – $10.",
+      "url": "https://pdxparent.com/series/omsi-on-ice/"
+    },
+    {
+      "title": "Mike Bennett's Dead Media Holiday Special",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Portland",
+      "detail": "VHS-themed holiday event with lights and photo ops. Free.",
+      "url": "https://pdxparent.com/event-single/mike-bennetts-holiday-pop-up/2026-11-14/"
+    },
+    {
+      "title": "The Portland Princess Ball",
+      "date": "2026-11-14",
+      "ends": null,
+      "where": "Tigard",
+      "detail": "An enchanting ball where guests meet nine princesses. $45.",
+      "url": "https://pdxparent.com/event-single/the-portland-princess-ball/"
+    },
+    {
       "title": "Pittock Mansion: Home for the Holidays",
       "date": "2026-11-16",
       "ends": "2027-01-10",
@@ -137,62 +201,6 @@
       "where": "Portland International Raceway, North Portland",
       "detail": "Drive-through holiday light show benefiting Sunshine Division; a BringFido listing gives Nov. 27 to Dec. 31, 2026 with evening hours. Easy with a toddler since you stay in the car.",
       "url": "https://www.bringfido.ca/event/43627"
-    },
-    {
-      "title": "Christmas Festival of Lights at The Grotto",
-      "date": "2026-11-27",
-      "ends": "2026-12-30",
-      "where": "The Grotto, Northeast Portland",
-      "detail": "Holiday lights and choir concerts, 5 to 9:30 p.m. nightly (grounds close at 10), closed Christmas Day, per The Grotto.",
-      "url": "https://thegrotto.org/christmas-festival-of-lights"
-    },
-    {
-      "title": "Holiday Express steam train",
-      "date": "2026-11-27",
-      "ends": "2026-12-27",
-      "where": "Oregon Rail Heritage Center, Southeast Portland",
-      "detail": "A 45-minute round-trip holiday train ride along the Willamette on select dates Nov. 27 to Dec. 27, per the rail center. Exact 2026 run dates were still listed as coming soon; infants under 3 ride free on a lap.",
-      "url": "https://orhf.org/holiday-express/"
-    },
-    {
-      "title": "Vancouver Community Tree Lighting",
-      "date": "2026-11-27",
-      "ends": null,
-      "where": "Vancouver Waterfront and Esther Short Park, Vancouver WA",
-      "detail": "Free Rotary Club tree lighting with Santa arriving by tugboat; Explore Washington State reports Friday, Nov. 27, 2026. Time not yet confirmed by the organizer.",
-      "url": "https://explorewashingtonstate.com/?p=156568"
-    },
-    {
-      "title": "Pioneer Courthouse Square Tree Lighting",
-      "date": "2026-11-27",
-      "ends": null,
-      "where": "Pioneer Courthouse Square, downtown Portland",
-      "detail": "Free annual tree lighting and singalong the day after Thanksgiving. The Nov. 27 date comes from an event listing; The Square hasn't posted its 2026 page yet.",
-      "url": "https://ma.to/event/annual-tree-lighting-27-nov-2026"
-    },
-    {
-      "title": "Seaside Yuletide Parade of Lights",
-      "date": "2026-11-27",
-      "ends": null,
-      "where": "Downtown Seaside",
-      "detail": "Lighted holiday parade that ends at the downtown tree-lighting ceremony; Visit the Oregon Coast lists Nov. 27, 2026. Start time not yet confirmed by the organizer.",
-      "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
-    },
-    {
-      "title": "Curiosity Kids: Design and Discover",
-      "date": "2026-11-28",
-      "ends": "2026-12-05",
-      "where": "Portland, OR",
-      "detail": "A science activity for kids from 9 am to 10 am.",
-      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
-    },
-    {
-      "title": "The Polar Express",
-      "date": "2026-12-11",
-      "ends": "2026-12-16",
-      "where": "Portland, OR",
-      "detail": "An event themed around The Polar Express.",
-      "url": "https://tickets.omsi.edu/oregonmuseumofscienceandindustry/events/5c72a103-d2d0-af25-e935-3afe47a0623c"
     }
   ]
 }

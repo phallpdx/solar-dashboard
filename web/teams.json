@@ -1,15 +1,15 @@
 {
   "updated": "2026-11-13",
-  "updated_at": "2026-11-13T11:19:55Z",
+  "updated_at": "2026-11-14T07:29:13Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and celebratory",
-      "pulse": "Fans are celebrating a strong 8-3 start and back-to-back wins over OKC. There is excitement around team balance and Damian Lillard's impact.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are riding high after an 8-3 start and a win over Sacramento. However, concerns exist regarding injuries and arena lease negotiations.",
       "storylines": [
-        "Defeated OKC Thunder twice in recent games",
-        "Vit Krejci out at least eight weeks after ankle surgery",
-        "Chris Youngblood sidelined with foot bone bruise",
-        "Next game against Kings on 2026-11-13"
+        "Blazers hold a 9-3 record following victory over the Kings.",
+        "Deni Avdija ranked #12 on recent MVP ladder.",
+        "Uncertainty surrounds Scoot Henderson's contract extension status.",
+        "Moda Center lease agreement negotiations have stalled."
       ],
       "sources": [
         {
@@ -35,13 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog mentality",
-      "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoff action against Dallas.",
+      "mood": "Optimistic underdog energy",
+      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is high anticipation for the upcoming playoff matchup against Dallas.",
       "storylines": [
-        "Four-game winning streak heading into playoffs",
-        "Playoff matchup upcoming against Dallas",
+        "Clinching the 7th seed in Audi 2026 MLS Cup Playoffs",
+        "Upcoming playoff matchup against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 lost 1-0 in MLS NEXT Pro Semifinals"
+        "Timbers2 eliminated in MLS NEXT Pro Semifinals"
       ],
       "sources": [
         {
@@ -67,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "speculative and uncertain",
-      "pulse": "Fans are focused on the 2027 driver market shifts. Uncertainty surrounds remaining grid seats and team personnel decisions.",
+      "mood": "Speculative and nostalgic",
+      "pulse": "Fans are discussing the 2027 driver market and Antonelli's title defense. Nostalgia for legends like Lauda and Schumacher is high.",
       "storylines": [
-        "Racing Bulls retain Lawson and Lindblad for 2027.",
-        "Nikola Tsolov named Red Bull/Racing Bulls reserve.",
-        "Mercedes staff may skip Middle East races.",
-        "Kimi Antonelli receives high honors in San Marino."
+        "Kimi Antonelli identifies Max Verstappen as his biggest 2027 threat.",
+        "Mercedes claims their ninth Constructors' Championship in 2026.",
+        "The Daily Mail announces a boycott of Formula 1.",
+        "Williams drops 2026 upgrades to prioritize 2027 development."
       ],
       "sources": [
         {
@@ -97,6 +97,29 @@
           "url": "https://www.mclaren.com/racing/formula-1/2026/las-vegas-grand-prix/"
         }
       ]
+    },
+    "ducks": {
+      "mood": "optimistic and expectant",
+      "pulse": "Fans are celebrating a blowout victory in the Big House. They are focused on beating Michigan to keep playoff dreams alive.",
+      "storylines": [
+        "Ducks secured second straight victory in the Big House",
+        "Playoff implications depend on USC/Indiana result",
+        "Next game vs Michigan airing on FOX",
+        "Hampton's playing status is uncertain"
+      ],
+      "sources": []
+    },
+    "niners": {
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are excited for the Dallas rivalry and Purdy's MVP candidacy. Injuries to Mike Evans and Trent Williams cause concern.",
+      "storylines": [
+        "Offense is producing at a historic rate under Kyle Shanahan.",
+        "Mike Evans ruled out with an Achilles injury.",
+        "Trent Williams is dealing with a shoulder injury.",
+        "Upcoming rivalry game against the Dallas Cowboys.",
+        "Brock Purdy remains a midseason MVP frontrunner."
+      ],
+      "sources": []
     }
   }
 }

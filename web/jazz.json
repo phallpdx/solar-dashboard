@@ -122,6 +122,22 @@
       ]
     },
     {
+      "artist": "Cyrus Nabipoor Quartet",
+      "kind": "Local",
+      "date": "2026-11-18",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$25",
+      "what": "A bold expression of American Music featuring unique originals and covers.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
       "date": "2026-11-19",
@@ -350,6 +366,22 @@
         {
           "name": "Eventworld ticket listing",
           "url": "https://www.eventworld.com/mark-guiliana-portland-tickets-12-11-2026/event/512087"
+        }
+      ]
+    },
+    {
+      "artist": "MARIA MAZZOTTA",
+      "kind": "Local",
+      "date": "2026-12-13",
+      "time": "7:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "A performance by Maria Mazzotta.",
+      "tickets": "https://www.ticketweb.com/event/maria-mazzotta-jack-london-revue-tickets/14210524?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/maria-mazzotta-jack-london-revue-tickets/14210524?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },

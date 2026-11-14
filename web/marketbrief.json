@@ -1,57 +1,46 @@
 {
   "updated": "2026-11-13",
-  "updated_at": "2026-11-13T11:22:13Z",
+  "updated_at": "2026-11-14T07:31:05Z",
   "analysis": {
-    "headline": "Markets fell and futures drifted as Nvidia's CEO exit triggered AI sector turmoil and chip rotation.",
-    "summary": "Nvidia shares tumbled following Jensen Huang's resignation, causing a broader sell-off in AI and Chinese stocks. US markets faced pressure from leadership shocks and fears of tighter US chip restrictions on China. Inflation rose 0.4% in October, complicating the Fed's path for future rate cuts. Consumers show signs of strain as retail sales growth slows due to high prices.",
+    "headline": "Indexes trimmed losses to end the week higher despite significant volatility and tech sector sell-offs.",
+    "summary": "Tech stocks fell due to Nvidia fallout and upcoming AI trade tests. AMD and CoreWeave saw declines amid an AI-chip sell-off. Wholesale prices rose 0.3% in October, hitting a four-year high. Consumers show signs of strain from high prices despite continued spending.",
     "sources": [
       {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1DUGhtX3RkQk1tTVc3WFZQOGhSalVKd2RzNks0R1dHRlFMSUd1bUhOeVVmNTQxS09JQjhaaTBQVWVnY3RBblNRRlc3a21TVEJJUnZmVm9pYmJMSVNWazl5bU9lZkdyOVpSSXhoSUlfeEx1ZUdvakVR0gF8QVVfeXFMUEZVRDFwUjNBQ01QTjdQX0h5WXU5R3BqdDZwVFJiNU9obl9qYk1lWC1XTWUxbDhFaGR4V2x0cERQdDAyNFlJQk1fNXBqdFItb3FaTDdyV2R6WklkbExBZHNnQ3k1WFR4X0FaeGpRM09SZHprem0zajZXbEx6Vg?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQOTBFMjR2dGk2dUhsUDR3bjJvM0NyTmR5eUF6VERTdWUtNEwxUXNLVjB5OUx3Njg1VFRzQnBFV2VTVGQ0b1c2NC01bFRHRWJUU0FOTVRsQTRYVGxheEpmMENMSGlVTUd1UjJkbW1zNkFnSlEtYnlsemtXbTB1UWhmbGJ5d2w?oc=5"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOZUh4NjJPT0pObkx0WXBCcTVMRXgtX1RId0RYYXNhY0xadmpGeVBKT3lKOXVnQVRuX0gyRFZHeW5jcEc5Y09IdGFfY1RyenNMWG9LakhGR0ZrV3lpeVU5V2FzMXJhTWxtdXl4RzZCYnhWa0pMNk51bDQ2VFRCMXdNOWR3QUFvUUlWTElBbi1SN1g3aTR2Y2VuLU1kWXpCUGlwaE9OWVNEbDRnbVExUnV5QzE2WDc3QS13ZVE?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNOUZ4dk5ZRTJ4TGJBWUdaUHltUWNhWE9IdjYwMi1lQU5pU0w4c2F4aEhsVXI1M2RIUUNiT25hbkpYRk1YRnlqQTZ3OEJHQ0UweTZiaU5vcnBqWWZiajJXcV84Sl85U0k5NWpWbXpKTTVRRnF3NGJ0UGlSSGhNYUZ0T2JRR00ycWIzTmEyVEFnQjFMTmJkb0NoSDUzd2lIOTZIQjh2ek1JMU1UNi1mTTFmQktvdGw3QTRlSGQ2X2dIdWpNVVBBRk9QXzhmS2ZUQQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQQWV2alBLQVV4UzlJSGJacVYyNjlrV25vNi1uM1BfUXdtVGhTZWsyRThzYzdYVXZ1bExsdWkxQ3FLT3RXUFlhVE8yNzNtQnpnQnNRUnBXYmRsSHBwWjJabGI2bFUwd1JXVTZfY3Bqdjd1eHdaSW5Id1R5UjZJVm5NN0V3RzhDSmxSN2Y0S2ZyaEROYWptTm5nVktCVUEtMDd5QWtmcTRvXzl0Q1VlQVpTam9Bb3E1dkJIc1RWVmE5d29rbGhsRm1wRVZMMmRTdlhNcVFwaw?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxOYy1EdlpSVjJXS0pZQXdGQ0YzRzZlTVRQT1ZZeS1JODVZRDVMQjllQ0VweXdYOFF2SWlYdjlvcXAyQTYwVWVyV3U1R0tnVDQ1ZWxhY0U4ZGVRV1U2RkNwVE5uMUZhY01xMGFjN2xQSGF0M1J0T1ZSMlJHVDhxRTJSVURPMXRJdUExM0tGVkZNc0VoeVk4Q252R01BTTlNWUZhOU1RX0gwdlEwUUVLTFRSMDU1S2NIRzR0WVZNQmYyTTRtcVdpTnhiSHJfelNhS3hPNVNCOTZid2JDMmloRjVIVmtNbFR3REhjQ2xKMg?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxNVE5fbXpLV2tpeUZNa08xNktTeW5EYmJlN0ZCV3dlR0lTY2xqaC1ITlQyc1hxZ3BZUlF3b0JTNUVKcGxpOWFZRzlPTDJvdjY3cU1zMUVTeE1zZnF6VDFqMjQwV1FaQTFkdUZJNUVzeUVXV3dzZ0x4OVlRek8yamFfSm4wZW84OGJjU2FxX0tpSVhFY0Q5NEk2Rk9waUR1Tm9NanZELVRabV8zeWVpZFdubGVreVQtMjFxMXU3SzNhcUtiTDlMNWpQcGNSWmJNQjNnaFllbUxIcXFza0FfUnh0S0hQYWd3NHZTdERRdmttNVdxNktOTnI5Vlp3?oc=5"
+      },
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPb0VlekxraEI1WDFkUGNVczRNTG1XMlRGNTdwcDByUmpBY0V0UmJGOTNLSzEyQWtBTDBWX1IwNVZ3NFZ4d0g0NFNpVFBCck1BMDJMdmdsVkhBdnhreHhWS0NudU5pR3VtQlVGd1FyakJ5YVZaU2c2Ul9tY0g4QmY2WG5WbFp5cEN2RTNKSUo5ZUxSb0FfVGRMM0c5OWFULWR0UnNLcG1XeFYzeXNOTTJudGhHbmNneC1UejR0MA?oc=5"
+      },
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdk9KSVZ5ZlN6RFNmNnlQVEZmYzB4RkxuXzVlaGEzMDdoZ1REdGkxNnhJdW9CMmszTEtpWGlWMUZUTkNLV3FSdll5S0ZiT29JWS1FZHVuSDJpeGxfQjNoUmZPOHdFcFJWUFlSQzdhN085Mld6ZDRJLU1jODF1dmRkQ0hKSWcxTGp4dUF5eENRTkYyLWYtZktxM2VmSnNBN2l2MUVTNHFLU3BzR00?oc=5"
       },
       {
         "name": "CNBC Markets",
-        "url": "https://www.cnbc.com/2026/11/11/nvidia-jensen-huang-ai-financial-system-risk.html"
-      },
-      {
-        "name": "Finance Calendar: Nov 13, 2026 events",
-        "url": "https://www.financecalendar.com/events/category/earnings-season/day/2026-11-13/"
-      },
-      {
-        "name": "StockHub: This week's economic calendar, Nov 9 to 13",
-        "url": "https://stockhub.kr/en/insights/macro-weekly-20261109"
-      },
-      {
-        "name": "Morningstar/Dow Jones: Nvidia slides premarket on Huang probe",
-        "url": "https://www.morningstar.com/news/dow-jones/202611092199/stock-futures-treasurys-steady-but-nvidia-slides-prema"
+        "url": "https://www.cnbc.com/2026/11/13/ppi-inflation-report-october-2026.html"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Jensen Huang's resignation from Nvidia",
-      "Fears of tougher US chip restrictions on China"
+      "Nvidia leadership crisis and spy scandal",
+      "AI-chip sector sell-off",
+      "Rising wholesale prices"
     ],
-    "watch": [
-      "Today (Fri Nov 13), 8:30 a.m. ET: October Producer Price Index (wholesale inflation) from the BLS, three days after October CPI.",
-      "AI earnings flagged on this week's calendar by StockHub: CoreWeave, Nebius and Applied Materials.",
-      "Nvidia: follow-up news on the company's investigation into CEO Jensen Huang, first reported by Dow Jones on Nov 9."
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant produces approximately 73 MMcf/Y. A $100 million helium liquefier may be built in Swift Current. The market faces a global shortage and tightening supply.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan to boost capacity. The market faces tightening supply and increased interest from independent distributors.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -87,12 +76,6 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Saskatchewan raises CAD $4.9m in third helium public offering",
-        "date": "2026-11-09",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
         "title": "A big win for Saskatchewan helium in federal budget",
         "date": "2026-11-09",
         "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdE8xSTRXWWUxci1tX2dZZ0Z1LUVOZnpuSUVsMVY2d3V1YVVjOFc3LXh4ak4wcmVJNURFNnM3cnFyRVhscnFVZjI5eVFiU29aWWJyaTloYWk5Q1MycFdJTDhickU5bkstakFLX2pPSF80d0EweTJKQW1FOUtfMWxOTWQxS28?oc=5",
@@ -109,17 +92,19 @@
         "date": "2026-11-03",
         "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPLXIzSDl3clVoQldJOElfREVSQXpqMEZsZDVaREVzd3dOVE5hVFhUTzhFb3hKdnhxd0E3c1k0WjV2blhEbjc0djNQS2xaMmxoUW5ON1E1ZVJRSzhIaHE5TUZOaDAyQnVuTWthaG5mcFY2eFBhLUxXZFd0VmJtX1I4VlByMGlLTFY4cFpCWUg5VzhGdEh5LW5NUlctcW1mcEtl?oc=5",
         "source": "Google News: North American Helium"
+      },
+      {
+        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
+        "date": "2026-11-02",
+        "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOc2xTWV9YaUxNQVNYdXdvYk8xNFdDOUwwdGxrcHRTVnRleU5Xd3ZId2cyQm95aUxKQm1DOXA2UU4tVU1xRjQxdUVvVU05V0REVWUwQ2pFbjQ4cldpUGtidk9lUDBvVVZ5QkFoaHdROVJCZTBwUlhFR3lmb3UtVUVEZjdya2xoWnYwVzQ2MnRxajFXeWhpZGpyd3hQWWVsdnBaUmtpZjF2QzRqWWZheEdMalgzYjRHeFFjZVE3RzhwS2pFaG92d2lYbHJEU2M3YTRtMVpZ?oc=5",
+        "source": "Google News: North American Helium"
       }
     ]
   },
   "realestate": {
     "headline": "The Portland housing market is stagnant with buyers backing out of deals.",
-    "summary": "Sellers are lowering prices to help make deals in a stagnant market. Home sales slow as buyers adjust to elevated mortgage rates. A punishing market is squeezing renters.",
+    "summary": "Sellers are lowering prices to help buyers in a stagnant market. Home sales slow as buyers adjust to elevated mortgage rates.",
     "sources": [
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNRDdRR201dE1lemNSVE0tc2VDd21HbDdVR0Z4VzV2LV9JRU43Y0lMYWpiLXdiNXoyTVFYZC1IMFFBLXNuM256WXlSOHl2c2QxVU43cnRTcW1jZFB5WC04ZjVOZjNyNzlGZWZhc1VRSVhBOG5yX2RNTmRFSUNKX2VBdlVaM2o?oc=5"
-      },
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
@@ -131,50 +116,32 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      },
-      {
-        "name": "Cano Real Estate: Portland Metro market report",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
-      },
-      {
-        "name": "Stacker: Portland mid-year housing market review (Redfin data)",
-        "url": "https://stacker.com/stories/oregon/portlandor/portland-oregon-mid-year-housing-market-review"
-      },
-      {
-        "name": "Axios Portland: Portland's housing market splits by ZIP code",
-        "url": "https://www.axios.com/local/portland/2026/11/02/housing-market-buyers-sellers-zip-codes"
       }
     ],
     "by": "local model",
     "items": [
       {
-        "title": "The average US 30-year mortgage rate falls to 7.11% this week, its fourth straight decline",
+        "title": "The average US 30-year mortgage rate falls to 7.11% this week, its fourth straight decline - The Frederick News-Post",
+        "date": "2026-11-14",
+        "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPSmNITEVKUUUtamRVR1hiQ2xGWEgyRzNUalpIalhPRFZRa1RqYnBNZkl1cmFMYklNT2QyR25hYzhMMTdkeEw4RTFfdW1kV3NUbUFZZkxZQlQ5U3Nka1BvMnU1c29JR25rRlJocXc5elVzc3VJRE12TFBLSEdsYkVNU2hnV200aV8ybGpuVEsteEoxcm1XSng1ZG4yUzVDZ2w0blFDVzN5NlFVc0RRVlpISld2QWdSWG96QjA0VFlpX2ZtQXhIVVQtbEpfZjJIa1liVU95VElIcFBoMGFwdHBDYmhvMHNWTlBtY0FETGJ1MGlGMmZXNmxEMQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Toll Brothers Announces Ridge at Granite Highlands Now Open in Washougal, Washington",
         "date": "2026-11-13",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9zNjRSTW5WX2RoM2VWSWhnbG1hU1VFekszcW14SHB4RkREZjAzU2tJYXBEclBDN1M5cmdzbHRYb0ZmRlVqWDhqZl9qdlVWRktvZEhDNF9fcjU2bEREc3k2Uk9jcExEZXhNLUUyRktmaw?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOQWZrazB5MHhTQ2VJcEJkOVdtb21BMzgyN0pjYTFKTTR4SktVT0RLWDFuN3k3Y3dtMW1GcHRSUXNFYTg4bWEtLVVzaC1GRmZlUXNOMmRGVzVHMUVDbDMzLUpmNWhRQnpZNFRWN2QxVERVMlRMZm03bnhyN3NPZ0pqNERubWJWem9EZU5jaGYtYmptUzVDRGpSeEE2cTBrLUQ3by1GWUpYNzY?oc=5",
+        "source": "Google News: Portland housing"
+      },
+      {
+        "title": "Mortgage Rates Forecast For 2026: Experts Predict Whether Interest Rates Will Drop",
+        "date": "2026-11-13",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9kMlJHRWhRY2owbnpsZWhWOHVVZFR1ZmM3NzhqTUVEVnpHR2xlMHp0QnR2eXFwV2wzQ2FMbXZTN3lTLUJ5OHgxdnk0S3Z2Q3hEQ2pEYW9xcWhrRktVS3B0RXB0NkdnM0hPMzBReG5neWZ1TTdvVWs4bWgxdWFNUkk?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
         "title": "Mortgage rates Friday, Nov. 13, 2026",
         "date": "2026-11-13",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5weHpTYi0xc09JclYwdGZ1OHNxZXdja1ZGZk5nNGVoR0lmSWJlcHhqY2tNNHpIa25tUEVhTEJUd2dDckIwalh3UThSQnVBR0thOEFoOThvVzAwQ3FIWWIwcmFRaWtyb3d6aDFRczNLWQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage and refinance interest rates today, Friday, November 13, 2026: Mortgage rates continue to rise from week-ago levels",
-        "date": "2026-11-13",
-        "url": "https://news.google.com/rss/articles/CBMiogJBVV95cUxPVExaUEg5SF82YWZsUGFLcE82OEpaMnZQc3ZMdWVnc2EwaDI0TjlKaDFsdUh2dFZhdTZUOHpIeXZZSEl1Q19uX3NKaFdyOEROWE5oOHZ1WnNWWmlRMTBpMkxsYkxMLUVJUXpJekNndFpmdktxLVZ5bFB3WkVTbmxHakdUZE42TmpwbkZYLUJTdlN6M3o1aDJXeVQ4N2swXzBYLUhnV3RtUUZBanQwaWR6QTk1VVFNUDhXTFZHbE1aR1VyYmMwQlZBRlNtbmdtWmNRandDQ2dDV2pwRjhoczhvTjA2Y2l6dE1iUUYtWl9MNmZjVFVVWDY4R2Y4Q1lJY2E4QnAtRHJTTGxxX3E3SjZHVmNIbzA3Z0FWbTFneERjV0M2QQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current refi mortgage rates report for Nov. 13, 2026",
-        "date": "2026-11-13",
-        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBRSmlOWjVweTgwd1JlVG9nd0VpUVBvSFcxQWhUY3A1Ynk4WHd0QUNOUWota2FlcGRKemo0NkQ1NnFhdlN5bTZvaXZmZDZ5czl6MWszdjNFUE5EOEpzUkxLc0Z5OHZOVXliMzd1Zkl4TnVxVXdhX2c?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current ARM mortgage rates report for Nov. 13, 2026",
-        "date": "2026-11-13",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE83cXNzTGc2VXg2RDhwMkVlUDJYVUNOMU9aZ2xxU0pMMHdoc2JScllyWkkwb0tpUWh6UXNlRlQ1eUR6WU9mYUdhRXI0VU9TZVczX24zS0s5TkJLX09wX3JsMlVSY1gtLVJqN2o0RVFJenhXZ1Vu?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

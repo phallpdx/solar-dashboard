@@ -1,14 +1,10 @@
 {
   "updated": "2026-11-14",
-  "updated_at": "2026-11-14T09:29:19Z",
+  "updated_at": "2026-11-14T11:26:39Z",
   "analysis": {
-    "headline": "Indexes trimmed losses to secure weekly gains despite significant volatility and tech sector sell-offs.",
-    "summary": "Tech stocks fell due to Nvidia fallout and upcoming AI trade tests. CoreWeave dropped over 6% amid $4 billion loan talks while Cerebras surged over 11%. Wholesale prices rose 0.3%, bringing the annual rate to 6.5%. Consumers show signs of strain from high prices despite continued spending.",
+    "headline": "Tech stocks fell amid Nvidia leadership scandal and AI sector sell-off, though indexes managed weekly gains despite volatility.",
+    "summary": "Nvidia's CEO resignation sparked a tech sell-off affecting AMD and CoreWeave. US producer prices rose 0.3% in October. Consumers show signs of strain from high prices. Markets face uncertainty regarding AI risks to the financial system.",
     "sources": [
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOZUh4NjJPT0pObkx0WXBCcTVMRXgtX1RId0RYYXNhY0xadmpGeVBKT3lKOXVnQVRuX0gyRFZHeW5jcEc5Y09IdGFfY1RyenNMWG9LakhGR0ZrV3lpeVU5V2FzMXJhTWxtdXl4RzZCYnhWa0pMNk51bDQ2VFRCMXdNOWR3QUFvUUlWTElBbi1SN1g3aTR2Y2VuLU1kWXpCUGlwaE9OWVNEbDRnbVExUnV5QzE2WDc3QS13ZVE?oc=5"
-      },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQQWV2alBLQVV4UzlJSGJacVYyNjlrV25vNi1uM1BfUXdtVGhTZWsyRThzYzdYVXZ1bExsdWkxQ3FLT3RXUFlhVE8yNzNtQnpnQnNRUnBXYmRsSHBwWjJabGI2bFUwd1JXVTZfY3Bqdjd1eHdaSW5Id1R5UjZJVm5NN0V3RzhDSmxSN2Y0S2ZyaEROYWptTm5nVktCVUEtMDd5QWtmcTRvXzl0Q1VlQVpTam9Bb3E1dkJIc1RWVmE5d29rbGhsRm1wRVZMMmRTdlhNcVFwaw?oc=5"
@@ -23,7 +19,11 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxQZERlWHVYQlp4clZXZk9zdTFLc182VXRJMW52X2lrcmRYYlRySlRPN1JTRjF3UjItNWZSam1IeFYtckN0SmxVTm9aaUNyREtyTEphN2pEb2dtcmRsM3d5cU9QUjBkQ2U2ZFpHMjBsZjllVG0xU2VCaXJlXzFtNzA3UmllZG1sc0thTHpRMUVQWEU4V2RhZTF4WU9KQVVDWlpXazlCWkhzdlBfdTdOS1M2eDQtTW5nMGxNUVRMaGJ3M0dpQUJRUHhFcGlTZTNBTVBLSVBBWFZ5cmc4dlRBSXFjOElFVFV1elNhVzhDTQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxQR3ByQlhuVjNsVG1rZDgxV2NRcjFKWFhwbG16a2lqc0lHRWtpTFBmSjVyRGJ3SzVxT2Y3LVd5dTRrVGdnQUF6ZDVEdXd5YnQ3aFREMG1vMVp2enBqRlp3X2tXc3RZc0JIU2NzTUpVMFlrOVVKZmlmS29EMG9TN0lBUV9QcUNsR3kyS3NHZ2czQUctMVNKVDRwanpGSGRQSFBoWjFHRWtMRWJxZFZhN3NIZHAwQklPUHh3cDRuZElrazZDTENsRVIwS1JlNEZjVTVKQWpfblBHR2lzTk9NUUIySjl1blJySk5KaVE?oc=5"
+      },
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdk9KSVZ5ZlN6RFNmNnlQVEZmYzB4RkxuXzVlaGEzMDdoZ1REdGkxNnhJdW9CMmszTEtpWGlWMUZUTkNLV3FSdll5S0ZiT29JWS1FZHVuSDJpeGxfQjNoUmZPOHdFcFJWUFlSQzdhN085Mld6ZDRJLU1jODF1dmRkQ0hKSWcxTGp4dUF5eENRTkYyLWYtZktxM2VmSnNBN2l2MUVTNHFLU3BzR00?oc=5"
       },
       {
         "name": "CNBC Markets",
@@ -32,18 +32,15 @@
     ],
     "by": "local model",
     "drivers": [
-      "Nvidia leadership crisis and spy scandal",
-      "AI-chip sector sell-off",
-      "Rising wholesale prices"
+      "Nvidia leadership scandal involving Jensen Huang",
+      "AI sector sell-off impacting AMD and CoreWeave",
+      "Wholesale prices rose 6.5% annually"
     ],
-    "watch": [
-      "Nvidia earnings",
-      "Anthropic IPO"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility in southwest Saskatchewan has opened. The market faces tightening supply and potential liquefier development in Swift Current.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. The market faces tightening supply and potential liquefier development in Swift Current.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -106,7 +103,7 @@
   },
   "realestate": {
     "headline": "Sellers are lowering prices in a stagnant Portland housing market.",
-    "summary": "Home sellers are cutting prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates and some back out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
+    "summary": "Home sellers are cutting prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates and some homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -128,6 +125,12 @@
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage and refinance interest rates today, Saturday, November 14, 2026: Mortgage rates rose all week long",
+        "date": "2026-11-14",
+        "url": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxQSTV4WnhBYmp6TlRwNDI4YU15MzFRWXB1aUxmSlR0OXY1OU82WERYWWtBZ3FrcUdab3lWMHNiOERmT0w5bnZCUW9IR2UtV1RkZW5WZm1Jb2RRV0dYTWo5SllxTFQwcml0bGx5UDMyQlh1aGxXak1JUkNTdFFUTDdSOENQZ2tuZ0doM1RUREN6M3RhWV9MOVRJUUhYWm0xVWZuWTFjQldUajlHN1BzSk16VmkzaXZCTG9QSDVfOXE4em5EcW9nY0lYWlh4aEdCVmZ2ZnR3MTVrcXdDaUNHVTZON01MemVlZUNXTk1aM045VFlZMVd6bjI2TldodlpFY3FIWmRNTDJmUWFnU00?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "The average US 30-year mortgage rate falls to 7.11% this week, its fourth straight decline - The Frederick News-Post",
         "date": "2026-11-14",
         "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPSmNITEVKUUUtamRVR1hiQ2xGWEgyRzNUalpIalhPRFZRa1RqYnBNZkl1cmFMYklNT2QyR25hYzhMMTdkeEw4RTFfdW1kV3NUbUFZZkxZQlQ5U3Nka1BvMnU1c29JR25rRlJocXc5elVzc3VJRE12TFBLSEdsYkVNU2hnV200aV8ybGpuVEsteEoxcm1XSng1ZG4yUzVDZ2w0blFDVzN5NlFVc0RRVlpISld2QWdSWG96QjA0VFlpX2ZtQXhIVVQtbEpfZjJIa1liVU95VElIcFBoMGFwdHBDYmhvMHNWTlBtY0FETGJ1MGlGMmZXNmxEMQ?oc=5",
@@ -146,15 +149,9 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage rates today, Nov. 13, 2026: Rates head upward after recent decreases",
+        "title": "Mortgage rates Friday, Nov. 13, 2026",
         "date": "2026-11-13",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5weHpTYi0xc09JclYwdGZ1OHNxZXdja1ZGZk5nNGVoR0lmSWJlcHhqY2tNNHpIa25tUEVhTEJUd2dDckIwalh3UThSQnVBR0thOEFoOThvVzAwQ3FIWWIwcmFRaWtyb3d6aDFRczNLWQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today's Current Mortgage Rates: November 13, 2026",
-        "date": "2026-11-13",
-        "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rdmpsVUwtTnZNcjlIbUQ5a0oyZDlUSV9IV1ZYQy0yOHViOEttMVlsTXlfUVEwcXBibVcycFRJZTY2WEhfM2Voby0xbVpIVUtMZ05j?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

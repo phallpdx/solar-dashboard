@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-14",
-  "updated_at": "2026-11-14T11:26:39Z",
+  "updated_at": "2026-11-14T13:14:56Z",
   "analysis": {
     "headline": "Tech stocks fell amid Nvidia leadership scandal and AI sector sell-off, though indexes managed weekly gains despite volatility.",
     "summary": "Nvidia's CEO resignation sparked a tech sell-off affecting AMD and CoreWeave. US producer prices rose 0.3% in October. Consumers show signs of strain from high prices. Markets face uncertainty regarding AI risks to the financial system.",
@@ -28,6 +28,22 @@
       {
         "name": "CNBC Markets",
         "url": "https://www.cnbc.com/2026/11/13/ppi-inflation-report-october-2026.html"
+      },
+      {
+        "name": "fedratecalc: US economic calendar, November 2026",
+        "url": "https://fedratecalc.com/us-economic-calendar/november-2026/"
+      },
+      {
+        "name": "NVIDIA: Sets Conference Call for Third Quarter Financial Results",
+        "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Sets-Conference-Call-for-Third-Quarter-Financial-Results/default.aspx"
+      },
+      {
+        "name": "Pepperstone: A trader's week ahead playbook",
+        "url": "https://pepperstone.com/en-gb/insights/market-analysis/economic-indicators/a-trader-s-week-ahead-playbook-key-market-risks-nvidia-earnings-us-nonfarm-payrolls"
+      },
+      {
+        "name": "Thrive in Markets: calendar for week of Nov 16, 2026",
+        "url": "https://thriveinmarkets.com/calendar/2026-11-16/"
       }
     ],
     "by": "local model",
@@ -36,7 +52,11 @@
       "AI sector sell-off impacting AMD and CoreWeave",
       "Wholesale prices rose 6.5% annually"
     ],
-    "watch": []
+    "watch": [
+      "Tue Nov 17, 8:30 a.m. ET: October retail sales from the Census Bureau (fedratecalc calendar).",
+      "Tue Nov 17, 2 p.m. PT: Nvidia reports third-quarter results after the close (Nvidia investor relations); Pepperstone says options price in about a 6.5% move.",
+      "This week: minutes of the Fed's last policy meeting, listed among the week's headline events by the Thrive in Markets calendar."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -120,6 +140,18 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcnRwN3NYcU1xQjdoMFo0aXJWSlhxaFJFYmZvYXp4Z2FSYWs3aElERGVjSUVuVTFjaUV3aElGQzJEV3JuX3lOdXp4ck8zbmlqRUlndW5sMEMwcHFJMHkyR3lHak1lU3pMTDh1cjlwVVJWODBxUkUtY2RZRGItcUN1N2p5QzZJSTdFZXZ2cG5fMTFMVnE3WVhVdU1uQTlXMXJHeVhaLVlqYVRXOGNLbk5jcVo5aEs?oc=5"
+      },
+      {
+        "name": "Cano Real Estate: Portland Metro Real Estate Market Report",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "name": "AP via ITV: mortgage rate dips for third straight week",
+        "url": "https://www.itv.com/news/2026-11-05/average-long-term-us-mortgage-rate-dips-for-third-straight-week"
+      },
+      {
+        "name": "Axios Portland: housing market by ZIP code",
+        "url": "https://www.axios.com/local/portland/2026/11/02/housing-market-buyers-sellers-zip-codes"
       }
     ],
     "by": "local model",
@@ -160,29 +192,22 @@
         "label": "Median sale price (Portland metro, September 2026)",
         "value": "$545,000",
         "change": "0.0% vs a year ago; +0.9% vs August",
-        "source": "Cano Real Estate market report",
+        "source": "Cano Real Estate (RMLS data)",
         "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Median sale price (Portland, Jan to Jun 2026 monthly average)",
-        "value": "$551,773",
-        "change": "-0.8% vs a year ago",
-        "source": "Redfin data via Stacker",
-        "url": "https://stacker.com/stories/oregon/portlandor/portland-oregon-mid-year-housing-market-review"
+        "label": "Inventory (Portland metro, September 2026)",
+        "value": "4.2 months of supply",
+        "change": "+0.4 months vs August",
+        "source": "Cano Real Estate (RMLS data)",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Homes sold (Portland, Jan to Jun 2026)",
-        "value": "2,478",
-        "change": "+3.6% vs a year ago",
-        "source": "Redfin data via Stacker",
-        "url": "https://stacker.com/stories/oregon/portlandor/portland-oregon-mid-year-housing-market-review"
-      },
-      {
-        "label": "Median days on market (Portland, Jan to Jun 2026)",
-        "value": "37.8 days",
-        "change": "+4.7 days vs a year ago",
-        "source": "Redfin data via Stacker",
-        "url": "https://stacker.com/stories/oregon/portlandor/portland-oregon-mid-year-housing-market-review"
+        "label": "Average market time (Portland metro, September 2026)",
+        "value": "68 days",
+        "change": null,
+        "source": "Cano Real Estate (RMLS data)",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
         "label": "Median days on market (Inner Southeast 97214, latest)",
@@ -192,18 +217,11 @@
         "url": "https://www.axios.com/local/portland/2026/11/02/housing-market-buyers-sellers-zip-codes"
       },
       {
-        "label": "Mortgage rate (US, November)",
-        "value": "7.20%",
-        "change": null,
-        "source": "WSJ",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNVTgyU3NXLWZTZ3RMWDVPUGg4SjF5cDNRcnRBOVJCQWhSa3o2ajh1UTY1ay1RM0tOa3JYZ2JLZkszSElLdGlxUUhoVzdIdEpJV1h1UHFOZXVvcnlXTlZTM3lMemd1ckNZV1M4UzdWbzlIMHVLTi1PSlBFNkd5anc2TnhhUnY0bVhodi1iTQ?oc=5"
-      },
-      {
-        "label": "Average US 30-year mortgage rate (US, November)",
+        "label": "30-year fixed mortgage rate (US, Freddie Mac, week of Nov 5)",
         "value": "7.18%",
-        "change": "third straight decline",
-        "source": "WCAX",
-        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
+        "change": "down from 7.24% a week earlier; 6.22% a year ago",
+        "source": "AP via ITV, Nov 5, 2026",
+        "url": "https://www.itv.com/news/2026-11-05/average-long-term-us-mortgage-rate-dips-for-third-straight-week"
       }
     ]
   }

@@ -130,6 +130,30 @@
       "url": "https://www.seasideor.com/event/holiday-festival-market/"
     },
     {
+      "name": "Parade of Lights",
+      "date": "2026-11-27",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Holiday parade with twinkling floats and music at 7:00 pm.",
+      "url": "https://www.seasideor.com/event/parade-of-lights/"
+    },
+    {
+      "name": "Tree Lighting Ceremony",
+      "date": "2026-11-27",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Community tree lighting ceremony featuring caroling and Santa Claus at 7:30 pm.",
+      "url": "https://www.seasideor.com/event/tree-lighting-ceremony/"
+    },
+    {
+      "name": "Treasure the Beach: Community Beach Cleanup",
+      "date": "2026-12-05",
+      "end": "2026-12-05",
+      "town": "Seaside",
+      "summary": "Monthly volunteer beach cleanup effort from 9:00 am to 11:00 am.",
+      "url": "https://www.seasideor.com/event/treasure-the-beach-community-beach-cleanup/2026-12-05/"
+    },
+    {
       "name": "Boys Varsity Basketball: Seaside vs Away",
       "date": "2026-12-11",
       "end": null,

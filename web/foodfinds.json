@@ -1,6 +1,20 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-14",
   "items": [
+    {
+      "name": "PDX Pop-Up Shops",
+      "maker": "PDX Pop-Up Shops",
+      "kind": "Seasonal",
+      "what": "17 local retailers in downtown Portland/Pearl District",
+      "where_to_buy": [],
+      "date": "2026-11-14",
+      "sources": [
+        {
+          "name": "Wool, Wagyu and wine: 17 local businesses to do your holiday shopping without leaving downtown Portland",
+          "url": "https://www.oregonlive.com/retail/2026/11/wool-wagyu-and-wine-do-all-your-holiday-shopping-within-this-8-block-radius-of-downtown-portland.html"
+        }
+      ]
+    },
     {
       "name": "Bob's Red Mill cookies",
       "maker": "Bob's Red Mill",
@@ -310,33 +324,6 @@
         {
           "name": "New School Beer + Cider: Oregon Beer Awards 2026 fresh hop competition medal winners",
           "url": "https://newschoolbeer.com/home/2026/10/oregon-beer-awards-2026-fresh-hop-competition-medal-winners"
-        }
-      ]
-    },
-    {
-      "name": "Rogue River Blue, 2026 vintage",
-      "maker": "Rogue Creamery (Central Point)",
-      "kind": "Seasonal",
-      "what": "Rogue Creamery's once-a-year blue, aged 9 to 11 months and wrapped in Syrah grape leaves soaked in pear spirits, debuts its new vintage each fall on the autumnal equinox. It was the first US cheese to win the World Cheese Awards.",
-      "where_to_buy": [
-        {
-          "store": "Rogue Creamery online shop",
-          "url": "https://roguecreamery.com/products/rogue-river-blue-cheese"
-        }
-      ],
-      "date": "2026-09-28",
-      "sources": [
-        {
-          "name": "Epicure Foods: Rogue River Blue returns for the season",
-          "url": "https://epicurefoodscorp.com/rogue-river-blue-returns-for-the-season/"
-        },
-        {
-          "name": "Rogue Creamery: Rogue River Blue",
-          "url": "https://roguecreamery.com/products/rogue-river-blue-cheese"
-        },
-        {
-          "name": "That Oregon Life: First US cheese to win the World Cheese Awards came from this Oregon creamery",
-          "url": "https://thatoregonlife.com/2026/10/rogue-river-blue-cheese-oregon-world-champion-rogue-creamery-central-point/"
         }
       ]
     }

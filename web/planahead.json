@@ -16,6 +16,20 @@
       ]
     },
     {
+      "title": "Buy Kathy Griffin tickets",
+      "kind": "Tickets",
+      "action": "On sale at Aladdin Theater",
+      "starts": "2026-11-14",
+      "by": null,
+      "why": "Aladdin Theater [#29]",
+      "sources": [
+        {
+          "name": "Portland on-sale news",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQVThvdC1kYnY3aXE3c3FMVU56SDVKRkhaZnRPMEFiODZNc1FiT3VSRHlXYkF6TzREWFNYTXlBV0k1ZGNrejJIaU9EYVllWFlyX3ZSLVYySmJCcHlWRnFwWW9qeWJsUzh6OFhGLV9PM2R4VXN0ZFlFY1RCR3AtNUdPNmZlLWhBS19sbWdZa2hEdHFxMXBocG1mdHc0NlQ?oc=5"
+        }
+      ]
+    },
+    {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
       "action": "Register on Phoebe Bridgers' official site by Sun, Nov 15 at 11:59 p.m. for the Day 1 random draw; artist presales Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",

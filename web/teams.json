@@ -1,14 +1,15 @@
 {
   "updated": "2026-11-14",
-  "updated_at": "2026-11-14T13:11:37Z",
+  "updated_at": "2026-11-15T07:32:12Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are riding high after a strong 8-3 start and recent wins over Sacramento and OKC. The worry now is a tough six-game road trip.",
+      "mood": "optimistic and excited",
+      "pulse": "Fans are celebrating a 9-3 start and strong team chemistry. Excitement is growing despite Shaedon Sharpe's absence due to injury.",
       "storylines": [
-        "Blazers hold an 8-3 record following victories over Kings and Thunder.",
-        "Deni Avdija ranks #12 on the latest MVP ladder.",
-        "A tough six-game road trip begins for the team."
+        "Blazers defeated Sacramento Kings 120-107",
+        "Deni Avdija scored 34 points in recent win",
+        "Shaedon Sharpe remains out due to injury",
+        "Next game against Timberwolves on 2026-11-16"
       ],
       "sources": [
         {
@@ -34,13 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog energy",
-      "pulse": "Fans are excited after a four-game winning streak secured the 7th seed. There is anticipation for the playoff matchup against Dallas.",
+      "mood": "Optimistic underdog energy",
+      "pulse": "Fans are energized by a four-game winning streak heading into playoffs. There is excitement surrounding individual achievements and community watch parties.",
       "storylines": [
-        "Clinching the 7th seed in Audi 2026 MLS Cup Playoffs",
+        "Four-game winning streak builds momentum for playoffs",
         "Upcoming playoff matchup against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 eliminated from MLS NEXT Pro playoffs"
+        "Timbers2 eliminated in MLS NEXT Pro Semifinals"
       ],
       "sources": [
         {
@@ -66,12 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory yet tense",
-      "pulse": "Fans are celebrating Antonelli's title and Mercedes' big season. The talk now is Verstappen's late-season surge and whether Mercedes helps Russell hold off Max for runner-up.",
+      "mood": "reflective and anticipatory",
+      "pulse": "Fans are celebrating Kimi Antonelli's title success and Lewis Hamilton's 2020 championship anniversary. Discussions focus on the 2027 driver market and McLaren's development.",
       "storylines": [
-        "Kimi Antonelli crowned 2026 World Champion",
-        "Mercedes wins ninth Constructors' Championship",
-        "Russell and Verstappen fighting for P2 in the standings"
+        "Kimi Antonelli is the 2026 World Champion.",
+        "Mercedes secured their ninth Constructors' Championship in 2026.",
+        "Alisha Palmowski moves to Formula Regional for 2027.",
+        "The 2027 driver market remains uncertain."
       ],
       "sources": [
         {
@@ -97,14 +99,13 @@
       ]
     },
     "ducks": {
-      "mood": "Fired up",
-      "pulse": "Ducks fans are buzzing after Oregon stormed back from two touchdowns down to beat Ohio State 41-28 in Columbus, scoring 38 straight. It's a second straight win since Dante Moore's season-ending concussion, and Dylan Raiola has the offense rolling into today's Michigan game with playoff hopes alive.",
+      "mood": "euphoric and hopeful",
+      "pulse": "Fans are celebrating back-to-back wins over blue bloods Ohio State and Michigan. The team is climbing back into the College Football Playoff chase.",
       "storylines": [
-        "Next game: TODAY, Sat Nov 14 vs. Michigan at Autzen, 12:30 PM PT on FS1 (Ducks favored by about 10)",
-        "Beat No. 11 Ohio State 41-28 last Saturday; Raiola threw for 257 yards and Dierre Hill Jr. ran for two TDs",
-        "Oregon is 6-3 (4-2 Big Ten) and back in the CFP rankings",
-        "Keys vs. Michigan: keep Raiola clean against the nation's No. 4 total defense",
-        "After that: Fri Nov 20 at Michigan State, 5:00 PM PT on FOX"
+        "Oregon defeated Michigan 31-7 at Autzen Stadium",
+        "#16 Oregon beat Ohio State and Michigan in consecutive weeks",
+        "Dylan Raiola has thrown 9 TDs with 0 interceptions recently",
+        "Fans are calculating Big Ten tiebreakers for CFP implications"
       ],
       "sources": [
         {
@@ -134,14 +135,13 @@
       ]
     },
     "niners": {
-      "mood": "Confident",
-      "pulse": "Niners fans feel great at 7-1 after a 38-17 rout of the Raiders, with the defense forcing five second-half takeaways and Purdy getting MVP buzz. The worry is injuries heading into Sunday's trip to Dallas.",
+      "mood": "optimistic but cautious",
+      "pulse": "Fans are excited for the rivalry game against Dallas. Concerns exist regarding secondary injuries and roster depth.",
       "storylines": [
-        "Next game: Sun Nov 15 at Dallas, 1:25 PM PT on FOX (49ers favored by about 4.5)",
-        "Beat the Raiders 38-17; Purdy had three total TDs, including his 100th career TD pass",
-        "Mike Evans (Achilles) out again; Trent Williams and Dre Greenlaw questionable",
-        "Jordan Watkins stepping up with injuries thinning the receiver room",
-        "After Dallas: Sun Nov 22 vs. Vikings, 5:20 PM PT on NBC"
+        "Upcoming matchup against Dallas Cowboys",
+        "Injury status of several defensive backs",
+        "Brock Purdy's MVP-level performance",
+        "Mike Evans ruled out with Achilles injury"
       ],
       "sources": [
         {

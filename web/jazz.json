@@ -122,6 +122,22 @@
       ]
     },
     {
+      "artist": "Kerry Politzer and Bossa PDX",
+      "kind": "Latin",
+      "date": "2026-11-19",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$25",
+      "what": "Portland pianist inspired by Brazilian music.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Eric Skye Trio Plays Miles Davis",
       "kind": "Local",
       "date": "2026-11-22",

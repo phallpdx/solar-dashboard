@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-15",
   "note": "Toddler-friendly events near North Portland, Vancouver and the coast, soonest first. Many holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
@@ -27,46 +27,6 @@
       "url": "https://pdxparent.com/series/santa-photos-an-elf-christmas-experience-at-vancouver-mall/"
     },
     {
-      "title": "Curiosity Kids: Sasquatch Science Team",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "A science activity for kids from 9 am to 10 am.",
-      "url": "https://omsi.edu/events/curiosity-kids-sasquatch-science-team/"
-    },
-    {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Daily storytimes for various age groups including toddlers. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "CHAP Art Club",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Hillsboro",
-      "detail": "Art workshops designed for children with medical challenges. No price listed.",
-      "url": "https://pdxparent.com/series/chap-art-club/"
-    },
-    {
-      "title": "Spanish Story & Play Time with Adventures in Spanish",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Portland area",
-      "detail": "A joyful hour of stories, songs, and play in Spanish.",
-      "url": "https://pdxparent.com/series/spanish-story-play-time/"
-    },
-    {
-      "title": "Kennedy School’s 111th Birthday Bash",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Celebration featuring face painting and birthday fun. Free.",
-      "url": "https://pdxparent.com/event-single/kennedy-schools-111th-birthday-bash/"
-    },
-    {
       "title": "Holiday Open House at The Nature Store",
       "date": "2026-11-14",
       "ends": "2026-11-15",
@@ -75,60 +35,52 @@
       "url": "https://pdxparent.com/series/holiday-open-house-at-the-nature-store/"
     },
     {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-15",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Free storytimes including toddler and family sessions are available.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
+    },
+    {
       "title": "OMSI On Ice",
-      "date": "2026-11-14",
+      "date": "2026-11-15",
       "ends": null,
       "where": "Portland",
-      "detail": "Indoor synthetic ice skating for families. $8 – $10.",
+      "detail": "Experience indoor ice skating on a synthetic rink. Prices $8-$10.",
       "url": "https://pdxparent.com/series/omsi-on-ice/"
     },
     {
-      "title": "Mike Bennett's Dead Media Holiday Special",
-      "date": "2026-11-14",
+      "title": "Gabby’s Dollhouse at The FLIP Children’s Museum of Hillsboro",
+      "date": "2026-11-15",
+      "ends": null,
+      "where": "Hillsboro",
+      "detail": "Enjoy crafts, a scavenger hunt, and photo opportunities with Gabby's characters. $10.",
+      "url": "https://pdxparent.com/series/gabbys-dollhouse-at-the-flip-childrens-museum-of-hillsboro-2/"
+    },
+    {
+      "title": "Mr. Ben at Wonderwood Springs",
+      "date": "2026-11-15",
       "ends": null,
       "where": "Portland",
-      "detail": "VHS-themed holiday event with lights and photo ops. Free.",
-      "url": "https://pdxparent.com/event-single/mike-bennetts-holiday-pop-up/2026-11-14/"
+      "detail": "An interactive singalong for babies and toddlers featuring music and movement. Free.",
+      "url": "https://pdxparent.com/series/music-singalongs-with-mr-ben-at-mike-bennetts-wonderwood-springs/"
     },
     {
-      "title": "The Portland Princess Ball",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Tigard",
-      "detail": "An enchanting ball where guests meet nine princesses. $45.",
-      "url": "https://pdxparent.com/event-single/the-portland-princess-ball/"
-    },
-    {
-      "title": "Santa at Clackamas Town Center",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Clackamas",
-      "detail": "Photo opportunities with Santa at Macy's Home Court for $20.",
-      "url": "https://pdxparent.com/series/santa-at-clackamas-town-center/"
-    },
-    {
-      "title": "Creative Movement Dance Class for 2 Year Olds",
-      "date": "2026-11-14",
-      "ends": null,
-      "where": "Beaverton",
-      "detail": "A dance class for two-year-olds to explore movement from 9am to 9:45am.",
-      "url": "https://pdxparent.com/series/creative-movement-dance-class-for-2-year-olds-2/"
-    },
-    {
-      "title": "Open Play at Laurelhurst Studio!",
-      "date": "2026-11-14",
+      "title": "Visit Leach Botanical Garden",
+      "date": "2026-11-15",
       "ends": null,
       "where": "Portland",
-      "detail": "Drop-in playtime for families from 9am to 12pm for $10.",
-      "url": "https://pdxparent.com/series/open-play-at-laurelhurst-studio/"
+      "detail": "Explore gardens with an aerial tree walk and meadow space to run. Free – $8.",
+      "url": "https://pdxparent.com/series/visit-leach-botanical-garden/"
     },
     {
-      "title": "St. Johns Farmers Market",
-      "date": "2026-11-14",
+      "title": "ZooLights Member Preview",
+      "date": "2026-11-15",
       "ends": null,
       "where": "Portland",
-      "detail": "A market featuring over 80 local vendors and artisan goods from 9am to 2pm.",
-      "url": "https://pdxparent.com/series/st-johns-farmers-market-3/"
+      "detail": "Members get a first look at ZooLights from 4:30 to 8:30 p.m.",
+      "url": "https://www.oregonzoo.org/events/zoolights-member-preview"
     },
     {
       "title": "Pittock Mansion: Home for the Holidays",

@@ -1,9 +1,9 @@
 {
-  "updated": "2026-11-14",
-  "updated_at": "2026-11-15T07:34:16Z",
+  "updated": "2026-11-15",
+  "updated_at": "2026-11-15T09:32:46Z",
   "analysis": {
-    "headline": "Markets face volatility amid aviation shutdowns, AI leadership crises, and Bitcoin's decline.",
-    "summary": "Chip stocks lost $650 billion as bond markets turned on the AI trade. Nvidia faces a leadership crisis following Jensen Huang's downfall. Bitcoin continues to decline into a deep value zone. Wholesale prices rose 0.3% in October.",
+    "headline": "Markets face uncertainty amid technical outages, aviation shutdowns, and Nvidia leadership concerns.",
+    "summary": "Bitcoin experienced a shaky rally followed by a dive. Tech stocks are volatile following Microsoft's outage and Nvidia's leadership crisis. Wholesale prices rose 0.3% in October, bringing the annual rate to 6.5%.",
     "sources": [
       {
         "name": "Google News: Business",
@@ -11,7 +11,11 @@
       },
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPREhQQTJ6T1M4cmdyMzU2SUhaYWszWDZOOWp0TzJ1M240RnY3RjI4OEpCQmlHR0pFbU1FekdXMXE1dzVjVHJlZ2ZMUjdOYXZIem5JY01DQ3JyYnIyUWxnZWNoR25TTG9DdExHNjNGMTdSNzJLZ3pKQ0JJeWxzMjV5cUlid3JkR0czV3ZmWlRnWXZ5QVBaSFJYZmltaU1Caks4NkdPTHo2bjE?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQbUFCdzU3WWxqWDJyOThxR0pfSENwbHdjWE50LVZfX0xSUUZFZnpTemtWN2RRckNlOW56TnZwT2pmUHpPYnU0cGtiaUJ4aFpzLXZ4OHN0a3UxVEpNenFlc0VETFE2UDJkdy1Ld0ZSU2V2MHJxNE9WN3VFMjA2U1lLRThOdE5kSWk2UVdpektzb00yV3ZjUjhOeWpiNA?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9SZmZCcS1rWDBlU1EtNTRYbFY4TE00cEVObWk3ak9jcnNsaWtabW83MjNuemxSUk1WWXZ5Q2VubUtCZ2Y5YnZkN2dNR3htVEhHUkpPbjNuczc0VmpDb1dIZ0Z3TVFaTW43Z1hrc00tTWFQQ0M5cFd4SUd6TG1ldw?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -23,25 +27,23 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQb285Njh2RGthblNyTDVSY1gtalE2OGkxTzBSQmpmdkdPdEJpMEZPSlVxaVBrZ2pfbU96aldfM29zV0VjRk5XV2V6YzFsaFRsSDhDbWRjbGN3bG1uYVhPUjdxS09EVFJ1UmNLTXBhMk9LV3RvOWNYQjh1MFBuSkdBYXFPR1Y3SUo0LTVrMmFlZmJidUotMFlxU19kN3duWjJYRkNud3BR?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPRXlDZ3FNZGJ5SldRNnRBNUtmdG04bDFsWm9YdWh2ZHFWelJ1NDNnWmlqUUc3Ymp0RTFpV1RjblV1T1JYbWlPWFNzVGhGZXFzMkdzSmYtanY4b0VTWXc3dTZNQ2c0RWJaNEJaVGo4VU1KYkEzZGZBY1BqdlpBX3NibXhOS1h2aHppV2ZJWnRLUWRqODF0TVUxcWhn?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBmVzhOVVR0Q0JXdll4UmRocnJ2NWh4Y01oWVdpa1VtdkFwUS1CYjg5YVBVTDlJYkR0dnN3V1k2S00zRE9halBSaHZXWUlVc2ZwN1k3R2xCMUh3aW5jZWV6NEsta2tSdUJqOEpRcENMelRsdw?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Nvidia CEO downfall and chip leakage concerns",
-      "FAA nationwide ground stop due to repair risks"
+      "FAA nationwide ground stop",
+      "Microsoft service outage",
+      "Nvidia leadership crisis"
     ],
     "watch": [
-      "2026-11-18: Massive day for the stock market"
+      "US Stock Market Earnings Calendar: 2026-11-16 to 2026-11-20",
+      "Critical market day: 2026-11-25"
     ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility in southwest Saskatchewan has opened. The market faces tightening supply and potential $100 million liquefier development in Swift Current.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A purification facility opened in southwest Saskatchewan. Swift Current could host a $100 million helium liquefier. Market supply is tightening.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -60,12 +62,12 @@
         "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
       },
       {
-        "name": "Google News: helium market",
+        "name": "Google News: North American Helium",
         "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
       },
       {
         "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOZ1Y3WEduRVpkanNMRFAzNUU5ZmxDQjBmSk5lSVg4M2lzQUhzaV9nSm00U3VNQ0RVa21BUzVkbXZCLURsV3I2ejU5UnRwLVZaR212OGdSNU5NdTFBcUVaWGQ5WUtpS2JFeG9WcEMya1BnWHNmSGg2eE9RUUQ3VVRKdzlaSlR1Y3U4bDI4VlVzN09HVWt6aFB6X29XRzcta2NPaXRGRkJpNDlQYXB2S0U1LWg4RTVCajVXajZBeFRNR2FOdW8?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNQzNIS3JVWkMxZTY5b3FXQTZHSlM5ZkFKV3EzblNwSFZLOFNoLVhBVHE5bG9GLUFDcjVEV19wUWJqTnpDOWh1LUhJQ2ZFUE5qVlNXenllTXRaemw3YWtXdXpZdzBNYlY0SDZFRHhiVTdScVRYZnhERzJUSC13VEhDc1h6ZVhvVEVDQVh3LU1SRG5iZmJrdEtaX3lnR3ZFUQ?oc=5"
       }
     ],
     "by": "local model",
@@ -103,8 +105,8 @@
     ]
   },
   "realestate": {
-    "headline": "The Portland market is stagnant with sellers lowering prices to attract buyers.",
-    "summary": "Sellers are cutting prices and helping buyers in a stagnant market. Homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
+    "headline": "Sellers are lowering prices in a stagnant market as buyers back out of deals.",
+    "summary": "Home sellers are lowering prices to help buyers make deals in a stagnant market. Portland homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -122,18 +124,6 @@
     "by": "local model",
     "items": [
       {
-        "title": "Will U.S. Mortgage Rates Ever Drop to 3% Again? What Homebuyers Should Know",
-        "date": "2026-11-15",
-        "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOYTBBaVRCczNXb0QyRlhDOHVjVkM4WFNIbnp1amdOMzZCSU1Xc25TdnNrTWY5RThJbWVCZWNLMm5MSTdaaEh2a3JmQmtJVHR5ZXdHYUVtODY1aEs4cUdhaUZIX2phWWhuWGZIUGVvU0RFVUtDUmc4ZzhsN0R4MVJoOHdMUmlVQl9PdTlNVWJGbkk3YmVNWW4xZ1VsRFJBZk5nTzFNLTVURENFRTJHczVLZ003bTNZWkk?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "The average US 30-year mortgage rate falls to 7.18% this week, its third straight decline - ABC News",
-        "date": "2026-11-14",
-        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNRWx0YUlmb3hEWC1xbWppVnpfQlNIWktxWE9sTENhcHg3NFBfM0NwaGRmbUZoNFNrV08yNjZCSy1GQUlsOGxhQU45MGhhQ2d3VlZkaktsQm9JOXR3bURmbVg3RUV0ZDdnbmd3aFFnaFNEel91dmxkREg1VjNTeWVFVzk1WHN5Rm1NWER3eVRzUDdVUGxFbkHSAZsBQVVfeXFMT2ZGNmZqVnNldWZNOWZrb0NjSWQtcmQ4SW9MT1B1cFp0OWFkQ3I4aEw0TVJSQXdJcWZ6OEdITno3WERVZVVhMGhCbjQzSVBWVjBEWnZOU2t1OVk0MU43Sml1TGFWQVpqU3JUWklQSi1SdWJDYktvWHNaM0Zmako2cVBPYV90cDlIMl9xTWIzRXlSTlFSRU43VWxocG8?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
         "title": "Mortgage and refinance interest rates today, Saturday, November 14, 2026: Mortgage rates rose all week long",
         "date": "2026-11-14",
         "url": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxQSTV4WnhBYmp6TlRwNDI4YU15MzFRWXB1aUxmSlR0OXY1OU82WERYWWtBZ3FrcUdab3lWMHNiOERmT0w5bnZCUW9IR2UtV1RkZW5WZm1Jb2RRV0dYTWo5SllxTFQwcml0bGx5UDMyQlh1aGxXak1JUkNTdFFUTDdSOENQZ2tuZ0doM1RUREN6M3RhWV9MOVRJUUhYWm0xVWZuWTFjQldUajlHN1BzSk16VmkzaXZCTG9QSDVfOXE4em5EcW9nY0lYWlh4aEdCVmZ2ZnR3MTVrcXdDaUNHVTZON01MemVlZUNXTk1aM045VFlZMVd6bjI2TldodlpFY3FIWmRNTDJmUWFnU00?oc=5",
@@ -143,6 +133,18 @@
         "title": "The average US 30-year mortgage rate falls to 7.11% this week, its fourth straight decline - The Frederick News-Post",
         "date": "2026-11-14",
         "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPSmNITEVKUUUtamRVR1hiQ2xGWEgyRzNUalpIalhPRFZRa1RqYnBNZkl1cmFMYklNT2QyR25hYzhMMTdkeEw4RTFfdW1kV3NUbUFZZkxZQlQ5U3Nka1BvMnU1c29JR25rRlJocXc5elVzc3VJRE12TFBLSEdsYkVNU2hnV200aV8ybGpuVEsteEoxcm1XSng1ZG4yUzVDZ2w0blFDVzN5NlFVc0RRVlpISld2QWdSWG96QjA0VFlpX2ZtQXhIVVQtbEpfZjJIa1liVU95VElIcFBoMGFwdHBDYmhvMHNWTlBtY0FETGJ1MGlGMmZXNmxEMQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Is It a Good Time to Lock In as Mortgage Rates Drop for the Fourth Straight Week",
+        "date": "2026-11-14",
+        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOOG1xRFMwMTk4cHBLVkZGNkpoeVJUdkFHZFVOVDVHb3EwNnFDM0UyeVhCdlpHTXJtMWpvMEpYODYxVEFOOGRKQ2dGbWNvQmhiYnVDczB3NmN1MzJHa2RXYlI2dVoxSmtBNHFzQXJYMFpHSENZRmNaYWIybzg2WUpORnV0NmMyNmt3N2JCMmg3WE1tam43X0Zaem1tMU9lOENQYjB1enVn?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Today, November 14, 2026: 30-Year Refinance Rate Rises 28 Basis Points",
+        "date": "2026-11-14",
+        "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNamFHdXJ4X08weE1ORHNJZDFkZEhLSkc0b1ZpLVBFQjFPX21pb3h3cjZwZEpxMHQtMUZmby1uc0ktVFdMWDJyTTNac0hGTkwtNXpsSTVCeU11OUJ4ZTlUdF9sQkwweUtaalJBTmViejBaeDY3Wlg1V3lJSU16bWpPWEdxVmRoWUdGR2l4OXc3OA?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

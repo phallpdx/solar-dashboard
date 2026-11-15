@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-15",
   "restaurants": [
+    {
+      "name": "Vivian",
+      "neighborhood": "",
+      "cuisine": "Nordic-inspired",
+      "price": "",
+      "opened": "",
+      "summary": "Nordic-inspired food in the new Kex Hotel.",
+      "reviews": [
+        {
+          "outlet": "Portland Monthly",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-07",
+          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQaXV1b3VCdldXZkx0UHdnaGRsSzRkejc5Mnd4OEFPNTJCS1p2Tk9xamMtSnhPVDRmbzdWVmhuRHBpeDZtMER5SEF4N0VLMHROazNTZWRZYm9QMGN4UDBCYVFEZWVWRUQ1Tjh4dkxXenVHQkVnMDNZX29zMGx4MGFFMVFpRm4yNk0tQWxGcjMzTkRzQm9YcGxpbXhCd1F3ZW1n?oc=5"
+        }
+      ]
+    },
     {
       "name": "Steelhead Music Venue",
       "neighborhood": "Central Eastside",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-10-29",
           "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Jojos",
-      "neighborhood": "Gresham",
-      "cuisine": "Tavern",
-      "price": "",
-      "opened": "2026-10-30",
-      "summary": "A tavern with great fries.",
-      "reviews": [
-        {
-          "outlet": "Fast Food Club",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-30",
-          "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNdWNvaXdXdkI3bUx4WGxsSWhPSmppY2J2OWJCSUVtN0xHRjFVNk9POWVIVVAwdk90YndpMFR4VGtQb19jbFU1UmhKRUo3WEM0SmN6TzRxOE9sQ1AtUnlyWl9mYTJtajlzT1dqSVh3TmNQRURTa0VuOW9rcENvSlROU3dBQnNtUlRtbnNjU0tDNEh1MWpEYUpxX1JOM3JmdHg3QW5sSDhNbC1tcTNzVF9veEcybXlIUQ?oc=5"
         }
       ]
     }

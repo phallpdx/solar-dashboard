@@ -1,27 +1,6 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-15",
   "deals": [
-    {
-      "title": "V for Vendetta",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital, $13",
-      "ends": "2026-11-14",
-      "url": "https://slickdeals.net/f/20306217-v-for-vendetta-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
-    },
-    {
-      "title": "Evil Dead Burn",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Digital 4K, $12.99",
-      "ends": "2026-11-14",
-      "url": "https://slickdeals.net/f/20302908-12-99-evil-dead-burn-4k-ultra-hd-digital-4k-at-amazon"
-    },
-    {
-      "title": "The Super Mario Galaxy Movie: Collector's Edition",
-      "store": "Amazon",
-      "detail": "$12.99 (4K UHD + Blu-ray + Digital 4K)",
-      "ends": "2026-11-14",
-      "url": "https://slickdeals.net/f/20308083-new-12-99-the-super-mario-galaxy-movie-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
-    },
     {
       "title": "Disclosure Day Collector's Edition",
       "store": "Amazon",
@@ -98,6 +77,41 @@
       "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (see below).",
       "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+    },
+    {
+      "title": "Evil Dead Burn",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Digital 4K)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20302908-12-99-evil-dead-burn-4k-ultra-hd-digital-4k-at-amazon"
+    },
+    {
+      "title": "Mars Attacks!",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
+    },
+    {
+      "title": "Various 4K Ultra HD Blu-ray Films",
+      "store": "GRUV Entertainment via Walmart",
+      "detail": "$13 or less (Wuthering Heights, Mortal Kombat II, Superman etc.)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "Raya and the Last Dragon",
+      "store": "Walmart",
+      "detail": "$9.75 (4K UHD + Blu-ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299629-raya-and-the-last-dragon-4k-uhd-blu-ray-digital-9-75-free-shipping-w-walmart-or-on-35"
+    },
+    {
+      "title": "Interview with the Vampire: The Vampire Chronicles",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20298036-interview-with-the-vampire-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
     }
   ],
   "upcoming": [

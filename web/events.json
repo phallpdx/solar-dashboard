@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-15",
   "events": [
     {
       "title": "Kumoricon 2026",
@@ -16,38 +16,6 @@
         {
           "name": "Kumoricon",
           "url": "https://www.kumoricon.org/uploads/sponsorship-and-advertising-opportunities-2026-email.pdf"
-        }
-      ]
-    },
-    {
-      "title": "OSAA 6A and 5A soccer state finals",
-      "date": "2026-11-14",
-      "ends": null,
-      "venue": "Hillsboro Stadium, Hillsboro",
-      "kind": "High school soccer",
-      "why": "The boys and girls 6A and 5A title games are scheduled at Hillsboro Stadium, with the smaller-school finals at nearby Liberty High; kickoff times are set once the brackets finish.",
-      "sources": [
-        {
-          "name": "OSAA 6A boys bracket",
-          "url": "https://www.osaa.org/activities/bsc/brackets"
-        },
-        {
-          "name": "OSAA 2026-27 calendar",
-          "url": "https://www.osaa.org/docs/calendar/26-27ActivityCalendar.pdf"
-        }
-      ]
-    },
-    {
-      "title": "Portland Cheese and Meat Festival",
-      "date": "2026-11-14",
-      "ends": "2026-11-14",
-      "venue": "Montgomery Park",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://dopdx.com"
         }
       ]
     },
@@ -346,6 +314,20 @@
         {
           "name": "Rose Quarter",
           "url": "https://www.rosequarter.com/calendar-events/wwe-jan-29-2027"
+        }
+      ]
+    },
+    {
+      "title": "Portland Folk Festival",
+      "date": "2027-01-30",
+      "ends": "2027-01-30",
+      "venue": "Crystal Ballroom",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://www.pdxpipeline.com/portland-january-events"
         }
       ]
     },

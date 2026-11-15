@@ -1,34 +1,6 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-15",
   "items": [
-    {
-      "title": "Epic Pass price increase",
-      "kind": "Deadline",
-      "action": "Buy before Nov 15 to beat the next price step; sales end Dec 6.",
-      "starts": null,
-      "by": "2026-11-14",
-      "why": "Powder lists the Epic Pass at $1,169 as of Oct 13, with the next increase Nov 15.",
-      "sources": [
-        {
-          "name": "Powder",
-          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
-        }
-      ]
-    },
-    {
-      "title": "Buy Kathy Griffin tickets",
-      "kind": "Tickets",
-      "action": "On sale at Aladdin Theater",
-      "starts": "2026-11-14",
-      "by": null,
-      "why": "Aladdin Theater [#29]",
-      "sources": [
-        {
-          "name": "Portland on-sale news",
-          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQVThvdC1kYnY3aXE3c3FMVU56SDVKRkhaZnRPMEFiODZNc1FiT3VSRHlXYkF6TzREWFNYTXlBV0k1ZGNrejJIaU9EYVllWFlyX3ZSLVYySmJCcHlWRnFwWW9qeWJsUzh6OFhGLV9PM2R4VXN0ZFlFY1RCR3AtNUdPNmZlLWhBS19sbWdZa2hEdHFxMXBocG1mdHc0NlQ?oc=5"
-        }
-      ]
-    },
     {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",

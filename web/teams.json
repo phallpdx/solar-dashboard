@@ -1,14 +1,14 @@
 {
-  "updated": "2026-11-14",
-  "updated_at": "2026-11-15T07:32:12Z",
+  "updated": "2026-11-15",
+  "updated_at": "2026-11-15T09:30:51Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and excited",
-      "pulse": "Fans are celebrating a 9-3 start and strong team chemistry. Excitement is growing despite Shaedon Sharpe's absence due to injury.",
+      "mood": "high spirits",
+      "pulse": "Fans are celebrating a 9-3 start and improved team chemistry. They feel optimistic about the roster's potential despite injuries.",
       "storylines": [
-        "Blazers defeated Sacramento Kings 120-107",
-        "Deni Avdija scored 34 points in recent win",
+        "Deni Avdija scored 34 points in win over Kings",
         "Shaedon Sharpe remains out due to injury",
+        "Scoot Henderson moved to bench for Sidy Cissoko",
         "Next game against Timberwolves on 2026-11-16"
       ],
       "sources": [
@@ -35,13 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Optimistic underdog energy",
-      "pulse": "Fans are energized by a four-game winning streak heading into playoffs. There is excitement surrounding individual achievements and community watch parties.",
+      "mood": "Underdog playoff energy",
+      "pulse": "Fans are excited following a four-game winning streak heading into playoffs. There is high anticipation for the upcoming matchup against Dallas.",
       "storylines": [
-        "Four-game winning streak builds momentum for playoffs",
-        "Upcoming playoff matchup against Dallas",
+        "Four-game winning streak builds momentum",
+        "Playoff matchup against Dallas approaching",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 eliminated in MLS NEXT Pro Semifinals"
+        "Timbers2 eliminated in MLS NEXT Pro semifinals"
       ],
       "sources": [
         {
@@ -67,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "reflective and anticipatory",
-      "pulse": "Fans are celebrating Kimi Antonelli's title success and Lewis Hamilton's 2020 championship anniversary. Discussions focus on the 2027 driver market and McLaren's development.",
+      "mood": "Reflective and anticipatory",
+      "pulse": "Fans are celebrating Lewis Hamilton's 7th title anniversary. Attention is shifting toward the 2027 driver market and Antonelli's defense.",
       "storylines": [
-        "Kimi Antonelli is the 2026 World Champion.",
-        "Mercedes secured their ninth Constructors' Championship in 2026.",
-        "Alisha Palmowski moves to Formula Regional for 2027.",
-        "The 2027 driver market remains uncertain."
+        "Kimi Antonelli crowned 2026 World Champion",
+        "Mercedes claims ninth Constructors' title in 2026",
+        "Alisha Palmowski graduates to Formula Regional for 2027",
+        "Liam Lawson secures new Racing Bulls deal"
       ],
       "sources": [
         {
@@ -100,12 +100,12 @@
     },
     "ducks": {
       "mood": "euphoric and hopeful",
-      "pulse": "Fans are celebrating back-to-back wins over blue bloods Ohio State and Michigan. The team is climbing back into the College Football Playoff chase.",
+      "pulse": "Fans are celebrating back-to-back wins over Ohio State and Michigan. They are eyeing an at-large CFP bid as rankings rise.",
       "storylines": [
         "Oregon defeated Michigan 31-7 at Autzen Stadium",
-        "#16 Oregon beat Ohio State and Michigan in consecutive weeks",
-        "Dylan Raiola has thrown 9 TDs with 0 interceptions recently",
-        "Fans are calculating Big Ten tiebreakers for CFP implications"
+        "#16 Oregon has won three straight games",
+        "Dylan Raiola is ballin' out with a 68% completion percentage",
+        "Ducks are chasing a potential College Football Playoff berth"
       ],
       "sources": [
         {
@@ -136,12 +136,12 @@
     },
     "niners": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are excited for the rivalry game against Dallas. Concerns exist regarding secondary injuries and roster depth.",
+      "pulse": "Fans are excited for the Cowboys rivalry game and Brock Purdy's MVP form. Concerns persist regarding injuries to key defensive players.",
       "storylines": [
         "Upcoming matchup against Dallas Cowboys",
-        "Injury status of several defensive backs",
-        "Brock Purdy's MVP-level performance",
-        "Mike Evans ruled out with Achilles injury"
+        "Mike Evans ruled out with Achilles injury",
+        "Brock Purdy's MVP candidacy",
+        "DeForest Buckner contract restructuring"
       ],
       "sources": [
         {

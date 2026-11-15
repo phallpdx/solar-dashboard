@@ -1,15 +1,14 @@
 {
   "updated": "2026-11-15",
-  "updated_at": "2026-11-15T09:30:51Z",
+  "updated_at": "2026-11-15T11:28:13Z",
   "teams": {
     "blazers": {
-      "mood": "high spirits",
-      "pulse": "Fans are celebrating a 9-3 start and improved team chemistry. They feel optimistic about the roster's potential despite injuries.",
+      "mood": "optimistic and high",
+      "pulse": "Fans are riding a wave of excitement following a strong 9-3 start. There is significant praise for Coach Micah Nori's leadership.",
       "storylines": [
-        "Deni Avdija scored 34 points in win over Kings",
+        "Team holds a 9-3 record after defeating Sacramento (#4,#6)",
         "Shaedon Sharpe remains out due to injury",
-        "Scoot Henderson moved to bench for Sidy Cissoko",
-        "Next game against Timberwolves on 2026-11-16"
+        "Next game: Blazers @ Timberwolves on 11/16"
       ],
       "sources": [
         {
@@ -35,7 +34,7 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog playoff energy",
+      "mood": "Optimistic underdog energy",
       "pulse": "Fans are excited following a four-game winning streak heading into playoffs. There is high anticipation for the upcoming matchup against Dallas.",
       "storylines": [
         "Four-game winning streak builds momentum",
@@ -67,13 +66,13 @@
       ]
     },
     "f1": {
-      "mood": "Reflective and anticipatory",
-      "pulse": "Fans are celebrating Lewis Hamilton's 7th title anniversary. Attention is shifting toward the 2027 driver market and Antonelli's defense.",
+      "mood": "reflective and evolving",
+      "pulse": "Fans are celebrating Hamilton's 7th title anniversary while processing Antonelli's championship win. Discussions focus on driver mental health and team personnel challenges.",
       "storylines": [
-        "Kimi Antonelli crowned 2026 World Champion",
-        "Mercedes claims ninth Constructors' title in 2026",
-        "Alisha Palmowski graduates to Formula Regional for 2027",
-        "Liam Lawson secures new Racing Bulls deal"
+        "Kimi Antonelli is the reigning 2026 World Champion.",
+        "Mercedes secured their ninth Constructors' Championship in 2026.",
+        "Lando Norris discussed his personal experiences with mental health.",
+        "Oscar Piastri addressed struggles faced during the 2026 season."
       ],
       "sources": [
         {
@@ -99,13 +98,13 @@
       ]
     },
     "ducks": {
-      "mood": "euphoric and hopeful",
-      "pulse": "Fans are celebrating back-to-back wins over Ohio State and Michigan. They are eyeing an at-large CFP bid as rankings rise.",
+      "mood": "euphoric and optimistic",
+      "pulse": "Fans are celebrating back-to-back wins over Ohio State and Michigan. The team is climbing back into the CFP chase.",
       "storylines": [
-        "Oregon defeated Michigan 31-7 at Autzen Stadium",
-        "#16 Oregon has won three straight games",
-        "Dylan Raiola is ballin' out with a 68% completion percentage",
-        "Ducks are chasing a potential College Football Playoff berth"
+        "Beat Michigan 31-7 at Autzen Stadium",
+        "Dylan Raiola has 9 TDs and 0 INTs recently",
+        "Ducks are 7-3 overall and 5-2 in Big Ten",
+        "Fans monitoring tiebreakers for CFP at-large bids"
       ],
       "sources": [
         {
@@ -136,12 +135,12 @@
     },
     "niners": {
       "mood": "optimistic but cautious",
-      "pulse": "Fans are excited for the Cowboys rivalry game and Brock Purdy's MVP form. Concerns persist regarding injuries to key defensive players.",
+      "pulse": "Fans are excited for the Cowboys game and Brock Purdy's MVP form. However, injuries to key defensive players cause concern.",
       "storylines": [
-        "Upcoming matchup against Dallas Cowboys",
-        "Mike Evans ruled out with Achilles injury",
-        "Brock Purdy's MVP candidacy",
-        "DeForest Buckner contract restructuring"
+        "Upcoming rivalry game against Dallas Cowboys",
+        "Brock Purdy is an MVP frontrunner",
+        "Multiple defensive players listed as questionable or out",
+        "Offense producing historic red zone touchdowns"
       ],
       "sources": [
         {

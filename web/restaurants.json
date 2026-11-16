@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "restaurants": [
+    {
+      "name": "The Shipment",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "Portland Monthly",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-05",
+          "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5lUzl2TGhlZ0JrQnB1WTdNSVpJQ1laZlJHZ2h5RVJQYmFQaHZiaEJKQlNPWnNZaFRqUkZ2SHN0N05wNW5Cbkc2SFpnWlowSGVoMTdGaEV6cEFxMmNzaFRZZUV3SVh6djlYVkRYSDYtdnQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "Vivian",
       "neighborhood": "",
@@ -282,6 +299,13 @@
       "summary": "",
       "reviews": [
         {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-16",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOTURnU0NTUUhFZVNLS1pHT2p6U3NHWmthdjFVUHl3c1B5SEhJZ2RlQ2NmUTk4dDJfVXp4TEUtVVFWcnctMURtTzQ4dVV4dlk0NGNnU0J2OUlFc04wSE43aDVFUHA2WW1tZ2tGb0hYQWl5a2VheUpWSi1vd0xLaFYyZVlWZFNPZUpEYkgyQXExbnRXT3lubXFtZl9IMUJGMjMzSkxzTlZuazVvV2Q3Y2NEWGF1em81UUM3cDhPUjNB?oc=5"
+        },
+        {
           "outlet": "The Oregonian food",
           "critic": "Not named",
           "verdict": "New bar opening",
@@ -403,23 +427,6 @@
           "verdict": "",
           "date": "2026-10-23",
           "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQeXdzS1ZPZ2dHbmRpR3Y0NzQwelp0LS1yRmdaV2dZTGdXbEh6SF9qX0dpbTJ0NlpCeUZRR2tNamtpaXJYMWk0enNMOEJuQjJoQ2dUSlQzS3V3bmVNQUtQWnlhRU5hM3BFZkJ1dzducmtOZF9hZ3dmdm5KeUVKZ2hkVUlwTHFoNXE4XzNGSTVlQ2JjZw?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Verdure",
-      "neighborhood": "Chubby Bunny",
-      "cuisine": "Dinner takeover",
-      "price": "",
-      "opened": "2026-10-29",
-      "summary": "Verdure takes over evenings at Chubby Bunny.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-10-29",
-          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
         }
       ]
     }

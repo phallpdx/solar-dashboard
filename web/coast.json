@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -104,6 +104,14 @@
       "town": "Seaside",
       "summary": "Monthly volunteer beach cleanup effort from 9:00 am to 11:00 am.",
       "url": "https://www.seasideor.com/event/treasure-the-beach-community-beach-cleanup/2026-12-05/"
+    },
+    {
+      "name": "Seaside vs Away Boys Junior Varsity Basketball",
+      "date": "2026-12-09",
+      "end": null,
+      "town": "Seaside",
+      "summary": "Boys junior varsity basketball game.",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQaFlSRVRQSFZRMTlZVWdqdjc2MVd2d1RvUF9xZTdBTkN1aE80aUFtQXR3Vm45OEFwS0dwZWZ6VHRlcWxXOVFDQ18ydGpoa1IwaDMxTjhzemJlS0MwLUktbWxWY2J5UUEtZ3U2bUQ0YVE0Ykx5ZGVoZ2ZERlBkcDIxX1NtSmx2dw?oc=5"
     },
     {
       "name": "Boys Varsity Basketball: Seaside vs Away",

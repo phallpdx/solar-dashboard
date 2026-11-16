@@ -1,22 +1,6 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "shows": [
-    {
-      "artist": "Bridgetown Sextet",
-      "kind": "Local",
-      "date": "2026-11-15",
-      "time": "05:30 pm",
-      "venue": "The 1905",
-      "price": "$25",
-      "what": "Performing music by icons of early jazz.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Oz Noy Trio with Brian Charette & Dave Weckl",
       "kind": "Touring",
@@ -478,6 +462,22 @@
         {
           "name": "Jack London Revue",
           "url": "https://www.ticketweb.com/event/maria-mazzotta-jack-london-revue-tickets/14210524?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "Matheny / Alex Duo",
+      "kind": "Local",
+      "date": "2026-12-13",
+      "time": "4:00pm to 7:00pm",
+      "venue": "INHOUSE Jazz",
+      "price": null,
+      "what": "Dmitri Matheny and Cheryl Alex perform at a private residence.",
+      "tickets": "https://jazzoregon.org/events/list",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://jazzoregon.org/events/list"
         }
       ]
     },

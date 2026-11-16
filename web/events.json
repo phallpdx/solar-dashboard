@@ -1,38 +1,6 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "events": [
-    {
-      "title": "Kumoricon 2026",
-      "date": "2026-11-13",
-      "ends": "2026-11-15",
-      "venue": "Oregon Convention Center, Lloyd District",
-      "kind": "Convention",
-      "why": "Oregon's biggest anime convention takes over every exhibit hall at the convention center for three days, with heavy crowds around the Lloyd District and MAX.",
-      "sources": [
-        {
-          "name": "Oregon Convention Center",
-          "url": "https://www.oregoncc.org/attend/events/2026/11/kumoricon-2026"
-        },
-        {
-          "name": "Kumoricon",
-          "url": "https://www.kumoricon.org/uploads/sponsorship-and-advertising-opportunities-2026-email.pdf"
-        }
-      ]
-    },
-    {
-      "title": "Rose Quarter Guitar Show",
-      "date": "2026-11-15",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Expo",
-      "why": "A one-day guitar show at the Coliseum on a Sunday, adding daytime Rose Quarter traffic the weekend Kumoricon fills the convention center nearby.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/guitar-show-nov-15-2026"
-        }
-      ]
-    },
     {
       "title": "Oregon vs. Oregon State men's basketball",
       "date": "2026-11-19",
@@ -212,6 +180,20 @@
       ]
     },
     {
+      "title": "The American Northwest - Portland - Nationals - DI/DII",
+      "date": "2026-12-05",
+      "ends": "2026-12-06",
+      "venue": "Hall D, Oregon Convention Center",
+      "kind": "Convention",
+      "why": "",
+      "sources": [
+        {
+          "name": "Oregon Convention Center",
+          "url": "https://www.oregoncc.org/attend/events/2026/12/american-northwest-portland-nationals-didii"
+        }
+      ]
+    },
+    {
       "title": "The Wolf's Nice Christmas Show",
       "date": "2026-12-06",
       "ends": null,
@@ -258,6 +240,20 @@
         {
           "name": "Web search: big Portland events",
           "url": "https://www.expocenter.org/calendar"
+        }
+      ]
+    },
+    {
+      "title": "Young the Giant",
+      "date": "2026-12-13",
+      "ends": null,
+      "venue": "McMenamins Crystal Ballroom",
+      "kind": "Concert",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://dopdx.com"
         }
       ]
     },
@@ -370,6 +366,20 @@
         {
           "name": "Travel Portland",
           "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
+        }
+      ]
+    },
+    {
+      "title": "Portland Winter Light Festival",
+      "date": "2027-02-05",
+      "ends": "2027-02-13",
+      "venue": "Pioneer Courthouse Square",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://onestowatch.com/live/best-oregon-winter-concerts"
         }
       ]
     }

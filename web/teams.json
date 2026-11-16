@@ -1,14 +1,16 @@
 {
-  "updated": "2026-11-15",
-  "updated_at": "2026-11-16T07:32:33Z",
+  "updated": "2026-11-16",
+  "updated_at": "2026-11-16T09:37:42Z",
   "teams": {
     "blazers": {
       "mood": "optimistic yet cautious",
-      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's performance. However, concerns persist regarding injuries to Shaedon Sharpe.",
+      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's 34-point performance. However, injuries to Shaedon Sharpe cause concern.",
       "storylines": [
-        "Team holds a 9-3 record after beating Sacramento",
-        "Deni Avdija recorded 34 points in recent win",
-        "Shaedon Sharpe remains out due to injury"
+        "Blazers hold a 9-3 record after beating the Kings.",
+        "Deni Avdija recorded 34 points in Friday's win.",
+        "Shaedon Sharpe remains out due to injury.",
+        "Next game is against the Timberwolves on road.",
+        "Debates persist regarding Scoot Henderson's role and coaching."
       ],
       "sources": [
         {
@@ -38,9 +40,9 @@
       "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoffs against Dallas.",
       "storylines": [
         "Four-game winning streak heading into playoffs",
-        "Playoff matchup upcoming against Dallas",
+        "Playoff matchup against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 lost 1-0 in MLS NEXT Pro semifinals"
+        "Timbers2 lost in MLS NEXT Pro semifinals"
       ],
       "sources": [
         {
@@ -67,12 +69,11 @@
     },
     "f1": {
       "mood": "Reflective and evolving",
-      "pulse": "Fans are celebrating Kimi Antonelli's 2026 championship win. Discussions also focus on driver mental health and technical regulation impacts.",
+      "pulse": "Fans are discussing Kimi Antonelli's championship win and Lewis Hamilton's resurgence. Discussions also focus on driver mental health.",
       "storylines": [
         "Kimi Antonelli crowned 2026 World Champion",
-        "Lewis Hamilton experiencing career resurgence under new regulations",
-        "Pirelli planning increased thermal degradation for 2027 tyres",
-        "Lando Norris discusses managing mental health"
+        "Lewis Hamilton experiencing career resurgence under new regs",
+        "Pirelli planning increased thermal degradation for 2027 tyres"
       ],
       "sources": [
         {
@@ -98,13 +99,13 @@
       ]
     },
     "ducks": {
-      "mood": "anxious but hopeful",
-      "pulse": "Fans are focused on the CFP at-large bid pathway. There is concern regarding player attitudes and injuries.",
+      "mood": "Anxious but hopeful",
+      "pulse": "Fans are debating playoff and bowl scenarios following the Michigan win. There is concern regarding player attitudes and injuries.",
       "storylines": [
-        "Victory over Michigan in Autzen Stadium",
-        "#13 ranking potential after Kentucky/Houston losses",
-        "Potential Alamo Bowl projection if no CFP berth",
-        "Evan Stewart attitude concerns"
+        "Defeated Michigan in Autzen Stadium",
+        "Playoff and Alamo Bowl projections being debated",
+        "Evan Stewart's attitude questioned",
+        "Tuioti recovering from surgery"
       ],
       "sources": [
         {
@@ -134,13 +135,10 @@
       ]
     },
     "niners": {
-      "mood": "Ecstatic and triumphant",
-      "pulse": "Fans are celebrating an 8-1 start after a dominant road win. They are praising Brock Purdy's performance and the team's offensive explosion.",
+      "mood": "Ecstatic and celebratory",
+      "pulse": "Fans are euphoric after a high-scoring shootout victory over the Cowboys. They are celebrating an 8-1 record and dominant offensive performances.",
       "storylines": [
-        "49ers beat Cowboys 46-21 to reach 8-1 record",
-        "Brock Purdy threw for 389 yards and 3 touchdowns",
-        "CMC scored a 74-yard touchdown run",
-        "Deebo Samuel had a 70-yard TD on a reverse"
+        "Beat Cowboys 46-40 in Scorigami win"
       ],
       "sources": [
         {

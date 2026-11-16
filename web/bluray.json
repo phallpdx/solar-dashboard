@@ -1,34 +1,6 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "deals": [
-    {
-      "title": "Select 4K Mix/Match Movies",
-      "store": "Gruv",
-      "detail": "3 for $33 (Sinners, Nosferatu & More)",
-      "ends": "2026-11-15",
-      "url": "https://slickdeals.net/f/20302098-gruv-select-4k-mix-match-movies-sinners-nosferatu-more-3-for-33-free-s-h"
-    },
-    {
-      "title": "Disclosure Day Collector's Edition",
-      "store": "Amazon",
-      "detail": "$13 (4K Ultra HD + Blu-ray + Digital)",
-      "ends": "2026-11-15",
-      "url": "https://slickdeals.net/f/20308947-disclosure-day-collector-s-edition-4k-ultra-hd-blu-ray-digital-13"
-    },
-    {
-      "title": "Speed Racer",
-      "store": "Amazon",
-      "detail": "$12.99 (4K UHD + Digital)",
-      "ends": "2026-11-15",
-      "url": "https://slickdeals.net/f/20307651-speed-racer-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "Mortal Kombat II",
-      "store": "Amazon",
-      "detail": "$12.99 (4K UHD + Digital)",
-      "ends": "2026-11-15",
-      "url": "https://slickdeals.net/f/20307222-mortal-kombat-ii-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
-    },
     {
       "title": "Back to the Future Trilogy (4K Ultra HD)",
       "store": "Rarewaves (UK)",
@@ -77,6 +49,20 @@
       "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (see below).",
       "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+    },
+    {
+      "title": "Speed Racer",
+      "store": "Amazon",
+      "detail": "$12.99 (4K UHD + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20307651-speed-racer-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "4K UHD, BLU-RAY & DVD DEALS!",
+      "store": "Amazon",
+      "detail": "3 for $33",
+      "ends": null,
+      "url": "https://x.com/4KMOVIEDEALS?lang=en"
     }
   ],
   "upcoming": [

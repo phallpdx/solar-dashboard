@@ -1,17 +1,7 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-16",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {
-      "artist": "Bonobo",
-      "album": "Distance in Static",
-      "score": 74,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/distance-in-static/bonobo/",
-      "date": "2026-11-15",
-      "venue": "Roseland Theater",
-      "tickets": "https://roselandpdx.com/event/bonobo/roseland-theater/portland-oregon/"
-    },
     {
       "artist": "Thundercat",
       "album": "Distracted",

@@ -30,7 +30,7 @@
       "kind": "Touring",
       "date": "2026-11-17",
       "time": "7:30 pm",
-      "venue": "Soul'd Out Presents",
+      "venue": "Jack London Revue",
       "price": null,
       "what": "A trio performance featuring guests.",
       "tickets": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp",
@@ -54,22 +54,6 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
-    {
-      "artist": "BOMBARGO",
-      "kind": "Local",
-      "date": "2026-11-18",
-      "time": "8:00 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Musical performance.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/bombargo/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/bombargo/"
         }
       ]
     },
@@ -122,22 +106,6 @@
       ]
     },
     {
-      "artist": "ERIC JOHN KAISER",
-      "kind": "Local",
-      "date": "2026-11-20",
-      "time": "8:00 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Album release event.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/eric-john-kaiser-album-release/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/eric-john-kaiser-album-release/"
-        }
-      ]
-    },
-    {
       "artist": "Farnell Newton's The Soul of Jazz",
       "kind": "Local",
       "date": "2026-11-20",
@@ -150,38 +118,6 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
-    {
-      "artist": "FOX WALKER, EARL GRACIOUS BAND, LIQUID SUN",
-      "kind": "Local",
-      "date": "2026-11-21",
-      "time": "8:00 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "A group of musical acts.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/fox-walker-earl-gracious-band-liquid-sun/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/fox-walker-earl-gracious-band-liquid-sun/"
-        }
-      ]
-    },
-    {
-      "artist": "BURLY-Q REVUE",
-      "kind": "Local",
-      "date": "2026-11-21",
-      "time": "10:30 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Musical revue performance.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-7/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-7/"
         }
       ]
     },
@@ -226,38 +162,6 @@
       ]
     },
     {
-      "artist": "INFINITY",
-      "kind": "Local",
-      "date": "2026-11-25",
-      "time": "8:00 PM",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Infinity performing in Portland.",
-      "tickets": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE",
-      "sources": [
-        {
-          "name": "Web search: touring jazz in Portland",
-          "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
-        }
-      ]
-    },
-    {
-      "artist": "Black Friday Neo Soul Supper Club",
-      "kind": "Local",
-      "date": "2026-11-27",
-      "time": "8:30 pm",
-      "venue": "Elevate Unity Presents",
-      "price": null,
-      "what": "Neo soul supper club event.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/black-friday-neo-soul-supper-club/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/black-friday-neo-soul-supper-club/"
-        }
-      ]
-    },
-    {
       "artist": "Charlie Brown III and Friends",
       "kind": "Local",
       "date": "2026-11-28",
@@ -270,54 +174,6 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"
-        }
-      ]
-    },
-    {
-      "artist": "ONE WAY OUT – ALLMAN BROTHERS BAND TRIBUTE",
-      "kind": "Local",
-      "date": "2026-11-28",
-      "time": "8:00 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Allman Brothers Band tribute act.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/one-way-out-allman-brothers-band-tribute/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/one-way-out-allman-brothers-band-tribute/"
-        }
-      ]
-    },
-    {
-      "artist": "BURLY-Q REVUE",
-      "kind": "Local",
-      "date": "2026-11-28",
-      "time": "10:30 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Musical revue performance.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-8/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-8/"
-        }
-      ]
-    },
-    {
-      "artist": "STEVE OLIVER",
-      "kind": "Local",
-      "date": "2026-12-02",
-      "time": "8:00 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "Musical performance.",
-      "tickets": "https://www.jacklondonrevue.com/tm-event/steve-oliver/",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.jacklondonrevue.com/tm-event/steve-oliver/"
         }
       ]
     },
@@ -450,22 +306,6 @@
       ]
     },
     {
-      "artist": "MARIA MAZZOTTA",
-      "kind": "Local",
-      "date": "2026-12-13",
-      "time": "7:30 pm",
-      "venue": "Soul'd Out Presents",
-      "price": null,
-      "what": "A performance by Maria Mazzotta.",
-      "tickets": "https://www.ticketweb.com/event/maria-mazzotta-jack-london-revue-tickets/14210524?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/maria-mazzotta-jack-london-revue-tickets/14210524?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
       "artist": "Matheny / Alex Duo",
       "kind": "Local",
       "date": "2026-12-13",
@@ -485,10 +325,10 @@
       "artist": "Sixth Annual Brown Branch Big Band Holiday Show",
       "kind": "Big band",
       "date": "2026-12-14",
-      "time": "6:30 pm",
+      "time": "7:30 pm",
       "venue": "Portland Center Stage at The Armory",
       "price": "$40",
-      "what": "A 15-piece big band directed by Domo Branch and Charlie Brown III, with Hailey Niswanger and Nicole McCabe on sax and vocalist LaRhonda Steele; also Tue Dec 15 at 6:30 pm.",
+      "what": "A 15-piece big band directed by Domo Branch and Charlie Brown III, with Hailey Niswanger and Nicole McCabe on sax and vocalist LaRhonda Steele; also Tue Dec 15; doors 6:30 pm, show 7:30 pm.",
       "tickets": "https://www.pcs.org/events/the-brown-branch-big-band",
       "sources": [
         {
@@ -510,6 +350,42 @@
         {
           "name": "Jack London Revue",
           "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "45th Parallel Universe: The Duke of Cello",
+      "kind": "Local",
+      "date": "2026-12-17",
+      "time": "7:00 pm",
+      "venue": "Polaris Hall",
+      "price": null,
+      "what": "Trevor Fitzpatrick leads six cellos and drums through Duke Ellington's jazz reimagining of The Nutcracker, a swinging holiday program.",
+      "tickets": "https://45thparallelpdx.org/concerts/duke-of-cello",
+      "sources": [
+        {
+          "name": "45th Parallel: The Duke of Cello",
+          "url": "https://45thparallelpdx.org/concerts/duke-of-cello"
+        },
+        {
+          "name": "All Classical Portland listing",
+          "url": "https://www.allclassical.org/?p=113319"
+        }
+      ]
+    },
+    {
+      "artist": "The Three Ds: A Christmas Nog II",
+      "kind": "Latin",
+      "date": "2026-12-23",
+      "time": "8:00 pm",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Soul'd Out presents a Brazilian jazz group mixing in American songbook surprises for a holiday night (21+); reported by an event-listing site, not confirmed on the venue's own page.",
+      "tickets": null,
+      "sources": [
+        {
+          "name": "Happening Next listing",
+          "url": "https://happeningnext.com/event/the-three-ds-eid3fkad1xfa4"
         }
       ]
     }

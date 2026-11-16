@@ -1,14 +1,18 @@
 {
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "items": [
     {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
-      "action": "Register on Phoebe Bridgers' official site by Sun, Nov 15 at 11:59 p.m. for the Day 1 random draw; artist presales Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",
+      "action": "Day 1 presale sign-up closed Nov 15; Rolling Stone says registration stays open until Nov 19 for later presale access. Artist presales via Seated Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",
       "starts": "2026-11-18",
-      "by": "2026-11-15",
-      "why": "Portland opens the 2027 Lost Tour leg (Grouper opens here); registrants are randomly assigned a presale day, late sign-ups get Day 2, and registering doesn't guarantee tickets. BroadwayWorld lists a later Nov 19 cutoff, so confirm on the official site.",
+      "by": "2026-11-20",
+      "why": "Portland opens the 2027 Lost Tour leg with Grouper; registrants are randomly assigned a presale day, late sign-ups get Day 2, and registering doesn't guarantee tickets.",
       "sources": [
+        {
+          "name": "Rolling Stone",
+          "url": "https://www.rollingstone.com/music/music-news/phoebe-bridgers-the-lost-tour-2027-dates-1235656557/"
+        },
         {
           "name": "Variety",
           "url": "https://variety.com/2026/music/news/phoebe-bridgers-extends-lost-tour-north-america-2027-1236946343/"
@@ -28,6 +32,10 @@
         {
           "name": "BroadwayWorld",
           "url": "https://www.broadwayworld.com/bwwmusic/article/Phoebe-Bridgers-Announces-Additional-2027-North-American-Dates-for-The-Lost-Tour-20261112"
+        },
+        {
+          "name": "Grimy Goods presale guide",
+          "url": "https://www.grimygoods.com/2026/11/12/phoebe-bridgers-tour-2027-presale-code-ticket-prices-waitlist/"
         }
       ]
     },
@@ -402,6 +410,38 @@
         {
           "name": "Ticket News",
           "url": "https://www.ticketnews.com/2026/11/fall-out-boy-announces-36-date-twilight-of-the-punks-world-tour-for-2027/"
+        }
+      ]
+    },
+    {
+      "title": "Mt. Hood Meadows season pass",
+      "kind": "Buy",
+      "action": "If you want a Meadows pass, buy soon; the price climbs as the season nears and sales eventually close.",
+      "starts": null,
+      "by": null,
+      "why": "Meadows' FAQ says season passes are dynamically priced and rise as the season approaches; check the live price on skihood.com.",
+      "sources": [
+        {
+          "name": "Mt. Hood Meadows FAQ",
+          "url": "https://www.skihood.com/explore/help/FAQ"
+        }
+      ]
+    },
+    {
+      "title": "Nothing But Thieves, Crystal Ballroom (Apr 1, 2027)",
+      "kind": "Tickets",
+      "action": "Tickets have been on sale since June; buy face value through the Crystal Ballroom's official ticketing rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "A 1,500-capacity room on the band's 17-date spring 2027 North American run behind new album Stray Dogs.",
+      "sources": [
+        {
+          "name": "JamBase",
+          "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
+        },
+        {
+          "name": "NME",
+          "url": "https://www.nme.com/news/music/nothing-but-thieves-new-album-stray-dog-tour-of-uk-europe-north-america-buy-tickets-3947453"
         }
       ]
     }

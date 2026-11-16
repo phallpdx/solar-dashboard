@@ -1,16 +1,15 @@
 {
   "updated": "2026-11-16",
-  "updated_at": "2026-11-16T09:37:42Z",
+  "updated_at": "2026-11-16T11:26:59Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic yet cautious",
-      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's 34-point performance. However, injuries to Shaedon Sharpe cause concern.",
+      "mood": "optimistic yet debated",
+      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's 34-point performance. However, coaching decisions and roster volatility spark debate.",
       "storylines": [
-        "Blazers hold a 9-3 record after beating the Kings.",
-        "Deni Avdija recorded 34 points in Friday's win.",
-        "Shaedon Sharpe remains out due to injury.",
-        "Next game is against the Timberwolves on road.",
-        "Debates persist regarding Scoot Henderson's role and coaching."
+        "Team is 9-3 after beating Sacramento",
+        "Deni Avdija scored 34 points against Kings",
+        "Shaedon Sharpe remains sidelined with injury",
+        "Next game: vs Timberwolves"
       ],
       "sources": [
         {
@@ -40,9 +39,9 @@
       "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoffs against Dallas.",
       "storylines": [
         "Four-game winning streak heading into playoffs",
-        "Playoff matchup against Dallas",
+        "Playoff matchup upcoming against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 lost in MLS NEXT Pro semifinals"
+        "Timbers2 lost in MLS NEXT Pro Semifinals"
       ],
       "sources": [
         {
@@ -68,12 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "Reflective and evolving",
-      "pulse": "Fans are discussing Kimi Antonelli's championship win and Lewis Hamilton's resurgence. Discussions also focus on driver mental health.",
+      "mood": "celebratory and speculative",
+      "pulse": "Fans are celebrating Kimi Antonelli's championship win. Discussions focus on his 2027 title defense and technical changes.",
       "storylines": [
         "Kimi Antonelli crowned 2026 World Champion",
-        "Lewis Hamilton experiencing career resurgence under new regs",
-        "Pirelli planning increased thermal degradation for 2027 tyres"
+        "McLaren fighting for P3 in Teams' Championship",
+        "Haas confirms Camara for Las Vegas GP",
+        "Pirelli planning higher degradation tyres for 2027"
       ],
       "sources": [
         {
@@ -99,13 +99,12 @@
       ]
     },
     "ducks": {
-      "mood": "Anxious but hopeful",
-      "pulse": "Fans are debating playoff and bowl scenarios following the Michigan win. There is concern regarding player attitudes and injuries.",
+      "mood": "Optimistic but anxious",
+      "pulse": "Fans are celebrating a victory over Michigan. Concerns exist regarding playoff seeding and player attitudes.",
       "storylines": [
-        "Defeated Michigan in Autzen Stadium",
-        "Playoff and Alamo Bowl projections being debated",
-        "Evan Stewart's attitude questioned",
-        "Tuioti recovering from surgery"
+        "Victory against Michigan at Autzen Stadium",
+        "Evan Stewart's attitude concerns",
+        "#Tuioti injury status"
       ],
       "sources": [
         {
@@ -135,10 +134,13 @@
       ]
     },
     "niners": {
-      "mood": "Ecstatic and celebratory",
-      "pulse": "Fans are euphoric after a high-scoring shootout victory over the Cowboys. They are celebrating an 8-1 record and dominant offensive performances.",
+      "mood": "Ecstatic and triumphant",
+      "pulse": "Fans are celebrating an 8-1 start after a high-scoring shootout win against Dallas. The offense is firing on all cylinders, led by Purdy's stellar performance.",
       "storylines": [
-        "Beat Cowboys 46-40 in Scorigami win"
+        "49ers beat Cowboys 46-40 in a Scorigami win",
+        "Brock Purdy remains undefeated against Dallas",
+        "CMC and Deebo Samuel recorded major touchdowns",
+        "Next game is in Mexico"
       ],
       "sources": [
         {

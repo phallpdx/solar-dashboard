@@ -1,14 +1,14 @@
 {
   "updated": "2026-11-15",
-  "updated_at": "2026-11-15T11:28:13Z",
+  "updated_at": "2026-11-16T07:32:33Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic and high",
-      "pulse": "Fans are riding a wave of excitement following a strong 9-3 start. There is significant praise for Coach Micah Nori's leadership.",
+      "mood": "optimistic yet cautious",
+      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's performance. However, concerns persist regarding injuries to Shaedon Sharpe.",
       "storylines": [
-        "Team holds a 9-3 record after defeating Sacramento (#4,#6)",
-        "Shaedon Sharpe remains out due to injury",
-        "Next game: Blazers @ Timberwolves on 11/16"
+        "Team holds a 9-3 record after beating Sacramento",
+        "Deni Avdija recorded 34 points in recent win",
+        "Shaedon Sharpe remains out due to injury"
       ],
       "sources": [
         {
@@ -34,13 +34,13 @@
       ]
     },
     "timbers": {
-      "mood": "Optimistic underdog energy",
-      "pulse": "Fans are excited following a four-game winning streak heading into playoffs. There is high anticipation for the upcoming matchup against Dallas.",
+      "mood": "Underdog mentality",
+      "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoffs against Dallas.",
       "storylines": [
-        "Four-game winning streak builds momentum",
-        "Playoff matchup against Dallas approaching",
+        "Four-game winning streak heading into playoffs",
+        "Playoff matchup upcoming against Dallas",
         "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 eliminated in MLS NEXT Pro semifinals"
+        "Timbers2 lost 1-0 in MLS NEXT Pro semifinals"
       ],
       "sources": [
         {
@@ -66,13 +66,13 @@
       ]
     },
     "f1": {
-      "mood": "reflective and evolving",
-      "pulse": "Fans are celebrating Hamilton's 7th title anniversary while processing Antonelli's championship win. Discussions focus on driver mental health and team personnel challenges.",
+      "mood": "Reflective and evolving",
+      "pulse": "Fans are celebrating Kimi Antonelli's 2026 championship win. Discussions also focus on driver mental health and technical regulation impacts.",
       "storylines": [
-        "Kimi Antonelli is the reigning 2026 World Champion.",
-        "Mercedes secured their ninth Constructors' Championship in 2026.",
-        "Lando Norris discussed his personal experiences with mental health.",
-        "Oscar Piastri addressed struggles faced during the 2026 season."
+        "Kimi Antonelli crowned 2026 World Champion",
+        "Lewis Hamilton experiencing career resurgence under new regulations",
+        "Pirelli planning increased thermal degradation for 2027 tyres",
+        "Lando Norris discusses managing mental health"
       ],
       "sources": [
         {
@@ -98,13 +98,13 @@
       ]
     },
     "ducks": {
-      "mood": "euphoric and optimistic",
-      "pulse": "Fans are celebrating back-to-back wins over Ohio State and Michigan. The team is climbing back into the CFP chase.",
+      "mood": "anxious but hopeful",
+      "pulse": "Fans are focused on the CFP at-large bid pathway. There is concern regarding player attitudes and injuries.",
       "storylines": [
-        "Beat Michigan 31-7 at Autzen Stadium",
-        "Dylan Raiola has 9 TDs and 0 INTs recently",
-        "Ducks are 7-3 overall and 5-2 in Big Ten",
-        "Fans monitoring tiebreakers for CFP at-large bids"
+        "Victory over Michigan in Autzen Stadium",
+        "#13 ranking potential after Kentucky/Houston losses",
+        "Potential Alamo Bowl projection if no CFP berth",
+        "Evan Stewart attitude concerns"
       ],
       "sources": [
         {
@@ -134,13 +134,13 @@
       ]
     },
     "niners": {
-      "mood": "optimistic but cautious",
-      "pulse": "Fans are excited for the Cowboys game and Brock Purdy's MVP form. However, injuries to key defensive players cause concern.",
+      "mood": "Ecstatic and triumphant",
+      "pulse": "Fans are celebrating an 8-1 start after a dominant road win. They are praising Brock Purdy's performance and the team's offensive explosion.",
       "storylines": [
-        "Upcoming rivalry game against Dallas Cowboys",
-        "Brock Purdy is an MVP frontrunner",
-        "Multiple defensive players listed as questionable or out",
-        "Offense producing historic red zone touchdowns"
+        "49ers beat Cowboys 46-21 to reach 8-1 record",
+        "Brock Purdy threw for 389 yards and 3 touchdowns",
+        "CMC scored a 74-yard touchdown run",
+        "Deebo Samuel had a 70-yard TD on a reverse"
       ],
       "sources": [
         {

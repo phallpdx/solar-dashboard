@@ -74,6 +74,22 @@
       ]
     },
     {
+      "artist": "BOMBARGO",
+      "kind": "Local",
+      "date": "2026-11-18",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Musical performance.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/bombargo/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/bombargo/"
+        }
+      ]
+    },
+    {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
       "date": "2026-11-19",
@@ -118,6 +134,70 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
+      "artist": "ERIC JOHN KAISER",
+      "kind": "Local",
+      "date": "2026-11-20",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Album release event.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/eric-john-kaiser-album-release/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/eric-john-kaiser-album-release/"
+        }
+      ]
+    },
+    {
+      "artist": "Farnell Newton's The Soul of Jazz",
+      "kind": "Local",
+      "date": "2026-11-20",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "A tribute to the legendary trumpeter Donald Byrd.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
+      "artist": "FOX WALKER, EARL GRACIOUS BAND, LIQUID SUN",
+      "kind": "Local",
+      "date": "2026-11-21",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "A group of musical acts.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/fox-walker-earl-gracious-band-liquid-sun/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/fox-walker-earl-gracious-band-liquid-sun/"
+        }
+      ]
+    },
+    {
+      "artist": "BURLY-Q REVUE",
+      "kind": "Local",
+      "date": "2026-11-21",
+      "time": "10:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Musical revue performance.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-7/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-7/"
         }
       ]
     },
@@ -178,6 +258,22 @@
       ]
     },
     {
+      "artist": "Black Friday Neo Soul Supper Club",
+      "kind": "Local",
+      "date": "2026-11-27",
+      "time": "8:30 pm",
+      "venue": "Elevate Unity Presents",
+      "price": null,
+      "what": "Neo soul supper club event.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/black-friday-neo-soul-supper-club/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/black-friday-neo-soul-supper-club/"
+        }
+      ]
+    },
+    {
       "artist": "Charlie Brown III and Friends",
       "kind": "Local",
       "date": "2026-11-28",
@@ -190,6 +286,54 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"
+        }
+      ]
+    },
+    {
+      "artist": "ONE WAY OUT – ALLMAN BROTHERS BAND TRIBUTE",
+      "kind": "Local",
+      "date": "2026-11-28",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Allman Brothers Band tribute act.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/one-way-out-allman-brothers-band-tribute/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/one-way-out-allman-brothers-band-tribute/"
+        }
+      ]
+    },
+    {
+      "artist": "BURLY-Q REVUE",
+      "kind": "Local",
+      "date": "2026-11-28",
+      "time": "10:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Musical revue performance.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-8/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/burly-q-revue-8/"
+        }
+      ]
+    },
+    {
+      "artist": "STEVE OLIVER",
+      "kind": "Local",
+      "date": "2026-12-02",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Musical performance.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/steve-oliver/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/steve-oliver/"
         }
       ]
     },
@@ -366,50 +510,6 @@
         {
           "name": "Jack London Revue",
           "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862233?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
-      "artist": "Polyrhythmics (New Year's Eve)",
-      "kind": "Touring",
-      "date": "2026-12-31",
-      "time": "9:00 pm",
-      "venue": "The Get Down",
-      "price": null,
-      "what": "Polyrhythmics play a New Year's Eve show listed under jazz/blues (also listed Dec 30); found on event listings, not on the venue's own page.",
-      "tickets": "https://concertful.com/event/958584",
-      "sources": [
-        {
-          "name": "Concertful listing",
-          "url": "https://concertful.com/event/958584"
-        },
-        {
-          "name": "Jazz Near You (Dec 31)",
-          "url": "https://www.jazznearyou.com/world/events/polyrhythmics-at-the-get-down-on-december-31"
-        },
-        {
-          "name": "Jazz Near You (Dec 30)",
-          "url": "https://www.jazznearyou.com/world/events/polyrhythmics-at-the-get-down-on-december-30"
-        }
-      ]
-    },
-    {
-      "artist": "2027 Biamp Portland Jazz Festival (tickets on sale now)",
-      "kind": "Festival",
-      "date": "2027-03-04",
-      "time": null,
-      "venue": "Various venues",
-      "price": null,
-      "what": "PDX Jazz has announced its March 4-13, 2027 festival with Emmylou Harris (Mar 5, Arlene Schnitzer Concert Hall), Lila Downs (Roseland Theater), Larry Carlton, Stanley Clarke + Hiromi, Daniel Lanois, Brian Blade & The Fellowship Band, Preservation Hall Jazz Band and Jazzmeia Horn, and tickets are now on sale.",
-      "tickets": "https://www.pdxjazz.org/lineup",
-      "sources": [
-        {
-          "name": "PDX Jazz: Festival lineup",
-          "url": "https://www.pdxjazz.org/lineup"
-        },
-        {
-          "name": "KOIN: Inside the 2027 Portland Jazz Festival lineup",
-          "url": "https://www.koin.com/news/portland/a-lifetime-of-music-making-and-new-global-sounds-inside-the-2027-portland-jazz-festival-lineup/"
         }
       ]
     }

@@ -1,47 +1,38 @@
 {
   "updated": "2026-11-15",
-  "updated_at": "2026-11-15T11:30:10Z",
+  "updated_at": "2026-11-16T07:34:29Z",
   "analysis": {
-    "headline": "Markets face uncertainty from aviation shutdowns, AI leadership crises, and rising wholesale prices.",
-    "summary": "Stocks are impacted by Nvidia's leadership crisis and potential AI risks to the financial system. Bitcoin is experiencing a shaky rally and recent price dives. Wholesale prices rose 0.3% in October, bringing annual inflation to 6.5%. Aviation shutdowns and tech outages have fueled broader market anxiety.",
+    "headline": "Tech stocks fall amid Jensen Huang's potential Nvidia return and Anthropic IPO anticipation.",
+    "summary": "Asian stocks declined as investors brace for Nvidia earnings and the Anthropic IPO. Intel shares face shareholder lawsuits following a 29% plunge. Japan's economy contracted due to high energy costs. Investors remain cautious regarding AI sector shifts.",
     "sources": [
       {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQdGhEX0dMOEdKd2dQcXJYV1NJVnZKeUFMTlMyRmVMWXFkZHhaU3hDR0NCM201VTZQRXc0QXNERjdBdGdyX3ZXU3ZlbU42WjR4MW5qLWh1WGtCdk9UVXdlaUlQMTJkS1FuWHhDcUt0MlNmQlRRYTdDSTh0Z3I0RTAwaGlYdzByVG05WE1uZjdyeWhiQlYtRmRRSkwtOVR0WS14X1VOZ25JZzVHMFFJNEhMUW9YWWtKVTM3cG5McHJDbjJGWWFfMTZV?oc=5"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOU3BQd2lUam5YX1RGekdqV203U1BmRzNUQnlhem10ajRycVpfTUYzRWtOM2h1ZDd5M2tvUnNXeG1VOHRGTEl4VkJsSUhuQk41UlcyNU1EZDJaSTNTd2NvM3lDUDV5NU95SUtxSHZaZEpjSnMxRGgtamUtb0lYWUtHMTFZZDBLblVaeXhVTEhSa2ZPeF9y?oc=5"
       },
       {
         "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQbUFCdzU3WWxqWDJyOThxR0pfSENwbHdjWE50LVZfX0xSUUZFZnpTemtWN2RRckNlOW56TnZwT2pmUHpPYnU0cGtiaUJ4aFpzLXZ4OHN0a3UxVEpNenFlc0VETFE2UDJkdy1Ld0ZSU2V2MHJxNE9WN3VFMjA2U1lLRThOdE5kSWk2UVdpektzb00yV3ZjUjhOeWpiNA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQUHB2RXZCbUwzeDlxQl9pSlRsWi1UUFZ4TkNWb1JEOXlqZDJHUjFVU0pway1BWmw5dHRuclY1MGNPbERVQThaOUZQTDR3MTFqLTBJakxoYVBRNzVJZlFNOEhXakxrM0JzRllCbm8yYU9PbkJ0TEwyaWdiYU9EWng3cm11SjlhSGljbHg4WXV1NEV1bHBudWZPYmVtU0pBZw?oc=5"
       },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxPQmoxeERFTVM2VG9DVVBnRERlZG4tcU0tOGFveC1mYlhEZEJydUZNM2ptaExRYU1LYXg3XzlUUHhtZ29JSF9OYlZtd0FSaF9mME9TYzhTWUVJT0lSSGVPSTMxZlhkTWhQMVp4MkRFVUdUZHRTNVd1bTdTckF2Q3VYdUxKY3kyaFpDaTZkQ1BVMHdrTUNQLUhnVVhPZzJIM3h6Tlg2THNnZU5NRDRvV3NFZUlta28wVXloNGhfNUFFTWdKR3Q3Vk05RnBhQXdWQkl3UTlGRC1RRGo2QU9rTmc?oc=5"
       },
       {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOQmZBRDFGMC1LS1dtTVZOU0ZsRUhpWHliUURJZmlqZkFPWENrdUJJbXpBeUM1Q0RISFZtMGRsQ0hjXy1IZEc3cndaVHNGdnc3dUhzSGxtbGFwN0lqUVFXa0Z5U3hCdkgwa2Jrd3h4VFFZbEppQk1yQjRwQ25pNXFYNnlrc0FSdFM2SFJKdjlXSDExaFRa?oc=5"
-      },
-      {
         "name": "CNBC Markets",
-        "url": "https://www.cnbc.com/2026/11/13/ai-risks-financial-system-federal-reserve.html"
-      },
-      {
-        "name": "CNBC Markets",
-        "url": "https://www.cnbc.com/2026/11/13/ppi-inflation-report-october-2026.html"
+        "url": "https://www.cnbc.com/2026/11/16/japan-q3-gdp-energy-oil-prices.html"
       }
     ],
     "by": "local model",
     "drivers": [
-      "Nvidia leadership crisis and chip leakage concerns",
-      "FAA nationwide ground stop due to repair risks"
+      "Jensen Huang weighing Nvidia CEO comeback",
+      "Anthropic IPO anticipation",
+      "Intel shareholder lawsuits after stock plunge"
     ],
-    "watch": [
-      "2026-11-25: Critical day for the stock market"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A large purification facility opened in southwest Saskatchewan. Swift Current may host a $100 million helium liquefier. Market supply is tightening.",
+    "summary": "The Stewart Valley plant produces approximately 73 MMcf/Y. A purification facility opened in southwest Saskatchewan and a $100 million liquefier is possible for Swift Current. The market faces tightening supply and potential growth from federal tax changes.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -65,7 +56,7 @@
       },
       {
         "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdjFySlZiaXdGa0dRQmVYcW5MQ1RSWmtpSE01Z3JwNHQyUUkzZGtXdkN1c3h6M3FEVERkdk90RXZsdnNPa2pJTVF1NV9XWGIyLS1hOGIwTFdDMExGWjVtZnVwSVBMdmEzNmdja1huV3JRYlctbGtDa08xT0xaUFNnVWRwR2dfNDQ2WklmYjBELWh0N2gwNFBUVm4yNXNCaWVuSkQ0MW1zSWpmNzBVLXd6cjFrblpmcElMZ2w0WElPdl9URDBEM0E?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcHpWdUpsSlZVMU9Ec2hBVHdjZnJ2TlZxXzRUYTBWc3BIVGlaZllfbG1DZmdEd1Z0WEZOQzhfZ3RMRi1UVTdtcEY3VVhGUFRXdUtsemZsMS1DSDlGd0R6VHJhRk5QM1RETC00bVpYYS1pdFNRelBVbFN2NWxQdUpSdXF4eHVzN3FpWkp3ZDN2Ny1IcW5jUEVtNFl3?oc=5"
       }
     ],
     "by": "local model",
@@ -104,15 +95,11 @@
   },
   "realestate": {
     "headline": "Sellers are lowering prices in a stagnant market.",
-    "summary": "Home sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. Portland homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
+    "summary": "Home sellers are lowering prices to help buyers make deals. Homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
     "sources": [
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
       },
       {
         "name": "Google News: Portland housing",
@@ -126,27 +113,33 @@
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage Rates Slide to 7.11% for Fourth Straight Week, Still Dwarf Last Year's 6.24%",
+        "date": "2026-11-16",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNZW5FQkJrSXBDOHo3YS01V1NHaEw4YjBCTnZSbzhiSlpIdU91c2pWYXdxekltSEx2MGtmWXVxNU9uRVJ5TFA1RUtjZmJyWlhySkdKRGFGUUJ2TDI1dkdZdUdKeFBJZWVKNS1PUTVsblV0NkRmQjNpbmFoSHA5blo3c3hJYXpSMTJYT2FBSHR0dmt6b3BnZ2ZrdmxiVFFYdGwzcXo2ZTZBakJZSTJBaUFyZjJB?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "How much you need to earn to buy — or rent — a single-family home in the Bay Area",
+        "date": "2026-11-15",
+        "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxONWNmdHYwaDdoSDVaZjI0OWZBNVNqY0hCSEZVanhxMkhnZG1zUDJ3SnI5Sm5UR2sxXzMyTmZzRzBSWEJvcVVsNWlKYlZWa193WnVmZjdfSC1fVGxpc21OT082cjAxdDFJYUdNY0NWNEstaFBhNl9EaFJibmR3LWNaTjdnV1NoeExVNFU0?oc=5",
+        "source": "Google News: Portland housing"
+      },
+      {
         "title": "Mortgage and refinance interest rates today, Sunday, November 15, 2026: 5/1 ARM rates up over 70 basis points since last week",
         "date": "2026-11-15",
         "url": "https://news.google.com/rss/articles/CBMiogJBVV95cUxQa2dEOUlsN0xSdEx6RXBtbWg5Z01FZGFUWlg1dmFUMmlSZlhpbEhSbFhLOWdJUHhmY05Fd1BxZk5COHUyRmJ6UEc2dW9neS1ibExoYkh4Nm1vZndxa3RhaUtWT3M5a3llQ25GQnNJcGxwMWJoX0pXb2lfb3JreDRlZzR0VlZmOGNSVVNRWnZva20wWko3YUt4YWgwVU8tTmNEeDRwZ0ZETFVxZmVjZkVmOWVVY1lFekFQMDAwYU9ZeVo3Ym8xR25RZHhoaXEtNXZ2eGo4Q0NYOUtBY1FvTWhSNEdBVXh2dVBYMjRTc1VwSnFIOGIxdXpKT1ZhYk8zSHNBUVR1U2dFRFRsaGVPd3Z4ZmxkNVVwVHZPMGFnRmJjYWlIUQ?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage and refinance interest rates today, Saturday, November 14, 2026: Mortgage rates rose all week long",
-        "date": "2026-11-14",
-        "url": "https://news.google.com/rss/articles/CBMiiwJBVV95cUxQSTV4WnhBYmp6TlRwNDI4YU15MzFRWXB1aUxmSlR0OXY1OU82WERYWWtBZ3FrcUdab3lWMHNiOERmT0w5bnZCUW9IR2UtV1RkZW5WZm1Jb2RRV0dYTWo5SllxTFQwcml0bGx5UDMyQlh1aGxXak1JUkNTdFFUTDdSOENQZ2tuZ0doM1RUREN6M3RhWV9MOVRJUUhYWm0xVWZuWTFjQldUajlHN1BzSk16VmkzaXZCTG9QSDVfOXE4em5EcW9nY0lYWlh4aEdCVmZ2ZnR3MTVrcXdDaUNHVTZON01MemVlZUNXTk1aM045VFlZMVd6bjI2TldodlpFY3FIWmRNTDJmUWFnU00?oc=5",
+        "title": "Mortgage Rates Today, November 15, 2026: 30-Year Refinance Rate Drops 2 Basis Points to 7.58%",
+        "date": "2026-11-15",
+        "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNT1B3eTNhbEJkb0hsR2htZnp1RE8yUFNXVXdVamI3RkVSalpMbGlvalBwUVdISldMVVZnaUpjdG9Iazc1MzVuNVgydHE1M0NrN3lDaFR6dUFjdUpwTEhiRGc3Z0NxNFJBbjBwblFWU0d5NW0wM3NMRlVDUzMwTnlxNi1FWGlmMkNrU1ZtZGJhNA?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "The average US 30-year mortgage rate falls to 7.11% this week, its fourth straight decline - The Frederick News-Post",
-        "date": "2026-11-14",
-        "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxPSmNITEVKUUUtamRVR1hiQ2xGWEgyRzNUalpIalhPRFZRa1RqYnBNZkl1cmFMYklNT2QyR25hYzhMMTdkeEw4RTFfdW1kV3NUbUFZZkxZQlQ5U3Nka1BvMnU1c29JR25rRlJocXc5elVzc3VJRE12TFBLSEdsYkVNU2hnV200aV8ybGpuVEsteEoxcm1XSng1ZG4yUzVDZ2w0blFDVzN5NlFVc0RRVlpISld2QWdSWG96QjA0VFlpX2ZtQXhIVVQtbEpfZjJIa1liVU95VElIcFBoMGFwdHBDYmhvMHNWTlBtY0FETGJ1MGlGMmZXNmxEMQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Is It a Good Time to Lock In as Mortgage Rates Drop for the Fourth Straight Week",
-        "date": "2026-11-14",
-        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOOG1xRFMwMTk4cHBLVkZGNkpoeVJUdkFHZFVOVDVHb3EwNnFDM0UyeVhCdlpHTXJtMWpvMEpYODYxVEFOOGRKQ2dGbWNvQmhiYnVDczB3NmN1MzJHa2RXYlI2dVoxSmtBNHFzQXJYMFpHSENZRmNaYWIybzg2WUpORnV0NmMyNmt3N2JCMmg3WE1tam43X0Zaem1tMU9lOENQYjB1enVn?oc=5",
+        "title": "Mortgage Rates Fall as Purchase Applications Jump 8 Percent",
+        "date": "2026-11-15",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQWVZ5NTV3M1dJekZUNFA5SXJFM1FrNlE1SGgzckRBclFfeVlQUk02LXhvLTVHalNlXzNQOVNtUERYWW11MWtjU1JXbVZ0NDF3bEV5R3hYSnBQSzVMV3EtNUJjZEtQaDBRdWFWOXAyLXNkcDEtZVFaRzdGMld1VXczdnZER0kweEozNGVTZDlqcmQyZjBGNHF3czNJdw?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

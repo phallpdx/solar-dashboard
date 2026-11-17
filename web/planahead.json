@@ -228,22 +228,22 @@
     {
       "title": "Mt. Hood National Forest Christmas tree permit",
       "kind": "Permit",
-      "action": "Watch Recreation.gov for this year's $5 permits and print yours; digital copies aren't accepted.",
-      "starts": null,
-      "by": null,
-      "why": "The Forest Service says the season is closed and reopens in November 2026; last year it opened Nov 14. Permits are $5 plus a $2.50 Recreation.gov fee, five per household.",
+      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
+      "starts": "2026-11-12",
+      "by": "2026-12-31",
+      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
       "sources": [
         {
-          "name": "Mt. Hood NF Christmas trees",
-          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
-        },
-        {
-          "name": "US Forest Service",
-          "url": "https://www.fs.usda.gov/r06/mthood/newsroom/releases/cut-your-own-christmas-tree-mt-hood-national-forest"
+          "name": "More Than Just Parks permit tracker",
+          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
         },
         {
           "name": "Recreation.gov",
           "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
+        },
+        {
+          "name": "Mt. Hood NF Christmas trees",
+          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
         }
       ]
     },
@@ -442,6 +442,24 @@
         {
           "name": "NME",
           "url": "https://www.nme.com/news/music/nothing-but-thieves-new-album-stray-dog-tour-of-uk-europe-north-america-buy-tickets-3947453"
+        }
+      ]
+    },
+    {
+      "title": "Greta Van Fleet, Moda Center (Mar 25, 2027)",
+      "kind": "Tickets",
+      "action": "Presales opened in mid-October; buy face value through Live Nation or Ticketmaster rather than resale.",
+      "starts": null,
+      "by": null,
+      "why": "Arena stop on the Into the Beginning tour; listings disagree on the presale start (Oct 13 or Oct 14).",
+      "sources": [
+        {
+          "name": "Live Nation",
+          "url": "https://www.livenation.com/event/vvG1HZ_Kle7js7/greta-van-fleet-into-the-beginning"
+        },
+        {
+          "name": "EventWorld listing",
+          "url": "https://www.eventworld.com/greta-van-fleet-portland-tickets-03-25-2027/event/576920"
         }
       ]
     }

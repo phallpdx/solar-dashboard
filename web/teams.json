@@ -1,14 +1,15 @@
 {
   "updated": "2026-11-17",
-  "updated_at": "2026-11-17T09:33:01Z",
+  "updated_at": "2026-11-17T11:26:47Z",
   "teams": {
     "blazers": {
       "mood": "frustrated but hopeful",
-      "pulse": "Fans are reeling from a shooting slump and loss to Minnesota. However, recent power ranking climbs provide optimism.",
+      "pulse": "Fans are disappointed after a shooting slump led to a loss against Minnesota. However, recent power ranking climbs provide optimism.",
       "storylines": [
         "Lost 98-106 to Timberwolves",
-        "Moved up to #6 in NBA Power Rankings",
-        "Ja Morant, Shaedon Sharpe, Vit Krejci, Chris Youngblood out"
+        "Moved to No. 6 in NBA Power Rankings",
+        "Avdija and Lillard nominated for Player of the Week",
+        "Ja Morant, Vit Krejci, Chris Youngblood, Shaedon Sharpe injured"
       ],
       "sources": [
         {
@@ -35,9 +36,9 @@
     },
     "timbers": {
       "mood": "Underdog mentality",
-      "pulse": "Fans are focused on MLS Cup Playoffs preparations. Players aim to push limits during this moment.",
+      "pulse": "Fans are focused on MLS Cup Playoffs preparations. There is excitement regarding academy talent and community engagement.",
       "storylines": [
-        "Timbers entered 2026 MLS Cup Playoffs"
+        "Timbers entered 2026 MLS Cup Playoffs as underdogs"
       ],
       "sources": [
         {
@@ -63,12 +64,14 @@
       ]
     },
     "f1": {
-      "mood": "Excited, anticipatory",
-      "pulse": "Fans are buzzing ahead of the Las Vegas Grand Prix. There is discussion regarding Kimi Antonelli's championship and special liveries.",
+      "mood": "Anticipatory and diverse",
+      "pulse": "Fans are excited for special Las Vegas liveries. Discussions also focus on diversity initiatives and driver milestones.",
       "storylines": [
-        "Kimi Antonelli won the 2026 F1 title",
-        "McLaren fighting for P3 in Teams' Championship",
-        "Haas confirms Rafael Camara for Las Vegas GP"
+        "Aston Martin to run bespoke Las Vegas livery",
+        "#7f71lWPYrxvriroCo30iaY",
+        "Williams unveils unique Las Vegas livery",
+        "#01klQqq0PYu7wjugCtr98K",
+        "Alonso returning to Dakar Rally in 2027 with Aston Martin"
       ],
       "sources": [
         {
@@ -95,11 +98,11 @@
     },
     "ducks": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. Some debate exists regarding championship potential.",
+      "pulse": "A win over Michigan keeps playoff hopes alive. Some fans debate if extra time off helps or hurts.",
       "storylines": [
-        "Defeated Michigan to keep playoff hopes alive",
+        "Victory over Michigan keeps playoff hopes alive",
         "Next game is against Michigan State as double-digit road favorites",
-        "Debate over whether extra time off helps or hurts"
+        "Debate over whether extra time off helps or hurts playoff chances"
       ],
       "sources": [
         {
@@ -129,12 +132,12 @@
       ]
     },
     "niners": {
-      "mood": "exuberant and dominant",
-      "pulse": "Fans are celebrating a 46-40 shootout win over the Cowboys. They feel unstoppable despite defensive concerns.",
+      "mood": "exultant but cautious",
+      "pulse": "Fans are celebrating a 46-40 shootout win over the Cowboys and an 8-1 record. Concerns exist regarding the pass rush and upcoming matchup against Minnesota.",
       "storylines": [
-        "Leading NFC with 8-1 record",
-        "Next game is Week 11 vs Vikings",
-        "Concerns regarding pass rush effectiveness"
+        "Offense scored 46 points in Week 10 win against Dallas",
+        "Purdy leads team to top of NFC playoff picture",
+        "Next game is a Week 11 clash against Vikings"
       ],
       "sources": [
         {

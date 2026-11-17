@@ -1,18 +1,10 @@
 {
   "updated": "2026-11-17",
-  "updated_at": "2026-11-17T09:35:11Z",
+  "updated_at": "2026-11-17T11:28:43Z",
   "analysis": {
-    "headline": "Tech stocks and Asian markets fell due to chip restrictions and Nvidia uncertainty.",
-    "summary": "Nasdaq slid as tech sector selling hit amid Nvidia turmoil and new AI chip rules. Asian stocks fell ahead of Nvidia earnings and Anthropic IPO. Japan's economy contracted because of high energy costs. Tech weakness pressured shares like IREN.",
+    "headline": "Tech stocks and futures fell as markets braced for Nvidia's upcoming earnings results.",
+    "summary": "Nasdaq and tech stocks extended a selloff driven by chip restrictions and Nvidia turmoil. Stock futures edged lower ahead of major Wall Street moves. Japan's economy unexpectedly contracted due to high energy costs from the Iran war. Investors are focused on Nvidia's Q3 earnings as a primary market catalyst.",
     "sources": [
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQSnRIQ2pkaE9LMG5IYzczNmdEZUlPYnc4SmJsRzduc0VzUnhBX2E1eklOYlItMHU5SWE0bjA3RWNWdElJWF9BT25CQTcwX2tMaktXYXlyQ0k0QndwblJOci1mR09sS3N4dVotcHJUZ0ktSkJkekhKRzZOcWZ0ckZmVjdmNXYyXzFvOElSdWtROTFVaEV0ekk3RVJBRk5uLTZWbmtqbjNPTl85Mmc?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQR0NjVnJURjhVb29vT04zN056SkZWOEc5SnpQalpDNHpTdm5MR0k3bV8yRW1HRWNYdmM5ZzBEWUFRNEVVQy1CS0hzSU8zbW8wbVozOHJDSkE4MHg0QnpVZl9pQUw5Y0xMcElzVmtKcHpMY2gxZkMzUkQzNEdBUklpSXdVRDhKbHhWMVMyTExjQkJiNmFkcDZET2x0d1A1RGvSAaQBQVVfeXFMTmtkUk1nN05uYUhjWXFYZmhLaUV0Q1ZsRXQtMW9MMXp5Mk1jM2UtNDdXQ0hyTmdVQVF3WUdaakU5VVdGS2haNmZuTlYtcG1keVAtOHpCQldVUVVpUlN4S2lzQjg1QUNGMGZkaUtSLXI5SktDcHhLRGd1MGtmMVVYU092b2lXUnRNU2pnZ0NndlJqMUViUWF4ZHB6ZVhfUEdseVY3U04?oc=5"
-      },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQSHFoREFNUWJRYTJxR0pTRnpHM2Q1NlhjQ1pjN0w3U1FWM09sclNuMlVNLWx4YXF0TURpOEdtSk9sc3BXTEpBakhLd21neWhod2pvZ1hRNVAtZWxNTlZmUXl4TXNJQ0MyTTFqa0tpRGVmOVpQZlRidlZzYkFLYnlNSXduLUtPSXo3QUJ0aVhlM0xWVFNh?oc=5"
@@ -23,24 +15,25 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOU3BQd2lUam5YX1RGekdqV203U1BmRzNUQnlhem10ajRycVpfTUYzRWtOM2h1ZDd5M2tvUnNXeG1VOHRGTEl4VkJsSUhuQk41UlcyNU1EZDJaSTNTd2NvM3lDUDV5NU95SUtxSHZaZEpjSnMxRGgtamUtb0lYWUtHMTFZZDBLblVaeXhVTEhSa2ZPeF9y?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOdXRFNFFpU3YxcXBXWDlqSTdsUjNIQ3NtTGRMN053Q0M4VmZYbkhlekg5R0dVUUNSRXg4TVo4TDN2NGgtbVdfT2d0UzlJWFJ2NUNlT2tnQXY4eTNtTEVyZjdUNjJmVzFvaEs4WG5wWUJMcEppVDNIaXNjVHFUeGF1VTlIU3UtNDdkb21CWExIVW0tZFZjU1VRTWE0RlY3QzVxMklxY1ljR2l2ZU9manMyd0pqYlpBWFRqVmMyeHlwc29jSlJhZ1FwelNJbGlDNXo5TnY3bzVDLWJRenljcGxIS2FPVzQ0SzVFdEwzbjZZZw?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPbDVpN2RLWTVRb25zM19CZURtUUlIT056MDhZWVJ4NFlwN0pyeWhIb2FsQmJnOGVDQ1d3UWowSjJZdzg5dVJpa1d2cS1wLVBhOFktaGtXN3JkeDVvemUtZ1RPMHY1OFY2Yjc0QTdmVDQyVVROeDhvem9rZmpjOUNCYXFGcFZ3MXZKclUwR01FTXA4MUFQc1RBdG5R?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSE9NWUhoUFFKcm0wbzBUNi1MMmlkNmNFVU80UmFkYVFOOHVuRlByem91azAxZW1LTUJtWU55czVCQjZHd2JzcnlvQ0E4S0dXSFREbE1fY01YS3RETW45YzNwSV9xSTlLNTVzbzVFSmxxX19sWFd5aTltQUVLMTh4WVcxVV9URC1oS1VrMk9HdXVkRXRJWVVDclRCVDd5dw?oc=5"
       }
     ],
     "by": "local model",
     "drivers": [
-      "New US AI chip restrictions targeting China"
+      "Nvidia upcoming earnings results",
+      "New US AI chip rules and restrictions"
     ],
     "watch": [
-      "Disney earnings report"
+      "Nvidia Q3 earnings report"
     ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant produces approximately 73 MMcf/Y. A $100 million helium liquefier could be built in Swift Current. The market faces tightening supply and potential growth from federal tax changes.",
+    "summary": "The Stewart Valley plant produces approximately 73 MMcf/Y. A purification facility opened in southwest Saskatchewan. Swift Current may host a $100 million helium liquefier.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -90,16 +83,16 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Federal helium tax changes boost Saskatchewan growth hopes",
-        "date": "2026-11-06",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcHpWdUpsSlZVMU9Ec2hBVHdjZnJ2TlZxXzRUYTBWc3BIVGlaZllfbG1DZmdEd1Z0WEZOQzhfZ3RMRi1UVTdtcEY3VVhGUFRXdUtsemZsMS1DSDlGd0R6VHJhRk5QM1RETC00bVpYYS1pdFNRelBVbFN2NWxQdUpSdXF4eHVzN3FpWkp3ZDN2Ny1IcW5jUEVtNFl3?oc=5",
+        "title": "Saskatchewan raises CAD $4.9m in third helium public offering",
+        "date": "2026-11-09",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5",
         "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
     "headline": "Sellers are lowering prices in a stagnant Portland market.",
-    "summary": "Sellers are cutting prices and helping buyers make deals. Homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 affordable apartments.",
+    "summary": "Sellers are cutting prices and helping buyers make deals. Homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -116,6 +109,10 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcnRwN3NYcU1xQjdoMFo0aXJWSlhxaFJFYmZvYXp4Z2FSYWs3aElERGVjSUVuVTFjaUV3aElGQzJEV3JuX3lOdXp4ck8zbmlqRUlndW5sMEMwcHFJMHkyR3lHak1lU3pMTDh1cjlwVVJWODBxUkUtY2RZRGItcUN1N2p5QzZJSTdFZXZ2cG5fMTFMVnE3WVhVdU1uQTlXMXJHeVhaLVlqYVRXOGNLbk5jcVo5aEs?oc=5"
+      },
+      {
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE41YzhRRnJRblNETGVHT0VvSVRTV3VsRW1wUldUYkp6OEZuQ05qRUp5TERMbGlyNDBudHJSSFVFbnFCdDgtU2RSdWxnSHNHOEgwbXUtdjU2VkZyaGdxakF3VFk4OA?oc=5"
       }
     ],
     "by": "local model",
@@ -133,21 +130,21 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 17, 2026",
+        "title": "Mortgage Rates Today: November 17, 2026 – 30-Year Rate Hits One-Month High",
         "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBFSFR4aXd4R1R2Zl9CVzNoQTgwdUROR0JuUFJaMy1jYjdJN2VxUXAxSW44eUwtQVlhTjMtN25lQ3FHcHNzM0pnZTN6TjBrdm1JQUlha2FvZEdwUkU0Tmdoek5ncDJDRUJY?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE94Q3FrbXdaclZiODhoem5TY3dQUEJ3OEgyVHRITDBEUkdzOUlTRGV4SzA0em1NczRKVEtxbmdiQjhhMTdEYjUzWlpUQ0NVZjN3OXBqXzJtTm1FdzhBYk56LWdNaTFVa1lPdTVDOGtzTlNSTlU?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Map Shows US Cities Where Home Sellers Are Cutting Prices Most",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5",
-        "source": "Google News: Portland housing"
+        "title": "Mortgage and refinance interest rates today, Tuesday, November 17, 2026: Mortgage rates seeing double-digit weekly increases",
+        "date": "2026-11-17",
+        "url": "https://news.google.com/rss/articles/CBMiogJBVV95cUxQQkx1WlBWOUV6TUJObk1DbENkQnRLV3d3TFlBX2F4ZFkxTktLWnRiN25HbGdfMldnV0JZSDVXOWZLU2FOOUEwaWpkVDZOLURyeXlSUHZwcDNYN1hiZGZ2RlY4U01GTTdIdTVaT2hTcjNXQnZhSjBVTEJ4ZURyWThudkl3N1dfTVZwNFJsSlBkRFU0OHdVVFNiLUtiWHduMnlFbkU2UjBDWTc0ZENKeHVNZ3drd0FuX1d4RGg5ZS1ZQ1VDY3dLRHUzZEV0cVRnd2pUVnRJUm4zelJMX0J0Uk5STnFUdEdHaFVIZTh2SWlsOHRVYVA1WnA4OTZOOGpfM2xubjRxQjNGWFlyZE1jMnY1UG1rRmJNRDFWb3EzTTE3alRVQQ?oc=5",
+        "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage Rates Start New Week Fairly Flat",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9wcThadjliV3ZrSXdjU1lUblVWdW0ybTZKdF9heEFvNVhORURLNmVfdmJ0RDdtVVNHY29TMVFpWUpmd1hKSkRzU0NXZWNuV3NmalJhUzFIQURnNEtwX1g3OTdoenBYaDBYWHN2S0dmNmFzUlnSAXRBVV95cUxNRnlWS01JQ2MyTWNqWUFGY1ljNWZCcWNhUzk5cGg0T0otQVlqQjlJMzlqMGpPaTdta1dRNTVmTFdmTFdESWZOcTk5QmNnRUpwLU1hZjhQbGdSQkJJZkl4SFp3YWwzYkdlT2EyTkdXcFh6aWRiUg?oc=5",
+        "title": "Mortgage Refinance Rates Today: November 17, 2026 – Rates Increase",
+        "date": "2026-11-17",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOOVprSVo2NllCWjA0S3FmWXRjNnZGTnRsWXBQMVU0aEhneUUycllsWDgzbUVvV0Q1MngtS1NSMzY4aVI5TldrLUxncnRNNUw2ckdVTGZ4Q3BUYzN3LWstdnMxb0xpOVp6RFdXenpUdVc1Tlo5VlR0WFF5NTBKdDZSWXRaVUdJMzNBdV9YZURB?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

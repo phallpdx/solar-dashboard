@@ -1,13 +1,6 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "deals": [
-    {
-      "title": "Back to the Future Trilogy (4K Ultra HD)",
-      "store": "Rarewaves (UK)",
-      "detail": "£35.87 with code TREAT10 (from £39.85), sold by Rarewaves per a UK deal site; listing says it ends Monday. UK pricing.",
-      "ends": "2026-11-16",
-      "url": "https://www.hotukdeals.com/deals/back-to-the-future-trilogy-4k-ultra-hd-wcode-5032292"
-    },
     {
       "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
       "store": "Amazon Italy",
@@ -44,6 +37,13 @@
       "url": "https://www.hotukdeals.com/deals/dr-seuss-how-the-grinch-stole-christmas-25th-anniversary-edition-4k-uhd-blu-ray-5031323"
     },
     {
+      "title": "Paramount Action-Packed Mix/Match (4K Digital)",
+      "store": "Fanflix",
+      "detail": "Minority Report, World War Z 5 for $15 or Less & Many More",
+      "ends": "2026-11-30",
+      "url": "https://slickdeals.net/f/20317683-fanflix-paramount-4k-digital-action-movies-5-for-13-5"
+    },
+    {
       "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
       "store": "Barnes & Noble",
       "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (see below).",
@@ -53,65 +53,58 @@
     {
       "title": "The Super Mario Galaxy Movie: Collector's Edition",
       "store": "eBay",
-      "detail": "$13 (4K UHD + Blu-ray + Digital)",
+      "detail": "4K UHD + Blu-ray + Digital $13",
       "ends": null,
       "url": "https://slickdeals.net/f/20314908-the-super-mario-galaxy-movie-4k-collector-s-edition-12-99"
     },
     {
       "title": "Disclosure Day Collector's Edition",
       "store": "Amazon",
-      "detail": "$13 (4K Ultra HD + Blu-ray + Digital)",
+      "detail": "4K Ultra HD + Blu-ray + Digital $13",
       "ends": null,
       "url": "https://slickdeals.net/f/20308947-disclosure-day-collector-s-edition-4k-ultra-hd-blu-ray-digital-13"
     },
     {
       "title": "Speed Racer",
       "store": "Amazon",
-      "detail": "$12.99 (4K UHD + Digital)",
+      "detail": "4K UHD + Digital on sale for $12.99",
       "ends": null,
       "url": "https://slickdeals.net/f/20307651-speed-racer-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
     },
     {
       "title": "Mortal Kombat II",
       "store": "Amazon",
-      "detail": "$12.99 (4K UHD + Digital)",
+      "detail": "4K UHD + Digital on sale for $12.99",
       "ends": null,
       "url": "https://slickdeals.net/f/20307222-mortal-kombat-ii-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
     },
     {
       "title": "V for Vendetta",
       "store": "Amazon",
-      "detail": "(4K Ultra HD + Blu-ray + Digital)",
+      "detail": "4K Ultra HD + Blu-ray + Digital $13",
       "ends": null,
       "url": "https://slickdeals.net/f/20306217-v-for-vendetta-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
     },
     {
       "title": "Evil Dead Burn",
       "store": "Amazon",
-      "detail": "$12.99 (4K Ultra HD + Digital)",
+      "detail": "4K UHD + Digital on sale for $12.99",
       "ends": null,
       "url": "https://slickdeals.net/f/20302908-12-99-evil-dead-burn-4k-ultra-hd-digital-4k-at-amazon"
     },
     {
-      "title": "Select 4K Mix/Match Movies",
+      "title": "GRUV: Select 4K Mix/Match Movies",
       "store": "GRUV",
-      "detail": "3 for $33 (4K UHD Blu-ray)",
+      "detail": "Sinners, Nosferatu & More 3 for $33",
       "ends": null,
       "url": "https://slickdeals.net/f/20302098-gruv-select-4k-mix-match-movies-sinners-nosferatu-more-3-for-33-free-s-h"
     },
     {
-      "title": "Mars Attacks!",
-      "store": "Amazon",
-      "detail": "$12.99 (4K Ultra HD + Digital 4K)",
+      "title": "BOUTIQUE BLU-RAY & 4K SALE!",
+      "store": "Vinegar Syndrome, Arrow, Criterion",
+      "detail": "$5 flat-rate US shipping; free on 3+ titles",
       "ends": null,
-      "url": "https://slickdeals.net/f/20299764-12-99-mars-attacks-4k-ultra-hd-digital-4k-at-amazon"
-    },
-    {
-      "title": "4K UHD, BLU-RAY & DVD DEALS!",
-      "store": "Amazon",
-      "detail": "3 for $33",
-      "ends": null,
-      "url": "https://x.com/4KMOVIEDEALS?lang=en"
+      "url": "https://www.facebook.com/groups/952227686087180/posts/1817139522929321"
     }
   ],
   "upcoming": [

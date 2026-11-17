@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,14 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Live Glass Blowing Demonstration",
-      "date": "2026-11-12",
-      "end": "2026-11-16",
-      "town": "Cannon Beach",
-      "summary": "Glass blowing demonstration at Icefire Glassworks from 10AM to 5PM.",
-      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
     },
     {
       "name": "Beach Towel Tuesdays",

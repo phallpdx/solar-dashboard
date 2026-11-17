@@ -1,6 +1,40 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "restaurants": [
+    {
+      "name": "Good Neighbor Cà Phê (becoming Portland Cà Phê)",
+      "neighborhood": "Northwest Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNd2FEMlV6MXhEN1lKUVNYamtNUFFvb2QwdVRhZXRSS2tBMmNEbVJwaXhBRUtTVlpVejd2VExFTElydmt4d3lRSkFXX3dxdkF6dWJUUkdEdnJFaURPNzFKRnppX2s1dlM5RWRVRVZveXdpZHFOeWVKVGIxbXRuMVd5MjE3QXFtOExzczFDaEJEOE9NdDRyQnhVNEVtMGZ5WFlGUU84dzhCQlhMVEdBTUE?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Louie Cocktail Bar",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMGdETGh6NlB0RTZUemNGTm01eHBJWHVwbS1GT3MzTmJvbS1QeS1GTHJINjhuNm5JTS11OEpST3dCOEo3RVZCQnJmNktyaTctczdfQ1ppeGpzVF9RMDhzMHVBb1c4OHpwWkRXOXhMV2o4SVlXVzFmTy1BdzQwZ3l0dU1BZkE2NWlNLXZzWlhELXdzb2lIdVo3NlZB?oc=5"
+        }
+      ]
+    },
     {
       "name": "Portland Cà Phê (formerly Good Neighbor Cà Phê)",
       "neighborhood": "Northwest Portland",
@@ -386,40 +420,6 @@
           "verdict": "",
           "date": "2026-10-29",
           "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxOZmluX1FpVEFuaThQT2dXeThoWUZBZ2Z4VlEtNFFIQ0NKbHA1NEgtUmtDNUxsemlyU1lHSnVpdjdxbGZsQl9VUW9YZldYSGRHTGxQMi1JSU1JclVEaGNBT2JGdWtobWZHTDk3eXVwWF9KbGdPeUZJUjFoamItek1rVk9RZElncXRTNzNUaXMxemJNQjE1djlWcUUwaUdOdnFfQjlWeXFiVFlnRENNcEliUmJBSFVRUll0MjVVejRab003Y0JkVmUza0FRczNPS0tMS0xLTURIcldieGptbXJRdlltYWNPeG9CMVFKZ2FZTWZTTFM0eVlvd2xMcTlIWEdOQjhoNnlsbVBpdjZMUVYxMQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Unnamed Thai restaurant",
-      "neighborhood": "North Portland",
-      "cuisine": "Thai",
-      "price": "",
-      "opened": "",
-      "summary": "New North Portland Thai spot worth repeat visits.",
-      "reviews": [
-        {
-          "outlet": "Axios",
-          "critic": "",
-          "verdict": "worth repeat visits",
-          "date": "2026-11-02",
-          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQTnFScjFWa2N4YXVpY2EyWVViUEJ3cVdjQnIwOFB0TTBKWElqOEJFWDVXNS10MmxpUkZ2OUdGTEo5YVBRcGxqM1VLNXA4YXRCNlpUWnRVNXZ1ajBKUUl3ZzhDanczRVZpWXMyT2RhNDh1X0NKMV81bjdHcXFldW53STdhMjJRQV80?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Pamana",
-      "neighborhood": "",
-      "cuisine": "Filipino",
-      "price": "",
-      "opened": "2026-11-03",
-      "summary": "Brings Filipino cuisine and a family legacy to Portland.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-03",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNQnYzTS1PS1JfVVMtNXFlU0h3QVV1NUUtTUxrdzNJclpfQThURjBjazhEM0RKaEc4bjVGMHNMMERGWjA3RHVJQld0V2tDU1VGa0trRVdxcnhWcHk5UjlkNVpFb2ZQRGV5c09PWDczNHRxNTN1RFRtMDNWS3VueFZhSVEyYW5PeDdFalFwcjVnVkR0WW52YWdJbGhqbTNPQzVKRmFkN3dIRQ?oc=5"
         }
       ]
     }

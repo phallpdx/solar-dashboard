@@ -1,15 +1,14 @@
 {
-  "updated": "2026-11-16",
-  "updated_at": "2026-11-17T07:31:01Z",
+  "updated": "2026-11-17",
+  "updated_at": "2026-11-17T09:33:01Z",
   "teams": {
     "blazers": {
       "mood": "frustrated but hopeful",
-      "pulse": "Fans are celebrating a jump to number six in power rankings. However, recent shooting struggles and a loss to Minnesota have caused frustration.",
+      "pulse": "Fans are reeling from a shooting slump and loss to Minnesota. However, recent power ranking climbs provide optimism.",
       "storylines": [
-        "Blazers fell 98-106 to Timberwolves on 2026-11-17.",
-        "Deni Avdija and Damian Lillard nominated for Player of the Week.",
-        "Ja Morant remains out with an injury.",
-        "Portland Fire secured the No. 5 WNBA draft pick."
+        "Lost 98-106 to Timberwolves",
+        "Moved up to #6 in NBA Power Rankings",
+        "Ja Morant, Shaedon Sharpe, Vit Krejci, Chris Youngblood out"
       ],
       "sources": [
         {
@@ -35,13 +34,10 @@
       ]
     },
     "timbers": {
-      "mood": "underdog mentality",
-      "pulse": "Fans are preparing for playoffs with an underdog mindset. There is excitement around academy talent and community engagement.",
+      "mood": "Underdog mentality",
+      "pulse": "Fans are focused on MLS Cup Playoffs preparations. Players aim to push limits during this moment.",
       "storylines": [
-        "Qualified for 2026 MLS Cup Playoffs",
-        "Kristoffer Velde embraces underdog role",
-        "James Pantemis up for 2026 MLS Save of the Year",
-        "Timbers2 lost in MLS NEXT Pro Semifinals"
+        "Timbers entered 2026 MLS Cup Playoffs"
       ],
       "sources": [
         {
@@ -67,13 +63,12 @@
       ]
     },
     "f1": {
-      "mood": "Excited and anticipatory",
-      "pulse": "Fans are buzzing ahead of Las Vegas Grand Prix race week. There is significant focus on special liveries and championship implications.",
+      "mood": "Excited, anticipatory",
+      "pulse": "Fans are buzzing ahead of the Las Vegas Grand Prix. There is discussion regarding Kimi Antonelli's championship and special liveries.",
       "storylines": [
         "Kimi Antonelli won the 2026 F1 title",
         "McLaren fighting for P3 in Teams' Championship",
-        "Haas confirms Rafael Camara for Las Vegas GP",
-        "Max Verstappen and Lewis Hamilton tied on podiums"
+        "Haas confirms Rafael Camara for Las Vegas GP"
       ],
       "sources": [
         {
@@ -99,10 +94,12 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic but debating",
-      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. Debates exist regarding championship potential and roster needs.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. Some debate exists regarding championship potential.",
       "storylines": [
-        "Beat Michigan to keep playoff hopes alive"
+        "Defeated Michigan to keep playoff hopes alive",
+        "Next game is against Michigan State as double-digit road favorites",
+        "Debate over whether extra time off helps or hurts"
       ],
       "sources": [
         {
@@ -132,11 +129,10 @@
       ]
     },
     "niners": {
-      "mood": "exultant but cautious",
-      "pulse": "Fans are celebrating a high-scoring win over the Cowboys. Some worry about the pass rush and upcoming Vikings matchup.",
+      "mood": "exuberant and dominant",
+      "pulse": "Fans are celebrating a 46-40 shootout win over the Cowboys. They feel unstoppable despite defensive concerns.",
       "storylines": [
         "Leading NFC with 8-1 record",
-        "Scored 46 points against Dallas",
         "Next game is Week 11 vs Vikings",
         "Concerns regarding pass rush effectiveness"
       ],

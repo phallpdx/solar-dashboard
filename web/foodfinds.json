@@ -1,6 +1,34 @@
 {
-  "updated": "2026-11-14",
+  "updated": "2026-11-17",
   "items": [
+    {
+      "name": "Black Butte Porter",
+      "maker": "Deschutes Brewery",
+      "kind": "Award",
+      "what": "Beer category winner",
+      "where_to_buy": [],
+      "date": "2026-11-17",
+      "sources": [
+        {
+          "name": "Oregon's Good Food Award Winners [#3]",
+          "url": "https://www.pdxmonthly.com/eat-and-drink/oregon-good-food-awards-january-2014"
+        }
+      ]
+    },
+    {
+      "name": "Ninkasi Brewing Company prize",
+      "maker": "Ninkasi Brewing Company",
+      "kind": "Award",
+      "what": "Beer category winner",
+      "where_to_buy": [],
+      "date": "2026-11-17",
+      "sources": [
+        {
+          "name": "Oregon's Good Food Award Winners [#3]",
+          "url": "https://www.pdxmonthly.com/eat-and-drink/oregon-good-food-awards-january-2014"
+        }
+      ]
+    },
     {
       "name": "PDX Pop-Up Shops",
       "maker": "PDX Pop-Up Shops",
@@ -288,42 +316,6 @@
         {
           "name": "Sip Magazine: Corollary Wines announces four new releases",
           "url": "https://sipmagazine.com/corollary-wines-announces-four-new-releases/"
-        }
-      ]
-    },
-    {
-      "name": "Tea-infused bonbon collection",
-      "maker": "Steven Smith Teamaker and Ranger Chocolate Co.",
-      "kind": "New product",
-      "what": "Two Portland makers teamed up on a six-piece bonbon set inspired by Smith teas Lord Bergamot, Golden Light and Masala Chai, previewed at a launch party during the Portland Craft Chocolate Festival. Retail availability wasn't announced.",
-      "where_to_buy": [],
-      "date": "2026-10-03",
-      "sources": [
-        {
-          "name": "PR Newswire: Portland Craft Chocolate Festival returns this weekend",
-          "url": "http://www.prnewswire.com/news-releases/portland-craft-chocolate-festival-returns-this-weekend-as-portland-rallies-around-chocolate-cookies-and-community-302896183.html"
-        },
-        {
-          "name": "PR Newswire: Portland Craft Chocolate Festival returns Oct. 2-4 with 45+ Oregon makers",
-          "url": "https://www.prnewswire.com/news-releases/portland-craft-chocolate-festival-returns-oct-24-with-45-oregon-makers--and-300-entries-for-portlands-best-chocolate-chip-cookie-302883566.html"
-        },
-        {
-          "name": "Food & Beverage Magazine: Portland Craft Chocolate Festival 2026",
-          "url": "https://www.fb101.com/portland-craft-chocolate-festival-2026-c4-cookie-competition-302883566"
-        }
-      ]
-    },
-    {
-      "name": "Fresh Coast Hospitality fresh hop IPA",
-      "maker": "Sunriver Brewing Company",
-      "kind": "Award",
-      "what": "Took gold in Fresh Hop Pale Ales and IPAs, the biggest category at the Oregon Beer Awards fresh hop competition on October 3, with Sunriver's Fresh Whammies taking silver. The competition drew 134 entries from 44 Oregon breweries, so look for these while fresh hop season lasts.",
-      "where_to_buy": [],
-      "date": "2026-10-03",
-      "sources": [
-        {
-          "name": "New School Beer + Cider: Oregon Beer Awards 2026 fresh hop competition medal winners",
-          "url": "https://newschoolbeer.com/home/2026/10/oregon-beer-awards-2026-fresh-hop-competition-medal-winners"
         }
       ]
     }

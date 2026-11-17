@@ -318,6 +318,62 @@
           "url": "https://sipmagazine.com/corollary-wines-announces-four-new-releases/"
         }
       ]
+    },
+    {
+      "name": "Steven Smith Teamaker x Ranger Chocolate bonbon collection",
+      "maker": "Ranger Chocolate Co. and Steven Smith Teamaker (Portland)",
+      "kind": "New product",
+      "what": "Two Portland makers teamed up on a new collaborative bonbon collection, launched on the Saturday of the second annual Portland Craft Chocolate Festival (Oct. 2 to 4), which drew more than 45 Oregon makers.",
+      "where_to_buy": [
+        {
+          "store": "Ranger Chocolate Co. (maker's own shop)",
+          "url": null
+        }
+      ],
+      "date": "2026-10-03",
+      "sources": [
+        {
+          "name": "Portland Craft Chocolate Festival Returns This Weekend (press release)",
+          "url": "https://www.webull.com/news/15673627865908224"
+        },
+        {
+          "name": "Portland Craft Chocolate Festival returns for 2026 (press release)",
+          "url": "https://lifestyle.kbew98country.com/story/172912/portland-craft-chocolate-festival-returns-for-2026-cementing-portland-as-a-hub-for-craft-chocolate-and-industry-innovation/"
+        }
+      ]
+    },
+    {
+      "name": "3 Sirens Straight American Whiskey",
+      "maker": "503 Distilling (Portland)",
+      "kind": "New product",
+      "what": "A new 88-proof straight American whiskey from Portland's 503 Distilling, blended for richness, spice and structure so it works neat, over ice or in cocktails. It debuted with a release party at the SE Portland distillery on Sept. 26.",
+      "where_to_buy": [
+        {
+          "store": "503 Distilling, SE Portland distillery (maker's own shop)",
+          "url": null
+        }
+      ],
+      "date": "2026-09-26",
+      "sources": [
+        {
+          "name": "Sip Magazine: 503 Distilling Answers the Call With 3 Sirens Straight American Whiskey",
+          "url": "https://sipmagazine.com/?p=403989"
+        }
+      ]
+    },
+    {
+      "name": "True Brut cider in new six-packs",
+      "maker": "Portland Cider Company",
+      "kind": "New product",
+      "what": "Portland Cider's zero-sugar True Brut got a fresh look and a new six-pack format, alongside updated Proper Pint cans, rolling out to select retailers around the Pacific Northwest.",
+      "where_to_buy": [],
+      "date": "2026-09-03",
+      "sources": [
+        {
+          "name": "Brewbound: Portland Cider's True Brut gets a fresh look and a new six-pack",
+          "url": "https://www.brewbound.com/pr/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
+        }
+      ]
     }
   ]
 }

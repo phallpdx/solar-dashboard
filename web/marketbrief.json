@@ -150,11 +150,32 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (US, November)",
-        "value": "7.28%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOcFFXRm9QMTc2bFdjTWRRNkZaTTRLRm5TeW1BbW1KTDVFRzFSdldnMkl1WkFSRE02SThZaGJTTEhyNWhzV2VzdzNacHViM0l6OE1HNkZRS2FQZUFoTU5kLTBFbmNGeF9ISnY5T1h1U0I0WW41RFJNVGRmYkhoSlF1c1ktT3F5ZDRJZDdiYTJB?oc=5"
+        "label": "Median sale price (Portland metro, October 2026)",
+        "value": "$545,000",
+        "change": "+0.9% vs a year ago",
+        "source": "Cano Real Estate, Portland Metro Market Report (RMLS data)",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "label": "Months of inventory (Portland, as of Nov 4, 2026)",
+        "value": "4.0 months",
+        "change": "2,214 active listings; balanced market",
+        "source": "Cascade Sotheby's International Realty market report",
+        "url": "https://marketreports.cascadesothebysrealty.com/r/c1b8462f20"
+      },
+      {
+        "label": "Median list price (Portland single-family, week of Nov 10, 2026)",
+        "value": "$600,000",
+        "change": "Market Action Index 37, down from 38 a month earlier",
+        "source": "Altos Research weekly market report",
+        "url": "https://altos.re/r/10577c6"
+      },
+      {
+        "label": "30-year fixed mortgage rate (US average, week of Nov 12, 2026)",
+        "value": "7.11%",
+        "change": "down from 7.18% the prior week; 6.24% a year ago",
+        "source": "Freddie Mac Primary Mortgage Market Survey",
+        "url": "https://www.freddiemac.com/pmms"
       }
     ]
   }

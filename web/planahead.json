@@ -2,6 +2,20 @@
   "updated": "2026-11-16",
   "items": [
     {
+      "title": "Periphery concert tickets",
+      "kind": "Tickets",
+      "action": "Buy Periphery tickets",
+      "starts": "2026-11-16",
+      "by": null,
+      "why": "on sale for Portland concert [#2]",
+      "sources": [
+        {
+          "name": "Portland on-sale news",
+          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNS1lZNm1zMk1hcE1hcWdtRHI3c1pOa3V3U3dUYWx0OHU4QjQ0b1phVWlJTjhsa3B2SDhNM0QwSG0xS0hWelRLaDNVZnJmejN1aHZQMnVYWmtTOUdLc1VLMUZ6THAwM2s0enpNYldkWVdoamtBSkx5NlpLT2lQb0lNUzRzczRWVjU2cFE?oc=5"
+        }
+      ]
+    },
+    {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
       "action": "Day 1 presale sign-up closed Nov 15; Rolling Stone says registration stays open until Nov 19 for later presale access. Artist presales via Seated Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",

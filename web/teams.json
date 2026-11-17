@@ -1,15 +1,15 @@
 {
   "updated": "2026-11-16",
-  "updated_at": "2026-11-16T11:26:59Z",
+  "updated_at": "2026-11-17T07:31:01Z",
   "teams": {
     "blazers": {
-      "mood": "optimistic yet debated",
-      "pulse": "Fans are celebrating a 9-3 start and Deni Avdija's 34-point performance. However, coaching decisions and roster volatility spark debate.",
+      "mood": "frustrated but hopeful",
+      "pulse": "Fans are celebrating a jump to number six in power rankings. However, recent shooting struggles and a loss to Minnesota have caused frustration.",
       "storylines": [
-        "Team is 9-3 after beating Sacramento",
-        "Deni Avdija scored 34 points against Kings",
-        "Shaedon Sharpe remains sidelined with injury",
-        "Next game: vs Timberwolves"
+        "Blazers fell 98-106 to Timberwolves on 2026-11-17.",
+        "Deni Avdija and Damian Lillard nominated for Player of the Week.",
+        "Ja Morant remains out with an injury.",
+        "Portland Fire secured the No. 5 WNBA draft pick."
       ],
       "sources": [
         {
@@ -35,11 +35,11 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog mentality",
-      "pulse": "Fans are energized by a four-game winning streak. The team is preparing for playoffs against Dallas.",
+      "mood": "underdog mentality",
+      "pulse": "Fans are preparing for playoffs with an underdog mindset. There is excitement around academy talent and community engagement.",
       "storylines": [
-        "Four-game winning streak heading into playoffs",
-        "Playoff matchup upcoming against Dallas",
+        "Qualified for 2026 MLS Cup Playoffs",
+        "Kristoffer Velde embraces underdog role",
         "James Pantemis up for 2026 MLS Save of the Year",
         "Timbers2 lost in MLS NEXT Pro Semifinals"
       ],
@@ -67,13 +67,13 @@
       ]
     },
     "f1": {
-      "mood": "celebratory and speculative",
-      "pulse": "Fans are celebrating Kimi Antonelli's championship win. Discussions focus on his 2027 title defense and technical changes.",
+      "mood": "Excited and anticipatory",
+      "pulse": "Fans are buzzing ahead of Las Vegas Grand Prix race week. There is significant focus on special liveries and championship implications.",
       "storylines": [
-        "Kimi Antonelli crowned 2026 World Champion",
+        "Kimi Antonelli won the 2026 F1 title",
         "McLaren fighting for P3 in Teams' Championship",
-        "Haas confirms Camara for Las Vegas GP",
-        "Pirelli planning higher degradation tyres for 2027"
+        "Haas confirms Rafael Camara for Las Vegas GP",
+        "Max Verstappen and Lewis Hamilton tied on podiums"
       ],
       "sources": [
         {
@@ -99,12 +99,10 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic but anxious",
-      "pulse": "Fans are celebrating a victory over Michigan. Concerns exist regarding playoff seeding and player attitudes.",
+      "mood": "Optimistic but debating",
+      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. Debates exist regarding championship potential and roster needs.",
       "storylines": [
-        "Victory against Michigan at Autzen Stadium",
-        "Evan Stewart's attitude concerns",
-        "#Tuioti injury status"
+        "Beat Michigan to keep playoff hopes alive"
       ],
       "sources": [
         {
@@ -134,13 +132,13 @@
       ]
     },
     "niners": {
-      "mood": "Ecstatic and triumphant",
-      "pulse": "Fans are celebrating an 8-1 start after a high-scoring shootout win against Dallas. The offense is firing on all cylinders, led by Purdy's stellar performance.",
+      "mood": "exultant but cautious",
+      "pulse": "Fans are celebrating a high-scoring win over the Cowboys. Some worry about the pass rush and upcoming Vikings matchup.",
       "storylines": [
-        "49ers beat Cowboys 46-40 in a Scorigami win",
-        "Brock Purdy remains undefeated against Dallas",
-        "CMC and Deebo Samuel recorded major touchdowns",
-        "Next game is in Mexico"
+        "Leading NFC with 8-1 record",
+        "Scored 46 points against Dallas",
+        "Next game is Week 11 vs Vikings",
+        "Concerns regarding pass rush effectiveness"
       ],
       "sources": [
         {

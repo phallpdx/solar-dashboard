@@ -122,6 +122,22 @@
       ]
     },
     {
+      "artist": "Kareem Kandi with Ali Jackson",
+      "kind": "Local",
+      "date": "2026-11-21",
+      "time": "06:30 PM",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "A versatile saxophonist performing jazz, blues, classical and funk.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Eric Skye Trio Plays Miles Davis",
       "kind": "Local",
       "date": "2026-11-22",

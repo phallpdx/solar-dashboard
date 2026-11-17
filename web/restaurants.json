@@ -2,6 +2,40 @@
   "updated": "2026-11-16",
   "restaurants": [
     {
+      "name": "Portland Cà Phê (formerly Good Neighbor Cà Phê)",
+      "neighborhood": "Northwest Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNd2FEMlV6MXhEN1lKUVNYamtNUFFvb2QwdVRhZXRSS2tBMmNEbVJwaXhBRUtTVlpVejd2VExFTElydmt4d3lRSkFXX3dxdkF6dWJUUkdEdnJFaURPNzFKRnppX2s1dlM5RWRVRVZveXdpZHFOeWVKVGIxbXRuMVd5MjE3QXFtOExzczFDaEJEOE9NdDRyQnhVNEVtMGZ5WFlGUU84dzhCQlhMVEdBTUE?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "The Hu Tieu at Danh’s Kitchen",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "Stunning dining experience.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "Simply Stunning",
+          "date": "2026-11-16",
+          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPNjN0dGZHZ1l5QXBzbmJ5WGt1a1RkSTBDcXZ2MmV1cm9wcDZtWVVLdGU5SEx3dEdrNGpsNDZBNk9wa2lqVGZVYVh2SElCUEVzRklrU3B2MnVTanpZUlAxSkdEV0lMTGR4TTQ3dnNJZnRiYmc0amJReWg4UEVBaHpsWEVfUEl6NllTbVdQSENyYzZYRXoxUUhERjd1anhldXFQYmlNMTJrQ3RGYW94LWZUSkhMUnJZRVdQaE9Od2JFcExtSDlUSEd4bkJoOHBjQQ?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Mendocino Farms",
       "neighborhood": "",
       "cuisine": "",
@@ -386,47 +420,6 @@
           "verdict": "",
           "date": "2026-11-03",
           "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNQnYzTS1PS1JfVVMtNXFlU0h3QVV1NUUtTUxrdzNJclpfQThURjBjazhEM0RKaEc4bjVGMHNMMERGWjA3RHVJQld0V2tDU1VGa0trRVdxcnhWcHk5UjlkNVpFb2ZQRGV5c09PWDczNHRxNTN1RFRtMDNWS3VueFZhSVEyYW5PeDdFalFwcjVnVkR0WW52YWdJbGhqbTNPQzVKRmFkN3dIRQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "North Portland Thai restaurant",
-      "neighborhood": "North Portland",
-      "cuisine": "Thai",
-      "price": "",
-      "opened": "2026-11-02",
-      "summary": "New Thai restaurant worth repeat visits.",
-      "reviews": [
-        {
-          "outlet": "Axios",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-02",
-          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQTnFScjFWa2N4YXVpY2EyWVViUEJ3cVdjQnIwOFB0TTBKWElqOEJFWDVXNS10MmxpUkZ2OUdGTEo5YVBRcGxqM1VLNXA4YXRCNlpUWnRVNXZ1ajBKUUl3ZzhDanczRVZpWXMyT2RhNDh1X0NKMV81bjdHcXFldW53STdhMjJRQV80?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Nodoguro",
-      "neighborhood": "",
-      "cuisine": "omakase",
-      "price": "",
-      "opened": "",
-      "summary": "Portland's most original omakase keeps getting better.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "",
-          "verdict": "Restaurant of the Year",
-          "date": "2026-11-02",
-          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNbDJTeENlMzhSd2tLeGdEN2syczg5NmlwNTRMSW9lenJaWlg3bTBmUTVjaGpaZlc5UVphSHprOE9fcUNCZl8tUm9jam8xdjhxUHFLbDJDYVN3V3BiRU9ZRVhZU0tfQy1hdDJ2SW5qT2xJVFBlSklrRVlIWjA1eFNnWWJIZE9FOGVOZUtybjMyUUw4bk4yenN1RzJSVEdGVnlZZV85ZkgyTWpGTG5LYnVDQnVNZw?oc=5"
-        },
-        {
-          "outlet": "Portland Monthly",
-          "critic": "",
-          "verdict": "Restaurant of the Year",
-          "date": "2026-11-02",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/portland-best-restaurants/nodoguro-portland-restaurant-of-the-year-2026/"
         }
       ]
     }

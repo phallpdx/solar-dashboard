@@ -37,18 +37,32 @@
       "url": "https://www.hotukdeals.com/deals/dr-seuss-how-the-grinch-stole-christmas-25th-anniversary-edition-4k-uhd-blu-ray-5031323"
     },
     {
-      "title": "Paramount Action-Packed Mix/Match (4K Digital)",
-      "store": "Fanflix",
-      "detail": "Minority Report, World War Z 5 for $15 or Less & Many More",
-      "ends": "2026-11-30",
-      "url": "https://slickdeals.net/f/20317683-fanflix-paramount-4k-digital-action-movies-5-for-13-5"
-    },
-    {
       "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
       "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (see below).",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (listed separately below, along with Perfect Days and KPop Demon Hunters).",
       "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+    },
+    {
+      "title": "No Country for Old Men: The Criterion Collection (4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.99, matching the Barnes & Noble Criterion 50% off sale (posted Nov. 6). Free shipping with Prime or on $35+.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
+    },
+    {
+      "title": "Perfect Days: The Criterion Collection (4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.98, half off as part of the Criterion price match. Free shipping with Prime or on $35+.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20296410-perfect-days-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "KPop Demon Hunters: The Criterion Collection (4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.98 (posted Nov. 6); commenters say Amazon is matching the Barnes & Noble 50% off Criterion sale.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20270163-kpop-demon-hunters-the-criterion-collection-4k-uhd-24-98"
     },
     {
       "title": "The Super Mario Galaxy Movie: Collector's Edition",
@@ -135,11 +149,25 @@
       "url": "https://slickdeals.net/f/20296710-12-99-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
     },
     {
-      "title": "BOUTIQUE BLU-RAY & 4K SALE!",
-      "store": "Vinegar Syndrome, Arrow, Criterion",
-      "detail": "$5 flat-rate US shipping; free on 3+ titles",
+      "title": "The Hunger Games 4-Film Collection (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$34.41 (from $59.99) for all four films in 4K, posted Nov. 8.",
       "ends": null,
-      "url": "https://www.facebook.com/groups/952227686087180/posts/1817139522929321"
+      "url": "https://slickdeals.net/f/20276364-hunger-games-the-complete-4-film-collection-steelbook-bluray-digital-4k-ultra-hd-34-42-amazon-com"
+    },
+    {
+      "title": "Cinderella (1950) (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$15.20, posted Nov. 7. Free shipping with Prime or on $35+.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20273991-cinderella-4k-uhd-blu-ray-digital-15-20-amazon-com"
+    },
+    {
+      "title": "Star Trek 4K UHD Blu-rays",
+      "store": "Amazon",
+      "detail": "Select Star Trek 4K discs, posted Nov. 3: Into Darkness $9.99, First Contact $12.49, The Search for Spock $12.49. Older post, so prices may have moved.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20252106-star-trek-4k-blu-rays-first-contact-12-49-the-search-for-spock-12-49-into-darkness-9-99-more-free-shipping-w-prime-or-on-35"
     }
   ],
   "upcoming": [

@@ -31,6 +31,8 @@ function Ensure-Installed($command, $wingetId, $label) {
 
 Ensure-Installed git 'Git.Git' 'Git'
 Ensure-Installed py 'Python.Python.3.12' 'Python'
+# Windows Python has no time zone database of its own; the market brief needs it.
+py -3 -m pip install --quiet --disable-pip-version-check tzdata
 
 $lms = Join-Path $env:USERPROFILE '.lmstudio\bin\lms.exe'
 if (-not (Test-Path $lms)) { throw "LM Studio's lms tool was not found. Open LM Studio once, then run this again." }
@@ -57,9 +59,18 @@ try {
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' `
     -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$here\run_daily.ps1`""
 # Later runs mostly reuse cached answers, so they take minutes and fill in anything an earlier run missed.
-$trigger = @($At | ForEach-Object { New-ScheduledTaskTrigger -Daily -At $_ })
+# The start time is written without a UTC offset so it stays at local clock time. With an
+# offset, Task Scheduler pins it to that offset, and after daylight saving ended the
+# 12:05 am run started at 11:05 pm (on the previous day's date).
+$trigger = @($At | ForEach-Object {
+    $t = New-ScheduledTaskTrigger -Daily -At $_
+    $t.StartBoundary = ([datetime]$t.StartBoundary).ToString('yyyy-MM-ddTHH:mm:ss')
+    $t
+})
+# A normal run takes under an hour. Two hours ends a stuck run before the next start time,
+# so one stuck run can't take the whole night with it.
 $settings = New-ScheduledTaskSettingsSet -WakeToRun -StartWhenAvailable -AllowStartIfOnBatteries `
-    -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 4)
+    -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 2)
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings `
     -Principal $principal -Force | Out-Null

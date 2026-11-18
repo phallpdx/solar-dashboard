@@ -35,9 +35,17 @@ if (-not (Test-Path $lms)) { $lms = (Get-Command lms -ErrorAction Stop).Source }
 # lms runs in its own hidden console: inside the task's console it can send a
 # Ctrl+C that ends this script.
 function Lms([string[]]$arguments) {
+    # Not -Wait: in Windows PowerShell that also waits for every process lms starts, and
+    # "lms server start" launches the LM Studio app, which never exits. That hung the
+    # 11 pm run on 2026-11-17 until the task's 4-hour limit, so no run finished that night.
+    # WaitForExit waits for lms alone, and a stuck lms is ended after 15 minutes.
     $out = [IO.Path]::GetTempFileName()
-    Start-Process $lms -ArgumentList $arguments -Wait -WindowStyle Hidden `
-        -RedirectStandardOutput $out -RedirectStandardError "$out.err" | Out-Null
+    $p = Start-Process $lms -ArgumentList $arguments -PassThru -WindowStyle Hidden `
+        -RedirectStandardOutput $out -RedirectStandardError "$out.err"
+    if (-not $p.WaitForExit(900000)) {
+        "lms $($arguments -join ' ') still running after 15 minutes; ending it"
+        try { $p.Kill() } catch {}
+    }
     Get-Content $out, "$out.err" -ErrorAction SilentlyContinue
     Remove-Item $out, "$out.err" -ErrorAction SilentlyContinue
 }
@@ -103,8 +111,11 @@ $py = Get-Command py -ErrorAction SilentlyContinue
 $pyArgs = @("`"$(Join-Path $here 'refresh_lists.py')`"") + $args
 if ($py) { $exe = $py.Source; $pyArgs = @('-3') + $pyArgs } else { $exe = 'python' }
 $out = [IO.Path]::GetTempFileName()
-$proc = Start-Process $exe -ArgumentList $pyArgs -Wait -PassThru -WindowStyle Hidden `
+$proc = Start-Process $exe -ArgumentList $pyArgs -PassThru -WindowStyle Hidden `
     -RedirectStandardOutput $out -RedirectStandardError "$out.err"
+$null = $proc.Handle  # keeps the exit code readable after it ends
+# WaitForExit, not -Wait: Python may restart LM Studio, and -Wait would wait for that too (see Lms).
+$proc.WaitForExit()
 Get-Content "$out.err" -ErrorAction SilentlyContinue  # errors that stopped Python, if any
 Remove-Item $out, "$out.err" -ErrorAction SilentlyContinue
 $code = $proc.ExitCode

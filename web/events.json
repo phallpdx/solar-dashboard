@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-18",
   "events": [
     {
       "title": "Oregon vs. Oregon State men's basketball",
@@ -48,26 +48,12 @@
       ]
     },
     {
-      "title": "JSTSTANCE - Portland",
-      "date": "2026-11-21",
-      "ends": "2026-11-21",
-      "venue": "Portland Expo Center",
-      "kind": "Convention",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://www.expocenter.org/calendar"
-        }
-      ]
-    },
-    {
-      "title": "OSAA football state championships (6A, 5A and 2A)",
-      "date": "2026-11-26",
+      "title": "OSAA football state championships",
+      "date": "2026-11-27",
       "ends": "2026-11-28",
       "venue": "Hillsboro Stadium, Hillsboro",
       "kind": "High school football",
-      "why": "The OSAA lists Hillsboro Stadium as host for the 6A, 5A and 2A title games; its calendar puts the finals on Nov. 27 and 28, while the 6A bracket page runs through Nov. 26, so check the bracket for each game's day and time.",
+      "why": "OSAA brackets set the 6A final for 1 p.m. and the 5A final for 5:30 p.m. Friday, Nov. 27 at Hillsboro Stadium, with the smaller classes crowned Saturday, so expect packed lots around the Hillsboro Hops' stadium over Thanksgiving weekend.",
       "sources": [
         {
           "name": "OSAA 6A bracket",
@@ -78,8 +64,8 @@
           "url": "https://www.osaa.org/activities/fbl/brackets?div=5A"
         },
         {
-          "name": "OSAA 2026-27 calendar",
-          "url": "https://www.osaa.org/docs/calendar/26-27ActivityCalendar.pdf"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/updated-oregon-high-school-football-003637399.html"
         }
       ]
     },
@@ -112,6 +98,24 @@
       ]
     },
     {
+      "title": "Winter Wonderland holiday lights",
+      "date": "2026-11-27",
+      "ends": "2026-12-31",
+      "venue": "Portland International Raceway, North Portland",
+      "kind": "Holiday lights",
+      "why": "Sunshine Division's drive-through light show runs nightly on the raceway track (5 to 10 p.m. weekdays, 4:30 to 11 p.m. weekends and Dec. 16 to 25), backing up traffic on North Victory Boulevard and near the I-5 Delta Park exit.",
+      "sources": [
+        {
+          "name": "Winter Wonderland",
+          "url": "https://winterwonderlandportland.com/drive-the-lights/"
+        },
+        {
+          "name": "Travel Portland",
+          "url": "https://travelportland.com/event/806447"
+        }
+      ]
+    },
+    {
       "title": "Trans-Siberian Orchestra: The Ghosts of Christmas Eve",
       "date": "2026-11-28",
       "ends": null,
@@ -126,6 +130,24 @@
         {
           "name": "Live Nation",
           "url": "https://www.livenation.com/event/vvG1HZ_8RKn5r8/trans-siberian-orchestra-the-ghosts-of-christmas-eve"
+        }
+      ]
+    },
+    {
+      "title": "Timbers vs. FC Dallas, MLS Cup Playoffs Round One Game 2",
+      "date": "2026-11-28",
+      "ends": null,
+      "venue": "Providence Park, Goose Hollow",
+      "kind": "Soccer playoffs",
+      "why": "Portland's only guaranteed home playoff match, 7:30 p.m. Saturday on FS1 after Game 1 in Frisco on Nov. 21; a Game 3, if needed, is Dec. 2 in Texas, so expect a sellout and Goose Hollow traffic and MAX crowds.",
+      "sources": [
+        {
+          "name": "Portland Timbers",
+          "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
+        },
+        {
+          "name": "FC Dallas",
+          "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"
         }
       ]
     },
@@ -180,16 +202,20 @@
       ]
     },
     {
-      "title": "The American Northwest - Portland - Nationals - DI/DII",
+      "title": "The American Northwest Portland Nationals (cheer and dance)",
       "date": "2026-12-05",
       "ends": "2026-12-06",
       "venue": "Hall D, Oregon Convention Center",
-      "kind": "Convention",
-      "why": "",
+      "kind": "Competition",
+      "why": "Varsity's weekend cheer and dance championship fills Hall D with teams and families, so Lloyd District parking and MAX trains will be busy.",
       "sources": [
         {
           "name": "Oregon Convention Center",
           "url": "https://www.oregoncc.org/attend/events/2026/12/american-northwest-portland-nationals-didii"
+        },
+        {
+          "name": "Varsity (2025 edition)",
+          "url": "https://tv.varsity.com/articles/14791691-insider-info-2025-the-american-northwest-portland-nationals"
         }
       ]
     },
@@ -216,170 +242,20 @@
       ]
     },
     {
-      "title": "Portland Holiday Brew Fest",
-      "date": "2026-12-11",
-      "ends": "2026-12-12",
-      "venue": "Pioneer Courthouse Square",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://dopdx.com"
-        }
-      ]
-    },
-    {
-      "title": "CEVA Power League Qualifier",
-      "date": "2026-12-12",
-      "ends": "2026-12-13",
-      "venue": "",
-      "kind": "Sports",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://www.expocenter.org/calendar"
-        }
-      ]
-    },
-    {
-      "title": "Young the Giant",
-      "date": "2026-12-13",
-      "ends": null,
-      "venue": "McMenamins Crystal Ballroom",
-      "kind": "Concert",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://dopdx.com"
-        }
-      ]
-    },
-    {
-      "title": "The Jinkx & DeLa Holiday Show",
-      "date": "2026-12-17",
-      "ends": "2026-12-17",
-      "venue": "Arlene Schnitzer Concert Hall",
-      "kind": "Concert",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://dopdx.com"
-        }
-      ]
-    },
-    {
       "title": "Portland Boat Show",
       "date": "2027-01-13",
       "ends": "2027-01-17",
-      "venue": "Expo Center",
-      "kind": "Convention",
-      "why": "",
+      "venue": "Portland Expo Center, North Portland",
+      "kind": "Expo",
+      "why": "The 67th annual show fills the Expo Center for five days in mid-January, so expect busy I-5 exits and MAX Yellow Line trains near Delta Park.",
       "sources": [
         {
-          "name": "Web search: big Portland events",
-          "url": "https://www.expocenter.org/calendar"
-        }
-      ]
-    },
-    {
-      "title": "Ram PBR Portland",
-      "date": "2027-01-22",
-      "ends": "2027-01-23",
-      "venue": "Moda Center",
-      "kind": "Sports",
-      "why": "High attendance expected for rodeo events.",
-      "sources": [
+          "name": "Portland Boat Show",
+          "url": "https://www.pdxboatshow.marketplaceevents.com/attendee-info/show-info"
+        },
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
-        }
-      ]
-    },
-    {
-      "title": "WWE Friday Night Smackdown",
-      "date": "2027-01-29",
-      "ends": null,
-      "venue": "Moda Center",
-      "kind": "Sports",
-      "why": "Large crowds will likely impact traffic.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/wwe-jan-29-2027"
-        }
-      ]
-    },
-    {
-      "title": "Portland Folk Festival",
-      "date": "2027-01-30",
-      "ends": "2027-01-30",
-      "venue": "Crystal Ballroom",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://www.pdxpipeline.com/portland-january-events"
-        }
-      ]
-    },
-    {
-      "title": "Harlem Globetrotters",
-      "date": "2027-01-31",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Sports",
-      "why": "Family events draw significant local crowds.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
-        }
-      ]
-    },
-    {
-      "title": "Gracie Abrams",
-      "date": "2027-01-31",
-      "ends": "2027-02-01",
-      "venue": "Moda Center",
-      "kind": "Concert",
-      "why": "Expect high pedestrian traffic near the venue.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
-        }
-      ]
-    },
-    {
-      "title": "Portland Winter Light Festival",
-      "date": "2027-02-01",
-      "ends": null,
-      "venue": "",
-      "kind": "Holiday lights",
-      "why": "Glowing sculptures and twinkling lights.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
-        }
-      ]
-    },
-    {
-      "title": "Portland Winter Light Festival",
-      "date": "2027-02-05",
-      "ends": "2027-02-13",
-      "venue": "Pioneer Courthouse Square",
-      "kind": "Festival",
-      "why": "",
-      "sources": [
-        {
-          "name": "Web search: big Portland events",
-          "url": "https://onestowatch.com/live/best-oregon-winter-concerts"
+          "name": "TickPick",
+          "url": "https://www.tickpick.com/buy-portland-boat-show-tickets-portland-expo-center-1-14-27-3am/7833902/"
         }
       ]
     }

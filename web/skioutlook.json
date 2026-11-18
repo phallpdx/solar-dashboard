@@ -1,23 +1,27 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "season": {
-    "summary": "A strong-to-very strong El Niño is strengthening and likely through January-March 2027. There are better than even odds for a historic event this winter. The next update is scheduled for 2026-12-10.",
+    "summary": "NOAA's Nov 12 update keeps an El Niño Advisory in place: El Niño is still strengthening, with a strong-to-very strong event likely through January-March 2027. NOAA's winter outlook gives the Pacific Northwest, Mt. Hood included, some of the best odds in the country for a warmer-than-normal winter. Strong El Niño winters usually mean less Northwest snow and higher snow levels, so early-season and low-elevation skiing is the bigger risk.",
     "sources": [
+      {
+        "name": "NOAA CPC ENSO discussion, Nov 2026",
+        "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_disc_nov2026/ensodisc.pdf"
+      },
       {
         "name": "NOAA CPC ENSO discussion",
         "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"
-      },
-      {
-        "name": "NOAA CPC ENSO discussion, Oct 2026",
-        "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_disc_oct2026/ensodisc.shtml"
       },
       {
         "name": "NOAA winter outlook",
         "url": "https://www.noaa.gov/news-release/el-nino-looms-large-over-us-winter-outlook"
       },
       {
-        "name": "MyNorthwest",
-        "url": "https://mynorthwest.com/pacific-northwest-weather/el-nino-winter/4286807"
+        "name": "Watchers: NOAA 2026-27 winter outlook",
+        "url": "https://watchers.news/2026/10/16/very-strong-el-nino-favors-wetter-south-and-warmer-north-in-noaas-2026-27-winter-outlook-u-s/"
+      },
+      {
+        "name": "KPTV: Super El Niño and the PNW",
+        "url": "https://www.kptv.com/2026/10/12/winter-2026-2027-its-super-el-nio-this-year-what-it-means-pacnw/"
       },
       {
         "name": "USGS Northwest CASC",
@@ -30,50 +34,46 @@
       "resort": "Mt. Hood Meadows",
       "date": "2026-12-04",
       "status": "Planned",
-      "note": "Date is a projection and subject to change.",
+      "note": "The only Mt. Hood resort with an announced target date, as of Nov 9.",
       "sources": [
         {
-          "name": "OnTheSnow Oregon projected openings",
-          "url": "https://www.onthesnow.com/oregon/projected-openings"
+          "name": "Portland Tribune",
+          "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
         },
         {
           "name": "Mt. Hood Meadows schedule",
           "url": "https://www.skihood.com/explore/Schedule"
-        },
-        {
-          "name": "SkiCentral",
-          "url": "https://www.skicentral.com/mounthood.html"
         }
       ]
     },
     {
       "resort": "Timberline",
-      "date": "2026-11-21",
-      "status": "Planned",
-      "note": "Date is a projection and subject to change.",
+      "date": null,
+      "status": "Depends on snow",
+      "note": "No official date; it opens once there's enough snow. Projection sites guess Nov 21 to 22.",
       "sources": [
         {
-          "name": "Timberline lift tickets",
-          "url": "https://timberlinelodge.com/mountain/lift-tickets/"
+          "name": "Portland Tribune",
+          "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
         },
         {
-          "name": "OnTheSnow Oregon projected openings",
-          "url": "https://www.onthesnow.com/oregon/projected-openings"
+          "name": "OnTheSnow Mt. Hood projected openings",
+          "url": "https://www.onthesnow.com/mt-hood/projected-openings"
         }
       ]
     },
     {
       "resort": "Mt. Hood Skibowl",
-      "date": "2026-11-27",
-      "status": "Planned",
-      "note": "Date is a projection and subject to change.",
+      "date": null,
+      "status": "Tentative",
+      "note": "Tentatively late November (projected Nov 27); no snow at base or summit as of Nov 9.",
       "sources": [
         {
-          "name": "OnTheSnow Oregon projected openings",
-          "url": "https://www.onthesnow.com/oregon/projected-openings"
+          "name": "Portland Tribune",
+          "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
         },
         {
-          "name": "OnTheSnow projected openings",
+          "name": "OnTheSnow Mt. Hood projected openings",
           "url": "https://www.onthesnow.com/mt-hood/projected-openings"
         }
       ]
@@ -81,8 +81,8 @@
     {
       "resort": "Cooper Spur",
       "date": "2026-12-26",
-      "status": "Planned",
-      "note": "Date is a projection and subject to change.",
+      "status": "Depends on snow",
+      "note": "Projection only, not announced by the resort.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",

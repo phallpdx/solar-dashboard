@@ -1,10 +1,60 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "items": [
+    {
+      "title": "The Teskey Brothers and Durand Jones & The Indications, Edgefield (Jul 11, 2027)",
+      "kind": "Tickets",
+      "action": "Join the Teskey Brothers mailing list for the presale starting Wed, Nov 18 at 10 a.m. local.",
+      "starts": "2026-11-18",
+      "by": null,
+      "why": "Co-headlining summer 2027 tour with a lawn show at Edgefield; the general on-sale date wasn't found in the sources.",
+      "sources": [
+        {
+          "name": "Concert Addicts",
+          "url": "https://www.concertaddicts.com/news-articles/tours/teskey-brothers-durand-jones-north-american-tour-2027"
+        }
+      ]
+    },
+    {
+      "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
+      "kind": "Tickets",
+      "action": "On sale now through Ticketmaster and the Moda Center box office.",
+      "starts": null,
+      "by": "2026-11-19",
+      "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
+      "sources": [
+        {
+          "name": "Oregon Ducks",
+          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
+        },
+        {
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
+        }
+      ]
+    },
+    {
+      "title": "Sam Fender, Portland (May 5, 2027, venue TBA)",
+      "kind": "Tickets",
+      "action": "General sale Thu, Nov 19 at 10 a.m. local; artist presale ran Nov 17 and venue/promoter presales Nov 18 at select stops.",
+      "starts": "2026-11-19",
+      "by": "2026-11-19",
+      "why": "One of 10 North American dates on his biggest headlining run in the region; the Portland venue hasn't been announced yet.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/sam-fender-2027-north-american-tour/"
+        },
+        {
+          "name": "Complex",
+          "url": "https://www.complex.com/music/a/will-lavin/sam-fender-north-america-tour-2027-dates-buy-tickets"
+        }
+      ]
+    },
     {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
-      "action": "Day 1 presale sign-up closed Nov 15; Rolling Stone says registration stays open until Nov 19 for later presale access. Artist presales via Seated Nov 18 and 19, general sale Fri, Nov 20 at 10 a.m.",
+      "action": "Artist presales via Seated run today (Nov 18) and tomorrow (Nov 19) for registered fans; general sale Fri, Nov 20 at 10 a.m.",
       "starts": "2026-11-18",
       "by": "2026-11-20",
       "why": "Portland opens the 2027 Lost Tour leg with Grouper; registrants are randomly assigned a presale day, late sign-ups get Day 2, and registering doesn't guarantee tickets.",
@@ -36,24 +86,6 @@
         {
           "name": "Grimy Goods presale guide",
           "url": "https://www.grimygoods.com/2026/11/12/phoebe-bridgers-tour-2027-presale-code-ticket-prices-waitlist/"
-        }
-      ]
-    },
-    {
-      "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
-      "kind": "Tickets",
-      "action": "On sale now through Ticketmaster and the Moda Center box office.",
-      "starts": null,
-      "by": "2026-11-19",
-      "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
-      "sources": [
-        {
-          "name": "Oregon Ducks",
-          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
-        },
-        {
-          "name": "Yahoo Sports",
-          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
         }
       ]
     },
@@ -96,6 +128,24 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Timbers vs. FC Dallas, MLS Cup Playoffs Round One Game 2 (Nov 28)",
+      "kind": "Tickets",
+      "action": "Watch timbers.com for playoff tickets for the 7:30 p.m. home match at Providence Park.",
+      "starts": null,
+      "by": "2026-11-28",
+      "why": "Portland's only home game of the best-of-three series; an official ticket on-sale announcement wasn't found.",
+      "sources": [
+        {
+          "name": "KPTV",
+          "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"
+        },
+        {
+          "name": "FOX 4 Dallas",
+          "url": "https://www.fox4news.com/sports/fc-dallas-2026-mls-cup-playoffs-portland-timbers"
         }
       ]
     },
@@ -210,10 +260,10 @@
     {
       "title": "Ikon Pass final sales window",
       "kind": "Deadline",
-      "action": "Buy by Dec 10 at the current $1,529 adult price.",
+      "action": "Buy by Dec 10 if you want an Ikon Pass this season; check the current price on ikonpass.com.",
       "starts": null,
       "by": "2026-12-10",
-      "why": "Ikon shows the current price valid until Dec 10; last year sales stopped Dec 11.",
+      "why": "Ikon's site gives Dec 10, 2026 as the 26/27 deadline, Powder says prices climb as winter approaches, and last year sales stopped Dec 11.",
       "sources": [
         {
           "name": "Ikon Pass",
@@ -346,20 +396,6 @@
       ]
     },
     {
-      "title": "Gracie Abrams, Moda Center (Jan 31 and Feb 1, 2027)",
-      "kind": "Tickets",
-      "action": "Tickets are on sale; buy face value through Ticketmaster or the Moda Center rather than resale.",
-      "starts": null,
-      "by": null,
-      "why": "Two Portland nights on The Look at My Life Tour, per KOIN.",
-      "sources": [
-        {
-          "name": "KOIN",
-          "url": "https://www.koin.com/news/portland/gracie-abrams-bringing-the-look-at-my-life-tour-to-moda-center-for-two-nights/amp/"
-        }
-      ]
-    },
-    {
       "title": "DIIV, Revolution Hall (May 12, 2027)",
       "kind": "Tickets",
       "action": "General sale opened Fri Oct 30 at 10 a.m.; buy face value through Revolution Hall's ticketing before the room sells through.",
@@ -396,24 +432,6 @@
       ]
     },
     {
-      "title": "Fall Out Boy with The Offspring, Providence Park (Aug 26, 2027)",
-      "kind": "Tickets",
-      "action": "General sale opened Thu, Nov 12; buy face value through Providence Park's official ticketing rather than resale.",
-      "starts": null,
-      "by": null,
-      "why": "Portland closes the North American leg of the Twilight of the Punks tour, with Good Charlotte and The Story So Far also on the bill.",
-      "sources": [
-        {
-          "name": "Portland Timbers / Providence Park",
-          "url": "https://www.timbers.com/news/fall-out-boy-s-twilight-of-the-punks-tour-to-play-providence-park-on-aug-26-2027"
-        },
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/fall-out-boy-announces-36-date-twilight-of-the-punks-world-tour-for-2027/"
-        }
-      ]
-    },
-    {
       "title": "Mt. Hood Meadows season pass",
       "kind": "Buy",
       "action": "If you want a Meadows pass, buy soon; the price climbs as the season nears and sales eventually close.",
@@ -428,38 +446,20 @@
       ]
     },
     {
-      "title": "Nothing But Thieves, Crystal Ballroom (Apr 1, 2027)",
-      "kind": "Tickets",
-      "action": "Tickets have been on sale since June; buy face value through the Crystal Ballroom's official ticketing rather than resale.",
+      "title": "Epic Pass goes off sale in early December",
+      "kind": "Deadline",
+      "action": "If you want an Epic Pass this season, buy in the next two weeks; the 2026 cutoff hasn't been announced.",
       "starts": null,
       "by": null,
-      "why": "A 1,500-capacity room on the band's 17-date spring 2027 North American run behind new album Stray Dogs.",
+      "why": "Last season Vail stopped selling Epic Passes on Dec 4, and OnTheSnow says prices rise until they go off sale in December.",
       "sources": [
         {
-          "name": "JamBase",
-          "url": "https://www.jambase.com/article/nothing-but-thieves-tour-dates-spring-2027"
+          "name": "Vail Resorts (2025 off-sale notice)",
+          "url": "https://news.vailresorts.com/2025-11-17-Epic-Passes-Go-Off-Sale-December-4-Lock-in-Your-Magical-Mountain-Holiday-Now"
         },
         {
-          "name": "NME",
-          "url": "https://www.nme.com/news/music/nothing-but-thieves-new-album-stray-dog-tour-of-uk-europe-north-america-buy-tickets-3947453"
-        }
-      ]
-    },
-    {
-      "title": "Greta Van Fleet, Moda Center (Mar 25, 2027)",
-      "kind": "Tickets",
-      "action": "Presales opened in mid-October; buy face value through Live Nation or Ticketmaster rather than resale.",
-      "starts": null,
-      "by": null,
-      "why": "Arena stop on the Into the Beginning tour; listings disagree on the presale start (Oct 13 or Oct 14).",
-      "sources": [
-        {
-          "name": "Live Nation",
-          "url": "https://www.livenation.com/event/vvG1HZ_Kle7js7/greta-van-fleet-into-the-beginning"
-        },
-        {
-          "name": "EventWorld listing",
-          "url": "https://www.eventworld.com/greta-van-fleet-portland-tickets-03-25-2027/event/576920"
+          "name": "OnTheSnow Epic Pass buyer's guide",
+          "url": "https://www.onthesnow.com/news/buyers-guide-epic-pass"
         }
       ]
     }

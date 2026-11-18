@@ -1,29 +1,21 @@
 {
-  "updated": "2026-11-17",
-  "note": "Toddler-friendly events near North Portland, Vancouver and the coast, soonest first. Many holiday dates come from guides or listings rather than the organizers, so check before going.",
+  "updated": "2026-11-18",
+  "note": "Toddler-friendly events in North Portland, Sauvie Island, Portland and Vancouver, soonest first. Some holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
-      "title": "Chrysanthemum Festival",
-      "date": "2026-11-11",
-      "ends": "2026-11-17",
-      "where": "Portland",
-      "detail": "A floral design showcase with illuminated evenings at Lan Su Chinese Garden. $18.00.",
-      "url": "https://pdxparent.com/series/chrysanthemum-festival-3/"
+      "title": "Toddler Storytime at St. Johns Library",
+      "date": null,
+      "ends": null,
+      "where": "St. Johns Library, North Portland",
+      "detail": "Weekly toddler storytime on Tuesdays, 12:30 to 1:15 p.m., with books, songs, rhymes and movement; free. Space can be limited, so check the branch calendar for the next date.",
+      "url": "https://multcolib.org/library-location/st-johns/events"
     },
     {
-      "title": "Mini Movers at Laurelhurst Park!",
-      "date": "2026-11-12",
-      "ends": "2026-12-08",
-      "where": "Portland",
-      "detail": "A playful class using props and storytelling to get toddlers moving. $18.",
-      "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
-    },
-    {
-      "title": "Santa Photos | An Elf™ Christmas Experience at Vancouver Mall",
+      "title": "Santa Photos: An Elf Christmas Experience at Vancouver Mall",
       "date": "2026-11-13",
       "ends": "2026-12-24",
-      "where": "Vancouver, WA",
-      "detail": "Magical holiday photo experience with Santa. Price not listed.",
+      "where": "Vancouver Mall, Vancouver, WA",
+      "detail": "Santa visits and photos in H&M Court on the lower level, daily through Dec. 24 (closed Thanksgiving and Christmas Day); reservations recommended but not required. Sensory-friendly Santa is Dec. 7 at 9 a.m. Price not listed.",
       "url": "https://pdxparent.com/series/santa-photos-an-elf-christmas-experience-at-vancouver-mall/"
     },
     {
@@ -31,87 +23,23 @@
       "date": "2026-11-16",
       "ends": "2027-01-10",
       "where": "Pittock Mansion, Portland",
-      "detail": "The mansion decorated for 'Holidays from Around the World'; Travel Portland lists Nov. 16, 2026 to Jan. 10, 2027, with days and times that vary.",
+      "detail": "The mansion decorated for 'Holidays from Around the World'; days and times vary. PDX Parent lists children under 6 free.",
       "url": "https://www.travelportland.com/event/68f14265d6b9f4033114e411/"
-    },
-    {
-      "title": "Sing, Sign & Play @ SWPMA PLAY!",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Playtime with singing and basic ASL from 9:00 am to 9:50 am. $5 – $25.",
-      "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
-    },
-    {
-      "title": "Family Ninjas (Martial Arts) For Ages 2/3",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A family martial arts experience for toddlers from 10:00 am to 10:40 am. $15 – $25.",
-      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
-    },
-    {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Various storytimes for toddlers and families are held daily. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "OMSI On Ice",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "OMSI",
-      "detail": "Indoor synthetic ice skating in the auditorium. $8 – $10.",
-      "url": "https://pdxparent.com/series/omsi-on-ice/"
-    },
-    {
-      "title": "Red Yarn’s Family Music & Puppet Show at Taborspace",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Weekly family music and puppet show with singing and dancing. $10 – $20.",
-      "url": "https://pdxparent.com/series/red-yarns-family-music-puppet-show-at-taborspace/"
-    },
-    {
-      "title": "Littles Ballet at Laurelhurst Studio",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Ballet stories and technique for children ages 2-5. $18.",
-      "url": "https://pdxparent.com/series/littles-ballet-at-laurelhurst-studio/"
-    },
-    {
-      "title": "Early Childhood Mandarin Music and Movement Class",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "West Linn",
-      "detail": "Mandarin music, movement, and storytelling for young learners. Free.",
-      "url": "https://pdxparent.com/series/early-childhood-mandarin-music-and-movement-class-17/"
-    },
-    {
-      "title": "Gym Open Play at Sellwood Community House",
-      "date": "2026-11-17",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Open-ended play with ride-on toys and toddler equipment in a gym. $8.",
-      "url": "https://pdxparent.com/series/gym-open-play-at-sellwood-community-house/"
     },
     {
       "title": "ZooLights",
       "date": "2026-11-20",
       "ends": "2027-01-03",
       "where": "Oregon Zoo, Portland",
-      "detail": "Wildlife-themed holiday lights. A third-party guide reports Nov. 20, 2026 to Jan. 3, 2027, opening at 4:30 p.m., with tickets for specific dates; the zoo hasn't fully posted its 2026 calendar. Go early in the evening with little ones.",
-      "url": "https://thrillzing.com/seasonal-events/zoolights-2026-oregon-zoo/"
+      "detail": "Wildlife-themed holiday lights. The zoo's page says the 2026 run goes through Jan. 3, 2027, closed Nov. 24 to 26 and Dec. 25; listings give a Nov. 20 opening at 4:30 p.m. Timed tickets online, with a TriMet ride included. Go early in the evening with little ones.",
+      "url": "https://oregonzoo.org/lights"
     },
     {
       "title": "U-cut Christmas trees at Sauvie Island Farms",
       "date": "2026-11-21",
       "ends": "2026-12-24",
       "where": "Sauvie Island Farms, Sauvie Island",
-      "detail": "The farm's blog says its U-cut tree field opens Nov. 21 to Dec. 24, 9 a.m. to 5 p.m., self-serve on the honor system; all trees $60, cash or Venmo.",
+      "detail": "The farm's blog says its U-cut tree field opens Nov. 21 to Dec. 24, 9 a.m. to 5 p.m.; all trees $60.",
       "url": "https://sifarms.blogspot.com/"
     },
     {
@@ -119,32 +47,64 @@
       "date": "2026-11-26",
       "ends": null,
       "where": "Topaz Farm, Sauvie Island",
-      "detail": "Holiday market with Christmas trees, wreaths and garlands; a community event listing reports opening day Thursday, Nov. 26, 2026, 10 a.m. to noon. Season hours not yet confirmed by the farm.",
+      "detail": "Holiday market with Christmas trees and wreaths. Community event listings disagree on opening day (Nov. 25, 26 or 29) and the farm hasn't confirmed season hours, so check before going.",
       "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-26"
+    },
+    {
+      "title": "Pioneer Courthouse Square Tree Lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Pioneer Courthouse Square, Portland",
+      "detail": "The 42nd annual lighting, 5:30 to 6:45 p.m., with a community sing-along led by Thomas Lauderdale and Santa switching on the 75-foot tree; free. Date and time per a family events guide.",
+      "url": "https://www.rallytakesthetrain.com/christmas-events/portland-or"
+    },
+    {
+      "title": "Vancouver Community Tree Lighting",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Esther Short Park, Vancouver, WA",
+      "detail": "Free; festivities from 3 p.m. with live music, carriage rides and treats, and Santa arrives escorted by the Christmas Ships. The tree is lit in the evening (listings say 6 or 6:30 p.m.).",
+      "url": "https://www.cityofvancouver.us/events/community-tree-lighting-3/"
+    },
+    {
+      "title": "Christmas Festival of Lights at The Grotto",
+      "date": "2026-11-27",
+      "ends": "2026-12-30",
+      "where": "The Grotto, Northeast Portland",
+      "detail": "Nightly holiday lights, 5 to 9:30 p.m., closed Christmas Day, per The Grotto. PDX Parent lists ages 2 and under free.",
+      "url": "https://thegrotto.org/christmas"
     },
     {
       "title": "Winter Wonderland drive-through lights",
       "date": "2026-11-27",
       "ends": "2026-12-31",
       "where": "Portland International Raceway, North Portland",
-      "detail": "Drive-through holiday light show benefiting Sunshine Division; a BringFido listing gives Nov. 27 to Dec. 31, 2026 with evening hours. Easy with a toddler since you stay in the car.",
+      "detail": "Drive-through holiday light show benefiting Sunshine Division, with some walking nights; nightly Nov. 27 to Dec. 31 per listings. Easy with a toddler since you stay in the car.",
       "url": "https://www.bringfido.ca/event/43627"
     },
     {
-      "title": "Curiosity Kids: Design and Discover",
-      "date": "2026-11-28",
-      "ends": "2026-12-05",
-      "where": "Portland, OR",
-      "detail": "A science activity for kids from 9 am to 10 am.",
-      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
+      "title": "Christmas Ships Parade (Vancouver shore)",
+      "date": null,
+      "ends": "2026-12-18",
+      "where": "Vancouver Waterfront Park and Grant Street Pier, Vancouver, WA",
+      "detail": "Lighted boats parade on the Columbia from late November through Dec. 18, about 45 to 60 minutes per night, per Visit Vancouver WA. Check the nightly schedule; weather can cancel a night.",
+      "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
     },
     {
-      "title": "The Polar Express",
+      "title": "The Polar Express at OMSI",
       "date": "2026-12-11",
       "ends": "2026-12-16",
-      "where": "Portland, OR",
-      "detail": "An event themed around The Polar Express.",
+      "where": "OMSI Empirical Theater, Portland",
+      "detail": "Screenings of The Polar Express, listed Dec. 11 to 16; OMSI's page doesn't show the year, so confirm before buying.",
       "url": "https://tickets.omsi.edu/oregonmuseumofscienceandindustry/events/5c72a103-d2d0-af25-e935-3afe47a0623c"
+    },
+    {
+      "title": "Peacock Lane",
+      "date": "2026-12-15",
+      "ends": "2026-12-31",
+      "where": "Peacock Lane, Southeast Portland",
+      "detail": "A block of homes decorated for the holidays, free to walk; a lights guide lists Dec. 15 to 31, 2026, with walking-only nights Dec. 15 and 16. The street's own site still shows last year, so the dates are not yet officially confirmed.",
+      "url": "https://explorewashingtonstate.com/vancouver-wa-christmas-lights/"
     }
   ]
 }

@@ -316,9 +316,22 @@ def lms(*args):
     if not os.path.exists(exe):
         exe = shutil.which("lms") or "lms"
     # A console of its own (with no window), so a Ctrl+C that lms sends can't end this script.
-    r = subprocess.run([exe, *args], capture_output=True, timeout=900,
-                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    return r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace").strip()
+    # Output goes to a file, not a pipe: if lms opens the LM Studio app, the app would hold the
+    # pipe open and this would wait for it to close, even past the timeout.
+    with tempfile.TemporaryFile() as f:
+        p = subprocess.Popen([exe, *args], stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+                             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        try:
+            code = p.wait(timeout=900)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            code = None
+        f.seek(0)
+        out = f.read().decode("utf-8", "replace").strip()
+    if code is None:
+        log(f"  lms {' '.join(args)} was still going after 900 s; stopped it")
+        code = 1
+    return code, out
 
 
 def reload_model(settle_seconds, why):

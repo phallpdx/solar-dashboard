@@ -33,11 +33,17 @@ $lms = Join-Path $env:USERPROFILE '.lmstudio\bin\lms.exe'
 if (-not (Test-Path $lms)) { $lms = (Get-Command lms -ErrorAction Stop).Source }
 
 # lms runs in its own hidden console: inside the task's console it can send a
-# Ctrl+C that ends this script.
-function Lms([string[]]$arguments) {
+# Ctrl+C that ends this script. Wait for lms itself, not with -Wait, which also waits for
+# whatever lms starts: "lms server start" opens the LM Studio app, which stays open, and
+# that held the Nov 17 run until the task's 4-hour limit, blocking the other night tasks.
+function Lms([string[]]$arguments, [int]$timeoutSec = 300) {
     $out = [IO.Path]::GetTempFileName()
-    Start-Process $lms -ArgumentList $arguments -Wait -WindowStyle Hidden `
-        -RedirectStandardOutput $out -RedirectStandardError "$out.err" | Out-Null
+    $p = Start-Process $lms -ArgumentList $arguments -PassThru -WindowStyle Hidden `
+        -RedirectStandardOutput $out -RedirectStandardError "$out.err"
+    if (-not $p.WaitForExit($timeoutSec * 1000)) {
+        "lms $($arguments -join ' ') was still going after $timeoutSec s; stopped it"
+        Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+    }
     Get-Content $out, "$out.err" -ErrorAction SilentlyContinue
     Remove-Item $out, "$out.err" -ErrorAction SilentlyContinue
 }
@@ -86,7 +92,10 @@ if ($env:OPENWEBUI_API_KEY -and -not $eveningOnly -and -not (OpenWebUI-Up)) {
 
 $before = Loaded-Models
 $serverWasRunning = $null -ne $before
-if (-not $serverWasRunning) { Lms @('server', 'start'); Start-Sleep 5 }
+if (-not $serverWasRunning) {
+    Lms @('server', 'start')
+    for ($i = 0; $i -lt 24 -and $null -eq (Loaded-Models); $i++) { Start-Sleep 5 }
+}
 $modelWasLoaded = @(Loaded-Models) -match [regex]::Escape($model.Split('/')[-1])
 # The model doesn't quite fit on the 16 GB card at this context, and forcing it all on can freeze the PC,
 # so part of it stays in system memory (gpu_offload is the share that goes on the GPU).
@@ -103,11 +112,21 @@ $py = Get-Command py -ErrorAction SilentlyContinue
 $pyArgs = @("`"$(Join-Path $here 'refresh_lists.py')`"") + $args
 if ($py) { $exe = $py.Source; $pyArgs = @('-3') + $pyArgs } else { $exe = 'python' }
 $out = [IO.Path]::GetTempFileName()
-$proc = Start-Process $exe -ArgumentList $pyArgs -Wait -PassThru -WindowStyle Hidden `
+$proc = Start-Process $exe -ArgumentList $pyArgs -PassThru -WindowStyle Hidden `
     -RedirectStandardOutput $out -RedirectStandardError "$out.err"
+$null = $proc.Handle  # keeps the exit code readable once it ends
+# The longest healthy run so far took 141 minutes. Past this, something is stuck: stop it so
+# the run ends and the other night tasks aren't held up.
+$limitMin = 160
+if ($proc.WaitForExit($limitMin * 60 * 1000)) {
+    $code = $proc.ExitCode
+} else {
+    "The lists refresh was still going after $limitMin minutes; stopping it"
+    taskkill /PID $proc.Id /T /F *> $null
+    $code = 1
+}
 Get-Content "$out.err" -ErrorAction SilentlyContinue  # errors that stopped Python, if any
 Remove-Item $out, "$out.err" -ErrorAction SilentlyContinue
-$code = $proc.ExitCode
 "Lists progress is in $env:SOLAR_LISTS_LOG"
 
 if (-not $modelWasLoaded) { Lms @('unload', $model) }

@@ -1,87 +1,172 @@
-{"updated": "2026-11-17", "updated_at": "2026-11-17T13:14:21Z", "teams": {
-  "blazers": {
-    "mood": "Frustrated",
-    "pulse": "Monday's 106-98 loss in Minnesota stung because Portland's offense went cold and nobody but Deni Avdija got going. Avdija's 27 points kept fans happy with him, but the free-throw gap and turnovers had people grumbling. Good news: the rematch is tonight, so there's a quick shot at revenge.",
-    "storylines": [
-      "Lost 106-98 at Minnesota; Terrence Shannon Jr. dropped a career-high 34",
-      "Avdija: 27 points, 8 boards, 4 assists, but no other Blazer scored more than 10",
-      "Clingan put up 10 points, 10 rebounds and 5 blocks",
-      "Rematch at Minnesota tonight (Tue Nov 17); Morant, Krejci and Sharpe listed out, Youngblood iffy"
-    ],
-    "sources": [
-      {"name": "ESPN recap", "url": "https://www.espn.com/nba/recap/_/gameId/401909999"},
-      {"name": "KATU Rip City Wrap-Up", "url": "https://katu.com/news/local/rip-city-wrap-up-blazers-lose-to-timberwolves-106-98"},
-      {"name": "Blazer's Edge recap", "url": "https://www.blazersedge.com/nba-scores/118543/timberwolves-bite-blazers-on-frigid-shooting-night"},
-      {"name": "SI: 3 winners, 1 loser", "url": "https://www.si.com/nba/trailblazers/onsi/3-winners-and-1-loser-from-blazers-loss-vs-timberwolves"},
-      {"name": "iHeart injury report (Nov 17)", "url": "https://sportsradio957.iheart.com/content/2026-11-17-trail-blazers-vs-timberwolves-injury-report-nov-17/"}
-    ]
-  },
-  "timbers": {
-    "mood": "Underdog swagger",
-    "pulse": "The Timbers snuck into the playoffs as the West's No. 7 seed on a four-game win streak, and fans are leaning into the underdog role. Round One is a best-of-three against No. 2 FC Dallas, which hasn't lost to Portland in its last six meetings.",
-    "storylines": [
-      "Game 1 at FC Dallas: Sat Nov 21, 1 p.m. Central (11 a.m. Pacific)",
-      "Game 2 at Providence Park: Sat Nov 28, 7:30 p.m.; also on FS1 and FOX Deportes, all games on Apple TV",
-      "Lassiter, Velde and Da Costa combined for 9 goals and 4 assists in the closing win streak",
-      "Third straight postseason, under Marti Cifuentes, who took over in July"
-    ],
-    "sources": [
-      {"name": "Timbers.com (Game 2)", "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"},
-      {"name": "KPTV (schedule)", "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"},
-      {"name": "KATU (win streak)", "url": "https://katu.com/sports/timbers/portland-timbers-ride-four-game-winning-streak-into-2026-mls-cup-playoffs-providence-park-oregon-mls-cup-playoffs-soccer"},
-      {"name": "Dallas Morning News preview", "url": "https://www.dallasnews.com/sports/fc-dallas/article/fc-dallas-eric-quill-mls-playoffs-portland-preview-22516585.php"},
-      {"name": "MLSsoccer.com (hot streak)", "url": "https://www.mlssoccer.com/news/portland-timbers-ride-hot-streak-into-audi-mls-cup-playoffs"}
-    ]
-  },
-  "f1": {
-    "mood": "Vegas mode",
-    "pulse": "The titles are settled: Kimi Antonelli clinched the drivers' crown in Mexico and Mercedes wrapped up the constructors' in Sao Paulo. All the buzz now is the five-way scrap for runner-up heading into Las Vegas this week, the first Vegas race under the new no-DRS rules.",
-    "storylines": [
-      "Las Vegas GP runs Nov 19-21; three races left",
-      "Fight for P2: Verstappen 279, Russell 262, Hamilton 261, Leclerc 249, Norris 246",
-      "Verstappen won Vegas in 2023 and 2025 and is the bookies' favorite",
-      "Lando Norris won from pole in Sao Paulo; Verstappen came from 21st to finish second"
-    ],
-    "sources": [
-      {"name": "Las Vegas Review-Journal", "url": "https://www.reviewjournal.com/sports/motor-sports/formula-1/whats-left-to-race-for-at-f1-las-vegas-grand-prix-after-champion-decided-3914384/"},
-      {"name": "Grande Premio (five-way fight)", "url": "https://grandepremio.com/en/f1/verstappen-hamilton-and-russell-face-five-way-f1-fight-with-just-33-points-between-them/"},
-      {"name": "Motorsport.com (Vegas schedule)", "url": "https://www.motorsport.com/f1/news/f1-las-vegas-gp-2026-start-time-schedule-and-how-to-watch/10874866/"},
-      {"name": "RG.org (Vegas odds)", "url": "https://rg.org/news/autosport/las-vegas-grand-prix-odds-verstappen-vs-antonelli-f1-best-bets"}
-    ]
-  },
-  "ducks": {
-    "mood": "Rolling",
-    "pulse": "Saturday's 31-7 rout of Michigan at Autzen has Duck fans feeling great about the late-season turnaround. At 7-3 they're the highest-ranked three-loss team, and Dan Lanning is openly pitching their playoff case, though the remaining schedule offers no more ranked wins.",
-    "storylines": [
-      "Beat Michigan 31-7; Dakorien Moore (59 yds) and Dierre Hill Jr. (49 yds) scored long TDs, Hill also ran for 98",
-      "No. 16 in the CFP rankings; still alive for an at-large spot or the Big Ten title route",
-      "Next game: Friday Nov 20 at Michigan State, 5:00 p.m. Pacific on FOX",
-      "Regular-season finale vs. Washington at Autzen on Nov 28 (time and TV TBA)"
-    ],
-    "sources": [
-      {"name": "ESPN recap", "url": "https://www.espn.com/college-football/recap?gameId=401858523"},
-      {"name": "SI: winners and losers", "url": "https://www.si.com/college/oregon/football/oregon-ducks-beat-michigan-wolverines-four-biggest-winners-losers"},
-      {"name": "SI: Lanning's playoff pitch", "url": "https://www.si.com/college/oregon/football/oregon-coach-dan-lanning-college-football-playoff-pitch-warning"},
-      {"name": "ClutchPoints (CFP case)", "url": "https://clutchpoints.com/ncaa-football/oregon-football-news-dan-lanning-ducks-cfb-michigan-state"},
-      {"name": "CBS Sports schedule", "url": "https://www.cbssports.com/college-football/teams/OREG/oregon-ducks/schedule/"},
-      {"name": "The Quack Report (kickoff PT)", "url": "https://thequackreport.com/schedule/"}
-    ]
-  },
-  "niners": {
-    "mood": "Thrilled, a bit nervous",
-    "pulse": "Sunday's 46-40 shootout win in Dallas has the 49ers at 8-1 and No. 1 in the power rankings, with Purdy posting a career-best 389 passing yards. The worry is the defense: zero sacks and pressure on just 12 of 51 dropbacks, and Niners Nation is arguing over whether the pass rush or the secondary is the bigger problem.",
-    "storylines": [
-      "Beat Dallas 46-40: 584 yards of offense, two long McCaffrey TD catches, a 70-yard Deebo TD run",
-      "Pass rush vs. secondary debate; Bosa still looking for his first sack since returning",
-      "Shanahan on the late fade: \"It seems like we got gassed\"",
-      "Next game: Sunday Nov 22 vs. Vikings in Mexico City, 5:20 p.m. Pacific on NBC/Peacock (Sunday Night Football)"
-    ],
-    "sources": [
-      {"name": "ESPN recap", "url": "https://www.espn.com/nfl/recap?gameId=401873063"},
-      {"name": "NBC Sports Bay Area (power rankings)", "url": "https://www.nbcsportsbayarea.com/nfl/san-francisco-49ers/week-11-power-rankings-cowboys-win/1978963/"},
-      {"name": "Niners Nation: winners and losers", "url": "https://www.ninersnation.com/san-francisco-49ers-news/165819/9-winners-7-losers-and-1-idk-from-the-49ers-win-over-the-cowboys"},
-      {"name": "Niners Nation: Bosa concern", "url": "https://www.ninersnation.com/san-francisco-49ers-news/165862/san-francisco-49ers-news-concern-nick-bosa-return-after-injury-dallas-cowboys-loss-sack-production-kyle-shanahan"},
-      {"name": "NBC Sports Bay Area (how to watch)", "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"}
-    ]
+{
+  "updated": "2026-11-18",
+  "updated_at": "2026-11-18T13:15:25Z",
+  "teams": {
+    "blazers": {
+      "mood": "Gutted",
+      "pulse": "Tuesday's 106-105 loss in Minnesota was a gut punch: Portland led by seven with under two minutes left, then went scoreless the last 50 seconds and gave up a McDaniels layup with 2.6 seconds to go. Fans are calling it one of the worst collapses of the year, and it was the second loss in two nights to the Wolves.",
+      "storylines": [
+        "Lost 106-105 at Minnesota after a late inbounds steal; Jaden McDaniels hit the winner",
+        "Damian Lillard led Portland with 25; Ayo Dosunmu scored 30 for Minnesota",
+        "Deni Avdija sat with a sore left foot, his first missed game of the season",
+        "Clingan had 12 points and 12 boards, but his late pass was picked off",
+        "Next up: Thursday at Milwaukee, with Avdija's status unclear"
+      ],
+      "sources": [
+        {
+          "name": "SF Chronicle (AP recap)",
+          "url": "https://www.sfchronicle.com/sports/article/mcdaniels-scores-with-2-6-seconds-left-to-lift-22536764.php"
+        },
+        {
+          "name": "Blazer's Edge recap",
+          "url": "https://www.blazersedge.com/gameday-coverage/118579/portland-trail-blazers-minnesota-timberwolves-score-recap-damian-lillard-lamelo-ball-nba-news"
+        },
+        {
+          "name": "Blazer's Edge analysis",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/118586/portland-trail-blazers-minnesota-timberwolves-final-score-boxscore-stats-damian-lillard"
+        },
+        {
+          "name": "Yahoo Sports (fan reaction)",
+          "url": "https://sports.yahoo.com/articles/brutal-one-worst-collapses-nba-055133353.html"
+        },
+        {
+          "name": "TSN (Avdija out)",
+          "url": "https://www.tsn.ca/nba/article/trail-blazers-rule-out-avdija-vs-timberwolves-with-sore-foot-n1-50515349/"
+        },
+        {
+          "name": "CBS Sports (Clingan)",
+          "url": "https://cbssports.com/fantasy/basketball/news/trail-blazers-donovan-clingan-records-double-double-in-defeat"
+        }
+      ]
+    },
+    "timbers": {
+      "mood": "Underdog swagger",
+      "pulse": "No game since the regular season ended, so the vibe is all playoff build-up. The Timbers come in as the West's No. 7 seed on a four-game win streak, and Velde says the group is embracing the underdog role against No. 2 FC Dallas.",
+      "storylines": [
+        "Game 1 at FC Dallas: Sat Nov 21, 1 p.m. Pacific, on Apple TV",
+        "Game 2 at Providence Park: Sat Nov 28",
+        "Season series: a 2-2 draw in Portland and a 2-1 Dallas win in Frisco",
+        "Cifuentes says Antony has a chance to return from a month-long knee issue (Rotowire, Nov 16)",
+        "Rolled in on four straight wins to clinch the No. 7 seed"
+      ],
+      "sources": [
+        {
+          "name": "Fox 4 (series schedule)",
+          "url": "https://www.fox4news.com/sports/fc-dallas-2026-mls-cup-playoffs-portland-timbers"
+        },
+        {
+          "name": "Willamette News (Game 1)",
+          "url": "https://www.willamettenews.com/post/timbers-open-mls-playoffs-at-fc-dallas-saturday-as-sophia-wilson-awaits-nwsl-mvp-word"
+        },
+        {
+          "name": "Rotowire (Antony)",
+          "url": "https://www.rotowire.com/soccer/headlines/antony-injury-could-return-for-playoff-clash-547045"
+        },
+        {
+          "name": "KATU (win streak)",
+          "url": "https://katu.com/sports/timbers/portland-timbers-ride-four-game-winning-streak-into-2026-mls-cup-playoffs-providence-park-oregon-mls-cup-playoffs-soccer"
+        },
+        {
+          "name": "Timbers.com (Game 2)",
+          "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
+        }
+      ]
+    },
+    "f1": {
+      "mood": "Vegas mode",
+      "pulse": "It's race week in Las Vegas. Both titles already belong to Antonelli and Mercedes, so the buzz is the scrap for second place, where Verstappen is the in-form driver after three wins in his last five races.",
+      "storylines": [
+        "Las Vegas GP this weekend; three races left",
+        "P2 fight: Verstappen 279, Russell 262, Hamilton 261, Leclerc 249, Norris 246",
+        "Verstappen has podiums in eight straight and is chasing a third Vegas win",
+        "Cadillac seat question: stick with Bottas or give Colton Herta his F1 shot"
+      ],
+      "sources": [
+        {
+          "name": "Sky Sports (what's left)",
+          "url": "https://www.skysports.com/f1/news/13611983/las-vegas-gp-whats-still-to-play-for-over-final-three-races-of-f1-2026-season-with-battles-in-drivers-and-constructors-championships"
+        },
+        {
+          "name": "TimesLIVE/Reuters (Verstappen)",
+          "url": "https://www.timeslive.co.za/motoring/2026-11-18-verstappen-has-momentum-to-claim-third-las-vegas-grand-prix-victory/"
+        },
+        {
+          "name": "Formula1.com (5 storylines)",
+          "url": "https://www.formula1.com/en/latest/article/its-race-week-5-storylines-were-excited-about-ahead-of-the-2026-las-vegas-grand-prix.3fjavheTbHD8fjZI0i7BWd"
+        },
+        {
+          "name": "Motorsport.com (Vegas schedule)",
+          "url": "https://www.motorsport.com/f1/news/f1-las-vegas-gp-2026-start-time-schedule-and-how-to-watch/10874866/"
+        }
+      ]
+    },
+    "ducks": {
+      "mood": "Rolling",
+      "pulse": "Duck fans are still riding high after the 31-7 rout of Michigan, and the Ducks are now big road favorites at struggling Michigan State. The only thing nagging anyone is that the Spartans have never lost to Oregon in East Lansing.",
+      "storylines": [
+        "Next game: Friday Nov 20 at Michigan State, 5:00 p.m. Pacific on FOX",
+        "Oregon (7-3, No. 16) is about a 16-point favorite",
+        "Michigan State is 0-3 at home vs. Oregon all-time, but is 3-7 and QB Alessio Milivojevic is hurt",
+        "Coming off a 31-7 win over Michigan; regular-season finale vs. Washington Nov 28"
+      ],
+      "sources": [
+        {
+          "name": "GoDucks.com preview",
+          "url": "https://goducks.com/news/2026/11/16/football-ducks-head-to-east-lansing-for-friday-night-showdown"
+        },
+        {
+          "name": "FanDuel Research (odds)",
+          "url": "https://www.fanduel.com/research/oregon-vs-michigan-state-college-football-odds-picks-best-bets-for-11-20-2026"
+        },
+        {
+          "name": "Yahoo Sports (how to watch)",
+          "url": "https://sports.yahoo.com/articles/watch-oregon-vs-michigan-state-192944862.html"
+        },
+        {
+          "name": "ESPN recap (Michigan)",
+          "url": "https://www.espn.com/college-football/recap?gameId=401858523"
+        },
+        {
+          "name": "CBS Sports schedule",
+          "url": "https://www.cbssports.com/college-football/teams/OREG/oregon-ducks/schedule/"
+        }
+      ]
+    },
+    "niners": {
+      "mood": "Thrilled, a bit nervous",
+      "pulse": "Fans are still buzzing from the 46-40 shootout in Dallas that put the 49ers at 8-1, but the leaky pass rush has Niners Nation uneasy. Sunday's game in Mexico City is framed as a real test for Purdy against Brian Flores' defense, with thin air on top.",
+      "storylines": [
+        "Next game: Sunday Nov 22 vs. Vikings in Mexico City, 5:20 p.m. Pacific on NBC/Peacock",
+        "Team prepping for altitude in Colorado Springs before flying in",
+        "Pass rush worry: zero sacks in Dallas and Bosa still hunting his first sack since returning",
+        "Vikings WR Jordan Addison headed for short-term IR after thumb surgery (Star Tribune)"
+      ],
+      "sources": [
+        {
+          "name": "NBC Sports Bay Area (how to watch)",
+          "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"
+        },
+        {
+          "name": "SF Standard (Purdy vs. Flores)",
+          "url": "https://sfstandard.com/2026/11/16/brock-purdy-brian-flores-49ers-vikings/"
+        },
+        {
+          "name": "NBC Sports Bay Area (travel plan)",
+          "url": "https://www.nbcsportsbayarea.com/nfl/san-francisco-49ers/kyle-shanahan-vikings-road-trip-plans/1979778/"
+        },
+        {
+          "name": "Niners Nation (Bosa)",
+          "url": "https://www.ninersnation.com/san-francisco-49ers-news/165862/san-francisco-49ers-news-concern-nick-bosa-return-after-injury-dallas-cowboys-loss-sack-production-kyle-shanahan"
+        },
+        {
+          "name": "Star Tribune (Vikings injuries)",
+          "url": "https://www.startribune.com/minnesota-vikings-injury-report-jordan-addison-update-san-francisco-49ers-nfl-week-11-mexico-city/601920081"
+        },
+        {
+          "name": "ESPN recap (Dallas)",
+          "url": "https://www.espn.com/nfl/recap?gameId=401873063"
+        }
+      ]
+    }
   }
-}}
+}

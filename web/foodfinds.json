@@ -1,6 +1,24 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "items": [
+    {
+      "name": "The Woodland Collection chocolate bars",
+      "maker": "Wildwood Chocolate (Portland)",
+      "kind": "New product",
+      "what": "A new line of personal-sized chocolate bars from Portland's Wildwood, announced July 29, 2026 for a September launch, with seven debut flavors including Berry Berry, Salted Brown Butter Texas Pecan Brittle and Orange Confit & Cherry. Four caramel-infused bars are planned to follow later in the year.",
+      "where_to_buy": [],
+      "date": "2026-07-29",
+      "sources": [
+        {
+          "name": "Nosh: Wildwood Unveils The Woodland Collection",
+          "url": "https://www.nosh.com/pr/2026/07/29/wildwood-unveils-the-woodland-collection"
+        },
+        {
+          "name": "Snack & Bakery: Wildwood returns to its roots with chocolate collection",
+          "url": "https://www.snackandbakery.com/articles/116080-wildwood-returns-to-its-roots-with-chocolate-collection"
+        }
+      ]
+    },
     {
       "name": "Black Butte Porter",
       "maker": "Deschutes Brewery",

@@ -1,180 +1,211 @@
 {
-  "updated": "2026-11-17",
-  "updated_at": "2026-11-17T11:28:43Z",
+  "updated": "2026-11-18",
+  "updated_at": "2026-11-18T13:20:31Z",
   "analysis": {
-    "headline": "Tech stocks and futures fell as markets braced for Nvidia's upcoming earnings results.",
-    "summary": "Nasdaq and tech stocks extended a selloff driven by chip restrictions and Nvidia turmoil. Stock futures edged lower ahead of major Wall Street moves. Japan's economy unexpectedly contracted due to high energy costs from the Iran war. Investors are focused on Nvidia's Q3 earnings as a primary market catalyst.",
-    "sources": [
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQSHFoREFNUWJRYTJxR0pTRnpHM2Q1NlhjQ1pjN0w3U1FWM09sclNuMlVNLWx4YXF0TURpOEdtSk9sc3BXTEpBakhLd21neWhod2pvZ1hRNVAtZWxNTlZmUXl4TXNJQ0MyTTFqa0tpRGVmOVpQZlRidlZzYkFLYnlNSXduLUtPSXo3QUJ0aVhlM0xWVFNh?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQY29YTk5iU1MzaDlHR1JZaWJHNlh1ZXAyMERVdjhoRG1CdHF5NmtPQ3JjSlQ0TkJmeVJOZmRHTHhhUjR6NkxOcEMtSGxpUzZKalJUMnctZkJpbkIteU9MSnpfRDRFMUJ2VHV1NU40djlkZXVoN0dGWjdsWkxaa1lLV29nclhMVi1MLXJoSkFDM2RzeG1yR0pGUzQ0emlQcEFDbDFENXlkNll2c2x4WFpRYWI2cVBJbW1QdjVxVzhoaXljdHptZFVRaQ?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOdXRFNFFpU3YxcXBXWDlqSTdsUjNIQ3NtTGRMN053Q0M4VmZYbkhlekg5R0dVUUNSRXg4TVo4TDN2NGgtbVdfT2d0UzlJWFJ2NUNlT2tnQXY4eTNtTEVyZjdUNjJmVzFvaEs4WG5wWUJMcEppVDNIaXNjVHFUeGF1VTlIU3UtNDdkb21CWExIVW0tZFZjU1VRTWE0RlY3QzVxMklxY1ljR2l2ZU9manMyd0pqYlpBWFRqVmMyeHlwc29jSlJhZ1FwelNJbGlDNXo5TnY3bzVDLWJRenljcGxIS2FPVzQ0SzVFdEwzbjZZZw?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSE9NWUhoUFFKcm0wbzBUNi1MMmlkNmNFVU80UmFkYVFOOHVuRlByem91azAxZW1LTUJtWU55czVCQjZHd2JzcnlvQ0E4S0dXSFREbE1fY01YS3RETW45YzNwSV9xSTlLNTVzbzVFSmxxX19sWFd5aTltQUVLMTh4WVcxVV9URC1oS1VrMk9HdXVkRXRJWVVDclRCVDd5dw?oc=5"
-      }
-    ],
-    "by": "local model",
+    "headline": "Stocks fell Tuesday (S&P 500 down about 1% to its lowest close since July, Dow down about 849 points, Nasdaq down 0.7%), but futures are higher this morning after Nvidia's results beat expectations.",
+    "summary": "Tuesday's selloff was driven by worries about AI spending and valuations ahead of Nvidia's report, plus a sharp drop in software stocks such as Salesforce after OpenAI released new models; about 17 of every 20 S&P 500 stocks fell. After the close Nvidia reported revenue of $115.8 billion, up 103% from a year earlier, beat earnings estimates and authorized another $150 billion in buybacks, and this morning Bloomberg had Nasdaq 100 futures up about 0.8% and S&P 500 futures up about 0.4%, on track to snap a four-day slide. Bonds remain under pressure from inflation and Fed rate-hike bets: Kitco put the 10-year Treasury yield near 5.10% and said markets are pricing further hikes, which has left gold near one-year lows around $3,850 an ounce. Oil stayed firm, with WTI settling near $86 and Brent near $93, while Bitcoin futures fell 1.4% to about $64,200, their lowest close since mid-August. Even after Nvidia's beat, one strategist told Yahoo Finance the results don't settle the bigger questions about returns on AI spending, how it is financed and leadership uncertainty after Jensen Huang's departure as CEO.",
     "drivers": [
-      "Nvidia upcoming earnings results",
-      "New US AI chip rules and restrictions"
+      "Nvidia beat third-quarter estimates ($2.68 adjusted EPS vs $2.47 expected) and gave a stronger outlook, its first report since Jensen Huang stepped down as CEO",
+      "Software stocks slid on AI-disruption fears after OpenAI released new models; Salesforce fell about 9.4%, the worst performer in the Dow and S&P 500",
+      "Rising import prices kept inflation worries alive, and futures markets are pricing a Fed rate hike at the December 8-9 meeting",
+      "A CNN report that a classified NSA communications network went down pushed the indexes to their session lows, per CNBC"
     ],
     "watch": [
-      "Nvidia Q3 earnings report"
+      "Today (Wed): minutes of the Oct. 27-28 Fed meeting at 2 p.m. ET (11 a.m. Pacific), plus October housing starts",
+      "Today (Wed): earnings from Target, Lowe's and TJX; Yahoo Finance reports Anthropic is preparing to price its IPO",
+      "Thursday: Walmart third-quarter results before the open, weekly jobless claims and the Philadelphia Fed manufacturing survey"
+    ],
+    "sources": [
+      {
+        "name": "Washington Post: How major US stock indexes fared Tuesday 11/17/2026",
+        "url": "https://www.washingtonpost.com/business/2026/11/17/wall-street-stocks-dow-nasdaq/9f975f00-e2cf-11f1-a99e-b3e3805c6b8b_story.html"
+      },
+      {
+        "name": "CNBC: Nasdaq futures rise as Nvidia gains on earnings beat and solid outlook",
+        "url": "https://www.cnbc.com/2026/11/17/stock-market-today-live-updates.html"
+      },
+      {
+        "name": "Bloomberg: Nvidia Results Boost Nasdaq 100 Futures, Soothe AI Market Concerns",
+        "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-stock-futures-rally-as-nvidia-results-ease-ai-trade-worries"
+      },
+      {
+        "name": "Yahoo Finance: Stock market today, Wednesday, November 18",
+        "url": "https://finance.yahoo.com/markets/live/stock-market-today-wednesday-november-18-dow-sp-500-nasdaq-nvidia-anthropic-ipo-090613569.html"
+      },
+      {
+        "name": "Yahoo Finance: Stock market today, Tuesday, November 17",
+        "url": "https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-17-dow-sp-500-nasdaq-nvidia-earnings-retail-sales-143848454.html"
+      },
+      {
+        "name": "UPI: Dow drops nearly 850 points on Nvidia, NSA outage",
+        "url": "https://www.upi.com/Top_News/US/2026/11/17/dow-drops-850-nvidia-nsa/4291794956078/"
+      },
+      {
+        "name": "Kitco: Gold struggles near one-year lows as stocks slide, Fed hike bets persist",
+        "url": "https://www.kitco.com/news/article/2026-11-17/gold-struggles-near-one-year-lows-silver-rebounds-stocks-slide-fed-hike"
+      },
+      {
+        "name": "TradingKey: The Week Ahead (Nvidia, retail sales, FOMC minutes, Walmart)",
+        "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262305825-week-ahead-nvidia-q3-earnings-us-october-retail-sales-fomc-minutes-walmart-tradingkey"
+      },
+      {
+        "name": "Admiral Markets: Warsh speech preview, November 16, 2026",
+        "url": "https://admiralmarkets.com/education/articles/fundamental-analysys/warsh-speech-preview-november-16-2026"
+      },
+      {
+        "name": "Stock Titan: Earnings calendar for the week of November 16, 2026",
+        "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-16-2026"
+      }
     ]
   },
   "helium": {
-    "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant produces approximately 73 MMcf/Y. A purification facility opened in southwest Saskatchewan. Swift Current may host a $100 million helium liquefier.",
-    "sources": [
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUEU5ZDdHSzN0WU0tZ3pCa3pDWTVRb3MwYzZITGZPZUM3MzVvaWNiV2hKZHMyZThYX2MybGJ2eXBTQjVuSF8ySVVaRk1iMy1QbVRPdFJkaTR6NnFKRkQ5QnVOR3hIS2t5SThKNXJ0OHlXY1ExS1N5NUJhTmdIRzNCNW1fbm1EMXdTNDNvTGNHanNtdU5WWGZDVDdRUHU?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNNUJ4VHZCSkFUZFFDY0pmVFRMV0pOaDN0ZnBWcXUzVXl5SEUwRzJtQk52MV8yZW9nQkt0aGo0NUNfZnBCZldFMUYzTlc2UUdnRUdVVnNKdXpDMFR4QTZ1X01XSi1TS3M5WG1zbWZJc0taTUl4d2YxLVlGQmhVYUdVazFHb2d0cFVnZGQydTFEUFFRTzF3V0FZQWZfWUM0bkRnel9hdzFTNnZMb3lHZEttbUx3?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQWFNN09zMzdJSWZ3aFpGSkdyeEktb1VLLTZwY0FBMVAtaE45dHR4M0I3Y0dzVWptV2FoMHZqNWoxTzBIREkzemtBS1EwRV9kOTdPZTJEUVIzdEF1dzU0UldMOE54bnhWeEs4bHZIN0kyUmlPQkRQR2hNcG15ZVYyRTFrOF9VTUhjSVRWcHV4UlFDZ1lYamYwNHhzZWVsYjdLRVE2ZFBub0dWTmdMUjJlRGdEdWhDY0M1bzVieS0xTk8?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
-      }
-    ],
-    "by": "local model",
+    "headline": "North American Helium's new Stewart Valley plant is producing about 73 million cubic feet a year, and the company is pushing ahead with plans for Canada's first helium liquefier in Swift Current.",
+    "summary": "NAH's Stewart Valley purification facility, which the company calls Canada's largest helium field, came online on September 20, 2026 at roughly 73 million cubic feet per year, with output sold to global industrial gas distributors under long-term contracts. Its next project is a helium liquefaction plant in Swift Current, estimated at about $100 million; the company is still working toward a final investment decision and funding, and today the region's helium is trucked as gas to U.S. plants to be liquefied. A Swift Current report this week says new federal tax treatment putting helium on a footing closer to oil and gas could help the liquefier, though it is not direct funding and some of the company's requests are still under consideration. The wider market has been tight since March, when strikes halted Qatar's helium output and Russia restricted exports; analysts cited by Edison Group (including Bank of America) estimated spot prices up 40% to 100%, while long-term contract prices move more slowly.",
     "items": [
       {
-        "title": "Helium Evolution Launches Up to $3 Million Winter Seismic Program to Advance Exploration on 100% Working Interest Lands",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMioAJBVV95cUxQQnZSVU9YNlVQNjJqZkc0dmlQeGp3c1VaWkNVRGlzdldlbVplNHpsM3hmOGN5VU9rVWhaVGFua0VWRDBRMzdrdGVDZXFEdlNHZjgxajdFbWhENDhkakhCb01OMHZvd1o4em1fUk1TUHFlRTZ3TXQ5aGdjSjIzSTVFYkhzRkN6Y3JGZWZHZlNpOXpZaG00djBMNWRCeVFsRnZ6ZkdLMVlsdG5iODN0NFZZMmdxd1NuNlZDaDBUTUdmYXpLSzBkaWJZdmhwQ19yYUxMMHg1UXIzcXI2N1F1dGZ5MVd0X3N3Q0hORDB4MGR3WXhOTnBaS3NYM0lrQWJJMmRhQlZISW5qcnFzOFpULVdMSU9vOXZVV3drNlJHeUt4SXbSAaACQVVfeXFMUEJ2UlVPWDZVUDYyamZHNHZpUHhqd3NVWlpDVURpc3ZXZW1aZTR6bDN4ZjhjeVVPa1VoWlRhbmtFVkQwUTM3a3RlQ2VxRHZTR2Y4MWo3RW1oRDQ4ZGpIQm9NTjB2b3daOHptX1JNU1BxZUU2d010OWhnY0oyM0k1RWJIc0ZDemNyRmVmR2ZTaTl6WWhtNHYwTDVkQnlRbEZ2emZHSzFZbHRuYjgzdDRWWTJncXdTbjZWQ2gwVE1HZmF6S0swZGliWXZocENfcmFMTDB4NVFyM3FyNjdRdXRmeTFXdF9zd0NITkQweDBkd1l4Tk5wWktzWDNJa0FiSTJkYUJWSEluanJxczhaVC1XTElPbzl2VVd3azZSR3lLeEl2?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
+        "date": "2026-11-17",
         "title": "Helium getting oil and gas treatment good news for Swift Current",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
-        "source": "Google News: North American Helium"
+        "what": "Federal tax changes for the helium industry could help NAH's planned Swift Current liquefier, though some of the company's requests are still being considered.",
+        "url": "https://www.swiftcurrentonline.com/articles/helium-getting-oil-and-gas-treatment-good-news-for-swift-current"
       },
       {
-        "title": "Helium Evolution targets new Saskatchewan discoveries in CAD $3m programme",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNVURYc1pUdmdITUdGQnlvQ1RENXdpRWs2Ri1QdTVZekgxNjJCUll1TEJsRHJjX0M1eFdkQVZwRlhCSEZIck0wcTNUdmJvNTY2Um53MFFjc2o2QjBadjBSU29peEhTVXRBYjh1N0xGZzl2d1VwQXVtQVhQZFh2RGptalJoRXd4UkVoendWWjUzX1MxRWdDbGpxMkJlSnB2Vks2ZnFsMlFLRzVaNnlfY2NnSXllVElUTzFYZ3FIMG1B?oc=5",
-        "source": "Google News: helium market"
+        "date": "2026-11-03",
+        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
+        "what": "NAH pledged $100,000 over four years toward new Swift Current recreation facilities, including an aquatic centre.",
+        "url": "https://www.sasktoday.ca/swift-current-today/swift-current-news/helium-producer-gives-swift-current-recreation-plans-a-100k-lift-12968988"
       },
       {
-        "title": "A big win for Saskatchewan helium in federal budget",
-        "date": "2026-11-09",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdE8xSTRXWWUxci1tX2dZZ0Z1LUVOZnpuSUVsMVY2d3V1YVVjOFc3LXh4ak4wcmVJNURFNnM3cnFyRVhscnFVZjI5eVFiU29aWWJyaTloYWk5Q1MycFdJTDhickU5bkstakFLX2pPSF80d0EweTJKQW1FOUtfMWxOTWQxS28?oc=5",
-        "source": "Google News: helium market"
+        "date": "2026-10-16",
+        "title": "Swift Current could be home to $100 million helium liquefier",
+        "what": "NAH is planning a roughly $100 million helium liquefaction plant in Swift Current, which would be the first in Canada.",
+        "url": "https://www.ckom.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
       },
       {
-        "title": "Saskatchewan raises CAD $4.9m in third helium public offering",
-        "date": "2026-11-09",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5",
-        "source": "Google News: helium market"
+        "date": "2026-09-22",
+        "title": "North American Helium Starts Production at Canada's Largest Helium Field",
+        "what": "The Stewart Valley purification facility came onstream September 20 at about 73 million cubic feet of helium per year.",
+        "url": "https://stockhouse.com/news/press-releases/2026/09/22/north-american-helium-starts-production-at-canada-s-largest-helium-field"
+      }
+    ],
+    "sources": [
+      {
+        "name": "SwiftCurrentOnline: Helium getting oil and gas treatment good news for Swift Current",
+        "url": "https://www.swiftcurrentonline.com/articles/helium-getting-oil-and-gas-treatment-good-news-for-swift-current"
+      },
+      {
+        "name": "SaskToday: Helium producer gives Swift Current recreation plans a $100K lift",
+        "url": "https://www.sasktoday.ca/swift-current-today/swift-current-news/helium-producer-gives-swift-current-recreation-plans-a-100k-lift-12968988"
+      },
+      {
+        "name": "CKOM: Swift Current could be home to $100 million helium liquefier",
+        "url": "https://www.ckom.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
+      },
+      {
+        "name": "Stockhouse (press release): North American Helium starts production at Canada's largest helium field",
+        "url": "https://stockhouse.com/news/press-releases/2026/09/22/north-american-helium-starts-production-at-canada-s-largest-helium-field"
+      },
+      {
+        "name": "CBC: Canada's largest helium purification facility opens in southwest Sask.",
+        "url": "https://www.cbc.ca/news/canada/saskatchewan/canada-s-largest-helium-purification-facility-opens-in-southwest-sask-9.7382739"
+      },
+      {
+        "name": "Edison Group: The Iran war may have triggered the next global supply shock",
+        "url": "https://www.edisongroup.com/thematic/edison-explains-the-iran-war-may-have-triggered-the-next-global-supply-shock/BM-3352/"
       }
     ]
   },
   "realestate": {
-    "headline": "Sellers are lowering prices in a stagnant Portland market.",
-    "summary": "Sellers are cutting prices and helping buyers make deals. Homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 regulated affordable apartments.",
-    "sources": [
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcnRwN3NYcU1xQjdoMFo0aXJWSlhxaFJFYmZvYXp4Z2FSYWs3aElERGVjSUVuVTFjaUV3aElGQzJEV3JuX3lOdXp4ck8zbmlqRUlndW5sMEMwcHFJMHkyR3lHak1lU3pMTDh1cjlwVVJWODBxUkUtY2RZRGItcUN1N2p5QzZJSTdFZXZ2cG5fMTFMVnE3WVhVdU1uQTlXMXJHeVhaLVlqYVRXOGNLbk5jcVo5aEs?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE41YzhRRnJRblNETGVHT0VvSVRTV3VsRW1wUldUYkp6OEZuQ05qRUp5TERMbGlyNDBudHJSSFVFbnFCdDgtU2RSdWxnSHNHOEgwbXUtdjU2VkZyaGdxakF3VFk4OA?oc=5"
-      }
-    ],
-    "by": "local model",
-    "items": [
-      {
-        "title": "Oh Dear, Condo Prices Dropped by 15% to 34% in 40 Bigger Markets Already, and by 8% to 14% in another 28 Markets",
-        "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxORXJlUjFrRUNHOEh5aWpPMkZ2VnpOUDZsM1Brdk54XzNsR1NuUWtBQ1NvWlEyZFhJZFhGcXZmR1FJOEh6MzFuNFFISFJsTW04My11c1VjQTJPWkNFcUZ5cWdSMnlCcWxGR1Z2UG1pRkdjeUFZZlBQMjJCNU5JeDF0NWJiTC1JWnhRTVZTZkRoY3g3bXkwV1VVTExlUXdhTzZycjFfNXQ3WURZeDlzaDJNLVpKTG1weEJ6QWZ1NUppQUIwdHN3UUhzYXB3amNuU21GNDZaMzI3LTY?oc=5",
-        "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Mortgage rates today, Nov. 17, 2026: Rates continue to inch upward",
-        "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE43RENvdHdEX1l2QWVEOXowTjlkS1BycHROam91cUhrTGhsS1B0d0s5WnZHbHlfU19VaXBtSTYtRXR4ZFhiS2E2T05mTlJFX3pQRWdleU1MdmYtQjBWclI1ZGg5cXZJMGNoNkRLbmxpSQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage Rates Today: November 17, 2026 – 30-Year Rate Hits One-Month High",
-        "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE94Q3FrbXdaclZiODhoem5TY3dQUEJ3OEgyVHRITDBEUkdzOUlTRGV4SzA0em1NczRKVEtxbmdiQjhhMTdEYjUzWlpUQ0NVZjN3OXBqXzJtTm1FdzhBYk56LWdNaTFVa1lPdTVDOGtzTlNSTlU?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage and refinance interest rates today, Tuesday, November 17, 2026: Mortgage rates seeing double-digit weekly increases",
-        "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMiogJBVV95cUxQQkx1WlBWOUV6TUJObk1DbENkQnRLV3d3TFlBX2F4ZFkxTktLWnRiN25HbGdfMldnV0JZSDVXOWZLU2FOOUEwaWpkVDZOLURyeXlSUHZwcDNYN1hiZGZ2RlY4U01GTTdIdTVaT2hTcjNXQnZhSjBVTEJ4ZURyWThudkl3N1dfTVZwNFJsSlBkRFU0OHdVVFNiLUtiWHduMnlFbkU2UjBDWTc0ZENKeHVNZ3drd0FuX1d4RGg5ZS1ZQ1VDY3dLRHUzZEV0cVRnd2pUVnRJUm4zelJMX0J0Uk5STnFUdEdHaFVIZTh2SWlsOHRVYVA1WnA4OTZOOGpfM2xubjRxQjNGWFlyZE1jMnY1UG1rRmJNRDFWb3EzTTE3alRVQQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage Refinance Rates Today: November 17, 2026 – Rates Increase",
-        "date": "2026-11-17",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOOVprSVo2NllCWjA0S3FmWXRjNnZGTnRsWXBQMVU0aEhneUUycllsWDgzbUVvV0Q1MngtS1NSMzY4aVI5TldrLUxncnRNNUw2ckdVTGZ4Q3BUYzN3LWstdnMxb0xpOVp6RFdXenpUdVc1Tlo5VlR0WFF5NTBKdDZSWXRaVUdJMzNBdV9YZURB?oc=5",
-        "source": "Google News: mortgage rates"
-      }
-    ],
+    "headline": "Portland-area home prices are holding roughly flat while sales have slowed sharply, with RMLS showing October's metro median at $545,000, up 0.9% from a year ago.",
+    "summary": "RMLS October figures, as summarized by local brokers, show a Portland metro median sale price of $545,000 (up 0.9% year over year) while closed sales fell 21.5% from a year earlier to 1,622 and new listings dropped 12.2% to 2,077. Inventory sits at 4.3 months, which brokers describe as balanced but tilting toward buyers, and average market time was 67 days. Redfin's city-of-Portland data puts the median sale price at $525,000, up 0.9%, with homes selling in about 26 days versus 29 a year ago. Mortgage rates are easing but still high: Freddie Mac's 30-year average was 7.11% on November 12, its fourth straight weekly decline; none of today's sources broke out North Portland, St. Johns or Sauvie Island.",
     "stats": [
       {
-        "label": "Median sale price (Portland metro, October 2026)",
+        "label": "Median sale price (Portland metro, October, RMLS)",
         "value": "$545,000",
         "change": "+0.9% vs a year ago",
-        "source": "Cano Real Estate, Portland Metro Market Report (RMLS data)",
+        "source": "The McCreith Team: November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
+      },
+      {
+        "label": "Closed sales (Portland metro, October, RMLS)",
+        "value": "1,622",
+        "change": "-21.5% vs a year ago",
+        "source": "Portland Real Estate Market Update, November 2026",
+        "url": "https://realestateagentpdx.com/portland-real-estate-market-update-november-2026/44207"
+      },
+      {
+        "label": "New listings (Portland metro, October, RMLS)",
+        "value": "2,077",
+        "change": "-12.2% vs a year ago",
+        "source": "Cano Real Estate: Portland Metro Market Report October 2026",
         "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Months of inventory (Portland, as of Nov 4, 2026)",
-        "value": "4.0 months",
-        "change": "2,214 active listings; balanced market",
-        "source": "Cascade Sotheby's International Realty market report",
-        "url": "https://marketreports.cascadesothebysrealty.com/r/c1b8462f20"
+        "label": "Months of inventory (Portland metro, October, RMLS)",
+        "value": "4.3 months",
+        "change": "+0.1 months vs September",
+        "source": "Portland Real Estate Market Update, November 2026",
+        "url": "https://realestateagentpdx.com/portland-real-estate-market-update-november-2026/44207"
       },
       {
-        "label": "Median list price (Portland single-family, week of Nov 10, 2026)",
-        "value": "$600,000",
-        "change": "Market Action Index 37, down from 38 a month earlier",
-        "source": "Altos Research weekly market report",
-        "url": "https://altos.re/r/10577c6"
+        "label": "Median sale price (city of Portland, October, Redfin)",
+        "value": "$525,000",
+        "change": "+0.9% vs a year ago",
+        "source": "Redfin: Portland Housing Market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       },
       {
-        "label": "30-year fixed mortgage rate (US average, week of Nov 12, 2026)",
+        "label": "Median days on market (city of Portland, October, Redfin)",
+        "value": "26 days",
+        "change": "vs 29 days a year ago",
+        "source": "Redfin: Portland Housing Market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "Median listing price (Portland-Vancouver-Hillsboro, October, Realtor.com)",
+        "value": "$580,000",
+        "change": "down from $587,750 in September",
+        "source": "FRED: Median Listing Price, Portland-Vancouver-Hillsboro",
+        "url": "https://fred.stlouisfed.org/series/MEDLISPRI38900"
+      },
+      {
+        "label": "30-year fixed mortgage rate (U.S. average, week of Nov. 12)",
         "value": "7.11%",
-        "change": "down from 7.18% the prior week; 6.24% a year ago",
-        "source": "Freddie Mac Primary Mortgage Market Survey",
+        "change": "down from 7.18% a week earlier",
+        "source": "Freddie Mac: Primary Mortgage Market Survey",
+        "url": "https://www.freddiemac.com/pmms"
+      }
+    ],
+    "items": [
+      {
+        "date": "2026-11-12",
+        "title": "Freddie Mac: 30-year rate falls to 7.11%",
+        "what": "The 30-year fixed average dipped from 7.18% to 7.11%, its fourth straight weekly decline.",
+        "url": "https://www.freddiemac.com/pmms"
+      }
+    ],
+    "sources": [
+      {
+        "name": "The McCreith Team: November 2026 Market Action Report (RMLS data)",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
+      },
+      {
+        "name": "Portland Real Estate Market Update, November 2026 (RMLS data)",
+        "url": "https://realestateagentpdx.com/portland-real-estate-market-update-november-2026/44207"
+      },
+      {
+        "name": "Cano Real Estate: Portland Metro Real Estate Market Report October 2026",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "name": "Redfin: Portland Housing Market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "name": "FRED: Median Listing Price in Portland-Vancouver-Hillsboro (Realtor.com data)",
+        "url": "https://fred.stlouisfed.org/series/MEDLISPRI38900"
+      },
+      {
+        "name": "Freddie Mac: Primary Mortgage Market Survey",
         "url": "https://www.freddiemac.com/pmms"
       }
     ]

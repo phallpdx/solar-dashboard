@@ -1,38 +1,6 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "shows": [
-    {
-      "artist": "OZ NOY TRIO w/ Brian Charette & Dave Weckl",
-      "kind": "Touring",
-      "date": "2026-11-17",
-      "time": "7:30 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "A trio performance featuring guests.",
-      "tickets": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/oz-noy-trio-w-brian-jack-london-revue-tickets/14884103?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
-      "artist": "Cyrus Nabipoor Quartet",
-      "kind": "Local",
-      "date": "2026-11-18",
-      "time": "06:30 PM",
-      "venue": "The 1905",
-      "price": "$25",
-      "what": "A bold expression of American Music featuring unique originals and covers.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
@@ -69,15 +37,19 @@
       "artist": "Kerry Politzer and Bossa PDX",
       "kind": "Latin",
       "date": "2026-11-19",
-      "time": "06:30 PM",
+      "time": "6:30 pm",
       "venue": "The 1905",
       "price": "$25",
-      "what": "Portland pianist inspired by Brazilian music.",
+      "what": "Portland pianist Kerry Politzer's Brazilian-jazz group Bossa PDX; all ages.",
       "tickets": "https://the1905.turntabletickets.com/",
       "sources": [
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/"
+        },
+        {
+          "name": "Portland Events Calendar",
+          "url": "https://www.pdx-events.com/"
         }
       ]
     },
@@ -85,15 +57,15 @@
       "artist": "Farnell Newton's The Soul of Jazz",
       "kind": "Local",
       "date": "2026-11-20",
-      "time": "06:30 PM",
+      "time": "6:30 pm",
       "venue": "The 1905",
       "price": "$30",
-      "what": "A tribute to the legendary trumpeter Donald Byrd.",
-      "tickets": "https://the1905.turntabletickets.com/",
+      "what": "Trumpeter Farnell Newton's set paying tribute to the legendary trumpeter and bandleader Donald Byrd; all ages.",
+      "tickets": "https://the1905.turntabletickets.com/shows/13232/2026-11-20",
       "sources": [
         {
           "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
+          "url": "https://the1905.turntabletickets.com/shows/13232/2026-11-20"
         }
       ]
     },
@@ -101,15 +73,19 @@
       "artist": "Kareem Kandi with Ali Jackson",
       "kind": "Local",
       "date": "2026-11-21",
-      "time": "06:30 PM",
+      "time": null,
       "venue": "The 1905",
       "price": "$30",
-      "what": "A versatile saxophonist performing jazz, blues, classical and funk.",
+      "what": "Portland saxophonist Kareem Kandi with drummer Ali Jackson, who held the drum chair of the Jazz at Lincoln Center Orchestra; listed on The 1905's upcoming shows page.",
       "tickets": "https://the1905.turntabletickets.com/",
       "sources": [
         {
-          "name": "The 1905 (Turntable Tickets)",
+          "name": "The 1905 (Turntable Tickets) upcoming shows",
           "url": "https://the1905.turntabletickets.com/"
+        },
+        {
+          "name": "Bandsintown: The 1905",
+          "url": "https://www.bandsintown.com/v/10022105-the-1905"
         }
       ]
     },
@@ -166,6 +142,26 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"
+        }
+      ]
+    },
+    {
+      "artist": "Steve Oliver",
+      "kind": "Touring",
+      "date": "2026-12-02",
+      "time": "8:00 pm",
+      "venue": "Jack London Revue",
+      "price": "$26.24-$206.49",
+      "what": "Soul'd Out presents an evening with contemporary jazz guitarist, singer and producer Steve Oliver (doors 7 pm, 21+); found on event-listing sites, not on the venue's own page.",
+      "tickets": null,
+      "sources": [
+        {
+          "name": "Happening Next listing",
+          "url": "https://happeningnext.com/event/steve-oliver-eid3fk8rr9wmw"
+        },
+        {
+          "name": "Concerts50 listing",
+          "url": "https://concerts50.com/show/steve-oliver-in-portland-tickets-dec-02-2026"
         }
       ]
     },
@@ -278,6 +274,22 @@
       ]
     },
     {
+      "artist": "George Fludas Trio with George Colligan and Robert Rodriguez",
+      "kind": "Touring",
+      "date": "2026-12-10",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$35",
+      "what": "Chicago drummer George Fludas, praised by critics for his swing, with pianist George Colligan and bassist Robert Rodriguez; all ages.",
+      "tickets": "https://the1905.turntabletickets.com/shows/13295/2026-12-10",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/shows/13295/2026-12-10"
+        }
+      ]
+    },
+    {
       "artist": "Mark Guiliana",
       "kind": "Touring",
       "date": "2026-12-11",
@@ -294,22 +306,6 @@
         {
           "name": "Eventworld ticket listing",
           "url": "https://www.eventworld.com/mark-guiliana-portland-tickets-12-11-2026/event/512087"
-        }
-      ]
-    },
-    {
-      "artist": "Matheny / Alex Duo",
-      "kind": "Local",
-      "date": "2026-12-13",
-      "time": "4:00pm to 7:00pm",
-      "venue": "INHOUSE Jazz",
-      "price": null,
-      "what": "Dmitri Matheny and Cheryl Alex perform at a private residence.",
-      "tickets": "https://jazzoregon.org/events/list",
-      "sources": [
-        {
-          "name": "Web search: touring jazz in Portland",
-          "url": "https://jazzoregon.org/events/list"
         }
       ]
     },
@@ -380,6 +376,42 @@
           "url": "https://happeningnext.com/event/the-three-ds-eid3fkad1xfa4"
         }
       ]
+    },
+    {
+      "artist": "Kat Edmonson",
+      "kind": "Vocal",
+      "date": "2026-12-29",
+      "time": "7:00 pm",
+      "venue": "Alberta Rose Theatre",
+      "price": null,
+      "what": "Jazz-pop singer-songwriter Kat Edmonson returns to the Alberta Rose, where she last played Portland in February 2025; found on ticket listings, not on the venue's own page.",
+      "tickets": "https://www.tickpick.com/buy-kat-edmonson-tickets-alberta-rose-theatre-12-29-26-7pm/8132169/",
+      "sources": [
+        {
+          "name": "TickPick listing",
+          "url": "https://www.tickpick.com/buy-kat-edmonson-tickets-alberta-rose-theatre-12-29-26-7pm/8132169/"
+        },
+        {
+          "name": "Eventworld listing",
+          "url": "https://www.eventworld.com/kat-edmonson-portland-tickets-12-29-2026/event/488842"
+        }
+      ]
+    },
+    {
+      "artist": "Mike Prigodich Quartet (MP4)",
+      "kind": "Local",
+      "date": "2027-01-16",
+      "time": "7:00 pm",
+      "venue": "The Burlingame Space",
+      "price": null,
+      "what": "Portland keyboardist Mike Prigodich, who played the 2026 Biamp Portland Jazz Festival, leads his quartet; reported by Jazz Near You, not confirmed on a venue page.",
+      "tickets": null,
+      "sources": [
+        {
+          "name": "Jazz Near You listing",
+          "url": "https://www.jazznearyou.com/portland/events/mike-prigodich-quartet-mp4-at-the-burlingame-space-on-january-16"
+        }
+      ]
     }
   ],
   "regulars": [
@@ -406,6 +438,12 @@
       "when": "Wednesday evenings",
       "venue": "Restaurant503",
       "url": "https://www.jazznearyou.com/world/events/jammin-with-steve-christofferson-and-friends-at-restaurant503-on-august-26"
+    },
+    {
+      "name": "Cake and Jazz (free local jazz, plus weekly open jams)",
+      "when": "Thursdays-Saturdays, about 7:30-9:30 pm",
+      "venue": "Farina Bakery",
+      "url": "https://www.travelportland.com/event/6977b1a27884cb40cbeed06f/"
     }
   ]
 }

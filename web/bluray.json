@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "deals": [
     {
       "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
@@ -7,6 +7,13 @@
       "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6, per Criterion. Most 4K titles are $24.99 (from $49.99), including The Princess Bride, Trainspotting, Uncut Gems and Blue Velvet; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). Amazon is matching some Criterion 4Ks, such as No Country for Old Men (listed separately below, along with Perfect Days and KPop Demon Hunters).",
       "ends": "2026-12-06",
       "url": "https://slickdeals.net/f/20265297-criterion-collection-semi-annual-50-off-sale-at-barnes-and-noble"
+    },
+    {
+      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
+      "store": "Amazon",
+      "detail": "Criterion's Black Friday sale at Amazon takes 50% off 4K UHD, Blu-ray and DVD editions through Dec. 7, per Consequence. Standouts include the Complete Kubrick 4K Collection at $299.98 and KPop Demon Hunters 4K at $24.98 (listed below).",
+      "ends": "2026-12-07",
+      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
     },
     {
       "title": "No Country for Old Men: The Criterion Collection (4K UHD)",
@@ -70,13 +77,6 @@
       "detail": "$75 (list $99.99, 25% off) for the five-film 4K set, per HD Report (Nov. 9).",
       "ends": null,
       "url": "https://hd-report.com/2026/11/09/the-complete-rambo-4k-collection-is-only-75/"
-    },
-    {
-      "title": "Resident Evil 6-Movie 4K SteelBook Library Case",
-      "store": "Amazon",
-      "detail": "33% off list for the six-film 4K SteelBook collection, per HD Report (Nov. 4); check the current price on Amazon.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/04/the-resident-evil-4k-steelbook-library-case-6-movie-collection-is-33-off/"
     },
     {
       "title": "Back to the Future Trilogy: 40th Anniversary Edition (4K UHD)",
@@ -144,7 +144,7 @@
     {
       "title": "Speed Racer (4K UHD + Digital)",
       "store": "Amazon",
-      "detail": "$12.99 at Amazon; Gruv has it at the same price (new customers get 15% off with code FIRSTGRUV15).",
+      "detail": "$12.99 at Amazon; Gruv has it at the same price (new customers get 15% off with code FIRSTGRUV15). HD Report's Nov. 18 roundup still lists it at $12.99.",
       "ends": null,
       "url": "https://slickdeals.net/f/20307651-speed-racer-4k-uhd-digital-12-99-free-shipping-w-prime-or-on-35"
     },
@@ -191,6 +191,48 @@
       "url": "https://slickdeals.net/f/20299629-raya-and-the-last-dragon-4k-uhd-blu-ray-digital-9-75-free-shipping-w-walmart-or-on-35"
     },
     {
+      "title": "The Bad Guys 2 (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report's Nov. 18 roundup of $12.99 4K discs ahead of Black Friday.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Ben-Hur (1959) (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report (Nov. 18).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Lee Cronin's The Mummy (2026) (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report (Nov. 18).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Minions & Monsters (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report (Nov. 18); some editions include a Blu-ray and digital code.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Pressure (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report (Nov. 18).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Wuthering Heights (4K UHD)",
+      "store": "Amazon",
+      "detail": "$12.99 at Amazon, per HD Report (Nov. 18).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
       "title": "2 for £30 on selected 4K UHDs (UK)",
       "store": "UK retailer",
       "detail": "Two selected 4K discs for £30, including Aliens, The Sixth Sense, Signs, Unbreakable, Minority Report and Predator; offer ends Dec. 31 per a UK deal site. UK pricing.",
@@ -231,24 +273,58 @@
       "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
       "ends": "2026-11-30",
       "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+    },
+    {
+      "title": "Total Recall (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£10.34 per a UK deal site; deal listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/total-recall-4k-uhd-blu-ray-5038455"
+    },
+    {
+      "title": "Trading Places (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£14.99 per a UK deal site. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/trading-places-4k-uhd-suitable-for-15-years-and-over-5038558"
+    },
+    {
+      "title": "Three Colours Trilogy: A Curzon Collection (4K UHD + Blu-ray, 7 discs)",
+      "store": "Amazon UK",
+      "detail": "£42 in Amazon's Black Friday sale per a UK deal site (Rarewaves lists £52.36); deal listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/three-colours-trilogy-a-curzon-collection-4k-ultra-hd-blu-ray-7-disc-set-5038907"
+    },
+    {
+      "title": "Avatar 3-Movie Collection (4K UHD + Blu-ray)",
+      "store": "Amazon UK",
+      "detail": "£36.35 with free delivery per a UK deal site, about £10 under the earlier SteelBook. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/avatar-3-movie-collection-4k-ultra-hd-blu-ray-5038885"
+    },
+    {
+      "title": "The Karate Kid 3-Movie Collection (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£36.74 with free delivery per a UK deal site. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/the-karate-kid-3-movie-collection-4k-uhd-blu-ray-5038900"
+    },
+    {
+      "title": "Blade Runner 2049 (4K UHD + Blu-ray)",
+      "store": "Amazon France",
+      "detail": "£9.66 plus about £2.56 import charge to the UK, per a UK deal site. US shipping not confirmed.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/blade-runner-2049-4k-uhd-blu-ray-5038173"
+    },
+    {
+      "title": "Jurassic World 7-Movie Collection (4K UHD)",
+      "store": "Rarewaves (UK)",
+      "detail": "£55.18 with code TREAT10, per a UK deal site. UK pricing.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/jurassic-world-7-movie-collection-4k-ultra-hd-5032157"
     }
   ],
   "upcoming": [
-    {
-      "title": "Amazon Black Friday sale",
-      "detail": "Amazon announced its Black Friday event starts Nov 19 at 12:01 a.m. PT and runs through Nov 30; specific 4K disc deals were not named yet.",
-      "url": "https://9to5toys.com/2026/11/10/amazon-black-friday-2026-officially-announced/"
-    },
-    {
-      "title": "Criterion Black Friday sale at Amazon",
-      "detail": "Consequence reports Criterion's Black Friday sale at Amazon with 50% off 4K UHD, Blu-ray and DVD; its listings run from Nov. 19 through Dec. 7.",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "Best Buy Black Friday sale",
-      "detail": "Best Buy's early sale started Nov 6; MacRumors reports the main Black Friday sale runs Nov 19 to 28, with Cyber Monday deals Nov 29 to 30. Disc deals were not detailed.",
-      "url": "https://macrumors.com/2026/11/06/best-buy-reveals-black-friday-2/"
-    },
     {
       "title": "Vinegar Syndrome Black Friday",
       "detail": "Main Black Friday sale reported to start Nov 27 at 12:01 a.m. ET, after a Nov 1 to 4 flash pre-order event.",

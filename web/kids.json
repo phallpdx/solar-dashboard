@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "note": "Toddler-friendly events in North Portland, Sauvie Island, Portland and Vancouver, soonest first. Some holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
@@ -9,6 +9,14 @@
       "where": "St. Johns Library, North Portland",
       "detail": "Weekly toddler storytime on Tuesdays, 12:30 to 1:15 p.m., with books, songs, rhymes and movement; free. Space can be limited, so check the branch calendar for the next date.",
       "url": "https://multcolib.org/library-location/st-johns/events"
+    },
+    {
+      "title": "Christmas Ships Parade (Vancouver shore)",
+      "date": null,
+      "ends": "2026-12-18",
+      "where": "Vancouver Waterfront Park and Grant Street Pier, Vancouver, WA",
+      "detail": "Lighted boats parade on the Columbia from late November through Dec. 18, about 45 to 60 minutes per night, per Visit Vancouver WA. Check the nightly schedule; weather can cancel a night.",
+      "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
     },
     {
       "title": "Santa Photos: An Elf Christmas Experience at Vancouver Mall",
@@ -31,7 +39,7 @@
       "date": "2026-11-20",
       "ends": "2027-01-03",
       "where": "Oregon Zoo, Portland",
-      "detail": "Wildlife-themed holiday lights. The zoo's page says the 2026 run goes through Jan. 3, 2027, closed Nov. 24 to 26 and Dec. 25; listings give a Nov. 20 opening at 4:30 p.m. Timed tickets online, with a TriMet ride included. Go early in the evening with little ones.",
+      "detail": "Wildlife-themed holiday lights opening Nov. 20; the zoo's page says the run goes through Jan. 3, 2027, closed Nov. 24 to 26 and Dec. 25. Listings give a 4:30 p.m. nightly opening. Timed tickets online, with a TriMet ride included. Go early in the evening with little ones.",
       "url": "https://oregonzoo.org/lights"
     },
     {
@@ -83,12 +91,20 @@
       "url": "https://www.bringfido.ca/event/43627"
     },
     {
-      "title": "Christmas Ships Parade (Vancouver shore)",
-      "date": null,
-      "ends": "2026-12-18",
-      "where": "Vancouver Waterfront Park and Grant Street Pier, Vancouver, WA",
-      "detail": "Lighted boats parade on the Columbia from late November through Dec. 18, about 45 to 60 minutes per night, per Visit Vancouver WA. Check the nightly schedule; weather can cancel a night.",
-      "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+      "title": "Holiday Express steam train",
+      "date": "2026-11-27",
+      "ends": "2026-12-27",
+      "where": "Oregon Rail Heritage Center (next to OMSI), Portland",
+      "detail": "About 45-minute round trip along the Willamette in decorated, heated cars with Santa aboard. Ticket listings give Fridays, Saturdays and Sundays Nov. 27 to Dec. 27; the center hasn't posted its own 2026 schedule in search results, and tickets sell out, so book ahead.",
+      "url": "https://ma.to/event/holiday-express-13-dec-2026"
+    },
+    {
+      "title": "Seaside Parade of Lights (Yuletide in Seaside)",
+      "date": "2026-11-27",
+      "ends": null,
+      "where": "Downtown Seaside",
+      "detail": "Illuminated floats and holiday music as part of a weekend of Yuletide events, per Visit the Oregon Coast. Start time and route for 2026 aren't listed yet; past years ran in the early evening.",
+      "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
     },
     {
       "title": "The Polar Express at OMSI",

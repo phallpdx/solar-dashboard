@@ -1,67 +1,74 @@
 {
-  "updated": "2026-11-18",
-  "updated_at": "2026-11-18T13:20:31Z",
+  "updated": "2026-11-19",
+  "updated_at": "2026-11-19T13:20:08Z",
   "analysis": {
-    "headline": "Stocks fell Tuesday (S&P 500 down about 1% to its lowest close since July, Dow down about 849 points, Nasdaq down 0.7%), but futures are higher this morning after Nvidia's results beat expectations.",
-    "summary": "Tuesday's selloff was driven by worries about AI spending and valuations ahead of Nvidia's report, plus a sharp drop in software stocks such as Salesforce after OpenAI released new models; about 17 of every 20 S&P 500 stocks fell. After the close Nvidia reported revenue of $115.8 billion, up 103% from a year earlier, beat earnings estimates and authorized another $150 billion in buybacks, and this morning Bloomberg had Nasdaq 100 futures up about 0.8% and S&P 500 futures up about 0.4%, on track to snap a four-day slide. Bonds remain under pressure from inflation and Fed rate-hike bets: Kitco put the 10-year Treasury yield near 5.10% and said markets are pricing further hikes, which has left gold near one-year lows around $3,850 an ounce. Oil stayed firm, with WTI settling near $86 and Brent near $93, while Bitcoin futures fell 1.4% to about $64,200, their lowest close since mid-August. Even after Nvidia's beat, one strategist told Yahoo Finance the results don't settle the bigger questions about returns on AI spending, how it is financed and leadership uncertainty after Jensen Huang's departure as CEO.",
+    "headline": "Stocks were mixed Wednesday (Dow down 561 points, or 1.1%, S&P 500 down about 0.2% for a fifth straight loss, Nasdaq up 0.4%), and futures are sharply higher this morning, led by Nasdaq 100 futures up about 2%, ahead of Anthropic's Nasdaq debut.",
+    "summary": "Wednesday's Dow drop was mostly health insurers: UnitedHealth fell about 10% and Humana about 13% as investors weighed a federal proposal to expand Medicare Advantage audits, while Nvidia gave back an early post-earnings gain and closed down about 2.9% despite revenue of $115.8 billion, up 103% from a year earlier. Rate worries added pressure: minutes of the Fed's October meeting, released Wednesday afternoon, said almost all officials see further rate hikes as likely appropriate, with a couple open to more than a quarter point in December, and the 10-year Treasury yield was near 5.07%. That higher-for-longer outlook and a firm dollar pushed gold to about $3,725 an ounce, its weakest in more than a year, and Bitcoin fell about 3% to near $62,500, while WTI crude dropped about 3% to roughly $83 after a surprise build in U.S. crude stocks. This morning the mood has flipped toward AI optimism, with S&P 500 futures up about 1.2% and on track for the index's first gain in six sessions, as Anthropic priced its IPO at $83 a share, above its earlier $70 to $78 range, and Walmart's revenue of $188.8 billion came in just above estimates.",
     "drivers": [
-      "Nvidia beat third-quarter estimates ($2.68 adjusted EPS vs $2.47 expected) and gave a stronger outlook, its first report since Jensen Huang stepped down as CEO",
-      "Software stocks slid on AI-disruption fears after OpenAI released new models; Salesforce fell about 9.4%, the worst performer in the Dow and S&P 500",
-      "Rising import prices kept inflation worries alive, and futures markets are pricing a Fed rate hike at the December 8-9 meeting",
-      "A CNN report that a classified NSA communications network went down pushed the indexes to their session lows, per CNBC"
+      "Fed minutes: almost all officials expect more rate hikes; Governor Cook and Cleveland Fed's Hammack dissented in October in favor of a hike, and a December 8-9 hike is widely priced in",
+      "UnitedHealth (down about 10%) and Humana (down about 13%) fell on a proposed expansion of Medicare Advantage audits, taking the Dow down 561 points",
+      "Nvidia closed down about 2.9% after its beat-and-raise report, extending a slide of over 13% in a week, before futures rebounded this morning",
+      "Anthropic priced its IPO at $83 a share, above its earlier range, and is due to start trading on Nasdaq under ANT today"
     ],
     "watch": [
-      "Today (Wed): minutes of the Oct. 27-28 Fed meeting at 2 p.m. ET (11 a.m. Pacific), plus October housing starts",
-      "Today (Wed): earnings from Target, Lowe's and TJX; Yahoo Finance reports Anthropic is preparing to price its IPO",
-      "Thursday: Walmart third-quarter results before the open, weekly jobless claims and the Philadelphia Fed manufacturing survey"
+      "Today: weekly jobless claims and the Philadelphia Fed manufacturing index (8:30 a.m. ET), plus a speech by Fed Vice Chair Jefferson",
+      "Today: Anthropic's first day of trading on Nasdaq (ticker ANT)",
+      "Friday: Fed Governor Cook speaks at 12:15 p.m. ET",
+      "Fed's next meeting is December 8-9, where markets expect a quarter-point hike"
     ],
     "sources": [
       {
-        "name": "Washington Post: How major US stock indexes fared Tuesday 11/17/2026",
-        "url": "https://www.washingtonpost.com/business/2026/11/17/wall-street-stocks-dow-nasdaq/9f975f00-e2cf-11f1-a99e-b3e3805c6b8b_story.html"
+        "name": "Yahoo Finance: Stock market today, Thursday, November 19 (futures rise ahead of Anthropic IPO)",
+        "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-090910916.html"
       },
       {
-        "name": "CNBC: Nasdaq futures rise as Nvidia gains on earnings beat and solid outlook",
-        "url": "https://www.cnbc.com/2026/11/17/stock-market-today-live-updates.html"
+        "name": "Washington Post: How major US stock indexes fared Wednesday 11/18/2026",
+        "url": "https://www.washingtonpost.com/business/2026/11/18/wall-street-stocks-dow-nasdaq/f0208c14-e395-11f1-a99e-b3e3805c6b8b_story.html"
       },
       {
-        "name": "Bloomberg: Nvidia Results Boost Nasdaq 100 Futures, Soothe AI Market Concerns",
-        "url": "https://www.bloomberg.com/news/articles/2026-11-18/us-stock-futures-rally-as-nvidia-results-ease-ai-trade-worries"
+        "name": "Investing Live: Dow continues its fall with a decline of 561 points, Nasdaq rebounds",
+        "url": "https://investinglive.com/stocks/dow-continues-its-fall-with-a-decline-of-561-points-nasdaq-rebounds/"
       },
       {
-        "name": "Yahoo Finance: Stock market today, Wednesday, November 18",
-        "url": "https://finance.yahoo.com/markets/live/stock-market-today-wednesday-november-18-dow-sp-500-nasdaq-nvidia-anthropic-ipo-090613569.html"
+        "name": "Quartz: Dow falls as Nvidia Q3 earnings bounce fizzles",
+        "url": "https://qz.com/dow-falls-459-points-nvidia-earnings-bounce-fizzles-111826"
       },
       {
-        "name": "Yahoo Finance: Stock market today, Tuesday, November 17",
-        "url": "https://finance.yahoo.com/markets/live/stock-market-today-tuesday-november-17-dow-sp-500-nasdaq-nvidia-earnings-retail-sales-143848454.html"
+        "name": "CNBC: Fed minutes October 2026, officials expect more rate hikes",
+        "url": "https://www.cnbc.com/2026/11/18/fed-minutes-october-2026.html"
       },
       {
-        "name": "UPI: Dow drops nearly 850 points on Nvidia, NSA outage",
-        "url": "https://www.upi.com/Top_News/US/2026/11/17/dow-drops-850-nvidia-nsa/4291794956078/"
+        "name": "Babypips: Financial & forex market recap, Nov. 18, 2026",
+        "url": "https://www.babypips.com/news/daily-financial-forex-market-recap-2026-11-18"
       },
       {
-        "name": "Kitco: Gold struggles near one-year lows as stocks slide, Fed hike bets persist",
-        "url": "https://www.kitco.com/news/article/2026-11-17/gold-struggles-near-one-year-lows-silver-rebounds-stocks-slide-fed-hike"
+        "name": "FXStreet: Yields hit 5.07%, gold holds $3,735, and Bitcoin eyes $60K",
+        "url": "https://www.fxstreet.com/analysis/yields-hit-507-gold-holds-3-735-and-bitcoin-eyes-60k-202611190854"
       },
       {
-        "name": "TradingKey: The Week Ahead (Nvidia, retail sales, FOMC minutes, Walmart)",
-        "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262305825-week-ahead-nvidia-q3-earnings-us-october-retail-sales-fomc-minutes-walmart-tradingkey"
+        "name": "Seoul Economic Daily: Bitcoin, gold and oil fall together on high rates, AI doubts",
+        "url": "https://en.sedaily.com/economy/2026/11/18/bitcoin-gold-and-oil-fall-together-on-high-rates-ai-doubts"
       },
       {
-        "name": "Admiral Markets: Warsh speech preview, November 16, 2026",
-        "url": "https://admiralmarkets.com/education/articles/fundamental-analysys/warsh-speech-preview-november-16-2026"
+        "name": "Investrade: Weekly event calendar 11/16/2026 to 11/20/2026",
+        "url": "https://investrade.com/weekly-event-calendar-11-16-2026-11-20-2026/"
       },
       {
-        "name": "Stock Titan: Earnings calendar for the week of November 16, 2026",
-        "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-16-2026"
+        "name": "Kiplinger: What to look out for in economic data this week (November 16-20)",
+        "url": "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar"
       }
     ]
   },
   "helium": {
-    "headline": "North American Helium's new Stewart Valley plant is producing about 73 million cubic feet a year, and the company is pushing ahead with plans for Canada's first helium liquefier in Swift Current.",
-    "summary": "NAH's Stewart Valley purification facility, which the company calls Canada's largest helium field, came online on September 20, 2026 at roughly 73 million cubic feet per year, with output sold to global industrial gas distributors under long-term contracts. Its next project is a helium liquefaction plant in Swift Current, estimated at about $100 million; the company is still working toward a final investment decision and funding, and today the region's helium is trucked as gas to U.S. plants to be liquefied. A Swift Current report this week says new federal tax treatment putting helium on a footing closer to oil and gas could help the liquefier, though it is not direct funding and some of the company's requests are still under consideration. The wider market has been tight since March, when strikes halted Qatar's helium output and Russia restricted exports; analysts cited by Edison Group (including Bank of America) estimated spot prices up 40% to 100%, while long-term contract prices move more slowly.",
+    "headline": "North American Helium's new Stewart Valley plant is producing about 73 million cubic feet a year, and a neighbouring explorer says NAH has recently licensed another well in southwest Saskatchewan.",
+    "summary": "NAH's Stewart Valley purification facility, which the province calls Canada's largest, came online on September 20, 2026 at roughly 73 million cubic feet of helium per year, and the province says it lifts Saskatchewan's annual output by more than 40 percent. In a November 16 release, partner Helium Evolution said its Glenbain North exploration area lies just south of a well NAH recently licensed at 12-30-16-7W3, one of four areas in its up-to-$3 million winter seismic program. NAH's next big project is a planned helium liquefaction plant in Swift Current, estimated at about $100 million, and a November 17 local report said new federal tax treatment for helium could help it, though some of the company's requests are still under consideration. The market it sells into remains tight: reports this month say spot helium prices have nearly tripled since March amid supply disruptions in Qatar and Russian export limits, and the U.S. designated helium a critical material on October 23.",
     "items": [
+      {
+        "date": "2026-11-16",
+        "title": "Helium Evolution launches up to $3 million winter seismic program",
+        "what": "The release says HEVI's Glenbain North focus area sits just south of a well North American Helium recently licensed, and notes HEVI's partnership with NAH.",
+        "url": "https://www.globenewswire.com/news-release/2026/11/16/3403498/0/en/helium-evolution-launches-up-to-3-million-winter-seismic-program-to-advance-exploration-on-100-working-interest-lands.html"
+      },
       {
         "date": "2026-11-17",
         "title": "Helium getting oil and gas treatment good news for Swift Current",
@@ -89,6 +96,22 @@
     ],
     "sources": [
       {
+        "name": "GlobeNewswire (Helium Evolution release): Up to $3 million winter seismic program",
+        "url": "https://www.globenewswire.com/news-release/2026/11/16/3403498/0/en/helium-evolution-launches-up-to-3-million-winter-seismic-program-to-advance-exploration-on-100-working-interest-lands.html"
+      },
+      {
+        "name": "gasworld: Helium Evolution targets new Saskatchewan discoveries in CAD $3m programme",
+        "url": "https://www.gasworld.com/story/helium-evolution-targets-new-saskatchewan-discoveries-in-cad-3m-programme/2264256.article/"
+      },
+      {
+        "name": "Government of Saskatchewan: Canada's largest helium purification facility opens in southwest Saskatchewan",
+        "url": "https://www.saskatchewan.ca/government/news-and-media/2026/october/15/canadas-largest-helium-purification-facility-opens-in-southwest-saskatchewan"
+      },
+      {
+        "name": "Streetwise Reports: US declares helium critical as Minnesota discovery points to 1 billion cubic feet",
+        "url": "https://www.streetwisereports.com/article/2026/11/02/us-declares-helium-critical-as-minnesota-discovery-points-to-1-billion-cubic-feet.html"
+      },
+      {
         "name": "SwiftCurrentOnline: Helium getting oil and gas treatment good news for Swift Current",
         "url": "https://www.swiftcurrentonline.com/articles/helium-getting-oil-and-gas-treatment-good-news-for-swift-current"
       },
@@ -115,8 +138,8 @@
     ]
   },
   "realestate": {
-    "headline": "Portland-area home prices are holding roughly flat while sales have slowed sharply, with RMLS showing October's metro median at $545,000, up 0.9% from a year ago.",
-    "summary": "RMLS October figures, as summarized by local brokers, show a Portland metro median sale price of $545,000 (up 0.9% year over year) while closed sales fell 21.5% from a year earlier to 1,622 and new listings dropped 12.2% to 2,077. Inventory sits at 4.3 months, which brokers describe as balanced but tilting toward buyers, and average market time was 67 days. Redfin's city-of-Portland data puts the median sale price at $525,000, up 0.9%, with homes selling in about 26 days versus 29 a year ago. Mortgage rates are easing but still high: Freddie Mac's 30-year average was 7.11% on November 12, its fourth straight weekly decline; none of today's sources broke out North Portland, St. Johns or Sauvie Island.",
+    "headline": "Portland-area home prices are holding roughly flat while sales have slowed sharply, with RMLS showing October's metro median at $545,000, up 0.9% from a year ago and closed sales down 21.5%.",
+    "summary": "RMLS October figures, as summarized by local brokers, put the Portland metro median sale price at $545,000, up 0.9% from a year earlier and flat from September, while closed sales fell 21.5% year over year. Inventory is about 4.3 months, which brokers describe as balanced but tilting toward buyers. Redfin's city-of-Portland data shows a $525,000 median, up 0.9%, with 1,801 homes sold in October versus 2,079 a year earlier and homes selling in about 26 days. Mortgage rates are easing but still high, with Freddie Mac's 30-year average at 7.11% on November 12 (this week's reading is due later today); none of today's sources broke out North Portland, St. Johns or Sauvie Island.",
     "stats": [
       {
         "label": "Median sale price (Portland metro, October, RMLS)",
@@ -127,17 +150,10 @@
       },
       {
         "label": "Closed sales (Portland metro, October, RMLS)",
-        "value": "1,622",
-        "change": "-21.5% vs a year ago",
-        "source": "Portland Real Estate Market Update, November 2026",
-        "url": "https://realestateagentpdx.com/portland-real-estate-market-update-november-2026/44207"
-      },
-      {
-        "label": "New listings (Portland metro, October, RMLS)",
-        "value": "2,077",
-        "change": "-12.2% vs a year ago",
-        "source": "Cano Real Estate: Portland Metro Market Report October 2026",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+        "value": "-21.5%",
+        "change": "vs a year ago",
+        "source": "The McCreith Team: November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
       },
       {
         "label": "Months of inventory (Portland metro, October, RMLS)",
@@ -157,6 +173,13 @@
         "label": "Median days on market (city of Portland, October, Redfin)",
         "value": "26 days",
         "change": "vs 29 days a year ago",
+        "source": "Redfin: Portland Housing Market",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "Homes sold (city of Portland, October, Redfin)",
+        "value": "1,801",
+        "change": "down from 2,079 a year ago",
         "source": "Redfin: Portland Housing Market",
         "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       },

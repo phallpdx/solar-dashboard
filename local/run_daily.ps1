@@ -95,13 +95,31 @@ if ($env:OPENWEBUI_API_KEY -and -not $eveningOnly -and -not (OpenWebUI-Up)) {
 $before = Loaded-Models
 $serverWasRunning = $null -ne $before
 if (-not $serverWasRunning) { Lms @('server', 'start'); Start-Sleep 5 }
-$modelWasLoaded = @(Loaded-Models) -match [regex]::Escape($model.Split('/')[-1])
+# What's really in memory comes from "lms ps". /v1/models also lists every downloaded model while
+# just-in-time loading is on, so it always said "loaded", and the first request then loaded the model
+# with LM Studio's defaults (8k context, all on the GPU), which loses the GPU (ErrorDeviceLost) all night.
+function Loaded-Instances {
+    $json = (Lms @('ps', '--json')) -join "`n"
+    try { @($json | ConvertFrom-Json | Where-Object { $_.modelKey -eq $model.Split('/')[-1] }) } catch { @() }
+}
+$instances = Loaded-Instances
+$modelWasLoaded = $instances.Count -gt 0
+$wantCtx = [int]$cfg.lmstudio.context_length
+# A copy loaded some other way (a chat, the local-llm tool) has the defaults: unload it and load ours.
+if ($modelWasLoaded -and @($instances | Where-Object { $_.contextLength -ne $wantCtx }).Count -gt 0) {
+    "Model was loaded with context $(($instances.contextLength) -join ', '), not $wantCtx; reloading it"
+    Lms @('unload', '--all')
+    Start-Sleep 20
+    # A chat or the local-llm tool may have loaded it again meanwhile (now with the safe per-model
+    # defaults). Loading a second copy doesn't fit on the card, so only load if nothing is there.
+    $instances = Loaded-Instances
+}
 # The model doesn't quite fit on the 16 GB card at this context, and forcing it all on can freeze the PC,
 # so part of it stays in system memory (gpu_offload is the share that goes on the GPU).
-$loadArgs = @('load', $model, '--context-length', "$($cfg.lmstudio.context_length)", '-y')
+$loadArgs = @('load', $model, '--context-length', "$wantCtx", '-y')
 if ($cfg.lmstudio.gpu_offload) { $loadArgs += @('--gpu', "$($cfg.lmstudio.gpu_offload)") }
-if (-not $modelWasLoaded) { Lms $loadArgs }
-"LM Studio server was running: $serverWasRunning; model was loaded: $([bool]$modelWasLoaded)"
+if ($instances.Count -eq 0) { Lms $loadArgs }
+"LM Studio server was running: $serverWasRunning; model was loaded: $modelWasLoaded; now: $((Loaded-Instances | ForEach-Object { "$($_.identifier) ctx $($_.contextLength)" }) -join ', ')"
 
 # Python also gets its own console, and writes its progress straight to
 # <date>-lists.log so it can be followed while the run is going.

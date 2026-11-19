@@ -67,10 +67,21 @@ $trigger = @($At | ForEach-Object {
     $t.StartBoundary = ([datetime]$t.StartBoundary).ToString('yyyy-MM-ddTHH:mm:ss')
     $t
 })
-# A normal run takes under an hour. Two hours ends a stuck run before the next start time,
-# so one stuck run can't take the whole night with it.
+# A normal run takes under an hour. 1 h 50 min ends a stuck run before the next start time
+# (exactly 2 hours ended it at the same moment, so that start was skipped).
 $settings = New-ScheduledTaskSettingsSet -WakeToRun -StartWhenAvailable -AllowStartIfOnBatteries `
-    -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 2)
+    -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 1 -Minutes 50)
+
+# LM Studio loads the model by itself when any app asks for it (a chat, the local-llm tool). Its
+# defaults (8k context, all of it on the GPU) lose the GPU on this card, so make its per-model
+# defaults the same safe context and offload as the nightly job.
+$modelDir = Join-Path $env:USERPROFILE '.lmstudio\.internal\user-concrete-model-default-config\lmstudio-community\gemma-4-26b-a4b-it-qat-GGUF'
+New-Item -ItemType Directory -Force $modelDir | Out-Null
+$defaults = @{ preset = ''; operation = @{ fields = @() }; load = @{ fields = @(
+    @{ key = 'llm.load.contextLength'; value = [int]$cfg.lmstudio.context_length },
+    @{ key = 'llm.load.llama.acceleration.offloadRatio'; value = [double]$cfg.lmstudio.gpu_offload }) } }
+[IO.File]::WriteAllText((Join-Path $modelDir 'gemma-4-26B-A4B-it-QAT-Q4_0.gguf.json'), ($defaults | ConvertTo-Json -Depth 5))
+Write-Host 'OK  LM Studio loads the model with the safe context and GPU offload by default'
 $principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings `
     -Principal $principal -Force | Out-Null

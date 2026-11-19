@@ -321,10 +321,27 @@ def lms(*args):
     return r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace").strip()
 
 
+def _loaded_instances():
+    """Copies of our model that LM Studio has in memory right now (from "lms ps --json")."""
+    try:
+        code, out = lms("ps", "--json")
+        key = LLM["model"].split("/")[-1]
+        return [m for m in json.loads(out[out.index("["):]) if m.get("modelKey") == key]
+    except (OSError, subprocess.TimeoutExpired, ValueError):
+        return []
+
+
 def reload_model(settle_seconds, why):
     log(f"  {why}")
     lms("unload", LLM["model"])
     time.sleep(settle_seconds)
+    # Another client (a chat, the local-llm tool) may have loaded it again while we waited. A second
+    # copy doesn't fit on the card and loses the GPU, so use that one; LM Studio's per-model defaults
+    # (set to the same context and offload as here) give it the safe settings.
+    if _loaded_instances():
+        _model["loaded_at"] = time.time()
+        log("  someone else already reloaded it; using that copy")
+        return True
     args = ["load", LLM["model"], "--context-length", str(LLM.get("context_length", 16384)), "-y"]
     if LLM.get("gpu_offload"):
         args += ["--gpu", str(LLM["gpu_offload"])]

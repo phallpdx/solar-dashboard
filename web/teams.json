@@ -1,62 +1,70 @@
 {
-  "updated": "2026-11-18",
-  "updated_at": "2026-11-18T13:15:25Z",
+  "updated": "2026-11-19",
+  "updated_at": "2026-11-19T13:14:51Z",
   "teams": {
     "blazers": {
-      "mood": "Gutted",
-      "pulse": "Tuesday's 106-105 loss in Minnesota was a gut punch: Portland led by seven with under two minutes left, then went scoreless the last 50 seconds and gave up a McDaniels layup with 2.6 seconds to go. Fans are calling it one of the worst collapses of the year, and it was the second loss in two nights to the Wolves.",
+      "mood": "Stung, eyeing a get-right",
+      "pulse": "Fans are still sore about Tuesday's 106-105 collapse in Minnesota, the second loss in two nights to the Wolves. Tonight's trip to Milwaukee looks like the perfect bounce-back spot: the Bucks are 1-14 and have lost 11 straight, but Avdija's foot is the big question.",
       "storylines": [
-        "Lost 106-105 at Minnesota after a late inbounds steal; Jaden McDaniels hit the winner",
-        "Damian Lillard led Portland with 25; Ayo Dosunmu scored 30 for Minnesota",
-        "Deni Avdija sat with a sore left foot, his first missed game of the season",
-        "Clingan had 12 points and 12 boards, but his late pass was picked off",
-        "Next up: Thursday at Milwaukee, with Avdija's status unclear"
+        "Last game: lost 106-105 at Minnesota on a McDaniels layup with 2.6 seconds left after a stolen inbounds pass",
+        "Tonight at Milwaukee, 5 p.m. Pacific; Portland 9-5, Bucks 1-14",
+        "Deni Avdija (sore foot) and Toumani Camara (abdominal soreness) are questionable",
+        "Avdija is averaging 24.2 points, 6.2 rebounds and 6.1 assists",
+        "Bettors have Portland as roughly a 10-point favorite"
       ],
       "sources": [
         {
-          "name": "SF Chronicle (AP recap)",
+          "name": "Blazer's Edge (injury report)",
+          "url": "https://www.blazersedge.com/trail-blazers-news/118611/portland-trail-blazers-injury-report-latest-milwaukee-bucks-deni-avdija-toumani-camara"
+        },
+        {
+          "name": "CBS Sports (Avdija questionable)",
+          "url": "https://www.cbssports.com/fantasy/basketball/news/trail-blazers-deni-avdija-questionable-versus-bucks/"
+        },
+        {
+          "name": "97.3 The Game (time, TV)",
+          "url": "https://973thegame.iheart.com/content/2026-11-19-trail-blazers-vs-bucks-time-tv-stream-nov-19/"
+        },
+        {
+          "name": "Doc's Sports (preview)",
+          "url": "https://www.docsports.com/free-picks/nba/2026/portland-trail-blazers-vs-milwaukee-bucks-prediction-11-19-2026-preview-and-pick.html"
+        },
+        {
+          "name": "SF Chronicle (AP recap, Minnesota)",
           "url": "https://www.sfchronicle.com/sports/article/mcdaniels-scores-with-2-6-seconds-left-to-lift-22536764.php"
-        },
-        {
-          "name": "Blazer's Edge recap",
-          "url": "https://www.blazersedge.com/gameday-coverage/118579/portland-trail-blazers-minnesota-timberwolves-score-recap-damian-lillard-lamelo-ball-nba-news"
-        },
-        {
-          "name": "Blazer's Edge analysis",
-          "url": "https://www.blazersedge.com/trail-blazers-analysis/118586/portland-trail-blazers-minnesota-timberwolves-final-score-boxscore-stats-damian-lillard"
         },
         {
           "name": "Yahoo Sports (fan reaction)",
           "url": "https://sports.yahoo.com/articles/brutal-one-worst-collapses-nba-055133353.html"
-        },
-        {
-          "name": "TSN (Avdija out)",
-          "url": "https://www.tsn.ca/nba/article/trail-blazers-rule-out-avdija-vs-timberwolves-with-sore-foot-n1-50515349/"
-        },
-        {
-          "name": "CBS Sports (Clingan)",
-          "url": "https://cbssports.com/fantasy/basketball/news/trail-blazers-donovan-clingan-records-double-double-in-defeat"
         }
       ]
     },
     "timbers": {
       "mood": "Underdog swagger",
-      "pulse": "No game since the regular season ended, so the vibe is all playoff build-up. The Timbers come in as the West's No. 7 seed on a four-game win streak, and Velde says the group is embracing the underdog role against No. 2 FC Dallas.",
+      "pulse": "No game since the regular-season finale, so it's all playoff build-up. Portland heads to Frisco as the West's No. 7 seed on a four-game win streak to face No. 2 FC Dallas, a 58-point team that has never beaten the Timbers in four playoff meetings.",
       "storylines": [
         "Game 1 at FC Dallas: Sat Nov 21, 1 p.m. Pacific, on Apple TV",
-        "Game 2 at Providence Park: Sat Nov 28",
-        "Season series: a 2-2 draw in Portland and a 2-1 Dallas win in Frisco",
-        "Cifuentes says Antony has a chance to return from a month-long knee issue (Rotowire, Nov 16)",
-        "Rolled in on four straight wins to clinch the No. 7 seed"
+        "Game 2 at Providence Park: Sat Nov 28, 7:30 p.m. Pacific, Apple TV and FS1; Game 3 in Dallas Dec 2 if needed",
+        "Ties after 90 minutes go straight to penalties, no extra time",
+        "Velde carries the attack with 12 goals and 10 assists",
+        "Cifuentes says Antony has a chance to return from a knee issue (Rotowire, Nov 16)"
       ],
       "sources": [
         {
-          "name": "Fox 4 (series schedule)",
-          "url": "https://www.fox4news.com/sports/fc-dallas-2026-mls-cup-playoffs-portland-timbers"
+          "name": "KPTV (schedule)",
+          "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"
         },
         {
-          "name": "Willamette News (Game 1)",
-          "url": "https://www.willamettenews.com/post/timbers-open-mls-playoffs-at-fc-dallas-saturday-as-sophia-wilson-awaits-nwsl-mvp-word"
+          "name": "Yahoo Sports (dates, TV)",
+          "url": "https://sports.yahoo.com/articles/fc-dallas-sets-dates-kickoff-210744130.html"
+        },
+        {
+          "name": "FC Dallas (Set the stage)",
+          "url": "https://www.fcdallas.com/news/set-the-stage-fc-dallas-vs-portland-timbers-playoffs-round-one-game-1"
+        },
+        {
+          "name": "Timbers.com (Game 2)",
+          "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
         },
         {
           "name": "Rotowire (Antony)",
@@ -65,21 +73,18 @@
         {
           "name": "KATU (win streak)",
           "url": "https://katu.com/sports/timbers/portland-timbers-ride-four-game-winning-streak-into-2026-mls-cup-playoffs-providence-park-oregon-mls-cup-playoffs-soccer"
-        },
-        {
-          "name": "Timbers.com (Game 2)",
-          "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
         }
       ]
     },
     "f1": {
       "mood": "Vegas mode",
-      "pulse": "It's race week in Las Vegas. Both titles already belong to Antonelli and Mercedes, so the buzz is the scrap for second place, where Verstappen is the in-form driver after three wins in his last five races.",
+      "pulse": "Cars hit the Strip tonight for practice. Antonelli and Mercedes already have both titles, so the buzz is the scrap for second, where two-time Vegas winner Verstappen is the in-form driver, and whether the cold desert night scrambles the order.",
       "storylines": [
-        "Las Vegas GP this weekend; three races left",
+        "Practice Thursday night, race Saturday Nov 21; three races left",
         "P2 fight: Verstappen 279, Russell 262, Hamilton 261, Leclerc 249, Norris 246",
-        "Verstappen has podiums in eight straight and is chasing a third Vegas win",
-        "Cadillac seat question: stick with Bottas or give Colton Herta his F1 shot"
+        "Pirelli warns cold track temps, tyre warm-up and graining could decide the race",
+        "Hamilton says the constructors' fight is Ferrari's main focus",
+        "Cadillac seat question: stick with Bottas or give Colton Herta his shot"
       ],
       "sources": [
         {
@@ -87,36 +92,53 @@
           "url": "https://www.skysports.com/f1/news/13611983/las-vegas-gp-whats-still-to-play-for-over-final-three-races-of-f1-2026-season-with-battles-in-drivers-and-constructors-championships"
         },
         {
-          "name": "TimesLIVE/Reuters (Verstappen)",
-          "url": "https://www.timeslive.co.za/motoring/2026-11-18-verstappen-has-momentum-to-claim-third-las-vegas-grand-prix-victory/"
+          "name": "GPFans (practice schedule)",
+          "url": "https://www.gpfans.com/en/f1-news/1093027/f1-practice-today-schedule-times-tv-channel-2026-las-vegas-grand-prix/"
+        },
+        {
+          "name": "GrandPrix247 (Pirelli)",
+          "url": "https://www.grandprix247.com/formula-1-news/pirelli-warns-tyre-warm-up-and-graining-could-prove-decisive-at-2026-formula-1-las-vegas-grand-prix"
+        },
+        {
+          "name": "Ferrari (Vegas preview)",
+          "url": "https://www.ferrari.com/en-EN/formula1/articles/las-vegas-grand-prix-2026-preview"
         },
         {
           "name": "Formula1.com (5 storylines)",
           "url": "https://www.formula1.com/en/latest/article/its-race-week-5-storylines-were-excited-about-ahead-of-the-2026-las-vegas-grand-prix.3fjavheTbHD8fjZI0i7BWd"
         },
         {
-          "name": "Motorsport.com (Vegas schedule)",
-          "url": "https://www.motorsport.com/f1/news/f1-las-vegas-gp-2026-start-time-schedule-and-how-to-watch/10874866/"
+          "name": "TimesLIVE/Reuters (Verstappen)",
+          "url": "https://www.timeslive.co.za/motoring/2026-11-18-verstappen-has-momentum-to-claim-third-las-vegas-grand-prix-victory/"
         }
       ]
     },
     "ducks": {
       "mood": "Rolling",
-      "pulse": "Duck fans are still riding high after the 31-7 rout of Michigan, and the Ducks are now big road favorites at struggling Michigan State. The only thing nagging anyone is that the Spartans have never lost to Oregon in East Lansing.",
+      "pulse": "Duck fans are still riding the 31-7 rout of Michigan, and Michigan State's quarterback mess makes Friday look very winnable. The nagging worry is Oregon's own injury list and the fact that the Ducks have never won in East Lansing.",
       "storylines": [
         "Next game: Friday Nov 20 at Michigan State, 5:00 p.m. Pacific on FOX",
-        "Oregon (7-3, No. 16) is about a 16-point favorite",
-        "Oregon is 0-3 all-time in East Lansing, but Michigan State is 3-7 and QB Alessio Milivojevic is hurt",
-        "Coming off a 31-7 win over Michigan; regular-season finale vs. Washington Nov 28"
+        "Spartans QB Alessio Milivojevic is out and backup Cam Fancher is questionable with a knee injury",
+        "Oregon has eight players out on the first report, including OLB Teitum Tuioti; Jerry Mixon questionable, Bear Alexander probable",
+        "Dante Moore still hasn't played since the Sept. 26 hit against USC",
+        "Oregon is 0-3 all-time in East Lansing; finale vs. Washington Nov 28"
       ],
       "sources": [
         {
-          "name": "GoDucks.com preview",
-          "url": "https://goducks.com/news/2026/11/16/football-ducks-head-to-east-lansing-for-friday-night-showdown"
+          "name": "Yahoo Sports (MSU injury report)",
+          "url": "https://sports.yahoo.com/articles/michigan-state-injury-report-qb-011905522.html"
         },
         {
-          "name": "FanDuel Research (odds)",
-          "url": "https://www.fanduel.com/research/oregon-vs-michigan-state-college-football-odds-picks-best-bets-for-11-20-2026"
+          "name": "Autzen Zoo (injury report)",
+          "url": "https://autzenzoo.com/oregon-vs-michigan-state-injury-report-reveals-more-ducks-injuries-and-a-major-spartans-dilemma"
+        },
+        {
+          "name": "SI Ducks (Lanning injury updates)",
+          "url": "https://www.si.com/college/oregon/football/dan-lanning-jordon-davison-bear-alexander-injury-updates-michigan-state-spartans-oregon-ducks"
+        },
+        {
+          "name": "GoDucks.com preview",
+          "url": "https://goducks.com/news/2026/11/16/football-ducks-head-to-east-lansing-for-friday-night-showdown"
         },
         {
           "name": "Yahoo Sports (how to watch)",
@@ -125,42 +147,39 @@
         {
           "name": "ESPN recap (Michigan)",
           "url": "https://www.espn.com/college-football/recap?gameId=401858523"
-        },
-        {
-          "name": "CBS Sports schedule",
-          "url": "https://www.cbssports.com/college-football/teams/OREG/oregon-ducks/schedule/"
         }
       ]
     },
     "niners": {
-      "mood": "Thrilled, a bit nervous",
-      "pulse": "Fans are still buzzing from the 46-40 shootout in Dallas that put the 49ers at 8-1, but the leaky pass rush has Niners Nation uneasy. Sunday's game in Mexico City is framed as a real test for Purdy against Brian Flores' defense, with thin air on top.",
+      "mood": "Confident, a bit nervous",
+      "pulse": "The 8-1 Niners are still buzzing from the shootout win in Dallas, and most experts pick them in Mexico City. The nerves come from Shanahan's 0-5 record against Vikings DC Brian Flores and a new Mike Evans injury scare.",
       "storylines": [
         "Next game: Sunday Nov 22 vs. Vikings in Mexico City, 5:20 p.m. Pacific on NBC/Peacock",
-        "Team prepping for altitude in Colorado Springs before flying in",
-        "Pass rush worry: zero sacks in Dallas and Bosa still hunting his first sack since returning",
-        "Vikings WR Jordan Addison headed for short-term IR after thumb surgery (Star Tribune)"
+        "Mike Evans missed Wednesday practice with an Achilles issue; Shanahan hopes he's back Thursday",
+        "Shanahan is 0-5 against Brian Flores defenses",
+        "Most of SI's MMQB staff pick the 49ers, but two took Minnesota",
+        "Team is practicing in Colorado Springs to get used to the altitude"
       ],
       "sources": [
+        {
+          "name": "Yahoo Sports (Mike Evans)",
+          "url": "https://sports.yahoo.com/articles/kyle-shanahan-announces-mike-evans-203038459.html"
+        },
+        {
+          "name": "Yahoo Sports (0-5 vs. Flores)",
+          "url": "https://sports.yahoo.com/articles/49ers-kyle-shanahan-faces-0-185634295.html"
+        },
+        {
+          "name": "SI MMQB (Week 11 picks)",
+          "url": "https://www.si.com/nfl/week-11-expert-staff-predictions-picks"
+        },
         {
           "name": "NBC Sports Bay Area (how to watch)",
           "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"
         },
         {
-          "name": "SF Standard (Purdy vs. Flores)",
-          "url": "https://sfstandard.com/2026/11/16/brock-purdy-brian-flores-49ers-vikings/"
-        },
-        {
-          "name": "NBC Sports Bay Area (travel plan)",
-          "url": "https://www.nbcsportsbayarea.com/nfl/san-francisco-49ers/kyle-shanahan-vikings-road-trip-plans/1979778/"
-        },
-        {
-          "name": "Niners Nation (Bosa)",
-          "url": "https://www.ninersnation.com/san-francisco-49ers-news/165862/san-francisco-49ers-news-concern-nick-bosa-return-after-injury-dallas-cowboys-loss-sack-production-kyle-shanahan"
-        },
-        {
-          "name": "Star Tribune (Vikings injuries)",
-          "url": "https://www.startribune.com/minnesota-vikings-injury-report-jordan-addison-update-san-francisco-49ers-nfl-week-11-mexico-city/601920081"
+          "name": "Yahoo Sports (altitude prep)",
+          "url": "https://sports.yahoo.com/articles/49ers-extra-step-prep-mexico-154436961.html"
         },
         {
           "name": "ESPN recap (Dallas)",

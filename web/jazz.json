@@ -1,6 +1,26 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "shows": [
+    {
+      "artist": "Kerry Politzer and Bossa PDX",
+      "kind": "Latin",
+      "date": "2026-11-19",
+      "time": "6:30 pm",
+      "venue": "The 1905",
+      "price": "$25",
+      "what": "Portland pianist Kerry Politzer's Brazilian-jazz group Bossa PDX; all ages.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        },
+        {
+          "name": "Portland Events Calendar",
+          "url": "https://www.pdx-events.com/"
+        }
+      ]
+    },
     {
       "artist": "Chuck Israels Jazz Orchestra",
       "kind": "Big band",
@@ -30,26 +50,6 @@
         {
           "name": "McMenamins",
           "url": "https://www.mcmenamins.com/events/277813-thundercat"
-        }
-      ]
-    },
-    {
-      "artist": "Kerry Politzer and Bossa PDX",
-      "kind": "Latin",
-      "date": "2026-11-19",
-      "time": "6:30 pm",
-      "venue": "The 1905",
-      "price": "$25",
-      "what": "Portland pianist Kerry Politzer's Brazilian-jazz group Bossa PDX; all ages.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        },
-        {
-          "name": "Portland Events Calendar",
-          "url": "https://www.pdx-events.com/"
         }
       ]
     },
@@ -106,6 +106,26 @@
         {
           "name": "Travel Portland event listing",
           "url": "https://www.travelportland.com/event/6a70ed67186757c18759176c/"
+        }
+      ]
+    },
+    {
+      "artist": "In Session: Jazz Combos Live (Portland State)",
+      "kind": "Local",
+      "date": "2026-11-22",
+      "time": "7:30 pm",
+      "venue": "Lincoln Recital Hall, Portland State",
+      "price": "Free",
+      "what": "Portland State's student jazz combos play works arranged or composed by students and faculty in the PSU Jazz Area; free and open to the public.",
+      "tickets": null,
+      "sources": [
+        {
+          "name": "Portland State: In Session: Jazz Combos Live",
+          "url": "https://www.pdx.edu/music-theater/events/session-jazz-combos-live-6"
+        },
+        {
+          "name": "Portland State events listing",
+          "url": "https://www.pdx.edu/events/session-jazz-combos-live-5"
         }
       ]
     },
@@ -238,6 +258,26 @@
       ]
     },
     {
+      "artist": "Isaiah Sharkey",
+      "kind": "Touring",
+      "date": "2026-12-05",
+      "time": "8:00 pm",
+      "venue": "Star Theater",
+      "price": null,
+      "what": "Isaiah Sharkey, billed under jazz/blues and R&B, plays Portland between dates at Yoshi's and Blue Note Hawaii; found on ticket listings, not on the venue's own page.",
+      "tickets": "https://www.tickpick.com/buy-isaiah-sharkey-tickets-star-theater-portland-12-5-26-8pm/8242330/",
+      "sources": [
+        {
+          "name": "TickPick listing",
+          "url": "https://www.tickpick.com/buy-isaiah-sharkey-tickets-star-theater-portland-12-5-26-8pm/8242330/"
+        },
+        {
+          "name": "Jazz Near You listing",
+          "url": "https://www.jazznearyou.com/portland/events/isaiah-sharkey-at-star-theater-on-december-5"
+        }
+      ]
+    },
+    {
       "artist": "Glenn Miller Orchestra: In the Christmas Mood",
       "kind": "Big band",
       "date": "2026-12-08",
@@ -258,22 +298,6 @@
       ]
     },
     {
-      "artist": "Mel Brown B3 Organ Group",
-      "kind": "Local",
-      "date": "2026-12-10",
-      "time": "7:00 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
-      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
       "artist": "George Fludas Trio with George Colligan and Robert Rodriguez",
       "kind": "Touring",
       "date": "2026-12-10",
@@ -286,6 +310,22 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13295/2026-12-10"
+        }
+      ]
+    },
+    {
+      "artist": "Mel Brown B3 Organ Group",
+      "kind": "Local",
+      "date": "2026-12-10",
+      "time": "7:00 pm",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "Mel Brown's organ group in Jack London Revue's Jazz Titan Thursdays series.",
+      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/14862433?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     },

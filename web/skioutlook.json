@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "season": {
-    "summary": "NOAA's Nov 12 update keeps an El Niño Advisory in place: El Niño is still strengthening, with a strong-to-very strong event likely through January-March 2027. NOAA's winter outlook gives the Pacific Northwest, Mt. Hood included, some of the best odds in the country for a warmer-than-normal winter. Strong El Niño winters usually mean less Northwest snow and higher snow levels, so early-season and low-elevation skiing is the bigger risk.",
+    "summary": "NOAA's Nov 12 update keeps an El Niño Advisory in place: El Niño is still strengthening, with a strong-to-very strong event likely through January-March 2027. NOAA's winter outlook gives the Pacific Northwest, Mt. Hood included, some of the best odds in the country for a warmer-than-normal winter. Strong El Niño winters usually mean less Northwest snow and higher snow levels, so early-season and low-elevation skiing is the bigger risk. A Nov 18 forecast for Meadows shows only light to moderate new snow over the next several days.",
     "sources": [
       {
         "name": "NOAA CPC ENSO discussion, Nov 2026",
@@ -26,6 +26,10 @@
       {
         "name": "USGS Northwest CASC",
         "url": "https://www.usgs.gov/programs/climate-adaptation-science-centers/regional-super-el-nino-impacts-northwest-us"
+      },
+      {
+        "name": "Snow-Forecast Meadows mid-mountain forecast",
+        "url": "https://www.snow-forecast.com/resorts/Mt-Hood-Meadows/6day/mid"
       }
     ]
   },
@@ -34,7 +38,7 @@
       "resort": "Mt. Hood Meadows",
       "date": "2026-12-04",
       "status": "Planned",
-      "note": "The only Mt. Hood resort with an announced target date, as of Nov 9.",
+      "note": "Still the only Mt. Hood resort with an announced date; a Nov 18 snow report lists Dec 4 for opening.",
       "sources": [
         {
           "name": "Portland Tribune",
@@ -43,6 +47,10 @@
         {
           "name": "Mt. Hood Meadows schedule",
           "url": "https://www.skihood.com/explore/Schedule"
+        },
+        {
+          "name": "Snow-Forecast Meadows snow report",
+          "url": "https://www.snow-forecast.com/resorts/Mt-Hood-Meadows/snow-report"
         }
       ]
     },
@@ -50,7 +58,7 @@
       "resort": "Timberline",
       "date": null,
       "status": "Depends on snow",
-      "note": "No official date; it opens once there's enough snow. Projection sites guess Nov 21 to 22.",
+      "note": "No official date; it opens once there's enough snow to operate responsibly. Projection sites disagree, so treat their dates as guesses.",
       "sources": [
         {
           "name": "Portland Tribune",

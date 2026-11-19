@@ -2,47 +2,6 @@
   "updated": "2026-11-19",
   "items": [
     {
-      "name": "The Unipiper Whiskey Number Two",
-      "maker": "Bull Run Distillery (Portland) with The Unipiper",
-      "kind": "New product",
-      "what": "The second limited-edition Unipiper Whiskey from Bull Run Distillery: only 250 bottles, released a few crates at a time through November and December. Last year's first edition, a 7-year rye aged in rum barrels, sold just 159 bottles with proceeds going to Weird Portland United.",
-      "where_to_buy": [],
-      "date": "2026-11-01",
-      "sources": [
-        {
-          "name": "The Unipiper's Whiskey Run, November 1, 2026",
-          "url": "https://unipipersportland.com/"
-        },
-        {
-          "name": "KOIN: 'Whiskey and weirdness': The Unipiper unveils limited edition whiskey",
-          "url": "https://www.koin.com/news/portland/whiskey-and-weirdness-the-unipiper-unveils-limited-edition-whiskey/"
-        }
-      ]
-    },
-    {
-      "name": "Unseen Realm American Vatted Malt Whiskey",
-      "maker": "Grimoire Spirits (Miles Munroe, former Westward Whiskey master blender)",
-      "kind": "New brand",
-      "what": "The debut release from Miles Munroe's new independent blending company after 13 years at Westward: a vatted malt of American single malts made with barleys like Golden Promise, Genie and AC Metcalf. It is $69.99 for Grimoire Whiskey Society members and ships in early December, with quarterly releases to follow.",
-      "where_to_buy": [
-        {
-          "store": "Grimoire Whiskey Society (members only)",
-          "url": null
-        }
-      ],
-      "date": "2026-10-12",
-      "sources": [
-        {
-          "name": "BevNET: A New American Vatted Malt to Be Released by Master Blender Miles Munroe",
-          "url": "https://bevnet.com/pr/2026/10/12/a-new-american-vatted-malt-to-be-released-by-master-blender-miles-munroe"
-        },
-        {
-          "name": "BevNET: Westward Whiskey Master Blender Miles Munroe Departs After 13 Years, Announces Launch of Grimoire Spirits",
-          "url": "https://www.bevnet.com/pr/2026/06/30/westward-whiskey-master-blender-miles-munroe-departs-after-13-years-announces-launch-of-grimoire-spirits"
-        }
-      ]
-    },
-    {
       "name": "Bob's Red Mill cookies",
       "maker": "Bob's Red Mill",
       "kind": "New product",
@@ -80,6 +39,24 @@
         {
           "name": "New Deal Distillery: Nocino Sour recipe",
           "url": "https://newdealdistillery.com/recipes/nocino-sour/"
+        }
+      ]
+    },
+    {
+      "name": "The Unipiper Whiskey Number Two",
+      "maker": "Bull Run Distillery (Portland) with The Unipiper",
+      "kind": "New product",
+      "what": "The second limited-edition Unipiper Whiskey from Bull Run Distillery: only 250 bottles, released a few crates at a time through November and December. Last year's first edition, a 7-year rye aged in rum barrels, sold just 159 bottles with proceeds going to Weird Portland United.",
+      "where_to_buy": [],
+      "date": "2026-11-01",
+      "sources": [
+        {
+          "name": "The Unipiper's Whiskey Run, November 1, 2026",
+          "url": "https://unipipersportland.com/"
+        },
+        {
+          "name": "KOIN: 'Whiskey and weirdness': The Unipiper unveils limited edition whiskey",
+          "url": "https://www.koin.com/news/portland/whiskey-and-weirdness-the-unipiper-unveils-limited-edition-whiskey/"
         }
       ]
     },
@@ -172,6 +149,29 @@
         {
           "name": "Nombase newswire: Public Coast Brewing Co. new label design and seasonal beers",
           "url": "https://www.nombase.com/newswire/2026/10/13/public-coast-brewing-co-announces-new-label-design-and-seasonal-beers-in-honor-of-10th-anniversary"
+        }
+      ]
+    },
+    {
+      "name": "Unseen Realm American Vatted Malt Whiskey",
+      "maker": "Grimoire Spirits (Miles Munroe, former Westward Whiskey master blender)",
+      "kind": "New brand",
+      "what": "The debut release from Miles Munroe's new independent blending company after 13 years at Westward: a vatted malt of American single malts made with barleys like Golden Promise, Genie and AC Metcalf. It is $69.99 for Grimoire Whiskey Society members and ships in early December, with quarterly releases to follow.",
+      "where_to_buy": [
+        {
+          "store": "Grimoire Whiskey Society (members only)",
+          "url": null
+        }
+      ],
+      "date": "2026-10-12",
+      "sources": [
+        {
+          "name": "BevNET: A New American Vatted Malt to Be Released by Master Blender Miles Munroe",
+          "url": "https://bevnet.com/pr/2026/10/12/a-new-american-vatted-malt-to-be-released-by-master-blender-miles-munroe"
+        },
+        {
+          "name": "BevNET: Westward Whiskey Master Blender Miles Munroe Departs After 13 Years, Announces Launch of Grimoire Spirits",
+          "url": "https://www.bevnet.com/pr/2026/06/30/westward-whiskey-master-blender-miles-munroe-departs-after-13-years-announces-launch-of-grimoire-spirits"
         }
       ]
     },
@@ -343,47 +343,6 @@
         {
           "name": "Sip Magazine: 503 Distilling Answers the Call With 3 Sirens Straight American Whiskey",
           "url": "https://sipmagazine.com/?p=403989"
-        }
-      ]
-    },
-    {
-      "name": "True Brut cider in new six-packs",
-      "maker": "Portland Cider Company",
-      "kind": "New product",
-      "what": "Portland Cider's zero-sugar True Brut got a fresh look and a new six-pack format, alongside updated Proper Pint cans, rolling out to select retailers around the Pacific Northwest.",
-      "where_to_buy": [],
-      "date": "2026-09-03",
-      "sources": [
-        {
-          "name": "Brewbound: Portland Cider's True Brut gets a fresh look and a new six-pack",
-          "url": "https://www.brewbound.com/pr/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
-        }
-      ]
-    },
-    {
-      "name": "Bacon Cheddar Brazilian Cheese Bread",
-      "maker": "Brazi Bites (Portland)",
-      "kind": "New product",
-      "what": "Brazi Bites' first new cheese bread flavor in three years, a bacon and cheddar take on its frozen pão de queijo. An 11.5-ounce bag of 18 bites has a suggested price of $6.99 to $7.99.",
-      "where_to_buy": [
-        {
-          "store": "Whole Foods Market (freezer aisle)",
-          "url": null
-        },
-        {
-          "store": "Independent grocers nationwide; Walmart and Kroger this fall",
-          "url": null
-        }
-      ],
-      "date": "2026-08-25",
-      "sources": [
-        {
-          "name": "Nosh: Brazi Bites Turns Up the Flavor with New Bacon Cheddar Brazilian Cheese Bread",
-          "url": "https://www.nosh.com/pr/2026/08/25/brazi-bites-turns-up-the-flavor-with-new-bacon-cheddar-brazilian-cheese-bread"
-        },
-        {
-          "name": "Nombase: Brazi Bites Turns Up the Flavor with New Bacon Cheddar Brazilian Cheese Bread",
-          "url": "https://www.nombase.com/newswire/2026/08/25/brazi-bites-turns-up-the-flavor-with-new-bacon-cheddar-brazilian-cheese-bread"
         }
       ]
     }

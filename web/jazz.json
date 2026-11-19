@@ -350,6 +350,22 @@
       ]
     },
     {
+      "artist": "MARIA MAZZOTTA",
+      "kind": "Local",
+      "date": "2026-12-13",
+      "time": "7:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Performance by Maria Mazzotta.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/maria-mazzotta/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/maria-mazzotta/"
+        }
+      ]
+    },
+    {
       "artist": "Sixth Annual Brown Branch Big Band Holiday Show",
       "kind": "Big band",
       "date": "2026-12-14",
@@ -434,6 +450,22 @@
         {
           "name": "Eventworld listing",
           "url": "https://www.eventworld.com/kat-edmonson-portland-tickets-12-29-2026/event/488842"
+        }
+      ]
+    },
+    {
+      "artist": "STORYVILLE CONFIDENTIAL \"EAST COAST\" NYE",
+      "kind": "Local",
+      "date": "2026-12-31",
+      "time": "7:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "New Year's Eve event.",
+      "tickets": "https://www.jacklondonrevue.com/tm-event/storyville-confidential-east-coast-nye/",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.jacklondonrevue.com/tm-event/storyville-confidential-east-coast-nye/"
         }
       ]
     },

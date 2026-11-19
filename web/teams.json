@@ -1,16 +1,15 @@
 {
   "updated": "2026-11-19",
-  "updated_at": "2026-11-19T13:14:51Z",
+  "updated_at": "2026-11-19T14:42:14Z",
   "teams": {
     "blazers": {
-      "mood": "Stung, eyeing a get-right",
-      "pulse": "Fans are still sore about Tuesday's 106-105 collapse in Minnesota, the second loss in two nights to the Wolves. Tonight's trip to Milwaukee looks like the perfect bounce-back spot: the Bucks are 1-14 and have lost 11 straight, but Avdija's foot is the big question.",
+      "mood": "frustrated but hopeful",
+      "pulse": "Fans are frustrated after a narrow loss to Minnesota due to late turnovers. There is excitement regarding championship potential.",
       "storylines": [
-        "Last game: lost 106-105 at Minnesota on a McDaniels layup with 2.6 seconds left after a stolen inbounds pass",
-        "Tonight at Milwaukee, 5 p.m. Pacific; Portland 9-5, Bucks 1-14",
-        "Deni Avdija (sore foot) and Toumani Camara (abdominal soreness) are questionable",
-        "Avdija is averaging 24.2 points, 6.2 rebounds and 6.1 assists",
-        "Bettors have Portland as roughly a 10-point favorite"
+        "Lost 106-105 to Timberwolves on Nov 17",
+        "Deni Avdija and Camara questionable for next game",
+        "Robert Williams III resting against Bucks",
+        "Next game: Milwaukee Bucks"
       ],
       "sources": [
         {
@@ -40,14 +39,12 @@
       ]
     },
     "timbers": {
-      "mood": "Underdog swagger",
-      "pulse": "No game since the regular-season finale, so it's all playoff build-up. Portland heads to Frisco as the West's No. 7 seed on a four-game win streak to face No. 2 FC Dallas, a 58-point team that has never beaten the Timbers in four playoff meetings.",
+      "mood": "focused and preparing",
+      "pulse": "Players are bonding through team activities ahead of the playoffs. The squad is stepping up to make the postseason.",
       "storylines": [
-        "Game 1 at FC Dallas: Sat Nov 21, 1 p.m. Pacific, on Apple TV",
-        "Game 2 at Providence Park: Sat Nov 28, 7:30 p.m. Pacific, Apple TV and FS1; Game 3 in Dallas Dec 2 if needed",
-        "Ties after 90 minutes go straight to penalties, no extra time",
-        "Velde carries the attack with 12 goals and 10 assists",
-        "Cifuentes says Antony has a chance to return from a knee issue (Rotowire, Nov 16)"
+        "Team building at the track before playoffs",
+        "Timbers2 lost 1-0 in MLS NEXT Pro semifinals",
+        "Academy player Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -77,14 +74,13 @@
       ]
     },
     "f1": {
-      "mood": "Vegas mode",
-      "pulse": "Cars hit the Strip tonight for practice. Antonelli and Mercedes already have both titles, so the buzz is the scrap for second, where two-time Vegas winner Verstappen is the in-form driver, and whether the cold desert night scrambles the order.",
+      "mood": "Anticipatory and strategic",
+      "pulse": "Fans are focused on upcoming Las Vegas and Qatar races. Interest is high regarding driver management changes and championship battles.",
       "storylines": [
-        "Practice Thursday night, race Saturday Nov 21; three races left",
-        "P2 fight: Verstappen 279, Russell 262, Hamilton 261, Leclerc 249, Norris 246",
-        "Pirelli warns cold track temps, tyre warm-up and graining could decide the race",
-        "Hamilton says the constructors' fight is Ferrari's main focus",
-        "Cadillac seat question: stick with Bottas or give Colton Herta his shot"
+        "Cadillac selects Bottas for 2027 alongside Perez.",
+        "Piastri splits with his management team.",
+        "Russell aims for victory in Las Vegas without a new turbo.",
+        "Hamilton focuses on Ferrari's Constructors' Championship fight."
       ],
       "sources": [
         {
@@ -114,14 +110,12 @@
       ]
     },
     "ducks": {
-      "mood": "Rolling",
-      "pulse": "Duck fans are still riding the 31-7 rout of Michigan, and Michigan State's quarterback mess makes Friday look very winnable. The nagging worry is Oregon's own injury list and the fact that the Ducks have never won in East Lansing.",
+      "mood": "Optimistic yet analytical",
+      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. There is debate regarding their status as a playoff team.",
       "storylines": [
-        "Next game: Friday Nov 20 at Michigan State, 5:00 p.m. Pacific on FOX",
-        "Spartans QB Alessio Milivojevic is out and backup Cam Fancher is questionable with a knee injury",
-        "Oregon has eight players out on the first report, including OLB Teitum Tuioti; Jerry Mixon questionable, Bear Alexander probable",
-        "Dante Moore still hasn't played since the Sept. 26 hit against USC",
-        "Oregon is 0-3 all-time in East Lansing; finale vs. Washington Nov 28"
+        "Beat Michigan to keep playoff hopes alive",
+        "Raiola named B1G offensive player of the week",
+        "Next game is against Michigan State"
       ],
       "sources": [
         {
@@ -151,14 +145,12 @@
       ]
     },
     "niners": {
-      "mood": "Confident, a bit nervous",
-      "pulse": "The 8-1 Niners are still buzzing from the shootout win in Dallas, and most experts pick them in Mexico City. The nerves come from Shanahan's 0-5 record against Vikings DC Brian Flores and a new Mike Evans injury scare.",
+      "mood": "optimistic and focused",
+      "pulse": "Fans are excited by Brock Purdy's MVP-caliber season and an 8-1 record. They are preparing for a high-stakes matchup in Mexico City.",
       "storylines": [
-        "Next game: Sunday Nov 22 vs. Vikings in Mexico City, 5:20 p.m. Pacific on NBC/Peacock",
-        "Mike Evans missed Wednesday practice with an Achilles issue; Shanahan hopes he's back Thursday",
-        "Shanahan is 0-5 against Brian Flores defenses",
-        "Most of SI's MMQB staff pick the 49ers, but two took Minnesota",
-        "Team is practicing in Colorado Springs to get used to the altitude"
+        "Fighting for NFC number one seed against Vikings",
+        "Brock Purdy is in the MVP conversation",
+        "Acclimatizing to altitude in Colorado Springs"
       ],
       "sources": [
         {

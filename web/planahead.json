@@ -2,52 +2,24 @@
   "updated": "2026-11-19",
   "items": [
     {
-      "title": "The Teskey Brothers and Durand Jones & The Indications, Edgefield (Jul 11, 2027)",
-      "kind": "Tickets",
-      "action": "Presale through the Teskey Brothers mailing list opened Wed, Nov 18 at 10 a.m. local; sign up and check for remaining presale tickets now.",
-      "starts": "2026-11-18",
-      "by": null,
-      "why": "Co-headlining summer 2027 tour with a lawn show at Edgefield; the general on-sale date wasn't found in the sources.",
+      "title": "Mt. Hood National Forest Christmas tree permit",
+      "kind": "Permit",
+      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
+      "starts": "2026-11-12",
+      "by": "2026-12-31",
+      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
       "sources": [
         {
-          "name": "Concert Addicts",
-          "url": "https://www.concertaddicts.com/news-articles/tours/teskey-brothers-durand-jones-north-american-tour-2027"
-        }
-      ]
-    },
-    {
-      "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
-      "kind": "Tickets",
-      "action": "On sale now through Ticketmaster and the Moda Center box office.",
-      "starts": null,
-      "by": "2026-11-19",
-      "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
-      "sources": [
-        {
-          "name": "Oregon Ducks",
-          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
+          "name": "More Than Just Parks permit tracker",
+          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
         },
         {
-          "name": "Yahoo Sports",
-          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
-        }
-      ]
-    },
-    {
-      "title": "Sam Fender, Portland (May 5, 2027, venue TBA)",
-      "kind": "Tickets",
-      "action": "General sale Thu, Nov 19 at 10 a.m. local; artist presale ran Nov 17 and venue/promoter presales Nov 18 at select stops.",
-      "starts": "2026-11-19",
-      "by": "2026-11-19",
-      "why": "One of 10 North American dates on his biggest headlining run in the region; the Portland venue hasn't been announced yet.",
-      "sources": [
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/sam-fender-2027-north-american-tour/"
+          "name": "Recreation.gov",
+          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
         },
         {
-          "name": "Complex",
-          "url": "https://www.complex.com/music/a/will-lavin/sam-fender-north-america-tour-2027-dates-buy-tickets"
+          "name": "Mt. Hood NF Christmas trees",
+          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
         }
       ]
     },
@@ -86,6 +58,42 @@
         {
           "name": "Grimy Goods presale guide",
           "url": "https://www.grimygoods.com/2026/11/12/phoebe-bridgers-tour-2027-presale-code-ticket-prices-waitlist/"
+        }
+      ]
+    },
+    {
+      "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
+      "kind": "Tickets",
+      "action": "On sale now through Ticketmaster and the Moda Center box office.",
+      "starts": null,
+      "by": "2026-11-19",
+      "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
+      "sources": [
+        {
+          "name": "Oregon Ducks",
+          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
+        },
+        {
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
+        }
+      ]
+    },
+    {
+      "title": "Sam Fender, Portland (May 5, 2027, venue TBA)",
+      "kind": "Tickets",
+      "action": "General sale Thu, Nov 19 at 10 a.m. local; artist presale ran Nov 17 and venue/promoter presales Nov 18 at select stops.",
+      "starts": "2026-11-19",
+      "by": "2026-11-19",
+      "why": "One of 10 North American dates on his biggest headlining run in the region; the Portland venue hasn't been announced yet.",
+      "sources": [
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/sam-fender-2027-north-american-tour/"
+        },
+        {
+          "name": "Complex",
+          "url": "https://www.complex.com/music/a/will-lavin/sam-fender-north-america-tour-2027-dates-buy-tickets"
         }
       ]
     },
@@ -132,40 +140,12 @@
       ]
     },
     {
-      "title": "The Grotto's Christmas Festival of Lights (Nov 27 to Dec 30)",
-      "kind": "Tickets",
-      "action": "Buy timed tickets online for a weeknight to avoid peak weekend crowds.",
-      "starts": "2026-11-27",
-      "by": null,
-      "why": "The Grotto lists general online tickets at $17.95; the festival runs Nov 27 to Dec 30 and is closed Christmas Day.",
-      "sources": [
-        {
-          "name": "The Grotto Christmas Festival of Lights",
-          "url": "https://thegrotto.org/christmas"
-        }
-      ]
-    },
-    {
-      "title": "Winter Wonderland at Portland International Raceway (Nov 27 to Dec 31)",
-      "kind": "Tickets",
-      "action": "Plan a drive-through night; times vary by date.",
-      "starts": "2026-11-27",
-      "by": null,
-      "why": "Travel Portland lists it daily Nov 27 to Dec 31, billed as the largest holiday light show west of the Mississippi.",
-      "sources": [
-        {
-          "name": "Travel Portland: Winter Wonderland",
-          "url": "https://travelportland.com/event/806447"
-        }
-      ]
-    },
-    {
       "title": "Timbers vs. FC Dallas, MLS Cup Playoffs Round One Game 2 (Nov 28)",
       "kind": "Tickets",
-      "action": "Tickets went on sale the Monday after the Nov 8 schedule release, to season ticket holders first and then the public at 2 p.m.; check timbers.com for what's left.",
+      "action": "Watch timbers.com for playoff tickets for the 7:30 p.m. home match at Providence Park.",
       "starts": null,
       "by": "2026-11-28",
-      "why": "Portland's only home game of the best-of-three series; at least one reseller lists it as sold out, so check the official site before paying resale.",
+      "why": "Portland's only home game of the best-of-three series; an official ticket on-sale announcement wasn't found.",
       "sources": [
         {
           "name": "KPTV",
@@ -304,28 +284,6 @@
       ]
     },
     {
-      "title": "Mt. Hood National Forest Christmas tree permit",
-      "kind": "Permit",
-      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
-      "starts": "2026-11-12",
-      "by": "2026-12-31",
-      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
-      "sources": [
-        {
-          "name": "More Than Just Parks permit tracker",
-          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
-        },
-        {
-          "name": "Recreation.gov",
-          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
-        },
-        {
-          "name": "Mt. Hood NF Christmas trees",
-          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
-        }
-      ]
-    },
-    {
       "title": "Coast state park campsites",
       "kind": "Book",
       "action": "Book Fort Stevens or Nehalem Bay exactly six months before your arrival date on the state's reservation site.",
@@ -340,6 +298,28 @@
         {
           "name": "Cape Lookout State Park",
           "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"
+        }
+      ]
+    },
+    {
+      "title": "Sylvan Esso, Crystal Ballroom (Feb 22 and 23, 2027)",
+      "kind": "Tickets",
+      "action": "Tickets are on sale now; buy face value through the venue's ticketing for either night before the ballroom shows sell through.",
+      "starts": null,
+      "by": null,
+      "why": "Two Portland nights on the band's 2026-27 tour; the Portland on-sale date wasn't confirmed in the sources found.",
+      "sources": [
+        {
+          "name": "Stereoboard (Feb 22)",
+          "url": "https://www.stereoboard.com/sylvan-esso-tickets/portland/2027-02-22"
+        },
+        {
+          "name": "Stereoboard (Feb 23)",
+          "url": "https://www.stereoboard.com/sylvan-esso-tickets/portland/2027-02-23"
+        },
+        {
+          "name": "BrooklynVegan tour announcement",
+          "url": "https://www.brooklynvegan.com/sylvan-esso-share-hot-slob-announce-2026-2027-tour/"
         }
       ]
     },
@@ -402,6 +382,24 @@
       ]
     },
     {
+      "title": "DIIV, Revolution Hall (May 12, 2027)",
+      "kind": "Tickets",
+      "action": "General sale opened Fri Oct 30 at 10 a.m.; buy face value through Revolution Hall's ticketing before the room sells through.",
+      "starts": null,
+      "by": null,
+      "why": "Newly announced stop on the ZIRP! world tour, with new single \"Dare Me\"; no Portland presale details were found in the sources.",
+      "sources": [
+        {
+          "name": "JamBase",
+          "url": "https://www.jambase.com/article/diiv-tour-dates-2027"
+        },
+        {
+          "name": "mxdwn",
+          "url": "https://music.mxdwn.com/2026/10/29/news/diiv-announce-spring-2027-north-american-tour-dates-shares-new-single-video-dare-me/amp/"
+        }
+      ]
+    },
+    {
       "title": "Conversations With Nick Cave, Arlene Schnitzer Concert Hall (Apr 12, 2027)",
       "kind": "Tickets",
       "action": "General sale opened Fri, Nov 13 at 10 a.m.; buy face value through the official links at nickcave.com rather than resale.",
@@ -434,16 +432,16 @@
       ]
     },
     {
-      "title": "Epic Pass goes off sale Dec 6",
+      "title": "Epic Pass goes off sale in early December",
       "kind": "Deadline",
-      "action": "Buy an Epic Pass by Sun, Dec 6 if you want one this season.",
+      "action": "If you want an Epic Pass this season, buy in the next two weeks; the 2026 cutoff hasn't been announced.",
       "starts": null,
-      "by": "2026-12-06",
-      "why": "A Nov 16, 2026 Vail Resorts release says Dec 6 is the last chance to buy a 2026/27 Epic Pass (adult $1,245); confirm on epicpass.com.",
+      "by": null,
+      "why": "Last season Vail stopped selling Epic Passes on Dec 4, and OnTheSnow says prices rise until they go off sale in December.",
       "sources": [
         {
-          "name": "Vail Resorts release via Finviz",
-          "url": "https://finviz.com/news/423328/how-to-save-on-your-ski-season-before-epic-passes-go-off-sale-december-6"
+          "name": "Vail Resorts (2025 off-sale notice)",
+          "url": "https://news.vailresorts.com/2025-11-17-Epic-Passes-Go-Off-Sale-December-4-Lock-in-Your-Magical-Mountain-Holiday-Now"
         },
         {
           "name": "OnTheSnow Epic Pass buyer's guide",

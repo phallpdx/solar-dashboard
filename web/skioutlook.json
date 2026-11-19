@@ -1,7 +1,7 @@
 {
   "updated": "2026-11-19",
   "season": {
-    "summary": "NOAA's Nov 12 update keeps an El Niño Advisory in place: El Niño is still strengthening, with a strong-to-very strong event likely through January-March 2027. NOAA's winter outlook gives the Pacific Northwest, Mt. Hood included, some of the best odds in the country for a warmer-than-normal winter. Strong El Niño winters usually mean less Northwest snow and higher snow levels, so early-season and low-elevation skiing is the bigger risk. A Nov 18 forecast for Meadows shows only light to moderate new snow over the next several days.",
+    "summary": "A strong-to-very strong El Niño is strengthening and likely through January-March 2027. There are better than even odds for historic event impacts this winter. The next update is scheduled for 2026-12-10. Impacts consistent with El Niño are higher, though not guaranteed.",
     "sources": [
       {
         "name": "NOAA CPC ENSO discussion, Nov 2026",
@@ -26,10 +26,6 @@
       {
         "name": "USGS Northwest CASC",
         "url": "https://www.usgs.gov/programs/climate-adaptation-science-centers/regional-super-el-nino-impacts-northwest-us"
-      },
-      {
-        "name": "Snow-Forecast Meadows mid-mountain forecast",
-        "url": "https://www.snow-forecast.com/resorts/Mt-Hood-Meadows/6day/mid"
       }
     ]
   },
@@ -38,8 +34,12 @@
       "resort": "Mt. Hood Meadows",
       "date": "2026-12-04",
       "status": "Planned",
-      "note": "Still the only Mt. Hood resort with an announced date; a Nov 18 snow report lists Dec 4 for opening.",
+      "note": "Date is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "Portland Tribune",
           "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
@@ -47,19 +47,19 @@
         {
           "name": "Mt. Hood Meadows schedule",
           "url": "https://www.skihood.com/explore/Schedule"
-        },
-        {
-          "name": "Snow-Forecast Meadows snow report",
-          "url": "https://www.snow-forecast.com/resorts/Mt-Hood-Meadows/snow-report"
         }
       ]
     },
     {
       "resort": "Timberline",
-      "date": null,
-      "status": "Depends on snow",
-      "note": "No official date; it opens once there's enough snow to operate responsibly. Projection sites disagree, so treat their dates as guesses.",
+      "date": "2026-11-27",
+      "status": "Planned",
+      "note": "Date is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "Portland Tribune",
           "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
@@ -72,10 +72,14 @@
     },
     {
       "resort": "Mt. Hood Skibowl",
-      "date": null,
-      "status": "Tentative",
-      "note": "Tentatively late November (projected Nov 27); no snow at base or summit as of Nov 9.",
+      "date": "2026-11-27",
+      "status": "Planned",
+      "note": "Date is a projection and subject to change.",
       "sources": [
+        {
+          "name": "OnTheSnow Oregon projected openings",
+          "url": "https://www.onthesnow.com/oregon/projected-openings"
+        },
         {
           "name": "Portland Tribune",
           "url": "https://portlandtribune.com/2026/11/09/mount-hood-ski-resorts-set-tentative-openings-for-respectful-season/"
@@ -89,8 +93,8 @@
     {
       "resort": "Cooper Spur",
       "date": "2026-12-26",
-      "status": "Depends on snow",
-      "note": "Projection only, not announced by the resort.",
+      "status": "Planned",
+      "note": "Date is a projection and subject to change.",
       "sources": [
         {
           "name": "OnTheSnow Oregon projected openings",

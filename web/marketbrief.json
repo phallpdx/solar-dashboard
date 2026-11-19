@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-19",
-  "updated_at": "2026-11-19T13:20:08Z",
+  "updated_at": "2026-11-19T14:49:02Z",
   "analysis": {
     "headline": "Stocks were mixed Wednesday (Dow down 561 points, or 1.1%, S&P 500 down about 0.2% for a fifth straight loss, Nasdaq up 0.4%), and futures are sharply higher this morning, led by Nasdaq 100 futures up about 2%, ahead of Anthropic's Nasdaq debut.",
     "summary": "Wednesday's Dow drop was mostly health insurers: UnitedHealth fell about 10% and Humana about 13% as investors weighed a federal proposal to expand Medicare Advantage audits, while Nvidia gave back an early post-earnings gain and closed down about 2.9% despite revenue of $115.8 billion, up 103% from a year earlier. Rate worries added pressure: minutes of the Fed's October meeting, released Wednesday afternoon, said almost all officials see further rate hikes as likely appropriate, with a couple open to more than a quarter point in December, and the 10-year Treasury yield was near 5.07%. That higher-for-longer outlook and a firm dollar pushed gold to about $3,725 an ounce, its weakest in more than a year, and Bitcoin fell about 3% to near $62,500, while WTI crude dropped about 3% to roughly $83 after a surprise build in U.S. crude stocks. This morning the mood has flipped toward AI optimism, with S&P 500 futures up about 1.2% and on track for the index's first gain in six sessions, as Anthropic priced its IPO at $83 a share, above its earlier $70 to $78 range, and Walmart's revenue of $188.8 billion came in just above estimates.",
@@ -60,80 +60,65 @@
     ]
   },
   "helium": {
-    "headline": "North American Helium's new Stewart Valley plant is producing about 73 million cubic feet a year, and a neighbouring explorer says NAH has recently licensed another well in southwest Saskatchewan.",
-    "summary": "NAH's Stewart Valley purification facility, which the province calls Canada's largest, came online on September 20, 2026 at roughly 73 million cubic feet of helium per year, and the province says it lifts Saskatchewan's annual output by more than 40 percent. In a November 16 release, partner Helium Evolution said its Glenbain North exploration area lies just south of a well NAH recently licensed at 12-30-16-7W3, one of four areas in its up-to-$3 million winter seismic program. NAH's next big project is a planned helium liquefaction plant in Swift Current, estimated at about $100 million, and a November 17 local report said new federal tax treatment for helium could help it, though some of the company's requests are still under consideration. The market it sells into remains tight: reports this month say spot helium prices have nearly tripled since March amid supply disruptions in Qatar and Russian export limits, and the U.S. designated helium a critical material on October 23.",
-    "items": [
-      {
-        "date": "2026-11-16",
-        "title": "Helium Evolution launches up to $3 million winter seismic program",
-        "what": "The release says HEVI's Glenbain North focus area sits just south of a well North American Helium recently licensed, and notes HEVI's partnership with NAH.",
-        "url": "https://www.globenewswire.com/news-release/2026/11/16/3403498/0/en/helium-evolution-launches-up-to-3-million-winter-seismic-program-to-advance-exploration-on-100-working-interest-lands.html"
-      },
-      {
-        "date": "2026-11-17",
-        "title": "Helium getting oil and gas treatment good news for Swift Current",
-        "what": "Federal tax changes for the helium industry could help NAH's planned Swift Current liquefier, though some of the company's requests are still being considered.",
-        "url": "https://www.swiftcurrentonline.com/articles/helium-getting-oil-and-gas-treatment-good-news-for-swift-current"
-      },
-      {
-        "date": "2026-11-03",
-        "title": "Helium producer gives Swift Current recreation plans a $100K lift",
-        "what": "NAH pledged $100,000 over four years toward new Swift Current recreation facilities, including an aquatic centre.",
-        "url": "https://www.sasktoday.ca/swift-current-today/swift-current-news/helium-producer-gives-swift-current-recreation-plans-a-100k-lift-12968988"
-      },
-      {
-        "date": "2026-10-16",
-        "title": "Swift Current could be home to $100 million helium liquefier",
-        "what": "NAH is planning a roughly $100 million helium liquefaction plant in Swift Current, which would be the first in Canada.",
-        "url": "https://www.ckom.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
-      },
-      {
-        "date": "2026-09-22",
-        "title": "North American Helium Starts Production at Canada's Largest Helium Field",
-        "what": "The Stewart Valley purification facility came onstream September 20 at about 73 million cubic feet of helium per year.",
-        "url": "https://stockhouse.com/news/press-releases/2026/09/22/north-american-helium-starts-production-at-canada-s-largest-helium-field"
-      }
-    ],
+    "headline": "North American Helium has started production at Canada's largest helium field.",
+    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A purification facility opened in southwest Saskatchewan. Federal budget wins and tax changes boost growth hopes for the industry.",
     "sources": [
       {
-        "name": "GlobeNewswire (Helium Evolution release): Up to $3 million winter seismic program",
-        "url": "https://www.globenewswire.com/news-release/2026/11/16/3403498/0/en/helium-evolution-launches-up-to-3-million-winter-seismic-program-to-advance-exploration-on-100-working-interest-lands.html"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUEU5ZDdHSzN0WU0tZ3pCa3pDWTVRb3MwYzZITGZPZUM3MzVvaWNiV2hKZHMyZThYX2MybGJ2eXBTQjVuSF8ySVVaRk1iMy1QbVRPdFJkaTR6NnFKRkQ5QnVOR3hIS2t5SThKNXJ0OHlXY1ExS1N5NUJhTmdIRzNCNW1fbm1EMXdTNDNvTGNHanNtdU5WWGZDVDdRUHU?oc=5"
       },
       {
-        "name": "gasworld: Helium Evolution targets new Saskatchewan discoveries in CAD $3m programme",
-        "url": "https://www.gasworld.com/story/helium-evolution-targets-new-saskatchewan-discoveries-in-cad-3m-programme/2264256.article/"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNNUJ4VHZCSkFUZFFDY0pmVFRMV0pOaDN0ZnBWcXUzVXl5SEUwRzJtQk52MV8yZW9nQkt0aGo0NUNfZnBCZldFMUYzTlc2UUdnRUdVVnNKdXpDMFR4QTZ1X01XSi1TS3M5WG1zbWZJc0taTUl4d2YxLVlGQmhVYUdVazFHb2d0cFVnZGQydTFEUFFRTzF3V0FZQWZfWUM0bkRnel9hdzFTNnZMb3lHZEttbUx3?oc=5"
       },
       {
-        "name": "Government of Saskatchewan: Canada's largest helium purification facility opens in southwest Saskatchewan",
-        "url": "https://www.saskatchewan.ca/government/news-and-media/2026/october/15/canadas-largest-helium-purification-facility-opens-in-southwest-saskatchewan"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQWFNN09zMzdJSWZ3aFpGSkdyeEktb1VLLTZwY0FBMVAtaE45dHR4M0I3Y0dzVWptV2FoMHZqNWoxTzBIREkzemtBS1EwRV9kOTdPZTJEUVIzdEF1dzU0UldMOE54bnhWeEs4bHZIN0kyUmlPQkRQR2hNcG15ZVYyRTFrOF9VTUhjSVRWcHV4UlFDZ1lYamYwNHhzZWVsYjdLRVE2ZFBub0dWTmdMUjJlRGdEdWhDY0M1bzVieS0xTk8?oc=5"
       },
       {
-        "name": "Streetwise Reports: US declares helium critical as Minnesota discovery points to 1 billion cubic feet",
-        "url": "https://www.streetwisereports.com/article/2026/11/02/us-declares-helium-critical-as-minnesota-discovery-points-to-1-billion-cubic-feet.html"
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
       },
       {
-        "name": "SwiftCurrentOnline: Helium getting oil and gas treatment good news for Swift Current",
-        "url": "https://www.swiftcurrentonline.com/articles/helium-getting-oil-and-gas-treatment-good-news-for-swift-current"
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdjFySlZiaXdGa0dRQmVYcW5MQ1RSWmtpSE01Z3JwNHQyUUkzZGtXdkN1c3h6M3FEVERkdk90RXZsdnNPa2pJTVF1NV9XWGIyLS1hOGIwTFdDMExGWjVtZnVwSVBMdmEzNmdja1huV3JRYlctbGtDa08xT0xaUFNnVWRwR2dfNDQ2WklmYjBELWh0N2gwNFBUVm4yNXNCaWVuSkQ0MW1zSWpmNzBVLXd6cjFrblpmcElMZ2w0WElPdl9URDBEM0E?oc=5"
       },
       {
-        "name": "SaskToday: Helium producer gives Swift Current recreation plans a $100K lift",
-        "url": "https://www.sasktoday.ca/swift-current-today/swift-current-news/helium-producer-gives-swift-current-recreation-plans-a-100k-lift-12968988"
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdE8xSTRXWWUxci1tX2dZZ0Z1LUVOZnpuSUVsMVY2d3V1YVVjOFc3LXh4ak4wcmVJNURFNnM3cnFyRVhscnFVZjI5eVFiU29aWWJyaTloYWk5Q1MycFdJTDhickU5bkstakFLX2pPSF80d0EweTJKQW1FOUtfMWxOTWQxS28?oc=5"
+      }
+    ],
+    "by": "local model",
+    "items": [
+      {
+        "title": "Helium Evolution Launches Up to $3 Million Winter Seismic Program to Advance Exploration on 100% Working Interest Lands",
+        "date": "2026-11-16",
+        "url": "https://news.google.com/rss/articles/CBMioAJBVV95cUxQQnZSVU9YNlVQNjJqZkc0dmlQeGp3c1VaWkNVRGlzdldlbVplNHpsM3hmOGN5VU9rVWhaVGFua0VWRDBRMzdrdGVDZXFEdlNHZjgxajdFbWhENDhkakhCb01OMHZvd1o4em1fUk1TUHFlRTZ3TXQ5aGdjSjIzSTVFYkhzRkN6Y3JGZWZHZlNpOXpZaG00djBMNWRCeVFsRnZ6ZkdLMVlsdG5iODN0NFZZMmdxd1NuNlZDaDBUTUdmYXpLSzBkaWJZdmhwQ19yYUxMMHg1UXIzcXI2N1F1dGZ5MVd0X3N3Q0hORDB4MGR3WXhOTnBaS3NYM0lrQWJJMmRhQlZISW5qcnFzOFpULVdMSU9vOXZVV3drNlJHeUt4SXbSAaACQVVfeXFMUEJ2UlVPWDZVUDYyamZHNHZpUHhqd3NVWlpDVURpc3ZXZW1aZTR6bDN4ZjhjeVVPa1VoWlRhbmtFVkQwUTM3a3RlQ2VxRHZTR2Y4MWo3RW1oRDQ4ZGpIQm9NTjB2b3daOHptX1JNU1BxZUU2d010OWhnY0oyM0k1RWJIc0ZDemNyRmVmR2ZTaTl6WWhtNHYwTDVkQnlRbEZ2emZHSzFZbHRuYjgzdDRWWTJncXdTbjZWQ2gwVE1HZmF6S0swZGliWXZocENfcmFMTDB4NVFyM3FyNjdRdXRmeTFXdF9zd0NITkQweDBkd1l4Tk5wWktzWDNJa0FiSTJkYUJWSEluanJxczhaVC1XTElPbzl2VVd3azZSR3lLeEl2?oc=5",
+        "source": "Google News: North American Helium"
       },
       {
-        "name": "CKOM: Swift Current could be home to $100 million helium liquefier",
-        "url": "https://www.ckom.com/2026/10/16/swift-current-could-be-home-to-100-million-helium-liquefier/"
+        "title": "Helium getting oil and gas treatment good news for Swift Current",
+        "date": "2026-11-16",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
+        "source": "Google News: North American Helium"
       },
       {
-        "name": "Stockhouse (press release): North American Helium starts production at Canada's largest helium field",
-        "url": "https://stockhouse.com/news/press-releases/2026/09/22/north-american-helium-starts-production-at-canada-s-largest-helium-field"
+        "title": "Saskatchewan helium industry heats up as Crown permits attract nearly $5 million in bids",
+        "date": "2026-11-11",
+        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5",
+        "source": "Google News: helium market"
       },
       {
-        "name": "CBC: Canada's largest helium purification facility opens in southwest Sask.",
-        "url": "https://www.cbc.ca/news/canada/saskatchewan/canada-s-largest-helium-purification-facility-opens-in-southwest-sask-9.7382739"
+        "title": "Saskatchewan raises CAD $4.9m in third helium public offering",
+        "date": "2026-11-09",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5",
+        "source": "Google News: helium market"
       },
       {
-        "name": "Edison Group: The Iran war may have triggered the next global supply shock",
-        "url": "https://www.edisongroup.com/thematic/edison-explains-the-iran-war-may-have-triggered-the-next-global-supply-shock/BM-3352/"
+        "title": "A big win for Saskatchewan helium in federal budget",
+        "date": "2026-11-09",
+        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdE8xSTRXWWUxci1tX2dZZ0Z1LUVOZnpuSUVsMVY2d3V1YVVjOFc3LXh4ak4wcmVJNURFNnM3cnFyRVhscnFVZjI5eVFiU29aWWJyaTloYWk5Q1MycFdJTDhickU5bkstakFLX2pPSF80d0EweTJKQW1FOUtfMWxOTWQxS28?oc=5",
+        "source": "Google News: helium market"
       }
     ]
   },

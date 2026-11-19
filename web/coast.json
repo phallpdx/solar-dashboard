@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-19",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,38 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Beach Towel Tuesdays",
-      "date": "2026-11-17",
-      "end": null,
-      "town": "Seaside",
-      "summary": "First five groups to post social media photos get a free towel. Free.",
-      "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
-    },
-    {
-      "name": "Iron Chef Goes Coastal",
-      "date": "2026-11-17",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Local chefs battle for the Iron Chef title.",
-      "url": "https://www.seasideor.com/event/iron-chef-goes-coastal-3/"
-    },
-    {
-      "name": "Historical look at coastal event",
-      "date": "2026-11-17",
-      "end": null,
-      "town": "Astoria",
-      "summary": "First Woman Settler in Oregon gets historical look at coastal event.",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOZjlHRVozTENUbmVLUkZnaEkwcHZUWkpVYnVoSVo2cllXTWZHZXN6SFdSVmYtNDdQanZGbGxuR0xGVWdTYWVueDNrUDlLcEpiaHB5ZGpYcnlzU2kySWNVRDdMTFY2cHhTSXVXSVRJbGlOdEp4c2Q0Y2wtMm9xZXlYZHBtcDdSZ3hrUDIxV0xNUlRYUQ?oc=5"
-    },
-    {
-      "name": "First Woman Settler in Oregon Historical Look",
-      "date": "2026-11-17",
-      "end": null,
-      "town": "Oregon Coast",
-      "summary": "Historical look at the first woman settler in Oregon.",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOZjlHRVozTENUbmVLUkZnaEkwcHZUWkpVYnVoSVo2cllXTWZHZXN6SFdSVmYtNDdQanZGbGxuR0xGVWdTYWVueDNrUDlLcEpiaHB5ZGpYcnlzU2kySWNVRDdMTFY2cHhTSXVXSVRJbGlOdEp4c2Q0Y2wtMm9xZXlYZHBtcDdSZ3hrUDIxV0xNUlRYUQ?oc=5"
     },
     {
       "name": "HOLIDAY TREASURES GIFT SALE",
@@ -104,6 +72,14 @@
       "town": "Seaside",
       "summary": "Community tree lighting ceremony featuring caroling and Santa Claus at 7:30 pm.",
       "url": "https://www.seasideor.com/event/tree-lighting-ceremony/"
+    },
+    {
+      "name": "Juliet Yänko New Album Release Event",
+      "date": "2026-12-03",
+      "end": null,
+      "town": "Manzanita",
+      "summary": "An evening of story and song at Hoffman Center.",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOMmZkMDZvSTNhb0kyaV9YNG4tSzFsRlNwX1Mtbks4NWU0dzB0QW9HMW5zSTlaMGlCUVRCOFdyczZKZ3FiMFpxZHBpYnRza21kclpfVDJIS2ZWNEl2NUVwVmxqc1lLam4tdTRzUXM2U2lNdTQySko2WGJqdnFYdkRQa1FLVlNVaVoxSV9VcmhaQkVKTlpQTHYxU3Z5X0hFR19mV0l3S2xlaTZaTkVoU2hpU1VZUlJGSTFRWXBRM1RhZFJOeUt2SjNSV1RxcFV4VzlsV1hqUQ?oc=5"
     },
     {
       "name": "Treasure the Beach: Community Beach Cleanup",

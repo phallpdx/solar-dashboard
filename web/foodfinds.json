@@ -1,63 +1,44 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "items": [
     {
-      "name": "The Woodland Collection chocolate bars",
-      "maker": "Wildwood Chocolate (Portland)",
+      "name": "The Unipiper Whiskey Number Two",
+      "maker": "Bull Run Distillery (Portland) with The Unipiper",
       "kind": "New product",
-      "what": "A new line of personal-sized chocolate bars from Portland's Wildwood, announced July 29, 2026 for a September launch, with seven debut flavors including Berry Berry, Salted Brown Butter Texas Pecan Brittle and Orange Confit & Cherry. Four caramel-infused bars are planned to follow later in the year.",
+      "what": "The second limited-edition Unipiper Whiskey from Bull Run Distillery: only 250 bottles, released a few crates at a time through November and December. Last year's first edition, a 7-year rye aged in rum barrels, sold just 159 bottles with proceeds going to Weird Portland United.",
       "where_to_buy": [],
-      "date": "2026-07-29",
+      "date": "2026-11-01",
       "sources": [
         {
-          "name": "Nosh: Wildwood Unveils The Woodland Collection",
-          "url": "https://www.nosh.com/pr/2026/07/29/wildwood-unveils-the-woodland-collection"
+          "name": "The Unipiper's Whiskey Run, November 1, 2026",
+          "url": "https://unipipersportland.com/"
         },
         {
-          "name": "Snack & Bakery: Wildwood returns to its roots with chocolate collection",
-          "url": "https://www.snackandbakery.com/articles/116080-wildwood-returns-to-its-roots-with-chocolate-collection"
+          "name": "KOIN: 'Whiskey and weirdness': The Unipiper unveils limited edition whiskey",
+          "url": "https://www.koin.com/news/portland/whiskey-and-weirdness-the-unipiper-unveils-limited-edition-whiskey/"
         }
       ]
     },
     {
-      "name": "Black Butte Porter",
-      "maker": "Deschutes Brewery",
-      "kind": "Award",
-      "what": "Beer category winner",
-      "where_to_buy": [],
-      "date": "2026-11-17",
-      "sources": [
+      "name": "Unseen Realm American Vatted Malt Whiskey",
+      "maker": "Grimoire Spirits (Miles Munroe, former Westward Whiskey master blender)",
+      "kind": "New brand",
+      "what": "The debut release from Miles Munroe's new independent blending company after 13 years at Westward: a vatted malt of American single malts made with barleys like Golden Promise, Genie and AC Metcalf. It is $69.99 for Grimoire Whiskey Society members and ships in early December, with quarterly releases to follow.",
+      "where_to_buy": [
         {
-          "name": "Oregon's Good Food Award Winners [#3]",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/oregon-good-food-awards-january-2014"
+          "store": "Grimoire Whiskey Society (members only)",
+          "url": null
         }
-      ]
-    },
-    {
-      "name": "Ninkasi Brewing Company prize",
-      "maker": "Ninkasi Brewing Company",
-      "kind": "Award",
-      "what": "Beer category winner",
-      "where_to_buy": [],
-      "date": "2026-11-17",
+      ],
+      "date": "2026-10-12",
       "sources": [
         {
-          "name": "Oregon's Good Food Award Winners [#3]",
-          "url": "https://www.pdxmonthly.com/eat-and-drink/oregon-good-food-awards-january-2014"
-        }
-      ]
-    },
-    {
-      "name": "PDX Pop-Up Shops",
-      "maker": "PDX Pop-Up Shops",
-      "kind": "Seasonal",
-      "what": "17 local retailers in downtown Portland/Pearl District",
-      "where_to_buy": [],
-      "date": "2026-11-14",
-      "sources": [
+          "name": "BevNET: A New American Vatted Malt to Be Released by Master Blender Miles Munroe",
+          "url": "https://bevnet.com/pr/2026/10/12/a-new-american-vatted-malt-to-be-released-by-master-blender-miles-munroe"
+        },
         {
-          "name": "Wool, Wagyu and wine: 17 local businesses to do your holiday shopping without leaving downtown Portland",
-          "url": "https://www.oregonlive.com/retail/2026/11/wool-wagyu-and-wine-do-all-your-holiday-shopping-within-this-8-block-radius-of-downtown-portland.html"
+          "name": "BevNET: Westward Whiskey Master Blender Miles Munroe Departs After 13 Years, Announces Launch of Grimoire Spirits",
+          "url": "https://www.bevnet.com/pr/2026/06/30/westward-whiskey-master-blender-miles-munroe-departs-after-13-years-announces-launch-of-grimoire-spirits"
         }
       ]
     },
@@ -118,20 +99,6 @@
         {
           "name": "After months of popcorn purgatory, Joe Brown's Carmel Corn has returned — in a new location",
           "url": "https://www.oregonlive.com/washingtoncounty/2026/10/the-beloved-portland-popcorn-shop-that-survived-a-mall-closing-just-reopened-with-a-bigger-menu.html"
-        }
-      ]
-    },
-    {
-      "name": "Team Ghoul'd",
-      "maker": "Liz Marek",
-      "kind": "Award",
-      "what": "Beaverton cake maker Liz Marek's Team Ghoul'd won Season 16 of Halloween Wars, making her a two-time champion of the show.",
-      "where_to_buy": [],
-      "date": "2026-10-30",
-      "sources": [
-        {
-          "name": "Beaverton's Liz Marek is a 2-time 'Halloween Wars' champ. Here's what's next for her",
-          "url": "https://www.oregonlive.com/food/2026/10/another-sweet-victory-for-oregon-cake-maker-on-halloween-wars.html"
         }
       ]
     },
@@ -390,6 +357,33 @@
         {
           "name": "Brewbound: Portland Cider's True Brut gets a fresh look and a new six-pack",
           "url": "https://www.brewbound.com/pr/2026/09/03/portland-ciders-true-brut-gets-a-fresh-look-and-a-new-sixpack"
+        }
+      ]
+    },
+    {
+      "name": "Bacon Cheddar Brazilian Cheese Bread",
+      "maker": "Brazi Bites (Portland)",
+      "kind": "New product",
+      "what": "Brazi Bites' first new cheese bread flavor in three years, a bacon and cheddar take on its frozen pão de queijo. An 11.5-ounce bag of 18 bites has a suggested price of $6.99 to $7.99.",
+      "where_to_buy": [
+        {
+          "store": "Whole Foods Market (freezer aisle)",
+          "url": null
+        },
+        {
+          "store": "Independent grocers nationwide; Walmart and Kroger this fall",
+          "url": null
+        }
+      ],
+      "date": "2026-08-25",
+      "sources": [
+        {
+          "name": "Nosh: Brazi Bites Turns Up the Flavor with New Bacon Cheddar Brazilian Cheese Bread",
+          "url": "https://www.nosh.com/pr/2026/08/25/brazi-bites-turns-up-the-flavor-with-new-bacon-cheddar-brazilian-cheese-bread"
+        },
+        {
+          "name": "Nombase: Brazi Bites Turns Up the Flavor with New Bacon Cheddar Brazilian Cheese Bread",
+          "url": "https://www.nombase.com/newswire/2026/08/25/brazi-bites-turns-up-the-flavor-with-new-bacon-cheddar-brazilian-cheese-bread"
         }
       ]
     }

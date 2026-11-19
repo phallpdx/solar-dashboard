@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {
@@ -119,6 +119,14 @@
       "why": "No Portland date found yet"
     },
     {
+      "artist": "Armand Hammer",
+      "album": "Snakes & Ladders",
+      "score": 90,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/snakes-ladders/armand-hammer/",
+      "why": "Played Mississippi Studios Nov 10; no new Portland date yet"
+    },
+    {
       "artist": "Vince Staples",
       "album": "Cry Baby",
       "score": 88,
@@ -141,12 +149,12 @@
       "why": "No Portland date announced"
     },
     {
-      "artist": "Armand Hammer",
-      "album": "Snakes & Ladders",
-      "score": null,
-      "score_source": "Pitchfork Best New Music",
-      "score_url": "https://pitchfork.com/reviews/albums/armand-hammer-snakes-and-ladders/",
-      "why": "No Portland date found yet"
+      "artist": "Kim Deal",
+      "album": "Live At The Barbican",
+      "score": 85,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/live-at-the-barbican/kim-deal/",
+      "why": "No Portland date announced"
     },
     {
       "artist": "Baby Osamaa",

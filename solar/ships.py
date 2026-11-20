@@ -55,7 +55,7 @@ async def _listen(key):
     ships = {}
     sub = {"APIKey": key, "BoundingBoxes": [BOX],
            "FilterMessageTypes": ["PositionReport", "ShipStaticData", "StandardClassBPositionReport"]}
-    async with websockets.connect("wss://stream.aisstream.io/v0/stream") as ws:
+    async with websockets.connect("wss://stream.aisstream.io/v0/stream", open_timeout=40) as ws:
         await ws.send(json.dumps(sub))
         end = asyncio.get_event_loop().time() + LISTEN_SECONDS
         while asyncio.get_event_loop().time() < end:
@@ -85,8 +85,17 @@ async def _listen(key):
     return ships
 
 
-def listen(key):
-    return asyncio.run(_listen(key))
+def listen(key, tries=4):
+    """aisstream.io is often slow to accept a connection, so wait longer and try again a few times."""
+    for attempt in range(tries):
+        try:
+            return asyncio.run(_listen(key))
+        except (TimeoutError, OSError) as e:
+            if attempt == tries - 1:
+                raise
+            print(f"aisstream: {e}; trying again")
+            import time
+            time.sleep(10 * (attempt + 1))
 
 
 def _pos_at(ship):

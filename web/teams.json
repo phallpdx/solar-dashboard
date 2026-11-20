@@ -4,37 +4,24 @@
   "teams": {
     "blazers": {
       "mood": "Cautiously optimistic",
-      "pulse": "Fans are recovering from losses to Minnesota. They feel encouraged by Damian Lillard's return.",
+      "pulse": "Fans are buoyed by Thursday's 124-114 win at Milwaukee, where Damian Lillard scored a season-high 33 in his return there. It came after two losses to Minnesota.",
       "storylines": [
-        "Blazers lost 106-105 to Bucks",
-        "Damian Lillard returns to play",
-        "Avdija and Camara questionable for next game",
-        "Next game against Spurs on Wednesday"
+        "Won 124-114 at Milwaukee on Thursday; Lillard scored 33 and Clingan had 13 rebounds",
+        "Deni Avdija and Robert Williams III are day-to-day",
+        "Next game: at the Knicks on Saturday afternoon"
       ],
       "sources": [
+        {
+          "name": "ESPN recap (Bucks)",
+          "url": "https://www.espn.com/nba/recap?gameId=401910020"
+        },
         {
           "name": "Blazer's Edge (injury report)",
           "url": "https://www.blazersedge.com/trail-blazers-news/118611/portland-trail-blazers-injury-report-latest-milwaukee-bucks-deni-avdija-toumani-camara"
         },
         {
-          "name": "CBS Sports (Avdija questionable)",
-          "url": "https://www.cbssports.com/fantasy/basketball/news/trail-blazers-deni-avdija-questionable-versus-bucks/"
-        },
-        {
-          "name": "97.3 The Game (time, TV)",
-          "url": "https://973thegame.iheart.com/content/2026-11-19-trail-blazers-vs-bucks-time-tv-stream-nov-19/"
-        },
-        {
-          "name": "Doc's Sports (preview)",
-          "url": "https://www.docsports.com/free-picks/nba/2026/portland-trail-blazers-vs-milwaukee-bucks-prediction-11-19-2026-preview-and-pick.html"
-        },
-        {
           "name": "SF Chronicle (AP recap, Minnesota)",
           "url": "https://www.sfchronicle.com/sports/article/mcdaniels-scores-with-2-6-seconds-left-to-lift-22536764.php"
-        },
-        {
-          "name": "Yahoo Sports (fan reaction)",
-          "url": "https://sports.yahoo.com/articles/brutal-one-worst-collapses-nba-055133353.html"
         }
       ]
     },

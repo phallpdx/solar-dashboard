@@ -115,8 +115,9 @@ def marine(d, now):
     by_day = {}
     for i, x in enumerate(sz.get("days") or []):
         m = re.search(r"(\d+)\s*(?:to|-|–)\s*(\d+)\s*ft", x.get("surf") or "")
-        if m:
-            by_day[today + dt.timedelta(days=i)] = f"{m.group(1)}-{m.group(2)}"
+        on = _date(x.get("date")) if x.get("date") else today + dt.timedelta(days=i)
+        if m and on not in by_day:
+            by_day[on] = f"{m.group(1)}-{m.group(2)}"
     for day in ((d.get("coast") or {}).get("days")) or []:
         on = _date(day.get("date"))
         if on in by_day:

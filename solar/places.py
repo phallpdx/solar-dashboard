@@ -8,6 +8,7 @@ coordinates for the coast forecast are written out.
 """
 import datetime as dt
 import json
+import re
 import urllib.parse
 import urllib.request
 
@@ -69,6 +70,18 @@ def _tomtom(a, b, key):
             "delay": s.get("trafficDelayInSeconds", 0) / 60, "miles": s["lengthInMeters"] / 1609.34}
 
 
+def _why(e):
+    """TomTom's own reason for an error (never the URL, which holds the key and coordinates)."""
+    msg = str(e)
+    try:
+        body = json.loads(e.read().decode("utf-8", "replace"))
+        msg += ": " + str((body.get("detailedError") or {}).get("message") or body.get("errorText")
+                          or (body.get("error") or {}).get("description") or body.get("message") or "")
+    except Exception:
+        pass
+    return re.sub(r"-?\d+\.\d+", "…", msg)[:200]  # no coordinates in the public status
+
+
 def commute(places, tomtom_key=None):
     lookup = dict(places)
     if "Home" not in lookup:
@@ -80,16 +93,22 @@ def commute(places, tomtom_key=None):
             continue
         try:
             there = _locate(address)
+            t = None
             if tomtom_key:
-                t = _tomtom(home, there, tomtom_key)
+                try:
+                    t = _tomtom(home, there, tomtom_key)
+                except Exception as e:  # say why TomTom refused, then still show a drive time without traffic
+                    why = _why(e)
+            if t:
                 out.append({"label": label, "minutes": round(t["minutes"]), "usual": round(t["usual"]),
                             "delay": round(t["delay"]), "miles": round(t["miles"]), "live": True})
             else:
                 minutes, miles = _osrm(home, there)
                 out.append({"label": label, "minutes": round(minutes), "usual": round(minutes),
-                            "delay": 0, "miles": round(miles), "live": False})
+                            "delay": 0, "miles": round(miles), "live": False,
+                            **({"traffic_error": why} if tomtom_key else {})})
         except Exception as e:
-            out.append({"label": label, "error": str(e)[:120]})
+            out.append({"label": label, "error": _why(e)[:160]})
     return out
 
 

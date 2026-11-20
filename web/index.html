@@ -4351,6 +4351,23 @@ function teamInsight(t, r) {
   return injHtml + news + redditBlock(r);
 }
 
+// The fan pulse is the local model's summary of news and fan posts, and it sometimes gets a score, the winner or
+// the next opponent wrong. ESPN's feed is the record: drop any line or sentence that contradicts it.
+function pulseAgrees(text, t) {
+  const l = t && t.last, g = t && t.next, s = String(text || '');
+  const nick = o => (o || '').trim().split(/\s+/).pop();  // "Milwaukee Bucks" -> "Bucks"
+  const names = o => [o, nick(o)].filter(Boolean).map(x => x.toLowerCase());
+  const says = (o) => names(o).some(n => n.length > 2 && s.toLowerCase().includes(n));
+  if (l && l.completed && l.us != null && says(l.opponent)) {
+    const m = s.match(/\b(\d{1,3})\s*[-–]\s*(\d{1,3})\b/);
+    if (m && [m[1], m[2]].sort().join() !== [String(l.us), String(l.them)].sort().join()) return false;
+    if (/\b(lost|lose|loses|losing|fell|fall|falls|defeated by|beaten by)\b/i.test(s) && l.won) return false;
+    if (/\b(won|win|wins|beat|beats|victory|defeated)\b/i.test(s) && !/\bby\b/i.test(s) && l.won === false) return false;
+  }
+  if (g && /\bnext (game|up|match|matchup|opponent)\b|\bup next\b/i.test(s) && !says(g.opponent)) return false;
+  return true;
+}
+
 // The fan pulse is written twice a day; flag it when a game has finished since.
 function pulseStale(tj, t) {
   const l = t && t.last;
@@ -4387,8 +4404,11 @@ function renderMore() {
     for (const [key, t] of Object.entries(tj.teams)) {
       const el = $('pulse-' + key);
       if (!el || !t.pulse) continue;
-      el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3><p class="note">${esc(t.pulse)}</p>` +
-        ((t.storylines || []).length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${t.storylines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
+      const espn = sp && sp[key], pulse = (t.pulse.match(/[^.!?]+[.!?]*/g) || [t.pulse]).filter(x => pulseAgrees(x, espn)).join(' ').trim();
+      const lines = (t.storylines || []).filter(x => pulseAgrees(x, espn));
+      if (!pulse && !lines.length) continue;
+      el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3>${pulse ? `<p class="note">${esc(pulse)}</p>` : ''}` +
+        (lines.length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${lines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
         `<p class="meta" style="margin:4px 0 0">Summary as of ${tj.updated_at ? localWhen(tj.updated_at) : fmtDate(tj.updated)}</p>` + cite(t.sources) + pulseStale(tj, sp && sp[key]);
     }
   }).catch(() => {});
@@ -5325,7 +5345,7 @@ async function renderBriefing() {
   if (ce) add(37, 'coast-events-card', `At the coast ${daysTo(ce.date) <= 0 ? 'today' : whenWord(ce.date)}: ${esc(ce.name)} in ${esc(ce.town)}.`);
   const pulseFresh = fans && fans.updated_at && (now - new Date(fans.updated_at)) < 30 * 3600e3;
   if (pulseFresh) { const ks = ['blazers', 'timbers', 'f1', 'ducks', 'niners'].filter(x => fans.teams && fans.teams[x]), k = ks[dayNo % ks.length], f = fans.teams && fans.teams[k];
-    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock', ducks: 'Ducks faithful', niners: '49ers Faithful'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
+    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock', ducks: 'Ducks faithful', niners: '49ers Faithful'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc(((f.pulse || '').match(/[^.!?]+[.!?]*/g) || []).find(x => pulseAgrees(x, D.sports && D.sports[k])) || '')}`); }
   if (brief && brief.updated === today && brief.analysis && brief.analysis.headline)
     add(53, 'more', `${say('markets_lead', 0, 'On the markets')}: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
   if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)

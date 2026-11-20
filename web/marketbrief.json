@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-20",
-  "updated_at": "2026-11-20T12:41:18Z",
+  "updated_at": "2026-11-20T13:19:38Z",
   "analysis": {
     "headline": "Markets declined as the AI trade cracks and Anthropic stock retreats.",
     "summary": "Major indices fell amid a cracking AI trade. Bonds saw yields rise with 10-year Treasury up 20.7% this year. Oil and Gold both experienced price drops. Bitcoin also declined amidst broader market weakness.",
@@ -12,6 +12,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOTk51MERjcW5QczZjMlVnYWtCbUl0R3k3QndGa0hZeGltbmduZVFrQ1RrbTlZdWRuZWVPT1hFRVRRQWpGTm9sSXB6VVFOdHhQN2tsdWVKOUNONjF5ZWw3TUdPTXRaTHRYNjhWSjF0M3NON3BpMmFRYzdjYjQzWFdjMlZ6ck11WlpkcE5ZcUJNWjlRUU9FN1U5VHN6QW5IXy1IMGJ3Vm13dnVsLVN2SU1CNlViNm1XTHBzZkRUNFFOQlA?oc=5"
+      },
+      {
+        "name": "NYSE: Holidays & Trading Hours",
+        "url": "https://www.nyse.com/trade/hours-calendars"
+      },
+      {
+        "name": "IfYouSpent: Thanksgiving week earnings preview (Dell, Workday, Zoom, HP, Deere)",
+        "url": "https://news.ifyouspent.com/en/news/thanksgiving-week-earnings-dell-workday-zoom-hp-deere-november-2026"
+      },
+      {
+        "name": "Federal Reserve: FOMC meeting calendars",
+        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
       }
     ],
     "by": "local model",
@@ -20,7 +32,11 @@
       "AI trade cracks",
       "Anthropic stock retreat"
     ],
-    "watch": []
+    "watch": [
+      "Next week is shortened for Thanksgiving: NYSE is closed Thursday, Nov. 26, and closes early at 1:00 p.m. ET on Friday, Nov. 27.",
+      "Earnings: Zoom on Monday, Nov. 23; Dell, HP and Workday after the close on Tuesday, Nov. 24; Deere on Wednesday, Nov. 25.",
+      "The Fed's next policy meeting is Dec. 8 to 9, with new economic projections."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",

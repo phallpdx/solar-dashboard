@@ -1,6 +1,6 @@
 """Ships heading past home on the Columbia, from live AIS radio data (aisstream.io).
 
-Each run listens for a couple of minutes to every ship transmitting between
+Each run listens for several minutes to every ship transmitting between
 Longview and Portland, then estimates which moving vessels are heading
 toward the river spot in front of home and roughly when they will pass,
 and which ship is parked (anchored or moored) across from home.
@@ -11,7 +11,9 @@ import json
 import re
 import math
 
-LISTEN_SECONDS = 150
+# A ship at anchor sends its position only every 3 minutes and its name every 6, so listen long
+# enough to hear each at least once.
+LISTEN_SECONDS = 400
 POS_MAX_AGE_MIN = 90
 PARKED_KN = 0.5     # slower than this counts as stopped (anchored ships drift a little as they swing)
 PARKED_MOVE_KM = 0.5  # moving further than this from where it stopped starts a new stop
@@ -47,39 +49,54 @@ def _bearing(lat1, lon1, lat2, lon2):
     return (math.degrees(math.atan2(y, x)) + 360) % 360
 
 
+def _record(ships, msg):
+    meta = msg.get("MetaData", {})
+    mmsi = meta.get("MMSI")
+    if not mmsi:
+        return
+    ship = ships.setdefault(mmsi, {"mmsi": mmsi})
+    ship["name"] = (meta.get("ShipName") or ship.get("name") or "").strip()
+    body = msg.get("Message", {}).get(msg.get("MessageType"), {})
+    if msg["MessageType"] == "ShipStaticData":
+        dim = body.get("Dimension") or {}
+        ship.update(type=body.get("Type"), destination=(body.get("Destination") or "").strip(),
+                    length_m=(dim.get("A") or 0) + (dim.get("B") or 0) or None,
+                    callsign=body.get("CallSign"), eta=body.get("Eta"))
+    else:
+        # Only Class A position reports carry a navigational status (1 = at anchor, 5 = moored).
+        ship.update(lat=meta.get("latitude"), lon=meta.get("longitude"), nav=body.get("NavigationalStatus"),
+                    sog=body.get("Sog"), cog=body.get("Cog"), seen=meta.get("time_utc"))
+
+
 async def _listen(key):
+    """Listen for LISTEN_SECONDS in all. aisstream.io is slow to accept a connection at times and drops
+    it now and then, so connect again (keeping what was heard) until the time is up."""
     import websockets  # installed in the workflow
 
-    ships = {}
+    ships, errors = {}, []
     sub = {"APIKey": key, "BoundingBoxes": [BOX],
            "FilterMessageTypes": ["PositionReport", "ShipStaticData", "StandardClassBPositionReport"]}
-    async with websockets.connect("wss://stream.aisstream.io/v0/stream") as ws:
-        await ws.send(json.dumps(sub))
-        end = asyncio.get_event_loop().time() + LISTEN_SECONDS
-        while asyncio.get_event_loop().time() < end:
-            try:
-                raw = await asyncio.wait_for(ws.recv(), timeout=end - asyncio.get_event_loop().time())
-            except asyncio.TimeoutError:
-                break
-            msg = json.loads(raw)
-            if "error" in msg:
-                raise RuntimeError(msg["error"])
-            meta = msg.get("MetaData", {})
-            mmsi = meta.get("MMSI")
-            if not mmsi:
-                continue
-            ship = ships.setdefault(mmsi, {"mmsi": mmsi})
-            ship["name"] = (meta.get("ShipName") or ship.get("name") or "").strip()
-            body = msg.get("Message", {}).get(msg.get("MessageType"), {})
-            if msg["MessageType"] == "ShipStaticData":
-                dim = body.get("Dimension") or {}
-                ship.update(type=body.get("Type"), destination=(body.get("Destination") or "").strip(),
-                            length_m=(dim.get("A") or 0) + (dim.get("B") or 0) or None,
-                            callsign=body.get("CallSign"), eta=body.get("Eta"))
-            else:
-                # Only Class A position reports carry a navigational status (1 = at anchor, 5 = moored).
-                ship.update(lat=meta.get("latitude"), lon=meta.get("longitude"), nav=body.get("NavigationalStatus"),
-                            sog=body.get("Sog"), cog=body.get("Cog"), seen=meta.get("time_utc"))
+    loop = asyncio.get_event_loop()
+    end = loop.time() + LISTEN_SECONDS
+    while loop.time() < end - 5:
+        try:
+            async with websockets.connect("wss://stream.aisstream.io/v0/stream", open_timeout=40) as ws:
+                await ws.send(json.dumps(sub))
+                while loop.time() < end:
+                    try:
+                        raw = await asyncio.wait_for(ws.recv(), timeout=end - loop.time())
+                    except asyncio.TimeoutError:
+                        break
+                    msg = json.loads(raw)
+                    if "error" in msg:
+                        raise RuntimeError(msg["error"])  # a bad key: trying again won't help
+                    _record(ships, msg)
+        except (websockets.exceptions.WebSocketException, TimeoutError, OSError) as e:
+            errors.append(e)
+            print(f"aisstream: {e!r}; connecting again")
+            await asyncio.sleep(min(5 * len(errors), max(0, end - loop.time() - 5)))
+    if not ships and errors:
+        raise errors[-1]
     return ships
 
 

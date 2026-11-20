@@ -87,23 +87,6 @@
       ]
     },
     {
-      "name": "Good Neighbor Cà Phê (becoming Portland Cà Phê)",
-      "neighborhood": "Northwest Portland",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-17",
-          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNd2FEMlV6MXhEN1lKUVNYamtNUFFvb2QwdVRhZXRSS2tBMmNEbVJwaXhBRUtTVlpVejd2VExFTElydmt4d3lRSkFXX3dxdkF6dWJUUkdEdnJFaURPNzFKRnppX2s1dlM5RWRVRVZveXdpZHFOeWVKVGIxbXRuMVd5MjE3QXFtOExzczFDaEJEOE9NdDRyQnhVNEVtMGZ5WFlGUU84dzhCQlhMVEdBTUE?oc=5"
-        }
-      ]
-    },
-    {
       "name": "Louie Cocktail Bar",
       "neighborhood": "",
       "cuisine": "",
@@ -377,7 +360,7 @@
     },
     {
       "name": "Louie on Lombard",
-      "neighborhood": "Old Garrison Bar Space",
+      "neighborhood": "",
       "cuisine": "",
       "price": "",
       "opened": "",

@@ -1,7 +1,7 @@
 name: Ships check (temporary)
 on:
   pull_request:
-    paths: [".github/workflows/ships-check.yml"]
+    paths: [".github/workflows/ships-check.yml", "solar/ships.py", "config.json"]
 jobs:
   check:
     runs-on: ubuntu-latest

@@ -2,34 +2,12 @@
   "updated": "2026-11-20",
   "items": [
     {
-      "title": "Mt. Hood National Forest Christmas tree permit",
-      "kind": "Permit",
-      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
-      "starts": "2026-11-12",
-      "by": "2026-12-31",
-      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
-      "sources": [
-        {
-          "name": "More Than Just Parks permit tracker",
-          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
-        },
-        {
-          "name": "Recreation.gov",
-          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
-        },
-        {
-          "name": "Mt. Hood NF Christmas trees",
-          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
-        }
-      ]
-    },
-    {
       "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
       "kind": "Tickets",
-      "action": "Artist presales via Seated run today (Nov 18) and tomorrow (Nov 19) for registered fans; general sale Fri, Nov 20 at 10 a.m.",
-      "starts": "2026-11-18",
+      "action": "Artist presales ended Nov 19; general sale opens today, Fri Nov 20, at 10 a.m. Buy face value through the official links rather than resale.",
+      "starts": "2026-11-20",
       "by": "2026-11-20",
-      "why": "Portland opens the 2027 Lost Tour leg with Grouper; registrants are randomly assigned a presale day, late sign-ups get Day 2, and registering doesn't guarantee tickets.",
+      "why": "Portland opens the 2027 Lost Tour leg with Grouper, and the Portland Mercury's Nov 19 ticket alert leads with this show.",
       "sources": [
         {
           "name": "Rolling Stone",
@@ -58,48 +36,10 @@
         {
           "name": "Grimy Goods presale guide",
           "url": "https://www.grimygoods.com/2026/11/12/phoebe-bridgers-tour-2027-presale-code-ticket-prices-waitlist/"
-        }
-      ]
-    },
-    {
-      "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
-      "kind": "Tickets",
-      "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
-      "starts": null,
-      "by": "2026-11-20",
-      "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
-      "sources": [
+        },
         {
-          "name": "Oregon Zoo",
-          "url": "https://www.oregonzoo.org/lights"
-        }
-      ]
-    },
-    {
-      "title": "Julien Baker tickets",
-      "kind": "Tickets",
-      "action": "Buy tickets for 2027 dates",
-      "starts": "2026-11-20",
-      "by": null,
-      "why": "On sale now",
-      "sources": [
-        {
-          "name": "Web search: Portland presales",
-          "url": "https://www.facebook.com/julianlage/posts/tickets-for-julians-new-2027-dates-with-the-quartet-are-on-sale-now-get-yours-no/1645515146932071"
-        }
-      ]
-    },
-    {
-      "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
-      "kind": "Buy",
-      "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
-      "starts": "2026-11-21",
-      "by": null,
-      "why": "The farm posted that it opens for the 2026 season on Saturday, Nov 21.",
-      "sources": [
-        {
-          "name": "Christmas Mountain on Facebook",
-          "url": "https://www.facebook.com/ChristmasMountain/"
+          "name": "Portland Mercury ticket alert (Nov 19)",
+          "url": "https://www.portlandmercury.com/everout/ticket-alert-phoebe-bridgers-jhene-aiko-and-more-portland-events-going-on-sale-this-week/"
         }
       ]
     },
@@ -120,10 +60,10 @@
     {
       "title": "Timbers vs. FC Dallas, MLS Cup Playoffs Round One Game 2 (Nov 28)",
       "kind": "Tickets",
-      "action": "Watch timbers.com for playoff tickets for the 7:30 p.m. home match at Providence Park.",
+      "action": "Game 1 is at FC Dallas Sat Nov 21 at 1 p.m.; get tickets on timbers.com for the Nov 28, 7:30 p.m. home match at Providence Park.",
       "starts": null,
       "by": "2026-11-28",
-      "why": "Portland's only home game of the best-of-three series; an official ticket on-sale announcement wasn't found.",
+      "why": "Portland's only home game of the best-of-three series; KPTV reported season ticket holders got first access, then the general public at 2 p.m. on the Monday sale day.",
       "sources": [
         {
           "name": "KPTV",
@@ -150,6 +90,146 @@
         {
           "name": "Freeskier",
           "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
+        }
+      ]
+    },
+    {
+      "title": "Oregon Ballet Theatre: Balanchine's The Nutcracker (Dec 5 to 24)",
+      "kind": "Tickets",
+      "action": "Single tickets are on sale from OBT; buy direct for face value rather than resale.",
+      "starts": null,
+      "by": "2026-12-05",
+      "why": "Runs at Keller Auditorium Dec 5 to 24, with a noon show on Christmas Eve.",
+      "sources": [
+        {
+          "name": "Oregon Ballet Theatre season",
+          "url": "https://www.obt.org/ballet-performances-in-portland/2026-27-season/"
+        },
+        {
+          "name": "OBT tickets",
+          "url": "https://my.obt.org/817/866"
+        }
+      ]
+    },
+    {
+      "title": "Barnes & Noble Criterion 50% off sale (through Dec 6)",
+      "kind": "Buy",
+      "action": "Buy Criterion 4K wish-list titles now, online or in store; the sale ends Dec 6.",
+      "starts": null,
+      "by": "2026-12-06",
+      "why": "Criterion says all in-stock discs are half off at B&N through Dec 6; B&N notes it doesn't combine with the Premium Member discount.",
+      "sources": [
+        {
+          "name": "Criterion on X",
+          "url": "https://x.com/Criterion/status/2118728293608493316"
+        },
+        {
+          "name": "Barnes & Noble Criterion page",
+          "url": "https://www.barnesandnoble.com/collections/movies-tv/the-criterion-collection"
+        }
+      ]
+    },
+    {
+      "title": "Epic Pass goes off sale Dec 6",
+      "kind": "Deadline",
+      "action": "Buy by Sun, Dec 6 if you want an Epic Pass this season; after that it isn't sold for 2026/27.",
+      "starts": null,
+      "by": "2026-12-06",
+      "why": "Vail Resorts' Nov 16 release says Dec 6 is the last chance to buy an Epic Pass for 2026/27, and OnTheSnow says prices rise until then.",
+      "sources": [
+        {
+          "name": "Vail Resorts release via Finviz",
+          "url": "https://finviz.com/news/423328/how-to-save-on-your-ski-season-before-epic-passes-go-off-sale-december-6"
+        },
+        {
+          "name": "Vail Resorts release via Webull",
+          "url": "https://www.webull.com/news/15934282987455488"
+        },
+        {
+          "name": "OnTheSnow Epic Pass buyer's guide",
+          "url": "https://www.onthesnow.com/news/buyers-guide-epic-pass"
+        }
+      ]
+    },
+    {
+      "title": "Ikon Pass final sales window",
+      "kind": "Deadline",
+      "action": "Buy by Dec 10 if you want an Ikon Pass this season; check the current price on ikonpass.com.",
+      "starts": null,
+      "by": "2026-12-10",
+      "why": "Ikon's site gives Dec 10, 2026 as the 26/27 deadline, Powder says prices climb as winter approaches, and last year sales stopped Dec 11.",
+      "sources": [
+        {
+          "name": "Ikon Pass",
+          "url": "https://www.ikonpass.com/en/shop-passes/ikon-pass"
+        },
+        {
+          "name": "Powder",
+          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
+        }
+      ]
+    },
+    {
+      "title": "Grotto Christmas Festival of Lights (Nov 27 to Dec 30)",
+      "kind": "Tickets",
+      "action": "Buy timed entry online ahead; general admission (12+) is $17.95 online, 5 to 9:30 p.m. nightly.",
+      "starts": "2026-11-27",
+      "by": "2026-12-30",
+      "why": "The Grotto's own page lists Nov 27 to Dec 30 (closed Christmas Day) with tickets sold through its site.",
+      "sources": [
+        {
+          "name": "The Grotto Christmas Festival of Lights",
+          "url": "https://thegrotto.org/christmas-festival-of-lights/"
+        }
+      ]
+    },
+    {
+      "title": "Mt. Hood National Forest Christmas tree permit",
+      "kind": "Permit",
+      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
+      "starts": "2026-11-12",
+      "by": "2026-12-31",
+      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
+      "sources": [
+        {
+          "name": "More Than Just Parks permit tracker",
+          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
+        },
+        {
+          "name": "Recreation.gov",
+          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
+        },
+        {
+          "name": "Mt. Hood NF Christmas trees",
+          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
+        }
+      ]
+    },
+    {
+      "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
+      "kind": "Tickets",
+      "action": "Opens tonight; buy dated tickets ahead. Prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
+      "starts": "2026-11-20",
+      "by": "2027-01-03",
+      "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
+      "sources": [
+        {
+          "name": "Oregon Zoo",
+          "url": "https://www.oregonzoo.org/lights"
+        }
+      ]
+    },
+    {
+      "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
+      "kind": "Buy",
+      "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
+      "starts": "2026-11-21",
+      "by": null,
+      "why": "The farm posted that it opens for the 2026 season on Saturday, Nov 21.",
+      "sources": [
+        {
+          "name": "Christmas Mountain on Facebook",
+          "url": "https://www.facebook.com/ChristmasMountain/"
         }
       ]
     },
@@ -204,60 +284,6 @@
         {
           "name": "Carnifest 2026 listing",
           "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
-        }
-      ]
-    },
-    {
-      "title": "Oregon Ballet Theatre: Balanchine's The Nutcracker (Dec 5 to 24)",
-      "kind": "Tickets",
-      "action": "Single tickets are on sale from OBT; buy direct for face value rather than resale.",
-      "starts": null,
-      "by": "2026-12-05",
-      "why": "Runs at Keller Auditorium Dec 5 to 24, with a noon show on Christmas Eve.",
-      "sources": [
-        {
-          "name": "Oregon Ballet Theatre season",
-          "url": "https://www.obt.org/ballet-performances-in-portland/2026-27-season/"
-        },
-        {
-          "name": "OBT tickets",
-          "url": "https://my.obt.org/817/866"
-        }
-      ]
-    },
-    {
-      "title": "Barnes & Noble Criterion 50% off sale (through Dec 6)",
-      "kind": "Buy",
-      "action": "Buy Criterion 4K wish-list titles now, online or in store; the sale ends Dec 6.",
-      "starts": null,
-      "by": "2026-12-06",
-      "why": "Criterion says all in-stock discs are half off at B&N through Dec 6; B&N notes it doesn't combine with the Premium Member discount.",
-      "sources": [
-        {
-          "name": "Criterion on X",
-          "url": "https://x.com/Criterion/status/2118728293608493316"
-        },
-        {
-          "name": "Barnes & Noble Criterion page",
-          "url": "https://www.barnesandnoble.com/collections/movies-tv/the-criterion-collection"
-        }
-      ]
-    },
-    {
-      "title": "Ikon Pass final sales window",
-      "kind": "Deadline",
-      "action": "Buy by Dec 10 if you want an Ikon Pass this season; check the current price on ikonpass.com.",
-      "starts": null,
-      "by": "2026-12-10",
-      "why": "Ikon's site gives Dec 10, 2026 as the 26/27 deadline, Powder says prices climb as winter approaches, and last year sales stopped Dec 11.",
-      "sources": [
-        {
-          "name": "Ikon Pass",
-          "url": "https://www.ikonpass.com/en/shop-passes/ikon-pass"
-        },
-        {
-          "name": "Powder",
-          "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
         }
       ]
     },
@@ -406,24 +432,6 @@
         {
           "name": "Mt. Hood Meadows FAQ",
           "url": "https://www.skihood.com/explore/help/FAQ"
-        }
-      ]
-    },
-    {
-      "title": "Epic Pass goes off sale in early December",
-      "kind": "Deadline",
-      "action": "If you want an Epic Pass this season, buy in the next two weeks; the 2026 cutoff hasn't been announced.",
-      "starts": null,
-      "by": null,
-      "why": "Last season Vail stopped selling Epic Passes on Dec 4, and OnTheSnow says prices rise until they go off sale in December.",
-      "sources": [
-        {
-          "name": "Vail Resorts (2025 off-sale notice)",
-          "url": "https://news.vailresorts.com/2025-11-17-Epic-Passes-Go-Off-Sale-December-4-Lock-in-Your-Magical-Mountain-Holiday-Now"
-        },
-        {
-          "name": "OnTheSnow Epic Pass buyer's guide",
-          "url": "https://www.onthesnow.com/news/buyers-guide-epic-pass"
         }
       ]
     }

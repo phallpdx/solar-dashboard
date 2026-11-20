@@ -1,0 +1,27 @@
+name: Ships check (temporary)
+on:
+  pull_request:
+    paths: [".github/workflows/ships-check.yml"]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - env:
+          AISSTREAM_KEY: ${{ secrets.AISSTREAM_KEY }}
+        run: |
+          pip install --quiet websockets
+          python - <<'PY'
+          import datetime as dt, json, os
+          from solar import ships
+          now = dt.datetime.now(dt.timezone.utc)
+          heard = ships.listen(os.environ["AISSTREAM_KEY"])
+          print("heard", len(heard), "ships")
+          print("LAUREL ISLAND (356334000):", heard.get(356334000))
+          cache = ships.merge({}, heard, now)
+          c = json.load(open("config.json"))["river_view"]
+          p, others = ships.parked(cache, c["lat"], c["lon"], now, c["parked_km"])
+          print("PARKED:", json.dumps(p))
+          PY

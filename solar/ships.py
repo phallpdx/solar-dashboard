@@ -1,6 +1,6 @@
 """Ships heading past home on the Columbia, from live AIS radio data (aisstream.io).
 
-Each run listens for a couple of minutes to every ship transmitting between
+Each run listens for several minutes to every ship transmitting between
 Longview and Portland, then estimates which moving vessels are heading
 toward the river spot in front of home and roughly when they will pass,
 and which ship is parked (anchored or moored) across from home.
@@ -11,7 +11,9 @@ import json
 import re
 import math
 
-LISTEN_SECONDS = 150
+# A ship at anchor sends its position only every 3 minutes and its name every 6, so listen long
+# enough to hear each at least once.
+LISTEN_SECONDS = 400
 POS_MAX_AGE_MIN = 90
 PARKED_KN = 0.5     # slower than this counts as stopped (anchored ships drift a little as they swing)
 PARKED_MOVE_KM = 0.5  # moving further than this from where it stopped starts a new stop

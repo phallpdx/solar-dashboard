@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -10,28 +10,28 @@
       "url": "https://www.cannonbeach.org/haystackholidays/"
     },
     {
-      "name": "HOLIDAY TREASURES GIFT SALE",
-      "date": "2026-11-19",
-      "end": "2026-11-19",
-      "town": "Seaside",
-      "summary": "Gift sale from 10:00 am to 2:00 pm.",
-      "url": "https://www.seasideor.com/event/holiday-treasures-gift-sale/"
-    },
-    {
-      "name": "History & Hops",
-      "date": "2026-11-19",
-      "end": "2026-11-19",
-      "town": "Seaside",
-      "summary": "Local history discussions at Seaside Brewing Co. Free.",
-      "url": "https://www.seasideor.com/event/history-hops-6/"
-    },
-    {
       "name": "Let’s Go Birding! Fort to Sea Trail Bird Hike",
       "date": "2026-11-20",
       "end": null,
       "town": "Seaside",
       "summary": "Guided walk along the Fort to Sea Trail.",
       "url": "https://www.seasideor.com/event/lets-go-birding-fort-to-sea-trail-bird-hike-8/"
+    },
+    {
+      "name": "Smoothhound live at The Lyons Den",
+      "date": "2026-11-20",
+      "end": "2026-11-20",
+      "town": "Seaside",
+      "summary": "Jazz/Funk/Soul trio from 7:00 pm - 9:00 pm; $10.00.",
+      "url": "https://www.seasideor.com/event/smoothhound-live-at-the-lyons-den/"
+    },
+    {
+      "name": "Kent M. Smith & Band live at The Lyons Den",
+      "date": "2026-11-21",
+      "end": "2026-11-21",
+      "town": "Seaside",
+      "summary": "Indie Soul/Rock from 7:00 pm - 9:00 pm; $5.00.",
+      "url": "https://www.seasideor.com/event/kent-m-smith-band-live-at-the-lyons-den/"
     },
     {
       "name": "Beach Towel Tuesdays",
@@ -74,12 +74,28 @@
       "url": "https://www.seasideor.com/event/tree-lighting-ceremony/"
     },
     {
+      "name": "Johnny Franco & His Real Brother Dom live at The Lyons Den",
+      "date": "2026-11-27",
+      "end": "2026-11-27",
+      "town": "Seaside",
+      "summary": "Indie Pop/Cabaret from 7:00 pm - 10:00 pm; $10.00.",
+      "url": "https://www.seasideor.com/event/johnny-franco-his-real-brother-dom-live-at-the-lyons-den-limited-advanced-tickets-available/"
+    },
+    {
       "name": "Juliet Yänko New Album Release Event",
       "date": "2026-12-03",
       "end": null,
       "town": "Manzanita",
       "summary": "An evening of story and song at Hoffman Center.",
       "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOMmZkMDZvSTNhb0kyaV9YNG4tSzFsRlNwX1Mtbks4NWU0dzB0QW9HMW5zSTlaMGlCUVRCOFdyczZKZ3FiMFpxZHBpYnRza21kclpfVDJIS2ZWNEl2NUVwVmxqc1lLam4tdTRzUXM2U2lNdTQySko2WGJqdnFYdkRQa1FLVlNVaVoxSV9VcmhaQkVKTlpQTHYxU3Z5X0hFR19mV0l3S2xlaTZaTkVoU2hpU1VZUlJGSTFRWXBRM1RhZFJOeUt2SjNSV1RxcFV4VzlsV1hqUQ?oc=5"
+    },
+    {
+      "name": "Let’s Go Birding! Coffenbury Lake Bird Walk",
+      "date": "2026-12-03",
+      "end": "2026-12-03",
+      "town": "Seaside",
+      "summary": "Bird walk from 9:30 am - 10:30 am; free.",
+      "url": "https://www.seasideor.com/event/lets-go-birding-coffenbury-lake-bird-walk-7/"
     },
     {
       "name": "Treasure the Beach: Community Beach Cleanup",

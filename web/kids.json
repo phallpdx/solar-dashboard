@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "note": "Toddler-friendly events in North Portland, Sauvie Island, Portland and Vancouver, soonest first. Some holiday dates come from guides or listings rather than the organizers, so check before going.",
   "events": [
     {
@@ -19,30 +19,6 @@
       "url": "https://www.travelportland.com/event/68f14265d6b9f4033114e411/"
     },
     {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
-      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
-    },
-    {
-      "title": "Spanish Story & Play Time with Adventures in Spanish",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland area",
-      "detail": "A joyful hour of stories, songs, and play in Spanish for young children. Not specified.",
-      "url": "https://pdxparent.com/series/spanish-story-play-time/"
-    },
-    {
-      "title": "Sing, Sign & Play @ SWPMA PLAY! at The Multnomah Arts Center",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Playtime involving singing, sign language, and movement in a soft space. $5 – $25.",
-      "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
-    },
-    {
       "title": "Mini Movers at Laurelhurst Park!",
       "date": "2026-11-19",
       "ends": "2026-12-08",
@@ -51,60 +27,76 @@
       "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
     },
     {
-      "title": "Little Explorers: Toddler & Pre-K Drop-In",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Beaverton",
-      "detail": "Hands-on play with art, sensory materials, and STEAM activities. $25.00.",
-      "url": "https://pdxparent.com/series/little-explorers-toddler-pre-k-drop-in/"
-    },
-    {
-      "title": "Family Ninjas (Martial Arts) For Ages 2/3 @ SWPMA PLAY!",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "A family martial arts experience on a matted space. $15 – $25.",
-      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
-    },
-    {
-      "title": "Morning Music with Mr. Ben at ModHaus",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Interactive family singalong for babies and toddlers with live music. Free; tips appreciated.",
-      "url": "https://pdxparent.com/series/morning-music-with-mr-ben-at-modhaus/"
-    },
-    {
-      "title": "Visit Leach Botanical Garden",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Explore gardens including an aerial tree walk and a gathering meadow. Free – $8.",
-      "url": "https://pdxparent.com/series/visit-leach-botanical-garden/"
-    },
-    {
-      "title": "Chrysanthemum Festival",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Celebrate fall with flower displays, sculptures, and cultural activities. Free – $32.",
-      "url": "https://pdxparent.com/series/chrysanthemum-festival-4/"
-    },
-    {
-      "title": "Weaving Time: NUNO at Portland Japanese Garden",
-      "date": "2026-11-19",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Exhibition of vibrant Japanese textile designs with hands-on touch elements. Included with admission.",
-      "url": "https://pdxparent.com/series/weaving-time-nuno-textiles-of-tradition-and-transformation-at-portland-japanese-garden/"
-    },
-    {
       "title": "ZooLights",
       "date": "2026-11-20",
       "ends": "2027-01-03",
       "where": "Oregon Zoo, Portland",
       "detail": "Wildlife-themed holiday lights opening Nov. 20; the zoo's page says the run goes through Jan. 3, 2027, closed Nov. 24 to 26 and Dec. 25. Listings give a 4:30 p.m. nightly opening. Timed tickets online, with a TriMet ride included. Go early in the evening with little ones.",
       "url": "https://oregonzoo.org/lights"
+    },
+    {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Libraries offer various storytimes for toddlers and families. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
+    },
+    {
+      "title": "OMSI On Ice",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Experience indoor ice skating on a synthetic rink in the auditorium. $8 – $10.",
+      "url": "https://pdxparent.com/series/omsi-on-ice/"
+    },
+    {
+      "title": "Toddler Time – Learning Italian Together",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A free parent-child playgroup for ages 2-4 to learn through play. Free.",
+      "url": "https://pdxparent.com/series/toddler-time-learning-italian-together/"
+    },
+    {
+      "title": "Open Play at Laurelhurst Studio!",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Drop-in playtime for families in a dedicated room. $10 per drop-in.",
+      "url": "https://pdxparent.com/series/open-play-at-laurelhurst-studio/"
+    },
+    {
+      "title": "Music With Mr. Hoo at Taborspace",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Interactive music session with guitar and kazoo to get kids dancing. $5 per person.",
+      "url": "https://pdxparent.com/series/music-with-mr-hoo-at-taborspace-3/"
+    },
+    {
+      "title": "Gym Open Play at Sellwood Community House!",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Toddler-friendly gym play featuring ride-on toys and balls. $8 for adults, $6 for siblings.",
+      "url": "https://pdxparent.com/series/gym-open-play-at-sellwood-community-house/"
+    },
+    {
+      "title": "Tiny Tunes With Cameron and Sadie",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Milwaukie",
+      "detail": "Sing along to classic nursery rhymes with musical instruments provided. Free.",
+      "url": "https://pdxparent.com/series/tiny-tunes-w-cameron-and-sadie/"
+    },
+    {
+      "title": "Early Childhood Mandarin Music and Movement Class",
+      "date": "2026-11-20",
+      "ends": null,
+      "where": "Beaverton",
+      "detail": "A 30-minute class of singing and movement for young learners. Free.",
+      "url": "https://pdxparent.com/series/early-childhood-mandarin-music-and-movement-class-15/"
     },
     {
       "title": "U-cut Christmas trees at Sauvie Island Farms",

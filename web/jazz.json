@@ -1,58 +1,6 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "shows": [
-    {
-      "artist": "Kerry Politzer and Bossa PDX",
-      "kind": "Latin",
-      "date": "2026-11-19",
-      "time": "6:30 pm",
-      "venue": "The 1905",
-      "price": "$25",
-      "what": "Portland pianist Kerry Politzer's Brazilian-jazz group Bossa PDX; all ages.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        },
-        {
-          "name": "Portland Events Calendar",
-          "url": "https://www.pdx-events.com/"
-        }
-      ]
-    },
-    {
-      "artist": "Chuck Israels Jazz Orchestra",
-      "kind": "Big band",
-      "date": "2026-11-19",
-      "time": "7:00 pm",
-      "venue": "Jack London Revue",
-      "price": null,
-      "what": "Bassist Chuck Israels's jazz orchestra in Jack London Revue's Jazz Titan Thursdays series.",
-      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp",
-      "sources": [
-        {
-          "name": "Jack London Revue",
-          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/14901203?pl=jacklondon&REFID=clientsitewp"
-        }
-      ]
-    },
-    {
-      "artist": "Thundercat",
-      "kind": "Touring",
-      "date": "2026-11-19",
-      "time": "8:00 pm",
-      "venue": "McMenamins Crystal Ballroom",
-      "price": null,
-      "what": "Thundercat brings his Distracted AF Tour, with Fera opening; all ages, doors 6:30 pm.",
-      "tickets": "https://www.mcmenamins.com/events/277813-thundercat",
-      "sources": [
-        {
-          "name": "McMenamins",
-          "url": "https://www.mcmenamins.com/events/277813-thundercat"
-        }
-      ]
-    },
     {
       "artist": "Farnell Newton's The Soul of Jazz",
       "kind": "Local",
@@ -126,6 +74,22 @@
         {
           "name": "Portland State events listing",
           "url": "https://www.pdx.edu/events/session-jazz-combos-live-5"
+        }
+      ]
+    },
+    {
+      "artist": "Chuck Israels Trio",
+      "kind": "Local",
+      "date": "2026-11-22",
+      "time": "05:30 PM",
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Bassist Chuck Israels performs with Joe Bagg and Michael Rodenkirch.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

@@ -1,15 +1,15 @@
 {
-  "updated": "2026-11-19",
-  "updated_at": "2026-11-19T14:42:14Z",
+  "updated": "2026-11-20",
+  "updated_at": "2026-11-20T08:46:07Z",
   "teams": {
     "blazers": {
-      "mood": "frustrated but hopeful",
-      "pulse": "Fans are frustrated after a narrow loss to Minnesota due to late turnovers. There is excitement regarding championship potential.",
+      "mood": "Cautiously optimistic",
+      "pulse": "Fans are recovering from losses to Minnesota. They feel encouraged by Damian Lillard's return.",
       "storylines": [
-        "Lost 106-105 to Timberwolves on Nov 17",
-        "Deni Avdija and Camara questionable for next game",
-        "Robert Williams III resting against Bucks",
-        "Next game: Milwaukee Bucks"
+        "Blazers lost 106-105 to Bucks",
+        "Damian Lillard returns to play",
+        "Avdija and Camara questionable for next game",
+        "Next game against Spurs on Wednesday"
       ],
       "sources": [
         {
@@ -39,12 +39,12 @@
       ]
     },
     "timbers": {
-      "mood": "focused and preparing",
-      "pulse": "Players are bonding through team activities ahead of the playoffs. The squad is stepping up to make the postseason.",
+      "mood": "focused and expectant",
+      "pulse": "The team shows enthusiasm and commitment for the playoffs. They are preparing to face FC Dallas in Round One.",
       "storylines": [
-        "Team building at the track before playoffs",
-        "Timbers2 lost 1-0 in MLS NEXT Pro semifinals",
-        "Academy player Eric Izoita signed first-team contract"
+        "Preparing for Round One playoffs against FC Dallas",
+        "Timbers2 lost 1-0 to Ventura County in semifinals",
+        "Eric Izoita signed a first-team contract"
       ],
       "sources": [
         {
@@ -74,13 +74,12 @@
       ]
     },
     "f1": {
-      "mood": "Anticipatory and strategic",
-      "pulse": "Fans are focused on upcoming Las Vegas and Qatar races. Interest is high regarding driver management changes and championship battles.",
+      "mood": "Anticipatory and uncertain",
+      "pulse": "Fans are watching wet practice results closely. Uncertainty surrounds car balance and upcoming grid penalties.",
       "storylines": [
-        "Cadillac selects Bottas for 2027 alongside Perez.",
-        "Piastri splits with his management team.",
-        "Russell aims for victory in Las Vegas without a new turbo.",
-        "Hamilton focuses on Ferrari's Constructors' Championship fight."
+        "Russell topped wet FP2 despite pace concerns",
+        "Verstappen faces Red Bull balance issues",
+        "Antonelli, Bearman and Stroll face grid penalties"
       ],
       "sources": [
         {
@@ -110,12 +109,12 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic yet analytical",
-      "pulse": "Fans are celebrating a win over Michigan that keeps playoff hopes alive. There is debate regarding their status as a playoff team.",
+      "mood": "Anticipatory and analytical",
+      "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff positioning.",
       "storylines": [
-        "Beat Michigan to keep playoff hopes alive",
-        "Raiola named B1G offensive player of the week",
-        "Next game is against Michigan State"
+        "Upcoming matchup against Michigan State Spartans",
+        "Analysis of performance against Michigan",
+        "Discussion on CFP rankings"
       ],
       "sources": [
         {
@@ -145,12 +144,13 @@
       ]
     },
     "niners": {
-      "mood": "optimistic and focused",
-      "pulse": "Fans are excited by Brock Purdy's MVP-caliber season and an 8-1 record. They are preparing for a high-stakes matchup in Mexico City.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are excited about Sunday Night Football against the Vikings. Defensive holes and injuries cause concern.",
       "storylines": [
-        "Fighting for NFC number one seed against Vikings",
-        "Brock Purdy is in the MVP conversation",
-        "Acclimatizing to altitude in Colorado Springs"
+        "8-1 record heading into primetime matchup",
+        "#165974 Christian Kirk underwent meniscus surgery",
+        "#165970 Nick Bosa struggling to execute his calling card",
+        "#165989 Brock Purdy's MVP opportunity vs Vikings"
       ],
       "sources": [
         {

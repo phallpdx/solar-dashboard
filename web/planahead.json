@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "items": [
     {
       "title": "Mt. Hood National Forest Christmas tree permit",
@@ -62,42 +62,6 @@
       ]
     },
     {
-      "title": "Oregon vs. Oregon State basketball, Moda Center (Nov 19)",
-      "kind": "Tickets",
-      "action": "On sale now through Ticketmaster and the Moda Center box office.",
-      "starts": null,
-      "by": "2026-11-19",
-      "why": "First Civil War meeting in Portland since 1996; public sale opened Oct 22.",
-      "sources": [
-        {
-          "name": "Oregon Ducks",
-          "url": "https://goducks.com/news/2026/10/16/mens-basketball-oregon-oregon-state-to-meet-in-portland-on-nov-19"
-        },
-        {
-          "name": "Yahoo Sports",
-          "url": "https://sports.yahoo.com/articles/tipoff-time-ticket-announced-oregon-171204177.html"
-        }
-      ]
-    },
-    {
-      "title": "Sam Fender, Portland (May 5, 2027, venue TBA)",
-      "kind": "Tickets",
-      "action": "General sale Thu, Nov 19 at 10 a.m. local; artist presale ran Nov 17 and venue/promoter presales Nov 18 at select stops.",
-      "starts": "2026-11-19",
-      "by": "2026-11-19",
-      "why": "One of 10 North American dates on his biggest headlining run in the region; the Portland venue hasn't been announced yet.",
-      "sources": [
-        {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/sam-fender-2027-north-american-tour/"
-        },
-        {
-          "name": "Complex",
-          "url": "https://www.complex.com/music/a/will-lavin/sam-fender-north-america-tour-2027-dates-buy-tickets"
-        }
-      ]
-    },
-    {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
       "action": "Buy dated tickets ahead; prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
@@ -108,6 +72,20 @@
         {
           "name": "Oregon Zoo",
           "url": "https://www.oregonzoo.org/lights"
+        }
+      ]
+    },
+    {
+      "title": "Julien Baker tickets",
+      "kind": "Tickets",
+      "action": "Buy tickets for 2027 dates",
+      "starts": "2026-11-20",
+      "by": null,
+      "why": "On sale now",
+      "sources": [
+        {
+          "name": "Web search: Portland presales",
+          "url": "https://www.facebook.com/julianlage/posts/tickets-for-julians-new-2027-dates-with-the-quartet-are-on-sale-now-get-yours-no/1645515146932071"
         }
       ]
     },

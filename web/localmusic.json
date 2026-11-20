@@ -1,6 +1,22 @@
 {
-  "updated": "2026-11-11",
+  "updated": "2026-11-20",
   "releases": [
+    {
+      "artist": "Blu Miller",
+      "title": "Bask in the Wonder",
+      "type": "Album",
+      "local": true,
+      "genre": "Nostalgia",
+      "label": "Debut album review",
+      "date": "",
+      "why": "Review of Blu Miller's debut album.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOMFRxbVNqS0FDM0pBUGt2UzZ0SllXeF9CZ3BPandKb2lvX0JldTFDdFlqUFNSZXBZdTR5a1RVUWliczNZV183Y3BmUk5aUGZmbXdMcU05NUowZVpSUlpPVHpMUmFXUkRNNEFmbTYxRm5SSDN0T29fMEJjclVMMHpta3QyLUZZZU5qYVcxNGltUUR5U2tkbGdtRVVield2VkNmcU9aY0dscVVGUEFkX1dCWDdsVFZSSlQtQXd5bldGcVZIZ2xhdnI2WVlR?oc=5"
+        }
+      ]
+    },
     {
       "artist": "Sour Widows",
       "title": "Sigil",
@@ -410,22 +426,6 @@
         {
           "name": "Review",
           "url": "https://www.thecrimson.com/article/2026/10/1/pylon-album-review/"
-        }
-      ]
-    },
-    {
-      "artist": "Fat Dog",
-      "title": "Cancel Me (I'm Tired)",
-      "type": "Album",
-      "local": false,
-      "genre": "Indie / electronic",
-      "label": "Domino",
-      "date": "",
-      "why": "The London seven-piece's second album, reviewed for rotation in KEXP's Oct. 5 New Music Reviews and on KEXP's chart.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/5/new-music-reviews-105/"
         }
       ]
     }

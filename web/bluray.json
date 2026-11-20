@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "deals": [
     {
       "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
@@ -79,81 +79,46 @@
       "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
     },
     {
-      "title": "One Flew Over the Cuckoo's Nest (4K Ultra HD + Digital)",
+      "title": "Schindler's List: 25th Anniversary Edition",
       "store": "Amazon",
-      "detail": "$12.99 for 50th Anniversary edition",
+      "detail": "$10 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
-      "url": "https://slickdeals.net/f/20328771-one-flew-over-the-cuckoo-s-nest-4k-ultra-hd-digital-13"
+      "url": "https://slickdeals.net/f/20349057-schindler-s-list-25th-anniversary-edition-4k-ultra-hd-blu-ray-digital-9-99-at-amazon"
     },
     {
-      "title": "Wall-E: The Criterion Collection (4K UHD + Blu-Ray)",
+      "title": "Dune",
       "store": "Amazon",
-      "detail": "$24.98",
+      "detail": "$11.49 (4K UHD + Blu-ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20347836-dune-4k-uhd-blu-ray-11-49-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "Live Die Repeat: Edge of Tomorrow",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Blu-ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20342061-live-die-repeat-edge-of-tomorrow-4k-ultra-hd-blu-ray-13"
+    },
+    {
+      "title": "Akira (1988)",
+      "store": "Amazon",
+      "detail": "$10.49 (4K UHD + Blu-ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20341281-10-49-akira-4k-ultra-hd-blu-ray-at-amazon"
+    },
+    {
+      "title": "Back to the Future Trilogy: 40th Anniversary Edition",
+      "store": "Amazon",
+      "detail": "$24.99 (4K UHD + Blu-ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20341158-24-99-back-to-the-future-40th-anniversary-trilogy-4k-uhd-blu-ray-digital-at-amazon"
+    },
+    {
+      "title": "Wall-E: The Criterion Collection",
+      "store": "Amazon",
+      "detail": "$24.98 (4K UHD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "Paramount Action-Packed Mix/Match (4K Digital)",
-      "store": "FanFlix",
-      "detail": "5 for $15",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20317683-fanflix-paramount-4k-digital-action-movies-5-for-13-5"
-    },
-    {
-      "title": "The Super Mario Galaxy Movie: Collector's Edition (4K UHD + Blu-ray + Digital)",
-      "store": "eBay",
-      "detail": "$13",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20314908-the-super-mario-galaxy-movie-4k-collector-s-edition-12-99"
-    },
-    {
-      "title": "Disclosure Day Collector's Edition",
-      "store": "Amazon",
-      "detail": "$13 for 4K Ultra HD + Blu-ray + Digital",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20308947-disclosure-day-collector-s-edition-4k-ultra-hd-blu-ray-digital-13"
-    },
-    {
-      "title": "GRUV: Select 4K Mix/Match Movies",
-      "store": "Gruv",
-      "detail": "3 for $33 qualifying films",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20302098-gruv-select-4k-mix-match-movies-sinners-nosferatu-more-3-for-33-free-s-h"
-    },
-    {
-      "title": "Dogma",
-      "store": "Amazon",
-      "detail": "$18.49 for 4K UHD + Blu-ray + Digital",
-      "ends": null,
-      "url": "https://www.ign.com/articles/4k-uhd-and-blu-ray-movies-amazon-prime-big-deal-days-2026"
-    },
-    {
-      "title": "Akira",
-      "store": "Amazon",
-      "detail": "$10.99 for 4K UHD + Blu-ray",
-      "ends": null,
-      "url": "https://www.ign.com/articles/4k-uhd-and-blu-ray-movies-amazon-prime-big-deal-days-2026"
-    },
-    {
-      "title": "2 for $25 Sale on 4K UHD Movies",
-      "store": "Amazon",
-      "detail": "$11.00 each; 2 for $25 sale",
-      "ends": null,
-      "url": "https://www.ign.com/articles/4k-uhd-and-blu-ray-movies-amazon-prime-big-deal-days-2026"
-    },
-    {
-      "title": "Friday the 13th",
-      "store": "Amazon",
-      "detail": "$11.00 for 4K UHD + Digital",
-      "ends": null,
-      "url": "https://www.ign.com/articles/4k-uhd-and-blu-ray-movies-amazon-prime-big-deal-days-2026"
-    },
-    {
-      "title": "The Matrix",
-      "store": "Amazon.com",
-      "detail": "$12.99 for 4K UHD",
-      "ends": null,
-      "url": "https://www.amazon.com/4k-uhd-blu-ray/s?k=4k+uhd+blu+ray"
     }
   ],
   "upcoming": [

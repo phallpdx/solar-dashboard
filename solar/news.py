@@ -157,6 +157,8 @@ def _collect(sources, days, counts=None):
             when = _when(it["date"])
             if not it["title"] or not it["url"] or not when or now - when > dt.timedelta(days=days):
                 continue
+            if when - now > dt.timedelta(hours=1):  # a feed dated days ahead (Fox opinion) would sit on top all week
+                continue
             out.append({**it, "source": name, "utc": when.isoformat(), "date": None})
     return out, failed
 

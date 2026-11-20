@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-20",
-  "updated_at": "2026-11-20T10:22:23Z",
+  "updated_at": "2026-11-20T12:39:08Z",
   "teams": {
     "blazers": {
       "mood": "Cautiously optimistic",
@@ -39,12 +39,12 @@
       ]
     },
     "timbers": {
-      "mood": "focused and expectant",
-      "pulse": "The team shows enthusiasm and commitment for the playoffs. Players are preparing for their upcoming battle against Dallas.",
+      "mood": "focused and ready",
+      "pulse": "Players show enthusiasm and commitment for the playoffs. The team is bonding through track activities ahead of Dallas.",
       "storylines": [
-        "Preparing for Round One playoffs against FC Dallas",
+        "Preparing for Round One playoff battle against FC Dallas",
         "Timbers2 lost 1-0 to Ventura County in semifinals",
-        "Eric Izoita signed a first-team contract"
+        "Academy player Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -75,11 +75,13 @@
     },
     "f1": {
       "mood": "Anticipatory and uncertain",
-      "pulse": "Fans are reacting to unpredictable wet practice sessions in Las Vegas. Uncertainty surrounds driver balance issues and upcoming grid penalties.",
+      "pulse": "Fans are focused on practice results in Las Vegas. Uncertainty surrounds driver lineups and car performance issues.",
       "storylines": [
-        "Russell topped wet FP2 despite pace concerns",
-        "Verstappen facing balance and energy management issues",
-        "Antonelli, Bearman, and Stroll face grid penalties"
+        "Gasly earned P2 during second practice for Alpine.",
+        "Verstappen faces balance and energy management issues.",
+        "Russell topped FP2 despite Mercedes lacking pace.",
+        "Palmowski secured pole in F1 Academy.",
+        "Cadillac retains Bottas over Herta for 2027."
       ],
       "sources": [
         {
@@ -113,8 +115,8 @@
       "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff potential.",
       "storylines": [
         "Upcoming matchup against Michigan State Spartans",
-        "Analysis of drive-by-drive performance against Michigan",
-        "Discussion on CFP rankings and playoff potential"
+        "Analysis of performance against Michigan",
+        "Discussion on CFP rankings"
       ],
       "sources": [
         {
@@ -145,12 +147,11 @@
     },
     "niners": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans are excited about the primetime matchup against Minnesota. Defensive inconsistencies cause concern.",
+      "pulse": "Fans face a primetime battle for the NFC top seed in Mexico City. Defensive lapses and injuries cause concern.",
       "storylines": [
-        "8-1 record heading into Sunday Night Football",
-        "#165974 Christian Kirk underwent meniscus surgery",
-        "#165970 Nick Bosa struggling to execute his calling card",
-        "#165989 Brock Purdy has MVP opportunity vs Vikings"
+        "Battle for No. 1 seed against Vikings",
+        "Christian Kirk underwent meniscus surgery",
+        "Nick Bosa struggling to execute signature pass rush play"
       ],
       "sources": [
         {

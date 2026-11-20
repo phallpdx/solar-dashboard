@@ -1,9 +1,9 @@
 {
   "updated": "2026-11-20",
-  "updated_at": "2026-11-20T10:24:31Z",
+  "updated_at": "2026-11-20T12:41:18Z",
   "analysis": {
-    "headline": "Stocks hit worst run since 2023 as AI trade cracks trigger selloff.",
-    "summary": "Stocks fell amid an AI rout following Anthropic's IPO. Bonds saw yields rise while oil and gold prices dropped. Bitcoin also faced losses during the downturn.",
+    "headline": "Markets declined as the AI trade cracks and Anthropic stock retreats.",
+    "summary": "Major indices fell amid a cracking AI trade. Bonds saw yields rise with 10-year Treasury up 20.7% this year. Oil and Gold both experienced price drops. Bitcoin also declined amidst broader market weakness.",
     "sources": [
       {
         "name": "Google News: stock market",
@@ -17,14 +17,14 @@
     "by": "local model",
     "session": "2026-11-19",
     "drivers": [
-      "AI sector selloff including Nvidia and AMD",
-      "Anthropic IPO volatility"
+      "AI trade cracks",
+      "Anthropic stock retreat"
     ],
     "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company started production at its large Canadian helium field and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant may pave the way for a $100 million liquefaction facility. Market supply is tightening.",
+    "summary": "The company started production at its large Canadian helium field and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential $100 million liquefaction facility. Market supply is tightening, leading independent distributors to move on helium.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -41,6 +41,10 @@
       {
         "name": "Google News: North American Helium",
         "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
+      },
+      {
+        "name": "Google News: North American Helium",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPV2VITXQzdk1nVDJoMUtWQXRwRDdNa2FxaEhkU1VEVVQ4UkY1eXItU1ZuOWtHX2JuT3hFUHFSOXlSRnU0TElqWV9oczBIS3Y3T3JwSkQ2S1VMM29xVlE5MlU0ajY5bUx1LWtkYXVyVE95UmZoY0RCcFp6TENGNWZUem1YRFhIa21uelJMcS1fSU5DVWMxdHg3OFZDWGVwdXpo?oc=5"
       },
       {
         "name": "Google News: helium market",
@@ -107,9 +111,21 @@
         "source": "Google News: mortgage rates"
       },
       {
+        "title": "Mortgage and refinance interest rates today, Friday, November 20, 2026: Mortgage rates mixed leading up to the weekend",
+        "date": "2026-11-20",
+        "url": "https://news.google.com/rss/articles/CBMimgJBVV95cUxOWVlpX2NDX3FRdzllb1AyZW84eFlEZE5nV3VVSkNYWlJEVHhUM2k2dko3eGJnZUh4eTQ4S1daZG05YjRER3ZoN3JwcU53TVYyQzhhM2VKUkhfcXY4Q1lyWEFPRXc5OVdpNzVFT3kwYVVIcHEzNGQtZ29YZ1VCZWtfTlVNNXZoVE0wQzF0NGpaR1ViU0NZVGFEMXMzU3Q4Nkg5U0d4YnE3ZE5wQ1VodFZTYVhHekNLYnQ2ZkxuaGwzTjF6emhuRzkwQzB1TnE2aUkwQURhbEV0RFNiRTlVLU4wTl96ZXNMb3ZMRzVKTllxLVRDUHRiTmtfSEMtbXlBQXVNcWZRS2dsMy1haXRKNWY5T3JYZHdoOVZQRGc?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "30-year mortgage rate rises to 7.28%, ending four-week decline",
         "date": "2026-11-20",
         "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPMnE3VnlCNTZ3ckI3aEVlUVk3d1NHbm1yWUhYWlJJSXpOOXRRMWw3ekp4cEZKeldWcThNUWtQUTJsWjBxQXN5QWlDcGE0SG53SW1oQzVYT25tWHpES2J4NFVnaExoY2UzdjlDc2NOZE5VX0VDVVpLal9nQnVhMS1aR1B4WGpyMTlQX1B0aw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Pasadena Rate Watch: 30-Year Mortgage Rate Falls for Fourth Consecutive Week to 7.11% as 10-Year Treasury Yield Rises to 5.10%",
+        "date": "2026-11-20",
+        "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxNblZVTVRELTFIMERnTlVFa2V2TVZ2ZDgzbmN3a3laOEkxYVZ4OWJ6eW5vekVoVG1MWlRJaW1JT2NMZFNmZ0x0UFNPTkd5bFZRdERnQnBxWFRzaUpCVmpkbHQxcENEMC1PLXdmeGNfamFNZ3RrOGRiMUhrbWxfLTFMb2pwTjdPU3YxUURfTVoyamd6NkNMWGlZOUxmNlh2cWhqVTlqNU90ZHg4WVJuMm5EZ3l3V1JLa1FWQ0JQVUQtUHVWcWhCM0J1eVJ3OWVrd3FGWklEeF9Hdnk0YjdLOXpzVVRjdjJyWXRXcTk0NkRsM0xQcjA?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -117,18 +133,6 @@
         "date": "2026-11-20",
         "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9YN0V3S0tfNE5NRGlFU3d6OGVNbGJrWVBZZXVCcnZJUVZYUV9jdVdYdlBPQUVkeEhtSHhtN1l6UHZKcWhnZ25EMEZzWjlSOUQ5Z3NyTl96cnhtMDJKTWx3WWs2MEdveVBF?oc=5",
         "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "U.S. 30-year mortgage rate rose to 7.28%, ending four-week decline",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQX0RCUmVoX0xITkFVSVNVS3FRVFZyYmxQTUJXenY2N0o0cjNmbXdhdWZYcDhzZkR3V3F3UDh6MDdQVElCTHJ6a1RXQ182WE1mWVhTeGc2YklLSDRlY1p0cDZUeVN4TjhkSk05aVo2NFh1eENpUWVOcWl0d2tFUTZBZ3lKal9fTEZw?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Hundreds of Oregon families could lose rent help under new Trump administration rule",
-        "date": "2026-11-19",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQYTJrTHlZVzVZSnNMdGRZTTJnTC1tZFV0SXdTUlRLLWVWX0JhYlc2OWNuM1R5MzduNUlQMlh6dVNBaHFrblVxaGJ3c0RTNC1QbFlfejRCRWlKSXh4TkswR1ZERHpZRG5LTGlRaC1CNFdHaV93ZDZKNlVUczJjQU55M191bmJtX1VfMkNlV3hWN3E3aThRaTJoMDFJUGtwNEZZTGl6M25QQUM0YU5PeE1PRnFB?oc=5",
-        "source": "Google News: Portland housing"
       }
     ],
     "stats": [

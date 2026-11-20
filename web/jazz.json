@@ -382,6 +382,22 @@
       ]
     },
     {
+      "artist": "Cyrus Nabipoor's Crescent City Christmas Card",
+      "kind": "Local",
+      "date": "2026-12-18",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "A holiday jazz performance.",
+      "tickets": "https://www.ticketweb.com/event/cyrus-nabipoors-crescent-city-christmas-jack-london-revue-tickets/14397894?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/cyrus-nabipoors-crescent-city-christmas-jack-london-revue-tickets/14397894?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
       "artist": "The Three Ds: A Christmas Nog II",
       "kind": "Latin",
       "date": "2026-12-23",

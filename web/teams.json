@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-20",
-  "updated_at": "2026-11-20T08:46:07Z",
+  "updated_at": "2026-11-20T10:22:23Z",
   "teams": {
     "blazers": {
       "mood": "Cautiously optimistic",
@@ -40,7 +40,7 @@
     },
     "timbers": {
       "mood": "focused and expectant",
-      "pulse": "The team shows enthusiasm and commitment for the playoffs. They are preparing to face FC Dallas in Round One.",
+      "pulse": "The team shows enthusiasm and commitment for the playoffs. Players are preparing for their upcoming battle against Dallas.",
       "storylines": [
         "Preparing for Round One playoffs against FC Dallas",
         "Timbers2 lost 1-0 to Ventura County in semifinals",
@@ -75,11 +75,11 @@
     },
     "f1": {
       "mood": "Anticipatory and uncertain",
-      "pulse": "Fans are watching wet practice results closely. Uncertainty surrounds car balance and upcoming grid penalties.",
+      "pulse": "Fans are reacting to unpredictable wet practice sessions in Las Vegas. Uncertainty surrounds driver balance issues and upcoming grid penalties.",
       "storylines": [
         "Russell topped wet FP2 despite pace concerns",
-        "Verstappen faces Red Bull balance issues",
-        "Antonelli, Bearman and Stroll face grid penalties"
+        "Verstappen facing balance and energy management issues",
+        "Antonelli, Bearman, and Stroll face grid penalties"
       ],
       "sources": [
         {
@@ -109,12 +109,12 @@
       ]
     },
     "ducks": {
-      "mood": "Anticipatory and analytical",
-      "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff positioning.",
+      "mood": "Anticipatory",
+      "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff potential.",
       "storylines": [
         "Upcoming matchup against Michigan State Spartans",
-        "Analysis of performance against Michigan",
-        "Discussion on CFP rankings"
+        "Analysis of drive-by-drive performance against Michigan",
+        "Discussion on CFP rankings and playoff potential"
       ],
       "sources": [
         {
@@ -145,12 +145,12 @@
     },
     "niners": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans are excited about Sunday Night Football against the Vikings. Defensive holes and injuries cause concern.",
+      "pulse": "Fans are excited about the primetime matchup against Minnesota. Defensive inconsistencies cause concern.",
       "storylines": [
-        "8-1 record heading into primetime matchup",
+        "8-1 record heading into Sunday Night Football",
         "#165974 Christian Kirk underwent meniscus surgery",
         "#165970 Nick Bosa struggling to execute his calling card",
-        "#165989 Brock Purdy's MVP opportunity vs Vikings"
+        "#165989 Brock Purdy has MVP opportunity vs Vikings"
       ],
       "sources": [
         {

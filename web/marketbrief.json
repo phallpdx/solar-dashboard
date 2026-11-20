@@ -1,67 +1,30 @@
 {
   "updated": "2026-11-20",
-  "updated_at": "2026-11-20T08:48:08Z",
+  "updated_at": "2026-11-20T10:24:31Z",
   "analysis": {
-    "headline": "Stocks were mixed Wednesday (Dow down 561 points, or 1.1%, S&P 500 down about 0.2% for a fifth straight loss, Nasdaq up 0.4%), and futures are sharply higher this morning, led by Nasdaq 100 futures up about 2%, ahead of Anthropic's Nasdaq debut.",
-    "summary": "Wednesday's Dow drop was mostly health insurers: UnitedHealth fell about 10% and Humana about 13% as investors weighed a federal proposal to expand Medicare Advantage audits, while Nvidia gave back an early post-earnings gain and closed down about 2.9% despite revenue of $115.8 billion, up 103% from a year earlier. Rate worries added pressure: minutes of the Fed's October meeting, released Wednesday afternoon, said almost all officials see further rate hikes as likely appropriate, with a couple open to more than a quarter point in December, and the 10-year Treasury yield was near 5.07%. That higher-for-longer outlook and a firm dollar pushed gold to about $3,725 an ounce, its weakest in more than a year, and Bitcoin fell about 3% to near $62,500, while WTI crude dropped about 3% to roughly $83 after a surprise build in U.S. crude stocks. This morning the mood has flipped toward AI optimism, with S&P 500 futures up about 1.2% and on track for the index's first gain in six sessions, as Anthropic priced its IPO at $83 a share, above its earlier $70 to $78 range, and Walmart's revenue of $188.8 billion came in just above estimates.",
-    "drivers": [
-      "Fed minutes: almost all officials expect more rate hikes; Governor Cook and Cleveland Fed's Hammack dissented in October in favor of a hike, and a December 8-9 hike is widely priced in",
-      "UnitedHealth (down about 10%) and Humana (down about 13%) fell on a proposed expansion of Medicare Advantage audits, taking the Dow down 561 points",
-      "Nvidia closed down about 2.9% after its beat-and-raise report, extending a slide of over 13% in a week, before futures rebounded this morning",
-      "Anthropic priced its IPO at $83 a share, above its earlier range, and is due to start trading on Nasdaq under ANT today"
-    ],
-    "watch": [
-      "Today: weekly jobless claims and the Philadelphia Fed manufacturing index (8:30 a.m. ET), plus a speech by Fed Vice Chair Jefferson",
-      "Today: Anthropic's first day of trading on Nasdaq (ticker ANT)",
-      "Friday: Fed Governor Cook speaks at 12:15 p.m. ET",
-      "Fed's next meeting is December 8-9, where markets expect a quarter-point hike"
-    ],
+    "headline": "Stocks hit worst run since 2023 as AI trade cracks trigger selloff.",
+    "summary": "Stocks fell amid an AI rout following Anthropic's IPO. Bonds saw yields rise while oil and gold prices dropped. Bitcoin also faced losses during the downturn.",
     "sources": [
       {
-        "name": "Yahoo Finance: Stock market today, Thursday, November 19 (futures rise ahead of Anthropic IPO)",
-        "url": "https://finance.yahoo.com/markets/live/stock-market-today-thursday-november-19-dow-sp-500-nasdaq-anthropic-ipo-090910916.html"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQUE9Bem9kWjBIcUtfa0xHOW0yQm1mV3A0VFVFZlh4X0hvWjlmckZSTDNGWlB1NGtzWFkyTTVSc0tNNW9tbUxGNURvNExmRTdTYnJyTTJtUGd1dkEyZklWR2xOSkphQ2s1d0NjZE9CRDc4SWtreWJxbDVoOFFnM2toQldLUHR5VUZFTDk4bDBXaWdodTh1?oc=5"
       },
       {
-        "name": "Washington Post: How major US stock indexes fared Wednesday 11/18/2026",
-        "url": "https://www.washingtonpost.com/business/2026/11/18/wall-street-stocks-dow-nasdaq/f0208c14-e395-11f1-a99e-b3e3805c6b8b_story.html"
-      },
-      {
-        "name": "Investing Live: Dow continues its fall with a decline of 561 points, Nasdaq rebounds",
-        "url": "https://investinglive.com/stocks/dow-continues-its-fall-with-a-decline-of-561-points-nasdaq-rebounds/"
-      },
-      {
-        "name": "Quartz: Dow falls as Nvidia Q3 earnings bounce fizzles",
-        "url": "https://qz.com/dow-falls-459-points-nvidia-earnings-bounce-fizzles-111826"
-      },
-      {
-        "name": "CNBC: Fed minutes October 2026, officials expect more rate hikes",
-        "url": "https://www.cnbc.com/2026/11/18/fed-minutes-october-2026.html"
-      },
-      {
-        "name": "Babypips: Financial & forex market recap, Nov. 18, 2026",
-        "url": "https://www.babypips.com/news/daily-financial-forex-market-recap-2026-11-18"
-      },
-      {
-        "name": "FXStreet: Yields hit 5.07%, gold holds $3,735, and Bitcoin eyes $60K",
-        "url": "https://www.fxstreet.com/analysis/yields-hit-507-gold-holds-3-735-and-bitcoin-eyes-60k-202611190854"
-      },
-      {
-        "name": "Seoul Economic Daily: Bitcoin, gold and oil fall together on high rates, AI doubts",
-        "url": "https://en.sedaily.com/economy/2026/11/18/bitcoin-gold-and-oil-fall-together-on-high-rates-ai-doubts"
-      },
-      {
-        "name": "Investrade: Weekly event calendar 11/16/2026 to 11/20/2026",
-        "url": "https://investrade.com/weekly-event-calendar-11-16-2026-11-20-2026/"
-      },
-      {
-        "name": "Kiplinger: What to look out for in economic data this week (November 16-20)",
-        "url": "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOTk51MERjcW5QczZjMlVnYWtCbUl0R3k3QndGa0hZeGltbmduZVFrQ1RrbTlZdWRuZWVPT1hFRVRRQWpGTm9sSXB6VVFOdHhQN2tsdWVKOUNONjF5ZWw3TUdPTXRaTHRYNjhWSjF0M3NON3BpMmFRYzdjYjQzWFdjMlZ6ck11WlpkcE5ZcUJNWjlRUU9FN1U5VHN6QW5IXy1IMGJ3Vm13dnVsLVN2SU1CNlViNm1XTHBzZkRUNFFOQlA?oc=5"
       }
-    ]
+    ],
+    "by": "local model",
+    "session": "2026-11-19",
+    "drivers": [
+      "AI sector selloff including Nvidia and AMD",
+      "Anthropic IPO volatility"
+    ],
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The Stewart Valley plant is producing approximately 73 MMcf/Y. A new purification facility opened in southwest Saskatchewan. The company raised CAD $4.9m in a third public offering. Market supply is tightening.",
+    "summary": "The company started production at its large Canadian helium field and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant may pave the way for a $100 million liquefaction facility. Market supply is tightening.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -77,11 +40,11 @@
       },
       {
         "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQRU00TW9TdDBxbENrZkoxOFNMa1k5MVh3UGljNjJxS3ZXRmlDTl9lUlNFUEUyY29YaXlxNndtWGcxWHA2TUxFbGtlbjdpTG5iRXF2aGUzRTlsaHBYZ1hXTTYzQjRmQTlxZXBHNVlNZ3h0MWpYOUVQTkt6aFN0d1ZtRnBEek5leGRWbEhwYUZoUkZyQTk3Q0tOQlg2R0NWN1gyU0oxb1ZGQWxNaUVPZVo4TXhzX0hYelRob19USlFtZFZUVzAzeTBReC1Uc2g2cVVw?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
       },
       {
         "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQUlwV0ZBSzBZZHBoZi1UZWV3XzRPRWItLUYtWGVTOXVfaVBUMUswbkdZU0FJbWZuS2NRSExKZkRvZk1hbUNiNlJ3ZnQ0Xzl0RS15eV9mRm42eFBWSjdBdER2UVlWN01tTVYwV2xhUlhScWh5RGx5ZWlUbmpMRWdwcFFrRXJLOUJQTkRfc05mdmVUdUVUVG5iZ0FMTmpHeTA0aDJhVXNzek1Uczdh?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
       }
     ],
     "by": "local model",
@@ -120,7 +83,7 @@
   },
   "realestate": {
     "headline": "The Portland housing market is stagnant with slowing sales.",
-    "summary": "Sellers are lowering prices to help buyers make deals. Home sales slow as buyers adjust to elevated mortgage rates. Some homebuyers are backing out of deals. Metro approved funding to reduce rents on nearly 300 affordable apartments.",
+    "summary": "Sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. Some homebuyers are backing out of deals.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -133,10 +96,6 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcnRwN3NYcU1xQjdoMFo0aXJWSlhxaFJFYmZvYXp4Z2FSYWs3aElERGVjSUVuVTFjaUV3aElGQzJEV3JuX3lOdXp4ck8zbmlqRUlndW5sMEMwcHFJMHkyR3lHak1lU3pMTDh1cjlwVVJWODBxUkUtY2RZRGItcUN1N2p5QzZJSTdFZXZ2cG5fMTFMVnE3WVhVdU1uQTlXMXJHeVhaLVlqYVRXOGNLbk5jcVo5aEs?oc=5"
       }
     ],
     "by": "local model",
@@ -154,6 +113,12 @@
         "source": "Google News: mortgage rates"
       },
       {
+        "title": "Today’s home equity loan and HELOC rates, Nov. 20, 2026",
+        "date": "2026-11-20",
+        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9YN0V3S0tfNE5NRGlFU3d6OGVNbGJrWVBZZXVCcnZJUVZYUV9jdVdYdlBPQUVkeEhtSHhtN1l6UHZKcWhnZ25EMEZzWjlSOUQ5Z3NyTl96cnhtMDJKTWx3WWs2MEdveVBF?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "U.S. 30-year mortgage rate rose to 7.28%, ending four-week decline",
         "date": "2026-11-20",
         "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQX0RCUmVoX0xITkFVSVNVS3FRVFZyYmxQTUJXenY2N0o0cjNmbXdhdWZYcDhzZkR3V3F3UDh6MDdQVElCTHJ6a1RXQ182WE1mWVhTeGc2YklLSDRlY1p0cDZUeVN4TjhkSk05aVo2NFh1eENpUWVOcWl0d2tFUTZBZ3lKal9fTEZw?oc=5",
@@ -164,12 +129,6 @@
         "date": "2026-11-19",
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQYTJrTHlZVzVZSnNMdGRZTTJnTC1tZFV0SXdTUlRLLWVWX0JhYlc2OWNuM1R5MzduNUlQMlh6dVNBaHFrblVxaGJ3c0RTNC1QbFlfejRCRWlKSXh4TkswR1ZERHpZRG5LTGlRaC1CNFdHaV93ZDZKNlVUczJjQU55M191bmJtX1VfMkNlV3hWN3E3aThRaTJoMDFJUGtwNEZZTGl6M25QQUM0YU5PeE1PRnFB?oc=5",
         "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Mortgage Rates Forecast For 2026: Experts Predict Whether Interest Rates Will Drop",
-        "date": "2026-11-19",
-        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9kMlJHRWhRY2owbnpsZWhWOHVVZFR1ZmM3NzhqTUVEVnpHR2xlMHp0QnR2eXFwV2wzQ2FMbXZTN3lTLUJ5OHgxdnk0S3Z2Q3hEQ2pEYW9xcWhrRktVS3B0RXB0NkdnM0hPMzBReG5neWZ1TTdvVWs4bWgxdWFNUkk?oc=5",
-        "source": "Google News: mortgage rates"
       }
     ],
     "stats": [

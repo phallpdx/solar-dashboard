@@ -2,6 +2,54 @@
   "updated": "2026-11-20",
   "releases": [
     {
+      "artist": "The Wood Brothers",
+      "title": "Rollin' On",
+      "type": "Album",
+      "local": true,
+      "genre": "Live Album",
+      "label": "",
+      "date": "",
+      "why": "Announced new live album.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE52UFFZenMxV2V1NEh3VHRsUkNtRXY5R2FmeWxJUUR3S1c1dEJuVWJLWlJVd0hQSmdOZGl0QnJYb1VfU0R0bjVSbm5tZllubnRweXNsTjJvWDJVTjdmVGtrWUt6MG83ckRWVFRvUHVvRVR3eTA3Q0hqWkFn?oc=5"
+        }
+      ]
+    },
+    {
+      "artist": "Psyclops",
+      "title": "Bound To Burn: Melody of the Martyr",
+      "type": "Album",
+      "local": true,
+      "genre": "Metal",
+      "label": "",
+      "date": "",
+      "why": "Album review for Psyclops.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFBodGR5dktXVVc2eTZ0YVVHZGxtd1FhZ0pSV2lrS3ZaNXR2Y3NyWVRXamdrMWg5eEM2aFpOa1ZCd1dxZmxid0N1cjExaVk3Q0wzd0RZc2JDMnhnZWNKRElndVhmcw?oc=5"
+        }
+      ]
+    },
+    {
+      "artist": "Unknown Mortal Orchestra",
+      "title": "Psychedelic Rock",
+      "type": "Album",
+      "local": true,
+      "genre": "Psychedelic Rock",
+      "label": "",
+      "date": "",
+      "why": "Brings psychedelic rock from Portland.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPa1ZwSS00YkNBZWQ3cGlzdk1pZmdYeWU0Ui1OQWNuc1k1NjZ4eXctd0ppeWdoaUd0eXE0cUp3T0FldnVsUEtGY3FiZGQyR2s5c3ZLOVhxZnZZUWtfeHZtclBlOEtnQ3lMdkNVLWNMMS03YXRPWDEtb0JFV25vMU1nUjVxSnZZa0Nkb04tYjBEaEV2UzJpejFjNGctWGhxLUh4WDg1T09NWUFaVGFlS1Q1RF9mU2VfUHQ2MFRZbXR1bXpXQmNMeHpZOVpCdw?oc=5"
+        }
+      ]
+    },
+    {
       "artist": "Blu Miller",
       "title": "Bask in the Wonder",
       "type": "Album",
@@ -370,62 +418,6 @@
         {
           "name": "KEXP review",
           "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
-        }
-      ]
-    },
-    {
-      "artist": "Babehoven",
-      "title": "I See Them, I See Me",
-      "type": "Album",
-      "local": false,
-      "genre": "Indie rock",
-      "label": "Double Double Whammy",
-      "date": "2026-10-16",
-      "why": "No. 1 on KVSC's college radio Top 30 for the week of Oct. 6 and named as a challenger at the top of the NACC chart; announced via Stereogum.",
-      "links": [
-        {
-          "name": "Stereogum",
-          "url": "https://stereogum.com/2504997/babehoven-announce-new-album-i-see-them-i-see-me-hear-lasagna/music"
-        },
-        {
-          "name": "KVSC chart",
-          "url": "https://www.kvsc.org/music/nacc-charts/"
-        }
-      ]
-    },
-    {
-      "artist": "Wishy",
-      "title": "Nature's Pill",
-      "type": "Album",
-      "local": false,
-      "genre": "Indie rock / power pop",
-      "label": "Winspear",
-      "date": "2026-10-02",
-      "why": "The Indianapolis band's second album was No. 2 on KVSC's college radio Top 30 for the week of Oct. 6 and is pushing for the top of the NACC chart.",
-      "links": [
-        {
-          "name": "KVSC chart",
-          "url": "https://www.kvsc.org/music/nacc-charts/"
-        },
-        {
-          "name": "Announcement",
-          "url": "https://www.thenote.com.au/news/wishy-announce-new-album-natures-pill-share-single-lovesick"
-        }
-      ]
-    },
-    {
-      "artist": "beabadoobee",
-      "title": "Pylon",
-      "type": "Album",
-      "local": false,
-      "genre": "Indie rock",
-      "label": "Dirty Hit",
-      "date": "2026-09-18",
-      "why": "The Crimson gave her latest album 4 stars.",
-      "links": [
-        {
-          "name": "Review",
-          "url": "https://www.thecrimson.com/article/2026/10/1/pylon-album-review/"
         }
       ]
     }

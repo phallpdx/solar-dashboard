@@ -1,4 +1,5 @@
 name: Ships check (temporary)
+concurrency: ships-check
 on:
   pull_request:
     paths: [".github/workflows/ships-check.yml", "solar/ships.py", "config.json"]
@@ -24,4 +25,5 @@ jobs:
           c = json.load(open("config.json"))["river_view"]
           p, others = ships.parked(cache, c["lat"], c["lon"], now, c["parked_km"])
           print("PARKED:", json.dumps(p))
+          print("OTHERS:", others)
           PY

@@ -1,21 +1,17 @@
 {
   "updated": "2026-11-21",
-  "updated_at": "2026-11-21T08:41:56Z",
+  "updated_at": "2026-11-21T10:26:54Z",
   "analysis": {
-    "headline": "Markets tumble as an AI rout drives major indices into correction territory.",
-    "summary": "Stocks plunged as fears over the AI trade intensified following Nvidia's chaos and Anthropic's IPO. The Nasdaq erased its yearly gains while S&P 500 and Dow entered corrections. Bonds saw yields rise as the 10-year Treasury climbed, while Gold and Bitcoin both declined significantly. Oil was the only major asset to post a gain.",
+    "headline": "U.S. stocks slump into correction territory amid tech and AI worries.",
+    "summary": "Stocks fell as an AI rout involving Anthropic and Nvidia soured sentiment. Nasdaq erased 2026 gains while S&P 500 entered a correction. Oil rose slightly despite the market downturn. Gold and Bitcoin both saw significant declines.",
     "sources": [
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQUmlPb2NNTTRIVWI5NXJFQUd2MXNkdkFtNzIxODZMZjdEbVFsUWQyWjRQT1AxMUE5YS1nRnZ6U21mN0J1V21IVFFRZEthZms4bkM0MDRNQlR6RkRtcUp2aUJqTnQ2YlloTU9ObkpmLUs1NWgyUXpubUxndklKTElFbExrY3ZtamdWNEpRUG5lNGd2VVZZdHVIUHp3eU1Wc0RzenQ0YQ?oc=5"
+      },
       {
         "name": "Google News: Business",
         "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQQ1hBdGw1anUtLVZ1cFNyVmJmX0liYVYxcGg3WEpaOURrSlJLWHZDSzlIbjFBM3ZaTlllb29CTERST2ZDaWVfWUxnRUJ5b19ybWs2dXp5NFRjUmU5TVlVUHYtYm5maDRxMUlpVFc0WDhyUEJFN1M2MjJGWGY0dXk1V2RHanl3S1pWU3J0Rm5CRDdjRXVJN2c?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNU291OEFTamphSmg2LXZBUzlrbzJzelRKUnZ0bEd6cTE1dFBWd1V4Xzk0RE1lOVBzTUprLUpDODVHb1J5RWNoT2FzODVnR2Fzd2tpb0NjckNxZlhMWXMzSGdjc2tadFFxREd3eFF6TDktOHRXZnNTMmJ6UEUxemNwdWNoMXNYWE5GY1piNlJxT0ZGaWRjR3pLSjNEekUxR251elAwWWdn?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOMGNzODFLR3MwUFV1clNGZXctVFJsT0g0SHBMSXVyQWxrdmVmcFgxSXEzbWhUUFRhS29RdF9hbnkwQ0JuTkZsNWFBLWpoM3I1MndKQmJhX0x4YkE5cjRubjJFNXVPZ0RaZkwyWTNWYlVUckxCbGZmZExfWURFTU1UZ1ZQbzhFeEgyTUJpOEhpRzZxV2NTMWc?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -23,7 +19,7 @@
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNSExVOUo0ZWNCMmNFcWNNQnZoQzRndVlwaDFBTXRYRnpYV1lub1h2bUpGNGRMWG1JcVd3c1owbzZ6Uk8wTE51NTJVdW1sQ1NWMG9OR2dMblVDRGdUT2w1ZlJMY1RUdEZZOENGZ1VyaWN2Z0NYbWVTbThMS1Z4eXBhaHN3d2tGMHN3QVM5VVlFYmlPQWFIM19RdXBOSEQ5RzJrTEo1V3VQLUtWRjhJSTFzQWZTaThoWkRuYWY5TA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQY09GMmxTYlpRMnQ3YVJ4Q3BUdmg3NEFJWG5lVlh4TC0zZGxxZVcydTkwSkpiZUZfS3BXdlRab05HSW5TS0h5TDY5NFRKajBDSWdFbUdhNFIxMzUxc3pLRnEtMXVNblBwZmgteFlUWVhuS0lRU3diRGpWQnkyeWtDMGJiS3hzd2xCdUtDVHIxc0hOWGkwTHdPZ1FfenUwQQ?oc=5"
       },
       {
         "name": "Google News: stock market",
@@ -33,15 +29,14 @@
     "by": "local model",
     "session": "2026-11-20",
     "drivers": [
-      "AI trade unwinding and tech sell-off",
-      "Nvidia leadership crisis and chaos",
-      "Anthropic IPO failing to quell AI nerves"
+      "Tech sell-off driven by Anthropic IPO turmoil and Nvidia chaos.",
+      "AI worries rattling market sentiment."
     ],
     "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market conditions show tightening supply.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a liquefaction facility. Global supply risks led the U.S. to declare helium a critical material.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -58,6 +53,10 @@
       {
         "name": "Google News: helium market",
         "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQdjFySlZiaXdGa0dRQmVYcW5MQ1RSWmtpSE01Z3JwNHQyUUkzZGtXdkN1c3h6M3FEVERkdk90RXZsdnNPa2pJTVF1NV9XWGIyLS1hOGIwTFdDMExGWjVtZnVwSVBMdmEzNmdja1huV3JRYlctbGtDa08xT0xaUFNnVWRwR2dfNDQ2WklmYjBELWh0N2gwNFBUVm4yNXNCaWVuSkQ0MW1zSWpmNzBVLXd6cjFrblpmcElMZ2w0WElPdl9URDBEM0E?oc=5"
+      },
+      {
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5fV2ZDeFB2b1JvMzNtbW56ZlptMzBUQ0FuQ1N6aEV0d29sN2sxcE1wN09ScHNBbnN4WGNoVHRDNExqNHk3VU5uZjczRlA5cE8yeC1tT0dZdjR5R3FSb21lT0VMUHRycVQ4T0Z1U3RsV1Y2WTFYNnUxWk9Eb2hjZnM?oc=5"
       },
       {
         "name": "Google News: helium market",
@@ -85,15 +84,15 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Helium Evolution Plans $3M Saskatchewan Seismic Program",
+        "title": "Helium Evolution Launches Up to $3 Million Winter Seismic Program to Advance Exploration on 100% Working Interest Lands",
         "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMimwJBVV95cUxQT1EwMDBiM0xIYUthR0J1T0VrOFBObGlKQTNFMC13TTcxQVo3QV9vSnM2N291SkFfdG91REVIRWVBYV9oQTZBSm9aR1ZNb2tyM3V5YkhGcVMzU29VcnNCaHM1WDBVSFhTcThTQThjdTA0OG5ORVNqRGlfNmJxZ3dFR2ZfVHZKRjdvYUkzOG80bFRpQ2ZNaEpUY05Tb1h2YjZ6M2JlVDBRSUNMdWM0cTVhUFl2WGVvdURMRmNmdE9peHYwbU14YU1vX1lZR2x3elpxMmk2NnhELVpPQUhwcV9OSlZGM3c4dUM0emgza2dpWVEtclIzWTR3SHd5RGFVTWg3d1p4VmhYTVk1QWpzQi1RY00xWTdmODFHNU9n0gGgAkFVX3lxTFBCdlJVT1g2VVA2MmpmRzR2aVB4andzVVpaQ1VEaXN2V2VtWmU0emwzeGY4Y3lVT2tVaFpUYW5rRVZEMFEzN2t0ZUNlcUR2U0dmODFqN0VtaEQ0OGRqSEJvTU4wdm93Wjh6bV9STVNQcWVFNndNdDloZ2NKMjNJNUViSHNGQ3pjckZlZkdmU2k5ellobTR2MEw1ZEJ5UWxGdnpmR0sxWWx0bmI4M3Q0VlkyZ3F3U242VkNoMFRNR2ZhektLMGRpYll2aHBDX3JhTEwweDVRcjNxcjY3UXV0ZnkxV3Rfc3dDSE5EMHgwZHdZeE5OcFpLc1gzSWtBYkkyZGFCVkhJbmpycXM4WlQtV0xJT285dlVXd2s2Ukd5S3hJdg?oc=5",
         "source": "Google News: helium market"
       },
       {
-        "title": "Saskatchewan helium industry heats up as Crown permits attract nearly $5 million in bids",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5",
+        "title": "Helium getting oil and gas treatment good news for Swift Current",
+        "date": "2026-11-16",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
         "source": "Google News: helium market"
       }
     ]
@@ -113,10 +112,6 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxNT3dqcXVLNnpxV1dBSEhRV0ZkaUxqeFNOb0hLRWFIaU5ESnE0RGpTNTh4bUF2Q2xTZnctdUl2aGJTb1lNYkdab1k1TGRjVjJCX2lpQzVKQ1JMTmczaHFlRkg4ZE1MbW5yWHFYb1RlRk9BTEdWZS1oNHAtSk1iR19kMTE0SWlRUWtnM01FLU0xNkJpMllzVmVWV0dvTFduaEVvcXJJbGtrY3YtTGtsczNRYW42UnpyNVVDaXdEMElzZjFBOTg2TEFPNjd0NXByUEdvenFwQmxHN2JqYjlTTC1DcEdrOWVFZw?oc=5"
       }
     ],
     "by": "local model",
@@ -125,12 +120,6 @@
         "title": "Stock market selloff pushes mortgage rates down",
         "date": "2026-11-21",
         "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxObkx0Ui1ETVZ4bWFDSFFjckd6Y1l3LWxkWHdGNUZmVFdXMUVVN0pQc0loVlBXTnlMUUtJY2xWalhvenhwckQySldVV2xTRlhQRDJqckRRdGlOOWFXTXVIa0RBNUl0bWxFOEt5MmItRHY1MGZEMTg2dWJ5QVJlQTVJR2YtTm1fcmZEUXk4Z0pTODZQZGs?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage Rates Rise to 7.28% on Inflation Fears",
-        "date": "2026-11-21",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOY3d0LWY5dUJDM1VUeE5McGtsc0NNRXJUdnNxTXdDWW5SLWFTVXBPbmYwbTk5NkZNR2kzRGlqcVRneGhEcFF5dVVyTmQ3QlhSSDIxUTVwVnNJLXdpbTI1Vm1kNFRxcEZWc0ZfTE41TmE4ZGpseFdpakVZRFdSSFNuMDduM2s5NTdkc3R6Ng?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -149,6 +138,12 @@
         "title": "Mortgage rates today, Nov. 20, 2026, rates drop again",
         "date": "2026-11-20",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5RaU5kaGo0WW83b2hNVzBVVjNRbnlTclZEdjVEU1ZDUFVKUWk1V011a3NRN21VWlRrVjZsTldyRFNnY2dpREF5dHlnN1kzVC1qS0pfQmFNb1UzY2xMeGRNcjBoYnJObFlyUzRMUThsUQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage and refinance interest rates today, Friday, November 20, 2026: Mortgage rates mixed leading up to the weekend",
+        "date": "2026-11-20",
+        "url": "https://news.google.com/rss/articles/CBMimgJBVV95cUxOWVlpX2NDX3FRdzllb1AyZW84eFlEZE5nV3VVSkNYWlJEVHhUM2k2dko3eGJnZUh4eTQ4S1daZG05YjRER3ZoN3JwcU53TVYyQzhhM2VKUkhfcXY4Q1lyWEFPRXc5OVdpNzVFT3kwYVVIcHEzNGQtZ29YZ1VCZWtfTlVNNXZoVE0wQzF0NGpaR1ViU0NZVGFEMXMzU3Q4Nkg5U0d4YnE3ZE5wQ1VodFZTYVhHekNLYnQ2ZkxuaGwzTjF6emhuRzkwQzB1TnE2aUkwQURhbEV0RFNiRTlVLU4wTl96ZXNMb3ZMRzVKTllxLVRDUHRiTmtfSEMtbXlBQXVNcWZRS2dsMy1haXRKNWY5T3JYZHdoOVZQRGc?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

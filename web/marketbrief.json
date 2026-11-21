@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-21",
-  "updated_at": "2026-11-21T12:25:22Z",
+  "updated_at": "2026-11-21T13:14:47Z",
   "analysis": {
     "headline": "Tech sell-off and AI worries drag major indices into correction territory.",
     "summary": "Stocks tumbled as an AI rout and Anthropic's IPO performance soured sentiment. Nasdaq erased yearly gains while S&P 500 entered a correction. Dow also entered correction territory. Oil rose slightly, gold fell sharply, and Bitcoin declined.",
@@ -28,6 +28,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQRTk1MEVuRzZfdUVPMG9Mc3c4VFlvRUJRTGl0WUxTWVFOUG41LWJwWTFsbnNwcnktNjh5VE9IMUdLbHRuRnlEbUFZNlUyZGgxMG5admdobWx6R3VBU2VCb3BBczlUZU9sdmctenh6c2laaUpWSzYzWTBHaUh6UWhSWmVmOTRnRWdoVDM2MjRoWkM0LXU4cmc?oc=5"
+      },
+      {
+        "name": "Schaeffer's: The Week Ahead, Thanksgiving week",
+        "url": "https://www.schaeffersresearch.com/content/news/2026/11/19/the-week-ahead-thanksgiving-week-brings-more-inflation-data"
+      },
+      {
+        "name": "Newsquawk weekly economic calendar, Nov 23-27, 2026",
+        "url": "https://www.newsquawk.com/headlines/newsquawk-weekly-economic-calendar---23rd-27th-november-2026"
+      },
+      {
+        "name": "What could move the stock market next week (Thanksgiving week)",
+        "url": "https://www.nacionale.com/en/articles/what-could-move-stock-market-next-week-thanksgiving-pce-gdp-dell-earnings-november-23"
       }
     ],
     "by": "local model",
@@ -37,7 +49,12 @@
       "Anthropic shares slide",
       "AI sector worries"
     ],
-    "watch": []
+    "watch": [
+      "Mon Nov 23: global flash PMIs; earnings from Hewlett Packard Enterprise, Zoom and Agilent after the close",
+      "Tue Nov 24: Conference Board consumer confidence; Dell, Workday, Autodesk, Best Buy and Medtronic report",
+      "Wed Nov 25: October PCE inflation, Q3 GDP second estimate, durable goods, new home sales and the Fed's Beige Book",
+      "Thu Nov 26: US markets closed for Thanksgiving; Fri Nov 27 early close (1 p.m. ET stocks)"
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -113,6 +130,14 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
+      },
+      {
+        "name": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "name": "Freddie Mac PMMS (via GlobeNewswire)",
+        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
       }
     ],
     "by": "local model",
@@ -150,11 +175,25 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (US, November 2026)",
-        "value": "7.37%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQY25xellGYUtjalo0NTlUanp5S2JuNkpLeWxkOWpoalpPZENSUW1Ua1J5OGpxaTFlS2NSakRUV2tZMlJZNkRIQXlOa3BiaTNoM1VuMWNQN1JEV2tOQ1FrblpIR1V1NWRObnZmMVMyYnM4aG9PQm5Fa241N18zV3JKMXFwMHBUQUN1ZFB4V29n?oc=5"
+        "label": "Median sale price (city of Portland, October 2026)",
+        "value": "$524,635",
+        "change": "+0.9% vs a year ago",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "Median days on market (city of Portland, October 2026)",
+        "value": "26 days",
+        "change": "vs 29 days a year ago",
+        "source": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "label": "30-year fixed mortgage rate (US average, week of Nov 19, 2026)",
+        "value": "7.28%",
+        "change": "up from 7.11% the week before; 6.26% a year ago",
+        "source": "Freddie Mac PMMS (via GlobeNewswire)",
+        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
       }
     ]
   }

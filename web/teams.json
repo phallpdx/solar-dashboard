@@ -1,169 +1,150 @@
 {
   "updated": "2026-11-21",
-  "updated_at": "2026-11-21T12:23:20Z",
+  "updated_at": "2026-11-21T13:11:24Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans are encouraged by an offensive renaissance and Scoot Henderson's recent performance. However, Deni Avdija's foot injury remains a concern.",
+      "mood": "Fired up",
+      "pulse": "Portland won 124-114 in Milwaukee on Thursday to get to 10-5, with Dame dropping a season-high 33 in his return to Milwaukee. Scoot Henderson's season-high 27 off the bench has fans and the coaches feeling good about him after a rough start. The worry is Deni Avdija's sore left foot heading into tonight at the Garden.",
       "storylines": [
-        "Defeated Milwaukee Bucks 124-114 on 2026-11-20",
-        "Deni Avdija is questionable with a left foot contusion.#4",
-        "Next game against Knicks at Madison Square Garden.#1",
-        "Dec. 1 matchup vs Timberwolves moved to national TV.#3"
+        "Beat the Bucks 124-114; Lillard 33, Holiday 22, Henderson 27 off the bench",
+        "Assistant Micah Nori on Scoot: the team has \"lost zero faith\" in him",
+        "Avdija (left foot) missed the last two games and is questionable",
+        "Tonight at the Knicks (9-6), 4:30 PT; Morant and Sharpe still out"
       ],
       "sources": [
         {
-          "name": "ESPN recap (Bucks)",
-          "url": "https://www.espn.com/nba/recap?gameId=401910020"
+          "name": "OPB/AP (Bucks recap)",
+          "url": "https://www.opb.org/article/2026/11/20/portland-trail-blazers-beat-milwaukee-bucks-damian-lillard-33-points/"
         },
         {
-          "name": "Blazer's Edge (injury report)",
-          "url": "https://www.blazersedge.com/trail-blazers-news/118611/portland-trail-blazers-injury-report-latest-milwaukee-bucks-deni-avdija-toumani-camara"
+          "name": "CBS Sports (Henderson)",
+          "url": "https://www.cbssports.com/fantasy/basketball/news/trail-blazers-scoot-henderson-erupts-for-season-high-27-off-bench/"
         },
         {
-          "name": "SF Chronicle (AP recap, Minnesota)",
-          "url": "https://www.sfchronicle.com/sports/article/mcdaniels-scores-with-2-6-seconds-left-to-lift-22536764.php"
+          "name": "Blazer's Edge (Nori on Scoot)",
+          "url": "https://www.blazersedge.com/trail-blazers-news/118675/portland-trail-blazers-scoot-henderson-micah-nori-nba-news-interviews-damian-lillard-jrue-holiday-milwaukee-bucks"
+        },
+        {
+          "name": "Posting and Toasting (Knicks preview)",
+          "url": "https://www.postingandtoasting.com/knicks-game-previews/91455/game-preview-knicks-vs-trail-blazers-november-21-2026"
+        },
+        {
+          "name": "Sports Mole (injury report)",
+          "url": "https://www.sportsmole.co.uk/basketball/new-york-knicks/preview/portland-trail-blazers-vs-new-york-knicks-player-props-injury-report-and-prediction--nba_609485.html"
         }
       ]
     },
     "timbers": {
-      "mood": "focused and expectant",
-      "pulse": "Fans are anticipating the MLS Cup Playoffs against FC Dallas. The team is showing enthusiasm and commitment.",
+      "mood": "Hopeful",
+      "pulse": "The playoffs start today: Portland, the No. 7 seed, opens a best-of-3 at No. 2 FC Dallas. Fans are riding a late surge under Marti Cifuentes, who took over midseason and closed with four straight wins and five unbeaten. Dallas won the season series, though, and has Golden Boot runner-up Petar Musa.",
       "storylines": [
-        "Face FC Dallas in Round One Best-of-3",
-        "Timbers2 lost 1-0 to Ventura County FC",
-        "Eric Izoita signed first-team contract",
-        "Kellen Tamblyn named to 2026 MLS NEXT All-Star Game"
+        "Game 1 today at Dallas, 1:00 PT on Apple TV",
+        "Game 2 at Providence Park Sat Nov 28; Game 3 (if needed) Dec 2 in Dallas",
+        "Kristoffer Velde led the team with 12 goals and 10 assists, and scored 4 in the last 3 games",
+        "Ties go straight to penalties, no extra time"
       ],
       "sources": [
         {
-          "name": "KPTV (schedule)",
-          "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"
+          "name": "MLSsoccer.com (5 storylines)",
+          "url": "https://www.mlssoccer.com/playoffs/2026/news/fc-dallas-vs-portland-timbers-5-biggest-storylines-for-western-conference-round-one"
         },
         {
           "name": "Yahoo Sports (dates, TV)",
           "url": "https://sports.yahoo.com/articles/fc-dallas-sets-dates-kickoff-210744130.html"
         },
         {
-          "name": "FC Dallas (Set the stage)",
-          "url": "https://www.fcdallas.com/news/set-the-stage-fc-dallas-vs-portland-timbers-playoffs-round-one-game-1"
-        },
-        {
           "name": "Timbers.com (Game 2)",
           "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
         },
         {
-          "name": "Rotowire (Antony)",
-          "url": "https://www.rotowire.com/soccer/headlines/antony-injury-could-return-for-playoff-clash-547045"
-        },
-        {
-          "name": "KATU (win streak)",
-          "url": "https://katu.com/sports/timbers/portland-timbers-ride-four-game-winning-streak-into-2026-mls-cup-playoffs-providence-park-oregon-mls-cup-playoffs-soccer"
+          "name": "Big D Soccer (Game 1 preview)",
+          "url": "https://www.bigdsoccer.com/mls-cup-playoffs-game-one-fc-dallas-vs-portland-timbers/"
         }
       ]
     },
     "f1": {
-      "mood": "tense and unpredictable",
-      "pulse": "Fans are reacting to chaotic qualifying results and unexpected grid shifts. Drivers express mixed emotions regarding performance and technical struggles.",
+      "mood": "Grumbling",
+      "pulse": "Kimi Antonelli was fastest in Las Vegas qualifying but drops to sixth with an engine penalty, handing Max Verstappen pole with George Russell alongside. Verstappen also escaped punishment after stewards looked at run-ins with Russell and Colapinto. Antonelli already clinched the title in Mexico City, so the real fight is for second.",
       "storylines": [
-        "Kimi Antonelli loses pole after penalty",
-        "Max Verstappen inherits pole position",
-        "Ferrari drivers miss top ten",
-        "Lando Norris faces straight-line speed concerns"
+        "Verstappen on pole; Russell, Norris, Hadjar next; Antonelli starts 6th after a 5-place engine penalty",
+        "Piastri takes a 10-place penalty and starts 17th",
+        "Stewards summoned Verstappen over incidents with Russell and Colapinto; no penalty",
+        "Title is Antonelli's; Verstappen (279) leads Russell (262) and Hamilton (261) for P2 after Sao Paulo",
+        "Mercedes already sealed the constructors' title"
       ],
       "sources": [
         {
+          "name": "Formula1.com (qualifying)",
+          "url": "https://www.formula1.com/en/latest/article/antonelli-quickest-in-las-vegas-gp-qualifying-as-verstappen-inherits-pole-position.6R7udh8iYMHunSOGI6zStK"
+        },
+        {
+          "name": "Sky Sports (qualifying)",
+          "url": "https://www.skysports.com/f1/news/13614575/las-vegas-gp-kimi-antonelli-fastest-but-max-verstappen-on-pole-from-george-russell-after-dramatic-qualifying"
+        },
+        {
+          "name": "Al Jazeera (stewards)",
+          "url": "https://www.aljazeera.com/sports/2026/11/21/verstappen-escapes-las-vegas-discipline-takes-pole-as-antonelli-penalised"
+        },
+        {
+          "name": "AutoRacing1 (Vegas preview, standings)",
+          "url": "https://www.autoracing1.com/pl/509931/formula-1-news-2026-las-vegas-gp-preview/"
+        },
+        {
           "name": "Sky Sports (what's left)",
           "url": "https://www.skysports.com/f1/news/13611983/las-vegas-gp-whats-still-to-play-for-over-final-three-races-of-f1-2026-season-with-battles-in-drivers-and-constructors-championships"
-        },
-        {
-          "name": "GPFans (practice schedule)",
-          "url": "https://www.gpfans.com/en/f1-news/1093027/f1-practice-today-schedule-times-tv-channel-2026-las-vegas-grand-prix/"
-        },
-        {
-          "name": "GrandPrix247 (Pirelli)",
-          "url": "https://www.grandprix247.com/formula-1-news/pirelli-warns-tyre-warm-up-and-graining-could-prove-decisive-at-2026-formula-1-las-vegas-grand-prix"
-        },
-        {
-          "name": "Ferrari (Vegas preview)",
-          "url": "https://www.ferrari.com/en-EN/formula1/articles/las-vegas-grand-prix-2026-preview"
-        },
-        {
-          "name": "Formula1.com (5 storylines)",
-          "url": "https://www.formula1.com/en/latest/article/its-race-week-5-storylines-were-excited-about-ahead-of-the-2026-las-vegas-grand-prix.3fjavheTbHD8fjZI0i7BWd"
-        },
-        {
-          "name": "TimesLIVE/Reuters (Verstappen)",
-          "url": "https://www.timeslive.co.za/motoring/2026-11-18-verstappen-has-momentum-to-claim-third-las-vegas-grand-prix-victory/"
         }
       ]
     },
     "ducks": {
-      "mood": "focused on playoffs",
-      "pulse": "Fans navigate a complex path to the CFP after three unexpected losses. They aim to maintain offensive dominance.",
+      "mood": "Happy",
+      "pulse": "Oregon rolled Michigan State 45-7 in East Lansing on Friday night for a fourth straight win, now 8-3. Brandon Smith ran for a career-high 121 yards and two TDs filling in for the injured Dierre Hill. Playoff hopes are alive but need a win over Washington and some help.",
       "storylines": [
-        "Ducks defeated Michigan State in East Lansing",
-        "Path to College Football Playoff is complicated",
-        "Michigan State has used four quarterbacks this season"
+        "Beat Michigan State 45-7; Brandon Smith 121 yards, 2 TDs",
+        "8-3 (6-2 Big Ten), No. 13 in the CFP rankings with work left to do",
+        "Next: vs. Washington at Autzen, Sat Nov 28, either 4:00 PT on FS1 or 4:30 PT on NBC (Big Ten picks after this weekend)"
       ],
       "sources": [
         {
-          "name": "Yahoo Sports (MSU injury report)",
-          "url": "https://sports.yahoo.com/articles/michigan-state-injury-report-qb-011905522.html"
+          "name": "ESPN recap (Michigan State)",
+          "url": "https://www.espn.com/college-football/recap/_/gameId/401858529"
         },
         {
-          "name": "Autzen Zoo (injury report)",
-          "url": "https://autzenzoo.com/oregon-vs-michigan-state-injury-report-reveals-more-ducks-injuries-and-a-major-spartans-dilemma"
+          "name": "CBS Sports (playoff hopes)",
+          "url": "https://www.cbssports.com/college-football/news/oregon-routs-michigan-state-45-7-to-keep-playoff-hopes-alive/"
         },
         {
-          "name": "SI Ducks (Lanning injury updates)",
-          "url": "https://www.si.com/college/oregon/football/dan-lanning-jordon-davison-bear-alexander-injury-updates-michigan-state-spartans-oregon-ducks"
+          "name": "Yahoo Sports (3 things learned)",
+          "url": "https://sports.yahoo.com/articles/oregon-3-things-learned-blowout-060207256.html"
         },
         {
-          "name": "GoDucks.com preview",
-          "url": "https://goducks.com/news/2026/11/16/football-ducks-head-to-east-lansing-for-friday-night-showdown"
-        },
-        {
-          "name": "Yahoo Sports (how to watch)",
-          "url": "https://sports.yahoo.com/articles/watch-oregon-vs-michigan-state-192944862.html"
-        },
-        {
-          "name": "ESPN recap (Michigan)",
-          "url": "https://www.espn.com/college-football/recap?gameId=401858523"
+          "name": "Yahoo Sports (Washington kickoff options)",
+          "url": "https://sports.yahoo.com/articles/oregons-regular-season-finale-2-184508152.html"
         }
       ]
     },
     "niners": {
-      "mood": "Anticipatory and cautious",
-      "pulse": "Fans are excited about an 8-1 record but worried about a struggling defense. The upcoming primetime matchup in Mexico City is seen as a season-defining test.",
+      "mood": "Confident but nervy",
+      "pulse": "At 8-1 with a three-game NFC West lead, fans are happy, but the 46-40 shootout win in Dallas left the defense under a microscope after it gave up 40 points and 439 yards. Sunday night in Mexico City against the 7-2 Vikings is being billed as a real NFC test.",
       "storylines": [
-        "Week 11 showdown against 7-2 Vikings in Mexico City",
-        "Mike Evans and others listed as questionable on injury report"
+        "Next: vs. Vikings in Mexico City, Sun Nov 22, 5:20 PT on NBC and Peacock",
+        "Defense worries: 40 points allowed in Dallas, little pressure, Renardo Green and Deommodore Lenoir banged up"
       ],
       "sources": [
         {
-          "name": "Yahoo Sports (Mike Evans)",
-          "url": "https://sports.yahoo.com/articles/kyle-shanahan-announces-mike-evans-203038459.html"
-        },
-        {
-          "name": "Yahoo Sports (0-5 vs. Flores)",
-          "url": "https://sports.yahoo.com/articles/49ers-kyle-shanahan-faces-0-185634295.html"
-        },
-        {
-          "name": "SI MMQB (Week 11 picks)",
-          "url": "https://www.si.com/nfl/week-11-expert-staff-predictions-picks"
+          "name": "49ers.com (how to watch)",
+          "url": "https://www.49ers.com/news/ways-to-watch-and-listen-vikings-vs-49ers-week-11-sunday-night-football-in-mexico-city"
         },
         {
           "name": "NBC Sports Bay Area (how to watch)",
           "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"
         },
         {
-          "name": "Yahoo Sports (altitude prep)",
-          "url": "https://sports.yahoo.com/articles/49ers-extra-step-prep-mexico-154436961.html"
+          "name": "49ers Webzone (Warner, Shanahan on defense)",
+          "url": "https://www.49erswebzone.com/articles/205189-warner-shanahan-defensive-struggles-cowboys/"
         },
         {
-          "name": "ESPN recap (Dallas)",
-          "url": "https://www.espn.com/nfl/recap?gameId=401873063"
+          "name": "Yahoo Sports (Dallas win)",
+          "url": "https://sports.yahoo.com/nfl/live/cowboys-49ers-score-live-updates-inactives-highlights-stats-where-to-watch-week-10-200146453.html"
         }
       ]
     }

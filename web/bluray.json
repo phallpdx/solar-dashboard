@@ -2,25 +2,39 @@
   "updated": "2026-11-21",
   "deals": [
     {
+      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99).",
+      "ends": "2026-12-06",
+      "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
+    },
+    {
+      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
+      "store": "Amazon",
+      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
+      "ends": "2026-12-07",
+      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
+    },
+    {
+      "title": "KPop Demon Hunters (Criterion 3-disc 4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.98 (list $49.95), part of Criterion's 50% off sale.",
+      "ends": "2026-12-07",
+      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
+    },
+    {
+      "title": "New and catalog 4K UHDs for $12.99 each",
+      "store": "Amazon",
+      "detail": "HD Report (Nov. 18) lists 4K discs at $12.99 each, including Minions & Monsters Collector's Edition, Lee Cronin's The Mummy, Ben-Hur (1959), Disclosure Day, Pressure, Wuthering Heights and Mars Attacks!.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
       "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
       "store": "Amazon Italy",
       "detail": "£7.29 plus £2.56 shipping to the UK, per a UK deal site; ends Nov. 21. US shipping not confirmed.",
       "ends": "2026-11-21",
       "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
-    },
-    {
-      "title": "The Wild Robot: Collector's Edition",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital for $13",
-      "ends": "2026-11-21",
-      "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
-    },
-    {
-      "title": "Disney's Hoppers (4K UHD Digital Film)",
-      "store": "VUDU/Fandango at Home",
-      "detail": "$5",
-      "ends": "2026-11-21",
-      "url": "https://slickdeals.net/f/20356002-disney-s-hoppers-2026-4k-uhd-digital-film-ma-5-via-vudu-fandango-at-home"
     },
     {
       "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
@@ -44,6 +58,13 @@
       "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
     },
     {
+      "title": "Justice League (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£6.76 per a UK deal site, listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/justice-league-4k-uhd-blu-ray-5041138"
+    },
+    {
       "title": "Die Hard (4K UHD + Blu-ray), HMV exclusive",
       "store": "HMV (UK)",
       "detail": "£9.96, listed through Nov. 30. UK pricing.",
@@ -51,11 +72,11 @@
       "url": "https://www.hotukdeals.com/deals/die-hard-4k-uhd-blu-ray-5040127"
     },
     {
-      "title": "Top Gun and Top Gun: Maverick 4K UHD twin pack",
-      "store": "Amazon Spain",
-      "detail": "£19.09 plus £2.62 shipping to the UK, listed through Nov. 30 as part of Black Friday deals. US shipping not confirmed.",
+      "title": "Gremlins (4K UHD + Blu-ray), HMV exclusive",
+      "store": "HMV (UK)",
+      "detail": "£11.99 with a code and free click and collect (or £2.99 delivery), through Nov. 30. UK pricing.",
       "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/top-gun-top-gun-maverick-4k-uhd-blu-ray-twin-pack-5040033"
+      "url": "https://www.hotukdeals.com/deals/gremlins-4k-uhd-blu-ray-wcode-free-cc-5040670"
     },
     {
       "title": "How the Grinch Stole Christmas: 25th Anniversary Edition (4K UHD)",
@@ -72,6 +93,27 @@
       "url": "https://www.hotukdeals.com/deals/total-recall-4k-uhd-blu-ray-5038455"
     },
     {
+      "title": "The Equalizer 1-3 Triple Pack (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£25.22 per a UK deal site, listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/the-equalizer-1-3-triple-pack-4k-uhd-blu-ray-5038889"
+    },
+    {
+      "title": "The Karate Kid 3-Movie Collection (4K UHD)",
+      "store": "Amazon UK",
+      "detail": "£36.74 per a UK deal site, listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/the-karate-kid-3-movie-collection-4k-uhd-blu-ray-5038900"
+    },
+    {
+      "title": "Star Trek: The Next Generation 4-Movie Boxset (4K UHD, 8 discs)",
+      "store": "UK retailer",
+      "detail": "£40.78 per a UK deal site, listed through Nov. 30. UK pricing.",
+      "ends": "2026-11-30",
+      "url": "https://www.hotukdeals.com/deals/star-trek-the-next-generation-movie-boxset-4k-uhd-5040881"
+    },
+    {
       "title": "Three Colours Trilogy: A Curzon Collection (4K UHD + Blu-ray, 7 discs)",
       "store": "Amazon UK",
       "detail": "£42 in Amazon's Black Friday sale per a UK deal site (a related listing shows £39.41). UK pricing.",
@@ -79,54 +121,21 @@
       "url": "https://www.hotukdeals.com/deals/three-colours-trilogy-a-curzon-collection-4k-ultra-hd-blu-ray-7-disc-set-5038907"
     },
     {
-      "title": "Battlestar Galactica 4K UHD",
-      "store": "UK retailer (pre-order)",
-      "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
-    },
-    {
-      "title": "Paramount Triple Feature Films (4K/HD Digital)",
-      "store": "Fanflix",
-      "detail": "Star Trek Trilogy UHD 3 Movie Bundle, $15 or less",
-      "ends": "2026-11-30",
-      "url": "https://slickdeals.net/f/20332956-fanflix-paramount-3-digital-title-bundles-2-for-13-5"
-    },
-    {
-      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
-      "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99).",
-      "ends": "2026-12-06",
-      "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
-    },
-    {
-      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
-      "store": "Amazon",
-      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include KPop Demon Hunters, The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "KPop Demon Hunters (Criterion 3-disc 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 (list $49.95), part of Criterion's 50% off sale.",
-      "ends": "2026-12-07",
-      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
-    },
-    {
       "title": "2 for £30 on selected 4K UHDs (UK)",
       "store": "UK retailer",
       "detail": "Two selected 4K discs for £30, including Aliens, The Sixth Sense, Signs, Unbreakable, Minority Report and Predator; offer ends Dec. 31 per a UK deal site. UK pricing.",
       "ends": "2026-12-31",
       "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
+    },
+    {
+      "title": "Snatch (4K UHD + Blu-ray)",
+      "store": "Amazon France",
+      "detail": "£9.92 plus about £2.56 shipping to the UK, per a UK deal site. US shipping not confirmed.",
+      "ends": null,
+      "url": "https://www.hotukdeals.com/deals/snatch-4k-uhd-blu-ray-5039053"
     }
   ],
   "upcoming": [
-    {
-      "title": "Vinegar Syndrome Black Friday",
-      "detail": "Main Black Friday sale reported to start Nov. 27 at 12:01 a.m. ET, after a Nov. 1 to 4 flash pre-order event.",
-      "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
-    },
     {
       "title": "Walmart Black Friday deals",
       "detail": "Walmart's main Black Friday deals run Nov. 23 to 29 (online at 12:01 a.m. ET, with Walmart+ members getting some online deals 24 hours early). Disc deals not detailed.",

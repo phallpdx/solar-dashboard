@@ -26,7 +26,7 @@
     {
       "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
       "kind": "Tickets",
-      "action": "Opens tonight; buy dated tickets ahead. Prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
+      "action": "Open now; buy dated tickets ahead. Prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
       "starts": "2026-11-20",
       "by": "2027-01-03",
       "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
@@ -80,6 +80,28 @@
       ]
     },
     {
+      "title": "Holiday Express steam train, Oregon Rail Heritage Center (Nov 27 to Dec 27)",
+      "kind": "Tickets",
+      "action": "Book a dated ride on orhf.org now; adults $35, kids 3 to 13 $25, under 3 free on a lap, family pass $105.",
+      "starts": "2026-11-27",
+      "by": "2026-12-27",
+      "why": "The rail center's FAQ says many trains sell out and urges buying in advance, and Travel Portland says tickets are limited and sell out quickly.",
+      "sources": [
+        {
+          "name": "Oregon Rail Heritage Center: Holiday Express",
+          "url": "https://orhf.org/holiday-express/"
+        },
+        {
+          "name": "Oregon Rail Heritage Center FAQs",
+          "url": "https://orhf.org/faqs/"
+        },
+        {
+          "name": "PDX Parent listing (Nov 27, 2026)",
+          "url": "https://pdxparent.com/event-single/holiday-express-at-oregon-rail-heritage-center/2026-11-27/"
+        }
+      ]
+    },
+    {
       "title": "Timbers vs. FC Dallas, MLS Cup Playoffs Round One Game 2 (Nov 28)",
       "kind": "Tickets",
       "action": "Game 1 is at FC Dallas Sat Nov 21 at 1 p.m.; get tickets on timbers.com for the Nov 28, 7:30 p.m. home match at Providence Park.",
@@ -121,8 +143,12 @@
       "action": "Plan a tree trip on Sauvie Island; Santa visits on weekends Nov 28 to Dec 13.",
       "starts": "2026-11-29",
       "by": null,
-      "why": "An event listing says the holiday market and Christmas trees open Nov 29; this is a listing, not the farm's own page, and it doesn't say the trees are U-cut.",
+      "why": "Event listings put the holiday market and tree sales opening the weekend after Thanksgiving; the farm's own page describes fresh-cut noble and Douglas firs (not U-cut) and Santa photos on weekends but doesn't post 2026 dates, so check before going.",
       "sources": [
+        {
+          "name": "Topaz Farm Holiday Market + Trees",
+          "url": "https://topazfarm.com/-holiday-market"
+        },
         {
           "name": "ma.to event listing",
           "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-29"
@@ -251,7 +277,7 @@
       "action": "Book Fort Stevens or Nehalem Bay exactly six months before your arrival date on the state's reservation site.",
       "starts": null,
       "by": null,
-      "why": "Oregon State Parks takes reservations up to six months ahead; Cape Lookout's campground has been closed for improvements since Aug 3, 2026.",
+      "why": "Oregon State Parks takes reservations up to six months ahead, and Axios reports prime coast spots like Fort Stevens often sell out within minutes; Cape Lookout's campground has been closed for improvements since Aug 3, 2026.",
       "sources": [
         {
           "name": "Fort Stevens State Park",
@@ -260,6 +286,10 @@
         {
           "name": "Cape Lookout State Park",
           "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=134"
+        },
+        {
+          "name": "Axios Portland: summer permits book fast",
+          "url": "https://www.axios.com/local/portland/2026/02/11/plan-oregon-summer-camping-hiking-permits"
         }
       ]
     },

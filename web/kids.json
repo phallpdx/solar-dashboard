@@ -99,6 +99,30 @@
       "url": "https://pdxparent.com/series/tree-time-preschool-walks/"
     },
     {
+      "title": "Gift Making for Ages 3-6",
+      "date": "2026-11-21",
+      "ends": null,
+      "where": "North Portland",
+      "detail": "A parent-child workshop creating handmade gifts from natural materials. Price not listed.",
+      "url": "https://pdxparent.com/series/gift-making-for-ages-3-6/"
+    },
+    {
+      "title": "Mr. Ben Special Saturday Performance",
+      "date": "2026-11-21",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Live music, movement, and fun for children of all ages. Free.",
+      "url": "https://pdxparent.com/event-single/mr-ben-special-saturday-performance/"
+    },
+    {
+      "title": "ZooLights Snow Globes",
+      "date": "2026-11-21",
+      "ends": null,
+      "where": "Portland, OR",
+      "detail": "Add winter whimsy to your experience with a cozy private snow globe.",
+      "url": "https://www.oregonzoo.org/snow-globe"
+    },
+    {
       "title": "Winter Wonderland drive-through lights",
       "date": "2026-11-27",
       "ends": "2026-12-31",
@@ -177,30 +201,6 @@
       "where": "Sandpiper Square, Seaside",
       "detail": "Tree lighting when the city also lights its Dickens-era gas lamps, per Visit the Oregon Coast. Time not listed.",
       "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
-    },
-    {
-      "title": "Curiosity Kids: Design and Discover",
-      "date": "2026-12-05",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "A hands-on design event for kids from 9 am to 10 am.",
-      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
-    },
-    {
-      "title": "Pizza with Santa",
-      "date": "2026-12-11",
-      "ends": null,
-      "where": "Firstenburg Community Center, Vancouver, WA",
-      "detail": "Evening with Santa, pizza, holiday crafts and photos, 6 to 8 p.m. Registration required; $12 for Vancouver residents.",
-      "url": "https://www.cityofvancouver.us/?p=74306"
-    },
-    {
-      "title": "Peacock Lane holiday lights",
-      "date": "2026-12-15",
-      "ends": "2026-12-31",
-      "where": "SE Peacock Lane, Portland",
-      "detail": "Free walk or drive past a whole street of decorated houses, 6 to 11 p.m. Guides list Dec. 15 to 31 for 2026, but the official site still shows last year's details, so check before going.",
-      "url": "https://peacocklane.org/"
     }
   ]
 }

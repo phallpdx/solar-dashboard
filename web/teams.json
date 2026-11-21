@@ -1,13 +1,14 @@
 {
   "updated": "2026-11-21",
-  "updated_at": "2026-11-21T08:39:47Z",
+  "updated_at": "2026-11-21T10:24:44Z",
   "teams": {
     "blazers": {
-      "mood": "Entertained and optimistic",
-      "pulse": "Fans find the team fun to watch during an offensive renaissance. Recent wins and national TV exposure have boosted morale.",
+      "mood": "Optimistic and excited",
+      "pulse": "Fans find the team fun to watch during an offensive renaissance. Damian Lillard's return is a major factor.",
       "storylines": [
-        "Blazers beat Bucks 124-114 on road trip",
-        "Deni Avdija questionable with left foot contusion"
+        "Blazers beat Bucks 124-114 on Thursday",
+        "Deni Avdija is questionable with a foot contusion",
+        "Next game against Timberwolves airs Dec. 1"
       ],
       "sources": [
         {
@@ -28,10 +29,9 @@
       "mood": "focused and expectant",
       "pulse": "Fans are anticipating the MLS Cup Playoffs against FC Dallas. The team shows enthusiasm and commitment for the battle.",
       "storylines": [
-        "Timbers face FC Dallas in Round One Best-of-3",
-        "Finn Surman ready for playoff battle",
-        "Kellen Tamblyn named to 2026 MLS NEXT All-Star Game",
-        "Eric Izoita signed to first-team contract"
+        "Face FC Dallas in Round One Best-of-3",
+        "Timbers2 lost 1-0 to Ventura County FC",
+        "Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -62,7 +62,7 @@
     },
     "f1": {
       "mood": "tense and unpredictable",
-      "pulse": "Fans are reacting to chaotic qualifying results and unexpected grid shifts. High stakes surround driver performance and technical deficits.",
+      "pulse": "Fans are reacting to chaotic qualifying results and unexpected grid shifts. Drivers express mixed emotions regarding performance and technical struggles.",
       "storylines": [
         "Kimi Antonelli loses pole after penalty",
         "Max Verstappen inherits pole position",
@@ -97,11 +97,12 @@
       ]
     },
     "ducks": {
-      "mood": "focused on playoffs",
-      "pulse": "Fans navigate a complex path to the CFP after three unexpected losses. They aim to maintain offensive dominance.",
+      "mood": "pushing for playoffs",
+      "pulse": "Fans are navigating a complex path to the CFP after three unexpected losses. They watch to see if offensive dominance continues.",
       "storylines": [
         "Ducks defeated Michigan State in East Lansing",
-        "Path to CFP is complicated due to early losses"
+        "Path to College Football Playoff is complicated due to early losses",
+        "Michigan State has played four quarterbacks this season"
       ],
       "sources": [
         {
@@ -136,8 +137,8 @@
       "storylines": [
         "Beat Cowboys 46-40 to improve to 8-1",
         "Defense must improve after allowing 40 points to Dallas",
-        "Mike Evans is questionable with an Achilles injury",
-        "Brock Purdy faces a major MVP test vs Vikings"
+        "Brock Purdy faces Brian Flores' defense in Mexico City",
+        "Mike Evans is questionable with an Achilles injury"
       ],
       "sources": [
         {

@@ -1,6 +1,57 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "restaurants": [
+    {
+      "name": "YUI",
+      "neighborhood": "Portland",
+      "cuisine": "Thai dishes",
+      "price": "",
+      "opened": "",
+      "summary": "A new location on SE Belmont offering familiar and less-familiar Thai dishes.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "",
+          "url": "https://bridgetownbites.com/2025/12/30/restaurants-opening-in-portland-in-2026-looking-forward-oregon"
+        }
+      ]
+    },
+    {
+      "name": "OK Chicken & Khao Soi",
+      "neighborhood": "Portland",
+      "cuisine": "Northern Thai food",
+      "price": "",
+      "opened": "2026-01-07",
+      "summary": "A new restaurant bringing Northern Thai flavors to the city.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "",
+          "url": "https://bridgetownbites.com/2025/12/30/restaurants-opening-in-portland-in-2026-looking-forward-oregon"
+        }
+      ]
+    },
+    {
+      "name": "ModHaus",
+      "neighborhood": "Portland",
+      "cuisine": "Filipino American, sandwiches, seafood, pasta, paninis, wing",
+      "price": "",
+      "opened": "2026-09-20",
+      "summary": "A stylish new coffee, bar, and indoor dining space featuring various local food carts.",
+      "reviews": [
+        {
+          "outlet": "Eater Portland",
+          "critic": "",
+          "verdict": "",
+          "date": "",
+          "url": "https://pdx.eater.com/maps/new-restaurant-openings-portland-oregon"
+        }
+      ]
+    },
     {
       "name": "Portland Spirit restaurant",
       "neighborhood": "Waterfront",
@@ -355,40 +406,6 @@
           "verdict": "",
           "date": "2026-11-12",
           "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOS2FsSnIydFl5eWR6S3N3S1NXcXVaNGNuMXpWNHh2OFl6S1FpbGtneUtLUXEzaGdHNjQxekFnZThpZFFjWFNTQXRyLW9JZEpJNmNzZVREcjFQVmdnbTNsNXB3SUNDaFFtMDlJc083UTVQYy16aWUtc2pKV0MyUUFaQjVvbi1sX3BfN0xiTEFpWGRNSTdXWWFDRmMweXhKbVlCY1I1OG1R?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Louie on Lombard",
-      "neighborhood": "",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "Opening in the Old Garrison Bar space.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-12",
-          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOMEhuMGliQ1ZOZWtaV29OMEdoSElYNDdhbXNiRk5DaUJpNGsxR0tFX2lBNTJqOWZ3MFpHeWFCS3c3aDlralJMbFR3LTB5Yng3RVVqSWxldjlEVklDems2ZWVSQkh4NkYzWXJ2N1dhS0NHWUJtNnU2bDQ0YUgyc1pia0dxM0ZKaWdUMkV6QjI3MDRxZHFsazNCUktwRTEwLVkzUDBTOUY0MTN1MS1CQ0stSVRXekJyb3MtYWVV?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "New restaurant (former Oven and Shaker space)",
-      "neighborhood": "Portland",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "The Business Journals",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-04",
-          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxORk0tMTZ0ZGh4c0FWM2VzX0VJRF96ZWZ0UUNfcGVfVXByb2RXYnRSZ3hzbktXZEJFYmlDOFk0RGpmNXVrUnRJVklxMU1uOHZYaW5OcjhLQm1hNFpKNnZfSUc5aWRGWXVZWmtfLUk0TUNwSEgzQUVkdVhGNlBUSE1iZ09rUUkzVlh4VV84YTcyWWZuRXkxbWhhc2FINU12UQ?oc=5"
         }
       ]
     }

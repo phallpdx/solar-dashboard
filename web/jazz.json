@@ -1,22 +1,6 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "shows": [
-    {
-      "artist": "Farnell Newton's The Soul of Jazz",
-      "kind": "Local",
-      "date": "2026-11-20",
-      "time": "6:30 pm",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Trumpeter Farnell Newton's set paying tribute to the legendary trumpeter and bandleader Donald Byrd; all ages.",
-      "tickets": "https://the1905.turntabletickets.com/shows/13232/2026-11-20",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/shows/13232/2026-11-20"
-        }
-      ]
-    },
     {
       "artist": "Kareem Kandi with Ali Jackson",
       "kind": "Local",
@@ -110,6 +94,22 @@
         {
           "name": "Event Tickets Center listing",
           "url": "https://www.eventticketscenter.com/scott-bradlees-postmodern-jukebox-portland-tickets/1405558/e"
+        }
+      ]
+    },
+    {
+      "artist": "greaterkind",
+      "kind": "Local",
+      "date": "2026-11-25",
+      "time": "06:30 PM",
+      "venue": "The 1905's",
+      "price": "$30",
+      "what": "A Portland band blending jazz fusion, funk, and R&B.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

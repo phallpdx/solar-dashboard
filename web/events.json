@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "events": [
     {
       "title": "ZooLights at the Oregon Zoo",
@@ -252,6 +252,118 @@
         {
           "name": "TickPick",
           "url": "https://www.tickpick.com/buy-portland-boat-show-tickets-portland-expo-center-1-14-27-3am/7833902/"
+        }
+      ]
+    },
+    {
+      "title": "Ram PBR Portland",
+      "date": "2027-01-22",
+      "ends": "2027-01-23",
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "High attendance for rodeo.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/pbr-jan-22-2027"
+        }
+      ]
+    },
+    {
+      "title": "WWE Friday Night Smackdown",
+      "date": "2027-01-29",
+      "ends": null,
+      "venue": "Moda Center",
+      "kind": "Sports",
+      "why": "Large wrestling fanbase expected.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/wwe-jan-29-2027"
+        }
+      ]
+    },
+    {
+      "title": "Harlem Globetrotters Rivalry Tour",
+      "date": "2027-01-31",
+      "ends": null,
+      "venue": "Veterans Memorial Coliseum",
+      "kind": "Sports",
+      "why": "Family crowds anticipated.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Gracie Abrams",
+      "date": "2027-01-31",
+      "ends": "2027-02-01",
+      "venue": "Moda Center",
+      "kind": "Concert",
+      "why": "Pop fans expected.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
+        }
+      ]
+    },
+    {
+      "title": "Portland Winter Light Festival",
+      "date": "2027-02-01",
+      "ends": null,
+      "venue": "",
+      "kind": "Holiday lights",
+      "why": "Glowing sculptures and twinkling lights.",
+      "sources": [
+        {
+          "name": "Travel Portland",
+          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
+        }
+      ]
+    },
+    {
+      "title": "Portland Winter Light Festival",
+      "date": "2027-02-05",
+      "ends": "2027-02-13",
+      "venue": "Citywide",
+      "kind": "Festival",
+      "why": "",
+      "sources": [
+        {
+          "name": "Web search: big Portland events",
+          "url": "https://onestowatch.com/live/best-oregon-winter-concerts"
+        }
+      ]
+    },
+    {
+      "title": "Bigger Than Life Fest",
+      "date": "2027-02-06",
+      "ends": null,
+      "venue": "Moda Center",
+      "kind": "Festival",
+      "why": "Music festival crowds expected.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/bigger-than-life-fest-feb-6-2027"
+        }
+      ]
+    },
+    {
+      "title": "Phoebe Bridgers",
+      "date": "2027-02-17",
+      "ends": null,
+      "venue": "Moda Center",
+      "kind": "Concert",
+      "why": "Large music audience anticipated.",
+      "sources": [
+        {
+          "name": "Rose Quarter",
+          "url": "https://www.rosequarter.com/calendar-events/phoebe-bridgers-feb-17-2027"
         }
       ]
     }

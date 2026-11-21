@@ -1,14 +1,13 @@
 {
-  "updated": "2026-11-20",
-  "updated_at": "2026-11-20T12:39:08Z",
+  "updated": "2026-11-21",
+  "updated_at": "2026-11-21T08:39:47Z",
   "teams": {
     "blazers": {
-      "mood": "Cautiously optimistic",
-      "pulse": "Fans are buoyed by Thursday's 124-114 win at Milwaukee, where Damian Lillard scored a season-high 33 in his return there. It came after two losses to Minnesota.",
+      "mood": "Entertained and optimistic",
+      "pulse": "Fans find the team fun to watch during an offensive renaissance. Recent wins and national TV exposure have boosted morale.",
       "storylines": [
-        "Won 124-114 at Milwaukee on Thursday; Lillard scored 33 and Clingan had 13 rebounds",
-        "Deni Avdija and Robert Williams III are day-to-day",
-        "Next game: at the Knicks on Saturday afternoon"
+        "Blazers beat Bucks 124-114 on road trip",
+        "Deni Avdija questionable with left foot contusion"
       ],
       "sources": [
         {
@@ -26,12 +25,13 @@
       ]
     },
     "timbers": {
-      "mood": "focused and ready",
-      "pulse": "Players show enthusiasm and commitment for the playoffs. The team is bonding through track activities ahead of Dallas.",
+      "mood": "focused and expectant",
+      "pulse": "Fans are anticipating the MLS Cup Playoffs against FC Dallas. The team shows enthusiasm and commitment for the battle.",
       "storylines": [
-        "Preparing for Round One playoff battle against FC Dallas",
-        "Timbers2 lost 1-0 to Ventura County in semifinals",
-        "Academy player Eric Izoita signed first-team contract"
+        "Timbers face FC Dallas in Round One Best-of-3",
+        "Finn Surman ready for playoff battle",
+        "Kellen Tamblyn named to 2026 MLS NEXT All-Star Game",
+        "Eric Izoita signed to first-team contract"
       ],
       "sources": [
         {
@@ -61,14 +61,13 @@
       ]
     },
     "f1": {
-      "mood": "Anticipatory and uncertain",
-      "pulse": "Fans are focused on practice results in Las Vegas. Uncertainty surrounds driver lineups and car performance issues.",
+      "mood": "tense and unpredictable",
+      "pulse": "Fans are reacting to chaotic qualifying results and unexpected grid shifts. High stakes surround driver performance and technical deficits.",
       "storylines": [
-        "Gasly earned P2 during second practice for Alpine.",
-        "Verstappen faces balance and energy management issues.",
-        "Russell topped FP2 despite Mercedes lacking pace.",
-        "Palmowski secured pole in F1 Academy.",
-        "Cadillac retains Bottas over Herta for 2027."
+        "Kimi Antonelli loses pole after penalty",
+        "Max Verstappen inherits pole position",
+        "Ferrari drivers miss top ten",
+        "Lando Norris faces straight-line speed concerns"
       ],
       "sources": [
         {
@@ -98,12 +97,11 @@
       ]
     },
     "ducks": {
-      "mood": "Anticipatory",
-      "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff potential.",
+      "mood": "focused on playoffs",
+      "pulse": "Fans navigate a complex path to the CFP after three unexpected losses. They aim to maintain offensive dominance.",
       "storylines": [
-        "Upcoming matchup against Michigan State Spartans",
-        "Analysis of performance against Michigan",
-        "Discussion on CFP rankings"
+        "Ducks defeated Michigan State in East Lansing",
+        "Path to CFP is complicated due to early losses"
       ],
       "sources": [
         {
@@ -133,12 +131,13 @@
       ]
     },
     "niners": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans face a primetime battle for the NFC top seed in Mexico City. Defensive lapses and injuries cause concern.",
+      "mood": "Anxious but optimistic",
+      "pulse": "Fans are excited about the 8-1 record and high-powered offense. However, defensive struggles against Dallas have caused concern.",
       "storylines": [
-        "Battle for No. 1 seed against Vikings",
-        "Christian Kirk underwent meniscus surgery",
-        "Nick Bosa struggling to execute signature pass rush play"
+        "Beat Cowboys 46-40 to improve to 8-1",
+        "Defense must improve after allowing 40 points to Dallas",
+        "Mike Evans is questionable with an Achilles injury",
+        "Brock Purdy faces a major MVP test vs Vikings"
       ],
       "sources": [
         {

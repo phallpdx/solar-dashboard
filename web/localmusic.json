@@ -1,6 +1,22 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "releases": [
+    {
+      "artist": "The Delines",
+      "title": "The Killing of a Motel Maid",
+      "type": "Album",
+      "local": true,
+      "genre": "",
+      "label": "Announces release date for new album.",
+      "date": "",
+      "why": "New album announcement.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYlJkWnFjUmRkQVhfQTlSb29rV0c1WkotU0s2NWp6eXRtZ0NVYkxxSHFkWWltaG1VQ3ZjQ3Jvb1VndV9qd3h5d01hblRNcVJOOWFOZW1WQXhKRkZGWUgxc1FFNlV5aThkLVFnZTF0VEQtTWZuVHpmTklqRF9XY25RbDJBY1dNYWxZQk5sdHZwem5aTU1jdlJiNl80b0J5R1U2WXdnUXRCeTc1cWg2M1Vv?oc=5"
+        }
+      ]
+    },
     {
       "artist": "The Wood Brothers",
       "title": "Rollin' On",
@@ -402,22 +418,6 @@
         {
           "name": "KEXP review",
           "url": "https://www.kexp.org/read/2026/10/26/new-music-reviews-1026/"
-        }
-      ]
-    },
-    {
-      "artist": "Dummy",
-      "title": "do you love the color of the sky?",
-      "type": "Album",
-      "local": false,
-      "genre": "Psych pop / post-punk",
-      "label": "Polyvinyl",
-      "date": "",
-      "why": "The band's third album and Polyvinyl debut, reviewed for airplay in KEXP's Oct. 19 New Music Reviews.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/19/new-music-reviews-1019/"
         }
       ]
     }

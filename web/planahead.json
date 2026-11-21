@@ -1,45 +1,53 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "items": [
     {
-      "title": "Phoebe Bridgers with Grouper, Moda Center (Feb 17, 2027)",
-      "kind": "Tickets",
-      "action": "Artist presales ended Nov 19; general sale opens today, Fri Nov 20, at 10 a.m. Buy face value through the official links rather than resale.",
-      "starts": "2026-11-20",
-      "by": "2026-11-20",
-      "why": "Portland opens the 2027 Lost Tour leg with Grouper, and the Portland Mercury's Nov 19 ticket alert leads with this show.",
+      "title": "Mt. Hood National Forest Christmas tree permit",
+      "kind": "Permit",
+      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
+      "starts": "2026-11-12",
+      "by": "2026-12-31",
+      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
       "sources": [
         {
-          "name": "Rolling Stone",
-          "url": "https://www.rollingstone.com/music/music-news/phoebe-bridgers-the-lost-tour-2027-dates-1235656557/"
+          "name": "More Than Just Parks permit tracker",
+          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
         },
         {
-          "name": "Variety",
-          "url": "https://variety.com/2026/music/news/phoebe-bridgers-extends-lost-tour-north-america-2027-1236946343/"
+          "name": "Recreation.gov",
+          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
         },
         {
-          "name": "Consequence",
-          "url": "https://consequence.net/2026/11/phoebe-bridgers-the-lost-tour-2027-dates/"
-        },
+          "name": "Mt. Hood NF Christmas trees",
+          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
+        }
+      ]
+    },
+    {
+      "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
+      "kind": "Tickets",
+      "action": "Opens tonight; buy dated tickets ahead. Prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
+      "starts": "2026-11-20",
+      "by": "2027-01-03",
+      "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
+      "sources": [
         {
-          "name": "Ticket News",
-          "url": "https://www.ticketnews.com/2026/11/phoebe-bridgers-2027-lost-tour-dates-presales/"
-        },
+          "name": "Oregon Zoo",
+          "url": "https://www.oregonzoo.org/lights"
+        }
+      ]
+    },
+    {
+      "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
+      "kind": "Buy",
+      "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
+      "starts": "2026-11-21",
+      "by": null,
+      "why": "The farm posted that it opens for the 2026 season on Saturday, Nov 21.",
+      "sources": [
         {
-          "name": "Pollstar",
-          "url": "https://news.pollstar.com/2026/11/12/phoebe-bridgers-extends-the-lost-tour-with-2027-dates/"
-        },
-        {
-          "name": "BroadwayWorld",
-          "url": "https://www.broadwayworld.com/bwwmusic/article/Phoebe-Bridgers-Announces-Additional-2027-North-American-Dates-for-The-Lost-Tour-20261112"
-        },
-        {
-          "name": "Grimy Goods presale guide",
-          "url": "https://www.grimygoods.com/2026/11/12/phoebe-bridgers-tour-2027-presale-code-ticket-prices-waitlist/"
-        },
-        {
-          "name": "Portland Mercury ticket alert (Nov 19)",
-          "url": "https://www.portlandmercury.com/everout/ticket-alert-phoebe-bridgers-jhene-aiko-and-more-portland-events-going-on-sale-this-week/"
+          "name": "Christmas Mountain on Facebook",
+          "url": "https://www.facebook.com/ChristmasMountain/"
         }
       ]
     },
@@ -54,6 +62,20 @@
         {
           "name": "KATU 2026-27 Blazers schedule",
           "url": "https://katu.com/sports/trail-blazers/story/nba-announces-2026-27-schedule-for-the-portland-trail-blazers-oregon-portland-nba-national-basketball-association-moda-rose-center-season-2026-27-black-friday-ja-morant-dame-lillard-damian-rip-city"
+        }
+      ]
+    },
+    {
+      "title": "Grotto Christmas Festival of Lights (Nov 27 to Dec 30)",
+      "kind": "Tickets",
+      "action": "Buy timed entry online ahead; general admission (12+) is $17.95 online, 5 to 9:30 p.m. nightly.",
+      "starts": "2026-11-27",
+      "by": "2026-12-30",
+      "why": "The Grotto's own page lists Nov 27 to Dec 30 (closed Christmas Day) with tickets sold through its site.",
+      "sources": [
+        {
+          "name": "The Grotto Christmas Festival of Lights",
+          "url": "https://thegrotto.org/christmas-festival-of-lights/"
         }
       ]
     },
@@ -90,6 +112,60 @@
         {
           "name": "Freeskier",
           "url": "https://www.freeskier.com/timberline-oregon-launches-cheapest-season-pass-in-five-years"
+        }
+      ]
+    },
+    {
+      "title": "Topaz Farm holiday market and trees, Sauvie Island (from Nov 29)",
+      "kind": "Buy",
+      "action": "Plan a tree trip on Sauvie Island; Santa visits on weekends Nov 28 to Dec 13.",
+      "starts": "2026-11-29",
+      "by": null,
+      "why": "An event listing says the holiday market and Christmas trees open Nov 29; this is a listing, not the farm's own page, and it doesn't say the trees are U-cut.",
+      "sources": [
+        {
+          "name": "ma.to event listing",
+          "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-29"
+        }
+      ]
+    },
+    {
+      "title": "Kann: January reservations",
+      "kind": "Book",
+      "action": "Book on Resy Dec 1 at noon, when the next month's tables are released.",
+      "starts": "2026-12-01",
+      "by": null,
+      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
+      "sources": [
+        {
+          "name": "Kann FAQ",
+          "url": "https://kannrestaurant.com/faqs"
+        },
+        {
+          "name": "Kann on Resy",
+          "url": "https://resy.com/cities/portland-or/venues/kann"
+        }
+      ]
+    },
+    {
+      "title": "Christmas Ships viewing dinner",
+      "kind": "Book",
+      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
+      "starts": "2026-12-03",
+      "by": null,
+      "why": "The official site says the 2026 schedule is posted, and a festival listing puts the parades Dec 3 to 20; Vancouver's tourism office advises reserving waterfront seats well in advance (Vancouver nights listed Dec 16 to 18).",
+      "sources": [
+        {
+          "name": "Christmas Ships parade schedule",
+          "url": "https://www.christmasships.org/parade-schedule"
+        },
+        {
+          "name": "Visit Vancouver WA",
+          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
+        },
+        {
+          "name": "Carnifest 2026 listing",
+          "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
         }
       ]
     },
@@ -166,124 +242,6 @@
         {
           "name": "Powder",
           "url": "https://www.powder.com/news/ikon-pass-epic-pass-deadlines-winter-26-27"
-        }
-      ]
-    },
-    {
-      "title": "Grotto Christmas Festival of Lights (Nov 27 to Dec 30)",
-      "kind": "Tickets",
-      "action": "Buy timed entry online ahead; general admission (12+) is $17.95 online, 5 to 9:30 p.m. nightly.",
-      "starts": "2026-11-27",
-      "by": "2026-12-30",
-      "why": "The Grotto's own page lists Nov 27 to Dec 30 (closed Christmas Day) with tickets sold through its site.",
-      "sources": [
-        {
-          "name": "The Grotto Christmas Festival of Lights",
-          "url": "https://thegrotto.org/christmas-festival-of-lights/"
-        }
-      ]
-    },
-    {
-      "title": "Mt. Hood National Forest Christmas tree permit",
-      "kind": "Permit",
-      "action": "Buy this year's $5 permits on Recreation.gov (limit five per household) and print yours; digital copies aren't accepted.",
-      "starts": "2026-11-12",
-      "by": "2026-12-31",
-      "why": "A permit-tracking site reports the 2026 permits on sale now with cutting Nov 12 to Dec 31; the Forest Service's own page hadn't been updated for 2026 when checked, so confirm dates on Recreation.gov.",
-      "sources": [
-        {
-          "name": "More Than Just Parks permit tracker",
-          "url": "https://morethanjustparks.com/christmas-tree-permits/oregon/mt-hood-national-forest"
-        },
-        {
-          "name": "Recreation.gov",
-          "url": "https://www.recreation.gov/tree-permits/300259cb-ec55-11ea-8045-369699f3be2d"
-        },
-        {
-          "name": "Mt. Hood NF Christmas trees",
-          "url": "https://www.fs.usda.gov/r06/mthood/permits/christmas-trees"
-        }
-      ]
-    },
-    {
-      "title": "ZooLights at the Oregon Zoo (Nov 20 to Jan 3)",
-      "kind": "Tickets",
-      "action": "Opens tonight; buy dated tickets ahead. Prices range $13 to $35 by night, and Any Night tickets work Nov 20 to Dec 31.",
-      "starts": "2026-11-20",
-      "by": "2027-01-03",
-      "why": "Tickets are sold in advance online and price varies by date, so earlier and weeknight picks are cheaper.",
-      "sources": [
-        {
-          "name": "Oregon Zoo",
-          "url": "https://www.oregonzoo.org/lights"
-        }
-      ]
-    },
-    {
-      "title": "Christmas Mountain U-cut trees, Scappoose (opens Nov 21)",
-      "kind": "Buy",
-      "action": "Plan a U-cut trip from Nov 21; noble, Nordmann, Douglas and grand fir.",
-      "starts": "2026-11-21",
-      "by": null,
-      "why": "The farm posted that it opens for the 2026 season on Saturday, Nov 21.",
-      "sources": [
-        {
-          "name": "Christmas Mountain on Facebook",
-          "url": "https://www.facebook.com/ChristmasMountain/"
-        }
-      ]
-    },
-    {
-      "title": "Topaz Farm holiday market and trees, Sauvie Island (from Nov 29)",
-      "kind": "Buy",
-      "action": "Plan a tree trip on Sauvie Island; Santa visits on weekends Nov 28 to Dec 13.",
-      "starts": "2026-11-29",
-      "by": null,
-      "why": "An event listing says the holiday market and Christmas trees open Nov 29; this is a listing, not the farm's own page, and it doesn't say the trees are U-cut.",
-      "sources": [
-        {
-          "name": "ma.to event listing",
-          "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-29"
-        }
-      ]
-    },
-    {
-      "title": "Kann: January reservations",
-      "kind": "Book",
-      "action": "Book on Resy Dec 1 at noon, when the next month's tables are released.",
-      "starts": "2026-12-01",
-      "by": null,
-      "why": "Kann's FAQ says it releases one month of reservations on the 1st of the prior month at noon; confirm the schedule is still current.",
-      "sources": [
-        {
-          "name": "Kann FAQ",
-          "url": "https://kannrestaurant.com/faqs"
-        },
-        {
-          "name": "Kann on Resy",
-          "url": "https://resy.com/cities/portland-or/venues/kann"
-        }
-      ]
-    },
-    {
-      "title": "Christmas Ships viewing dinner",
-      "kind": "Book",
-      "action": "Check the 2026 route schedule, then reserve a riverside window table for a night the fleet passes.",
-      "starts": "2026-12-03",
-      "by": null,
-      "why": "The official site says the 2026 schedule is posted, and a festival listing puts the parades Dec 3 to 20; Vancouver's tourism office advises reserving waterfront seats well in advance (Vancouver nights listed Dec 16 to 18).",
-      "sources": [
-        {
-          "name": "Christmas Ships parade schedule",
-          "url": "https://www.christmasships.org/parade-schedule"
-        },
-        {
-          "name": "Visit Vancouver WA",
-          "url": "https://www.visitvancouverwa.com/event/christmas-ships-parade-2026/17940/"
-        },
-        {
-          "name": "Carnifest 2026 listing",
-          "url": "https://www.carnifest.com/portland-christmas-ships-parade-2026/"
         }
       ]
     },

@@ -1,159 +1,19 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "deals": [
-    {
-      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
-      "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99).",
-      "ends": "2026-12-06",
-      "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
-    },
-    {
-      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
-      "store": "Amazon",
-      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include KPop Demon Hunters, The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
-      "ends": "2026-12-07",
-      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
-    },
-    {
-      "title": "Gruv Black Friday 4K UHD deals, $12.99 each",
-      "store": "Gruv",
-      "detail": "Limited-time Black Friday page of 4K UHD discs at $12.99, including Disclosure Day, Obsession, Pressure, Hamnet, A Beautiful Mind, Wicked: For Good and Bugonia (some Collector's Editions). End date not shown.",
-      "ends": null,
-      "url": "https://gruv.com/collections/black-friday-4k-uhd-deals-limited-time-only"
-    },
-    {
-      "title": "Amazon 4K Blu-rays at $12.99 ahead of Black Friday",
-      "store": "Amazon",
-      "detail": "HD Report's Nov. 18 roundup lists 4K discs at $12.99 including Minions & Monsters Collector's Edition, Ben-Hur (1959), Lee Cronin's The Mummy, Pressure, Wuthering Heights and Mars Attacks!",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
-    },
-    {
-      "title": "100+ 4K Blu-rays $13 and under (Gruv via Walmart)",
-      "store": "Walmart",
-      "detail": "Gruv titles sold through Walmart at $12.99 each with free shipping, posted Nov. 12, including Wuthering Heights, Mortal Kombat II, Superman and Akira.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
-    },
-    {
-      "title": "Arrow Video: 2 for $60 on selected 4K UHDs",
-      "store": "Arrow Video (US store)",
-      "detail": "Arrow's own UHD deals page offers selected 4K UHD titles at 2 for $60. The page is undated, so it looks like a standing offer rather than a Black Friday sale.",
-      "ends": null,
-      "url": "https://www.arrowvideo.com/c/uhd-deals/"
-    },
-    {
-      "title": "Schindler's List: 25th Anniversary Edition (4K UHD + Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$9.99, posted Nov. 19; free shipping with Prime or on $35+.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20349057-schindler-s-list-25th-anniversary-edition-4k-ultra-hd-blu-ray-digital-9-99-at-amazon"
-    },
-    {
-      "title": "Akira (1988) (4K UHD + Blu-ray)",
-      "store": "Amazon",
-      "detail": "$10.49, posted Nov. 19.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20341281-10-49-akira-4k-ultra-hd-blu-ray-at-amazon"
-    },
-    {
-      "title": "Dune (4K UHD + Blu-ray)",
-      "store": "Amazon",
-      "detail": "$11.49, posted Nov. 19; the post notes Dune: Part Two 4K is $12.49.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20347836-dune-4k-uhd-blu-ray-11-49-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "Live Die Repeat: Edge of Tomorrow (4K UHD + Blu-ray)",
-      "store": "Amazon",
-      "detail": "$12.99, posted Nov. 19; Gruv via Best Buy also has it at $12.99.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20342061-12-99-live-die-repeat-edge-of-tomorrow-4k-ultra-hd-blu-ray-at-amazon"
-    },
-    {
-      "title": "Disclosure Day 4K Collector's Edition",
-      "store": "Amazon",
-      "detail": "$12.99 (list $34.98) for Steven Spielberg's 2026 film, 4K + Blu-ray + Digital.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/14/steven-spielbergs-disclosure-day-is-only-12-99-2-disc-digital-4k-collectors-edition/"
-    },
-    {
-      "title": "The Bad Guys 2 4K Collector's Edition",
-      "store": "Amazon",
-      "detail": "$12.99 (list $34.98), 4K + Digital.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/18/the-bad-guys-2-is-only-12-99-for-the-4k-blu-ray-digital-collectors-edition/"
-    },
-    {
-      "title": "Speed Racer (4K UHD + Digital)",
-      "store": "Amazon",
-      "detail": "$12.99 (list $29.99); Gruv lists the same price.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/18/speed-racer-on-4k-blu-ray-with-digital-copy-is-only-12-99/"
-    },
-    {
-      "title": "V for Vendetta (4K UHD + Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$12.99, posted Nov. 13; Walmart also listed it at $12.99.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20306217-v-for-vendetta-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
-    },
-    {
-      "title": "Back to the Future Trilogy: 40th Anniversary Edition (4K UHD + Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$24.99, posted Nov. 19; commenters call it the lowest price yet for the 4K set.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20341158-24-99-back-to-the-future-40th-anniversary-trilogy-4k-uhd-blu-ray-digital-at-amazon"
-    },
-    {
-      "title": "KPop Demon Hunters (Criterion 3-disc 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 (list $49.95), part of Criterion's 50% off sale.",
-      "ends": "2026-12-07",
-      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
-    },
-    {
-      "title": "Perfect Days (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98, posted Nov. 12; free shipping with Prime or on $35+. Target lists it at $44.99.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20296410-perfect-days-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "No Country for Old Men (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "$24.98 (50% off), posted Nov. 6.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20268042-24-99-no-country-for-old-men-the-criterion-collection-4k-uhd-at-amazon"
-    },
-    {
-      "title": "The Lord of the Rings: The Motion Picture Trilogy (4K, theatrical + extended, 9 discs)",
-      "store": "Amazon",
-      "detail": "$44.99 (list $89.99, 44% off) for a limited time, per HD Report on Nov. 19.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/19/the-lord-of-the-rings-the-motion-picture-trilogy-is-44-off-theatrical-extended-versions/"
-    },
-    {
-      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
-      "store": "Amazon Italy",
-      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout, through Nov. 29 per a UK deal site; example: The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
-      "ends": "2026-11-29",
-      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
-    },
-    {
-      "title": "2 for £30 on selected 4K UHDs (UK)",
-      "store": "UK retailer",
-      "detail": "Two selected 4K discs for £30, including Aliens, The Sixth Sense, Signs, Unbreakable, Minority Report and Predator; offer ends Dec. 31 per a UK deal site. UK pricing.",
-      "ends": "2026-12-31",
-      "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
-    },
     {
       "title": "Jurassic World: Dominion Extended Edition (4K UHD + Blu-ray)",
       "store": "Amazon Italy",
       "detail": "£7.29 plus £2.56 shipping to the UK, per a UK deal site; ends Nov. 21. US shipping not confirmed.",
       "ends": "2026-11-21",
       "url": "https://www.hotukdeals.com/deals/jurassic-world-dominion-extended-edition-4k-uhd-blu-ray-5026846"
+    },
+    {
+      "title": "The Wild Robot: Collector's Edition",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital for $13",
+      "ends": "2026-11-21",
+      "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
     },
     {
       "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
@@ -168,6 +28,13 @@
       "detail": "$57 plus $9 international shipping (about £61.91 with UK tax), against a £100 reference price; deal listed through Nov. 27.",
       "ends": "2026-11-27",
       "url": "https://www.hotukdeals.com/deals/rocky-6-film-ultimate-knockout-collection-4k-blu-ray-5039870"
+    },
+    {
+      "title": "Buy two 4K UHDs, save 40% (Amazon Italy, UK deal site)",
+      "store": "Amazon Italy",
+      "detail": "Add two or more promo 4K UHD titles and 40% comes off at checkout, through Nov. 29 per a UK deal site; example: The Fog (1980) plus The Core (2003) for £21.61 delivered to the UK. Shipping to the US not confirmed.",
+      "ends": "2026-11-29",
+      "url": "https://www.hotukdeals.com/deals/buy-two-4k-uhd-blu-rays-save-40-new-promo-5015666"
     },
     {
       "title": "Die Hard (4K UHD + Blu-ray), HMV exclusive",
@@ -205,18 +72,39 @@
       "url": "https://www.hotukdeals.com/deals/three-colours-trilogy-a-curzon-collection-4k-ultra-hd-blu-ray-7-disc-set-5038907"
     },
     {
-      "title": "The Hobbit: The Motion Picture Trilogy (4K, theatrical + extended)",
-      "store": "UK retailer",
-      "detail": "£30.31 for all three films in both cuts, per a UK deal site; a German import is about £30.69 shipped. UK pricing.",
-      "ends": null,
-      "url": "https://www.hotukdeals.com/deals/the-hobbit-the-motion-picture-trilogy-extended-edition-4k-ultra-hd-blu-ray-5040070"
-    },
-    {
       "title": "Battlestar Galactica 4K UHD",
       "store": "UK retailer (pre-order)",
       "detail": "£16.99 pre-order per a UK deal site; deal listed through Nov. 30. UK pricing.",
       "ends": "2026-11-30",
       "url": "https://www.hotukdeals.com/deals/battlestar-galactica-4k-uhd-blu-ray-5028293"
+    },
+    {
+      "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99).",
+      "ends": "2026-12-06",
+      "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
+    },
+    {
+      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
+      "store": "Amazon",
+      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include KPop Demon Hunters, The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
+      "ends": "2026-12-07",
+      "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
+    },
+    {
+      "title": "KPop Demon Hunters (Criterion 3-disc 4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.98 (list $49.95), part of Criterion's 50% off sale.",
+      "ends": "2026-12-07",
+      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
+    },
+    {
+      "title": "2 for £30 on selected 4K UHDs (UK)",
+      "store": "UK retailer",
+      "detail": "Two selected 4K discs for £30, including Aliens, The Sixth Sense, Signs, Unbreakable, Minority Report and Predator; offer ends Dec. 31 per a UK deal site. UK pricing.",
+      "ends": "2026-12-31",
+      "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
     }
   ],
   "upcoming": [

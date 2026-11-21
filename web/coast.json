@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,22 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Let’s Go Birding! Fort to Sea Trail Bird Hike",
-      "date": "2026-11-20",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Guided walk along the Fort to Sea Trail.",
-      "url": "https://www.seasideor.com/event/lets-go-birding-fort-to-sea-trail-bird-hike-8/"
-    },
-    {
-      "name": "Smoothhound live at The Lyons Den",
-      "date": "2026-11-20",
-      "end": "2026-11-20",
-      "town": "Seaside",
-      "summary": "Jazz/Funk/Soul trio from 7:00 pm - 9:00 pm; $10.00.",
-      "url": "https://www.seasideor.com/event/smoothhound-live-at-the-lyons-den/"
     },
     {
       "name": "Kent M. Smith & Band live at The Lyons Den",
@@ -106,6 +90,22 @@
       "url": "https://www.seasideor.com/event/treasure-the-beach-community-beach-cleanup/2026-12-05/"
     },
     {
+      "name": "Festival of Trees",
+      "date": "2026-12-05",
+      "end": "2026-12-05",
+      "town": "Seaside",
+      "summary": "Holiday winter wonderland open from 9:00 am to 5:00 pm.",
+      "url": "https://www.seasideor.com/event/festival-of-trees/"
+    },
+    {
+      "name": "Christmas Bazaar & Cafe",
+      "date": "2026-12-05",
+      "end": "2026-12-05",
+      "town": "Seaside",
+      "summary": "Holiday crafts and cafe from 10:00 am to 3:00 pm.",
+      "url": "https://www.seasideor.com/event/christmas-bazaar-cafe-2/"
+    },
+    {
       "name": "Seaside vs Away Boys Junior Varsity Basketball",
       "date": "2026-12-09",
       "end": null,
@@ -128,6 +128,14 @@
       "town": "Seaside",
       "summary": "Boys varsity basketball game.",
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNWmZVZzc5dGV3V0hfR2RIbERydVZrSEZsQkF4dkI5RDdFUzd4TnJWQTdWd2daSjYtX2U4UDFPYmNiMmxjY29JX1gxU08tenJYZ19lREtoM3Y1MDMteURxeXBEYVVBY1dkRGxoLUJvSFVrVVNqMFUtczlkRUV1cGZ6TW8wbHRvZw?oc=5"
+    },
+    {
+      "name": "Seaside vs Astoria Boys Varsity Wrestling",
+      "date": "2027-01-20",
+      "end": null,
+      "town": "Astoria/Seaside",
+      "summary": "Boys varsity wrestling match.",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOUVJKNnNja2lxNGljajdFLXVDb2FvQnBmNlJGdE9MMURHbm9rQkNtaklhd2FJQjFMdUpQdUJpQjVEc3RjdmlGbjJMUHVOQU9LZkl5dGtSRzFIXzhTTm9zVVdvcXlRSkwyV3l6Qm8tWmZINGY5b01reFpERzdycHNCYndkUkdQdw?oc=5"
     }
   ]
 }

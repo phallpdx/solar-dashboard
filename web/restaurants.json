@@ -44,6 +44,13 @@
       "summary": "A new restaurant bringing Northern Thai flavors to the city.",
       "reviews": [
         {
+          "outlet": "Wisevoter",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQQlRzejZxQ1YzLTRjNUtXWlBxRkprWXBzZ3F3S0ZFbG53dWYyeEtSaWF1M3EtQVA3Y3V1QlM5Zy1xWlhxSEx0OGRqRUkzMlhreGFFTTRtVWVuZ3h1a1o3TjgwbDZ1Z3pyUXV2WVI2eVdxa1VvN2s3a1FXTEF4N1hHa3ZTRDlDZmVCRUlfR0pxWksxNjdSbGs0ZUc1cU01andE?oc=5"
+        },
+        {
           "outlet": "Bridgetown Bites",
           "critic": "",
           "verdict": "",

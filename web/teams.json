@@ -1,14 +1,15 @@
 {
   "updated": "2026-11-21",
-  "updated_at": "2026-11-21T10:24:44Z",
+  "updated_at": "2026-11-21T12:23:20Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and excited",
-      "pulse": "Fans find the team fun to watch during an offensive renaissance. Damian Lillard's return is a major factor.",
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are encouraged by an offensive renaissance and Scoot Henderson's recent performance. However, Deni Avdija's foot injury remains a concern.",
       "storylines": [
-        "Blazers beat Bucks 124-114 on Thursday",
-        "Deni Avdija is questionable with a foot contusion",
-        "Next game against Timberwolves airs Dec. 1"
+        "Defeated Milwaukee Bucks 124-114 on 2026-11-20",
+        "Deni Avdija is questionable with a left foot contusion.#4",
+        "Next game against Knicks at Madison Square Garden.#1",
+        "Dec. 1 matchup vs Timberwolves moved to national TV.#3"
       ],
       "sources": [
         {
@@ -27,11 +28,12 @@
     },
     "timbers": {
       "mood": "focused and expectant",
-      "pulse": "Fans are anticipating the MLS Cup Playoffs against FC Dallas. The team shows enthusiasm and commitment for the battle.",
+      "pulse": "Fans are anticipating the MLS Cup Playoffs against FC Dallas. The team is showing enthusiasm and commitment.",
       "storylines": [
         "Face FC Dallas in Round One Best-of-3",
         "Timbers2 lost 1-0 to Ventura County FC",
-        "Eric Izoita signed first-team contract"
+        "Eric Izoita signed first-team contract",
+        "Kellen Tamblyn named to 2026 MLS NEXT All-Star Game"
       ],
       "sources": [
         {
@@ -97,12 +99,12 @@
       ]
     },
     "ducks": {
-      "mood": "pushing for playoffs",
-      "pulse": "Fans are navigating a complex path to the CFP after three unexpected losses. They watch to see if offensive dominance continues.",
+      "mood": "focused on playoffs",
+      "pulse": "Fans navigate a complex path to the CFP after three unexpected losses. They aim to maintain offensive dominance.",
       "storylines": [
         "Ducks defeated Michigan State in East Lansing",
-        "Path to College Football Playoff is complicated due to early losses",
-        "Michigan State has played four quarterbacks this season"
+        "Path to College Football Playoff is complicated",
+        "Michigan State has used four quarterbacks this season"
       ],
       "sources": [
         {
@@ -132,13 +134,11 @@
       ]
     },
     "niners": {
-      "mood": "Anxious but optimistic",
-      "pulse": "Fans are excited about the 8-1 record and high-powered offense. However, defensive struggles against Dallas have caused concern.",
+      "mood": "Anticipatory and cautious",
+      "pulse": "Fans are excited about an 8-1 record but worried about a struggling defense. The upcoming primetime matchup in Mexico City is seen as a season-defining test.",
       "storylines": [
-        "Beat Cowboys 46-40 to improve to 8-1",
-        "Defense must improve after allowing 40 points to Dallas",
-        "Brock Purdy faces Brian Flores' defense in Mexico City",
-        "Mike Evans is questionable with an Achilles injury"
+        "Week 11 showdown against 7-2 Vikings in Mexico City",
+        "Mike Evans and others listed as questionable on injury report"
       ],
       "sources": [
         {

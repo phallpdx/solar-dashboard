@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-22",
-  "updated_at": "2026-11-22T10:27:52Z",
+  "updated_at": "2026-11-22T12:19:49Z",
   "teams": {
     "blazers": {
       "mood": "disappointed and frustrated",
@@ -8,8 +8,8 @@
       "storylines": [
         "Lost to New York Knicks on 2026-11-21",
         "Deni Avdija was available for play",
-        "Moda Center renovation negotiations stalled",
-        "Timberwolves game moved to national TV"
+        "Dec 1 game vs Timberwolves moved to national TV",
+        "Moda Center renovation negotiations are stalled"
       ],
       "sources": [
         {
@@ -35,12 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Disappointed but hopeful",
-      "pulse": "Timbers lost 3-0 in Game 1 against FC Dallas. They aim to move on and even the series.",
+      "mood": "disappointed but hopeful",
+      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can bounce back in Portland.",
       "storylines": [
-        "Lost 3-0 to FC Dallas in Game 1",
-        "Round One is a best-of-three series",
-        "#Next game is in Portland"
+        "Timbers lost 3-0 to FC Dallas in Game 1",
+        "Series is best-of-three",
+        "Next game is in Portland",
+        "Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -62,12 +63,12 @@
       ]
     },
     "f1": {
-      "mood": "tense and controversial",
-      "pulse": "Fans are reacting to numerous penalties and on-track collisions. High drama from driver errors and technical failures is driving engagement.",
+      "mood": "Tense and controversial",
+      "pulse": "Fans are reacting to driver clashes and penalties. Tensions are high following several on-track incidents.",
       "storylines": [
-        "Verstappen wins Las Vegas GP after slipstream thriller",
-        "McLaren secures double podium in Las Vegas",
-        "Perez faces five-place penalty for Qatar"
+        "Hamilton and Leclerc clash in Las Vegas",
+        "Verstappen wins Driver of the Day",
+        "Perez faces penalty for Qatar GP"
       ],
       "sources": [
         {
@@ -93,7 +94,7 @@
       ]
     },
     "ducks": {
-      "mood": "Anxious but hopeful",
+      "mood": "Cautious optimism",
       "pulse": "Fans focus on playoff odds after early losses. They hope to maintain offensive dominance and secure a spot.",
       "storylines": [
         "Ducks defeated Michigan State in East Lansing"
@@ -119,12 +120,12 @@
     },
     "niners": {
       "mood": "Anticipatory and cautious",
-      "pulse": "Fans are focused on the high-stakes matchup against Minnesota in Mexico City. Mike Evans is expected to return from an Achilles injury.",
+      "pulse": "Fans are focused on the high-stakes matchup against Minnesota in Mexico City. There is excitement regarding Mike Evans' return despite defensive struggles last week.",
       "storylines": [
         "Vikings game determines NFC number one seed battle",
         "Mike Evans expected to play after Achilles injury",
-        "Defense gave up 40 points to Cowboys",
-        "Nate Hobbs downgraded to out; Brandin Cooks waived"
+        "Defense struggled giving up 40 points to Cowboys",
+        "Brandin Cooks waived for C.J. West"
       ],
       "sources": [
         {

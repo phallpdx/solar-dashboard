@@ -3,191 +3,203 @@
   "date": "2026-11-22",
   "lines": {
     "hello_late": [
-      "Still awake, sir? I shall bring tea.",
-      "The stars are watching you tonight, Master Parker.",
-      "A late night for a gentleman, sir.",
-      "Sleep is quite elusive this morning, sir."
+      "The moon remains your only companion, Master Parker.",
+      "A rather late hour for such activity!",
+      "One wonders if sleep has forgotten you, sir."
     ],
     "hello_morning": [
-      "The sun has arrived to greet you.",
-      "Coffee awaits your arrival, sir.",
-      "Up and at 'em, Master Parker.",
-      "A fine start to the day, sir."
+      "The day beckons, Master Parker.",
+      "A fresh start awaits you."
     ],
     "hello_afternoon": [
-      "The day marches on, Master Parker.",
-      "Afternoon tea is prepared, sir.",
-      "Hopeful progress this afternoon, sir."
+      "I trust your midday is pleasant?",
+      "A lovely afternoon for a stroll, sir.",
+      "Time flies when one is busy, Master Parker.",
+      "Lunch was quite satisfactory, I hope."
     ],
     "hello_evening": [
-      "Another day concluded, Master Parker.",
-      "A quiet twilight approaches, sir."
+      "A restful evening lies ahead, Master Parker.",
+      "The day's work is done, sir.",
+      "Evening settles in quite nicely!"
     ],
     "intro_urgent": [
-      "Immediate attention is required, sir.",
-      "Pardon the interruption, but duty calls!",
-      "A matter of utmost importance, Master Parker.",
-      "This cannot wait, sir."
+      "Priority matters require your immediate gaze!",
+      "I must insist you read this first, sir.",
+      "Urgent business has arrived, Master Parker.",
+      "Do not delay with these, sir."
     ],
     "intro_some": [
-      "A few tidbits for your review, sir.",
-      "Nothing too dire, just some notes.",
-      "The daily updates are here, Master Parker.",
-      "A modest collection for you, sir."
+      "A few items of interest for today.",
+      "Nothing too grave, just a brief update, sir.",
+      "Some trifles to catch you up, Master Parker.",
+      "The day's minor curiosities await."
     ],
     "intro_calm": [
-      "All is quite tranquil today, sir.",
-      "Peace reigns in the household.",
-      "A very gentle morning, Master Parker.",
-      "No news is good news, sir."
+      "All is quite peaceful here, sir.",
+      "A most tranquil morning, Master Parker.",
+      "Quietude reigns supreme at present.",
+      "No alarms have sounded today, sir."
     ],
     "sign": [
-      "Do behave yourself, Alfred",
-      "I shall remain nearby, Alfred"
+      "Be careful out there, Alfred",
+      "I remain yours, Alfred"
     ],
     "fresh_heading": [
-      "The latest reading, sir",
-      "Freshly delivered for you",
-      "A new acquisition",
-      "To satisfy your curiosity"
+      "Today's essential reading",
+      "An interesting volume",
+      "A selection for your eyes"
     ],
     "nws_alert": [
-      "One must be cautious today, sir.",
-      "Conditions are rather treacherous, sir."
+      "Do take precautions, sir.",
+      "The elements are quite agitated!",
+      "One should proceed with caution, Master Parker."
     ],
     "forecast_alert": [
-      "Brace yourself against the coming gale, Master Parker.",
-      "One should prepare for a bit of a struggle."
+      "The skies look rather temperamental today!",
+      "A spirited wind is brewing, Master Parker.",
+      "Brace yourself for some unruly elements."
     ],
     "rain": [
-      "A liquid deluge is expected, sir.",
-      "Do ensure your headgear is sufficiently waterproof!",
-      "The heavens are quite unsettled, Master Parker.",
-      "Prepare to navigate a few puddles, sir."
-    ],
-    "air_bad": [
-      "The atmosphere is rather disagreeable today.",
-      "One should avoid any unnecessary exertion, sir.",
-      "I suggest keeping the casements tightly shut!",
-      "A most unpleasant haze has settled in, sir."
+      "Do mind the puddles, sir.",
+      "It appears quite damp out there.",
+      "Wet weather is currently in vogue!",
+      "Keep your head covered, Master Parker."
     ],
     "air_ok": [
-      "The breeze is quite manageable, Master Parker.",
-      "No need to worry about the vapors, sir.",
-      "A perfectly tolerable atmosphere for your strolls!",
-      "The air remains quite agreeable today, sir."
+      "The air is quite agreeable today.",
+      "A pleasant breath of fresh air, sir.",
+      "The atmosphere is perfectly serviceable!"
     ],
     "commute": [
-      "The roads may prove rather sluggish, sir.",
-      "Patience will be required on your journey!",
-      "One might encounter some delightful delays, Master Parker.",
-      "Travel may take a trifle longer, sir."
+      "Traffic is proving rather stubborn!",
+      "Avoid the main thoroughfares if possible, sir.",
+      "A slow journey awaits you, Master Parker.",
+      "Expect some delays on your travels."
     ],
     "pdx": [
-      "A delay is brewing at the terminal, sir.",
-      "Check the departure boards before departing, Master Parker.",
-      "The arrivals are running somewhat behind schedule!",
-      "Do keep an eye on those flight times, sir."
+      "Flight schedules are behaving poorly, sir.",
+      "The arrivals board may prove troublesome!",
+      "Patience is required for travelers today.",
+      "Check the departure boards, Master Parker."
     ],
     "sick": [
-      "Health is a delicate matter this week!",
-      "One must be cautious of these ailments, Master Parker."
+      "Germs are quite busy at present.",
+      "Health is a fickle thing, sir.",
+      "One must be cautious of the contagion.",
+      "A bit of caution is advised, sir."
     ],
     "kids_last_day": [
-      "The little ones are finally free, sir!",
-      "A momentous conclusion to their lessons, Master Parker.",
-      "Freedom awaits the youngsters today!",
-      "The final bell rings for them, sir."
+      "The chaos reaches its finale today!",
+      "Freedom for the young ones at last!",
+      "Their academic journey concludes this morning, sir.",
+      "Peace returns once they depart, Master Parker."
+    ],
+    "jazz_lead": [
+      "For a melodic diversion",
+      "An evening of smooth rhythms",
+      "To soothe your spirit with song",
+      "A bit of soulful syncopation"
     ],
     "iss": [
-      "Look upward for a shining guest!",
-      "The heavens offer a luminous spectacle, Master Parker."
+      "A celestial visitor approaches tonight!",
+      "Look up for a most shiny guest.",
+      "The stars have a special passenger!",
+      "A luminous traveler passes by, sir."
     ],
     "full_moon": [
-      "It's a luminous night for mischief!",
-      "A brilliant orb watches over us, Master Parker.",
-      "One finds the moonlight rather enchanting today."
+      "A luminous orb dominates the sky!",
+      "It is quite bright tonight, Master Parker.",
+      "Such a glowing spectacle above us."
     ],
     "rare_bird": [
-      "An avian rarity has appeared, sir.",
-      "Do keep your eyes on the branches!",
-      "A feathered wonder awaits your scrutiny, sir.",
-      "Master Parker, a winged guest approaches."
+      "A feathered marvel has been spotted!",
+      "A winged rarity graces us, sir.",
+      "Keep your eyes on the branches, Master Parker.",
+      "A most unusual visitor in the garden!"
     ],
     "ski": [
-      "The slopes are perfectly prepared, sir.",
-      "White powder beckons for a descent!",
-      "Prepare yourself for a frosty adventure, sir.",
-      "Fresh powders await your expert touch, Master Parker."
+      "The mountain slopes are pristine, sir.",
+      "Fresh powder awaits your descent!",
+      "Prepare for a frosty adventure, Master Parker.",
+      "One finds the white peaks quite inviting."
     ],
     "coast_wild": [
-      "The ocean is quite spirited today!",
-      "A vigorous swell greets the shore, sir.",
-      "Watch the unruly tides with care!"
+      "The tides are behaving rather spiritedly!",
+      "Watch those unruly swells, sir.",
+      "A vigorous display from the sea!",
+      "Nature's fury is on full show, Master Parker."
     ],
     "bluray": [
-      "Time is fleeting for these discs, sir.",
-      "Your media library awaits reinforcement!",
-      "A brief window for cinematic treasures, Master Parker.",
-      "Do not let these digital gems vanish!"
+      "A fleeting opportunity for your collection!",
+      "Digital treasures await, sir.",
+      "Do not let these discs vanish!",
+      "Time is running thin for these gems, Master Parker."
     ],
     "mushrooms": [
-      "A most savory harvest awaits you!",
-      "One might find a woodland feast, sir.",
-      "The pantry could benefit from foraging, Master Parker."
+      "The forest floor offers a bounty!",
+      "A savory harvest awaits, sir.",
+      "One might find woodland delicacies today!"
     ],
     "sunset": [
-      "The horizon is putting on a show!",
-      "An evening masterpiece approaches, sir.",
-      "Colors are painting the sky, Master Parker.",
-      "I suggest catching this fleeting glow!"
+      "The horizon is painting a masterpiece!",
+      "An evening glow beckons, sir.",
+      "Catch this fleeting light, Master Parker.",
+      "A truly splendid display of color!"
     ],
     "solar_best": [
-      "The heavens are being quite generous, sir.",
-      "Our stores shall be replenished today!",
-      "Quite a bright performance from above, sir."
+      "Energy flows quite abundantly today!",
+      "The sun is being most generous, sir.",
+      "Our reserves shall be replenished quickly!",
+      "A bright performance from above, Master Parker."
     ],
     "apod": [
-      "Something stellar is waiting to be seen!",
-      "A celestial marvel awaits, Master Parker."
+      "A celestial marvel for your eyes!",
+      "NASA offers a stunning view, sir.",
+      "Do look at this cosmic wonder!",
+      "A stellar sight awaits, Master Parker."
+    ],
+    "science_lead": [
+      "An intriguing discovery",
+      "A finding worth discussing",
+      "A matter of scientific interest"
     ],
     "news_lead": [
-      "The morning's grandest commotion",
-      "Rumors are swirling quite briskly",
-      "The headlines demand attention"
+      "The chatter is quite lively today, sir",
+      "A most spirited discussion has emerged",
+      "Word travels fast this morning, Master Parker"
     ],
     "read_lead": [
-      "For your afternoon reflection",
-      "A lengthy endeavor for later, sir",
-      "Should you seek a mental escape",
-      "A substantial text awaits"
+      "Something substantial to ponder over tea",
+      "An extensive tale awaits your attention",
+      "For a slow afternoon of study, sir"
     ],
     "larder_lead": [
-      "Provisions of high quality",
-      "A culinary delight, Master Parker",
-      "To satisfy your refined palate"
+      "Local flavors worth noting, sir",
+      "A delightful discovery for the pantry",
+      "Provisions that may pique interest, Master Parker",
+      "Fresh delicacies have arrived, sir"
     ],
     "markets_lead": [
-      "The ledger's shifting tides",
-      "Current fluctuations in trade, sir",
-      "Financial movements for your review",
-      "Regarding the worldly commerce"
+      "The currents of commerce shift, sir",
+      "Regarding the world's bustling trade",
+      "A summary of global movement, sir",
+      "Financial tides are in flux, Master Parker"
     ],
     "property_lead": [
-      "An update on local estates",
-      "Matters of residence, sir",
-      "Concerning our neighborhood dwellings",
-      "A brief survey of housing"
+      "Concerning our local dwellings",
+      "A survey of nearby estates, sir",
+      "Housing news for your review, Master Parker"
     ],
     "win_lead": [
-      "A glorious triumph today",
-      "Victory is truly ours"
+      "The home side triumphs today",
+      "Victory is truly ours, Master Parker",
+      "A splendid performance on the pitch, sir"
     ],
     "loss_lead": [
-      "Alas, fortune was unkind",
-      "A most regrettable outcome, sir",
-      "The contest did not favor us",
-      "Such a disappointing display, Master Parker"
+      "A rather regrettable turn of events",
+      "Fortune was not our friend today, sir",
+      "An unfortunate result for the side",
+      "Alas, the score was against us, Master Parker"
     ]
   },
   "recent": {
@@ -4866,7 +4878,134 @@
     "Alas, fortune was unkind": "2026-11-22",
     "A most regrettable outcome, sir": "2026-11-22",
     "The contest did not favor us": "2026-11-22",
-    "Such a disappointing display, Master Parker": "2026-11-22"
+    "Such a disappointing display, Master Parker": "2026-11-22",
+    "The moon remains your only companion, Master Parker.": "2026-11-22",
+    "A rather late hour for such activity!": "2026-11-22",
+    "One wonders if sleep has forgotten you, sir.": "2026-11-22",
+    "The day beckons, Master Parker.": "2026-11-22",
+    "A fresh start awaits you.": "2026-11-22",
+    "I trust your midday is pleasant?": "2026-11-22",
+    "A lovely afternoon for a stroll, sir.": "2026-11-22",
+    "Time flies when one is busy, Master Parker.": "2026-11-22",
+    "Lunch was quite satisfactory, I hope.": "2026-11-22",
+    "A restful evening lies ahead, Master Parker.": "2026-11-22",
+    "The day's work is done, sir.": "2026-11-22",
+    "Evening settles in quite nicely!": "2026-11-22",
+    "Priority matters require your immediate gaze!": "2026-11-22",
+    "I must insist you read this first, sir.": "2026-11-22",
+    "Urgent business has arrived, Master Parker.": "2026-11-22",
+    "Do not delay with these, sir.": "2026-11-22",
+    "A few items of interest for today.": "2026-11-22",
+    "Nothing too grave, just a brief update, sir.": "2026-11-22",
+    "Some trifles to catch you up, Master Parker.": "2026-11-22",
+    "The day's minor curiosities await.": "2026-11-22",
+    "All is quite peaceful here, sir.": "2026-11-22",
+    "A most tranquil morning, Master Parker.": "2026-11-22",
+    "Quietude reigns supreme at present.": "2026-11-22",
+    "No alarms have sounded today, sir.": "2026-11-22",
+    "Be careful out there, Alfred": "2026-11-22",
+    "I remain yours, Alfred": "2026-11-22",
+    "Today's essential reading": "2026-11-22",
+    "An interesting volume": "2026-11-22",
+    "A selection for your eyes": "2026-11-22",
+    "Do take precautions, sir.": "2026-11-22",
+    "The elements are quite agitated!": "2026-11-22",
+    "One should proceed with caution, Master Parker.": "2026-11-22",
+    "The skies look rather temperamental today!": "2026-11-22",
+    "A spirited wind is brewing, Master Parker.": "2026-11-22",
+    "Brace yourself for some unruly elements.": "2026-11-22",
+    "Do mind the puddles, sir.": "2026-11-22",
+    "It appears quite damp out there.": "2026-11-22",
+    "Wet weather is currently in vogue!": "2026-11-22",
+    "Keep your head covered, Master Parker.": "2026-11-22",
+    "The air is quite agreeable today.": "2026-11-22",
+    "A pleasant breath of fresh air, sir.": "2026-11-22",
+    "The atmosphere is perfectly serviceable!": "2026-11-22",
+    "Traffic is proving rather stubborn!": "2026-11-22",
+    "Avoid the main thoroughfares if possible, sir.": "2026-11-22",
+    "A slow journey awaits you, Master Parker.": "2026-11-22",
+    "Expect some delays on your travels.": "2026-11-22",
+    "Flight schedules are behaving poorly, sir.": "2026-11-22",
+    "The arrivals board may prove troublesome!": "2026-11-22",
+    "Patience is required for travelers today.": "2026-11-22",
+    "Check the departure boards, Master Parker.": "2026-11-22",
+    "Germs are quite busy at present.": "2026-11-22",
+    "Health is a fickle thing, sir.": "2026-11-22",
+    "One must be cautious of the contagion.": "2026-11-22",
+    "A bit of caution is advised, sir.": "2026-11-22",
+    "The chaos reaches its finale today!": "2026-11-22",
+    "Freedom for the young ones at last!": "2026-11-22",
+    "Their academic journey concludes this morning, sir.": "2026-11-22",
+    "Peace returns once they depart, Master Parker.": "2026-11-22",
+    "For a melodic diversion": "2026-11-22",
+    "An evening of smooth rhythms": "2026-11-22",
+    "To soothe your spirit with song": "2026-11-22",
+    "A bit of soulful syncopation": "2026-11-22",
+    "A celestial visitor approaches tonight!": "2026-11-22",
+    "Look up for a most shiny guest.": "2026-11-22",
+    "The stars have a special passenger!": "2026-11-22",
+    "A luminous traveler passes by, sir.": "2026-11-22",
+    "A luminous orb dominates the sky!": "2026-11-22",
+    "It is quite bright tonight, Master Parker.": "2026-11-22",
+    "Such a glowing spectacle above us.": "2026-11-22",
+    "A feathered marvel has been spotted!": "2026-11-22",
+    "A winged rarity graces us, sir.": "2026-11-22",
+    "Keep your eyes on the branches, Master Parker.": "2026-11-22",
+    "A most unusual visitor in the garden!": "2026-11-22",
+    "The mountain slopes are pristine, sir.": "2026-11-22",
+    "Fresh powder awaits your descent!": "2026-11-22",
+    "Prepare for a frosty adventure, Master Parker.": "2026-11-22",
+    "One finds the white peaks quite inviting.": "2026-11-22",
+    "The tides are behaving rather spiritedly!": "2026-11-22",
+    "Watch those unruly swells, sir.": "2026-11-22",
+    "A vigorous display from the sea!": "2026-11-22",
+    "Nature's fury is on full show, Master Parker.": "2026-11-22",
+    "A fleeting opportunity for your collection!": "2026-11-22",
+    "Digital treasures await, sir.": "2026-11-22",
+    "Do not let these discs vanish!": "2026-11-22",
+    "Time is running thin for these gems, Master Parker.": "2026-11-22",
+    "The forest floor offers a bounty!": "2026-11-22",
+    "A savory harvest awaits, sir.": "2026-11-22",
+    "One might find woodland delicacies today!": "2026-11-22",
+    "The horizon is painting a masterpiece!": "2026-11-22",
+    "An evening glow beckons, sir.": "2026-11-22",
+    "Catch this fleeting light, Master Parker.": "2026-11-22",
+    "A truly splendid display of color!": "2026-11-22",
+    "Energy flows quite abundantly today!": "2026-11-22",
+    "The sun is being most generous, sir.": "2026-11-22",
+    "Our reserves shall be replenished quickly!": "2026-11-22",
+    "A bright performance from above, Master Parker.": "2026-11-22",
+    "A celestial marvel for your eyes!": "2026-11-22",
+    "NASA offers a stunning view, sir.": "2026-11-22",
+    "Do look at this cosmic wonder!": "2026-11-22",
+    "A stellar sight awaits, Master Parker.": "2026-11-22",
+    "An intriguing discovery": "2026-11-22",
+    "A finding worth discussing": "2026-11-22",
+    "A matter of scientific interest": "2026-11-22",
+    "The chatter is quite lively today, sir": "2026-11-22",
+    "A most spirited discussion has emerged": "2026-11-22",
+    "Word travels fast this morning, Master Parker": "2026-11-22",
+    "Something substantial to ponder over tea": "2026-11-22",
+    "An extensive tale awaits your attention": "2026-11-22",
+    "For a slow afternoon of study, sir": "2026-11-22",
+    "Local flavors worth noting, sir": "2026-11-22",
+    "A delightful discovery for the pantry": "2026-11-22",
+    "Provisions that may pique interest, Master Parker": "2026-11-22",
+    "Fresh delicacies have arrived, sir": "2026-11-22",
+    "The currents of commerce shift, sir": "2026-11-22",
+    "Regarding the world's bustling trade": "2026-11-22",
+    "A summary of global movement, sir": "2026-11-22",
+    "Financial tides are in flux, Master Parker": "2026-11-22",
+    "Concerning our local dwellings": "2026-11-22",
+    "A survey of nearby estates, sir": "2026-11-22",
+    "Housing news for your review, Master Parker": "2026-11-22",
+    "The home side triumphs today": "2026-11-22",
+    "Victory is truly ours, Master Parker": "2026-11-22",
+    "A splendid performance on the pitch, sir": "2026-11-22",
+    "A rather regrettable turn of events": "2026-11-22",
+    "Fortune was not our friend today, sir": "2026-11-22",
+    "An unfortunate result for the side": "2026-11-22",
+    "Alas, the score was against us, Master Parker": "2026-11-22"
   },
   "updated": "2026-11-22"
 }

@@ -1,9 +1,9 @@
 {
   "updated": "2026-11-22",
-  "updated_at": "2026-11-22T10:29:44Z",
+  "updated_at": "2026-11-22T12:22:55Z",
   "analysis": {
-    "headline": "Markets slumped as tech and AI concerns triggered a significant sell-off.",
-    "summary": "Stocks fell sharply amid an AI bubble burst and Nvidia's accounting probe. Bonds saw yields rise while gold and Bitcoin declined. Oil rose slightly amidst broader market volatility.",
+    "headline": "Markets experienced a significant sell-off led by tech and AI sectors.",
+    "summary": "Stocks fell sharply following an Anthropic IPO and Nvidia issues. Bonds saw yields drop while gold prices declined significantly. Oil rose slightly amid the broader market volatility. Bitcoin showed gains despite a negative yearly trend.",
     "sources": [
       {
         "name": "Google News: Business",
@@ -14,29 +14,25 @@
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMjVQWHNJMWw0Y21HYTVDN0lhX0ZYQS1FdzFCLV9nbVRzS09jNFN5UXRaanhHM2tXbGJkVGtlZVdMMnlTa2RTR29MUU1KbXVkekg1X19VeU5ISGJCbG9FRU5nSkNrZG1MWFJBaVZWY3pGUm5vUmZUWl96aWl6TVNDcUFCOXFxRmlYTFhRLTlqdTQ2S2FWTjJ4RWNBbnlVS2dtemlUSF9nOVlpZFpONElOdUhB0gG3AUFVX3lxTFBNVVBhQ1VSV2VIc0Z5OTJfSU1FUmc2UVFZNDJPX19TSjgteXV4QWxmbDZQWGQwa0M3S0tLUTY1V3ZTRXhUTmVNLTNBSk15QTRuQ1ZzSDY5VkFVT3laUl9XemZJVWZBVG9TU21UaW1US3JvWGZ3dGpiakppUDJobkQ2NW5lVGxEZUdCTlBnaGhEVWNvRE43ZTEySTBZaDJ6VzFuY08xN2FJRkFWUzI1Rkg0eEljUHl0OA?oc=5"
       },
       {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQNkpvTmdpdzNUMVVjZEJXbVdIYXlheTM1ZmpMRl9LdkQ1YjV1VXYtNUxGSTlHZWpzLWhfTFVnR2h0b0NMNGlsTWhOYXpYRVYyR0ZkTmJNRkh2MXAycU5Nd0pKNy1QbG92UGg1TXd0SGx4S1R6UXNDek1fTTFpZnR1VEVfaE9Na0hOYjlBUGlfUC1jTGFCS195ek1ZNjc?oc=5"
-      },
-      {
-        "name": "Google News: Business",
-        "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQUmlPb2NNTTRIVWI5NXJFQUd2MXNkdkFtNzIxODZMZjdEbVFsUWQyWjRQT1AxMUE5YS1nRnZ6U21mN0J1V21IVFFRZEthZms4bkM0MDRNQlR6RkRtcUp2aUJqTnQ2YlloTU9ObkpmLUs1NWgyUXpubUxndklKTElFbExrY3ZtamdWNEpRUG5lNGd2VVZZdHVIUHp3eU1Wc0RzenQ0YQ?oc=5"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbGZqY3FoUjhCTGtSbnJQMmlMMlNQWGxuQ1UyR09vYVpCY2xHcU5la0pPb0FGbnkzZ3AwRThVNXdMcXk4cEZ4elRxd1VKVHRqTEdxUGtHeUZNS1RPQkVKdUpXeVJscjg1Qm1zUHpjMDlzYUQ5UUE0X3FVTzRqRC1FWVRGU0NXWUI0Rk1FWERnVWxkWEtRbTJNc3Nldms4emVsSF9yMU4xaDU4SWh6TDgydjJWa3ZYQ2pFaUp2TFhmdUh6cFU?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbGZqY3FoUjhCTGtSbnJQMmlMMlNQWGxuQ1UyR09vYVpCY2xHcU5la0pPb0FGbnkzZ3AwRThVNXdMcXk4cEZ4elRxd1VKVHRqTEdxUGtHeUZNS1RPQkVKdUpXeVJscjg1Qm1zUHpjMDlzYUQ5UUE0X3FVTzRqRC1FWVRGU0NXWUI0Rk1FWERnVWxkWEtRbTJNc3Nldms4emVsSF9yMU4xaDU4SWh6TDgydjJWa3ZYQ2pFaUp2TFhmdUh6cFU?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNMU1BS09sWFhaUnRtWlBmMm41cFl0QW1nWXBmNFp2SURMaUdQblMteV9yZEd5NVNCcnlfNXU4Nkl1bGNBdXR6TkU3WHp0Y0hlOVR3N0c4V25Dcy1FaVVZOUVrMFZJTGFVVWRjNWo1cXY4Z2E3MFlCdGl6b2I2Q21MMWN4NWFQRThEU2h2aVctRVpucnph?oc=5"
       }
     ],
     "by": "local model",
     "session": "2026-11-20",
     "drivers": [
-      "AI sector sell-off and Anthropic IPO turmoil",
-      "Nvidia SEC accounting investigation"
+      "AI wipeout involving Nvidia and Anthropic [#1, #2, #6]",
+      "Tech outages fueling doomsday economy concerns [#14]"
     ],
     "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market supply is tightening.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a liquefaction facility. Market supply is tightening, prompting increased drilling targets and industry growth in Saskatchewan.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -91,7 +87,7 @@
   },
   "realestate": {
     "headline": "The Portland housing market is stagnant with slowing sales.",
-    "summary": "Sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. The average US 30-year mortgage rate fell to 7.18%. Prices continue climbing in Oregon.",
+    "summary": "Sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. The average US 30-year mortgage rate recently fell to 7.18%.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -104,18 +100,26 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
+        "title": "Mortgage and refinance interest rates today, Sunday, November 22, 2026: 5/1 ARM purchase rates down the most this past week",
+        "date": "2026-11-22",
+        "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxOMXNaM2haQm0yUEljYWhySjdIZWZfRGFwMnptNk1NMVoyLUpnSkFOQWN4RFlJRm5JZnB1c2ZvamlucGM0bDJhcXdLVHEtNF9CVWp0MkRDdmFzMEZ5TUJiVkN0TkJfM2ZyU2paVW9PejhSSTU1OTU5ZFJ0QXJxczNjaDFKOXhNX3NFSi01cC1TTzNhRHFvdERmbkVBd3BWenp0cmo4T3pZaHFPejVoYy1pa2NQQzQ3bmR1aGxZSDhPWExxSGtraVZZNjdQUWJ5X0dhTmpXVFBLb2taQ3FVUWpyNlFZUy0wMVlJUW5XdXROR3hwUjlCWkh0X0Y1TkxpU3hEQTd3QTdHdWJ6bEJYYzNybzVoZjBMLUFfX05Lb0Rtbw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "Sub-7% mortgage rates depend on 10-year yield and spreads",
         "date": "2026-11-22",
         "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE01RGJJTVRUVnQzcUFjc0l6bGRJOWJpQ0N0Zlo0Tm9PMnU5RmlKeUxYRmRWcDZtWVV3dkExN0pPMWtMaUl5Ul9HZ1E2MFJfdjdXZTNjNmtUaUlnNU9qc2p5OFpOZ29BdUpJT3ZvTmE2VU9HbDVJYlpJd19aSEQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Today, November 22, 2026: 30-Year Refinance Rate Drops 6 Basis Points to 7.44%",
+        "date": "2026-11-22",
+        "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNUjlPVEJ4dE4wNFlCQW9hWGdxb0YwYU1MMUJjQlJqaGRjcWk0MGQ2cXkzajVNUU84bzFOby1yRnZmMjhra0dLZmNSMDh4aDlsVlpPSUZ3QnZLaWJpSGE2M0Nqa3RlNE9LbUhhT2tqTWdsQ3llanVHaGtYT2VFNmFiZ1R6R2I4V0R5eXRSVUtQdw?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -128,18 +132,6 @@
         "title": "Mortgage and refinance interest rates today, Saturday, November 21, 2026: Purchase mortgage rates down from yesterday and week prior",
         "date": "2026-11-21",
         "url": "https://news.google.com/rss/articles/CBMirAJBVV95cUxQa3RZWmJwLV93dlpCRGZIaGJaZzJES2oxSkRJZ20tVVJYajY3X004Tk1GT09INnBFRV9VeXgwY0U4dFBzel9DZVVxdEN6NWk1dWVzamVKT0tXNEEyN1ZRMW9ERnJEQmlrZzhkOUFLM2FoM3dnNmRUcHFNeVEydm5oRzJyc19oM1RWZEtyNTNCdzc5Y0t0ejFBTFBtZkhfNzhCS3FNT05zS09ZelZQT2JOZFhXN0xDRWZFTGc0SlhTWHVwZGF0MzFoWGwzcnJjaWw3TVpmazFRd0JpS2NpQi1DamNlVFYwS28ydEFhYTFSMFpiX2tPQXpDX1oxbC13UHY3N3RIUmJ0N0lsczVGZlhSUDVIbEVlQkthbDBqT0o4aExCSXNsVlNZNEtTMHg?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage rates climb back to 7.28%—adding hundreds to monthly payments for homebuyers",
-        "date": "2026-11-21",
-        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBwemJOYi1SYVZDWWEtZHBxVmIxUHprZHpwd3V5QzhMQlBjWVg2WnVlYXdBSkhCbExMclBhamZtalJ2REVZUW94RGdyc2I2a0w4MlRCVjdFSDFDdGl2T1Ryc1hnbUlQVF9NMWhWSTBOVGJZRVVnNUdv?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Average U.S. 30-year mortgage rate rises to 7.28% this week, ending a four-week slide",
-        "date": "2026-11-21",
-        "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNbi1zenFKRTYwcDVRU05UdDVYYjJ4ODhxdnJVc296R0RualJnT0hYUWFRN2xLYTZRVXBVYlIzOHkzdFNxbk9laVlQUkFrOXlST3JLWE0yZzJRb2MtNFliUUlGVE5adVdhRU1YVUdEb3VZRTl6cUNWQjN5WDh1SnNmOGhpbVhwREg2d2hGYTdpY0thS185ZF9oRXZVWko4Zk5TSlFWVW90bGwyOUpWVFpZdmg0UlU0Yml4dTk3eUlRZ3VtcG9mTjZzSDBzcDlRQ0xSZE1EdnRXeUphRG43eGdMaTZmLTlQRmVPUVlKbVYxeks?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

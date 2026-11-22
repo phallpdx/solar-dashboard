@@ -2,6 +2,27 @@
   "updated": "2026-11-22",
   "deals": [
     {
+      "title": "GRUV 4K sale at Walmart: about $13 each (Superman, The Super Mario Galaxy Movie, Mortal Kombat II)",
+      "store": "Walmart (sold by GRUV)",
+      "detail": "Slickdeals thread from Nov. 12 lists dozens of 4K UHD titles at about $13 each with free shipping, including Superman, The Super Mario Galaxy Movie, Mortal Kombat II and Wuthering Heights; the poster says the same prices went live Nov. 13 on GRUV's own site.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "$12.99 4K discs: Minions & Monsters, Lee Cronin's The Mummy, Ben-Hur (1959)",
+      "store": "Amazon",
+      "detail": "HD Report (Nov. 18) lists 4K UHD discs at $12.99 each, including Minions & Monsters, Lee Cronin's The Mummy, Ben-Hur (1959), Disclosure Day and Pressure.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Walmart Black Friday movie deals (4K combos)",
+      "store": "Walmart",
+      "detail": "Walmart's Black Friday movies page lists 4K Ultra HD + Blu-ray combos such as Encanto, Coco, Elf and The Polar Express, with some prices as low as $14.99; check each listing says 4K.",
+      "ends": null,
+      "url": "https://www.walmart.com/shop/deals/movies-music-and-books/movies-and-tv"
+    },
+    {
       "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
       "store": "Amazon UK",
       "detail": "£39.99 (was £49.99), and HMV reportedly matches; deal listed through Nov. 23. UK pricing.",
@@ -81,7 +102,7 @@
     {
       "title": "Criterion Collection 50% off at Barnes & Noble (4K UHD included)",
       "store": "Barnes & Noble",
-      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99).",
+      "detail": "All in-stock Criterion discs 50% off online and in stores through Dec. 6. Most single-film 4K discs are $24.99 (from $49.99), including Mulholland Dr., Blue Velvet, The Breakfast Club and Some Like It Hot; Seven Samurai and Citizen Kane 4K are $29.99 (from $59.99). PopSci also lists The Princess Bride 4K at $24.99 and Yojimbo/Sanjuro 4K at $39.99 (from $79.99).",
       "ends": "2026-12-06",
       "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
     },
@@ -107,9 +128,9 @@
       "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
     },
     {
-      "title": "4K Blu-ray Movies: Apollo 13, Waterwold, The Lost Boyz & More",
+      "title": "3 for $33 on select 4K Blu-rays at Amazon",
       "store": "amazon.com",
-      "detail": "3 for $33",
+      "detail": "Three select 4K discs sold by Amazon for $33 total, including Apollo 13, Beetlejuice and The Shining.",
       "ends": null,
       "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
     },
@@ -182,6 +203,20 @@
       "detail": "$24.98 (4K UHD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "One Battle After Another (4K UHD)",
+      "store": "Per Blu-ray.com bargains",
+      "detail": "$12.99 (56% off) in Blu-ray.com's Nov. 16 to 22 bargain roundup; the same roundup lists The Right Stuff 4K at about $24.98, half off.",
+      "ends": null,
+      "url": "https://www.blu-ray.com/news/?id=39333"
+    },
+    {
+      "title": "The Odyssey (2026) (4K + Blu-ray + Digital)",
+      "store": "Per Slickdeals thread",
+      "detail": "$25.50, about 13% off the $30 list, posted Nov. 17 (release week). Nolan's new film.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20328516-the-odyssey-4k-blu-ray-digital-25-50"
     }
   ],
   "upcoming": [
@@ -189,6 +224,11 @@
       "title": "Walmart Black Friday deals",
       "detail": "Walmart's main Black Friday deals run Nov. 23 to 29 (online at 12:01 a.m. ET, with Walmart+ members getting some online deals 24 hours early). Disc deals not detailed.",
       "url": "https://cordcuttersnews.com/walmart-announces-three-major-2026-holiday-shopping-events-with-extended-black-friday-and-cyber-monday-savings/?amp=1"
+    },
+    {
+      "title": "Vinegar Syndrome Black Friday sale",
+      "detail": "Main sale starts Nov. 27 at 12:01 a.m. ET, after a flash pre-order event; seven Vinegar Syndrome and two Mélusine releases will be revealed during the sale, per Eyecrave.",
+      "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
     }
   ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"

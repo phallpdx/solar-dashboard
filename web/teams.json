@@ -1,15 +1,15 @@
 {
-  "updated": "2026-11-21",
-  "updated_at": "2026-11-21T13:11:31Z",
+  "updated": "2026-11-22",
+  "updated_at": "2026-11-22T08:30:36Z",
   "teams": {
     "blazers": {
-      "mood": "Fired up",
-      "pulse": "Portland won 124-114 in Milwaukee on Thursday to get to 10-5, with Dame dropping a season-high 33 in his return to Milwaukee. Scoot Henderson's season-high 27 off the bench has fans and the coaches feeling good about him after a rough start. The worry is Deni Avdija's sore left foot heading into tonight at the Garden.",
+      "mood": "disappointed and frustrated",
+      "pulse": "Fans are reeling after a heavy loss to the Knicks. The team's recent struggles against top competition have dampened early season excitement.",
       "storylines": [
-        "Beat the Bucks 124-114; Lillard 33, Holiday 22, Henderson 27 off the bench",
-        "Assistant Micah Nori on Scoot: the team has \"lost zero faith\" in him",
-        "Avdija (left foot) missed the last two games and is questionable",
-        "Tonight at the Knicks (9-6), 4:30 PT; Morant and Sharpe still out"
+        "Lost to New York Knicks on 2026-11-21",
+        "Deni Avdija was available for play",
+        "Dec 1 game vs Timberwolves moved to national TV",
+        "Moda Center renovation negotiations are stalled"
       ],
       "sources": [
         {
@@ -35,13 +35,13 @@
       ]
     },
     "timbers": {
-      "mood": "Hopeful",
-      "pulse": "The playoffs start today: Portland, the No. 7 seed, opens a best-of-3 at No. 2 FC Dallas. Fans are riding a late surge under Marti Cifuentes, who took over midseason and closed with four straight wins and five unbeaten. Dallas won the season series, though, and has Golden Boot runner-up Petar Musa.",
+      "mood": "disappointed but hopeful",
+      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can bounce back in Portland.",
       "storylines": [
-        "Game 1 today at Dallas, 1:00 PT on Apple TV",
-        "Game 2 at Providence Park Sat Nov 28; Game 3 (if needed) Dec 2 in Dallas",
-        "Kristoffer Velde led the team with 12 goals and 10 assists, and scored 4 in the last 3 games",
-        "Ties go straight to penalties, no extra time"
+        "Timbers lost 3-0 to FC Dallas in Game 1",
+        "Series is best-of-three",
+        "Next game is in Portland",
+        "Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -63,14 +63,13 @@
       ]
     },
     "f1": {
-      "mood": "Grumbling",
-      "pulse": "Kimi Antonelli was fastest in Las Vegas qualifying but drops to sixth with an engine penalty, handing Max Verstappen pole with George Russell alongside. Verstappen also escaped punishment after stewards looked at run-ins with Russell and Colapinto. Antonelli already clinched the title in Mexico City, so the real fight is for second.",
+      "mood": "exhilarating and unpredictable",
+      "pulse": "Fans are reacting to an unprecedented slipstream thriller with 35 lead changes. High drama from driver errors and collisions keeps engagement high.",
       "storylines": [
-        "Verstappen on pole; Russell, Norris, Hadjar next; Antonelli starts 6th after a 5-place engine penalty",
-        "Piastri takes a 10-place penalty and starts 17th",
-        "Stewards summoned Verstappen over incidents with Russell and Colapinto; no penalty",
-        "Title is Antonelli's; Verstappen (279) leads Russell (262) and Hamilton (261) for P2 after Sao Paulo",
-        "Mercedes already sealed the constructors' title"
+        "Verstappen wins Las Vegas GP",
+        "35 lead changes during race",
+        "Leclerc penalized after Hamilton clash",
+        "Antonelli settles for fourth place"
       ],
       "sources": [
         {
@@ -96,12 +95,10 @@
       ]
     },
     "ducks": {
-      "mood": "Happy",
-      "pulse": "Oregon rolled Michigan State 45-7 in East Lansing on Friday night for a fourth straight win, now 8-3. Brandon Smith ran for a career-high 121 yards and two TDs filling in for the injured Dierre Hill. Playoff hopes are alive but need a win over Washington and some help.",
+      "mood": "Cautious optimism",
+      "pulse": "Fans focus on the playoff push after early losses. They hope to maintain offensive dominance and avoid trap games.",
       "storylines": [
-        "Beat Michigan State 45-7; Brandon Smith 121 yards, 2 TDs",
-        "8-3 (6-2 Big Ten), No. 13 in the CFP rankings with work left to do",
-        "Next: vs. Washington at Autzen, Sat Nov 28, either 4:00 PT on FS1 or 4:30 PT on NBC (Big Ten picks after this weekend)"
+        "Ducks defeated Michigan State in East Lansing"
       ],
       "sources": [
         {
@@ -123,12 +120,11 @@
       ]
     },
     "niners": {
-      "mood": "Confident but nervy",
-      "pulse": "At 8-1 with a three-game NFC West lead, fans are happy, but the 46-40 shootout win in Dallas left the defense under a microscope after it gave up 40 points and 439 yards. Sunday night in Mexico City against the 7-2 Vikings is being billed as a real NFC test.",
+      "mood": "Anticipatory and cautious",
+      "pulse": "Fans are excited about Mike Evans' return for a primetime matchup in Mexico City. Defensive struggles against Dallas have caused concern.",
       "storylines": [
-        "Next: vs. Vikings in Mexico City, Sun Nov 22, 5:20 PT on NBC and Peacock",
-        "8-1 after a 46-40 shootout win at Dallas, with a three-game NFC West lead",
-        "Defense worries: 40 points allowed in Dallas, little pressure, Renardo Green and Deommodore Lenoir banged up"
+        "Mike Evans expected to play vs Vikings after Achilles injury",
+        "Vikings game could decide NFC number one seed tiebreaker"
       ],
       "sources": [
         {

@@ -1,26 +1,6 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-22",
   "shows": [
-    {
-      "artist": "Kareem Kandi with Ali Jackson",
-      "kind": "Local",
-      "date": "2026-11-21",
-      "time": null,
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Portland saxophonist Kareem Kandi with drummer Ali Jackson, who held the drum chair of the Jazz at Lincoln Center Orchestra; listed on The 1905's upcoming shows page.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets) upcoming shows",
-          "url": "https://the1905.turntabletickets.com/"
-        },
-        {
-          "name": "Bandsintown: The 1905",
-          "url": "https://www.bandsintown.com/v/10022105-the-1905"
-        }
-      ]
-    },
     {
       "artist": "Eric Skye Trio Plays Miles Davis",
       "kind": "Local",

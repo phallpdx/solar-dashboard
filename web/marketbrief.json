@@ -20,6 +20,22 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNMU1BS09sWFhaUnRtWlBmMm41cFl0QW1nWXBmNFp2SURMaUdQblMteV9yZEd5NVNCcnlfNXU4Nkl1bGNBdXR6TkU3WHp0Y0hlOVR3N0c4V25Dcy1FaVVZOUVrMFZJTGFVVWRjNWo1cXY4Z2E3MFlCdGl6b2I2Q21MMWN4NWFQRThEU2h2aVctRVpucnph?oc=5"
+      },
+      {
+        "name": "BEA release schedule",
+        "url": "https://www.bea.gov/index.php/news/schedule/full"
+      },
+      {
+        "name": "StockTitan: Dell, Deere and Best Buy report in a short Thanksgiving week",
+        "url": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-23-2026"
+      },
+      {
+        "name": "TradingKey: The week ahead (GDP, PCE, Dell, HPE)",
+        "url": "https://www.tradingkey.com/analysis/stocks/us-stocks/262316778-week-ahead-us-gdp-pce-dell-hpe-report-anthropic-tradingkey"
+      },
+      {
+        "name": "Schaeffer's: Thanksgiving week brings more inflation data",
+        "url": "https://www.schaeffersresearch.com/content/news/2026/11/19/the-week-ahead-thanksgiving-week-brings-more-inflation-data"
       }
     ],
     "by": "local model",
@@ -28,7 +44,11 @@
       "AI wipeout involving Nvidia and Anthropic [#1, #2, #6]",
       "Tech outages fueling doomsday economy concerns [#14]"
     ],
-    "watch": []
+    "watch": [
+      "Tue Nov 24 after the close: Dell and HP report quarterly earnings (per StockTitan and TradingKey previews).",
+      "Wed Nov 25, 8:30 a.m. ET: second estimate of Q3 GDP from the BEA; previews also expect October PCE inflation that day. Deere reports Wednesday too.",
+      "Thu Nov 26: US markets closed for Thanksgiving; Friday Nov 27 is a shortened session closing at 1 p.m. ET."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -100,6 +120,18 @@
       {
         "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
+      },
+      {
+        "name": "McCreith Team summary of RMLS Market Action",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
+        "name": "Redfin",
+        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+      },
+      {
+        "name": "Freddie Mac PMMS (via GlobeNewswire)",
+        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
       }
     ],
     "by": "local model",
@@ -137,16 +169,16 @@
     ],
     "stats": [
       {
+        "label": "Median sale price (Portland metro, October 2026, RMLS data)",
+        "value": "$545,000",
+        "change": "+0.9% vs a year ago",
+        "source": "McCreith Team summary of RMLS Market Action",
+        "url": "https://www.themccreithteam.com/post/october-2026-market-action-report-portland-metro-and-yamhill-polk-and-marion-counties"
+      },
+      {
         "label": "Median sale price (city of Portland, October 2026)",
         "value": "$524,635",
         "change": "+0.9% vs a year ago",
-        "source": "Redfin",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
-      },
-      {
-        "label": "Median days on market (city of Portland, October 2026)",
-        "value": "26 days",
-        "change": "vs 29 days a year ago",
         "source": "Redfin",
         "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
       },

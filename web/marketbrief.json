@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-22",
-  "updated_at": "2026-11-22T08:32:41Z",
+  "updated_at": "2026-11-22T10:29:44Z",
   "analysis": {
     "headline": "Markets slumped as tech and AI concerns triggered a significant sell-off.",
     "summary": "Stocks fell sharply amid an AI bubble burst and Nvidia's accounting probe. Bonds saw yields rise while gold and Bitcoin declined. Oil rose slightly amidst broader market volatility.",
@@ -36,7 +36,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a liquefaction facility. Market supply is tightening.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market supply is tightening.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -91,7 +91,7 @@
   },
   "realestate": {
     "headline": "The Portland housing market is stagnant with slowing sales.",
-    "summary": "Home sellers are lowering prices to help buyers make deals in a stagnant market. Sales are slowing as buyers adjust to elevated mortgage rates. The average US 30-year mortgage rate recently fell to 7.18%.",
+    "summary": "Sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. The average US 30-year mortgage rate fell to 7.18%. Prices continue climbing in Oregon.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -103,15 +103,11 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFByNWlVTk41NThkOXA4YkJIYXBlZE4teWdEUUJsZ1hHNW9TVWVGM1JzaUJoajNfZldGLWxRVnNDSkNDR0R3NXk0dVRMOVAtMzFiOTlkVDktTlpuM1F3S01yMUJB?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
       }
     ],
     "by": "local model",
@@ -120,6 +116,12 @@
         "title": "Sub-7% mortgage rates depend on 10-year yield and spreads",
         "date": "2026-11-22",
         "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE01RGJJTVRUVnQzcUFjc0l6bGRJOWJpQ0N0Zlo0Tm9PMnU5RmlKeUxYRmRWcDZtWVV3dkExN0pPMWtMaUl5Ul9HZ1E2MFJfdjdXZTNjNmtUaUlnNU9qc2p5OFpOZ29BdUpJT3ZvTmE2VU9HbDVJYlpJd19aSEQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage rates hit highest level in 20 months - ABC News",
+        "date": "2026-11-21",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNaGlaUEo5dHhaTmdhc3NhS1Z3UHo2SjRsTWhIQmFlRGdxaG5NRWhWRkxOcG1xWDdXUHRRNlNpS21NN25nbm9RX1FWRjJCeThQRVVSVmpodERyVElldXhpQ1p1SGVIa0xiZnF0WmFLY3paUWZYU2hWZmJ6TUtpVk5ZQXBDUW9EdndiSHdkWXJvUzFWYkZl0gGaAUFVX3lxTE9sbVpPaFF1UkhDRGljeTQzbTRrSHdwMWNUZlo1aDZ1dDV6c0lNVkVVTV9FOGFPbUlreFZXTjVqSHE1V1RGUFFqcTEzUmhXUzQ2UzhLQ29sUERyQTJPa1d1VDM3Z0VwbW9VSjBBbEhUTTF1dlUzN3J1U2ZwTmlYOEFMNWt4SW5vYk5mcV9JdDRYWHl0Y0w3T3NiTVE?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -138,12 +140,6 @@
         "title": "Average U.S. 30-year mortgage rate rises to 7.28% this week, ending a four-week slide",
         "date": "2026-11-21",
         "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNbi1zenFKRTYwcDVRU05UdDVYYjJ4ODhxdnJVc296R0RualJnT0hYUWFRN2xLYTZRVXBVYlIzOHkzdFNxbk9laVlQUkFrOXlST3JLWE0yZzJRb2MtNFliUUlGVE5adVdhRU1YVUdEb3VZRTl6cUNWQjN5WDh1SnNmOGhpbVhwREg2d2hGYTdpY0thS185ZF9oRXZVWko4Zk5TSlFWVW90bGwyOUpWVFpZdmg0UlU0Yml4dTk3eUlRZ3VtcG9mTjZzSDBzcDlRQ0xSZE1EdnRXeUphRG43eGdMaTZmLTlQRmVPUVlKbVYxeks?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today’s Mortgage Rates, November 21: 30-Year Rate Down 15 Basis Points",
-        "date": "2026-11-21",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPYnRqNHE1Vml3bXhHeFgzSXZMeENYNDZES01BNld0cTNvSkhOM2w0RzNBSVFQNU52QmMtNWlCUlFmTEJGZE8xUmRBMFdvSm5Ia2labEtwTVZxY2RJM3VfNmRNcUxvMkpYMVBzOUtZTGtLRnM2VjR2UzExT2pzLU9YVTVtSVlJb2NGbVgzTQ?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

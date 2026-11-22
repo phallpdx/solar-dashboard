@@ -1,15 +1,15 @@
 {
   "updated": "2026-11-22",
-  "updated_at": "2026-11-22T08:30:36Z",
+  "updated_at": "2026-11-22T10:27:52Z",
   "teams": {
     "blazers": {
       "mood": "disappointed and frustrated",
-      "pulse": "Fans are reeling after a heavy loss to the Knicks. The team's recent struggles against top competition have dampened early season excitement.",
+      "pulse": "Fans are reeling after a heavy loss to the Knicks. The team's recent struggles against top competition have dampened early season optimism.",
       "storylines": [
         "Lost to New York Knicks on 2026-11-21",
         "Deni Avdija was available for play",
-        "Dec 1 game vs Timberwolves moved to national TV",
-        "Moda Center renovation negotiations are stalled"
+        "Moda Center renovation negotiations stalled",
+        "Timberwolves game moved to national TV"
       ],
       "sources": [
         {
@@ -35,13 +35,12 @@
       ]
     },
     "timbers": {
-      "mood": "disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can bounce back in Portland.",
+      "mood": "Disappointed but hopeful",
+      "pulse": "Timbers lost 3-0 in Game 1 against FC Dallas. They aim to move on and even the series.",
       "storylines": [
-        "Timbers lost 3-0 to FC Dallas in Game 1",
-        "Series is best-of-three",
-        "Next game is in Portland",
-        "Eric Izoita signed first-team contract"
+        "Lost 3-0 to FC Dallas in Game 1",
+        "Round One is a best-of-three series",
+        "#Next game is in Portland"
       ],
       "sources": [
         {
@@ -63,13 +62,12 @@
       ]
     },
     "f1": {
-      "mood": "exhilarating and unpredictable",
-      "pulse": "Fans are reacting to an unprecedented slipstream thriller with 35 lead changes. High drama from driver errors and collisions keeps engagement high.",
+      "mood": "tense and controversial",
+      "pulse": "Fans are reacting to numerous penalties and on-track collisions. High drama from driver errors and technical failures is driving engagement.",
       "storylines": [
-        "Verstappen wins Las Vegas GP",
-        "35 lead changes during race",
-        "Leclerc penalized after Hamilton clash",
-        "Antonelli settles for fourth place"
+        "Verstappen wins Las Vegas GP after slipstream thriller",
+        "McLaren secures double podium in Las Vegas",
+        "Perez faces five-place penalty for Qatar"
       ],
       "sources": [
         {
@@ -95,8 +93,8 @@
       ]
     },
     "ducks": {
-      "mood": "Cautious optimism",
-      "pulse": "Fans focus on the playoff push after early losses. They hope to maintain offensive dominance and avoid trap games.",
+      "mood": "Anxious but hopeful",
+      "pulse": "Fans focus on playoff odds after early losses. They hope to maintain offensive dominance and secure a spot.",
       "storylines": [
         "Ducks defeated Michigan State in East Lansing"
       ],
@@ -121,10 +119,12 @@
     },
     "niners": {
       "mood": "Anticipatory and cautious",
-      "pulse": "Fans are excited about Mike Evans' return for a primetime matchup in Mexico City. Defensive struggles against Dallas have caused concern.",
+      "pulse": "Fans are focused on the high-stakes matchup against Minnesota in Mexico City. Mike Evans is expected to return from an Achilles injury.",
       "storylines": [
-        "Mike Evans expected to play vs Vikings after Achilles injury",
-        "Vikings game could decide NFC number one seed tiebreaker"
+        "Vikings game determines NFC number one seed battle",
+        "Mike Evans expected to play after Achilles injury",
+        "Defense gave up 40 points to Cowboys",
+        "Nate Hobbs downgraded to out; Brandin Cooks waived"
       ],
       "sources": [
         {

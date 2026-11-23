@@ -1,31 +1,24 @@
 {
   "updated": "2026-11-23",
-  "updated_at": "2026-11-23T10:23:42Z",
+  "updated_at": "2026-11-23T12:23:45Z",
   "analysis": {
-    "headline": "Wall Street prepares to rebound after an AI-driven stock sell-off.",
-    "summary": "Stocks fell as Asian markets tumbled due to AI bubble fears. Nasdaq entered a correction while futures show signs of recovery. Gold and Bitcoin prices were not specified in the text. Bonds and oil movements were not detailed in the provided headlines.",
+    "headline": "Asian markets tumble as AI bubble fears mount.",
+    "summary": "Stocks fell amid an AI-driven correction and bubble concerns. Bonds saw yields decline while oil prices dropped. Gold rose during market volatility. Bitcoin showed slight gains despite a long-term downward trend.",
     "sources": [
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNeXhpd01xVDBQSlFMWUJzZktLSGh3WXZ0b3JfRTdwSEV4Rll0bjlIc3FfM3MwemllQlRidmpiOEpUbHJBQzZ4YU1ZOFNhMmVpMjBWc3RULWppdmxLZVdERHFTLXJHSjU3aTFWcmFrakkzS3VpTDFkSE45Vk1TbmszWUhzcVM?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMFVRM2J2cTZ6eU02Qzk1TF83UmhsSEN3SlpHYjJuc2lDeXBVM0h6WkN2bEJCUlk5RnZNOFMta05FOXFqeTZQQWZnbFl2RG1WTWVNSXYwVWhZRFZxRkx6SDlhTWtUWk92UVBJa2FGWVk3ak9rOUVJYjZ6RDBqcUZCOEpiWmFVWGxvVmM1Y2prdDk2N19EZG0xWjU3aFV5QkJ6MjF4eExGSkd3TWxaWGRBVzhB?oc=5"
-      },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOaWg2VjJNckwyMnpNTjV6cnBRckpmX2hndGxyM29qMnU0aml6bUNicGJPNXJKdzludzVfYVNhSHpJR0xhZjJMeHFDM3d4MldqQUJPbE9ha3VFbjMyLXFEeS1VSkFxejNJN2czNFlnMF9uNGdnb2lPUUdoTmZZeUFrbHFfNjVsZzc5QUVSR3hST2VYaDB1S2dYd0ktRWNoSHNmQUHSAacBQVVfeXFMUHlLZVl5SzNCcWd0RjktYlZwT2pDLXNDZmg1dzNKQ2k4VFZaa08xWjhQcEFubzhxYnpsZWxQU3ZIaGZSZlFzOGlrY3RRNUlLczVZRk8xN05VdkduMFRaVy03ME5zMWFtT0JSSWRqTzZ0cjVtUVBwYzJ5LWZhM0FiOFlSSlJHS1ZhcmZqeGlFdi1CLTBLeVpVSFNJVElhSnQxQmU4WS1hSWM?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOMHVtODRCNHpEWlpxVUloeXluS04zZTB3WUFMazNTamtVckExbW9qbWFDaGJObUtCNHZUZkVoRWpYMlk4OXVOYzF4dUhERk4wOXpNWHhZWEZGamR2cGpxdC1mRVpDTVpsLVhDbS1RQmJlYXpRblh4cC0wOUJtalI4WHAzLWVFcHhXYzd2dTNidS0yM0hEX0tXX3pB?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMFVRM2J2cTZ6eU02Qzk1TF83UmhsSEN3SlpHYjJuc2lDeXBVM0h6WkN2bEJCUlk5RnZNOFMta05FOXFqeTZQQWZnbFl2RG1WTWVNSXYwVWhZRFZxRkx6SDlhTWtUWk92UVBJa2FGWVk3ak9rOUVJYjZ6RDBqcUZCOEpiWmFVWGxvVmM1Y2prdDk2N19EZG0xWjU3aFV5QkJ6MjF4eExGSkd3TWxaWGRBVzhB?oc=5"
       }
     ],
     "by": "local model",
     "session": "2026-11-20",
     "drivers": [
-      "AI stock sell-off"
+      "AI bubble fears mounting",
+      "AI-driven sell-off"
     ],
     "watch": []
   },
@@ -93,8 +86,8 @@
     ]
   },
   "realestate": {
-    "headline": "Sellers are lowering prices in a stagnant market.",
-    "summary": "Median sale price was $545,000 in October 2026 and $555,000 in July 2026. Inventory rose to 4.3 months in October. Home sales are slowing as buyers adjust to elevated mortgage rates.",
+    "headline": "Sellers are lowering prices in a stagnant Portland housing market.",
+    "summary": "Median sale prices were $545,000 in October 2026 and $555,000 in July 2026. Inventory rose to 4.3 months by October. Home sales are slowing due to elevated mortgage rates.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -116,33 +109,33 @@
     "by": "local model",
     "items": [
       {
-        "title": "Mortgage rates Monday, Nov. 23, 2026",
+        "title": "Mortgage rates today, Nov. 23, 2026: Rates dip",
         "date": "2026-11-23",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBIakJnWHB4NFFmaDNmYjB1MmhKMk8ycG9jOXF6OWZYTnhGdjRZRUdKSDRabFBBNHMtb003YkhpRDZrcERDUmtQcmJiX0RkclBvR0tqNHMyUHdELUJrWWwxelF2VGRsMVF2aElLLW04UQ?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Today: November 23, 2026 – Rates Fall For 3rd Straight Day",
+        "date": "2026-11-23",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE40NFdXb1B1WkdDWURzM2I0cWF3N0xuWW11Sng0ZmI3VjlEM250SE15bkVUX2VySkswSnRzWmVicGJRbGtzMkd6N2dlMEh2bFV4bXFRV1NvYzc2VUN6LURMdlVKWmFIWkdxTUxsVmpSSXltZUk?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage and refinance interest rates today, Monday, November 23, 2026: Purchase mortgage rates lower than refinance rates",
+        "date": "2026-11-23",
+        "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxOQkZCQWRzZXVBTW9SRnd1YklkZWhXSlpxRTVhMTNyR3cwT2hEUGxYLXJFeEZyMElTeHNoODh0SWJBS0JmQk1QdEt3RE9ETmswV1JGby01c21GTllrd24zYkJ6TEhzcXota3N3SnYxcjBVY1ItTzlvX0dSWU01UHNGbkw0cWVlZDhXWHFVdlFKaE91S0tYVmRpMVFwNXBsX3p3ZExCWEhLY3R0YnZiNEJLT3lzOThlSEVzbHVocWlxSDB4R1VFX2FEajA3NXZXbTNDVEZIekI3OGVGRnFJYVRCUDE5amRpV2x0RFNPTko1Y2MyRG5nT1ZEemtEYllxZE9Rd3ZwZGd4VWlkb3FKblY3QmVsb3lFX1p3V2F1QlNsaw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Current Mortgage Refinance Rates: November 23, 2026 – Rates Show Mixed Movement",
+        "date": "2026-11-23",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOX2tVZmk1OHlERHZsNlp3S2lCZElpNlYyOEdHQk16UlZyU1NlQ0ZGNGJBUzFocUZCbE5JZGlYOFRDQjdpT3g1aHJJekVMeHlCVWw0NlFlTzlic0g4SXhfODgwQU14b2FSUzNsRWpONTMybmtjSC1YcTNqQUdtQUlkVmZHRmxrd3JrOGpZaWZ3?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
         "title": "Today’s home equity loan and HELOC rates, Nov. 23, 2026",
         "date": "2026-11-23",
         "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE50UlU4aUxfcVI2ejI4NXpOSUJfNDVPOTZNTkkydm9mTzhUbFIwdU5nb1FFQUd0Vzc4RDJnaXR1SlExOUlYbFZ2ZVZoVWVKQ2FnMFFsRHpCcjBkYTBYemFkdkZvVEZVQnM1?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Portland Pending Home Sales Drop 20% Year Over Year",
-        "date": "2026-11-22",
-        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQWXBtOWhrOHpmTnlXbXhnSGV4YVRfMTYtVnZDcmhrYl9kVTFkTjNWY0kyVXlxOThTV1RQVVljVVBjbUFHQ1VDUzBZQktSS1Rqc200MGxwZm5ZWFBwdkNBLXBVTEk4R21mcjVjdFY5X2JVUU1ENnAwMTIyb1ppLWl4SnZEZmtUUnJjdUQ1WlZUR1JJRjFLdWlJVG5UeEJNWXBy?oc=5",
-        "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Sub-7% mortgage rates depend on 10-year yield and spreads",
-        "date": "2026-11-22",
-        "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE01RGJJTVRUVnQzcUFjc0l6bGRJOWJpQ0N0Zlo0Tm9PMnU5RmlKeUxYRmRWcDZtWVV3dkExN0pPMWtMaUl5Ul9HZ1E2MFJfdjdXZTNjNmtUaUlnNU9qc2p5OFpOZ29BdUpJT3ZvTmE2VU9HbDVJYlpJd19aSEQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage and refinance interest rates today, Sunday, November 22, 2026: 5/1 ARM purchase rates down the most this past week",
-        "date": "2026-11-22",
-        "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxOMXNaM2haQm0yUEljYWhySjdIZWZfRGFwMnptNk1NMVoyLUpnSkFOQWN4RFlJRm5JZnB1c2ZvamlucGM0bDJhcXdLVHEtNF9CVWp0MkRDdmFzMEZ5TUJiVkN0TkJfM2ZyU2paVW9PejhSSTU1OTU5ZFJ0QXJxczNjaDFKOXhNX3NFSi01cC1TTzNhRHFvdERmbkVBd3BWenp0cmo4T3pZaHFPejVoYy1pa2NQQzQ3bmR1aGxZSDhPWExxSGtraVZZNjdQUWJ5X0dhTmpXVFBLb2taQ3FVUWpyNlFZUy0wMVlJUW5XdXROR3hwUjlCWkh0X0Y1TkxpU3hEQTd3QTdHdWJ6bEJYYzNybzVoZjBMLUFfX05Lb0Rtbw?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

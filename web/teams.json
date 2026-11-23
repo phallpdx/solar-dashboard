@@ -1,13 +1,13 @@
 {
   "updated": "2026-11-23",
-  "updated_at": "2026-11-23T10:19:52Z",
+  "updated_at": "2026-11-23T12:19:52Z",
   "teams": {
     "blazers": {
       "mood": "disappointed and weary",
       "pulse": "Fans are struggling after a brutal six-game road trip. Recent losses to the Knicks have dampened spirits.",
       "storylines": [
         "Lost to Knicks on Saturday night",
-        "End road trip against 76ers Monday"
+        "Finish road trip against 76ers Monday"
       ],
       "sources": [
         {
@@ -34,11 +34,12 @@
     },
     "timbers": {
       "mood": "disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can bounce back in Portland.",
+      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can even the series in Portland.",
       "storylines": [
-        "Timbers lost Game 1 of Round One",
-        "Next game is in Portland to even series",
-        "Eric Izoita signed first-team contract"
+        "Timbers lost Game 1 of Round One 3-0 against FC Dallas.",
+        "The series is a best-of-three format.",
+        "Next game will be played in Portland.",
+        "Eric Izoita signed a first-team contract."
       ],
       "sources": [
         {
@@ -60,12 +61,11 @@
       ]
     },
     "f1": {
-      "mood": "Thrilled but chaotic",
-      "pulse": "Fans are energized by record-breaking overtaking in Las Vegas. Tension is rising due to driver clashes and championship battles.",
+      "mood": "Thrilled and intense",
+      "pulse": "Fans are energized by a record-breaking race with 352 overtakes. Excitement grows as Verstappen dominates while championship battles tighten.",
       "storylines": [
-        "Verstappen wins fourth race of the season",
-        "Norris recovers to P2 in chaotic race",
-        "Hamilton and Leclerc clash at Las Vegas",
+        "Verstappen wins Las Vegas GP",
+        "McLaren drivers finish second and third",
         "Camara to drive for Haas in final races"
       ],
       "sources": [
@@ -117,10 +117,13 @@
       ]
     },
     "niners": {
-      "mood": "optimistic and dominant",
-      "pulse": "Fans are ecstatic after a blowout win against the Vikings. Mike Evans' return raises offensive expectations significantly.",
+      "mood": "Triumphant and dominant",
+      "pulse": "Fans are ecstatic after a blowout win over the Vikings. The offense looks unstoppable with Mike Evans returning.",
       "storylines": [
-        "8-1 record puts Niners in first place NFC seeding"
+        "Blowout victory against Minnesota",
+        "Mike Evans returns to lineup",
+        "Dre Greenlaw is out",
+        "Offensive line continuity remains high"
       ],
       "sources": [
         {

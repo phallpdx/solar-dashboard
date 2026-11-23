@@ -1,146 +1,152 @@
 {
   "updated": "2026-11-23",
-  "updated_at": "2026-11-23T12:19:52Z",
+  "updated_at": "2026-11-23T13:16:22Z",
   "teams": {
     "blazers": {
-      "mood": "disappointed and weary",
-      "pulse": "Fans are struggling after a brutal six-game road trip. Recent losses to the Knicks have dampened spirits.",
+      "mood": "Frustrated",
+      "pulse": "Saturday stung: Portland clawed back from 26 down to lead the Knicks with 3.4 seconds left, then Mikal Bridges hit a buzzer three for a 97-96 Knicks win. Slow starts have dogged the last few road games, and the trip has worn everyone down.",
       "storylines": [
-        "Lost to Knicks on Saturday night",
-        "Finish road trip against 76ers Monday"
+        "Lost 97-96 at New York on a Bridges three at the horn after a 26-point comeback",
+        "Scoot Henderson had a rough night vs. the Knicks: 1-for-8, 3 points, 3 turnovers",
+        "Slow starts in the last three games, all on the road (Sean Highkin via Hoops Rumors)",
+        "Six-game road trip wraps tonight (Mon) at Philadelphia"
       ],
       "sources": [
         {
-          "name": "OPB/AP (Bucks recap)",
-          "url": "https://www.opb.org/article/2026/11/20/portland-trail-blazers-beat-milwaukee-bucks-damian-lillard-33-points/"
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/118759/portland-trail-blazers-new-york-knicks-final-score-boxscore-jalen-brunson"
         },
         {
-          "name": "CBS Sports (Henderson)",
-          "url": "https://www.cbssports.com/fantasy/basketball/news/trail-blazers-scoot-henderson-erupts-for-season-high-27-off-bench/"
+          "name": "SI Blazers",
+          "url": "https://www.si.com/nba/trailblazers/onsi/2-winners-2-losers-in-blazers-loss-vs-mikal-bridges-knicks"
         },
         {
-          "name": "Blazer's Edge (Nori on Scoot)",
-          "url": "https://www.blazersedge.com/trail-blazers-news/118675/portland-trail-blazers-scoot-henderson-micah-nori-nba-news-interviews-damian-lillard-jrue-holiday-milwaukee-bucks"
+          "name": "Hoops Rumors",
+          "url": "https://www.hoopsrumors.com/2026/11/trail-blazers-notes-slow-starts-henderson-kent-more.html"
         },
         {
-          "name": "Posting and Toasting (Knicks preview)",
-          "url": "https://www.postingandtoasting.com/knicks-game-previews/91455/game-preview-knicks-vs-trail-blazers-november-21-2026"
-        },
-        {
-          "name": "Sports Mole (injury report)",
-          "url": "https://www.sportsmole.co.uk/basketball/new-york-knicks/preview/portland-trail-blazers-vs-new-york-knicks-player-props-injury-report-and-prediction--nba_609485.html"
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/gameday-coverage/118771/portland-trail-blazers-philadelphia-76ers-time-tv-latest-injury-report"
         }
       ]
     },
     "timbers": {
-      "mood": "disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can even the series in Portland.",
+      "mood": "Worried",
+      "pulse": "Game 1 in Frisco went badly: FC Dallas won 3-0, with Joaquín Valiente scoring twice in two minutes early in the second half. Portland now has to win at Providence Park to keep the season alive.",
       "storylines": [
-        "Timbers lost Game 1 of Round One 3-0 against FC Dallas.",
-        "The series is a best-of-three format.",
-        "Next game will be played in Portland.",
-        "Eric Izoita signed a first-team contract."
+        "Lost Game 1 of the best-of-3 Round One series 3-0 at FC Dallas (Sat Nov 21)",
+        "Valiente scored in the 53rd and 55th minutes; Sam Sarver added one in stoppage time",
+        "Game 2 is Saturday, Nov 28 at Providence Park",
+        "A Game 3 would be Dec 5 if Portland evens the series"
       ],
       "sources": [
         {
-          "name": "MLSsoccer.com (5 storylines)",
-          "url": "https://www.mlssoccer.com/playoffs/2026/news/fc-dallas-vs-portland-timbers-5-biggest-storylines-for-western-conference-round-one"
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/recap-timbers-lose-3-0-to-fc-dallas-in-game-1-of-round-one"
         },
         {
-          "name": "Yahoo Sports (dates, TV)",
-          "url": "https://sports.yahoo.com/articles/fc-dallas-sets-dates-kickoff-210744130.html"
+          "name": "FC Dallas",
+          "url": "https://www.fcdallas.com/news/fc-dallas-opens-audi-2026-mls-cup-playoffs-with-commanding-3-0-home-win-over-the-portland-timbers"
         },
         {
-          "name": "Timbers.com (Game 2)",
+          "name": "Stumptown Footy",
+          "url": "https://stumptown-footy.ghost.io/mls-cup-playoffs-round-one-game-1-recap-highlights-portland-timbers-at-fc-dallas/"
+        },
+        {
+          "name": "Timbers.com",
           "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
-        },
-        {
-          "name": "Big D Soccer (Game 1 preview)",
-          "url": "https://www.bigdsoccer.com/mls-cup-playoffs-game-one-fc-dallas-vs-portland-timbers/"
         }
       ]
     },
     "f1": {
-      "mood": "Thrilled and intense",
-      "pulse": "Fans are energized by a record-breaking race with 352 overtakes. Excitement grows as Verstappen dominates while championship battles tighten.",
+      "mood": "Buzzing",
+      "pulse": "Las Vegas was a slipstream thriller: Max Verstappen fell behind both McLarens heading into the last lap and still won by 0.6s over Lando Norris. Verstappen called it something he'd never seen in F1, while Kimi Antonelli's title lead stays huge.",
       "storylines": [
-        "Verstappen wins Las Vegas GP",
-        "McLaren drivers finish second and third",
-        "Camara to drive for Haas in final races"
+        "Verstappen wins Las Vegas; Norris and Piastri complete the podium for McLaren",
+        "Antonelli leads the drivers' title on 402 points, 98 clear of Verstappen",
+        "George Russell hit the wall late and dropped to ninth; Hamilton jumps to third in the standings",
+        "Mercedes lead the constructors on 666; McLaren cut Red Bull's lead for third to nine points"
       ],
       "sources": [
         {
-          "name": "Formula1.com (qualifying)",
-          "url": "https://www.formula1.com/en/latest/article/antonelli-quickest-in-las-vegas-gp-qualifying-as-verstappen-inherits-pole-position.6R7udh8iYMHunSOGI6zStK"
+          "name": "Formula1.com",
+          "url": "https://www.formula1.com/en/latest/article/something-that-ive-never-seen-before-in-f1-verstappen-reflects-on-las-vegas-gp-win-after-slipstream-thriller.11R5Iz64C6PLpqrGDJU5OK"
         },
         {
-          "name": "Sky Sports (qualifying)",
-          "url": "https://www.skysports.com/f1/news/13614575/las-vegas-gp-kimi-antonelli-fastest-but-max-verstappen-on-pole-from-george-russell-after-dramatic-qualifying"
+          "name": "RacingNews365",
+          "url": "https://racingnews365.com/2026-f1-championship-standings-after-las-vegas-grand-prix"
         },
         {
-          "name": "Al Jazeera (stewards)",
-          "url": "https://www.aljazeera.com/sports/2026/11/21/verstappen-escapes-las-vegas-discipline-takes-pole-as-antonelli-penalised"
+          "name": "PlanetF1",
+          "url": "https://www.planetf1.com/news/f1-championship-standings-2026-las-vegas-grand-prix"
         },
         {
-          "name": "AutoRacing1 (Vegas preview, standings)",
-          "url": "https://www.autoracing1.com/pl/509931/formula-1-news-2026-las-vegas-gp-preview/"
-        },
-        {
-          "name": "Sky Sports (what's left)",
-          "url": "https://www.skysports.com/f1/news/13611983/las-vegas-gp-whats-still-to-play-for-over-final-three-races-of-f1-2026-season-with-battles-in-drivers-and-constructors-championships"
+          "name": "PlanetF1",
+          "url": "https://www.planetf1.com/features/winners-and-losers-2026-las-vegas-grand-prix"
         }
       ]
     },
     "ducks": {
-      "mood": "Anxious but hopeful",
-      "pulse": "Fans are navigating a complex path to the CFP after three unexpected losses. Implied odds give Oregon a 46.5% chance.",
+      "mood": "Hopeful",
+      "pulse": "Oregon rolled Michigan State 45-7 on Friday night for a fourth straight win. Now it all rides on the rivalry game: beat Washington and the Big Ten title game and playoff hopes stay alive.",
       "storylines": [
-        "Ducks defeated Michigan State"
+        "Beat Michigan State 45-7 in East Lansing (Fri Nov 20)",
+        "At 8-3 (6-2 Big Ten), the Ducks need a win to stay in the Big Ten title and playoff hunt",
+        "Washington (7-4) is playing spoiler",
+        "Next game: Saturday, Nov 28 vs. Washington at Autzen, 4:30 PM PT on NBC"
       ],
       "sources": [
         {
-          "name": "ESPN recap (Michigan State)",
-          "url": "https://www.espn.com/college-football/recap/_/gameId/401858529"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/ncaaf/oregon-ducks-michigan-state-spartans-202611200030/"
         },
         {
-          "name": "CBS Sports (playoff hopes)",
-          "url": "https://www.cbssports.com/college-football/news/oregon-routs-michigan-state-45-7-to-keep-playoff-hopes-alive/"
+          "name": "GoDucks.com",
+          "url": "https://goducks.com/news/2026/11/21/football-oregon-vs-washington-set-for-4-30-pm"
         },
         {
-          "name": "Yahoo Sports (3 things learned)",
-          "url": "https://sports.yahoo.com/articles/oregon-3-things-learned-blowout-060207256.html"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/washington-aims-spoil-oregon-footballs-121303652.html"
         },
         {
-          "name": "Yahoo Sports (Washington kickoff options)",
-          "url": "https://sports.yahoo.com/articles/oregons-regular-season-finale-2-184508152.html"
+          "name": "SI Ducks",
+          "url": "https://www.si.com/college/oregon/football/oregon-washington-game-two-possible-kickoff-times-tv-schedule-rivalry"
         }
       ]
     },
     "niners": {
-      "mood": "Triumphant and dominant",
-      "pulse": "Fans are ecstatic after a blowout win over the Vikings. The offense looks unstoppable with Mike Evans returning.",
+      "mood": "Fired up",
+      "pulse": "Sunday night in Mexico City was a rout: the Niners beat the Vikings 35-10 to move to 9-1 and hold the NFC's No. 1 seed. Brock Purdy carved up the league's stingiest defense and the MVP talk is getting louder.",
       "storylines": [
-        "Blowout victory against Minnesota",
-        "Mike Evans returns to lineup",
-        "Dre Greenlaw is out",
-        "Offensive line continuity remains high"
+        "Beat Minnesota 35-10 in Mexico City; now 9-1 and the NFC's top seed",
+        "Purdy: 21 of 26, 255 yards, 3 TDs; Kittle caught two TDs and Ji'Ayir Brown had a pick-six",
+        "Mike Evans was active after a month out with Achilles tendinitis; Dre Greenlaw was inactive",
+        "Next game: Sunday, Nov 29 vs. Seattle at Levi's Stadium, 1:25 PM PT on FOX"
       ],
       "sources": [
         {
-          "name": "49ers.com (how to watch)",
-          "url": "https://www.49ers.com/news/ways-to-watch-and-listen-vikings-vs-49ers-week-11-sunday-night-football-in-mexico-city"
+          "name": "ESPN",
+          "url": "https://www.espn.com/nfl/story/_/id/50525677/49ers-beat-vikings-sunday-night-football-mexico-city-kittle"
         },
         {
-          "name": "NBC Sports Bay Area (how to watch)",
-          "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"
+          "name": "NBC Sports Bay Area",
+          "url": "https://www.nbcsportsbayarea.com/nfl/san-francisco-49ers/live-updates-score-highlights-minnesota-vikings-2/1981025/"
         },
         {
-          "name": "49ers Webzone (Warner, Shanahan on defense)",
-          "url": "https://www.49erswebzone.com/articles/205189-warner-shanahan-defensive-struggles-cowboys/"
+          "name": "theScore",
+          "url": "https://www.thescore.com/nfl/news/3663666/purdy-kittle-help-49-ers-blow-out-vikings-in-mexico"
         },
         {
-          "name": "Yahoo Sports (Dallas win)",
-          "url": "https://sports.yahoo.com/nfl/live/cowboys-49ers-score-live-updates-inactives-highlights-stats-where-to-watch-week-10-200146453.html"
+          "name": "ABC7",
+          "url": "https://abc7news.com/post/49ers-make-bold-statement-blowout-win-vikings-keep-nfcs-no-1-seed/20068566/"
+        },
+        {
+          "name": "ProFootballTalk",
+          "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/sunday-night-football-mike-evans-active-dre-greenlaw-inactive-for-49ers-vikings"
+        },
+        {
+          "name": "Seahawks.com",
+          "url": "https://www.seahawks.com/game-day/2026/reg-week12/seahawks-at-49ers/how-to-watch"
         }
       ]
     }

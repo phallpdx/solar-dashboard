@@ -1,27 +1,6 @@
 {
-  "updated": "2026-11-22",
+  "updated": "2026-11-23",
   "deals": [
-    {
-      "title": "GRUV 4K sale at Walmart: about $13 each (Superman, The Super Mario Galaxy Movie, Mortal Kombat II)",
-      "store": "Walmart (sold by GRUV)",
-      "detail": "Slickdeals thread from Nov. 12 lists dozens of 4K UHD titles at about $13 each with free shipping, including Superman, The Super Mario Galaxy Movie, Mortal Kombat II and Wuthering Heights; the poster says the same prices went live Nov. 13 on GRUV's own site.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
-    },
-    {
-      "title": "$12.99 4K discs: Minions & Monsters, Lee Cronin's The Mummy, Ben-Hur (1959)",
-      "store": "Amazon",
-      "detail": "HD Report (Nov. 18) lists 4K UHD discs at $12.99 each, including Minions & Monsters, Lee Cronin's The Mummy, Ben-Hur (1959), Disclosure Day and Pressure.",
-      "ends": null,
-      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
-    },
-    {
-      "title": "Walmart Black Friday movie deals (4K combos)",
-      "store": "Walmart",
-      "detail": "Walmart's Black Friday movies page lists 4K Ultra HD + Blu-ray combos such as Encanto, Coco, Elf and The Polar Express, with some prices as low as $14.99; check each listing says 4K.",
-      "ends": null,
-      "url": "https://www.walmart.com/shop/deals/movies-music-and-books/movies-and-tv"
-    },
     {
       "title": "30 Days of Night 4K UHD Limited Edition SteelBook",
       "store": "Amazon UK",
@@ -128,30 +107,30 @@
       "url": "https://www.hotukdeals.com/deals/2-for-ps30-on-4k-uhd-films-aliens-sixth-sense-signs-unbreakable-minority-report-ad-astra-predator-and-more-5023888"
     },
     {
-      "title": "3 for $33 on select 4K Blu-rays at Amazon",
+      "title": "Apollo 13, Waterwold, The Lost Boyz & More",
       "store": "amazon.com",
-      "detail": "Three select 4K discs sold by Amazon for $33 total, including Apollo 13, Beetlejuice and The Shining.",
+      "detail": "3 for $33 (4K Blu-ray Movies)",
       "ends": null,
       "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
     },
     {
       "title": "The Wild Robot: Collector's Edition",
-      "store": "amazon.com",
-      "detail": "$13 (4K Ultra HD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
     },
     {
       "title": "Schindler's List: 25th Anniversary Edition",
-      "store": "Amazon",
-      "detail": "$9.99 (4K Ultra HD + Blu-ray + Digital)",
+      "store": "amazon.com",
+      "detail": "$10 (4K Ultra HD + Blu-ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20349057-schindler-s-list-25th-anniversary-edition-4k-ultra-hd-blu-ray-digital-9-99-at-amazon"
     },
     {
       "title": "Dune",
-      "store": "amazon.com",
-      "detail": "$11.49 (4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$11.49 (4K Ultra HD + Blu-ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20347836-dune-4k-uhd-blu-ray-11-49-free-shipping-w-prime-or-on-35"
     },
@@ -164,15 +143,15 @@
     },
     {
       "title": "Star Trek: The Original 4-Movie Collection",
-      "store": "amazon.com",
+      "store": "Amazon",
       "detail": "$19.93 (4K Ultra HD + Blu-Ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20342088-19-93-star-trek-the-original-4-movie-collection-4k-ultra-hd-blu-ray-digital-at-amazon"
     },
     {
       "title": "Live Die Repeat: Edge of Tomorrow",
-      "store": "amazon.com",
-      "detail": "$12.99 (4K Ultra HD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$12.99 (4K UHD + Blu-ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20342061-live-die-repeat-edge-of-tomorrow-4k-ultra-hd-blu-ray-13"
     },
@@ -185,38 +164,52 @@
     },
     {
       "title": "Back to the Future Trilogy: 40th Anniversary Edition",
-      "store": "Amazon",
+      "store": "amazon.com",
       "detail": "$24.99 (4K UHD + Blu-ray + Digital)",
       "ends": null,
       "url": "https://slickdeals.net/f/20341158-24-99-back-to-the-future-40th-anniversary-trilogy-4k-uhd-blu-ray-digital-at-amazon"
     },
     {
-      "title": "One Flew Over the Cuckoo's Nest",
-      "store": "amazon.com",
-      "detail": "$13 (4K Ultra HD + Digital)",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20328771-one-flew-over-the-cuckoo-s-nest-4k-ultra-hd-digital-13"
-    },
-    {
       "title": "Wall-E: The Criterion Collection",
-      "store": "Amazon",
+      "store": "amazon.com",
       "detail": "$24.98 (4K UHD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
     },
     {
-      "title": "One Battle After Another (4K UHD)",
-      "store": "Per Blu-ray.com bargains",
-      "detail": "$12.99 (56% off) in Blu-ray.com's Nov. 16 to 22 bargain roundup; the same roundup lists The Right Stuff 4K at about $24.98, half off.",
+      "title": "4K Blu-ray Movies",
+      "store": "amazon.com",
+      "detail": "Apollo 13, Waterwold, The Lost Boyz & More 3 for $33",
       "ends": null,
-      "url": "https://www.blu-ray.com/news/?id=39333"
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
     },
     {
-      "title": "The Odyssey (2026) (4K + Blu-ray + Digital)",
-      "store": "Per Slickdeals thread",
-      "detail": "$25.50, about 13% off the $30 list, posted Nov. 17 (release week). Nolan's new film.",
+      "title": "AWOL Vision Aetherion Max 4K RGB Triple Laser UST Projector + 150\" Matte Screen",
+      "store": "AWOL VISION via Amazon",
+      "detail": "$2999 + Free S&H",
       "ends": null,
-      "url": "https://slickdeals.net/f/20328516-the-odyssey-4k-blu-ray-digital-25-50"
+      "url": "https://slickdeals.net/f/20348187-awol-vision-aetherion-max-4k-rgb-triple-laser-ust-projector-150-matte-screen-2999-free-s-h"
+    },
+    {
+      "title": "Mars Attacks!",
+      "store": "Amazon",
+      "detail": "$12.99 (4K UHD + Digital)",
+      "ends": null,
+      "url": "https://www.ign.com/articles/black-friday-deals-on-4k-uhd-and-blu-rays-2026"
+    },
+    {
+      "title": "Interview with the Vampire",
+      "store": "Amazon",
+      "detail": "$12.99 (4K UHD + Digital)",
+      "ends": null,
+      "url": "https://www.ign.com/articles/black-friday-deals-on-4k-uhd-and-blu-rays-2026"
+    },
+    {
+      "title": "Kung Fu Hustle (Criterion Collection)",
+      "store": "Amazon",
+      "detail": "$49.95 (4K UltraHD + Blu-ray)",
+      "ends": null,
+      "url": "https://x.com/4KMOVIEDEALS?lang=en"
     }
   ],
   "upcoming": [

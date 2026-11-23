@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-23",
   "events": [
     {
       "title": "ZooLights at the Oregon Zoo",
@@ -12,20 +12,6 @@
         {
           "name": "Oregon Zoo",
           "url": "https://www.oregonzoo.org/lights"
-        }
-      ]
-    },
-    {
-      "title": "Major League Table Tennis",
-      "date": "2026-11-20",
-      "ends": "2026-11-22",
-      "venue": "Hall A, Oregon Convention Center",
-      "kind": "Sports",
-      "why": "Pro table tennis matches in Hall A of the convention center the weekend before Thanksgiving.",
-      "sources": [
-        {
-          "name": "Oregon Convention Center",
-          "url": "https://www.oregoncc.org/attend/events/2026/11/major-league-table-tennis"
         }
       ]
     },

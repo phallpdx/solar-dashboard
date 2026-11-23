@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-23",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
     {
@@ -145,6 +145,14 @@
       "score_source": "Metacritic",
       "score_url": "https://www.metacritic.com/music/live-at-the-barbican/kim-deal/",
       "why": "No Portland date announced"
+    },
+    {
+      "artist": "Atlas Sound",
+      "album": "Thanatos",
+      "score": null,
+      "score_source": "Pitchfork Best New Music",
+      "score_url": "https://pitchfork.com/reviews/albums/atlas-sound-thanatos/",
+      "why": "No Portland date found yet"
     },
     {
       "artist": "Baby Osamaa",

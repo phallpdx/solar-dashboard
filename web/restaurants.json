@@ -1,6 +1,40 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-23",
   "restaurants": [
+    {
+      "name": "Marée",
+      "neighborhood": "Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "The tides are changing at Marée.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-12",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOS2FsSnIydFl5eWR6S3N3S1NXcXVaNGNuMXpWNHh2OFl6S1FpbGtneUtLUXEzaGdHNjQxekFnZThpZFFjWFNTQXRyLW9JZEpJNmNzZVREcjFQVmdnbTNsNXB3SUNDaFFtMDlJc083UTVQYy16aWUtc2pKV0MyUUFaQjVvbi1sX3BfN0xiTEFpWGRNSTdXWWFDRmMweXhKbVlCY1I1OG1R?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Il Forno",
+      "neighborhood": "Portland",
+      "cuisine": "Italian",
+      "price": "",
+      "opened": "2026-12-01",
+      "summary": "An Italian restaurant opening soon.",
+      "reviews": [
+        {
+          "outlet": "Portland Food Map",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-22",
+          "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9JRFVkcDJyTjN0UFczLTNObXdnYTNsa05sTHdYRWZvNks5cWtLdmlseFFRQXFYdndpWUZhU08yazVXazVpX2VrSjNBd25iaXV3QS1KUUd3MmNSVEFaY0lTRkEyRDNJV3F3UFM2Uw?oc=5"
+        }
+      ]
+    },
     {
       "name": "Louie on Lombard",
       "neighborhood": "",
@@ -379,40 +413,6 @@
           "verdict": "",
           "date": "2026-11-14",
           "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
-        }
-      ]
-    },
-    {
-      "name": "Jade Rabbit",
-      "neighborhood": "Hawthorne",
-      "cuisine": "Vegan",
-      "price": "",
-      "opened": "empty",
-      "summary": "A vegan restaurant in Hawthorne.",
-      "reviews": [
-        {
-          "outlet": "Resy",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
-        }
-      ]
-    },
-    {
-      "name": "Le Petit Chef at The Mindaro hotel",
-      "neighborhood": "",
-      "cuisine": "3D dinner show",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "La Revue des Hôtels",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-07",
-          "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxPRHRKODlMbnNIVXN1ZnRRVXZDLWdnbzljN0N4bjUzTnpjNThOcjZIV3VHQzlPM0MtdVJjdjRnVHdGbzNYTXdESWZUa3pJMGZIRWZwTkdUTXpkQW0zNERTbnY4Tm1VZUJuSENEVnJsZmcyamY1SmZsV2xzRHl2em80ajFoR2RVVTg?oc=5"
         }
       ]
     }

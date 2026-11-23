@@ -1,15 +1,14 @@
 {
-  "updated": "2026-11-22",
-  "updated_at": "2026-11-22T12:19:49Z",
+  "updated": "2026-11-23",
+  "updated_at": "2026-11-23T08:30:57Z",
   "teams": {
     "blazers": {
-      "mood": "disappointed and frustrated",
-      "pulse": "Fans are reeling after a heavy loss to the Knicks. The team's recent struggles against top competition have dampened early season optimism.",
+      "mood": "disheartened",
+      "pulse": "Fans are disheartened after a brutal six-game road trip ending in losses. Recent defensive lapses and blowout defeats have dampened spirits.",
       "storylines": [
-        "Lost to New York Knicks on 2026-11-21",
-        "Deni Avdija was available for play",
-        "Dec 1 game vs Timberwolves moved to national TV",
-        "Moda Center renovation negotiations are stalled"
+        "Lost to Knicks on Saturday",
+        "Defeated Bucks on Thursday",
+        "Next game against 76ers on Monday"
       ],
       "sources": [
         {
@@ -36,12 +35,12 @@
     },
     "timbers": {
       "mood": "disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They hope the team can bounce back in Portland.",
+      "pulse": "Timbers lost Game 1 to FC Dallas. They aim to even the series in Portland.",
       "storylines": [
-        "Timbers lost 3-0 to FC Dallas in Game 1",
-        "Series is best-of-three",
-        "Next game is in Portland",
-        "Eric Izoita signed first-team contract"
+        "Lost Game 1 of Round One 3-0 against FC Dallas.",
+        "Series is a best-of-three format.",
+        "Next game will be played in Portland.",
+        "Eric Izoita signed a first-team contract."
       ],
       "sources": [
         {
@@ -63,12 +62,13 @@
       ]
     },
     "f1": {
-      "mood": "Tense and controversial",
-      "pulse": "Fans are reacting to driver clashes and penalties. Tensions are high following several on-track incidents.",
+      "mood": "tense and chaotic",
+      "pulse": "Fans are reacting to Verstappen's wins and high-stakes racing chaos. Tension is rising due to driver clashes and tight championship battles.",
       "storylines": [
-        "Hamilton and Leclerc clash in Las Vegas",
-        "Verstappen wins Driver of the Day",
-        "Perez faces penalty for Qatar GP"
+        "Verstappen won the Las Vegas Grand Prix",
+        "Battle for second place in 2026 intensifies",
+        "Hamilton and Leclerc had an unacceptable clash",
+        "Camara to drive final two races for Haas"
       ],
       "sources": [
         {
@@ -94,10 +94,10 @@
       ]
     },
     "ducks": {
-      "mood": "Cautious optimism",
-      "pulse": "Fans focus on playoff odds after early losses. They hope to maintain offensive dominance and secure a spot.",
+      "mood": "Anxious but hopeful",
+      "pulse": "Fans are navigating a complex path to the CFP after three unexpected losses. Implied odds give Oregon a 46.5% chance.",
       "storylines": [
-        "Ducks defeated Michigan State in East Lansing"
+        "Ducks defeated Michigan State"
       ],
       "sources": [
         {
@@ -119,13 +119,12 @@
       ]
     },
     "niners": {
-      "mood": "Anticipatory and cautious",
-      "pulse": "Fans are focused on the high-stakes matchup against Minnesota in Mexico City. There is excitement regarding Mike Evans' return despite defensive struggles last week.",
+      "mood": "Optimistic and dominant",
+      "pulse": "Fans are ecstatic after a blowout win against the Vikings. Mike Evans' return raises offensive expectations significantly.",
       "storylines": [
-        "Vikings game determines NFC number one seed battle",
-        "Mike Evans expected to play after Achilles injury",
-        "Defense struggled giving up 40 points to Cowboys",
-        "Brandin Cooks waived for C.J. West"
+        "8-1 record puts Niners in first place NFC seeding",
+        "Mike Evans returns to active roster",
+        "Dre Greenlaw is out; Nate Hobbs downgraded to out"
       ],
       "sources": [
         {

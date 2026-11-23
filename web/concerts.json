@@ -53,6 +53,16 @@
       "tickets": "https://www.rosequarter.com/calendar-events/phoebe-bridgers-feb-17-2027"
     },
     {
+      "artist": "Blondshell",
+      "album": "Violins",
+      "score": 80,
+      "score_source": "Metacritic",
+      "score_url": "https://www.metacritic.com/music/violins/blondshell",
+      "date": "2027-03-05",
+      "venue": "Crystal Ballroom",
+      "tickets": "https://www.mcmenamins.com/events/276943-blondshell"
+    },
+    {
       "artist": "Iceage",
       "album": "For Love of Grace & the Hereafter",
       "score": 87,
@@ -85,6 +95,13 @@
       "score": 92,
       "score_url": "https://www.metacritic.com/music/rooming-house/charlie-parr/",
       "why": "Fall tour is Midwest and East Coast only"
+    },
+    {
+      "artist": "Radie Peat",
+      "album": "No Human Tongue Can Tell",
+      "score": 92,
+      "score_url": "https://www.metacritic.com/music/no-human-tongue-can-tell/radie-peat/",
+      "why": "Only Amsterdam and London dates announced for 2027"
     },
     {
       "artist": "Tinashe",

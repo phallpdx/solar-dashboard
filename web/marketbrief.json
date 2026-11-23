@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-23",
-  "updated_at": "2026-11-23T12:23:45Z",
+  "updated_at": "2026-11-23T13:21:22Z",
   "analysis": {
     "headline": "Asian markets tumble as AI bubble fears mount.",
     "summary": "Stocks fell amid an AI-driven correction and bubble concerns. Bonds saw yields decline while oil prices dropped. Gold rose during market volatility. Bitcoin showed slight gains despite a long-term downward trend.",
@@ -12,6 +12,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMFVRM2J2cTZ6eU02Qzk1TF83UmhsSEN3SlpHYjJuc2lDeXBVM0h6WkN2bEJCUlk5RnZNOFMta05FOXFqeTZQQWZnbFl2RG1WTWVNSXYwVWhZRFZxRkx6SDlhTWtUWk92UVBJa2FGWVk3ak9rOUVJYjZ6RDBqcUZCOEpiWmFVWGxvVmM1Y2prdDk2N19EZG0xWjU3aFV5QkJ6MjF4eExGSkd3TWxaWGRBVzhB?oc=5"
+      },
+      {
+        "name": "Gotrade: US Stocks Week Ahead: PCE, GDP and Dell Earnings",
+        "url": "https://www.heygotrade.com/en/news/weekly-economic-outlook-2026-11-23/"
+      },
+      {
+        "name": "FXEmpire: The Week Ahead: PCE in Focus After AI Sell-Off in Holiday-Shortened Week",
+        "url": "https://www.fxempire.com/forecasts/article/the-week-ahead-pce-in-focus-after-ai-sell-off-in-holiday-shortened-week-1646337"
+      },
+      {
+        "name": "CoinDesk: U.S. inflation, Thanksgiving trading: Crypto Week Ahead",
+        "url": "https://www.coindesk.com/markets/2026/11/23/u-s-inflation-thanksgiving-trading-crypto-week-ahead"
       }
     ],
     "by": "local model",
@@ -20,7 +32,12 @@
       "AI bubble fears mounting",
       "AI-driven sell-off"
     ],
-    "watch": []
+    "watch": [
+      "Tuesday, Nov. 24: Conference Board consumer confidence for November.",
+      "Wednesday, Nov. 25, 8:30 a.m. ET: October PCE inflation, the second estimate of Q3 GDP, weekly jobless claims (moved up a day) and durable goods orders.",
+      "Thursday, Nov. 26: U.S. stock markets closed for Thanksgiving.",
+      "Dell reports earnings this week."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -104,6 +121,14 @@
       {
         "name": "Web search: Portland housing data",
         "url": "https://lovejoyrealestate.com/portland-metro-market-update-october-2026"
+      },
+      {
+        "name": "Daily Tidings (RMLS Market Action, October 2026)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "name": "The McCreith Team: November 2026 Market Action Report",
+        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
       }
     ],
     "by": "local model",
@@ -141,25 +166,32 @@
     ],
     "stats": [
       {
-        "label": "Median sale price (Portland metro, July)",
-        "value": "$555,000",
-        "change": "Down 1.8% from June",
-        "source": "maddinghomes.com",
-        "url": "https://maddinghomes.com/market-report"
-      },
-      {
-        "label": "Days on market (Portland metro, July)",
-        "value": "54",
-        "change": "Fastest pace of 2026",
-        "source": "maddinghomes.com",
-        "url": "https://maddinghomes.com/market-report"
-      },
-      {
         "label": "Median sale price (Portland metro, October)",
         "value": "$545,000",
+        "change": "+0.9% vs a year ago; flat vs September",
+        "source": "Daily Tidings (RMLS Market Action, October 2026)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "label": "Closed sales (Portland metro, October)",
+        "value": "1,622",
+        "change": "-21.5% vs a year ago; -7.4% vs September",
+        "source": "Daily Tidings (RMLS Market Action, October 2026)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "label": "Inventory (Portland metro, October)",
+        "value": "4.3 months",
         "change": null,
-        "source": "lovejoyrealestate.com",
-        "url": "https://lovejoyrealestate.com/portland-metro-market-update-october-2026"
+        "source": "Daily Tidings (RMLS Market Action, October 2026)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "label": "Average days on market before an offer (Portland metro, October)",
+        "value": "67 days",
+        "change": null,
+        "source": "Daily Tidings (RMLS Market Action, October 2026)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
       }
     ]
   }

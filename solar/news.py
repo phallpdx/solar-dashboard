@@ -87,7 +87,29 @@ STOP = set("the a an and or of to in on for with is are was be by at from as it 
 
 
 def _text(node):
-    return html.unescape(re.sub(r"<[^>]+>", " ", node or "")).strip()
+    return strip_tags(node)
+
+
+_INLINE = re.compile(r"</?(?:i|b|em|strong|a|span|u|small|sup|sub|abbr|cite|q)\b[^>]*>", re.I)
+
+
+def strip_tags(text):
+    """HTML to plain text. Inline tags vanish without a space, so '"<i>Sesame Street</i>"' doesn't become
+    '" Sesame Street "'; block tags become a space."""
+    text = _INLINE.sub("", text or "")
+    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text))).strip()
+
+
+def clip(text, n):
+    """Shorten to about n characters at a sentence or word boundary, with an ellipsis, instead of mid-word."""
+    text = (text or "").strip()
+    if len(text) <= n:
+        return text
+    cut = text[:n]
+    end = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    if end >= n * 0.6:
+        return cut[:end + 1]
+    return cut[:cut.rfind(" ")].rstrip(" ,;:-—") + "…" if " " in cut else cut + "…"
 
 
 def _first_img(raw):
@@ -108,7 +130,7 @@ def _parse(xml_bytes):
         enc = it.find("enclosure")
         body = it.findtext("{http://purl.org/rss/1.0/modules/content/}encoded") or it.findtext("description")
         items.append({"title": _text(it.findtext("title")), "url": (it.findtext("link") or "").strip(),
-                      "date": date, "summary": _text(it.findtext("description"))[:240],
+                      "date": date, "summary": clip(_text(it.findtext("description")), 240),
                       "author": _text(it.findtext("{http://purl.org/dc/elements/1.1/}creator") or it.findtext("author")),
                       "image": (thumb.get("url") if thumb is not None else None) or
                                (enc.get("url") if enc is not None and "image" in (enc.get("type") or "") else None) or
@@ -118,7 +140,7 @@ def _parse(xml_bytes):
         content = e.findtext("a:content", namespaces=ns)
         items.append({"title": _text(e.findtext("a:title", namespaces=ns)), "url": link,
                       "date": e.findtext("a:published", namespaces=ns) or e.findtext("a:updated", namespaces=ns),
-                      "summary": _text(e.findtext("a:summary", namespaces=ns) or content)[:240],
+                      "summary": clip(_text(e.findtext("a:summary", namespaces=ns) or content), 240),
                       "author": _text(e.findtext("a:author/a:name", namespaces=ns)), "image": _first_img(content)})
     return items
 

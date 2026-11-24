@@ -6,6 +6,8 @@ import re
 import urllib.parse
 import urllib.request
 
+from .alerts import cancelled
+
 UA = {"User-Agent": "solar-dashboard (personal home dashboard)", "Accept": "application/json"}
 
 # USGS gauges: the Columbia at Vancouver (stage, the closest gauge upstream of home), the Columbia at Port
@@ -110,6 +112,8 @@ def parse_alerts(data):
     out = []
     for f in data.get("features") or []:
         p = f.get("properties") or {}
+        if p.get("messageType") == "Cancel" or cancelled(p):
+            continue
         out.append({"event": p.get("event"), "headline": p.get("headline"), "severity": p.get("severity"),
                     "onset": p.get("onset") or p.get("effective"), "expires": p.get("ends") or p.get("expires"),
                     "description": (p.get("description") or "").replace("\n", " ")[:400], "url": p.get("@id")})

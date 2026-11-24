@@ -1,9 +1,9 @@
 {
   "updated": "2026-11-24",
-  "updated_at": "2026-11-24T10:30:14Z",
+  "updated_at": "2026-11-24T12:26:33Z",
   "analysis": {
-    "headline": "Markets surged as Nvidia shares soared following Jensen Huang's reinstatement as CEO.",
-    "summary": "Stocks jumped led by Nvidia's return reviving AI interest. Treasury yields rose alongside the market rally. Oil prices fell slightly while gold and Bitcoin both declined. Major indices show significant growth this year.",
+    "headline": "Major indices surged today following Jensen Huang's reinstatement as Nvidia CEO.",
+    "summary": "Stocks rose significantly with Nasdaq leading gains. Treasury yields increased alongside 10-year rates. Oil prices climbed slightly while gold and Bitcoin both declined. The market trend shows strength in tech despite some volatility.",
     "sources": [
       {
         "name": "Google News: stock market",
@@ -12,10 +12,6 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPNXRXMlFUQkJfcnJPMGVlaWZRejZzSnVuRWJiV1E3TUM3c3pkWkxSSGZJaGtCcEc0Uzdja0xzbFFNcWRIZEtZNlFHMHNDclAzVzJqUHU2Z2lFRE51V3AwSWV1cnRoamFsbDVleTdVUFVhSElYMEhXTlhiNkhQNWtSZlRGT1FYQURPeE9RTA?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNUV8xQS1Xa09sWUwzZlR6YzZyQTBlRk1jRWJNNWFROHY1ZDdicFNhLXkwRWIyV3YtM2NJSXRJY05mTHhyU3JHTFRndEdmQlZEYXJlMVJzMmhmTGdXOFAzZERRdmduRjZXSmpBLWVWQjBxUWNIVDdHZ0M0VXdja3EyZ2xzWGhSVXc0d0VIczl5Y2UyMDlzTzdBbw?oc=5"
       }
     ],
     "by": "local model",
@@ -27,7 +23,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market conditions include tightening supply and increased exploration activity in Saskatchewan.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a liquefaction facility. Market conditions include tightening supply and increased exploration activity in Saskatchewan.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -48,6 +44,12 @@
     ],
     "by": "local model",
     "items": [
+      {
+        "title": "Prairie Lithium Brings Brine to Surface at Pad #1",
+        "date": "2026-11-24",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPQ1NsZGlNRmdlZC11SC1FWThvZVNKMjBXRG13YzJwazVCb1pXZHROWG05aEJEMFRPZ3pSdlFsTWs1NlYydmdpY2JXcHJ5R1c0WXV2OGxQSkdtQm5pd0l6WlIzSFYtLUQzTjJsVXljekYtYW5TUEVCNDdvM1M3ZGNNZ2JQcTR6SGJhdzVmYmRn?oc=5",
+        "source": "Google News: helium market"
+      },
       {
         "title": "Why helium exploration is gathering pace in Saskatchewan",
         "date": "2026-11-23",
@@ -71,18 +73,12 @@
         "date": "2026-11-16",
         "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
         "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium Evolution Plans $3M Saskatchewan Seismic Program",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
-        "source": "Google News: North American Helium"
       }
     ]
   },
   "realestate": {
     "headline": "Home sales slow as buyers adjust to elevated mortgage rates.",
-    "summary": "Mortgage rates rose to 7.40% on 2026-11-23 after a four-week decline. Sellers are lowering prices in stagnant markets to help buyers make deals. Homebuyers are walking away from the market in large numbers.",
+    "summary": "Sellers are lowering prices in a stagnant market. The average US 30-year mortgage rate rose to 7.28% recently. Home sales have slowed due to high rates.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -94,7 +90,7 @@
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQbU5VcjZtVGoycThWMjhJUWhyM1B2cWYxckh1LWpod1JrU1VhZWQwOUhVa2lCRTI5SVY4UVNGTHN6LXF2aXFZZnJtcVlSSGt3ejBjZTFjRWFOSExNZENqN2xBU040WlBBM1AzUkVIUUFVNjA4QjJ5R2F5TlhmTkFuTm9SMzAzUVE2d0RFdnQzSUY1RjJQMTlvU2VkY0JpRDd2UEZYczNUYTJocTF5Vmpz?oc=5"
       }
     ],
     "by": "local model",
@@ -118,15 +114,15 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "The Fed Cut Rates 1.45 Points and Mortgage Rates Rose to 7.28% Anyway. A $200,000 Loan Now Costs $158 More a Month",
+        "title": "Mortgage Rates Today: November 24, 2026 – Rates Fall For 4th Straight Day",
         "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNS2t3MU5DNlU4aGxSYlZYOHE1M3lQU2JvLTZrQ05aSUdfM1VTNV9CbkFIVS1ITFBHM0pEelI2VDh1T1M5azJGM0NJNjJwNm1sdmlSdDJZTlNNZGIzdk12cDZoeXNieG81dXVOdTF3MFFIbjFvaXdYREhOTjFITlM1ZUFCTVFpa2o4c0xKSWlIRGxINFd2UTNGdEJCM0FEVFNWSEFscXhYdUZyNy05YWZ2VVpMWlhYckZBUF94VE9WUVZhbkJBYWNWS2U1QktrT25TSFEtbEp4THU2bThZc2sycUdDZXdrMmti?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9CRWhhQ0piUXRpUWZNNlBWX1lnOXo3OWppYy0yRWdJMUFTZkFxZ3l6WHdLVFU2S0R4X1EwdzJWa3lSdzdRelhJVUFOaWRnNUZxZE9rMU8wX2VzMkdRY0JHTU1JQnlidGpqMHVocEhPYU1Oa1E?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 24, 2026",
+        "title": "Mortgage and refinance interest rates today, Tuesday, November 24, 2026: Rates down substantially from yesterday and last week",
         "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1RY1hBNnA5WWVURTlFRTh1RU92VkhiWHF1Tk50SkloUlhCaGVIa0FIM3F4X016aWs2WC1uQXlzQkxtRUhld2RucVp1VUkxR2Z1LXlLN19xVGxBNTYwVnFCNEFfdWZhNWh5?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxOWk9hS2NWeHBSM1E4OGRpLU1MTkFvR2hoU3MxQzhVc1BwTW9qOVR2V25aZWR0U0ZBR3AyX2NEczRWdE5YTGNzWHZNWWFNVXUzUXdkMW5fUW1tWXliLWlmc2N3OV9OdDg3d3J0Z3JQeFZNZEtpMi00UkkwbF9nS0dlR1ZMdi1jWk8wRE9ZbzgyX3VHb3NQNnhzbDB3dUhqQUFhRW5Nd0Vtbk5XMlB1cWZ2TkYwa0VFczJNX3FVLU9NRVlNSklzNFViXy1ncHpQMWZkSVJwMHAyUUZZNlhMeWpsZ29oS0p5UEZhYVc4aWU2S3RZZzU2VkVWUVk1OGwwYS1ubDVLQzdUNmRoMGFfQ1RMQXk3U0hfeUJoWUY4VUNPUEdtdk5r?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

@@ -169,7 +169,7 @@ LOCAL = ("OPS", "OPPS", "HARBOR", "NARBOR", "COL RIV", "COLUMBIA RIVER", "COL RI
 
 
 def _place(code):
-    code = code.strip().strip("-_,.").upper()
+    code = code.strip().strip("-_,.<>=~ ").upper()  # "MXZLO >> US VAN" and "=>" splits leave arrows behind
     squashed = re.sub(r"[\s_]", "", code)
     if squashed[:5] in PORTS:
         return PORTS[squashed[:5]]

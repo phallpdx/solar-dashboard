@@ -115,8 +115,9 @@ def marine(d, now):
     by_day = {}
     for i, x in enumerate(sz.get("days") or []):
         m = re.search(r"(\d+)\s*(?:to|-|–)\s*(\d+)\s*ft", x.get("surf") or "")
-        if m:
-            by_day[today + dt.timedelta(days=i)] = f"{m.group(1)}-{m.group(2)}"
+        on = _date(x.get("date")) if x.get("date") else today + dt.timedelta(days=i)
+        if m and on not in by_day:
+            by_day[on] = f"{m.group(1)}-{m.group(2)}"
     for day in ((d.get("coast") or {}).get("days")) or []:
         on = _date(day.get("date"))
         if on in by_day:
@@ -517,6 +518,38 @@ def vote_summary(p):
 
 # ------------------------------------------------------------------ driver
 
+# ------------------------------------------------------------------ the overnight lists' habits
+
+SCHOOL_SPORTS = re.compile(r"\b(varsity|junior varsity|jv|freshman)\b.*\b(basketball|football|wrestling|volleyball|soccer|baseball|softball|swim)|"
+                           r"\b(basketball|football|wrestling|volleyball|soccer)\b.*\bvs\.? away\b|\bvs\.? away\b", re.I)
+
+
+def _clock(t):
+    """'06:30 PM' -> '6:30 pm', the way every other list writes times."""
+    m = re.fullmatch(r"\s*0?(\d{1,2}):(\d{2})\s*([AaPp])\.?[Mm]\.?\s*", t or "")
+    return f"{int(m.group(1))}:{m.group(2)} {m.group(3).lower()}m" if m else t
+
+
+def tidy(feeds):
+    """Fix what the PC's overnight model gets wrong the same way every night, so it never reaches the page:
+    high-school games in the beach events, the same club written two ways, promoters listed as venues, and
+    times in a second format."""
+    coast = (feeds.get("coast") or {}).get("events")
+    if coast:
+        keep = [x for x in coast if not SCHOOL_SPORTS.search(f"{x.get('name') or ''} {x.get('summary') or ''}")]
+        if len(keep) != len(coast):
+            log(f"coast: {len(coast) - len(keep)} high-school games dropped")
+            coast[:] = keep
+    for x in (feeds.get("jazz") or {}).get("shows") or []:
+        v = x.get("venue") or ""
+        if re.fullmatch(r"the 1905'?s?", v.strip(), re.I):
+            x["venue"] = "The 1905"
+        elif re.search(r"soul'?d out", v, re.I) and "jacklondonrevue" in json.dumps(x).lower().replace(" ", ""):
+            x["venue"] = "Jack London Revue"
+        if x.get("time"):
+            x["time"] = _clock(x["time"])
+
+
 FEEDS = ["planahead", "kids", "events", "jazz", "concerts", "bluray", "foodfinds", "skioutlook", "coast", "marketbrief"]
 
 
@@ -531,6 +564,7 @@ def apply(d, feeds, now=None):
                     sports_dates.add((g.get("date") or "")[:10] or (_when(g["utc"]) and _today(_when(g["utc"])).isoformat()))
     calendar(d, sports_dates)
     fresh(d, feeds, now)
+    tidy(feeds)
     events(d, feeds)
     news(d, now)
     civics(d, now)

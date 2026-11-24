@@ -7,6 +7,13 @@ UA = {"User-Agent": "solar-dashboard (personal home dashboard)", "Accept": "appl
 SEVERITY = {"Extreme": 3, "Severe": 3, "Moderate": 2, "Minor": 1}
 
 
+def cancelled(p):
+    """NWS sometimes ends an alert with an "Update" whose text says it was cancelled (the coast card showed
+    "The Coastal Flood Warning has been cancelled." as a live warning)."""
+    text = f"{p.get('headline') or ''} {(p.get('description') or '')[:200]}".lower()
+    return "has been cancelled" in text or "has been canceled" in text or "is no longer in effect" in text
+
+
 def nws(lat, lon):
     """Active National Weather Service alerts covering this point."""
     req = urllib.request.Request(f"https://api.weather.gov/alerts/active?point={lat},{lon}", headers=UA)
@@ -15,7 +22,7 @@ def nws(lat, lon):
     out = []
     for f in data.get("features", []):
         p = f.get("properties") or {}
-        if p.get("status") != "Actual" or p.get("messageType") == "Cancel":
+        if p.get("status") != "Actual" or p.get("messageType") == "Cancel" or cancelled(p):
             continue
         out.append({"event": p.get("event"), "headline": p.get("headline"), "severity": p.get("severity"),
                     "onset": p.get("onset") or p.get("effective"), "ends": p.get("ends") or p.get("expires"),

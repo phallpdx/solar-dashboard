@@ -1166,8 +1166,13 @@ def refresh_marketbrief(data, sources):
     from solar import markets  # standard library only, shared with the dashboard's own update
     try:
         quotes = markets.snapshot()
-        closes = "; ".join(f"{q['name']} {q['price']:,} ({q['day_pct']:+.2f}% on the day, {q['ytd_pct']:+.1f}% this year)"
-                           for q in quotes if q.get("day_pct") is not None and q.get("ytd_pct") is not None)
+        # A yield is a rate, not a price: say "the yield fell", or the model writes "bonds rose 20% this year".
+        def move(q):
+            if q.get("kind") == "yield":
+                return (f"{q['name']} yield {q['price']}% (the yield {'rose' if q['day_pct'] > 0 else 'fell'} on the day; "
+                        f"it is {'higher' if q['ytd_pct'] > 0 else 'lower'} than at the start of the year)")
+            return f"{q['name']} {q['price']:,} ({q['day_pct']:+.2f}% on the day, {q['ytd_pct']:+.1f}% this year)"
+        closes = "; ".join(move(q) for q in quotes if q.get("day_pct") is not None and q.get("ytd_pct") is not None)
         session = _market_session(quotes[0].get("as_of")) if quotes else None
     except Exception as e:  # noqa: BLE001
         log(f"  quotes failed ({e}); writing from the news alone")
@@ -1310,7 +1315,11 @@ def refresh_restaurants(data, sources):
     places = list(data.get("restaurants", []))
     added = 0
     for n in new:
-        old = next((o for o in places if same_thing(o["name"], None, n["name"], None)), None)
+        url = n["reviews"][0]["url"]
+        # A rename ("Good Neighbor Cà Phê, becoming Portland Cà Phê") read from the same article is the same place.
+        renamed = lambda o: (url in [v.get("url") for v in o.get("reviews", [])]
+                             and len(words(o["name"]) & words(n["name"])) / max(1, min(len(words(o["name"])), len(words(n["name"])))) >= 0.5)
+        old = next((o for o in places if same_thing(o["name"], None, n["name"], None) or renamed(o)), None)
         if old:
             if n["reviews"][0]["url"] not in [v.get("url") for v in old.get("reviews", [])]:
                 old.setdefault("reviews", []).insert(0, n["reviews"][0])

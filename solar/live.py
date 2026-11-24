@@ -79,7 +79,8 @@ def planes(lat, lon):
         if on_ground or plat is None or alt_m is None:
             continue
         out.append({"callsign": callsign or s[0], "miles": round(_km(lat, lon, plat, plon) / 1.609, 1),
-                    "feet": max(0, round(alt_m * 3.281 / 100) * 100),  # barometric altitude reads below 0 on a PDX landing "mph": round((speed or 0) * 2.237),
+                    # barometric altitude reads below 0 on a PDX landing
+                    "feet": max(0, round(alt_m * 3.281 / 100) * 100), "mph": round((speed or 0) * 2.237),
                     "heading": round(heading or 0), "country": s[2],
                     "url": f"https://globe.adsbexchange.com/?icao={s[0]}"})
     out.sort(key=lambda p: p["miles"])

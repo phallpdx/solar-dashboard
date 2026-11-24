@@ -6,6 +6,8 @@ import re
 import urllib.parse
 import urllib.request
 
+from .alerts import cancelled
+
 UA = {"User-Agent": "solar-dashboard (personal home dashboard)", "Accept": "application/json"}
 
 # USGS gauges: the Columbia at Vancouver (stage, the closest gauge upstream of home), the Columbia at Port
@@ -110,6 +112,8 @@ def parse_alerts(data):
     out = []
     for f in data.get("features") or []:
         p = f.get("properties") or {}
+        if p.get("messageType") == "Cancel" or cancelled(p):
+            continue
         out.append({"event": p.get("event"), "headline": p.get("headline"), "severity": p.get("severity"),
                     "onset": p.get("onset") or p.get("effective"), "expires": p.get("ends") or p.get("expires"),
                     "description": (p.get("description") or "").replace("\n", " ")[:400], "url": p.get("@id")})
@@ -133,6 +137,30 @@ def surf_zone():
     product = _get(latest["@id"])
     text = product.get("productText") or ""
     return {"issued": latest.get("issuanceTime"), "text": text[:6000], "url": latest["@id"], **parse_surf_zone(text)}
+
+
+WEEKDAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+
+
+def date_surf_zone(days, issued_on, today):
+    """Give each surf-zone day its real date. The product names days relative to when it was issued ("Today",
+    "Friday"), so yesterday's product would otherwise print yesterday's surf as today's. Days already past are
+    dropped and the rest relabelled for today."""
+    out = []
+    for x in days or []:
+        name = (x.get("day") or "").upper()
+        wd = next((i for i, w in enumerate(WEEKDAYS) if w in name), None)
+        if wd is None:  # Today, Tonight, This afternoon, Rest of today
+            on = issued_on
+        else:
+            on = issued_on + dt.timedelta(days=(wd - issued_on.weekday()) % 7 or 7)
+        if on < today:
+            continue
+        label = "Today" if on == today else "Tomorrow" if on == today + dt.timedelta(days=1) else WEEKDAYS[on.weekday()].title()
+        if "NIGHT" in name:
+            label = "Tonight" if on == today else label + " night"
+        out.append({**x, "day": label, "date": on.isoformat()})
+    return out
 
 
 def parse_surf_zone(text, want=("SEASIDE", "CANNON BEACH", "CLATSOP")):

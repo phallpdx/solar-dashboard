@@ -230,6 +230,7 @@ header h1{font-size:40px}
 .near-feature small{color:var(--muted);font-weight:600}
 .near-feature .note{margin-top:4px}
 .group[data-sec=almanac] .card a,#hol-today a,#trails a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--soft)}
+#hol-today a{color:inherit}
 #near .sub{margin-top:8px}
 .group[data-sec=civics]{--accent:#2F5DA8;--tint:#E4ECF8}
 .elect-next{display:flex;gap:16px;align-items:center;margin-bottom:6px}
@@ -744,6 +745,8 @@ html[data-day='1'] .joy-card::after{left:28%;rotate:6deg}html[data-day='2'] .joy
 /* Doodle charts */
 .group[data-sec=doodles]{--accent:#C2643A}
 .dd svg{display:block;width:100%;height:auto;overflow:visible}
+/* These drawings are laid out for a card about 360 to 540 px wide; in a full-width card they would blow their labels up to 40+ px. */
+.dd svg,svg.dd{max-width:560px;margin-left:auto;margin-right:auto}
 .dd .ink{fill:none;stroke:var(--inkline);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dd .ink.thin{stroke-width:1.3;opacity:.7}
 .dd .dots{fill:none;stroke:var(--inkline);stroke-width:2;stroke-linecap:round;stroke-dasharray:.1 7;opacity:.6}
@@ -768,7 +771,8 @@ html[data-day='1'] .joy-card::after{left:28%;rotate:6deg}html[data-day='2'] .joy
 .stop .w b{font-family:var(--pen);font-weight:400;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stop .w small{color:var(--muted);font-size:12.5px}
 .stop.soon .n{color:#B4553A}
-.tide-doodle{margin:4px 0 2px}
+.tide-doodle{margin:4px 0 2px;display:block}
+svg.tide-doodle.dd{max-width:440px;margin-left:0}
 .moon-row{display:flex;gap:14px;align-items:center;margin-top:6px}.moon-row svg{width:68px;flex:none}
 .moon-row p{margin:0;font-family:var(--pen);font-size:15.5px;color:var(--body);line-height:1.25}.moon-row b{display:block;font-family:var(--hand);font-size:28px;color:var(--ink)}
 #shelf svg{max-width:760px;margin:0 auto}
@@ -881,6 +885,7 @@ header>.sprite{position:absolute;z-index:0;pointer-events:none}
 .arch-cap{margin:8px 0 0;font-size:13.5px;line-height:1.5}.arch-cap b{font-weight:800}.arch-cap small{display:block;color:var(--muted);font-weight:600}
 #surfzone .v small{display:block;font-weight:600;margin-top:2px}
 .stage-chart{width:100%;height:120px;display:block}.stage-chart text{font:600 11px Manrope,sans-serif;fill:var(--muted)}
+@media (max-width:600px){.stage-chart text{font-size:19px}} /* the 600-wide drawing shrinks to about half on a phone */
 .mtn{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed rgba(60,40,20,.18)}
 .mtn:last-of-type{border-bottom:0}
 .mtn b{font-family:var(--display,inherit);font-size:17px}
@@ -1775,7 +1780,7 @@ body{background-color:#8F5A32;
       </div>
       <section class="card" aria-labelledby="plane-h" id="plane-card" hidden>
         <div class="head"><h2 id="plane-h">Overhead right now</h2><span class="meta" id="plane-meta"></span></div>
-        <div id="over-wrap" hidden><p class="summary" id="over-sum"></p><div id="over"></div></div>
+        <div id="over-wrap" hidden><p class="summary" id="over-sum"></p><div id="over" class="dd"></div></div>
         <div class="lines" id="planes"></div>
         <p class="note" id="pdx"></p>
       </section>
@@ -2621,11 +2626,11 @@ function tideDoodle(tides, seed) {
   const line = P.curve(pts, .5), bx = X(now), by = Y(at(now));
   const marks = ex.filter(e => +e.t > t0 + 18e5 && +e.t < t1 - 18e5).map(e => {
     const x = X(+e.t), yy = Y(e.ft), up = e.type === 'High';
-    return `<text class="sm" x="${rd(Math.min(250, Math.max(0, x - 30)))}" y="${rd(up ? yy - 9 : yy + 20)}">${up ? 'high' : 'low'} ${e.ft} ft · ${clock(`${e.t.getHours()}:${String(e.t.getMinutes()).padStart(2, '0')}`)}</text>`;
+    return `<text class="sm" x="${rd(Math.min(244, Math.max(76, x)))}" y="${rd(up ? yy - 9 : yy + 20)}" text-anchor="middle">${up ? 'high' : 'low'} ${e.ft} ft · ${clock(`${e.t.getHours()}:${String(e.t.getMinutes()).padStart(2, '0')}`)}</text>`;
   }).join('');
   return `<svg class="tide-doodle dd drawn" viewBox="0 0 320 108" role="img" aria-label="Tide curve for the next day">
     <path class="wash" fill="#4E8FBF" d="${line} L${rd(X(t1))} 104 L${rd(X(t0))} 104 Z"/>${ink(line)}${marks}
-    <path d="M${rd(bx - 11)} ${rd(by - 3)}h22l-4 5h-14zM${rd(bx)} ${rd(by - 3)}v-15l9 13z" fill="#F3E3B5" stroke="#3A2614" stroke-width="1.4" stroke-linejoin="round"/><text class="sm" x="${rd(bx - 10)}" y="${rd(Math.min(100, by + 22))}">now</text></svg>`;
+    <path d="M${rd(bx - 11)} ${rd(by - 3)}h22l-4 5h-14zM${rd(bx)} ${rd(by - 3)}v-15l9 13z" fill="#F3E3B5" stroke="#3A2614" stroke-width="1.4" stroke-linejoin="round"/>${ex.some(e => Math.abs(X(+e.t) - bx) < 70) ? '' : `<text class="sm" x="${rd(bx - 10)}" y="${rd(Math.min(100, by + 22))}">now</text>`}</svg>`;
 }
 
 // The sky in the header: the sun rides its real arc from sunrise to sunset, with clouds for today's cover and the weather falling.
@@ -2926,7 +2931,7 @@ function render() {
   Promise.allSettled(waits).then(syncGroups).then(clampLong).then(sortByFreshness);
   setTimeout(() => { syncGroups(); clampLong(); }, 4000);
   $('foot').textContent = sample ? 'Showing sample numbers until your system’s data arrives.' :
-    `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates every 20 minutes.`;
+    `APsystems calls this month: ${s ? s.calls_this_month : 0}. Updates about every 15 minutes.`;
 }
 
 // ------------------------------------------------------------------ daily fun
@@ -3041,10 +3046,12 @@ function renderOutings() {
       + (day.whale_fact ? `<p class="note">${esc(day.whale_fact)}</p>` : '');
   }
   const pic = o.picture;
+  // Commons credits are sometimes a whole paragraph of licence requests; keep the name.
+  const shortCredit = t => { t = String(t).replace(/^(this )?photo (was )?taken by /i, '').trim(); if (t.length <= 80) return t; const m = t.match(/^(.{2,80}?[a-z\u00e0-\u024f]{2})[.;\n]/); return m ? m[1].trim() : t.slice(0, 80).replace(/\s+\S*$/, '') + '…'; };
   $('potd-card').hidden = !(pic && pic.image);
   if (pic && pic.image) {
     $('potd').innerHTML = `<a class="potd-img" href="${esc(pic.url || pic.full)}" target="_blank" rel="noopener"><img src="${esc(pic.image)}" alt="${esc(pic.title)}" loading="lazy"></a>
-      <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? `<p class="note">${esc(pic.caption.slice(0, 260))}${pic.caption.length > 260 ? '…' : ''}</p>` : ''}${pic.artist ? `<small class="muted">${esc(pic.artist)}</small>` : ''}`;
+      <b class="potd-title">${esc(pic.title)}</b>${pic.caption ? `<p class="note">${esc(pic.caption.slice(0, 260))}${pic.caption.length > 260 ? '…' : ''}</p>` : ''}${pic.artist ? `<small class="muted">${esc(shortCredit(pic.artist))}</small>` : ''}`;
     // A thumbnail that won't load: try the full-size file, then hide the card rather than show a broken image.
     $('potd').querySelector('img').onerror = function () {
       if (pic.full && this.src !== pic.full) this.src = pic.full; else $('potd-card').hidden = true;
@@ -3755,7 +3762,8 @@ function renderSky(o) {
   $('sky').innerHTML = (o.sky_events || []).map(e => `<div><span><b style="font-weight:700">${e.kind === 'launch' && e.visible ? '🚀 ' : ''}${esc(e.title)}</b><br><small>${esc(e.detail)}</small></span>
     <span style="white-space:nowrap;padding-left:12px">${localDay(e.utc)}${e.kind === 'launch' ? '<br><small>' + tm(e.utc) + '</small>' : ''}</span></div>`).join('');
   const iss = o.iss || [];
-  const nights = o.nights || [];
+  // 7Timer's first night can be the one that just ended; start from tonight so it isn't listed as both "Tonight" and today's weekday.
+  const tonightIso = new Date().toLocaleDateString('en-CA'), nights = (o.nights || []).filter(n => n.night >= tonightIso);
   const scale = (v, words) => words[Math.min(words.length - 1, Math.floor((v - 1) / 3))];
   // A pass is rated with the night's clouds in: a high pass on a clouded-out night is "Clouded out", and
   // the height words say what they mean ("High in the sky", not a bare "Low").
@@ -3763,7 +3771,7 @@ function renderSky(o) {
   const passWord = p => { const n = nights.find(x => x.night === nightOf(p.utc));
     if (n && /clouded out/i.test(n.verdict || '')) return 'Clouded out';
     return p.max_alt >= 40 ? 'High, easy to see' : p.max_alt >= 25 ? 'Good height' : 'Low in the sky'; };
-  $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${i === 0 ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
+  $('nights').innerHTML = nights.map((n, i) => `<div><span><b style="font-weight:700">${n.night === tonightIso ? 'Tonight' : DOW[new Date(n.night + 'T12:00').getDay()] + ' night'}</b><br><small>${scale(n.cloud, ['clear', 'some cloud', 'cloudy'])}, ${scale(n.seeing, ['steady air', 'a little twinkly', 'twinkly'])}, ${scale(n.transparency, ['transparent sky', 'a little hazy', 'hazy'])} · 7Timer</small></span><span style="white-space:nowrap;padding-left:12px">${esc(n.verdict)}</span></div>`).join('');
   const sats = o.satellites || [];
   $('sat-h').hidden = !sats.length;
   $('sats').innerHTML = sats.map(p => `<div><span><b style="font-weight:700">${esc(p.name)}</b> · ${localDay(p.utc)} at ${tm(p.utc)}<br><small>${p.minutes} min, from the ${esc(p.from)} to the ${esc(p.to)}, up to ${p.max_alt}° high</small></span>
@@ -3884,7 +3892,7 @@ function renderParked() {
 }
 
 function renderWorld() {
-  const b = D.bangkok, hol = D.holidays || [];
+  const b = D.bangkok, hol = D.holidays || [], bkToday = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' });
   $('world').hidden = !b && !hol.length && !(D.thai_buddhist || []).length;
   if (b) {
     const tick = () => { $('bkk-time').textContent = new Date().toLocaleString(undefined, { timeZone: 'Asia/Bangkok', weekday: 'short', hour: 'numeric', minute: '2-digit' }); };
@@ -3898,11 +3906,16 @@ function renderWorld() {
         <div class="mini"><span class="k">Air quality</span><span class="v"><i class="aqi" style="background:${aqiColor}"></i>${b.aqi ?? '–'} <small>${aqiLabel}</small></span></div>
         <div class="mini"><span class="k">Humidity</span><span class="v">${b.humidity ?? '–'}<small>%</small></span></div>
       </div>
-      <div class="lines">${b.days.map((d, i) => `<div><span>${i === 0 ? 'Today' : localDay(d.date + 'T12:00:00+07:00')}</span><span>${d.hi}° / ${d.lo}° · ${d.rain_pct ?? 0}% rain</span></div>`).join('')}</div></div>`;
+      <div class="lines">${b.days.filter(d => d.date >= bkToday).map(d => `<div><span>${d.date === bkToday ? 'Today' : new Date(d.date + 'T12:00:00+07:00').toLocaleDateString('en-US', { timeZone: 'Asia/Bangkok', weekday: 'short', month: 'short', day: 'numeric' })}</span><span>${d.hi}° / ${d.lo}° · ${d.rain_pct ?? 0}% rain</span></div>`).join('')}</div></div>`;
   }
   // One list, by date: US and Thai public holidays plus the Thai Buddhist calendar.
   const norm = x => x.toLowerCase().replace(/[^a-z]/g, '').slice(0, 8);
-  const all = hol.map(h => ({...h, thai: h.country !== 'USA'}));
+  // Christmas, New Year's and the like are holidays in both countries: one line with both colors, not two identical lines.
+  const all = [];
+  for (const h of hol) {
+    const twin = all.find(x => x.date === h.date && norm(x.name) === norm(h.name) && x.thai !== (h.country !== 'USA'));
+    if (twin) twin.both = true; else all.push({...h, thai: h.country !== 'USA'});
+  }
   for (const t of D.thai_buddhist || []) {
     const same = all.find(h => h.thai && h.date === t.date && (norm(h.name) === norm(t.name) || norm(h.local || '') === norm(t.name)));
     if (same) { same.about = same.about || t.about; continue; }
@@ -3914,7 +3927,7 @@ function renderWorld() {
     const when = (h.approx ? 'Around ' : '') + new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: y !== new Date().getFullYear() ? 'numeric' : undefined }) +
       (h.ends ? '–' + fmtDate(h.ends).replace(/^\w+ /, '') : '');
     const sub = [h.local && h.local !== h.name ? h.local : '', h.about || ''].filter(Boolean).map(x => esc(x)).join(' · ');
-    return `<div><span><i class="sw" style="display:inline-block;margin-right:8px;background:${h.thai ? 'var(--solar)' : 'var(--use)'}"></i>${esc(h.name)}${sub ? `<br><small>${sub}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
+    return `<div><span>${h.both ? '<i class="sw" style="display:inline-block;margin-right:3px;background:var(--use)"></i><i class="sw" style="display:inline-block;margin-right:8px;background:var(--solar)"></i>' : `<i class="sw" style="display:inline-block;margin-right:8px;background:${h.thai ? 'var(--solar)' : 'var(--use)'}"></i>`}${esc(h.name)}${sub ? `<br><small>${sub}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px">${when}</span></div>`;
   }).join('');
 }
 
@@ -3942,6 +3955,15 @@ async function renderGigs() {
 }
 
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+// ESPN's one-line standing ("1st in Big Sky") can name the same group as the rank row underneath ("Big Sky Conference, 4th of 11")
+// with a different place, early in a college season when nobody has played a conference game. Keep one: the row.
+function standingText(t) {
+  const st = (t.standing || '').replace('Conference Division', 'Conference'), g = t.group_rank && t.group_rank.group;
+  const m = st.match(/^\d+\w\w in (.+)$/);
+  if (!m || !g) return st;
+  const initials = g.split(/\s+/).map(w => w[0]).join('').toUpperCase();
+  return g.toLowerCase().startsWith(m[1].toLowerCase()) || initials === m[1].toUpperCase() ? '' : st;
+}
 const rankLine = r => r ? `<div class="lines"><div><span>${esc(r.group)}</span><span>${ordinal(r.rank)} of ${r.of}</span></div></div>` : '';
 
 function ago(iso) {
@@ -3987,7 +4009,7 @@ function renderComing() {
       topList.map(x => item(x, x.date ? 'out ' + dayLabel(x.date) : null)).join('') : '') +
     `<div class="day-h">Upcoming, next 7 days</div>` +
     (thisWeek.map(x => item(x, dayLabel(x.date))).join('') || '<p class="note" style="padding:12px 0">Nothing coming out this week.</p>') +
-    (later.length ? `<div class="day-h">Later this month</div>` + later.map(x => item(x, dayLabel(x.date))).join('') : '');
+    (later.length ? `<div class="day-h">Coming later</div>` + later.map(x => item(x, dayLabel(x.date))).join('') : '');
   const k = D.kids_movie;
   $('kidmov-card').hidden = !k;
   if (k) {
@@ -4028,6 +4050,23 @@ function renderComing() {
   $('alb-meta').textContent = notable.length ? 'Well reviewed or much anticipated · Metacritic, Wikipedia' : '';
 }
 
+// The overnight list writes "opened" as a date or as a status word ("upcoming", "open", "soft opened"); say it in plain words,
+// and a date still ahead as "opens", not "opened".
+function openedText(v) {
+  v = String(v || '').trim();
+  if (!v) return null;
+  if (/^\d{4}-\d{2}-\d{2}/.test(v)) {
+    const iso = v.slice(0, 10), yr = iso.slice(0, 4) === String(new Date().getFullYear()) ? '' : ', ' + iso.slice(0, 4);
+    return (iso > todayIso() ? 'opens ' : 'opened ') + fmtDate(iso) + yr;
+  }
+  const w = v.toLowerCase();
+  if (/upcoming|coming soon|soon|planned|announced/.test(w)) return 'opening soon';
+  if (/soft/.test(w)) return 'soft open now';
+  if (/reopen/.test(w)) return 'reopening';
+  if (/^(open|opened|now open)$/.test(w)) return 'open now';
+  if (/clos/.test(w)) return 'closed';
+  return /^opened? /.test(w) ? v : 'opened ' + v;
+}
 async function renderLocal() {
   const getJson = async f => { try { const r = await fetch(f + '?t=' + Date.now()); return r.ok ? dropMaine(await r.json()) : null; } catch (e) { return null; } };
   const [rest, liq] = await Promise.all([getJson('restaurants.json'), getJson('liquor.json')]);
@@ -4048,7 +4087,7 @@ async function renderLocal() {
   if (rs.length) {
     $('open-card').hidden = false;
     $('restaurants').innerHTML = `<h3 class="sub" style="margin-top:12px">Reviewed and reported · updated ${fmtDate(rest.updated)}</h3><div class="lines">` + rs.map(x => `<div><span><b style="font-weight:700">${esc(x.name)}</b>
-      <br><small>${[x.cuisine, x.neighborhood, x.price, x.opened ? 'opened ' + x.opened : null].filter(Boolean).map(esc).join(' · ')}</small>
+      <br><small>${[x.cuisine, x.neighborhood, x.price, openedText(x.opened)].filter(Boolean).map(esc).join(' · ')}</small>
       ${x.summary ? `<br><small>${esc(x.summary)}</small>` : ''}
       <br><small>${(x.reviews || []).filter(r => r.url).map(r => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.critic ? r.critic + ', ' + r.outlet : r.outlet)}</a>${r.verdict ? ': ' + esc(r.verdict) : ''}`).join(' · ')}</small></span></div>`).join('') + '</div>';
   }
@@ -4090,7 +4129,7 @@ async function renderCoast() {
   $('coast').hidden = !c;
   if (!c) return;
   const days = c.days || [], now = c.now || {};
-  const official = (c.alerts || []).map(x => ({ ...x, level: ({ Extreme: 3, Severe: 3, Moderate: 2 })[x.severity] || 1 }));
+  const official = (c.alerts || []).filter(x => !/has been cancell?ed|no longer in effect/i.test(`${x.headline || ''} ${x.description || ''}`)).map(x => ({ ...x, level: ({ Extreme: 3, Severe: 3, Moderate: 2 })[x.severity] || 1 }));
   $('coast-alerts').innerHTML = official.map(x => `<div class="alert l${x.level}" role="alert">${ALERT_ICON}<div>
       <b>${esc(x.event)}</b> <span class="src">· coast · ${x.ends ? 'until ' + localWhen(x.ends) : ''}</span>${x.headline ? `<p>${esc(x.headline)}</p>` : ''}
       ${x.description ? `<details><summary>Details</summary><p style="white-space:pre-line">${esc(x.description)}</p></details>` : ''}</div></div>`).join('');
@@ -4142,7 +4181,7 @@ async function renderCoast() {
       const h = head !== lastHead ? `<h3 class="sub">${esc(head)}</h3>` : ''; lastHead = head;
       return h + `<div class="story"><span><b>${esc(title(x.name))}</b>
       <small>${[x.end && x.end !== x.date ? (on === 'now' ? 'through ' : dayLabel(x.date) + ' – ') + dayLabel(x.end) : dayLabel(x.date), x.town].filter(Boolean).map(esc).join(' · ')}</small>
-      ${x.summary ? `<p>${esc(x.summary.replace(/\s*Price not given\.?/i, ''))}</p>` : ''}${x.url || x.olcc_url ? `<small>${[x.url ? `<a href="${esc(x.url)}" target="_blank" rel="noopener">Rating</a>` : '', x.olcc_url ? `<a href="${esc(x.olcc_url)}" target="_blank" rel="noopener">OLCC listing</a>` : ''].filter(Boolean).join(' · ')}</small>` : ''}</span></div>`; }).join('');
+      ${x.summary ? `<p>${esc(x.summary.replace(/\s*Price not given\.?/i, ''))}</p>` : ''}${x.url ? `<small><a href="${esc(x.url)}" target="_blank" rel="noopener">Details</a></small>` : ''}</span></div>`; }).join('');
   }
 }
 
@@ -4262,7 +4301,7 @@ function renderLive() {
     $('planes').innerHTML = p.closest.map(x => `<div><span style="display:flex;gap:10px;align-items:flex-start">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy" onerror="this.remove()" style="width:64px;height:44px;object-fit:cover;border-radius:8px;flex:none">` : ''}<span>
       <a href="${esc(x.url)}" target="_blank" rel="noopener" style="font-weight:700">${esc(x.callsign)}</a>${x.airline || x.owner ? ` <small>${esc(x.airline || x.owner)}</small>` : ''}
       ${x.from || x.to ? `<br><b style="font-weight:700">${ap(x.from)} → ${ap(x.to)}</b>` : ''}
-      <br><small>${[x.aircraft ? esc(x.aircraft) : null, `${x.feet.toLocaleString()} ft`, `${x.mph} mph`].filter(Boolean).join(' · ')}</small></span></span><span>${x.miles} mi</span></div>`).join('')
+      <br><small>${[x.aircraft ? esc(x.aircraft) : null, `${x.feet.toLocaleString()} ft`, x.mph != null ? `${x.mph} mph` : null].filter(Boolean).join(' · ')}</small></span></span><span>${x.miles} mi</span></div>`).join('')
       || '<div><span>Nothing overhead right now</span><span></span></div>';
   }
   const pdx = l.pdx;
@@ -4273,11 +4312,13 @@ function renderLive() {
 
 // Big and local news: one entry per story, ranked by how many outlets cover it. Each entry links the outlet
 // it came from and the other outlets reporting the same story, so every headline carries its sources.
+// Some feeds repeat the headline as the summary ("Coastal flooding, strong winds and rain..." twice); show it once.
+const newSummary = x => { const k = t => String(t || '').toLowerCase().replace(/[^a-z0-9]/g, ''); return !!x.summary && !k(x.summary).startsWith(k(x.title)); };
 function headlineItem(x) {
   const also = (x.also || []).slice(0, cap(6)).map(a => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.source)}</a>`);
   return `<div class="story headline">
       ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
-      <span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}
+      <span><a href="${esc(x.url)}" target="_blank" rel="noopener"><b>${esc(x.title)}</b></a>${newSummary(x) ? `<p>${esc(x.summary)}</p>` : ''}
       <small>${[esc(x.source), ago(x.utc)].filter(Boolean).join(' · ')}${also.length ? ` · also ${also.join(', ')}${(x.also || []).length > 6 ? ` and ${x.also.length - 6} more` : ''}` : ''}</small></span></div>`;
 }
 function renderHeadlines() {
@@ -4297,7 +4338,7 @@ function renderNews() {
   $('news').hidden = !stories.length && !reviews.length && !(n.big || []).length && !(n.local || []).length;
   const item = (x, extra) => `<a class="story" href="${esc(x.url)}" target="_blank" rel="noopener">
       ${x.image ? `<img src="${esc(x.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
-      <span><b>${esc(x.title)}</b>${x.summary ? `<p>${esc(x.summary)}</p>` : ''}<small>${extra}</small></span></a>`;
+      <span><b>${esc(x.title)}</b>${newSummary(x) ? `<p>${esc(x.summary)}</p>` : ''}<small>${extra}</small></span></a>`;
   $('stories').innerHTML = stories.map(x => item(x, [esc(x.source), ago(x.utc),
     x.coverage > 1 ? `covered by ${x.coverage} outlets` : null, x.av ? 'A/V' : null].filter(Boolean).join(' · '))).join('')
     || '<p class="note" style="padding:12px 0">No stories right now.</p>';
@@ -4351,6 +4392,23 @@ function teamInsight(t, r) {
   return injHtml + news + redditBlock(r);
 }
 
+// The fan pulse is the local model's summary of news and fan posts, and it sometimes gets a score, the winner or
+// the next opponent wrong. ESPN's feed is the record: drop any line or sentence that contradicts it.
+function pulseAgrees(text, t) {
+  const l = t && t.last, g = t && t.next, s = String(text || '');
+  const nick = o => (o || '').trim().split(/\s+/).pop();  // "Milwaukee Bucks" -> "Bucks"
+  const names = o => [o, nick(o)].filter(Boolean).map(x => x.toLowerCase());
+  const says = (o) => names(o).some(n => n.length > 2 && s.toLowerCase().includes(n));
+  if (l && l.completed && l.us != null && says(l.opponent)) {
+    const m = s.match(/\b(\d{1,3})\s*[-–]\s*(\d{1,3})\b/);
+    if (m && [m[1], m[2]].sort().join() !== [String(l.us), String(l.them)].sort().join()) return false;
+    if (/\b(lost|lose|loses|losing|fell|fall|falls|defeated by|beaten by)\b/i.test(s) && l.won) return false;
+    if (/\b(won|win|wins|beat|beats|victory|defeated)\b/i.test(s) && !/\bby\b/i.test(s) && l.won === false) return false;
+  }
+  if (g && /\bnext (game|up|match|matchup|opponent)\b|\bup next\b/i.test(s) && !says(g.opponent)) return false;
+  return true;
+}
+
 // The fan pulse is written twice a day; flag it when a game has finished since.
 function pulseStale(tj, t) {
   const l = t && t.last;
@@ -4379,7 +4437,7 @@ function renderMore() {
       ${rc.leaders.length ? `<small>${rc.leaders.slice(0, cap(3)).map(x => `${esc(x.stat)}: ${esc(x.player)} ${esc(x.value)}`).join(' · ')}</small>` : ''}
       ${rc.goals.length ? `<small>Goals: ${rc.goals.map(x => `${esc(x.player || '?')}${x.minute ? ` (${esc(x.minute)})` : ''}`).join(', ')}</small>` : ''}</div>` : '';
     teams.push(`<section class="card"><div class="team-top">${t.logo ? `<img src="${esc(t.logo)}" alt="">` : ''}
-      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, (t.standing || '').replace('Conference Division', 'Conference')].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}<p class="src-line">Sources: <a href="https://www.espn.com/" target="_blank" rel="noopener">ESPN scores, standings and recaps</a>${sp.reddit && sp.reddit[key] ? ' · <a href="https://www.reddit.com/" target="_blank" rel="noopener">Reddit fan threads</a>' : ''}</p></section>`);
+      <div><h2>${esc(t.name)}</h2><span class="meta">${[t.record, standingText(t)].filter(Boolean).map(esc).join(' · ')}</span></div></div>${rankLine(t.group_rank)}${next}${last}${recap}<div id="pulse-${key}"></div>${teamInsight(t, sp.reddit && sp.reddit[key])}<p class="src-line">Sources: <a href="https://www.espn.com/" target="_blank" rel="noopener">ESPN scores, standings and recaps</a>${sp.reddit && sp.reddit[key] ? ' · <a href="https://www.reddit.com/" target="_blank" rel="noopener">Reddit fan threads</a>' : ''}</p></section>`);
   }
   $('teams').innerHTML = teams.join('');
   fetch('teams.json?t=' + Date.now()).then(r => r.ok ? r.json() : null).then(tj => {
@@ -4387,8 +4445,11 @@ function renderMore() {
     for (const [key, t] of Object.entries(tj.teams)) {
       const el = $('pulse-' + key);
       if (!el || !t.pulse) continue;
-      el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3><p class="note">${esc(t.pulse)}</p>` +
-        ((t.storylines || []).length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${t.storylines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
+      const espn = sp && sp[key], pulse = (t.pulse.match(/[^.!?]+[.!?]*/g) || [t.pulse]).filter(x => pulseAgrees(x, espn)).join(' ').trim();
+      const lines = (t.storylines || []).filter(x => pulseAgrees(x, espn));
+      if (!pulse && !lines.length) continue;
+      el.innerHTML = `<h3 class="sub">Fan pulse${t.mood ? ` <span class="pill">${esc(t.mood)}</span>` : ''}</h3>${pulse ? `<p class="note">${esc(pulse)}</p>` : ''}` +
+        (lines.length ? `<ul class="note" style="margin:6px 0 0;padding-left:18px">${lines.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
         `<p class="meta" style="margin:4px 0 0">Summary as of ${tj.updated_at ? localWhen(tj.updated_at) : fmtDate(tj.updated)}</p>` + cite(t.sources) + pulseStale(tj, sp && sp[key]);
     }
   }).catch(() => {});
@@ -4814,7 +4875,7 @@ async function renderKids() {
   const events = ((kj && kj.events) || []).filter(e => (e.ends || e.date) >= today && (e.date || today) <= soon)
     .sort((x, y) => (x.date || today).localeCompare(y.date || today));
   const spots = OUTINGS.filter(o => o[2].includes(month)).concat(OUTINGS.filter(o => !o[2].length));
-  const when = e => e.date && e.date > today ? (e.ends && e.ends !== e.date ? `${dayLabel(e.date)} to ${dayLabel(e.ends)}` : dayLabel(e.date)) : (e.ends ? `Now through ${dayLabel(e.ends)}` : 'Now');
+  const when = e => e.date && e.date > today ? (e.ends && e.ends !== e.date ? `${dayLabel(e.date)} to ${dayLabel(e.ends)}` : dayLabel(e.date)) : (e.ends && e.ends > today ? `Now through ${dayLabel(e.ends)}` : 'Today');
   $('kid-out').innerHTML = (events.length ? '<div class="day-h">Coming up</div>' + events.map(e => `<a class="story" href="${esc(e.url)}" target="_blank" rel="noopener"><span><b>${esc(e.title)}</b><small>${[when(e), e.where].filter(Boolean).map(esc).join(' · ')}</small>${e.detail ? `<p>${esc(e.detail)}</p>` : ''}</span></a>`).join('') : '') +
     '<div class="day-h">Good this time of year</div>' + spots.map(o => `<a class="story" href="${esc(o[3])}" target="_blank" rel="noopener"><span><b>${esc(o[0])}</b><small>${o[2].length ? 'In season now' : 'Any time'}</small><p>${esc(o[1])}</p></span></a>`).join('');
   $('kid-out-meta').textContent = kj && kj.updated ? `Events checked ${dayLabel(kj.updated)}` : '';
@@ -5240,7 +5301,7 @@ async function renderBriefing() {
 
   // The diary, the date and the trails
   const cal = (D.calendar || []).filter(e => e.date === today && (e.all_day || new Date(e.end || e.start) > now));
-  if (cal.length) add(96, 'cal-card', `On your calendar today: ${cal.slice(0, 3).map(e => `<b>${esc(e.title)}</b>${e.all_day ? '' : ' at ' + timeOf(e.start)}`).join(', ')}${cal.length > 3 ? `, and ${cal.length - 3} more` : ''}.`);
+  if (cal.length) add(96, 'cal-card', `On your calendar today: ${cal.slice(0, 3).map(e => `<b>${esc(e.title)}</b>${e.all_day ? '' : calSpan(e) ? calSpan(e).brief : ' at ' + timeOf(e.start)}`).join(', ')}${cal.length > 3 ? `, and ${cal.length - 3} more` : ''}.`);
   else if (D.calendar) {
     const next = D.calendar.find(e => e.date === tomorrow);
     add(next ? 52 : 20, 'cal-card', next ? `Your calendar is clear today. Tomorrow: <b>${esc(next.title)}</b>${next.all_day ? '' : ' at ' + timeOf(next.start)}.` : 'Your calendar is clear today, sir.');
@@ -5293,7 +5354,7 @@ async function renderBriefing() {
     if (when && now - when < 3 * 864e5) newVotes.push([p, v]);
   }
   if (newVotes.length) { const [p, v] = newVotes[0];
-    add(32, 'civics', `${esc(p.name)} voted <b>${esc(v.vote)}</b> on ${esc(v.bill || v.question || 'a measure')}${v.desc ? `, ${esc(v.desc.length > 90 ? v.desc.slice(0, 87) + '…' : v.desc)}` : ''}.`); }
+    add(32, 'civics', `${esc(p.name)} ${/not voting/i.test(v.vote || '') ? '<b>did not vote</b>' : `voted <b>${esc(v.vote)}</b>`} on ${esc(v.bill || v.question || 'a measure')}${v.desc ? `, ${esc(v.desc.length > 90 ? v.desc.slice(0, 87) + '…' : v.desc)}` : ''}.`); }
 
   const sunset = ((o.sunsets) || []).find(x => x.date === today);
   if (sunset && sunset.score >= 70 && now < new Date(`${today}T${sunset.sunset}`))
@@ -5328,9 +5389,9 @@ async function renderBriefing() {
   if (ce) add(37, 'coast-events-card', `At the coast ${daysTo(ce.date) <= 0 ? 'today' : whenWord(ce.date)}: ${esc(ce.name)} in ${esc(ce.town)}.`);
   const pulseFresh = fans && fans.updated_at && (now - new Date(fans.updated_at)) < 30 * 3600e3;
   if (pulseFresh) { const ks = ['blazers', 'timbers', 'f1', 'ducks', 'niners'].filter(x => fans.teams && fans.teams[x]), k = ks[dayNo % ks.length], f = fans.teams && fans.teams[k];
-    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock', ducks: 'Ducks faithful', niners: '49ers Faithful'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc((f.pulse || '').replace(/^(.*?[.!?])\s.*$/s, '$1'))}`); }
+    if (f && f.mood) add(35, 'more', `The ${{blazers: 'Blazers faithful', timbers: 'Timbers Army', f1: 'Formula 1 paddock', ducks: 'Ducks faithful', niners: '49ers Faithful'}[k]} ${k === 'f1' ? 'is' : 'are'} feeling ${esc(f.mood.toLowerCase())}. ${esc(((f.pulse || '').match(/[^.!?]+[.!?]*/g) || []).find(x => pulseAgrees(x, D.sports && D.sports[k])) || '')}`); }
   if (brief && brief.updated === today && brief.analysis && brief.analysis.headline)
-    add(53, 'more', `${say('markets_lead', 0, 'On the markets')}: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.` : ''}`);
+    add(53, 'more', `${say('markets_lead', 0, 'On the markets')}: ${esc(brief.analysis.headline.replace(/\.$/, ''))}.${brief.helium && brief.helium.headline ? (/^North American Helium\b/i.test(brief.helium.headline) ? ` ${esc(brief.helium.headline.replace(/\.$/, ''))}.` : ` As for North American Helium, ${esc(brief.helium.headline.charAt(0).toLowerCase() + brief.helium.headline.slice(1).replace(/\.$/, ''))}.`) : ''}`);
   if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)
     add(36, 'more', `${say('property_lead', 0, 'Property, sir')}: ${esc(brief.realestate.headline.replace(/\.$/, ''))}.`);
   if (D.poem && D.poem.title) add(14, 'poem-card', `Today’s poem is “${esc(D.poem.title)}” by ${esc(D.poem.poet)}.`);
@@ -5379,6 +5440,18 @@ async function renderBriefing() {
 
 // ------------------------------------------------------------------ calendar, this day, trails
 const calTime = iso => new Date(iso).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+// A timed event that runs past midnight (a four-day "Watch Teddy" from 12 am Tue to 12 am Sat) reads as a span of days,
+// not "12:00 AM–12:00 AM". Returns null for an ordinary same-day event.
+function calSpan(e) {
+  if (e.all_day || !e.start || !e.end) return null;
+  const a = new Date(e.start), b = new Date(e.end), day = d => d.toLocaleDateString('en-CA');
+  const last = new Date(b - (b.getHours() || b.getMinutes() ? 0 : 1));
+  if (day(a) === day(last)) return null;
+  const midnight = d => !d.getHours() && !d.getMinutes();
+  const lastTxt = DOW[last.getDay()] + ', ' + fmtDate(day(last)) + (midnight(b) ? '' : ' ' + timeOf(e.end));
+  if (a <= new Date()) return { brief: ' (through ' + lastTxt + ')', line: 'Until ' + lastTxt };
+  return { brief: (midnight(a) ? '' : ' from ' + timeOf(e.start)) + ' through ' + lastTxt, line: (midnight(a) ? '' : calTime(e.start) + ', ') + 'until ' + lastTxt };
+}
 function calDay(iso) {
   const n = Math.round((new Date(iso + 'T12:00') - new Date(todayIso() + 'T12:00')) / 864e5);
   return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : DOW[new Date(iso + 'T12:00').getDay()] + ' ' + fmtDate(iso);
@@ -5392,7 +5465,7 @@ function renderCalendar() {
   $('cal-meta').textContent = ev.length ? `${ev.length} in the next week` : '';
   $('cal').innerHTML = Object.keys(byDay).length ? Object.entries(byDay).map(([d, list]) => `<h3 class="sub cal-day">${calDay(d)}</h3>
     <div class="lines">${list.map(e => `<div><span>${esc(e.title)}${e.where ? `<br><small>${esc(e.where)}</small>` : ''}</span>
-      <span style="white-space:nowrap;padding-left:12px">${e.all_day ? (e.last_day ? 'Until ' + fmtDate(e.last_day) : 'All day') : calTime(e.start) + '–' + calTime(e.end)}</span></div>`).join('')}</div>`).join('')
+      <span style="white-space:nowrap;padding-left:12px">${e.all_day ? (e.last_day ? 'Until ' + fmtDate(e.last_day) : 'All day') : calSpan(e) ? calSpan(e).line : calTime(e.start) + '–' + calTime(e.end)}</span></div>`).join('')}</div>`).join('')
     : '<p class="note">Nothing on the calendar this week.</p>';
 }
 
@@ -5404,7 +5477,14 @@ function renderAlmanac() {
   $('date-facts').innerHTML = (a.facts || []).map(f => `<span class="chip">${esc(f)}</span>`).join('');
   const hol = (h && h.holidays) || [];
   $('hol-today').hidden = !hol.length;
-  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${hol.slice(0, cap(6)).map(x => pageLink(x.page, esc(x.text))).join(' · ')}` : '';
+  // Wikipedia lists each saint as "Christian feast days: Albert of Louvain"; say the heading once.
+  const holGroups = [];
+  for (const x of hol.slice(0, cap(6))) {
+    const m = String(x.text).match(/^([^:]{3,40}):\s*(.+)$/), key = m ? m[1] : null, g = key && holGroups.find(g => g.key === key);
+    const link = pageLink(x.page, esc(m ? m[2] : x.text));
+    if (g) g.items.push(link); else holGroups.push({ key, items: [link] });
+  }
+  $('hol-today').innerHTML = hol.length ? `<b>Observed today:</b> ${holGroups.map(g => (g.key ? esc(g.key) + ': ' : '') + g.items.join(', ')).join(' · ')}` : '';
   $('hist-card').hidden = !h;
   if (h) {
     const row = x => `<div><span>${pageLink(x.page, esc(x.text))}${x.page && x.page.summary ? `<br><small>${esc(x.page.summary.slice(0, 220))}${x.page.summary.length > 220 ? '…' : ''}</small>` : ''}</span><span style="padding-left:12px">${x.year ?? ''}</span></div>`;
@@ -5454,11 +5534,11 @@ function renderCivics() {
   }
   const said = v => ({ yea: 'YES', yes: 'YES', aye: 'YES', nay: 'NO', no: 'NO' })[(v.vote || '').toLowerCase()] || (v.vote || '').toUpperCase();
   const outcome = v => v.outcome === 'passed' ? (/confirm/i.test(v.result || '') ? 'confirmed' : 'passed') : v.outcome === 'failed' ? 'failed' : (v.result || '').toLowerCase();
-  const voteLine = (p, v) => `<div><span><b style="font-weight:700">${esc(p.name.split(' ').slice(-1)[0])} voted ${esc(said(v))}</b> on ${esc(v.plain || v.desc || v.question || '')}${v.bill && !/^PN/.test(v.bill) ? ` (${esc(v.bill.replace(/^H\.?\s?R\.?\s?/, 'H.R. ').replace(/^S\.?\s?(\d)/, 'S. $1'))})` : ''}. ${outcome(v) ? `${outcome(v) === 'confirmed' ? 'Confirmed' : 'It ' + esc(outcome(v))}${v.date && /^\d{4}-/.test(v.date) ? ', ' + fmtDate(v.date) : ''}.` : ''}${(v.steps || []).length ? ` <small>(${v.steps.length} procedural vote${v.steps.length > 1 ? 's' : ''} folded in)</small>` : ''} <small><a href="${esc(v.url)}" target="_blank" rel="noopener">Roll call</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(said(v))}</span></div>`;
+  const voteLine = (p, v) => `<div><span><b style="font-weight:700">${esc(p.name.split(' ').slice(-1)[0])} ${said(v) === 'YES' || said(v) === 'NO' ? 'voted ' + said(v) : /not voting/i.test(v.vote || '') ? 'did not vote' : /present/i.test(v.vote || '') ? 'voted present' : 'voted ' + esc(said(v))}</b> on ${esc(v.plain || v.desc || v.question || '')}${v.bill && !/^PN/.test(v.bill) ? ` (${esc(v.bill.replace(/^H\.?\s?R\.?\s?/, 'H.R. ').replace(/^S\.?\s?(\d)/, 'S. $1'))})` : ''}. ${outcome(v) ? `${outcome(v) === 'confirmed' ? 'Confirmed' : 'It ' + esc(outcome(v))}${v.date && /^\d{4}-/.test(v.date) ? ', ' + fmtDate(v.date) : ''}.` : ''}${(v.steps || []).length ? ` <small>(${v.steps.length} procedural vote${v.steps.length > 1 ? 's' : ''} folded in)</small>` : ''} <small><a href="${esc(v.url)}" target="_blank" rel="noopener">Roll call</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(said(v))}</span></div>`;
   const voteRow = v => `<div><span>${v.bill ? `<b style="font-weight:700">${esc(v.bill)}</b> ` : ''}${esc(v.desc || v.question || '')}<br><small>${esc(v.question || '')}${v.result ? ' · ' + esc(v.result) : ''} · <a href="${esc(v.url)}" target="_blank" rel="noopener">${v.date && /^\d{4}-/.test(v.date) ? fmtDate(v.date) : esc(v.date || 'Details')}</a></small></span><span class="vote v-${esc((v.vote || '').toLowerCase().replace(/[^a-z]/g, ''))}">${esc(v.vote)}</span></div>`;
   $('reps').innerHTML = c.people.map(p => `<div class="rep">
       <div class="rep-head"><div><b>${esc(p.name)}</b> ${partyTag(p.party)}<br><small>${esc(p.role)}</small></div>
-        <div class="rep-links">${p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : ''}${p.phone ? ` · <a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : ''}${p.email ? ` · <a href="mailto:${esc(p.email)}">Email</a>` : ''}${p.url && p.url !== p.contact ? ` · <a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''}</div></div>
+        <div class="rep-links">${[p.contact ? `<a href="${esc(p.contact)}" target="_blank" rel="noopener">Contact</a>` : '', p.phone ? `<a href="tel:${esc(p.phone)}">${esc(p.phone)}</a>` : '', p.email ? `<a href="mailto:${esc(p.email)}">Email</a>` : '', p.url && p.url !== p.contact ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">Site</a>` : ''].filter(Boolean).join(' · ')}</div></div>
       ${p.votes.length ? `<h3 class="sub">Recent floor votes</h3>${p.vote_summary ? `<p class="summary">${esc(p.vote_summary)}</p>` : ''}<div class="lines">${p.votes.slice(0, cap(4)).map(v => v.plain != null ? voteLine(p, v) : voteRow(v)).join('')}</div>` : ''}
       ${p.bills.length ? `<h3 class="sub">Bills they sponsored</h3><div class="lines">${p.bills.slice(0, cap(3)).map(b => `<div><span>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.id)}</a>` : esc(b.id)} ${esc(b.title || '')}${b.action ? `<br><small>${esc(b.action)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${b.date ? fmtDate(b.date) : ''}</small></span></div>`).join('')}</div>` : ''}
       ${p.news.length ? `<h3 class="sub">In the news</h3><div class="lines">${p.news.map(x => `<div><span><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.source ? `<br><small>${esc(x.source)}</small>` : ''}</span><span style="white-space:nowrap;padding-left:12px"><small>${x.date ? fmtDate(x.date) : ''}</small></span></div>`).join('')}</div>` : ''}

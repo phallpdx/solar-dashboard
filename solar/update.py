@@ -1092,7 +1092,7 @@ def civics_view(state, today):
         people.append({k: v for k, v in p.items() if k not in ("lis", "govtrack")} | {
             "votes": votes.get(vid) or [], "bills": bills.get(p.get("bioguide") or p.get("openstates_id")) or [],
             "news": news.get(p["name"]) or []})
-    ballot = {b["date"]: b for b in c.get("ballot") or [] if b["date"] >= today}
+    ballot = {b["date"]: b for b in c.get("ballot") or [] if b["date"] >= today and "test election" not in (b.get("name") or "").lower()}
     elections = []
     for e in civics.oregon_elections(dt.date.fromisoformat(today)):
         b = ballot.pop(e["date"], None)
@@ -1199,6 +1199,9 @@ def fetch_places(state, now_utc):
         store.pop("commute_at", None)  # retry places that failed
     _refresh(store, "commute", lambda: places.commute(spots, env("TOMTOM_KEY")),
              0 if env("TOMTOM_KEY") else 24, now_utc, errors)
+    refused = next((x["traffic_error"] for x in store.get("commute") or [] if x.get("traffic_error")), None)
+    if refused:
+        errors.append(f"traffic: {refused} (showing drive times without traffic)")
     coast = dict(spots).get("Coast house")
     if coast:
         today = now_utc.astimezone(zone("America/Los_Angeles")).date()
@@ -1310,7 +1313,7 @@ def fetch_river(state, now_utc):
     _refresh(store, "usgs", river.usgs, 0.5, now_utc, errors)
     _refresh(store, "nwps", river.nwps, 3, now_utc, errors)
     _refresh(store, "bar", river.bar_alerts, 0.5, now_utc, errors)
-    _refresh(store, "surf_zone", river.surf_zone, 6, now_utc, errors)
+    _refresh(store, "surf_zone", river.surf_zone, 2, now_utc, errors)  # NWS issues it around 3 to 4 am; a 6-hour wait could keep yesterday's until noon
     return "; ".join(errors) or None
 
 
@@ -1320,6 +1323,9 @@ def river_view(state, now_utc):
         return None
     bar = [a for a in store.get("bar") or [] if not a.get("expires") or a["expires"] >= now_utc.isoformat()]
     sz = {k: v for k, v in (store.get("surf_zone") or {}).items() if k != "text"}  # the parsed lines, not the whole product
+    if sz.get("issued"):
+        issued_on = dt.datetime.fromisoformat(sz["issued"].replace("Z", "+00:00")).astimezone(LOCAL).date()
+        sz["days"] = river.date_surf_zone(sz.get("days"), issued_on, now_utc.astimezone(LOCAL).date())
     return {"gauges": store["usgs"], "forecast": store.get("nwps"), "bar": bar, "surf_zone": sz or None,
             "updated": store.get("usgs_at")}
 

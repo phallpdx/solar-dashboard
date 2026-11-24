@@ -292,7 +292,8 @@ def civic_elections(address, key, today):
     data = _json("https://www.googleapis.com/civicinfo/v2/elections?" + urllib.parse.urlencode({"key": key}))
     out = []
     for e in data.get("elections") or []:
-        if e["id"] == "2000" or e.get("electionDay", "") < today.isoformat():  # 2000 is Google's test election
+        # 2000 is Google's test election, and it has added others ("Google Test Election (Future)", dated 2033).
+        if e["id"] == "2000" or "test election" in (e.get("name") or "").lower() or e.get("electionDay", "") < today.isoformat():
             continue
         # Google answers voterinfo for any address and any election, so another state's election would
         # come back looking like ours. Keep only Oregon's (or nationwide ones).

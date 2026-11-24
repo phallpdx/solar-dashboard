@@ -2,6 +2,74 @@
   "updated": "2026-11-24",
   "restaurants": [
     {
+      "name": "Wild Card Salad Shop",
+      "neighborhood": "Portland",
+      "cuisine": "Salad shop",
+      "price": "",
+      "opened": "upcoming",
+      "summary": "A new salad shop by Chef Chad Conley.",
+      "reviews": [
+        {
+          "outlet": "Wisevoter",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-13",
+          "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNSlFLX1cxbFpkS0JodGRBeXZtNnUtR2JTcUtVeDRkRUFrUVd3elh0aUdQdG14UUZJcU1LTTZNblZGckdwdUV1TUV4UGJNc3J5Q0x6VTNtLWNxd0JQRlJnZnptZjRGX2pGWk52Vkx1SmFaYVVfTzBROE5iRG0ydXpkNy1XQkVPVGt3ZmdxMW1xbVZlcXV4?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Sumo Sushi",
+      "neighborhood": "Milwaukie",
+      "cuisine": "Sushi",
+      "price": "",
+      "opened": "upcoming",
+      "summary": "Taking over a former Shari's location.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-23",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPRllWc2F6WGlMeEJWVmExME1uVnlvRERjUHBQSlFUSkxUV3pKM3ExWlp6VW1zVm8tdlE4SHpuT3k4UzRIMFpEYkNWTXMycnFxU1Jiay05U0FVbzhnZ2FDWGpfNmxWN3I4MlphSERYcjJjNWNuenlVQUlITTBoWC1mQjV1T1VTa3Q5alA1czJvbHlsNmxJQzQ4aV9BbnY?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "1508 Coffee & Cocktails",
+      "neighborhood": "Portland",
+      "cuisine": "Ethiopian hospitality",
+      "price": "",
+      "opened": "upcoming",
+      "summary": "A new spot bringing Ethiopian hospitality to Portland.",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPUTlqTWxSa3plcDN2Ukltc0dJRm5mMDZCZmFjTl9BWWNrSUNhbXhLaHFXOUpxXy1EZjZGYWhDMUQ5R3phX05tbjl2TTM5X1daTFEwU0N2QkVQdXhiNW53QXFCdVdvTXRJTFpBM1FKakk2MGVHUFZPOHBTN0RlR2NSa3kzZDYwOWxRWWtQZElvUVhVRFNGRnA2RjBmLWRqSlEzeWd4N282dVFCUkdEbHlRSklVVURTRWxzaUxuUUlrMU9pTFE2M0k0RHR1ekk?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Oat Mode",
+      "neighborhood": "Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "open",
+      "summary": "A new establishment that is now open.",
+      "reviews": [
+        {
+          "outlet": "Portland Food Map",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-21",
+          "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9lWEJZQ3RMY0xENjlNSUE5M0NyekJvLXhIb1NMdE5ialdDTVF1Z0FLVFc5TWY4bEdNbjVhMlBFMWJBN1otZ0w4Q2MyOGpRNlFvU0pRTzJkNHFJdXdPWnZj?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Bar Sprezzatura",
       "neighborhood": "",
       "cuisine": "",
@@ -94,6 +162,13 @@
       "opened": "about to open",
       "summary": "Opening in the Old Garrison Bar Space.",
       "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMGdETGh6NlB0RTZUemNGTm01eHBJWHVwbS1GT3MzTmJvbS1QeS1GTHJINjhuNm5JTS11OEpST3dCOEo3RVZCQnJmNktyaTctczdfQ1ppeGpzVF9RMDhzMHVBb1c4OHpwWkRXOXhMV2o4SVlXVzFmTy1BdzQwZ3l0dU1BZkE2NWlNLXZzWlhELXdzb2lIdVo3NlZB?oc=5"
+        },
         {
           "outlet": "Bridgetown Bites",
           "critic": "",
@@ -345,74 +420,6 @@
           "verdict": "",
           "date": "2026-11-07",
           "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQaXV1b3VCdldXZkx0UHdnaGRsSzRkejc5Mnd4OEFPNTJCS1p2Tk9xamMtSnhPVDRmbzdWVmhuRHBpeDZtMER5SEF4N0VLMHROazNTZWRZYm9QMGN4UDBCYVFEZWVWRUQ1Tjh4dkxXenVHQkVnMDNZX29zMGx4MGFFMVFpRm4yNk0tQWxGcjMzTkRzQm9YcGxpbXhCd1F3ZW1n?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Steelhead Music Venue",
-      "neighborhood": "Central Eastside",
-      "cuisine": "Music venue",
-      "price": "",
-      "opened": "Summer 2027",
-      "summary": "Moving toward a summer 2027 opening.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-13",
-          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxObDhCaldNUjQ1TmFSTnYwTFJqbzVpenUtVG15OGY1Wkp5VXZkRU52R3dqZXgtbVRZNW1OWmRBTkJLN0Eyb0xCM3dCMFFQbVBic3p5LTczSXhSdThIWl9kVXU1Y3oxb0NtMDZBWFgzeTZUTUExTHNERU1UME1lWlBhNGYtYmJCZEpNdWxSb2g4Mnh3RVh5OTNQMG93SHVaLW5LUkNETDVSN1U3a1M2RkJpMENKM2FmZUU?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Fukami",
-      "neighborhood": "Downtown Portland",
-      "cuisine": "Omakase sushi",
-      "price": "",
-      "opened": "2025-09-18",
-      "summary": "A refined, eight-seat omakase sushi bar.",
-      "reviews": [
-        {
-          "outlet": "Eater Portland",
-          "critic": "Katrina Yentch",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://pdx.eater.com"
-        }
-      ]
-    },
-    {
-      "name": "Richmond Club",
-      "neighborhood": "Division Street",
-      "cuisine": "French bistro-style bar food",
-      "price": "",
-      "opened": "2025-09-03",
-      "summary": "A French bistro-style space serving upscale bar food.",
-      "reviews": [
-        {
-          "outlet": "Eater Portland",
-          "critic": "Ben Coleman",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://pdx.eater.com/maps/new-restaurant-openings-portland-oregon"
-        }
-      ]
-    },
-    {
-      "name": "Pretty Ugly",
-      "neighborhood": "Portland",
-      "cuisine": "Burgers and cocktails",
-      "price": "",
-      "opened": "empty",
-      "summary": "A spot serving burgers and fancy cocktails.",
-      "reviews": [
-        {
-          "outlet": "Resy",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
         }
       ]
     }

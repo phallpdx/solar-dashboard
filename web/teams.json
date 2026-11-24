@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-24",
-  "updated_at": "2026-11-24T08:45:59Z",
+  "updated_at": "2026-11-24T10:27:39Z",
   "teams": {
     "blazers": {
       "mood": "Optimistic and surging",
@@ -29,12 +29,10 @@
       ]
     },
     "timbers": {
-      "mood": "Disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They aim to learn quickly before Game 2.",
+      "mood": "disappointed but hopeful",
+      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. They must learn quickly before Game 2.",
       "storylines": [
-        "Lost 3-0 to FC Dallas in Game 1 of Round One",
-        "Game 2 is Saturday, Nov. 28 against FC Dallas",
-        "Ian Miller named to U.S. U-16 Boys domestic training camp"
+        "Lost 3-0 in Round One, Game 1 against Dallas"
       ],
       "sources": [
         {
@@ -57,12 +55,12 @@
     },
     "f1": {
       "mood": "Excited and intense",
-      "pulse": "Fans are thrilled by the record-breaking Las Vegas Grand Prix featuring 352 overtakes. Tension is rising as the championship battle tightens.",
+      "pulse": "Fans are thrilled by the record-breaking Las Vegas GP with 352 overtakes. The championship battle is tightening.",
       "storylines": [
-        "Verstappen won in Las Vegas with four wins in six races.",
-        "Norris and Piastri finished second and third.",
-        "Sainz finished eighth for Williams.",
-        "Perez received a penalty for a clash with Camara."
+        "Verstappen won in Las Vegas",
+        "Norris and Piastri finished second and third",
+        "Sainz scored P8 for Williams",
+        "Perez received a penalty for Qatar"
       ],
       "sources": [
         {
@@ -85,7 +83,7 @@
     },
     "ducks": {
       "mood": "Optimistic and hopeful",
-      "pulse": "Fans feel rewarded after recent wins following a difficult mid-season stretch. Increased odds for B1G Championship boost confidence regarding playoff potential.",
+      "pulse": "Fans feel rewarded after recent wins following a difficult mid-season stretch. Increased odds for B1G Championship have boosted confidence regarding playoff potential.",
       "storylines": [
         "Beat Michigan State to clear path to B1G Championship",
         "Ranked 14th in AP Poll",
@@ -113,7 +111,7 @@
     },
     "niners": {
       "mood": "mixed excitement and concern",
-      "pulse": "Fans celebrate a dominant blowout win over the Vikings to stay in first place. However, Colton McKivitz's season-ending injury and Brandon Aiyuk's release cause worry.",
+      "pulse": "Fans are celebrating a dominant blowout win over the Vikings. However, they are worried about Colton McKivitz's season-ending injury.",
       "storylines": [
         "Beat Vikings 35-10 to reach 9-1 record"
       ],

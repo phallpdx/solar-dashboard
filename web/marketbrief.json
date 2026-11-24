@@ -1,34 +1,33 @@
 {
   "updated": "2026-11-24",
-  "updated_at": "2026-11-24T08:49:03Z",
+  "updated_at": "2026-11-24T10:30:14Z",
   "analysis": {
-    "headline": "Markets surged as Jensen Huang's return to Nvidia reignited AI trade bets.",
-    "summary": "Stocks soared following Jensen Huang's reinstatement at Nvidia. Treasury yields rose amid the market rebound. Oil and Bitcoin declined while gold fell. The broader trend shows an AI-driven relief rally.",
+    "headline": "Markets surged as Nvidia shares soared following Jensen Huang's reinstatement as CEO.",
+    "summary": "Stocks jumped led by Nvidia's return reviving AI interest. Treasury yields rose alongside the market rally. Oil prices fell slightly while gold and Bitcoin both declined. Major indices show significant growth this year.",
     "sources": [
+      {
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOVnQycUtpVGkxa0dZbl83Ykdvc3QwUzBSbkJScFdlS2R2V0o3VWI1eGlEM01sQXlJdmtXQzN4Rl84MGt5RDdEbzZkcmdqNEEtZy1PSVlrRkJPZ29mNTRrdXREcUtoVnByakJtNmx4NGVSejFMYXQzcndzWUxfYk5ZcElKWXN6LW1RT3JSUDNMcG9oRkxLX0ZBNl9xT2Jfa3Zqdmc3N0pOZ3dnVlVDUWtPVWg0RG5DSlZ1ekx6RGFfR0lUaDZLc01Ub1gxSXRKY0N6QklCQlBTdlp3elVET1p2bDMyVQ?oc=5"
+      },
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPNXRXMlFUQkJfcnJPMGVlaWZRejZzSnVuRWJiV1E3TUM3c3pkWkxSSGZJaGtCcEc0Uzdja0xzbFFNcWRIZEtZNlFHMHNDclAzVzJqUHU2Z2lFRE51V3AwSWV1cnRoamFsbDVleTdVUFVhSElYMEhXTlhiNkhQNWtSZlRGT1FYQURPeE9RTA?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNMFVRM2J2cTZ6eU02Qzk1TF83UmhsSEN3SlpHYjJuc2lDeXBVM0h6WkN2bEJCUlk5RnZNOFMta05FOXFqeTZQQWZnbFl2RG1WTWVNSXYwVWhZRFZxRkx6SDlhTWtUWk92UVBJa2FGWVk3ak9rOUVJYjZ6RDBqcUZCOEpiWmFVWGxvVmM1Y2prdDk2N19EZG0xWjU3aFV5QkJ6MjF4eExGSkd3TWxaWGRBVzhB?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPWE52dEljX0cyZVo2a1A1dWJaNXFBemdNUE9jcU94RjNXc1JwMEJyZkpjd3h5cHF0VFUxZWpCOTRpTlRRSzJBTlJGa0tubHEwa3VROU9xRFd4a1czS1Z3d05tMklnTFdESzMyTVRpdVFUQXBoMmkwdE0zd0V4TkcxRnhocTdBSm9fS3pvcksteFlqRGtIMUpjdldDbElVQlgzX3hMNWotbEJXelczemJac2h0TWhKeW9PTmJrZlIwNVBpY2VQVFVaRHFadlNOV0d2bWN2aDl4WlVQeU9IVkFRRUNDSU9tSV9xcjNJcFdJVGhkQWw0cmpJbld3WWE5OHhKcnc?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNUV8xQS1Xa09sWUwzZlR6YzZyQTBlRk1jRWJNNWFROHY1ZDdicFNhLXkwRWIyV3YtM2NJSXRJY05mTHhyU3JHTFRndEdmQlZEYXJlMVJzMmhmTGdXOFAzZERRdmduRjZXSmpBLWVWQjBxUWNIVDdHZ0M0VXdja3EyZ2xzWGhSVXc0d0VIczl5Y2UyMDlzTzdBbw?oc=5"
       }
     ],
     "by": "local model",
     "session": "2026-11-23",
     "drivers": [
-      "Jensen Huang reinstated as Nvidia CEO",
-      "Nvidia surge fueling AI trade bets"
+      "Jensen Huang reinstated as Nvidia CEO"
     ],
     "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market conditions show tightening supply and increased exploration activity in Saskatchewan.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market conditions include tightening supply and increased exploration activity in Saskatchewan.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -83,7 +82,7 @@
   },
   "realestate": {
     "headline": "Home sales slow as buyers adjust to elevated mortgage rates.",
-    "summary": "Mortgage rates climbed to 7.40%. Home sale prices are losing steam and sellers are lowering prices in stagnant markets. Buyers are walking away from the market in large numbers.",
+    "summary": "Mortgage rates rose to 7.40% on 2026-11-23 after a four-week decline. Sellers are lowering prices in stagnant markets to help buyers make deals. Homebuyers are walking away from the market in large numbers.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -94,20 +93,18 @@
         "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOTjUyZVZCamJfdWRyczFwVWt1eVFkeVgxaHNvdlE0TGZEN19XM3VIcUNmbWlSS1FNLVpXbEE2X1NpRDZEcElZRnJiODE1MElPWndLMmF2Q0lkZHJqVnY0Nkhpb2VKU2JaSHRXd2hQTWZDX2lXdFk4cTdRT2plM1d3eG9KWVlMV2RwUHJ6TVhtQWw2RVp4RG5RTmtvdm5ldWhWcU1ZcTJGR3k3Mkx4VHk0cmN5aExXRHBEZl83ajBhc2FIS0xQbTBnSUthVElyM3c?oc=5"
       },
       {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFByNWlVTk41NThkOXA4YkJIYXBlZE4teWdEUUJsZ1hHNW9TVWVGM1JzaUJoajNfZldGLWxRVnNDSkNDR0R3NXk0dVRMOVAtMzFiOTlkVDktTlpuM1F3S01yMUJB?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNM0FtY0Rib2dqcUdyNkNzTUc5WW44cFREc3dIdkNFRzBweEdiNWN2X0Y0Njl5TUtSMV9kR1pqa0hfT0hSd0FfMjNpVjRYMWtsUElocWFFTFk1Vk9rMnJZbGtmX1BDYkk1eG9pclg5WWR3bXVHUExUbmJTaUlWQUl5SVBiUXUxdGxSQmlGZXJXTk80RkFpcml1RHJKcmxIVnh3SHotNUtLMFFWNnNNODRPUUJ2dTNDa1VKTGx0NEU5WHhmU1IxOWVn0gHbAUFVX3lxTE9fcnR3WDhyS3FEZU9LNXhzM1psLUpfei01U0sxMzVGZmRqSl8tbGNESXR3a2xTZkFTNkhWcU1BdU1DdXlwTVNlOXVKbTlnWE44a3ZmaEJzMEkxaU1TUEpkUF9pWk9DSFZlUW5yd1B4Z1JxTDRlRnVxWmp1QmNDNFN6RGpQb1dSTFlSd0h3M0dab2dLNXZYMmRzQVRnRXhNeWk4U0ZSWERHSTJ3c0tGbGdIR2hkeWNZVTkybGVnTXZ2T2JGNC1ReTJ5a3BzdlBxZmZVczU1TEp3ZFJIMA?oc=5"
-      },
-      {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
       }
     ],
     "by": "local model",
     "items": [
+      {
+        "title": "Portland, OR Realtor Jennifer Fidler Says Prepared Homes Still Sell Fast While Metro Prices Soften",
+        "date": "2026-11-24",
+        "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxQaDM4eEFkcTZYems0TVo3dDFxcVFvNkllVDJEZF8tdHNQR1JoLXgtbmd0LWRva3BzdFZ1SjBGY3R5djR0Zi1ON2FKZjBlRmFaeE9xUmcwVHVhY2VkRGoxWW1qdGtaSlpxMGhGM1NmZXhxMl9GcFJfOHlVRDdmd0NiQU5Lb1M1bHBpTEI5WTBkYi1lallJd0l4Vjh0M2hoanVLODloelVuX2dEUWFDeW9uVVpsZGpfQS1SQnVnRGd4TlVoWFozd25nU2ZyUVgxYTduQndEblNQM2RQWlgzUllWdW5MMG5STGRmUXRyeVQ1RVVHUVpoS0xV?oc=5",
+        "source": "Google News: Portland housing"
+      },
       {
         "title": "Three New Restaurants Open in Portland",
         "date": "2026-11-24",
@@ -118,12 +115,6 @@
         "title": "Mortgage rates today, Nov. 24, 2026",
         "date": "2026-11-24",
         "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBFLVMwV3lXcFk5WWlCNkEzbFJzVmRvcFhlMUQ4ZkxYZTkweW9IclRqT3JPcUhZWS01UG5kZ19NSzd5LXUyRWxWaENlX1p5YUtMaTNWUHE0V1ZUU1h6c0VnLV9fOUlvQ29ydWFiQm1Wdw?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "The average US 30-year mortgage rate rises to 7.28% this week, ending a four-week slide",
-        "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNbi1zenFKRTYwcDVRU05UdDVYYjJ4ODhxdnJVc296R0RualJnT0hYUWFRN2xLYTZRVXBVYlIzOHkzdFNxbk9laVlQUkFrOXlST3JLWE0yZzJRb2MtNFliUUlGVE5adVdhRU1YVUdEb3VZRTl6cUNWQjN5WDh1SnNmOGhpbVhwREg2d2hGYTdpY0thS185ZF9oRXZVWko4Zk5TSlFWVW90bGwyOUpWVFpZdmg0UlU0Yml4dTk3eUlRZ3VtcG9mTjZzSDBzcDlRQ0xSZE1EdnRXeUphRG43eGdMaTZmLTlQRmVPUVlKbVYxeks?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
@@ -141,11 +132,18 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (US, November 23)",
+        "label": "30-year mortgage rate (US, November)",
         "value": "7.40%",
         "change": null,
         "source": "news.google.com",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
+      },
+      {
+        "label": "Average US 30-year mortgage rate (US, November)",
+        "value": "7.28%",
+        "change": "ending a four-week slide",
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBFLVMwV3lXcFk5WWlCNkEzbFJzVmRvcFhlMUQ4ZkxYZTkweW9IclRqT3JPcUhZWS01UG5kZ19NSzd5LXUyRWxWaENlX1p5YUtMaTNWUHE0V1ZUU1h6c0VnLV9fOUlvQ29ydWFiQm1Wdw?oc=5"
       }
     ]
   }

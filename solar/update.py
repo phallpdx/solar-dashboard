@@ -697,9 +697,9 @@ def _refresh(store, key, fn, every_hours, now_utc, errors):
 
 def fetch_sports(state, now_utc):
     store, errors = state.setdefault("sports", {}), []
-    if store.get("v") != 6:  # new fields (game ids and recaps): fetch again now
+    if store.get("v") != 7:  # v7: next game from the schedule, whole-sentence recaps
         store.clear()
-        store["v"] = 6
+        store["v"] = 7
     watch = store.setdefault("watch", {})
 
     def every(key):

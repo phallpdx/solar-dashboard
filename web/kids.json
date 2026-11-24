@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "note": "Toddler-friendly holiday outings in North Portland, Portland, Vancouver and the north coast, soonest first. Several dates come from event guides rather than the organizers, so the detail says when to double-check.",
   "events": [
     {
@@ -17,6 +17,94 @@
       "where": "Oregon Zoo, Portland",
       "detail": "Wildlife-themed holiday lights. The zoo's page sells Any Night tickets for Nov. 20 to Dec. 31 (closed Nov. 24 to 26 and Dec. 25), says tickets are valid through Jan. 3, 2027, and includes a free TriMet ride. Buy online in advance; go early in the evening with little ones.",
       "url": "https://oregonzoo.org/lights"
+    },
+    {
+      "title": "Bridgeport Village Letters to Santa",
+      "date": "2026-11-21",
+      "ends": "2026-12-24",
+      "where": "Bridgeport Village",
+      "detail": "Write letters to Santa at the magical Gingerbread Cottage. Free.",
+      "url": "https://pdxparent.com/series/bridgeport-village-letters-to-santa/"
+    },
+    {
+      "title": "Santa Photos | An Elf™ Christmas Experience at Vancouver Mall",
+      "date": "2026-11-21",
+      "ends": "2026-12-24",
+      "where": "Vancouver Mall",
+      "detail": "Magical holiday photo experience with Santa.",
+      "url": "https://pdxparent.com/series/santa-photos-an-elf-christmas-experience-at-vancouver-mall/"
+    },
+    {
+      "title": "Christmas Festival at Redland Family Farm",
+      "date": "2026-11-21",
+      "ends": "2026-12-06",
+      "where": "Oregon City",
+      "detail": "Festival with tractor rides, animal visits, and Santa. $10. 9:30 am - 4:30 pm.",
+      "url": "https://pdxparent.com/series/christmas-festival-at-redland-family-farm/"
+    },
+    {
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Washington County",
+      "detail": "Free storytimes including Toddler Times are available.",
+      "url": "https://pdxparent.com/event-single/storytime-at-washington-county-libraries/2026-11-24/"
+    },
+    {
+      "title": "OMSI On Ice",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Indoor synthetic ice skating for $8-$10.",
+      "url": "https://pdxparent.com/event-single/omsi-on-ice/2026-11-24/"
+    },
+    {
+      "title": "Sing, Sign & Play @ SWPMA PLAY! at The Multnomah Arts Center",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Playtime with singing and basic American Sign Language. $5 – $25.",
+      "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
+    },
+    {
+      "title": "Mini Movers at Laurelhurst Park!",
+      "date": "2026-11-24",
+      "ends": "2026-12-08",
+      "where": "Portland",
+      "detail": "Playful movement class using props and storytelling. $18.",
+      "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
+    },
+    {
+      "title": "Family Ninjas (Martial Arts) For Ages 2/3 @ SWPMA PLAY!",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A family martial arts experience on a matted space. $15 – $25.",
+      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
+    },
+    {
+      "title": "Magic + Balloons Show with Juggles",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Morning of magic tricks and balloon animals. Free.",
+      "url": "https://pdxparent.com/series/magic-balloons-show-with-juggles/"
+    },
+    {
+      "title": "Red Yarn’s Family Music & Puppet Show at Taborspace",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Weekly family music and puppet show with singing and dancing. $10 – $20.",
+      "url": "https://pdxparent.com/series/red-yarns-family-music-puppet-show-at-taborspace/"
+    },
+    {
+      "title": "Littles Ballet at Laurelhurst Studio",
+      "date": "2026-11-24",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Ballet stories and technique for ages 2-5. $18.",
+      "url": "https://pdxparent.com/series/littles-ballet-at-laurelhurst-studio/"
     },
     {
       "title": "Winter Wonderland drive-through lights",
@@ -99,20 +187,12 @@
       "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
     },
     {
-      "title": "Pizza with Santa",
-      "date": "2026-12-11",
+      "title": "Curiosity Kids: Design and Discover",
+      "date": "2026-12-05",
       "ends": null,
-      "where": "Firstenburg Community Center, Vancouver, WA",
-      "detail": "Evening with Santa, pizza, holiday crafts and photos, 6 to 8 p.m. Registration required; $12 for Vancouver residents.",
-      "url": "https://www.cityofvancouver.us/?p=74306"
-    },
-    {
-      "title": "Peacock Lane holiday lights",
-      "date": "2026-12-15",
-      "ends": "2026-12-31",
-      "where": "SE Peacock Lane, Portland",
-      "detail": "Free walk or drive past a whole street of decorated houses, 6 to 11 p.m. Guides list Dec. 15 to 31 for 2026, but the official site still shows last year's details, so check before going.",
-      "url": "https://peacocklane.org/"
+      "where": "Portland, OR",
+      "detail": "A hands-on design event for kids from 9 am to 10 am.",
+      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
     }
   ]
 }

@@ -6,11 +6,11 @@
     "note": "Rounded to island level on purpose; this repo is public."
   },
   "river_view": {
-    "lat": 45.72,
-    "lon": -122.77,
+    "lat": 45.7,
+    "lon": -122.775,
     "zoom": 12,
-    "parked_km": 1,
-    "parked_note": "Only a ship stopped within 1 km of this spot counts as parked across from the house."
+    "parked_km": 3,
+    "parked_note": "A big ship stopped within 3 km of this spot counts as parked across from the house. The anchorage out front runs about 45.68 to 45.72 N; the Vancouver and Kelley Point berths are 5 km or more away."
   },
   "places": [
     {

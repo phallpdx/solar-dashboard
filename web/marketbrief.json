@@ -1,213 +1,200 @@
 {
-  "updated": "2026-11-20",
-  "updated_at": "2026-11-20T13:19:38Z",
-  "analysis": {
-    "headline": "Markets declined as the AI trade cracks and Anthropic stock retreats.",
-    "summary": "Major indices fell amid a cracking AI trade. The 10-year Treasury yield slipped to 5.05%, though it is still well above where it started the year. Oil and Gold both experienced price drops. Bitcoin also declined amidst broader market weakness.",
-    "sources": [
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQUE9Bem9kWjBIcUtfa0xHOW0yQm1mV3A0VFVFZlh4X0hvWjlmckZSTDNGWlB1NGtzWFkyTTVSc0tNNW9tbUxGNURvNExmRTdTYnJyTTJtUGd1dkEyZklWR2xOSkphQ2s1d0NjZE9CRDc4SWtreWJxbDVoOFFnM2toQldLUHR5VUZFTDk4bDBXaWdodTh1?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOTk51MERjcW5QczZjMlVnYWtCbUl0R3k3QndGa0hZeGltbmduZVFrQ1RrbTlZdWRuZWVPT1hFRVRRQWpGTm9sSXB6VVFOdHhQN2tsdWVKOUNONjF5ZWw3TUdPTXRaTHRYNjhWSjF0M3NON3BpMmFRYzdjYjQzWFdjMlZ6ck11WlpkcE5ZcUJNWjlRUU9FN1U5VHN6QW5IXy1IMGJ3Vm13dnVsLVN2SU1CNlViNm1XTHBzZkRUNFFOQlA?oc=5"
-      },
-      {
-        "name": "NYSE: Holidays & Trading Hours",
-        "url": "https://www.nyse.com/trade/hours-calendars"
-      },
-      {
-        "name": "IfYouSpent: Thanksgiving week earnings preview (Dell, Workday, Zoom, HP, Deere)",
-        "url": "https://news.ifyouspent.com/en/news/thanksgiving-week-earnings-dell-workday-zoom-hp-deere-november-2026"
-      },
-      {
-        "name": "Federal Reserve: FOMC meeting calendars",
-        "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
-      }
-    ],
-    "by": "local model",
-    "session": "2026-11-19",
-    "drivers": [
-      "AI trade cracks",
-      "Anthropic stock retreat"
-    ],
-    "watch": [
-      "Next week is shortened for Thanksgiving: NYSE is closed Thursday, Nov. 26, and closes early at 1:00 p.m. ET on Friday, Nov. 27.",
-      "Earnings: Zoom on Monday, Nov. 23; Dell, HP and Workday after the close on Tuesday, Nov. 24; Deere on Wednesday, Nov. 25.",
-      "The Fed's next policy meeting is Dec. 8 to 9, with new economic projections."
-    ]
-  },
-  "helium": {
-    "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company started production at its large Canadian helium field and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential $100 million liquefaction facility. Market supply is tightening, leading independent distributors to move on helium.",
-    "sources": [
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUEU5ZDdHSzN0WU0tZ3pCa3pDWTVRb3MwYzZITGZPZUM3MzVvaWNiV2hKZHMyZThYX2MybGJ2eXBTQjVuSF8ySVVaRk1iMy1QbVRPdFJkaTR6NnFKRkQ5QnVOR3hIS2t5SThKNXJ0OHlXY1ExS1N5NUJhTmdIRzNCNW1fbm1EMXdTNDNvTGNHanNtdU5WWGZDVDdRUHU?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNNUJ4VHZCSkFUZFFDY0pmVFRMV0pOaDN0ZnBWcXUzVXl5SEUwRzJtQk52MV8yZW9nQkt0aGo0NUNfZnBCZldFMUYzTlc2UUdnRUdVVnNKdXpDMFR4QTZ1X01XSi1TS3M5WG1zbWZJc0taTUl4d2YxLVlGQmhVYUdVazFHb2d0cFVnZGQydTFEUFFRTzF3V0FZQWZfWUM0bkRnel9hdzFTNnZMb3lHZEttbUx3?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQWFNN09zMzdJSWZ3aFpGSkdyeEktb1VLLTZwY0FBMVAtaE45dHR4M0I3Y0dzVWptV2FoMHZqNWoxTzBIREkzemtBS1EwRV9kOTdPZTJEUVIzdEF1dzU0UldMOE54bnhWeEs4bHZIN0kyUmlPQkRQR2hNcG15ZVYyRTFrOF9VTUhjSVRWcHV4UlFDZ1lYamYwNHhzZWVsYjdLRVE2ZFBub0dWTmdMUjJlRGdEdWhDY0M1bzVieS0xTk8?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPV2VITXQzdk1nVDJoMUtWQXRwRDdNa2FxaEhkU1VEVVQ4UkY1eXItU1ZuOWtHX2JuT3hFUHFSOXlSRnU0TElqWV9oczBIS3Y3T3JwSkQ2S1VMM29xVlE5MlU0ajY5bUx1LWtkYXVyVE95UmZoY0RCcFp6TENGNWZUem1YRFhIa21uelJMcS1fSU5DVWMxdHg3OFZDWGVwdXpo?oc=5"
-      },
-      {
-        "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
-      }
-    ],
-    "by": "local model",
-    "items": [
-      {
-        "title": "Helium Evolution Launches Up to $3 Million Winter Seismic Program to Advance Exploration on 100% Working Interest Lands",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMioAJBVV95cUxQQnZSVU9YNlVQNjJqZkc0dmlQeGp3c1VaWkNVRGlzdldlbVplNHpsM3hmOGN5VU9rVWhaVGFua0VWRDBRMzdrdGVDZXFEdlNHZjgxajdFbWhENDhkakhCb01OMHZvd1o4em1fUk1TUHFlRTZ3TXQ5aGdjSjIzSTVFYkhzRkN6Y3JGZWZHZlNpOXpZaG00djBMNWRCeVFsRnZ6ZkdLMVlsdG5iODN0NFZZMmdxd1NuNlZDaDBUTUdmYXpLSzBkaWJZdmhwQ19yYUxMMHg1UXIzcXI2N1F1dGZ5MVd0X3N3Q0hORDB4MGR3WXhOTnBaS3NYM0lrQWJJMmRhQlZISW5qcnFzOFpULVdMSU9vOXZVV3drNlJHeUt4SXbSAaACQVVfeXFMUEJ2UlVPWDZVUDYyamZHNHZpUHhqd3NVWlpDVURpc3ZXZW1aZTR6bDN4ZjhjeVVPa1VoWlRhbmtFVkQwUTM3a3RlQ2VxRHZTR2Y4MWo3RW1oRDQ4ZGpIQm9NTjB2b3daOHptX1JNU1BxZUU2d010OWhnY0oyM0k1RWJIc0ZDemNyRmVmR2ZTaTl6WWhtNHYwTDVkQnlRbEZ2emZHSzFZbHRuYjgzdDRWWTJncXdTbjZWQ2gwVE1HZmF6S0swZGliWXZocENfcmFMTDB4NVFyM3FyNjdRdXRmeTFXdF9zd0NITkQweDBkd1l4Tk5wWktzWDNJa0FiSTJkYUJWSEluanJxczhaVC1XTElPbzl2VVd3azZSR3lLeEl2?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium getting oil and gas treatment good news for Swift Current",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium Evolution Plans $3M Saskatchewan Seismic Program",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium Evolution Plans $3M Saskatchewan Seismic Program",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
-        "title": "Saskatchewan helium industry heats up as Crown permits attract nearly $5 million in bids",
-        "date": "2026-11-11",
-        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5",
-        "source": "Google News: helium market"
-      }
-    ]
-  },
-  "realestate": {
-    "headline": "The Portland housing market is stagnant with slowing sales.",
-    "summary": "Sellers are lowering prices to help buyers make deals. Home sales are slowing as buyers adjust to elevated mortgage rates. Some homebuyers are backing out of deals.",
-    "sources": [
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNRjIxZ2RhaVJpLWNQZnRheFRmb1FuU09MMFFIX0xSR01kUWg2N2RLRWtqT1dORUxHUHl3NGZHRmUtV1VtWjJGZjF0UlBndmc2bldhYmszSFZYSnZKYnpIZ2RVUlhlNFM3TndGQzRDd0g1SFpWeUN4QUxPdEFaRDBRZ3pJNzFXaVRxTElJQlpJR3dhQk1PTS1BUGo0amFMdVhsakVHaG9DM2tHelhENjA3N0Y4TzhKc1Q4eGxZVkNqcHRtQUxUWGc3cTh30gHPAUFVX3lxTE5HdVU3ZE0tdFhTdHhCM3N4NkhVUUcyX291dXpXZVExaGhjeVFDSGdHUW9yaTMtbnFSVzFLTi1HdUpWXzlzeExSQ1V5c2FXOUY4eTAyRW4xeWFaZktBZ2ZidGFPTGFWLWJWZFJxd0t1QjNlQlNKNF8xTEFjdmxTbU9mX25hSlM3TklWSGlYVGtyMHY4RjVxV3JfTm8yRmVGaHlpaEMtVUZ4bElBY21peEZKekV0NU41bVRXenhsVldtaGJFNnBQWWRmVGdBS2NtTQ?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQNmFYUXlHSW5DY2YzODdSQU9SVkpHT2tuM0F2WFp3eG5aN3NCRXFhTlJWT1NwQVlLb1dJUFN2VVB2S2oyV0NVeWs3NGJHZ3Z4SWozb09icFdKT21hdjViUmJWRDI0STVCaWZ2V2tnYXp2SG5lejNiRXVKRTJYME0xNlAxd2FENHlDdXJQaER6eXA?oc=5"
-      }
-    ],
-    "by": "local model",
-    "items": [
-      {
-        "title": "Mortgage rates today, Nov. 20, 2026, rates drop again",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5RaU5kaGo0WW83b2hNVzBVVjNRbnlTclZEdjVEU1ZDUFVKUWk1V011a3NRN21VWlRrVjZsTldyRFNnY2dpREF5dHlnN1kzVC1qS0pfQmFNb1UzY2xMeGRNcjBoYnJObFlyUzRMUThsUQ?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage and refinance interest rates today, Friday, November 20, 2026: Mortgage rates mixed leading up to the weekend",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMimgJBVV95cUxOWVlpX2NDX3FRdzllb1AyZW84eFlEZE5nV3VVSkNYWlJEVHhUM2k2dko3eGJnZUh4eTQ4S1daZG05YjRER3ZoN3JwcU53TVYyQzhhM2VKUkhfcXY4Q1lyWEFPRXc5OVdpNzVFT3kwYVVIcHEzNGQtZ29YZ1VCZWtfTlVNNXZoVE0wQzF0NGpaR1ViU0NZVGFEMXMzU3Q4Nkg5U0d4YnE3ZE5wQ1VodFZTYVhHekNLYnQ2ZkxuaGwzTjF6emhuRzkwQzB1TnE2aUkwQURhbEV0RFNiRTlVLU4wTl96ZXNMb3ZMRzVKTllxLVRDUHRiTmtfSEMtbXlBQXVNcWZRS2dsMy1haXRKNWY5T3JYZHdoOVZQRGc?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "30-year mortgage rate rises to 7.28%, ending four-week decline",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPMnE3VnlCNTZ3ckI3aEVlUVk3d1NHbm1yWUhYWlJJSXpOOXRRMWw3ekp4cEZKeldWcThNUWtQUTJsWjBxQXN5QWlDcGE0SG53SW1oQzVYT25tWHpES2J4NFVnaExoY2UzdjlDc2NOZE5VX0VDVVpLal9nQnVhMS1aR1B4WGpyMTlQX1B0aw?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Pasadena Rate Watch: 30-Year Mortgage Rate Falls for Fourth Consecutive Week to 7.11% as 10-Year Treasury Yield Rises to 5.10%",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxNblZVTVRELTFIMERnTlVFa2V2TVZ2ZDgzbmN3a3laOEkxYVZ4OWJ6eW5vekVoVG1MWlRJaW1JT2NMZFNmZ0x0UFNPTkd5bFZRdERnQnBxWFRzaUpCVmpkbHQxcENEMC1PLXdmeGNfamFNZ3RrOGRiMUhrbWxfLTFMb2pwTjdPU3YxUURfTVoyamd6NkNMWGlZOUxmNlh2cWhqVTlqNU90ZHg4WVJuMm5EZ3l3V1JLa1FWQ0JQVUQtUHVWcWhCM0J1eVJ3OWVrd3FGWklEeF9Hdnk0YjdLOXpzVVRjdjJyWXRXcTk0NkRsM0xQcjA?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 20, 2026",
-        "date": "2026-11-20",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9YN0V3S0tfNE5NRGlFU3d6OGVNbGJrWVBZZXVCcnZJUVZYUV9jdVdYdlBPQUVkeEhtSHhtN1l6UHZKcWhnZ25EMEZzWjlSOUQ5Z3NyTl96cnhtMDJKTWx3WWs2MEdveVBF?oc=5",
-        "source": "Google News: mortgage rates"
-      }
-    ],
-    "stats": [
-      {
-        "label": "Median sale price (Portland metro, October, RMLS)",
-        "value": "$545,000",
-        "change": "+0.9% vs a year ago",
-        "source": "The McCreith Team: November 2026 Market Action Report",
-        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
-      },
-      {
-        "label": "Closed sales (Portland metro, October, RMLS)",
-        "value": "-21.5%",
-        "change": "vs a year ago",
-        "source": "The McCreith Team: November 2026 Market Action Report",
-        "url": "https://www.themccreithteam.com/post/november-2026-market-action-report-in-portland-metro-yamhill-polk-marion-oregon"
-      },
-      {
-        "label": "Months of inventory (Portland metro, October, RMLS)",
-        "value": "4.3 months",
-        "change": "+0.1 months vs September",
-        "source": "Portland Real Estate Market Update, November 2026",
-        "url": "https://realestateagentpdx.com/portland-real-estate-market-update-november-2026/44207"
-      },
-      {
-        "label": "Median sale price (city of Portland, October, Redfin)",
-        "value": "$525,000",
-        "change": "+0.9% vs a year ago",
-        "source": "Redfin: Portland Housing Market",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
-      },
-      {
-        "label": "Median days on market (city of Portland, October, Redfin)",
-        "value": "26 days",
-        "change": "vs 29 days a year ago",
-        "source": "Redfin: Portland Housing Market",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
-      },
-      {
-        "label": "Homes sold (city of Portland, October, Redfin)",
-        "value": "1,801",
-        "change": "down from 2,079 a year ago",
-        "source": "Redfin: Portland Housing Market",
-        "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
-      },
-      {
-        "label": "Median listing price (Portland-Vancouver-Hillsboro, October, Realtor.com)",
-        "value": "$580,000",
-        "change": "down from $587,750 in September",
-        "source": "FRED: Median Listing Price, Portland-Vancouver-Hillsboro",
-        "url": "https://fred.stlouisfed.org/series/MEDLISPRI38900"
-      },
-      {
-        "label": "30-year fixed mortgage rate (U.S. average, week of Nov. 12)",
-        "value": "7.11%",
-        "change": "down from 7.18% a week earlier",
-        "source": "Freddie Mac: Primary Mortgage Market Survey",
-        "url": "https://www.freddiemac.com/pmms"
-      }
-    ]
-  }
+ "updated": "2026-11-24",
+ "updated_at": "2026-11-24T13:20:38Z",
+ "analysis": {
+  "headline": "Major indices surged today following Jensen Huang's reinstatement as Nvidia CEO.",
+  "summary": "Stocks rose significantly with Nasdaq leading gains. Treasury yields increased alongside 10-year rates. Oil prices climbed slightly while gold and Bitcoin both declined. The market trend shows strength in tech despite some volatility.",
+  "sources": [
+   {
+    "name": "Google News: stock market",
+    "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOVnQycUtpVGkxa0dZbl83Ykdvc3QwUzBSbkJScFdlS2R2V0o3VWI1eGlEM01sQXlJdmtXQzN4Rl84MGt5RDdEbzZkcmdqNEEtZy1PSVlrRkJPZ29mNTRrdXREcUtoVnByakJtNmx4NGVSejFMYXQzcndzWUxfYk5ZcElKWXN6LW1RT3JSUDNMcG9oRkxLX0ZBNl9xT2Jfa3Zqdmc3N0pOZ3dnVlVDUWtPVWg0RG5DSlZ1ekx6RGFfR0lUaDZLc01Ub1gxSXRKY0N6QklCQlBTdlp3elVET1p2bDMyVQ?oc=5"
+   },
+   {
+    "name": "Google News: stock market",
+    "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPNXRXMlFUQkJfcnJPMGVlaWZRejZzSnVuRWJiV1E3TUM3c3pkWkxSSGZJaGtCcEc0Uzdja0xzbFFNcWRIZEtZNlFHMHNDclAzVzJqUHU2Z2lFRE51V3AwSWV1cnRoamFsbDVleTdVUFVhSElYMEhXTlhiNkhQNWtSZlRGT1FYQURPeE9RTA?oc=5"
+   },
+   {
+    "name": "FXEmpire: The Week Ahead, PCE in focus",
+    "url": "https://fxempire.com/forecasts/article/the-week-ahead-pce-in-focus-after-ai-sell-off-in-holiday-shortened-week-1646337"
+   },
+   {
+    "name": "Thrive in Markets: S&P 500 faces PCE test in Thanksgiving week",
+    "url": "https://thriveinmarkets.com/market-insights/week-ahead-2026-11-23/"
+   },
+   {
+    "name": "RoboForex: Is the stock market open on Thanksgiving?",
+    "url": "https://roboforex.com/blog/analysis/is-the-stock-market-open-on-thanksgiving-market-week-ahead-november-23-27/"
+   },
+   {
+    "name": "CNBC: Six key questions raised by Jensen Huang's return",
+    "url": "https://cnbc.com/2026/11/24/nvidia-jensen-huang-politics-market.html"
+   }
+  ],
+  "by": "local model",
+  "session": "2026-11-23",
+  "drivers": [
+   "Jensen Huang reinstated as Nvidia CEO"
+  ],
+  "watch": [
+   "Wed Nov 25, 8:30 a.m. ET: October PCE inflation, second Q3 GDP estimate, weekly jobless claims and durable goods all land at once (consensus core PCE about 0.3% m/m, per FXEmpire and Thrive in Markets)",
+   "Thu Nov 26: U.S. stock markets closed for Thanksgiving; Friday Nov 27 is a shortened session ending 1 p.m. ET (RoboForex)",
+   "Fed's Dec 8-9 meeting: traders have priced in a quarter-point rate hike after October's hot CPI, so Wednesday's PCE is the next big test (Thrive in Markets)",
+   "Nvidia follow-through after Jensen Huang's reinstatement: the board says its investigation continues and lawmakers are still pressing on China sales (CNBC)"
+  ]
+ },
+ "helium": {
+  "headline": "North American Helium has started production at Canada's largest helium field.",
+  "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a liquefaction facility. Market conditions include tightening supply and increased exploration activity in Saskatchewan.",
+  "sources": [
+   {
+    "name": "Google News: North American Helium",
+    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNUEU5ZDdHSzN0WU0tZ3pCa3pDWTVRb3MwYzZITGZPZUM3MzVvaWNiV2hKZHMyZThYX2MybGJ2eXBTQjVuSF8ySVVaRk1iMy1QbVRPdFJkaTR6NnFKRkQ5QnVOR3hIS2t5SThKNXJ0OHlXY1ExS1N5NUJhTmdIRzNCNW1fbm1EMXdTNDNvTGNHanNtdU5WWGZDVDdRUHU?oc=5"
+   },
+   {
+    "name": "Google News: North American Helium",
+    "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNNUJ4VHZCSkFUZFFDY0pmVFRMV0pOaDN0ZnBWcXUzVXl5SEUwRzJtQk52MV8yZW9nQkt0aGo0NUNfZnBCZldFMUYzTlc2UUdnRUdVVnNKdXpDMFR4QTZ1X01XSi1TS3M5WG1zbWZJc0taTUl4d2YxLVlGQmhVYUdVazFHb2d0cFVnZGQydTFEUFFRTzF3V0FZQWZfWUM0bkRnel9hdzFTNnZMb3lHZEttbUx3?oc=5"
+   },
+   {
+    "name": "Google News: North American Helium",
+    "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQWFNN09zMzdJSWZ3aFpGSkdyeEktb1VLLTZwY0FBMVAtaE45dHR4M0I3Y0dzVWptV2FoMHZqNWoxTzBIREkzemtBS1EwRV9kOTdPZTJEUVIzdEF1dzU0UldMOE54bnhWeEs4bHZIN0kyUmlPQkRQR2hNcG15ZVYyRTFrOF9VTUhjSVRWcHV4UlFDZ1lYamYwNHhzZWVsYjdLRVE2ZFBub0dWTmdMUjJlRGdEdWhDY0M1bzVieS0xTk8?oc=5"
+   },
+   {
+    "name": "Google News: helium market",
+    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
+   }
+  ],
+  "by": "local model",
+  "items": [
+   {
+    "title": "Prairie Lithium Brings Brine to Surface at Pad #1",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPQ1NsZGlNRmdlZC11SC1FWThvZVNKMjBXRG13YzJwazVCb1pXZHROWG05aEJEMFRPZ3pSdlFsTWs1NlYydmdpY2JXcHJ5R1c0WXV2OGxQSkdtQm5pd0l6WlIzSFYtLUQzTjJsVXljekYtYW5TUEVCNDdvM1M3ZGNNZ2JQcTR6SGJhdzVmYmRn?oc=5",
+    "source": "Google News: helium market"
+   },
+   {
+    "title": "Why helium exploration is gathering pace in Saskatchewan",
+    "date": "2026-11-23",
+    "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNaXlibFVnOUxhUS1qMW5rQ0NKUVhzWXFRQWk3UGRFbW40Tkt0REhsYXltSHkzVlM4ZGFpY3hxU3VWXzZCNjRoZFdxS3FHLU90LWRUUXgzTzRfSkVNVUxCN25jczNBTGQ3OS03VEtvb01RY2RUR3FEWktPX1JFRDVhSXJDSjVYbEFkSmZVY05hTlFDOUxHNUJiRTQ0WUpEUS01RlI2TWFnSQ?oc=5",
+    "source": "Google News: helium market"
+   },
+   {
+    "title": "Top 5 Canadian Mining Stocks This Week: Star Diamond Gains 33 Percent",
+    "date": "2026-11-20",
+    "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE1lOXdSczkwZ19VLWVZY0o3alpYS2t3Q2lxelZOUGVrQWdWNmc4cHZFSXd3d095cngtRFQ0OW5tOG1zc3pfRmhPZmVTRzVBMFlySllpb19R?oc=5",
+    "source": "Google News: helium market"
+   },
+   {
+    "title": "Pulsar Helium Inc. (TSXV:PLSR) Gives Back Ground While Minnesota Helium Appraisal Still Awaits a Production Decision",
+    "date": "2026-11-18",
+    "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOVXZkbmJOMnlfdTc5eWVULVhuNkVoeEExbjVGSTNTZW1fX0VaRjBFel93X24wQnludW5ORWk5RldsRTU3dDd6Sy05dGRlbENMZXZ5NHpzZDVwX3hMWFp6UW8yUHZNZHlxc2MwQ2hVVUZ6OVcwd0pKSFFKdDNKUDRRcS1IdXRKV1ktTmNreXYyYzJJQnpBWUdMYTBRT1BLT3VhdGRwZjNGM2xpVGxORFB3TUxqVUp6N2I3bnBsS0U1X1dPZmx2VV81dUNfZk5VX1MzdEE2SEpJa19Gb0U?oc=5",
+    "source": "Google News: helium market"
+   },
+   {
+    "title": "Helium getting oil and gas treatment good news for Swift Current",
+    "date": "2026-11-16",
+    "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
+    "source": "Google News: North American Helium"
+   }
+  ]
+ },
+ "realestate": {
+  "headline": "Home sales slow as buyers adjust to elevated mortgage rates.",
+  "summary": "Sellers are lowering prices in a stagnant market. The average US 30-year mortgage rate rose to 7.28% recently. Home sales have slowed due to high rates.",
+  "sources": [
+   {
+    "name": "Google News: Portland housing",
+    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
+   },
+   {
+    "name": "Google News: Portland housing",
+    "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOTjUyZVZCamJfdWRyczFwVWt1eVFkeVgxaHNvdlE0TGZEN19XM3VIcUNmbWlSS1FNLVpXbEE2X1NpRDZEcElZRnJiODE1MElPWndLMmF2Q0lkZHJqVnY0Nkhpb2VKU2JaSHRXd2hQTWZDX2lXdFk4cTdRT2plM1d3eG9KWVlMV2RwUHJ6TVhtQWw2RVp4RG5RTmtvdm5ldWhWcU1ZcTJGR3k3Mkx4VHk0cmN5aExXRHBEZl83ajBhc2FIS0xQbTBnSUthVElyM3c?oc=5"
+   },
+   {
+    "name": "Google News: mortgage rates",
+    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQbU5VcjZtVGoycThWMjhJUWhyM1B2cWYxckh1LWpod1JrU1VhZWQwOUhVa2lCRTI5SVY4UVNGTHN6LXF2aXFZZnJtcVlSSGt3ejBjZTFjRWFOSExNZENqN2xBU040WlBBM1AzUkVIUUFVNjA4QjJ5R2F5TlhmTkFuTm9SMzAzUVE2d0RFdnQzSUY1RjJQMTlvU2VkY0JpRDd2UEZYczNUYTJocTF5Vmpz?oc=5"
+   },
+   {
+    "name": "Redfin: Portland housing market",
+    "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+   },
+   {
+    "name": "Freddie Mac: Primary Mortgage Market Survey",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "name": "GlobeNewswire (Freddie Mac): Mortgage Rates Average 7.28%",
+    "url": "https://www.globenewswire.com/news-release/2026/11/19/3406994/0/en/mortgage-rates-average-7-28.html"
+   }
+  ],
+  "by": "local model",
+  "items": [
+   {
+    "title": "Portland, OR Realtor Jennifer Fidler Says Prepared Homes Still Sell Fast While Metro Prices Soften",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxQaDM4eEFkcTZYems0TVo3dDFxcVFvNkllVDJEZF8tdHNQR1JoLXgtbmd0LWRva3BzdFZ1SjBGY3R5djR0Zi1ON2FKZjBlRmFaeE9xUmcwVHVhY2VkRGoxWW1qdGtaSlpxMGhGM1NmZXhxMl9GcFJfOHlVRDdmd0NiQU5Lb1M1bHBpTEI5WTBkYi1lallJd0l4Vjh0M2hoanVLODloelVuX2dEUWFDeW9uVVpsZGpfQS1SQnVnRGd4TlVoWFozd25nU2ZyUVgxYTduQndEblNQM2RQWlgzUllWdW5MMG5STGRmUXRyeVQ1RVVHUVpoS0xV?oc=5",
+    "source": "Google News: Portland housing"
+   },
+   {
+    "title": "Three New Restaurants Open in Portland",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxObEEwaTFOM3R4X3ZXRHhoSmRrUGpKQjljRXhRUXdmcUlvYUxYVEt5NnNMeTYzTU5sR01JdU1LNEoyOGxoM0kxUXBobFRvZG1LUjNsU1pnN2lXRzluRHVEbDFDYU11OG8tU21fbXlvemZQRzZnS3JpQkNCWEhZRUg3MnM1dTlGNjBkclAwNmpQelVxcnc?oc=5",
+    "source": "Google News: Portland housing"
+   },
+   {
+    "title": "Mortgage rates today, Nov. 24, 2026",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBFLVMwV3lXcFk5WWlCNkEzbFJzVmRvcFhlMUQ4ZkxYZTkweW9IclRqT3JPcUhZWS01UG5kZ19NSzd5LXUyRWxWaENlX1p5YUtMaTNWUHE0V1ZUU1h6c0VnLV9fOUlvQ29ydWFiQm1Wdw?oc=5",
+    "source": "Google News: mortgage rates"
+   },
+   {
+    "title": "Mortgage Rates Today: November 24, 2026 – Rates Fall For 4th Straight Day",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9CRWhhQ0piUXRpUWZNNlBWX1lnOXo3OWppYy0yRWdJMUFTZkFxZ3l6WHdLVFU2S0R4X1EwdzJWa3lSdzdRelhJVUFOaWRnNUZxZE9rMU8wX2VzMkdRY0JHTU1JQnlidGpqMHVocEhPYU1Oa1E?oc=5",
+    "source": "Google News: mortgage rates"
+   },
+   {
+    "title": "Mortgage and refinance interest rates today, Tuesday, November 24, 2026: Rates down substantially from yesterday and last week",
+    "date": "2026-11-24",
+    "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxOWk9hS2NWeHBSM1E4OGRpLU1MTkFvR2hoU3MxQzhVc1BwTW9qOVR2V25aZWR0U0ZBR3AyX2NEczRWdE5YTGNzWHZNWWFNVXUzUXdkMW5fUW1tWXliLWlmc2N3OV9OdDg3d3J0Z3JQeFZNZEtpMi00UkkwbF9nS0dlR1ZMdi1jWk8wRE9ZbzgyX3VHb3NQNnhzbDB3dUhqQUFhRW5Nd0Vtbk5XMlB1cWZ2TkYwa0VFczJNX3FVLU9NRVlNSklzNFViXy1ncHpQMWZkSVJwMHAyUUZZNlhMeWpsZ29oS0p5UEZhYVc4aWU2S3RZZzU2VkVWUVk1OGwwYS1ubDVLQzdUNmRoMGFfQ1RMQXk3U0hfeUJoWUY4VUNPUEdtdk5r?oc=5",
+    "source": "Google News: mortgage rates"
+   }
+  ],
+  "stats": [
+   {
+    "label": "Median sale price (Portland city, 3 months ending October)",
+    "value": "$525,000",
+    "change": "+0.9% vs a year ago",
+    "source": "Redfin",
+    "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+   },
+   {
+    "label": "Typical days on market (Portland city, October)",
+    "value": "26 days",
+    "change": "vs 29 days a year ago",
+    "source": "Redfin",
+    "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+   },
+   {
+    "label": "Homes sold (Portland city, October)",
+    "value": "1,801",
+    "change": "vs 2,079 a year ago",
+    "source": "Redfin",
+    "url": "https://www.redfin.com/city/30772/OR/Portland/housing-market"
+   },
+   {
+    "label": "30-year fixed mortgage rate (US average, week of Nov 19)",
+    "value": "7.28%",
+    "change": "up from 7.11% the week before; 6.26% a year ago",
+    "source": "Freddie Mac PMMS",
+    "url": "https://www.freddiemac.com/pmms"
+   },
+   {
+    "label": "15-year fixed mortgage rate (US average, week of Nov 19)",
+    "value": "6.66%",
+    "change": "up from 6.45% the week before",
+    "source": "Freddie Mac PMMS",
+    "url": "https://www.freddiemac.com/pmms"
+   }
+  ]
+ }
 }

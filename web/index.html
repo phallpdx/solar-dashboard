@@ -5092,7 +5092,7 @@ async function renderBriefing() {
   const box = $('brief');
   if (!D) { box.hidden = true; return; }
   const now = new Date(), today = isoLocal(now), tomorrow = isoLocal(new Date(now.getTime() + 864e5));
-  const daysTo = iso => Math.round((new Date(iso.slice(0, 10) + 'T12:00') - new Date(today + 'T12:00')) / 864e5);
+  const daysTo = iso => iso ? Math.round((new Date(String(iso).slice(0, 10) + 'T12:00') - new Date(today + 'T12:00')) / 864e5) : NaN;  // a missing date matches no window
   const whenWord = iso => { const n = daysTo(iso); return n === 0 ? 'today' : n === 1 ? 'tomorrow' : n === -1 ? 'yesterday' : n > 1 && n < 7 ? 'on ' + DOW[new Date(iso.slice(0, 10) + 'T12:00').getDay()] : 'on ' + fmtDate(iso.slice(0, 10)); };
   const soon = (iso, n) => iso && daysTo(iso) >= 0 && daysTo(iso) <= n;
   const notes = [];
@@ -5108,12 +5108,15 @@ async function renderBriefing() {
   // They sit in a span so his memory of what he told you goes by the facts, not the phrasing.
   const said = {};  // a key used twice in one brief moves on to its next line
   const say = (key, salt, ...fallback) => {
-    const fresh = (alf && alf.lines && alf.lines[key] || []).filter(x => typeof x === 'string' && /\s/.test(x.trim()));  // a bare key name is not a line
+    const fresh = (alf && alf.lines && alf.lines[key] || []).filter(x => typeof x === 'string' && /\s/.test(x.trim()) && !/["\\{}\[\]]/.test(x));  // a bare key name or a line with JSON debris in it is not a line
     const pool = fresh.length ? fresh : fallback;
     said[key] = (said[key] ?? -1) + 1;
     return `<span class="aside">${esc(pool[(dayNo + salt + said[key]) % pool.length]).replace(/'/g, '’')}</span>`;
   };
 
+  // One odd field in the day's data must never cost the whole letter: a note that trips stops the gathering,
+  // and Alfred still writes with what he has.
+  try {
   // Weather and alerts
   const o = D.outside || {};
   for (const a of (D.alerts && D.alerts.official) || [])
@@ -5351,6 +5354,8 @@ async function renderBriefing() {
   if (brief && brief.updated && daysTo(brief.updated) >= -1 && brief.realestate && brief.realestate.headline)
     add(36, 'more', `${say('property_lead', 0, 'Property, sir')}: ${esc(brief.realestate.headline.replace(/\.$/, ''))}.`);
   if (D.poem && D.poem.title) add(14, 'poem-card', `Today’s poem is “${esc(D.poem.title)}” by ${esc(D.poem.poet)}.`);
+
+  } catch (e) { console.error('briefing: a note failed', e); }
 
   // Alfred remembers what he told you on earlier mornings (in this browser) and moves on to fresher news.
   let seen = {};

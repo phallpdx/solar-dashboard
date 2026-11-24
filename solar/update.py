@@ -1097,7 +1097,7 @@ def civics_view(state, today):
     for e in civics.oregon_elections(dt.date.fromisoformat(today)):
         b = ballot.pop(e["date"], None)
         elections.append(e | ({"name": b["name"] or e["name"], "contests": b["contests"], "info_url": b["info_url"]} if b else {}))
-    elections += [b for b in ballot.values()]
+    elections += [b for b in ballot.values() if b.get("contests")]  # off Oregon's calendar and nothing on our ballot: not ours
     elections.sort(key=lambda e: e["date"])
     return {"districts": d, "people": people, "elections": elections[:4],
             "statewide": [{"role": r, "name": n, "party": p, "url": u} for r, n, p, u in civics.OREGON_STATEWIDE],

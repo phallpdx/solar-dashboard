@@ -1,45 +1,52 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "items": [
     {
-      "name": "Willamette Valley wines",
-      "maker": "Willamette Valley",
+      "name": "Four Oregon wines on Wine Spectator's 2026 Top 100",
+      "maker": "Ken Wright Cellars, Evening Land, Alexana and Elk Cove (Willamette Valley)",
       "kind": "Award",
-      "what": "Wine Spectator's top 100 for 2026",
+      "what": "Four Willamette Valley wines made Wine Spectator's Top 100 for 2026, led by Ken Wright Cellars' 2024 Eola-Amity Hills Pinot Noir at No. 18, a $38 bottle. Evening Land, Alexana and Elk Cove also made the list.",
       "where_to_buy": [],
       "date": "2026-11-19",
       "sources": [
         {
-          "name": "Wine Spectator's top 100 for 2026 is out, and the Willamette Valley showed up strong",
+          "name": "KOIN: 'Vibrant, rich and full of energy': Four Oregon wines recognized among best of 2026",
+          "url": "https://www.koin.com/news/oregon/vibrant-rich-and-full-of-energy-four-oregon-wines-recognized-among-best-of-2026/"
+        },
+        {
+          "name": "Portland Business Journal on X: Four Oregon wines made Wine Spectator's 2026 Top 100",
+          "url": "https://x.com/PDXBIZJournal/status/2122468523335118893"
+        },
+        {
+          "name": "OregonLive: 4 Oregon wines made Wine Spectator's top 100 list for 2026",
           "url": "https://www.oregonlive.com/wine/2026/11/4-oregon-wines-made-wine-spectators-top-100-list-for-2026.html"
-        }
-      ]
-    },
-    {
-      "name": "PDX Pop-Up Shops retailers",
-      "maker": "PDX Pop-Up Shops",
-      "kind": "Seasonal",
-      "what": "17 local retailers in downtown Portland",
-      "where_to_buy": [],
-      "date": "2026-11-14",
-      "sources": [
+        },
         {
-          "name": "Wool, Wagyu and wine: 17 local businesses to do your holiday shopping without leaving downtown Portland",
-          "url": "https://www.oregonlive.com/retail/2026/11/wool-wagyu-and-wine-do-all-your-holiday-shopping-within-this-8-block-radius-of-downtown-portland.html"
+          "name": "WineBusiness.com: 4 Oregon wines made Wine Spectator's top 100 list for 2026",
+          "url": "https://www.winebusiness.com/news/link/325395"
         }
       ]
     },
     {
-      "name": "Bob's Red Mill cookies",
-      "maker": "Bob's Red Mill",
+      "name": "Black Lavender Fog chocolate bar",
+      "maker": "Ranger Chocolate Co. with Steven Smith Teamaker (both Portland)",
       "kind": "New product",
-      "what": "Hallmark holiday collaboration",
-      "where_to_buy": [],
-      "date": "2026-11-11",
+      "what": "Two Portland neighbors teamed up on a bean-to-bar chocolate infused with Smith's No. 14 Black Lavender tea, with notes of black tea, lavender and a touch of rose. It follows their recently released Ranger x Smith tea-infused bonbon collection, timed for the holidays.",
+      "where_to_buy": [
+        {
+          "store": "Ranger Chocolate Co. online shop",
+          "url": "https://rangerchocolate.co/"
+        }
+      ],
+      "date": "2026-11-16",
       "sources": [
         {
-          "name": "Bob’s Red Mill cookies will star in Hallmark’s latest holiday romance",
-          "url": "https://www.oregonlive.com/tv/2026/11/bobs-red-mill-cookies-will-star-in-hallmarks-latest-holiday-romance.html"
+          "name": "Yahoo Finance (press release): Ranger Chocolate Co. and Steven Smith Teamaker introduce Black Lavender Fog chocolate bar",
+          "url": "https://finance.yahoo.com/media-advertising/articles/ranger-chocolate-co-steven-smith-174600764.html"
+        },
+        {
+          "name": "Webull News (press release): Ranger Chocolate Co. and Steven Smith Teamaker introduce Black Lavender Fog chocolate bar",
+          "url": "https://www.webull.com/news/15934695760970752"
         }
       ]
     },
@@ -85,25 +92,6 @@
         {
           "name": "KOIN: 'Whiskey and weirdness': The Unipiper unveils limited edition whiskey",
           "url": "https://www.koin.com/news/portland/whiskey-and-weirdness-the-unipiper-unveils-limited-edition-whiskey/"
-        }
-      ]
-    },
-    {
-      "name": "Joe Brown's Carmel Corn",
-      "maker": "Joe Brown's",
-      "kind": "New product",
-      "what": "Portland's longtime caramel corn shop, which lost its home when its mall closed, has reopened in a new location with a bigger menu.",
-      "where_to_buy": [
-        {
-          "store": "Joe Brown's Carmel Corn",
-          "url": "https://joebrownscarmelcorn.com/"
-        }
-      ],
-      "date": "2026-10-31",
-      "sources": [
-        {
-          "name": "After months of popcorn purgatory, Joe Brown's Carmel Corn has returned — in a new location",
-          "url": "https://www.oregonlive.com/washingtoncounty/2026/10/the-beloved-portland-popcorn-shop-that-survived-a-mall-closing-just-reopened-with-a-bigger-menu.html"
         }
       ]
     },
@@ -154,6 +142,25 @@
         {
           "name": "ProBrewer: Pelican Brewing releases Lite IPA",
           "url": "https://probrewer.com/beverage-industry-news/commentary/the-return-on-lite-beer-pelican-brewing-release-lite-ipa/"
+        }
+      ]
+    },
+    {
+      "name": "00 Wines, VinePair Winery of the Year",
+      "maker": "00 Wines (Willamette Valley)",
+      "kind": "Award",
+      "what": "The small family-owned Oregon Chardonnay house, founded in 2015 by Chris and Kathryn Hermann, was named Winery of the Year at VinePair's 2026 Next Wave Awards in New York.",
+      "where_to_buy": [
+        {
+          "store": "00 Wines",
+          "url": null
+        }
+      ],
+      "date": "2026-10-15",
+      "sources": [
+        {
+          "name": "Wine Industry Advisor: 00 Wines receives VinePair's 2026 Winery of the Year award",
+          "url": "https://wineindustryadvisor.com/2026/10/23/00-wines-receives-vinepairs-2026-winery-of-the-year-award/"
         }
       ]
     },

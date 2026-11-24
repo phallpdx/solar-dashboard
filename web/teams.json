@@ -1,169 +1,150 @@
 {
-  "updated": "2026-11-20",
-  "updated_at": "2026-11-20T12:39:08Z",
+  "updated": "2026-11-24",
+  "updated_at": "2026-11-24T12:23:54Z",
   "teams": {
     "blazers": {
-      "mood": "Cautiously optimistic",
-      "pulse": "Fans are buoyed by Thursday's 124-114 win at Milwaukee, where Damian Lillard scored a season-high 33 in his return there. It came after two losses to Minnesota.",
+      "mood": "Optimistic and surging",
+      "pulse": "Fans are excited after a decisive road win against Philadelphia. The team's 11-6 record reflects strong momentum.",
       "storylines": [
-        "Won 124-114 at Milwaukee on Thursday; Lillard scored 33 and Clingan had 13 rebounds",
-        "Deni Avdija and Robert Williams III are day-to-day",
-        "Next game: at the Knicks on Saturday afternoon"
+        "Blazers beat 76ers 128-111 on 2026-11-23",
+        "Team holds an 11-6 season record",
+        "Bench play helped secure statement win"
       ],
       "sources": [
         {
-          "name": "ESPN recap (Bucks)",
-          "url": "https://www.espn.com/nba/recap?gameId=401910020"
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-analysis/118759/portland-trail-blazers-new-york-knicks-final-score-boxscore-jalen-brunson"
         },
         {
-          "name": "Blazer's Edge (injury report)",
-          "url": "https://www.blazersedge.com/trail-blazers-news/118611/portland-trail-blazers-injury-report-latest-milwaukee-bucks-deni-avdija-toumani-camara"
+          "name": "SI Blazers",
+          "url": "https://www.si.com/nba/trailblazers/onsi/2-winners-2-losers-in-blazers-loss-vs-mikal-bridges-knicks"
         },
         {
-          "name": "SF Chronicle (AP recap, Minnesota)",
-          "url": "https://www.sfchronicle.com/sports/article/mcdaniels-scores-with-2-6-seconds-left-to-lift-22536764.php"
+          "name": "Hoops Rumors",
+          "url": "https://www.hoopsrumors.com/2026/11/trail-blazers-notes-slow-starts-henderson-kent-more.html"
+        },
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/gameday-coverage/118771/portland-trail-blazers-philadelphia-76ers-time-tv-latest-injury-report"
         }
       ]
     },
     "timbers": {
-      "mood": "focused and ready",
-      "pulse": "Players show enthusiasm and commitment for the playoffs. The team is bonding through track activities ahead of Dallas.",
+      "mood": "Disappointed but hopeful",
+      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. The team aims to learn quickly before Game 2.",
       "storylines": [
-        "Preparing for Round One playoff battle against FC Dallas",
-        "Timbers2 lost 1-0 to Ventura County in semifinals",
-        "Academy player Eric Izoita signed first-team contract"
+        "Lost 3-0 to FC Dallas in Round One, Game 1",
+        "Next game is Saturday, Nov. 28 against FC Dallas",
+        "Ian Miller named to U.S. U-16 Boys domestic training camp"
       ],
       "sources": [
         {
-          "name": "KPTV (schedule)",
-          "url": "https://www.kptv.com/2026/11/08/timbers-mls-cup-playoffs-schedule-released-portland-host-game-2/"
+          "name": "Timbers.com",
+          "url": "https://www.timbers.com/news/recap-timbers-lose-3-0-to-fc-dallas-in-game-1-of-round-one"
         },
         {
-          "name": "Yahoo Sports (dates, TV)",
-          "url": "https://sports.yahoo.com/articles/fc-dallas-sets-dates-kickoff-210744130.html"
+          "name": "FC Dallas",
+          "url": "https://www.fcdallas.com/news/fc-dallas-opens-audi-2026-mls-cup-playoffs-with-commanding-3-0-home-win-over-the-portland-timbers"
         },
         {
-          "name": "FC Dallas (Set the stage)",
-          "url": "https://www.fcdallas.com/news/set-the-stage-fc-dallas-vs-portland-timbers-playoffs-round-one-game-1"
+          "name": "Stumptown Footy",
+          "url": "https://stumptown-footy.ghost.io/mls-cup-playoffs-round-one-game-1-recap-highlights-portland-timbers-at-fc-dallas/"
         },
         {
-          "name": "Timbers.com (Game 2)",
+          "name": "Timbers.com",
           "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
-        },
-        {
-          "name": "Rotowire (Antony)",
-          "url": "https://www.rotowire.com/soccer/headlines/antony-injury-could-return-for-playoff-clash-547045"
-        },
-        {
-          "name": "KATU (win streak)",
-          "url": "https://katu.com/sports/timbers/portland-timbers-ride-four-game-winning-streak-into-2026-mls-cup-playoffs-providence-park-oregon-mls-cup-playoffs-soccer"
         }
       ]
     },
     "f1": {
-      "mood": "Anticipatory and uncertain",
-      "pulse": "Fans are focused on practice results in Las Vegas. Uncertainty surrounds driver lineups and car performance issues.",
+      "mood": "Speculative and intense",
+      "pulse": "Fans are analyzing team dynamics after clashes in Las Vegas. Interest is high regarding upcoming Qatar predictions.",
       "storylines": [
-        "Gasly earned P2 during second practice for Alpine.",
-        "Verstappen faces balance and energy management issues.",
-        "Russell topped FP2 despite Mercedes lacking pace.",
-        "Palmowski secured pole in F1 Academy.",
-        "Cadillac retains Bottas over Herta for 2027."
+        "Sainz finished P8 in Las Vegas for Williams.",
+        "Freddie Slater to replace Camara in F2.",
+        "Tom Hart replacing Lambiase as Verstappen's engineer.",
+        "Verstappen and Russell rivalry continues to escalate."
       ],
       "sources": [
         {
-          "name": "Sky Sports (what's left)",
-          "url": "https://www.skysports.com/f1/news/13611983/las-vegas-gp-whats-still-to-play-for-over-final-three-races-of-f1-2026-season-with-battles-in-drivers-and-constructors-championships"
+          "name": "Formula1.com",
+          "url": "https://www.formula1.com/en/latest/article/something-that-ive-never-seen-before-in-f1-verstappen-reflects-on-las-vegas-gp-win-after-slipstream-thriller.11R5Iz64C6PLpqrGDJU5OK"
         },
         {
-          "name": "GPFans (practice schedule)",
-          "url": "https://www.gpfans.com/en/f1-news/1093027/f1-practice-today-schedule-times-tv-channel-2026-las-vegas-grand-prix/"
+          "name": "RacingNews365",
+          "url": "https://racingnews365.com/2026-f1-championship-standings-after-las-vegas-grand-prix"
         },
         {
-          "name": "GrandPrix247 (Pirelli)",
-          "url": "https://www.grandprix247.com/formula-1-news/pirelli-warns-tyre-warm-up-and-graining-could-prove-decisive-at-2026-formula-1-las-vegas-grand-prix"
+          "name": "PlanetF1",
+          "url": "https://www.planetf1.com/news/f1-championship-standings-2026-las-vegas-grand-prix"
         },
         {
-          "name": "Ferrari (Vegas preview)",
-          "url": "https://www.ferrari.com/en-EN/formula1/articles/las-vegas-grand-prix-2026-preview"
-        },
-        {
-          "name": "Formula1.com (5 storylines)",
-          "url": "https://www.formula1.com/en/latest/article/its-race-week-5-storylines-were-excited-about-ahead-of-the-2026-las-vegas-grand-prix.3fjavheTbHD8fjZI0i7BWd"
-        },
-        {
-          "name": "TimesLIVE/Reuters (Verstappen)",
-          "url": "https://www.timeslive.co.za/motoring/2026-11-18-verstappen-has-momentum-to-claim-third-las-vegas-grand-prix-victory/"
+          "name": "PlanetF1",
+          "url": "https://www.planetf1.com/features/winners-and-losers-2026-las-vegas-grand-prix"
         }
       ]
     },
     "ducks": {
-      "mood": "Anticipatory",
-      "pulse": "Fans are analyzing drive-by-drive performance against Michigan while looking ahead to Michigan State. There is debate regarding playoff potential.",
+      "mood": "Optimistic and hopeful",
+      "pulse": "Fans feel rewarded after recent wins following a difficult mid-season stretch. Increased odds for B1G Championship have boosted confidence regarding playoff potential.",
       "storylines": [
-        "Upcoming matchup against Michigan State Spartans",
-        "Analysis of performance against Michigan",
-        "Discussion on CFP rankings"
+        "Beat Michigan State to clear path to B1G Championship",
+        "Ranked 14th in AP Poll",
+        "Increased odds for automatic playoff bid via conference championship",
+        "Playoff probability at 46.5% per FanDuel"
       ],
       "sources": [
         {
-          "name": "Yahoo Sports (MSU injury report)",
-          "url": "https://sports.yahoo.com/articles/michigan-state-injury-report-qb-011905522.html"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/ncaaf/oregon-ducks-michigan-state-spartans-202611200030/"
         },
         {
-          "name": "Autzen Zoo (injury report)",
-          "url": "https://autzenzoo.com/oregon-vs-michigan-state-injury-report-reveals-more-ducks-injuries-and-a-major-spartans-dilemma"
+          "name": "GoDucks.com",
+          "url": "https://goducks.com/news/2026/11/21/football-oregon-vs-washington-set-for-4-30-pm"
         },
         {
-          "name": "SI Ducks (Lanning injury updates)",
-          "url": "https://www.si.com/college/oregon/football/dan-lanning-jordon-davison-bear-alexander-injury-updates-michigan-state-spartans-oregon-ducks"
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/washington-aims-spoil-oregon-footballs-121303652.html"
         },
         {
-          "name": "GoDucks.com preview",
-          "url": "https://goducks.com/news/2026/11/16/football-ducks-head-to-east-lansing-for-friday-night-showdown"
-        },
-        {
-          "name": "Yahoo Sports (how to watch)",
-          "url": "https://sports.yahoo.com/articles/watch-oregon-vs-michigan-state-192944862.html"
-        },
-        {
-          "name": "ESPN recap (Michigan)",
-          "url": "https://www.espn.com/college-football/recap?gameId=401858523"
+          "name": "SI Ducks",
+          "url": "https://www.si.com/college/oregon/football/oregon-washington-game-two-possible-kickoff-times-tv-schedule-rivalry"
         }
       ]
     },
     "niners": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans face a primetime battle for the NFC top seed in Mexico City. Defensive lapses and injuries cause concern.",
+      "pulse": "Fans are celebrating a 35-10 win over the Vikings and Purdy's performance. However, Colton McKivitz's ankle injury is a major concern.",
       "storylines": [
-        "Battle for No. 1 seed against Vikings",
-        "Christian Kirk underwent meniscus surgery",
-        "Nick Bosa struggling to execute signature pass rush play"
+        "Beat Vikings 35-10 to reach 9-1 record",
+        "Brandon Aiyuk to be released Monday",
+        "John Lynch signed contract extension",
+        "Colton McKivitz out for season (ankle)"
       ],
       "sources": [
         {
-          "name": "Yahoo Sports (Mike Evans)",
-          "url": "https://sports.yahoo.com/articles/kyle-shanahan-announces-mike-evans-203038459.html"
+          "name": "ESPN",
+          "url": "https://www.espn.com/nfl/story/_/id/50525677/49ers-beat-vikings-sunday-night-football-mexico-city-kittle"
         },
         {
-          "name": "Yahoo Sports (0-5 vs. Flores)",
-          "url": "https://sports.yahoo.com/articles/49ers-kyle-shanahan-faces-0-185634295.html"
+          "name": "NBC Sports Bay Area",
+          "url": "https://www.nbcsportsbayarea.com/nfl/san-francisco-49ers/live-updates-score-highlights-minnesota-vikings-2/1981025/"
         },
         {
-          "name": "SI MMQB (Week 11 picks)",
-          "url": "https://www.si.com/nfl/week-11-expert-staff-predictions-picks"
+          "name": "theScore",
+          "url": "https://www.thescore.com/nfl/news/3663666/purdy-kittle-help-49-ers-blow-out-vikings-in-mexico"
         },
         {
-          "name": "NBC Sports Bay Area (how to watch)",
-          "url": "https://www.nbcsportsbayarea.com/nfl/vikings-49ers-sunday-night-football-week-11-how-to-watch-nbc-peacock/1980712/"
+          "name": "ABC7",
+          "url": "https://abc7news.com/post/49ers-make-bold-statement-blowout-win-vikings-keep-nfcs-no-1-seed/20068566/"
         },
         {
-          "name": "Yahoo Sports (altitude prep)",
-          "url": "https://sports.yahoo.com/articles/49ers-extra-step-prep-mexico-154436961.html"
+          "name": "ProFootballTalk",
+          "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/sunday-night-football-mike-evans-active-dre-greenlaw-inactive-for-49ers-vikings"
         },
         {
-          "name": "ESPN recap (Dallas)",
-          "url": "https://www.espn.com/nfl/recap?gameId=401873063"
+          "name": "Seahawks.com",
+          "url": "https://www.seahawks.com/game-day/2026/reg-week12/seahawks-at-49ers/how-to-watch"
         }
       ]
     }

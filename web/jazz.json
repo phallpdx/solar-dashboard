@@ -1,98 +1,6 @@
 {
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "shows": [
-    {
-      "artist": "Farnell Newton's The Soul of Jazz",
-      "kind": "Local",
-      "date": "2026-11-20",
-      "time": "6:30 pm",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Trumpeter Farnell Newton's set paying tribute to the legendary trumpeter and bandleader Donald Byrd; all ages.",
-      "tickets": "https://the1905.turntabletickets.com/shows/13232/2026-11-20",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/shows/13232/2026-11-20"
-        }
-      ]
-    },
-    {
-      "artist": "Kareem Kandi with Ali Jackson",
-      "kind": "Local",
-      "date": "2026-11-21",
-      "time": null,
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Portland saxophonist Kareem Kandi with drummer Ali Jackson, who held the drum chair of the Jazz at Lincoln Center Orchestra; listed on The 1905's upcoming shows page.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets) upcoming shows",
-          "url": "https://the1905.turntabletickets.com/"
-        },
-        {
-          "name": "Bandsintown: The 1905",
-          "url": "https://www.bandsintown.com/v/10022105-the-1905"
-        }
-      ]
-    },
-    {
-      "artist": "Eric Skye Trio Plays Miles Davis",
-      "kind": "Local",
-      "date": "2026-11-22",
-      "time": "7:00 pm",
-      "venue": "Show Bar at Revolution Hall",
-      "price": "From $32.36",
-      "what": "Portland acoustic guitarist Eric Skye, whose album A Different Kind of Blue reimagined Kind of Blue, plays late-1950s Miles Davis tunes with upright bass and drums; 21+.",
-      "tickets": "https://www.revolutionhall.com/show-bar/",
-      "sources": [
-        {
-          "name": "Revolution Hall: Show Bar",
-          "url": "https://www.revolutionhall.com/show-bar/"
-        },
-        {
-          "name": "Travel Portland event listing",
-          "url": "https://www.travelportland.com/event/6a70ed67186757c18759176c/"
-        }
-      ]
-    },
-    {
-      "artist": "In Session: Jazz Combos Live (Portland State)",
-      "kind": "Local",
-      "date": "2026-11-22",
-      "time": "7:30 pm",
-      "venue": "Lincoln Recital Hall, Portland State",
-      "price": "Free",
-      "what": "Portland State's student jazz combos play works arranged or composed by students and faculty in the PSU Jazz Area; free and open to the public.",
-      "tickets": null,
-      "sources": [
-        {
-          "name": "Portland State: In Session: Jazz Combos Live",
-          "url": "https://www.pdx.edu/music-theater/events/session-jazz-combos-live-6"
-        },
-        {
-          "name": "Portland State events listing",
-          "url": "https://www.pdx.edu/events/session-jazz-combos-live-5"
-        }
-      ]
-    },
-    {
-      "artist": "Chuck Israels Trio",
-      "kind": "Local",
-      "date": "2026-11-22",
-      "time": "05:30 PM",
-      "venue": "The 1905",
-      "price": "$30",
-      "what": "Bassist Chuck Israels performs with Joe Bagg and Michael Rodenkirch.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Scott Bradlee's Postmodern Jukebox",
       "kind": "Vocal",
@@ -114,6 +22,22 @@
       ]
     },
     {
+      "artist": "greaterkind",
+      "kind": "Local",
+      "date": "2026-11-25",
+      "time": "06:30 PM",
+      "venue": "The 1905's",
+      "price": "$30",
+      "what": "A Portland band blending jazz fusion, funk, and R&B.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
+        }
+      ]
+    },
+    {
       "artist": "Charlie Brown III and Friends",
       "kind": "Local",
       "date": "2026-11-28",
@@ -126,6 +50,22 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"
+        }
+      ]
+    },
+    {
+      "artist": "Mel Brown B3 Organ Group",
+      "kind": "Local",
+      "date": "2026-11-29",
+      "time": "05:30 PM",
+      "venue": "The 1905's",
+      "price": "$30",
+      "what": "An all-star band of Oregon Music Hall of Fame inductees.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },
@@ -462,6 +402,22 @@
         {
           "name": "Jazz Near You listing",
           "url": "https://www.jazznearyou.com/portland/events/mike-prigodich-quartet-mp4-at-the-burlingame-space-on-january-16"
+        }
+      ]
+    },
+    {
+      "artist": "Black Tie/White Noise: Low with The Christopher Brown Quartet (Early Show)",
+      "kind": "Local",
+      "date": "2027-01-30",
+      "time": "07:00 PM",
+      "venue": "Jack London Revue",
+      "price": null,
+      "what": "An early show performance.",
+      "tickets": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE",
+      "sources": [
+        {
+          "name": "Web search: touring jazz in Portland",
+          "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
         }
       ]
     }

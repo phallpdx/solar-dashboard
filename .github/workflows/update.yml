@@ -134,3 +134,16 @@ jobs:
       - id: deploy
         uses: actions/deploy-pages@v4
         continue-on-error: true # data still updates while Pages is not turned on yet
+
+      # Pages sometimes can't see an artifact uploaded a second earlier ("No artifacts named github-pages"),
+      # and the page silently stays on the old build. Wait and try again before giving up.
+      - if: steps.deploy.outcome == 'failure'
+        run: sleep 30
+      - id: deploy_retry
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - if: steps.deploy.outcome == 'failure' && steps.deploy_retry.outcome == 'failure'
+        run: sleep 60
+      - if: steps.deploy.outcome == 'failure' && steps.deploy_retry.outcome == 'failure'
+        uses: actions/deploy-pages@v4

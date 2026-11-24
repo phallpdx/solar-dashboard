@@ -10,6 +10,8 @@ import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
 
+from .news import clip, strip_tags
+
 UA = {"User-Agent": "solar-dashboard/1.0 (personal home dashboard; github.com/phallpdx/solar-dashboard)"}
 
 
@@ -21,7 +23,7 @@ def _get(url, as_json=True):
 
 
 def _strip(text):
-    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text or ""))).strip()
+    return strip_tags(text)
 
 
 # ------------------------------------------------------------------ streaming
@@ -77,7 +79,7 @@ def _premieres(start, days):
                     "genres": show.get("genres") or [],
                     "language": show.get("language"),
                     "runtime": ep.get("runtime") or show.get("averageRuntime"),
-                    "summary": _strip(show.get("summary"))[:320],
+                    "summary": clip(_strip(show.get("summary")), 320),
                     "image": (show.get("image") or {}).get("medium"),
                     "url": show.get("officialSite") or show.get("url"),
                     "rating": (show.get("rating") or {}).get("average"),
@@ -148,7 +150,7 @@ def _where(movie_id, key, ids):
 def _movie(m, services, **extra):
     return {"title": m.get("title"), "date": m.get("release_date"), "services": services,
             "rating": m.get("vote_average"), "votes": m.get("vote_count"),
-            "summary": (m.get("overview") or "")[:320],
+            "summary": clip(m.get("overview") or "", 320),
             "image": f"https://image.tmdb.org/t/p/w185{m['poster_path']}" if m.get("poster_path") else None,
             "url": f"https://www.themoviedb.org/movie/{m['id']}", "id": m["id"], **extra}
 

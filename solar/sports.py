@@ -7,6 +7,8 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
+from .news import clip
+
 ESPN = "https://site.api.espn.com/apis/site/v2/sports"
 STANDINGS = "https://site.api.espn.com/apis/v2/sports"
 UA = {"User-Agent": "solar-dashboard (personal home dashboard)"}
@@ -129,10 +131,11 @@ def team(league_path, name, standings_level=None):
         rank = group_rank(league_path, team_id, standings_level)
     except Exception:
         rank = None
-    upcoming = [_game(e, team_id) for e in info.get("nextEvent", [])] or \
-        [g for g in games if not g["completed"]]
+    # ESPN's "nextEvent" keeps pointing at the last game until a day or two after it ends (the 49ers card said
+    # "No game scheduled yet" with Seattle five days out), so fall back to the schedule once it has nothing ahead.
     now = dt.datetime.now(dt.timezone.utc).isoformat()
-    upcoming = [g for g in upcoming if not g["completed"] and (g["utc"] or "") >= now[:16]]
+    ahead = lambda gs: [g for g in gs if not g["completed"] and (g["utc"] or "") >= now[:16]]
+    upcoming = ahead([_game(e, team_id) for e in info.get("nextEvent", [])]) or ahead(games)
     return {
         "name": info.get("displayName") or name,
         "logo": (info.get("logos") or [{}])[0].get("href"),
@@ -152,12 +155,26 @@ def _recent_enough(game, days=4):
     return bool(game.get("id")) and (game.get("utc") or "") >= cutoff
 
 
+def _whole(text):
+    """ESPN cuts some recap blurbs mid-sentence ("...trying to show that they deserve a spot in the");
+    keep the whole sentences, or mark the cut."""
+    text = (text or "").strip()
+    if text.endswith("..."):
+        return text[:-3].rstrip() + "…"
+    if not text:
+        return None
+    if text[-1] in ".!?\"”’)":
+        return text
+    end = max(text.rfind(". "), text.rfind("! "), text.rfind("? "))
+    return text[:end + 1] if end > 40 else clip(text, len(text) - 1)
+
+
 def recap(league_path, game, team_id):
     """What happened in the last game: ESPN's recap story, our top performers and, for soccer, who scored."""
     data = _get(f"{ESPN}/{league_path}/summary?event={game['id']}")
     art = data.get("article") or {}
     out = {"game_id": game["id"], "headline": art.get("headline"),
-           "summary": art.get("description") or None, "leaders": [], "goals": []}
+           "summary": _whole(art.get("description")), "leaders": [], "goals": []}
     story = re.sub(r"<[^>]+>", " ", art.get("story") or "")
     story = re.sub(r"\s+", " ", story).strip()
     if story and not out["summary"]:

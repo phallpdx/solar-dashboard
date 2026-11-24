@@ -1313,7 +1313,7 @@ def fetch_river(state, now_utc):
     _refresh(store, "usgs", river.usgs, 0.5, now_utc, errors)
     _refresh(store, "nwps", river.nwps, 3, now_utc, errors)
     _refresh(store, "bar", river.bar_alerts, 0.5, now_utc, errors)
-    _refresh(store, "surf_zone", river.surf_zone, 6, now_utc, errors)
+    _refresh(store, "surf_zone", river.surf_zone, 2, now_utc, errors)  # NWS issues it around 3 to 4 am; a 6-hour wait could keep yesterday's until noon
     return "; ".join(errors) or None
 
 

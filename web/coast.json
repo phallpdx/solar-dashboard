@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -16,6 +16,14 @@
       "town": "Seaside",
       "summary": "Post a photo to receive a free beach towel from 9:00 am to 5:00 pm.",
       "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
+    },
+    {
+      "name": "Wreath-Making Workshop",
+      "date": "2026-11-24",
+      "end": null,
+      "town": "Netarts",
+      "summary": "A wreath-making workshop at N. Oregon Coast's Netarts.",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOXzROTk14aWVBQ0JTS2ZHdlVXV1ZqRkhZdk13UjFFcDVJUmtMNHM2Zm9SdkJua25NcUdZa3V6STVMOXdBblVRcElFN25xLWhIc051UWphTW42MkFyUWVGQXJRdm8tU0FoRi04bXUzWWtVaXBsUGVnUDJoSUZqekZ5b3RjNA?oc=5"
     },
     {
       "name": "Seaside Turkey Trot 5K Family Run at SEPRD",

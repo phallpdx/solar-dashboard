@@ -1,6 +1,57 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "restaurants": [
+    {
+      "name": "Bar Sprezzatura",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQQ1JndXhOUzB5aWZKOTIzcnNPNnhqR1dydFZ6YWdVNjVCV1R4c1htZy1mQnM3b0d5eGRwMFBKYmF5Mm45MzVnbHlVeVJUMnBGM1ZNZ1hDa3pLRWc3R19saloxSTdvSmoydmFMR3huX0pWcmpWbXhYSTNhSzE0cl9NV1V4TWNMTnFzTDlhV05kM2l3WTlTT0REcWlGeFpKZ0N6ZVpiclRlV1UwZi1SaGRKR24zTC10UQ?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Feli",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQQ1JndXhOUzB5aWZKOTIzcnNPNnhqR1dydFZ6YWdVNjVCV1R4c1htZy1mQnM3b0d5eGRwMFBKYmF5Mm45MzVnbHlVeVJUMnBGM1ZNZ1hDa3pLRWc3R19saloxSTdvSmoydmFMR3huX0pWcmpWbXhYSTNhSzE0cl9NV1V4TWNMTnFzTDlhV05kM2l3WTlTT0REcWlGeFpKZ0N6ZVpiclRlV1UwZi1SaGRKR24zTC10UQ?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Cosmopolis",
+      "neighborhood": "",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "",
+      "reviews": [
+        {
+          "outlet": "Bridgetown Bites",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-17",
+          "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQQ1JndXhOUzB5aWZKOTIzcnNPNnhqR1dydFZ6YWdVNjVCV1R4c1htZy1mQnM3b0d5eGRwMFBKYmF5Mm45MzVnbHlVeVJUMnBGM1ZNZ1hDa3pLRWc3R19saloxSTdvSmoydmFMR3huX0pWcmpWbXhYSTNhSzE0cl9NV1V4TWNMTnFzTDlhV05kM2l3WTlTT0REcWlGeFpKZ0N6ZVpiclRlV1UwZi1SaGRKR24zTC10UQ?oc=5"
+        }
+      ]
+    },
     {
       "name": "Marée",
       "neighborhood": "Portland",
@@ -355,57 +406,6 @@
       "price": "",
       "opened": "empty",
       "summary": "A spot serving burgers and fancy cocktails.",
-      "reviews": [
-        {
-          "outlet": "Resy",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
-        }
-      ]
-    },
-    {
-      "name": "Wolf Fusion",
-      "neighborhood": "Portland",
-      "cuisine": "Fusion",
-      "price": "",
-      "opened": "empty",
-      "summary": "A fusion restaurant in Portland.",
-      "reviews": [
-        {
-          "outlet": "Resy",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
-        }
-      ]
-    },
-    {
-      "name": "Bistro Alder",
-      "neighborhood": "SW Portland",
-      "cuisine": "Bistro",
-      "price": "",
-      "opened": "empty",
-      "summary": "A bistro located in SW Portland.",
-      "reviews": [
-        {
-          "outlet": "Resy",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-14",
-          "url": "https://blog.resy.com/new-on-resy/new-on-resy-portland"
-        }
-      ]
-    },
-    {
-      "name": "23rd Champagne Poetry",
-      "neighborhood": "Nob Hill",
-      "cuisine": "Modern Pan-Asian",
-      "price": "",
-      "opened": "empty",
-      "summary": "A champagne bar with Italian wines and imported salumi.",
       "reviews": [
         {
           "outlet": "Resy",

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-24",
   "shows": [
     {
       "artist": "Scott Bradlee's Postmodern Jukebox",
@@ -50,6 +50,22 @@
         {
           "name": "The 1905 (Turntable Tickets)",
           "url": "https://the1905.turntabletickets.com/shows/13238/2026-11-28"
+        }
+      ]
+    },
+    {
+      "artist": "Mel Brown B3 Organ Group",
+      "kind": "Local",
+      "date": "2026-11-29",
+      "time": "05:30 PM",
+      "venue": "The 1905's",
+      "price": "$30",
+      "what": "An all-star band of Oregon Music Hall of Fame inductees.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

@@ -2,109 +2,186 @@
   "updated": "2026-11-24",
   "deals": [
     {
-      "title": "National Lampoon's: Christmas Vacation (1989)",
-      "store": "Walmart",
-      "detail": "4K Ultra HD + Blu-Ray $10 + Free S&H",
-      "ends": "2026-11-24",
-      "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-4k-uhd-blu-ray-9-99-walmart-com"
+      "title": "Barnes & Noble 50% off Criterion Collection sale (4K UHD included)",
+      "store": "Barnes & Noble",
+      "detail": "Annual half-off Criterion sale on 2,000+ discs through Dec. 6, per Popular Science (Nov. 11). 4K picks: The Princess Bride, No Country for Old Men and Blue Velvet $24.99 each; Seven Samurai 4K $29.99; Wes Anderson Archive 4K set $249.99.",
+      "ends": "2026-12-06",
+      "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
     },
     {
-      "title": "A Christmas Story (1983)",
-      "store": "Walmart",
-      "detail": "$10 + Free S&H (4K Ultra HD + Blu-Ray)",
-      "ends": "2026-11-24",
-      "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
-    },
-    {
-      "title": "Justice League (4K UHD), HMV exclusive",
-      "store": "HMV (UK)",
-      "detail": "£6.76 per a UK deal site, listed through Nov. 30. UK pricing.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/justice-league-4k-uhd-blu-ray-5041138"
-    },
-    {
-      "title": "Star Trek: The Next Generation 4-Movie Boxset (4K UHD)",
-      "store": "Amazon UK",
-      "detail": "£40.78 per a UK deal site, listed through Nov. 30. UK pricing.",
-      "ends": "2026-11-30",
-      "url": "https://www.hotukdeals.com/deals/star-trek-the-next-generation-movie-boxset-4k-uhd-5040881"
-    },
-    {
-      "title": "Paramount Build Your Collection (4K/HD Digital Films)",
-      "store": "",
-      "detail": "Paper Moon $3.99 UHD, Harold & Maude $3.99 UHD, Escape From Alcatraz $3.99 UHD, The Man Who Shot Liberty Valance $3.99 UHD, Witness $3.99 UHD",
-      "ends": "2026-11-30",
-      "url": "https://slickdeals.net/f/20375037-fanflix-paramount-digital-movies-3-6-w-code"
-    },
-    {
-      "title": "Criterion Collection 50% off at Amazon for Black Friday (4K UHD included)",
+      "title": "Criterion Collection 50% off at Amazon (4K UHD included)",
       "store": "Amazon",
       "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
       "ends": "2026-12-07",
       "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
     },
     {
-      "title": "KPop Demon Hunters (Criterion 3-disc 4K UHD)",
+      "title": "Gruv Black Friday 4K UHD deals, $12.99 each",
+      "store": "Gruv (also Walmart via Gruv)",
+      "detail": "Limited-time Black Friday collection of 4K discs at $12.99 each, including Wuthering Heights (4K + Digital) and Superman: The Movie (4K + Blu-ray). Gruv calls it limited time, with no end date posted.",
+      "ends": null,
+      "url": "https://gruv.com/collections/black-friday-4k-uhd-deals-limited-time-only"
+    },
+    {
+      "title": "Amazon 3 for $33 select 4K Blu-rays",
       "store": "Amazon",
-      "detail": "$24.98 (list $49.95), part of Criterion's 50% off sale.",
+      "detail": "Add three eligible 4K titles and the discount applies at checkout (posted Nov. 21). Titles include Apollo 13, Inglourious Basterds, The Lost Boys 35th Anniversary, V for Vendetta and Waterworld.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+    },
+    {
+      "title": "Amazon 4K discs at $10.99 to $12.99",
+      "store": "Amazon",
+      "detail": "HD Report's Nov. 18 roundup of 4K discs at $12.99 or less: Minions & Monsters Collector's Edition, Ben-Hur (1959), The Bad Guys 2, Lee Cronin's The Mummy, Pressure and Mars Attacks! (1996).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "KPop Demon Hunters (Criterion 4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.98 (list $49.95) as part of Criterion's 50% off sale.",
       "ends": "2026-12-07",
       "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
     },
     {
-      "title": "The Lord of the Rings: Motion Picture Trilogy",
+      "title": "Wall-E: The Criterion Collection (4K UHD + Blu-ray)",
       "store": "Amazon",
-      "detail": "4K UHD Blu-ray, Extended/Theatrical $50 + Free S&H",
+      "detail": "$24.98 (posted Nov. 17); Barnes & Noble has it at $24.99 in its Criterion sale.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "The Lord of the Rings: Motion Picture Trilogy (4K UHD, Extended + Theatrical)",
+      "store": "Amazon",
+      "detail": "$49.99 (list $90), posted Nov. 23; Walmart lists the same price.",
       "ends": null,
       "url": "https://slickdeals.net/f/20382057-the-lord-of-the-rings-the-motion-picture-trilogy-extended-theatrical-4k-ultra-hd-49-amazon-com"
     },
     {
-      "title": "Dungeons & Dragons Honor Among Thieves",
+      "title": "Schindler's List 25th Anniversary (4K UHD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Digital $9.99",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
-    },
-    {
-      "title": "The Wild Robot: Collector's Edition",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital $12.99",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
-    },
-    {
-      "title": "Schindler's List: 25th Anniversary Edition",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital $9.99",
+      "detail": "$9.99 (list $30), posted Nov. 19.",
       "ends": null,
       "url": "https://slickdeals.net/f/20349057-schindler-s-list-25th-anniversary-edition-4k-ultra-hd-blu-ray-digital-9-99-at-amazon"
     },
     {
-      "title": "Dune",
-      "store": "Amazon",
-      "detail": "4K UHD + Blu-ray $11.49",
+      "title": "A Christmas Story (4K UHD + Blu-ray)",
+      "store": "Walmart (via Gruv)",
+      "detail": "$9.99 with free shipping, posted Nov. 23; Amazon matched the price.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20347836-dune-4k-uhd-blu-ray-11-49-free-shipping-w-prime-or-on-35"
+      "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
     },
     {
-      "title": "Live Die Repeat: Edge of Tomorrow",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray $12.99",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20342061-live-die-repeat-edge-of-tomorrow-4k-ultra-hd-blu-ray-13"
-    },
-    {
-      "title": "The Polar Express (2004)",
+      "title": "National Lampoon's Christmas Vacation (4K UHD + Blu-ray)",
       "store": "Walmart",
-      "detail": "$10 + Free S&H (4K Ultra HD + Blu-Ray)",
+      "detail": "$9.99 with free shipping, posted Nov. 23.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-4k-uhd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "The Polar Express (4K UHD + Blu-ray)",
+      "store": "Walmart (via Gruv)",
+      "detail": "$9.99 with free shipping, posted Nov. 23; Amazon also lists it at $9.99.",
       "ends": null,
       "url": "https://slickdeals.net/f/20376540-the-polar-express-4k-ultra-hd-blu-ray-9-99-walmart-com"
     },
     {
-      "title": "Vinegar Syndrome 4K UHD debut",
-      "store": "Vinegar Syndrome",
-      "detail": "Releases totaling $204.94 (SRP)",
+      "title": "Akira (1988) (4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$10.49, posted Nov. 19.",
       "ends": null,
-      "url": "https://criterionforum.org/forum/viewtopic.php?t=12382&start=2575"
+      "url": "https://slickdeals.net/f/20341281-10-49-akira-4k-ultra-hd-blu-ray-at-amazon"
+    },
+    {
+      "title": "Dune (4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$11.49, posted Nov. 19.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20347836-dune-4k-uhd-blu-ray-11-49-free-shipping-w-prime-or-on-35"
+    },
+    {
+      "title": "Dune: Part Two (4K)",
+      "store": "Blu-ray.com bargain list",
+      "detail": "$12.49 (63% off) in Blu-ray.com's Nov. 22 weekly bargains.",
+      "ends": null,
+      "url": "https://www.blu-ray.com/news/?id=39371"
+    },
+    {
+      "title": "Interstellar (4K)",
+      "store": "Blu-ray.com bargain list",
+      "detail": "$14.20 (45% off) in Blu-ray.com's Nov. 22 weekly bargains.",
+      "ends": null,
+      "url": "https://www.blu-ray.com/news/?id=39371"
+    },
+    {
+      "title": "The Wild Robot Collector's Edition (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99, posted Nov. 19.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
+    },
+    {
+      "title": "Live Die Repeat: Edge of Tomorrow (4K UHD + Blu-ray)",
+      "store": "Best Buy (via Gruv) / Amazon",
+      "detail": "$12.99, posted Nov. 19.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20342061-live-die-repeat-edge-of-tomorrow-4k-ultra-hd-blu-ray-13"
+    },
+    {
+      "title": "Mortal Kombat II (2026) (4K UHD + Digital)",
+      "store": "Walmart (sold by Gruv)",
+      "detail": "$12.99 (was $27.96) with free shipping.",
+      "ends": null,
+      "url": "https://www.walmart.com/ip/Mortal-Kombat-II-2026-4K-Ultra-HD-Digital-Copy-Action-New-Line-Cinema/20120155124"
+    },
+    {
+      "title": "The Super Mario Galaxy Movie Collector's Edition (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99, posted Nov. 13.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20308083-new-12-99-the-super-mario-galaxy-movie-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-at-amazon"
+    },
+    {
+      "title": "Disclosure Day Collector's Edition (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99 (list $34.98), per HD Report Nov. 14; the SteelBook costs more.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/14/steven-spielbergs-disclosure-day-is-only-12-99-2-disc-digital-4k-collectors-edition/"
+    },
+    {
+      "title": "Speed Racer (2008) (4K UHD + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99, per HD Report Nov. 18.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/speed-racer-on-4k-blu-ray-with-digital-copy-is-only-12-99/"
+    },
+    {
+      "title": "Obsession (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99, per HD Report Nov. 12.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/12/get-obsession-in-3-formats-4k-blu-ray-blu-ray-digital-for-only-12-99/"
+    },
+    {
+      "title": "Skyfall (4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$15.99 for Black Friday, about 53% off, per SlashFilm.",
+      "ends": null,
+      "url": "https://www.slashfilm.com/2322792/best-4k-blu-ray-black-friday-deals-under-20-dollars/"
+    },
+    {
+      "title": "The Hunt for Red October (4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$16.99 for Black Friday (normally about $26), per SlashFilm.",
+      "ends": null,
+      "url": "https://www.slashfilm.com/2322792/best-4k-blu-ray-black-friday-deals-under-20-dollars/"
+    },
+    {
+      "title": "The Odyssey (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$25.50 (from $30) for the new release, posted Nov. 17.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20328516-the-odyssey-4k-blu-ray-digital-25-50"
     }
   ],
   "upcoming": [

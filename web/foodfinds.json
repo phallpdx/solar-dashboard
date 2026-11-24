@@ -2,86 +2,51 @@
   "updated": "2026-11-24",
   "items": [
     {
-      "name": "Maté Party",
-      "maker": "Maté Party",
+      "name": "Four Oregon wines on Wine Spectator's 2026 Top 100",
+      "maker": "Ken Wright Cellars, Evening Land, Alexana and Elk Cove (Willamette Valley)",
       "kind": "Award",
-      "what": "Good Food Award Winner",
-      "where_to_buy": [],
-      "date": "2026-11-24",
-      "sources": [
-        {
-          "name": "WE WON A GOOD FOOD AWARD!!",
-          "url": "https://drinkmateparty.com/blogs/news/mate-party-unsweetened-wins-prestigious-good-food-award"
-        }
-      ]
-    },
-    {
-      "name": "Willamette Valley wines",
-      "maker": "Willamette Valley",
-      "kind": "Award",
-      "what": "Wine Spectator's top 100 for 2026",
+      "what": "Four Willamette Valley wines made Wine Spectator's Top 100 for 2026, led by Ken Wright Cellars' 2024 Eola-Amity Hills Pinot Noir at No. 18, a $38 bottle. Evening Land, Alexana and Elk Cove also made the list.",
       "where_to_buy": [],
       "date": "2026-11-19",
       "sources": [
         {
-          "name": "Wine Spectator's top 100 for 2026 is out, and the Willamette Valley showed up strong",
+          "name": "KOIN: 'Vibrant, rich and full of energy': Four Oregon wines recognized among best of 2026",
+          "url": "https://www.koin.com/news/oregon/vibrant-rich-and-full-of-energy-four-oregon-wines-recognized-among-best-of-2026/"
+        },
+        {
+          "name": "Portland Business Journal on X: Four Oregon wines made Wine Spectator's 2026 Top 100",
+          "url": "https://x.com/PDXBIZJournal/status/2122468523335118893"
+        },
+        {
+          "name": "OregonLive: 4 Oregon wines made Wine Spectator's top 100 list for 2026",
           "url": "https://www.oregonlive.com/wine/2026/11/4-oregon-wines-made-wine-spectators-top-100-list-for-2026.html"
+        },
+        {
+          "name": "WineBusiness.com: 4 Oregon wines made Wine Spectator's top 100 list for 2026",
+          "url": "https://www.winebusiness.com/news/link/325395"
         }
       ]
     },
     {
-      "name": "Air, Free and Mind franchises iterations",
-      "maker": "Nike",
+      "name": "Black Lavender Fog chocolate bar",
+      "maker": "Ranger Chocolate Co. with Steven Smith Teamaker (both Portland)",
       "kind": "New product",
-      "what": "Latest iterations of popular franchises",
-      "where_to_buy": [],
-      "date": "2026-11-17",
-      "sources": [
+      "what": "Two Portland neighbors teamed up on a bean-to-bar chocolate infused with Smith's No. 14 Black Lavender tea, with notes of black tea, lavender and a touch of rose. It follows their recently released Ranger x Smith tea-infused bonbon collection, timed for the holidays.",
+      "where_to_buy": [
         {
-          "name": "Nike kicks off critical investor event with new twists on a few big sellers",
-          "url": "https://www.oregonlive.com/business/2026/11/nike-kicks-off-critical-investor-event-with-new-twists-on-a-few-big-sellers.html"
+          "store": "Ranger Chocolate Co. online shop",
+          "url": "https://rangerchocolate.co/"
         }
-      ]
-    },
-    {
-      "name": "FlyWeb Bra",
-      "maker": "Nike",
-      "kind": "New product",
-      "what": "3D-printed bra designed to reduce sweat retention",
-      "where_to_buy": [],
-      "date": "2026-11-17",
+      ],
+      "date": "2026-11-16",
       "sources": [
         {
-          "name": "Nike bets on women's innovation to reverse decline",
-          "url": "https://www.oregonlive.com/sports/2026/11/nike-wants-to-abolish-the-bra-tax-with-new-womens-sportswear.html"
-        }
-      ]
-    },
-    {
-      "name": "PDX Pop-Up Shops retailers",
-      "maker": "PDX Pop-Up Shops",
-      "kind": "Seasonal",
-      "what": "17 local retailers in downtown Portland",
-      "where_to_buy": [],
-      "date": "2026-11-14",
-      "sources": [
+          "name": "Yahoo Finance (press release): Ranger Chocolate Co. and Steven Smith Teamaker introduce Black Lavender Fog chocolate bar",
+          "url": "https://finance.yahoo.com/media-advertising/articles/ranger-chocolate-co-steven-smith-174600764.html"
+        },
         {
-          "name": "Wool, Wagyu and wine: 17 local businesses to do your holiday shopping without leaving downtown Portland",
-          "url": "https://www.oregonlive.com/retail/2026/11/wool-wagyu-and-wine-do-all-your-holiday-shopping-within-this-8-block-radius-of-downtown-portland.html"
-        }
-      ]
-    },
-    {
-      "name": "Bob's Red Mill cookies",
-      "maker": "Bob's Red Mill",
-      "kind": "New product",
-      "what": "Hallmark holiday collaboration",
-      "where_to_buy": [],
-      "date": "2026-11-11",
-      "sources": [
-        {
-          "name": "Bob’s Red Mill cookies will star in Hallmark’s latest holiday romance",
-          "url": "https://www.oregonlive.com/tv/2026/11/bobs-red-mill-cookies-will-star-in-hallmarks-latest-holiday-romance.html"
+          "name": "Webull News (press release): Ranger Chocolate Co. and Steven Smith Teamaker introduce Black Lavender Fog chocolate bar",
+          "url": "https://www.webull.com/news/15934695760970752"
         }
       ]
     },
@@ -127,25 +92,6 @@
         {
           "name": "KOIN: 'Whiskey and weirdness': The Unipiper unveils limited edition whiskey",
           "url": "https://www.koin.com/news/portland/whiskey-and-weirdness-the-unipiper-unveils-limited-edition-whiskey/"
-        }
-      ]
-    },
-    {
-      "name": "Joe Brown's Carmel Corn",
-      "maker": "Joe Brown's",
-      "kind": "New product",
-      "what": "Portland's longtime caramel corn shop, which lost its home when its mall closed, has reopened in a new location with a bigger menu.",
-      "where_to_buy": [
-        {
-          "store": "Joe Brown's Carmel Corn",
-          "url": "https://joebrownscarmelcorn.com/"
-        }
-      ],
-      "date": "2026-10-31",
-      "sources": [
-        {
-          "name": "After months of popcorn purgatory, Joe Brown's Carmel Corn has returned — in a new location",
-          "url": "https://www.oregonlive.com/washingtoncounty/2026/10/the-beloved-portland-popcorn-shop-that-survived-a-mall-closing-just-reopened-with-a-bigger-menu.html"
         }
       ]
     },
@@ -196,6 +142,25 @@
         {
           "name": "ProBrewer: Pelican Brewing releases Lite IPA",
           "url": "https://probrewer.com/beverage-industry-news/commentary/the-return-on-lite-beer-pelican-brewing-release-lite-ipa/"
+        }
+      ]
+    },
+    {
+      "name": "00 Wines, VinePair Winery of the Year",
+      "maker": "00 Wines (Willamette Valley)",
+      "kind": "Award",
+      "what": "The small family-owned Oregon Chardonnay house, founded in 2015 by Chris and Kathryn Hermann, was named Winery of the Year at VinePair's 2026 Next Wave Awards in New York.",
+      "where_to_buy": [
+        {
+          "store": "00 Wines",
+          "url": null
+        }
+      ],
+      "date": "2026-10-15",
+      "sources": [
+        {
+          "name": "Wine Industry Advisor: 00 Wines receives VinePair's 2026 Winery of the Year award",
+          "url": "https://wineindustryadvisor.com/2026/10/23/00-wines-receives-vinepairs-2026-winery-of-the-year-award/"
         }
       ]
     },
@@ -300,6 +265,77 @@
         {
           "name": "Brewbound: 2 Towns Ciderhouse wins two medals at 2026 GABF",
           "url": "https://www.brewbound.com/pr/2026/10/14/2-towns-ciderhouse-wins-two-medals-in-mostentered-cider-category-at-2026-great-american-beer-festival"
+        }
+      ]
+    },
+    {
+      "name": "UPP Liquids, Brewery of the Year",
+      "maker": "UPP Liquids (Bend)",
+      "kind": "Award",
+      "what": "The young Bend brewery was one of two Oregon breweries named Brewery of the Year at the 2026 Great American Beer Festival, winning the 251 to 500 barrel category.",
+      "where_to_buy": [],
+      "date": "2026-10-11",
+      "sources": [
+        {
+          "name": "Great American Beer Festival: 2026 winners",
+          "url": "https://www.greatamericanbeerfestival.com/2026-winners/"
+        },
+        {
+          "name": "New School Beer + Cider: Oregon wins 34 medals and 2 Brewery of the Year awards at 2026 GABF",
+          "url": "https://newschoolbeer.com/home/2026/10/oregon-wins-at-2026-great-american-beer-festival-gabf"
+        },
+        {
+          "name": "Brewpublic: 2026 GABF winners, Oregon wins 35 medals",
+          "url": "https://brewpublic.com/beer-awards/2026-great-american-beer-festival-winners-oregon-wins-35-medals-as-washington-wins-17-medals/"
+        }
+      ]
+    },
+    {
+      "name": "Cheers to the Land 2026",
+      "maker": "Oregon Agricultural Trust with 16 Oregon breweries and cideries",
+      "kind": "Seasonal",
+      "what": "This year's run of farmland-benefit beers and ciders from Breakside, Baerlic, Bauman's, Gigantic, Hopworks, Deschutes and others launched with a beer fest at John's Marketplace on October 10. Proceeds support the trust's work to permanently protect Oregon farmland.",
+      "where_to_buy": [],
+      "date": "2026-10-10",
+      "sources": [
+        {
+          "name": "New School Beer + Cider: Cheers to the Land '26 introduces 16 new beers & ciders",
+          "url": "https://newschoolbeer.com/home/2026/9/cheers-to-the-land-26-16-new-beers-amp-ciders-to-protect-oregon-farm-land"
+        },
+        {
+          "name": "Travel Portland: Cheers to the Land launch party",
+          "url": "https://www.travelportland.com/event/6aa32195e6309d93181feec0/"
+        },
+        {
+          "name": "Mercury Tickets: Cheers to the Land 2026 at John's Marketplace",
+          "url": "https://www.merctickets.com/events/186892657/cheers-to-the-land-2026-johns-marketplace"
+        },
+        {
+          "name": "Visit the Oregon Coast: Cheers to the Land (Lincoln City)",
+          "url": "https://visittheoregoncoast.com/cities/cheers-to-the-land/"
+        }
+      ]
+    },
+    {
+      "name": "2022 Demi-Sec Rosé and fall sparkling releases",
+      "maker": "Corollary Wines (Amity)",
+      "kind": "New product",
+      "what": "The Willamette Valley sparkling house marked its 10th harvest with four fall releases, including its first-ever sweet wine, a 2022 Demi-Sec Rosé ($70, just 40 cases) blended from six Willamette Valley sites, and a 2020 Cuvée One aged five years en tirage ($95).",
+      "where_to_buy": [
+        {
+          "store": "Corollary Wines",
+          "url": "https://corollarywines.com/"
+        }
+      ],
+      "date": "2026-10-07",
+      "sources": [
+        {
+          "name": "Wine Industry Advisor: Corollary Wines announces four new releases",
+          "url": "https://wineindustryadvisor.com/2026/10/07/corollary-wines-announces-four-new-releases/"
+        },
+        {
+          "name": "Sip Magazine: Corollary Wines announces four new releases",
+          "url": "https://sipmagazine.com/corollary-wines-announces-four-new-releases/"
         }
       ]
     }

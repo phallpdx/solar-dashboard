@@ -2,6 +2,23 @@
   "updated": "2026-11-25",
   "restaurants": [
     {
+      "name": "Mendocino Farms",
+      "neighborhood": "Oregon",
+      "cuisine": "",
+      "price": "",
+      "opened": "",
+      "summary": "Teasing first Oregon location.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-16",
+          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOdm8wUDRuY3hvNHJBSzlVcTdHY2l2VGxNM2dKRERNUTJCYmVPVnR4dGlGNFJGT1V6TWR2ZV80VmoyVU9kUmVRU1AySm81TzVYODhMN205WVBrZXhHZ0k1Zktscy1INjFzYTJIRkpSN2xZdEVGdzNiQUtxRHI4VFROQzU1Z1NIcFlBY0ZOM01zcGt4UQ?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Danh’s Kitchen",
       "neighborhood": "Portland",
       "cuisine": "Hu Tieu",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-11-19",
           "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOT0V2Rkg0cHMzS29wNUJNUlc3NTB4Yk13QmVVbjhNbVNxdmZCU0o1VVVOblRZd1c4N0FLTnBSenlnWW8wLWoyZTB1REo1enFYaFhxVmxQWTFQajlvaHZCVTUzT3VlWXUtVk85SHhNelp5cUh6ZnJiTVVPZkZaVFhWb3lFcEMteVpjQl9SUjZJZGJiUVMyc2VvSjdtOXNfRlo5ai1Ud1dDUUVOZWpnQlBwYm40aURJcmFRaFdLVlRR?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Louie Cocktail Bar",
-      "neighborhood": "",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-17",
-          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMGdETGh6NlB0RTZUemNGTm01eHBJWHVwbS1GT3MzTmJvbS1QeS1GTHJINjhuNm5JTS11OEpST3dCOEo3RVZCQnJmNktyaTctczdfQ1ppeGpzVF9RMDhzMHVBb1c4OHpwWkRXOXhMV2o4SVlXVzFmTy1BdzQwZ3l0dU1BZkE2NWlNLXZzWlhELXdzb2lIdVo3NlZB?oc=5"
         }
       ]
     }

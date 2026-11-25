@@ -1,14 +1,14 @@
 {
   "updated": "2026-11-25",
-  "updated_at": "2026-11-25T10:20:02Z",
+  "updated_at": "2026-11-25T12:18:56Z",
   "teams": {
     "blazers": {
       "mood": "optimistic and surging",
-      "pulse": "Fans are excited by an 11-6 start and a decisive win over Philadelphia. However, concerns exist regarding Ja Morant's hamstring injury.",
+      "pulse": "Fans are excited by an 11-6 start and a decisive win over Philadelphia. However, concerns remain regarding Ja Morant's hamstring injury.",
       "storylines": [
         "Team holds an 11-6 record",
         "Deni Avdija projected as All-Star",
-        "Ja Morant remains out with hamstring strain",
+        "Ja Morant remains out (hamstring)",
         "Next game against San Antonio Spurs"
       ],
       "sources": [
@@ -36,7 +36,8 @@
       "storylines": [
         "Lost Game 1 against Dallas",
         "Preparing for Game 2 at Providence Park",
-        "Timbers2 lost 1-0 to Ventura County FC"
+        "Timbers2 lost 1-0 to Ventura County FC",
+        "Eric Izoita signed first-team contract"
       ],
       "sources": [
         {
@@ -58,13 +59,12 @@
       ]
     },
     "f1": {
-      "mood": "intense and speculative",
-      "pulse": "Fans are buzzing after a thrilling Las Vegas Grand Prix. Attention is shifting toward Qatar race details.",
+      "mood": "Anticipatory and intense",
+      "pulse": "Fans are buzzing after Verstappen's victory in Las Vegas. Attention is shifting toward Qatar.",
       "storylines": [
-        "Verstappen won the Las Vegas Grand Prix with RB22 tweaks.",
-        "Russell and Verstappen rivalry renewed in Las Vegas.",
-        "Freddie Slater to debut in F2 for final two rounds.",
-        "Tom Hart replacing GP as Verstappen's engineer."
+        "Verstappen won the Las Vegas Grand Prix",
+        "Pirelli mandates 27-lap tyre limit in Qatar",
+        "Freddie Slater to debut in F2 in Qatar"
       ],
       "sources": [
         {
@@ -86,12 +86,12 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic and competitive",
-      "pulse": "Fans are excited after beating Washington. They see a clear path to the Big Ten Championship.",
+      "mood": "Optimistic and hyped",
+      "pulse": "Fans are excited after beating Michigan State. They see a clear path to the Big Ten Championship.",
       "storylines": [
-        "Beat Michigan State and Washington",
-        "Increased odds for B1G Championship",
-        "Potential automatic playoff bid",
+        "Beat Washington for first time in years",
+        "Increased odds for B1G Championship game",
+        "Playoff readiness debates",
         "Husky Hate Week is here"
       ],
       "sources": [
@@ -114,13 +114,13 @@
       ]
     },
     "niners": {
-      "mood": "dominant and celebratory",
-      "pulse": "Fans are ecstatic after a 35-10 win over the Vikings. They feel the team is the best in the NFL.",
+      "mood": "dominant but uncertain",
+      "pulse": "Fans are celebrating a 35-10 win over the Vikings and holding the No. 1 seed. However, Brandon Aiyuk's departure adds uncertainty to the roster.",
       "storylines": [
-        "Record improved to 9-1 with NFC first place control.",
-        "Brandon Aiyuk cleared waivers and visits Commanders on 2026-11-24.",
-        "Next game is against rivals Seattle Seahawks.",
-        "Offense shows high performance despite roster age."
+        "9-1 record with sole possession of NFC first place",
+        "Brandon Aiyuk scheduled to visit Commanders on Wednesday",
+        "Colton McKivitz suffered an ankle injury",
+        "Next game is against the Seattle Seahawks"
       ],
       "sources": [
         {

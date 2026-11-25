@@ -2,73 +2,132 @@
   "updated": "2026-11-25",
   "deals": [
     {
-      "title": "Paramount Build Your Collection (4K/HD Digital Films)",
-      "store": "",
-      "detail": "Paper Moon $3.99 UHD; Harold & Maude $3.99 UHD; Escape From Alcatraz $3.99 UHD; The Man Who Shot Liberty Valance $3.99 UHD; Witness $3.99 UHD",
-      "ends": "2026-11-30",
-      "url": "https://slickdeals.net/f/20375037-fanflix-paramount-digital-movies-3-6-w-code"
-    },
-    {
       "title": "Barnes & Noble 50% off Criterion Collection sale (4K UHD included)",
       "store": "Barnes & Noble",
-      "detail": "Annual half-off Criterion sale on 2,000+ discs through Dec. 6, per Popular Science (Nov. 11). 4K picks: The Princess Bride, No Country for Old Men and Blue Velvet $24.99 each; Seven Samurai 4K $29.99; Wes Anderson Archive 4K set $249.99.",
+      "detail": "Half-off Criterion sale on 4K UHD, Blu-ray and DVD through Dec. 6, per Popular Science (Nov. 11). 4K picks it names: The Princess Bride, No Country for Old Men and Blue Velvet $24.99 each; Seven Samurai 4K $29.99; Wes Anderson Archive 4K set $249.99.",
       "ends": "2026-12-06",
       "url": "https://www.popsci.com/gear/barnes-noble-criterion-collection-sale-november-2026/"
     },
     {
       "title": "Criterion Collection 50% off at Amazon (4K UHD included)",
       "store": "Amazon",
-      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks at $24.98 include The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Kubrick 4K Collection is $299.98.",
+      "detail": "50% off Criterion 4K UHD, Blu-ray and DVD through Dec. 7, per Consequence. 4K picks include The Silence of the Lambs, The Princess Bride and No Country for Old Men; the Complete Stanley Kubrick 4K Collection is $299.98.",
       "ends": "2026-12-07",
       "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
     },
     {
       "title": "KPop Demon Hunters (Criterion 4K UHD)",
       "store": "Amazon",
-      "detail": "$24.98 (list $49.95) as part of Criterion's 50% off sale.",
+      "detail": "4K UHD for $24.98 (list $49.95), part of the Criterion 50% off sale, per HD Report.",
       "ends": "2026-12-07",
       "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
     },
     {
-      "title": "The Super Mario Galaxy Movie: Collector's Edition",
+      "title": "WALL-E (Criterion 4K UHD + Blu-ray)",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital for $10.99",
+      "detail": "$24.98 with free shipping with Prime or on $35+, per a Slickdeals post from Nov. 17.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20389947-the-super-mario-galaxy-movie-collector-s-edition-blu-ray-digital-9"
+      "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
     },
     {
-      "title": "The Lord of the Rings: Motion Picture Trilogy",
+      "title": "Blow Out (Criterion 4K UHD + Blu-ray)",
       "store": "Amazon",
-      "detail": "4K UHD Blu-ray, Extended/Theatrical for $50",
+      "detail": "$26.36 per a Dealnews listing from Nov. 23, which shows the deal expiring Dec. 23.",
+      "ends": "2026-12-23",
+      "url": "https://www.dealnews.com/s313/Amazon/22424961.html"
+    },
+    {
+      "title": "Back to the Future Trilogy: 40th Anniversary Edition (4K + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$24.99 per a Slickdeals post from Nov. 19; the poster called it the lowest price yet for the 4K set.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20341158-24-99-back-to-the-future-40th-anniversary-trilogy-4k-uhd-blu-ray-digital-at-amazon"
+    },
+    {
+      "title": "The Lord of the Rings: Motion Picture Trilogy (4K UHD, Extended + Theatrical)",
+      "store": "Amazon",
+      "detail": "$50 (down from $90) per a Slickdeals post from Nov. 23; Walmart had the same price.",
       "ends": null,
       "url": "https://slickdeals.net/f/20382057-the-lord-of-the-rings-the-motion-picture-trilogy-extended-theatrical-4k-ultra-hd-49-amazon-com"
     },
     {
-      "title": "Dungeons & Dragons Honor Among Thieves",
+      "title": "Amazon 3 for $33 on select 4K Blu-rays",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Digital for $9.99",
+      "detail": "Buy three eligible 4K discs for $33, per a Slickdeals post from Nov. 21; titles listed include Apollo 13, Waterworld, Creed II, Fast X and Jurassic World. Only items sold by Amazon count.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
     },
     {
-      "title": "The Wild Robot: Collector's Edition",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital for $12.99",
+      "title": "GRUV Black Friday: 4K UHDs $12.99 each, plus 3 for $33",
+      "store": "GRUV",
+      "detail": "GRUV's Black Friday collection lists 4K UHDs at $12.99 each, including Obsession, Supergirl and Wicked: For Good. A Nov. 13 report says the sale has 49 titles at $12.99 (One Battle After Another among them) and a separate 3 for $33 4K offer.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20353095-the-wild-robot-collector-s-edition-4k-ultra-hd-blu-ray-digital-12-99-amazon-com"
-    }
-  ],
-  "upcoming": [
-    {
-      "title": "Vinegar Syndrome Black Friday sale",
-      "detail": "Starts Friday, Nov. 27 and runs through Tuesday, Dec. 1, per Vinegar Syndrome's sale FAQ and product pages; new 4K titles are revealed during the sale.",
-      "url": "https://support.vinegarsyndrome.com/en-US/vinegar-syndrome-does-america-black-friday-sale-2026---faq-9270245"
+      "url": "https://gruv.com/collections/black-friday-4k-uhd-deals-limited-time-only"
     },
     {
-      "title": "Severin Films Black Friday sale",
-      "detail": "Starts Friday, Nov. 27 at 12:01 a.m. ET and ends Tuesday, Dec. 1 at 3 a.m. ET: 50% off most Severin and Intervision titles, up to 75% off select titles, plus new pre-orders such as the Demons of the Mind UHD premiere.",
-      "url": "https://x.com/SeverinFilms/status/2123129149275656403"
+      "title": "100+ 4K Blu-rays $13 and under (GRUV via Walmart)",
+      "store": "Walmart",
+      "detail": "Per a Slickdeals post from Nov. 12, GRUV's Walmart storefront has 4K titles such as Superman, The Super Mario Galaxy Movie, F1, Akira, Wuthering Heights and Mortal Kombat II at about $12.99 each.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
+    },
+    {
+      "title": "The Polar Express (4K Ultra HD + Blu-ray)",
+      "store": "Walmart",
+      "detail": "$9.99 with free shipping from GRUV via Walmart, per a Slickdeals post from Nov. 23.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376540-the-polar-express-4k-ultra-hd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "A Christmas Story (4K Ultra HD + Blu-ray)",
+      "store": "Walmart",
+      "detail": "$9.99 from GRUV via Walmart, per a Slickdeals post from Nov. 23; returnable until Jan. 31, 2027.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "National Lampoon's Christmas Vacation (4K Ultra HD + Blu-ray)",
+      "store": "Walmart",
+      "detail": "$9.99 from GRUV via Walmart, per a Slickdeals post from Nov. 23.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-4k-uhd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "Walmart Black Friday movie deals (4K titles)",
+      "store": "Walmart",
+      "detail": "Walmart's Black Friday movies page lists 4K combos such as Disclosure Day $12.99 (was $29.96), A Charlie Brown Thanksgiving $9.99, Ratatouille $18.53 and Coco $21.18.",
+      "ends": null,
+      "url": "https://www.walmart.com/shop/deals/movies-music-and-books/movies-and-tv"
+    },
+    {
+      "title": "MVD Annual Black Friday & Cyber Week Sale",
+      "store": "MVD",
+      "detail": "3,500+ titles on sale through Dec. 7, prices from 99 cents. 4K example on MVD's sale page: Maniac (4K UHD + Blu-ray) $24.99, down from $49.95.",
+      "ends": "2026-12-07",
+      "url": "https://mvdshop.com/collections/annual-black-friday-cyber-week-sale-2026"
+    },
+    {
+      "title": "Radiance Films Black Friday sale",
+      "store": "Radiance Films",
+      "detail": "Radiance's own sale page says its Black Friday sale runs until Dec. 9. Check each title for a 4K edition; the page didn't show specific 4K prices in what I could see.",
+      "ends": "2026-12-09",
+      "url": "https://www.radiancefilms.co.uk/collections/sale"
+    },
+    {
+      "title": "Umbrella Entertainment Black Friday (4K UHD)",
+      "store": "Umbrella Entertainment",
+      "detail": "Umbrella's Black Friday page offers buy one get one free on selected releases and 60% off the Terrifier box set; Collector's Editions, new releases and pre-orders are excluded. The page doesn't show end dates. Ships from Australia.",
+      "ends": null,
+      "url": "https://shop.umbrellaent.com.au/collections/sale-2"
+    },
+    {
+      "title": "Shout! Factory 4K UHDs on sale",
+      "store": "Shout! Factory",
+      "detail": "Shout's 4K on-sale page lists Collector's Edition 4K + Blu-ray sets such as The Holdovers $27.99, Nightcrawler $32.99 and End of Watch $33.23.",
+      "ends": null,
+      "url": "https://shoutfactory.com/collections/4k-uhd-on-sale"
     }
   ],
+  "upcoming": [],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"
 }

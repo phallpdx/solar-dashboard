@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-25",
-  "updated_at": "2026-11-25T12:22:22Z",
+  "updated_at": "2026-11-25T13:18:30Z",
   "analysis": {
     "headline": "Nasdaq and S&P 500 fell as AI trade doubts resurfaced while Dow rose on value rotation.",
     "summary": "Tech stocks declined as confidence in the AI trade faded and Nvidia retreated. The Dow gained through value rotation. Gold and Bitcoin saw significant price drops. Oil prices decreased slightly.",
@@ -20,6 +20,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNRGtvc1R6Y1RvSXFZeW5KTVdmOUkzMnE3MEFvNWt6UTJkSi1pUDZTSWs4YzdvTk5DR1NLYmtVOHBZOWhRY1NwVXZUVEVKOWNGeHpySXlpOF9qcmo5YllkTWpvb1MwRi0zOUEtbDFpQUJnMmdSUXZWSWhjdVhVOVZlbzhmUHhzQlZSRms3T2otRlV5YTlv?oc=5"
+      },
+      {
+        "name": "FinanceCalendar: US Personal Income and Outlays (PCE), Nov 25, 2026",
+        "url": "https://www.financecalendar.com/events/2026-11-25/"
+      },
+      {
+        "name": "Investrade: Weekly Event Calendar 11/23/2026 - 11/27/2026",
+        "url": "https://investrade.com/weekly-event-calendar-11-23-2026-11-27-2026/"
+      },
+      {
+        "name": "Gotrade: US Stocks Week Ahead: PCE, GDP and Dell Earnings",
+        "url": "https://www.heygotrade.com/en/news/weekly-economic-outlook-2026-11-23/"
       }
     ],
     "by": "local model",
@@ -29,7 +41,12 @@
       "Nvidia retreat",
       "Traders betting on December Fed hike"
     ],
-    "watch": []
+    "watch": [
+      "Today, 5:30 AM PT: October PCE inflation (the last inflation reading before the Fed's Dec. 9 decision), the second estimate of Q3 GDP and weekly jobless claims",
+      "Today, 11 AM PT: Federal Reserve Beige Book",
+      "Thursday: US markets closed for Thanksgiving",
+      "Friday: stock markets close early at 10 AM PT (1 PM ET), bond markets at 11 AM PT"
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
@@ -109,6 +126,14 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
+      },
+      {
+        "name": "Daily Tidings: Portland home sales drop more than 20% from a year ago (RMLS October data)",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "name": "Freddie Mac: Mortgage Rates Average 7.28% (Nov 19, 2026)",
+        "url": "https://www.globenewswire.com/news-release/2026/11/19/3406994/0/en/mortgage-rates-average-7-28.html"
       }
     ],
     "by": "local model",
@@ -146,25 +171,32 @@
     ],
     "stats": [
       {
-        "label": "Average US 30-year mortgage rate (US, November)",
-        "value": "7.18%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
+        "label": "Median sale price (Portland metro, October, RMLS)",
+        "value": "$545,000",
+        "change": "+0.9% vs a year ago ($540,000)",
+        "source": "Daily Tidings, citing RMLS",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
       },
       {
-        "label": "30-Year Rates (US, November)",
-        "value": "7.40%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
+        "label": "Closed sales (Portland metro, October, RMLS)",
+        "value": "1,622",
+        "change": "-21.5% vs a year ago",
+        "source": "Daily Tidings, citing RMLS",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
       },
       {
-        "label": "Conforming average mortgage rate (US, November)",
-        "value": "7.53%",
+        "label": "Months of inventory (Portland metro, October, RMLS)",
+        "value": "4.3 months",
         "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1ETXFMa1hhZHRvNlZ4WGRmb3BRLUZ3WVgyZ2lNZHExVk12QVF1QTRZTXd0ZEIwZWFOcjAxUEdkXy1Rb2RwenQybFI5NGNyaWExRk9kUDNBUDdZdV8ydUpZRFJxUGpESmZwTWFwMU80UGQ?oc=5"
+        "source": "Daily Tidings, citing RMLS",
+        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
+      },
+      {
+        "label": "Average 30-year fixed mortgage rate (US, week of Nov 19)",
+        "value": "7.28%",
+        "change": "up from 7.11% a week earlier; 6.26% a year ago",
+        "source": "Freddie Mac PMMS",
+        "url": "https://www.globenewswire.com/news-release/2026/11/19/3406994/0/en/mortgage-rates-average-7-28.html"
       }
     ]
   }

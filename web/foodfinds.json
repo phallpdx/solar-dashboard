@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "items": [
     {
       "name": "Four Oregon wines on Wine Spectator's 2026 Top 100",
@@ -24,6 +24,20 @@
         {
           "name": "WineBusiness.com: 4 Oregon wines made Wine Spectator's top 100 list for 2026",
           "url": "https://www.winebusiness.com/news/link/325395"
+        }
+      ]
+    },
+    {
+      "name": "Willamette Valley wines",
+      "maker": "Willamette Valley",
+      "kind": "Award",
+      "what": "Wine Spectator's top 100 for 2026",
+      "where_to_buy": [],
+      "date": "2026-11-19",
+      "sources": [
+        {
+          "name": "Wine Spectator's top 100 for 2026 is out, and the Willamette Valley showed up strong",
+          "url": "https://www.oregonlive.com/wine/2026/11/4-oregon-wines-made-wine-spectators-top-100-list-for-2026.html"
         }
       ]
     },

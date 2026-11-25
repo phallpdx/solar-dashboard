@@ -1,6 +1,74 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "restaurants": [
+    {
+      "name": "Angelina's",
+      "neighborhood": "Slabtown",
+      "cuisine": "Italian",
+      "price": "",
+      "opened": "2026-11-24",
+      "summary": "An Italian menu opening in Slabtown.",
+      "reviews": [
+        {
+          "outlet": "Hoodline",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNYXdyTzFnOHU0RUR1cjVrQ1g2MjF3TDNXaHFrWFZVdEJDNmNaOUFsMUhlSHc4Q3ZEcUlIRjU4X2cyVE01a25PQTVsYmdKcWRldzJmUFM4T1VTellDSXMxM3pfcXVFdmg2dmZJUWtLZGpLbUNpWnByQjBMalpOajl4LURqX2RDcmRYeWZPbXlDZDZWY0JiUXJLZ2FKTUhmSi1raHc?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Timbuktu Lounge",
+      "neighborhood": "Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "2027-01-01",
+      "summary": "Planning a January opening.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNWGNMNjNweXZ4TXNSR3R0RDEwc1FFSTlERzhDUjI5UXVrWEhNeHJ5Mk01ODFMU1BLbF9yUndxcnhuUmI3Mi1HM2dXcGY3c1NHTjl2cUNMLTNWVTJrM0tCMm1kbzF0ZERkQlMxU1BVZDY1MVJwR1h0N2tSdzNUVUR5MkM4MG5NUGVXQ3ROQ1otSEtlV1dlQVhNSnVlTm4?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Aomori",
+      "neighborhood": "Portland",
+      "cuisine": "",
+      "price": "",
+      "opened": "2026-11-24",
+      "summary": "Received a 4 star review.",
+      "reviews": [
+        {
+          "outlet": "Portland Food Map",
+          "critic": "",
+          "verdict": "4 Star Review",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9hc0JSajlnUDNnMVd1c1gyNk90QkMwZFZ5N0MwQjhESjd5bUdiSnZUZnJ5ZnRSNUN5c0Zxb0JUWTVVNzF0SlkwaGN2bkJmYzdQYkNMd09rZnBHOW02M2U2cEdKVlBJMDA?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Slabtown's newest restaurant",
+      "neighborhood": "Slabtown",
+      "cuisine": "Comfort food",
+      "price": "",
+      "opened": "2026-11-24",
+      "summary": "Serving comfort food and mini martinis.",
+      "reviews": [
+        {
+          "outlet": "The Portland Tribune",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNRUxKVzFMR1BYUzVtYXdUblRNT0xPMWI3OVVpMmtLNURxME1lLXpSMlhQUnBQVHRTWUY3OWcwWU12RXZtVHlLdWZ5NllQdmlKVVdYTEg3cmNtc0p1NzNhYjJrbnBreDR3VnpDeWltNmY2eUkxYUItMWw0WlRLc2k2Z1dVLWc2ZEJwMkEtbFBPMTl4ci14RjVidEJxN3VkTmxPSFdjc3VIdXlyY2hxcnphVTVFXzFCb2sy?oc=5"
+        }
+      ]
+    },
     {
       "name": "Wild Card Salad Shop",
       "neighborhood": "Portland",
@@ -352,74 +420,6 @@
           "verdict": "",
           "date": "2026-11-17",
           "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNd2FEMlV6MXhEN1lKUVNYamtNUFFvb2QwdVRhZXRSS2tBMmNEbVJwaXhBRUtTVlpVejd2VExFTElydmt4d3lRSkFXX3dxdkF6dWJUUkdEdnJFaURPNzFKRnppX2s1dlM5RWRVRVZveXdpZHFOeWVKVGIxbXRuMVd5MjE3QXFtOExzczFDaEJEOE9NdDRyQnhVNEVtMGZ5WFlGUU84dzhCQlhMVEdBTUE?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "The Hu Tieu at Danh’s Kitchen",
-      "neighborhood": "",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "Stunning dining experience.",
-      "reviews": [
-        {
-          "outlet": "Portland Mercury",
-          "critic": "",
-          "verdict": "Simply Stunning",
-          "date": "2026-11-16",
-          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPNjN0dGZHZ1l5QXBzbmJ5WGt1a1RkSTBDcXZ2MmV1cm9wcDZtWVVLdGU5SEx3dEdrNGpsNDZBNk9wa2lqVGZVYVh2SElCUEVzRklrU3B2MnVTanpZUlAxSkdEV0lMTGR4TTQ3dnNJZnRiYmc0amJReWg4UEVBaHpsWEVfUEl6NllTbVdQSENyYzZYRXoxUUhERjd1anhldXFQYmlNMTJrQ3RGYW94LWZUSkhMUnJZRVdQaE9Od2JFcExtSDlUSEd4bkJoOHBjQQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Mendocino Farms",
-      "neighborhood": "",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "Teasing first Oregon restaurant.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-16",
-          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOdm8wUDRuY3hvNHJBSzlVcTdHY2l2VGxNM2dKRERNUTJCYmVPVnR4dGlGNFJGT1V6TWR2ZV80VmoyVU9kUmVRU1AySm81TzVYODhMN205WVBrZXhHZ0k1Zktscy1INjFzYTJIRkpSN2xZdEVGdzNiQUtxRHI4VFROQzU1Z1NIcFlBY0ZOM01zcGt4UQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "The Shipment",
-      "neighborhood": "",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-05",
-          "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5lUzl2TGhlZ0JrQnB1WTdNSVpJQ1laZlJHZ2h5RVJQYmFQaHZiaEJKQlNPWnNZaFRqUkZ2SHN0N05wNW5Cbkc2SFpnWlowSGVoMTdGaEV6cEFxMmNzaFRZZUV3SVh6djlYVkRYSDYtdnQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Vivian",
-      "neighborhood": "",
-      "cuisine": "Nordic-inspired",
-      "price": "",
-      "opened": "",
-      "summary": "Nordic-inspired food in the new Kex Hotel.",
-      "reviews": [
-        {
-          "outlet": "Portland Monthly",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-07",
-          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQaXV1b3VCdldXZkx0UHdnaGRsSzRkejc5Mnd4OEFPNTJCS1p2Tk9xamMtSnhPVDRmbzdWVmhuRHBpeDZtMER5SEF4N0VLMHROazNTZWRZYm9QMGN4UDBCYVFEZWVWRUQ1Tjh4dkxXenVHQkVnMDNZX29zMGx4MGFFMVFpRm4yNk0tQWxGcjMzTkRzQm9YcGxpbXhCd1F3ZW1n?oc=5"
         }
       ]
     }

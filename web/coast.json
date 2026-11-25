@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,22 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Beach Towel Tuesdays",
-      "date": "2026-11-24",
-      "end": "2026-11-24",
-      "town": "Seaside",
-      "summary": "Post a photo to receive a free beach towel from 9:00 am to 5:00 pm.",
-      "url": "https://www.seasideor.com/series/beach-towel-tuesdays/"
-    },
-    {
-      "name": "Wreath-Making Workshop",
-      "date": "2026-11-24",
-      "end": null,
-      "town": "Netarts",
-      "summary": "A wreath-making workshop at N. Oregon Coast's Netarts.",
-      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOXzROTk14aWVBQ0JTS2ZHdlVXV1ZqRkhZdk13UjFFcDVJUmtMNHM2Zm9SdkJua25NcUdZa3V6STVMOXdBblVRcElFN25xLWhIc051UWphTW42MkFyUWVGQXJRdm8tU0FoRi04bXUzWWtVaXBsUGVnUDJoSUZqekZ5b3RjNA?oc=5"
     },
     {
       "name": "Seaside Turkey Trot 5K Family Run at SEPRD",
@@ -64,6 +48,14 @@
       "town": "Seaside",
       "summary": "Indie Pop/Cabaret from 7:00 pm - 10:00 pm; $10.00.",
       "url": "https://www.seasideor.com/event/johnny-franco-his-real-brother-dom-live-at-the-lyons-den-limited-advanced-tickets-available/"
+    },
+    {
+      "name": "Charki’s Sagittarius Birthday Karaoke Party",
+      "date": "2026-11-28",
+      "end": "2026-11-28",
+      "town": "Seaside",
+      "summary": "TV and movie theme song karaoke party starting at 6 pm.",
+      "url": "https://www.seasideor.com/event/charkis-sagittarius-birthday-karaoke-party-at-the-lyons-den/"
     },
     {
       "name": "Juliet Yänko New Album Release Event",

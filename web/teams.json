@@ -1,14 +1,15 @@
 {
-  "updated": "2026-11-24",
-  "updated_at": "2026-11-24T12:23:54Z",
+  "updated": "2026-11-25",
+  "updated_at": "2026-11-25T08:35:55Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and surging",
-      "pulse": "Fans are excited after a decisive road win against Philadelphia. The team's 11-6 record reflects strong momentum.",
+      "mood": "optimistic and surging",
+      "pulse": "Fans are excited by an 11-6 start and a decisive win over Philadelphia. However, concerns exist regarding Ja Morant's hamstring injury.",
       "storylines": [
-        "Blazers beat 76ers 128-111 on 2026-11-23",
-        "Team holds an 11-6 season record",
-        "Bench play helped secure statement win"
+        "Team holds an 11-6 record",
+        "Deni Avdija projected as All-Star",
+        "Ja Morant remains out (hamstring)",
+        "Next game against San Antonio Spurs"
       ],
       "sources": [
         {
@@ -30,12 +31,13 @@
       ]
     },
     "timbers": {
-      "mood": "Disappointed but hopeful",
-      "pulse": "Fans are reeling from a 3-0 loss to FC Dallas. The team aims to learn quickly before Game 2.",
+      "mood": "Determined but recovering",
+      "pulse": "Fans are focused on rebounding after a Game 1 loss to Dallas. There is high anticipation for the upcoming home playoff game.",
       "storylines": [
-        "Lost 3-0 to FC Dallas in Round One, Game 1",
-        "Next game is Saturday, Nov. 28 against FC Dallas",
-        "Ian Miller named to U.S. U-16 Boys domestic training camp"
+        "Lost Game 1 against Dallas in MLS Cup Playoffs",
+        "Preparing for Game 2 at Providence Park",
+        "Timbers2 lost 1-0 to Ventura County FC",
+        "Eric Izoita signed to first-team contract"
       ],
       "sources": [
         {
@@ -57,13 +59,13 @@
       ]
     },
     "f1": {
-      "mood": "Speculative and intense",
-      "pulse": "Fans are analyzing team dynamics after clashes in Las Vegas. Interest is high regarding upcoming Qatar predictions.",
+      "mood": "Thrilled and speculative",
+      "pulse": "Fans are buzzing after Verstappen's victory in Las Vegas. Interest is high regarding technical upgrades and driver changes.",
       "storylines": [
-        "Sainz finished P8 in Las Vegas for Williams.",
-        "Freddie Slater to replace Camara in F2.",
-        "Tom Hart replacing Lambiase as Verstappen's engineer.",
-        "Verstappen and Russell rivalry continues to escalate."
+        "Verstappen won the Las Vegas Grand Prix with RB22 tweaks.",
+        "Russell and Verstappen rivalry renewed in Las Vegas.",
+        "Freddie Slater to debut in F2 for Qatar/Abu Dhabi.",
+        "Tom Hart replacing GP as Verstappen's race engineer."
       ],
       "sources": [
         {
@@ -85,13 +87,10 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic and hopeful",
-      "pulse": "Fans feel rewarded after recent wins following a difficult mid-season stretch. Increased odds for B1G Championship have boosted confidence regarding playoff potential.",
+      "mood": "Optimistic and hyped",
+      "pulse": "Fans are excited after beating Michigan State. They see a clear path to the Big Ten Championship.",
       "storylines": [
-        "Beat Michigan State to clear path to B1G Championship",
-        "Ranked 14th in AP Poll",
-        "Increased odds for automatic playoff bid via conference championship",
-        "Playoff probability at 46.5% per FanDuel"
+        "Beat Washington for first time in years"
       ],
       "sources": [
         {
@@ -113,13 +112,12 @@
       ]
     },
     "niners": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans are celebrating a 35-10 win over the Vikings and Purdy's performance. However, Colton McKivitz's ankle injury is a major concern.",
+      "mood": "dominant and celebratory",
+      "pulse": "Fans are ecstatic after a 35-10 win over the Vikings. They feel the team is the best in the NFL.",
       "storylines": [
-        "Beat Vikings 35-10 to reach 9-1 record",
-        "Brandon Aiyuk to be released Monday",
-        "John Lynch signed contract extension",
-        "Colton McKivitz out for season (ankle)"
+        "Record improved to 9-1 with NFC first place control",
+        "Brandon Aiyuk cleared waivers to visit Commanders",
+        "Next game against rivals Seattle Seahawks"
       ],
       "sources": [
         {

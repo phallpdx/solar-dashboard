@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "note": "Toddler-friendly holiday outings in North Portland, Portland, Vancouver and the north coast, soonest first. Several dates come from event guides rather than the organizers, so the detail says when to double-check.",
   "events": [
     {
@@ -43,30 +43,6 @@
       "url": "https://pdxparent.com/series/christmas-festival-at-redland-family-farm/"
     },
     {
-      "title": "Storytime at Washington County Libraries",
-      "date": "2026-11-24",
-      "ends": null,
-      "where": "Washington County",
-      "detail": "Free storytimes including Toddler Times are available.",
-      "url": "https://pdxparent.com/event-single/storytime-at-washington-county-libraries/2026-11-24/"
-    },
-    {
-      "title": "OMSI On Ice",
-      "date": "2026-11-24",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Indoor synthetic ice skating for $8-$10.",
-      "url": "https://pdxparent.com/event-single/omsi-on-ice/2026-11-24/"
-    },
-    {
-      "title": "Sing, Sign & Play @ SWPMA PLAY! at The Multnomah Arts Center",
-      "date": "2026-11-24",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Playtime with singing and basic American Sign Language. $5 – $25.",
-      "url": "https://pdxparent.com/series/sing-sign-play-swpma-play-at-the-multnomah-arts-ctr/"
-    },
-    {
       "title": "Mini Movers at Laurelhurst Park!",
       "date": "2026-11-24",
       "ends": "2026-12-08",
@@ -75,36 +51,28 @@
       "url": "https://pdxparent.com/series/mini-movers-at-laurelhurst-park/"
     },
     {
-      "title": "Family Ninjas (Martial Arts) For Ages 2/3 @ SWPMA PLAY!",
-      "date": "2026-11-24",
+      "title": "Storytime at Washington County Libraries",
+      "date": "2026-11-25",
       "ends": null,
-      "where": "Portland",
-      "detail": "A family martial arts experience on a matted space. $15 – $25.",
-      "url": "https://pdxparent.com/series/family-ninjas-martial-arts-for-ages-2-3-swpma-play/"
+      "where": "Washington County",
+      "detail": "Various storytimes for toddlers and families are available. Free.",
+      "url": "https://pdxparent.com/series/storytime-at-washington-county-libraries/"
     },
     {
-      "title": "Magic + Balloons Show with Juggles",
-      "date": "2026-11-24",
+      "title": "OMSI On Ice",
+      "date": "2026-11-25",
       "ends": null,
       "where": "Portland",
-      "detail": "Morning of magic tricks and balloon animals. Free.",
-      "url": "https://pdxparent.com/series/magic-balloons-show-with-juggles/"
+      "detail": "Skate on a synthetic ice rink in an indoor wonderland. $8 – $10.",
+      "url": "https://pdxparent.com/series/omsi-on-ice/"
     },
     {
-      "title": "Red Yarn’s Family Music & Puppet Show at Taborspace",
-      "date": "2026-11-24",
+      "title": "Mike Bennett’s Dead Media Holiday Special",
+      "date": "2026-11-25",
       "ends": null,
       "where": "Portland",
-      "detail": "Weekly family music and puppet show with singing and dancing. $10 – $20.",
-      "url": "https://pdxparent.com/series/red-yarns-family-music-puppet-show-at-taborspace/"
-    },
-    {
-      "title": "Littles Ballet at Laurelhurst Studio",
-      "date": "2026-11-24",
-      "ends": null,
-      "where": "Portland",
-      "detail": "Ballet stories and technique for ages 2-5. $18.",
-      "url": "https://pdxparent.com/series/littles-ballet-at-laurelhurst-studio/"
+      "detail": "A VHS-themed holiday event with lights and characters. Free.",
+      "url": "https://pdxparent.com/series/mike-bennetts-holiday-pop-up/"
     },
     {
       "title": "Winter Wonderland drive-through lights",

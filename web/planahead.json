@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "items": [
     {
       "title": "Mt. Hood National Forest Christmas tree permit",
@@ -454,6 +454,28 @@
         {
           "name": "Monqui: Caroline Rose at Wonder Ballroom",
           "url": "https://monqui.com/event/caroline-rose-2/wonder-ballroom/portland-oregon/"
+        }
+      ]
+    },
+    {
+      "title": "Sam Fender, Portland (May 5, 2027, venue TBA)",
+      "kind": "Tickets",
+      "action": "Watch Sam Fender's official site for the Portland venue and on-sale; the rest of the tour's presales and general sale have already run.",
+      "starts": null,
+      "by": null,
+      "why": "Complex reports Portland is the one exception to the tour's Nov 17 presale and Nov 19 general sale and runs on its own schedule; the Portland venue and on-sale date weren't announced in the sources found.",
+      "sources": [
+        {
+          "name": "Complex",
+          "url": "https://www.complex.com/music/a/will-lavin/sam-fender-north-america-tour-2027-dates-buy-tickets"
+        },
+        {
+          "name": "Ticket News",
+          "url": "https://www.ticketnews.com/2026/11/sam-fender-2027-north-american-tour/"
+        },
+        {
+          "name": "Stereoboard Portland listing",
+          "url": "https://stereoboard.com/sam-fender-tickets/portland"
         }
       ]
     }

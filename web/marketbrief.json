@@ -1,50 +1,42 @@
 {
   "updated": "2026-11-25",
-  "updated_at": "2026-11-25T08:40:25Z",
+  "updated_at": "2026-11-25T10:23:17Z",
   "analysis": {
-    "headline": "Major indices surged today following Jensen Huang's reinstatement as Nvidia CEO.",
-    "summary": "Stocks rose significantly with Nasdaq leading gains. Treasury yields increased alongside 10-year rates. Oil prices climbed slightly while gold and Bitcoin both declined. The market trend shows strength in tech despite some volatility.",
+    "headline": "Nasdaq falls as tech sell-off and tariff reports weigh on markets while Dow gains via value rotation.",
+    "summary": "Nasdaq fell amid AI growth fears and tech sell-offs. The Dow rose 0.85% through a shift toward value stocks. Oil prices dropped slightly despite high yearly gains. Bitcoin and Gold saw mixed movements amidst broader market volatility.",
     "sources": [
       {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxOVnQycUtpVGkxa0dZbl83Ykdvc3QwUzBSbkJScFdlS2R2V0o3VWI1eGlEM01sQXlJdmtXQzN4Rl84MGt5RDdEbzZkcmdqNEEtZy1PSVlrRkJPZ29mNTRrdXREcUtoVnByakJtNmx4NGVSejFMYXQzcndzWUxfYk5ZcElKWXN6LW1RT3JSUDNMcG9oRkxLX0ZBNl9xT2Jfa3Zqdmc3N0pOZ3dnVlVDUWtPVWg0RG5DSlZ1ekx6RGFfR0lUaDZLc01Ub1gxSXRKY0N6QklCQlBTdlp3elVET1p2bDMyVQ?oc=5"
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOQmhlWk90SmZVWUllcWFBTGNHbWs3SUhBUXNEWUh1ei1tQUd0eFQxSHN5RnJHcFZyRENZS3VCaVdLalFqZzZpd29NcjRJU3BuSGlEVGZULXJJRVN3VlVJeXE4RGM2VVBIcFNPaC1ielpmaWd2YjZzZkxWU195YWNyQmlvTXVmQ1hFelNzcGtabU0xUGtUUlItTXhhYnBjX3NsQm1BajRtRWhwblFubjhqLVg5eV8tbW9wU2JWWWMybVpPQQ?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5Jd2QwOVppNGtIY3I5ZXgyVmZKQzJ3SzZvVnVydTJHQnliRXBCR2RiQTBMeXExQU16TnpPQzkwWVl2Q0FKV055NzJBNE4tMGQ0UmlFMFdnQ3o1OG9tR2JNd1Z6Ymk5cGtDVFBxZjJPT19jblIxZ2lwRdIBfkFVX3lxTE5qZGNISDFwMjNGQUoxc3ZlT1JFR1A5Zk1oTmJSX1kxWVFOWUZscTZGTWh2cHdfMW92SzVCbXdBR2o3YWJUVzN2TXhfOUdhSUZpdFNyNXBaUjdseWpuQklwaVgzaUlGdkJqNm54TWEyVTluWVFYVTZVMVptNV9xQQ?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPWjE4Zm9DOUxVdmFFaTlaQVJMWHFaVEVGVy1JcTNEcEc3bnhET2xfaGNCdFlpbXkwS210Tkx0d3JVUWVzbzA4amhwWU1FWGxLd2E0YUJBY1lOOUNlVmlwNF83b3Bqc2dqaWVMTzUwSGFfYWNJVDZwXzh5TGp5YUZaTzZoa0dZenZfalhyelF0UUZwbllhOEZIbWNGc1V3OHQxWlhfV3ZoeGdKRURCS3dTVEFSRnk?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPNXRXMlFUQkJfcnJPMGVlaWZRejZzSnVuRWJiV1E3TUM3c3pkWkxSSGZJaGtCcEc0Uzdja0xzbFFNcWRIZEtZNlFHMHNDclAzVzJqUHU2Z2lFRE51V3AwSWV1cnRoamFsbDVleTdVUFVhSElYMEhXTlhiNkhQNWtSZlRGT1FYQURPeE9RTA?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQNlNnSlBpMXFaSUNvekNTTlNHTXVKV1VzdVFCUmNMNmRna0VBT3FRUm9wSWxRSDdvajRfR2Vla19IbG1ZNXlfOC0zUTJGbWZ0bTQzYU53WkF4cjdqbmxlX1lRaVFVbWhwS0daT1JtQmcxTHFWcGhzQzYtOU5CbjhfZ1dmMEhWRWtFUWJYUWk4YjF1MDB6UGFjbjNqbXpSUU5pNVh4RTM3WDdzN3FMSDlwUllSODVQVkg3NmlWTXNQSUREQWRRc0k0bnRMUWpUUEZWUGlZSQ?oc=5"
       },
       {
-        "name": "FXEmpire: The Week Ahead, PCE in focus",
-        "url": "https://fxempire.com/forecasts/article/the-week-ahead-pce-in-focus-after-ai-sell-off-in-holiday-shortened-week-1646337"
-      },
-      {
-        "name": "Thrive in Markets: S&P 500 faces PCE test in Thanksgiving week",
-        "url": "https://thriveinmarkets.com/market-insights/week-ahead-2026-11-23/"
-      },
-      {
-        "name": "RoboForex: Is the stock market open on Thanksgiving?",
-        "url": "https://roboforex.com/blog/analysis/is-the-stock-market-open-on-thanksgiving-market-week-ahead-november-23-27/"
-      },
-      {
-        "name": "CNBC: Six key questions raised by Jensen Huang's return",
-        "url": "https://cnbc.com/2026/11/24/nvidia-jensen-huang-politics-market.html"
+        "name": "Google News: stock market",
+        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNRGtvc1R6Y1RvSXFZeW5KTVdmOUkzMnE3MEFvNWt6UTJkSi1pUDZTSWs4YzdvTk5DR1NLYmtVOHBZOWhRY1NwVXZUVEVKOWNGeHpySXlpOF9qcmo5YllkTWpvb1MwRi0zOUEtbDFpQUJnMmdSUXZWSWhjdVhVOVZlbzhmUHhzQlZSRms3T2otRlV5YTlv?oc=5"
       }
     ],
     "by": "local model",
-    "session": "2026-11-23",
+    "session": "2026-11-24",
     "drivers": [
-      "Jensen Huang reinstated as Nvidia CEO"
+      "Tech sell-off and fading AI euphoria",
+      "Reports of fresh U.S. tariffs"
     ],
-    "watch": [
-      "Wed Nov 25, 8:30 a.m. ET: October PCE inflation, second Q3 GDP estimate, weekly jobless claims and durable goods all land at once (consensus core PCE about 0.3% m/m, per FXEmpire and Thrive in Markets)",
-      "Thu Nov 26: U.S. stock markets closed for Thanksgiving; Friday Nov 27 is a shortened session ending 1 p.m. ET (RoboForex)",
-      "Fed's Dec 8-9 meeting: traders have priced in a quarter-point rate hike after October's hot CPI, so Wednesday's PCE is the next big test (Thrive in Markets)",
-      "Nvidia follow-through after Jensen Huang's reinstatement: the board says its investigation continues and lawmakers are still pressing on China sales (CNBC)"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant is paving the way for a liquefaction facility. Market supply is tightening, driving exploration and interest in Saskatchewan.",
+    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant is paving the way for a liquefaction facility. Market supply is tightening, driving increased exploration and interest in Saskatchewan.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -99,7 +91,7 @@
   },
   "realestate": {
     "headline": "Home sales slow as buyers adjust to elevated mortgage rates.",
-    "summary": "Mortgage rates climbed to 7.40% on 2026-11-23. Sellers are lowering prices in a stagnant market to help buyers make deals. Portland may double down on renter protections as landlords push back.",
+    "summary": "The average US 30-year mortgage rate fell to 7.18% before climbing to 7.40%. Prices continue to climb in Oregon. Sales are slowing as buyers react to high rates.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -107,11 +99,11 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOTjUyZVZCamJfdWRyczFwVWt1eVFkeVgxaHNvdlE0TGZEN19XM3VIcUNmbWlSS1FNLVpXbEE2X1NpRDZEcElZRnJiODE1MElPWndLMmF2Q0lkZHJqVnY0Nkhpb2VKU2JaSHRXd2hQTWZDX2lXdFk4cTdRT2plM1d3eG9KWVlMV2RwUHJ6TVhtQWw2RVp4RG5RTmtvdm5ldWhWcU1ZcTJGR3k3Mkx4VHk0cmN5aExXRHBEZl83ajBhc2FIS0xQbTBnSUthVElyM3c?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQdHpUaFdONTFvQ1RpNUViLUJ0RE9qNzBXY3lfV0dBbnlLaEdhLWR0MkFWRHhtS2U4ZEVSTXlzV1ZJc2JlMmZOYnRBOFRCTTIyNUR0NjJRdnpSdk13aXVqUUpOcG1TWHJUMkFsRXJtYl9lVXJmdmw2cWhZVXpaN3NVdm8zTUY5ejFvWVNENGJVSUJOal9DSVFZemxLVTlYVlBqMHZMODFaeWxFNGNEOXY5Z3p6NlA3dmotVXc?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
       },
       {
         "name": "Google News: mortgage rates",
@@ -121,9 +113,9 @@
     "by": "local model",
     "items": [
       {
-        "title": "November 2026 Industrial Report: E-Commerce Anchors Resilient Industrial Growth Amid Cost & Supply Shifts",
+        "title": "Nearly every major city is a buyer’s market. Here’s why Boston still isn’t.",
         "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5UcERadEl3RDVrd1FPMjVvUmJKa3A2M1hibVRScmVjWW1GdHdBUGhKekVVLWRTNWRmU09XcmJadVZlVGEwbF8tTmZWRG51LUZraThlcGN2cU9od2lnajE2MEdUY2NZTXF6YjlmazJQdi0?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOV2VsVDZXSmlDZ0FOZkNfRzFLY3BXM2Q3WGQ0Qm9zOGRKZTlydHpaSThiNE5VMHdTelhQY3hvbHhIS2pkYk5KdXRzZVdWS21xQVQwdDlkVkZWQ0lZZ2R1TXlPVGJEZ0RxdEQyd1g3dWwtX0o5dTFiZ0ZsbFFsR2ZkaEFsQmxyNzNUUWlqYkhTLUUzTVVCYlNsbmUwWE41SUF6c001X3Fiaw?oc=5",
         "source": "Google News: Portland housing"
       },
       {
@@ -135,20 +127,20 @@
       {
         "title": "Current refi mortgage rates report for Nov. 25, 2026",
         "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5RV2J0TUZ5bGJCNGdKTFpsVHFFcU9HbFJSUlJUWnZzVWNEdFNNWXdwamJiaXFmYVVuZWdyOUxTaTBBaTMwUWpwd3FjYUpTSU5nQlNBVXdfN0lXUjl5dkkwb0RySzRVVHdxeXZuaUFNcUh4WGN6?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5WYU5hSFljNzVWdGtEY29lcDZWa1d6bzF4MVFPWW1vcndMUWMtclNOLWxPRDdCSGgzZGtXcUNWeVRpS3c3OUU3ZWRZcnZLOWxZQ09wZUlsaDN2SXVhS0F5TzJ6QjhFQVR0MkVwYkZ2cjR2MXJmaVE?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "US house prices stall in September as 30-year mortgage rates reach 7.28%",
+        "title": "Current ARM mortgage rates report for Nov. 25, 2026",
         "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1maEduLUNvMEM1VWlUbVloU3I5T254d0gzY1hyakdlSEY0ejJkdV8ySUFUMHF5MlBsNkxOZHZBcHR6QnlObHdlRmNlU01IazV5R1lIQ1dleTRxNHp2VlFZZUllTXZZNXJCLW5YMjExNjhPajdWc1E?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1WUEU3amcyTVVEaTFRdnE1WFNFeHpGV21FSHR2OGNBeTNDU1hLcjA4S2pfTzd3RkdzQnpDT2lWa1FKek1adXlpcGo3NVRTWUVlbU5rdGpUcFpVY1dNQzVRTGRfVE5qSzVEVHE4cXA0UFZEMTl1?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Homes are selling fastest in these cities",
-        "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPbnFzREdnWkdPSTVhTlk4NzFBazBBY3hUVVZjZnhNSVFWUXIybi1XbmViZmcxVy12bWRMNnpFbF9NX2Q3Q2o4bWhHX2ZDN2Z4Q0kzQkNCMHlfQnVmOElleGhCS0MwUGdZdEdQczlPUllvekVoaExWcnhlZm02MzQwNTg4VnRQb0lmQTFIdTBpeUxWUQ?oc=5",
-        "source": "Google News: Portland housing"
+        "title": "Today’s home equity loan and HELOC rates, Nov. 25, 2026",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBubG1MdnlSdEptSndsWWRpSUtscGpMX3VFc2tTMnM0ODN3ZnpNdFFYMVlIZ1o4TUR6Znc3ZlhEWU5DaXVtMjdrWkVlY20zUlVrOHZZSjg2TkxvWE5Cdm9NYkU0eDVmZkhW?oc=5",
+        "source": "Google News: mortgage rates"
       }
     ],
     "stats": [

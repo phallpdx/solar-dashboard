@@ -75,6 +75,54 @@
       "url": "https://pdxparent.com/series/mike-bennetts-holiday-pop-up/"
     },
     {
+      "title": "Santa at Clackamas Town Center",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Clackamas",
+      "detail": "Kids can meet Santa for a photo package. $19.99.",
+      "url": "https://pdxparent.com/event-single/santa-at-clackamas-town-center/2026-11-25/"
+    },
+    {
+      "title": "Blue Block Play @ SWPMA PLAY!",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Active indoor playtime with large blocks for children ages 0-5. $1 – $10.",
+      "url": "https://pdxparent.com/event-single/blue-block-play-swpma-play-inside-the-multnomah-arts-ctr/2026-11-25/"
+    },
+    {
+      "title": "Bonjour Bebes",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Portland",
+      "detail": "French language activities designed for children aged 0-36 months. $10 – $20.",
+      "url": "https://pdxparent.com/event-single/bonjour-bebes/2026-11-25/"
+    },
+    {
+      "title": "Morning Music with Mr. Ben at The Heist",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Interactive family singalong for babies and toddlers. Free.",
+      "url": "https://pdxparent.com/event-single/morning-music-with-mr-ben-at-the-heist/2026-11-25/"
+    },
+    {
+      "title": "Red Yarn’s Family Music & Puppet Show",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Portland",
+      "detail": "Weekly music and puppet show for families to sing and dance. $10 – $20.",
+      "url": "https://pdxparent.com/event-single/red-yarns-family-music-puppet-show-at-village-ballroom/2026-11-25/"
+    },
+    {
+      "title": "Baby Only Open Gym at My Gym",
+      "date": "2026-11-25",
+      "ends": null,
+      "where": "Portland",
+      "detail": "A 50-minute play session for babies and their caregivers. $10.",
+      "url": "https://pdxparent.com/event-single/baby-only-open-gym-at-my-gym-childrens-fitness-center/2026-11-25/"
+    },
+    {
       "title": "Winter Wonderland drive-through lights",
       "date": "2026-11-27",
       "ends": "2026-12-31",
@@ -153,14 +201,6 @@
       "where": "Sandpiper Square, Seaside",
       "detail": "Tree lighting when the city also lights its Dickens-era gas lamps, per Visit the Oregon Coast. Time not listed.",
       "url": "https://visittheoregoncoast.com/travel-guides/top-oregon-coast-holiday-light-displays/"
-    },
-    {
-      "title": "Curiosity Kids: Design and Discover",
-      "date": "2026-12-05",
-      "ends": null,
-      "where": "Portland, OR",
-      "detail": "A hands-on design event for kids from 9 am to 10 am.",
-      "url": "https://tickets.omsi.edu/events/019c5979-d0f5-0990-83f8-9fb9b12efada"
     }
   ]
 }

@@ -2,6 +2,23 @@
   "updated": "2026-11-25",
   "restaurants": [
     {
+      "name": "Danh’s Kitchen",
+      "neighborhood": "Portland",
+      "cuisine": "Hu Tieu",
+      "price": "",
+      "opened": "",
+      "summary": "The Hu Tieu is simply stunning.",
+      "reviews": [
+        {
+          "outlet": "Portland Mercury",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-16",
+          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPNjN0dGZHZ1l5QXBzbmJ5WGt1a1RkSTBDcXZ2MmV1cm9wcDZtWVVLdGU5SEx3dEdrNGpsNDZBNk9wa2lqVGZVYVh2SElCUEVzRklrU3B2MnVTanpZUlAxSkdEV0lMTGR4TTQ3dnNJZnRiYmc0amJReWg4UEVBaHpsWEVfUEl6NllTbVdQSENyYzZYRXoxUUhERjd1anhldXFQYmlNMTJrQ3RGYW94LWZUSkhMUnJZRVdQaE9Od2JFcExtSDlUSEd4bkJoOHBjQQ?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Angelina's",
       "neighborhood": "Slabtown",
       "cuisine": "Italian",
@@ -403,23 +420,6 @@
           "verdict": "",
           "date": "2026-11-17",
           "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMGdETGh6NlB0RTZUemNGTm01eHBJWHVwbS1GT3MzTmJvbS1QeS1GTHJINjhuNm5JTS11OEpST3dCOEo3RVZCQnJmNktyaTctczdfQ1ppeGpzVF9RMDhzMHVBb1c4OHpwWkRXOXhMV2o4SVlXVzFmTy1BdzQwZ3l0dU1BZkE2NWlNLXZzWlhELXdzb2lIdVo3NlZB?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Portland Cà Phê (formerly Good Neighbor Cà Phê)",
-      "neighborhood": "Northwest Portland",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-17",
-          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNd2FEMlV6MXhEN1lKUVNYamtNUFFvb2QwdVRhZXRSS2tBMmNEbVJwaXhBRUtTVlpVejd2VExFTElydmt4d3lRSkFXX3dxdkF6dWJUUkdEdnJFaURPNzFKRnppX2s1dlM5RWRVRVZveXdpZHFOeWVKVGIxbXRuMVd5MjE3QXFtOExzczFDaEJEOE9NdDRyQnhVNEVtMGZ5WFlGUU84dzhCQlhMVEdBTUE?oc=5"
         }
       ]
     }

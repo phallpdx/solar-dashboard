@@ -12,6 +12,18 @@
       {
         "name": "Google News: stock market",
         "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOaXlUNjZxa3BkdXd3Z2VfMWZhanhZeklCeUZJaTd4QTFCM2RVYW1lYnRVZTk5TlhUR05ER2txV0h5X1VzQzRoOXlmY3I4NnVMcGpxSFV5WTN1S3RoYmV0anQ3TzRvZE1KMWM5dW5mcnlNbjJhTjJmRkp2MzNRdmhKcS1SaFJqd0Jia2YzaEpKS1hOWmtu?oc=5"
+      },
+      {
+        "name": "TradeStation: Stock market holidays 2026 and 2027",
+        "url": "https://www.tradestation.com/learn/market-hours/stock-market-holidays/"
+      },
+      {
+        "name": "Newsweek: Is the stock market open on Thanksgiving Day 2026?",
+        "url": "https://www.newsweek.com/stock-market-thanksgiving-2026-12761725"
+      },
+      {
+        "name": "NewsNation: Is the stock market open on Thanksgiving and Black Friday 2026?",
+        "url": "https://www.newsnationnow.com/business/your-money/stock-market-thanksgiving-hours/"
       }
     ],
     "by": "local model",
@@ -20,7 +32,10 @@
       "AI sector uncertainty and chip shipment halts",
       "Tariff threats and inflation concerns"
     ],
-    "watch": []
+    "watch": [
+      "Thursday, Nov 26: U.S. stock and bond markets are closed for Thanksgiving (TradeStation, Newsweek).",
+      "Friday, Nov 27: stocks close early at 1 p.m. ET (10 a.m. Pacific); the bond market closes at 2 p.m. ET under SIFMA's recommendation, and thin holiday volume is typical."
+    ]
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",

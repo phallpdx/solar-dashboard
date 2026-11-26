@@ -2,13 +2,6 @@
   "updated": "2026-11-26",
   "deals": [
     {
-      "title": "Paramount Build Your Collection (4K/HD Digital Films)",
-      "store": "Paramount+",
-      "detail": "Escape From Alcatraz and more, $3.99 or less",
-      "ends": "2026-11-30",
-      "url": "https://slickdeals.net/f/20375037-fanflix-paramount-digital-movies-3-6-w-code"
-    },
-    {
       "title": "Barnes & Noble 50% off Criterion Collection sale (4K UHD included)",
       "store": "Barnes & Noble",
       "detail": "Half-off Criterion sale on 4K UHD, Blu-ray and DVD through Dec. 6, per Popular Science (Nov. 11). 4K picks it names: The Princess Bride, No Country for Old Men and Blue Velvet $24.99 each; Seven Samurai 4K $29.99; Wes Anderson Archive 4K set $249.99.",
@@ -23,13 +16,6 @@
       "url": "https://consequence.net/2026/11/criterion-collection-black-friday-amazon-sale/"
     },
     {
-      "title": "KPop Demon Hunters (Criterion 4K UHD)",
-      "store": "Amazon",
-      "detail": "4K UHD for $24.98 (list $49.95), part of the Criterion 50% off sale, per HD Report.",
-      "ends": "2026-12-07",
-      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
-    },
-    {
       "title": "MVD Annual Black Friday & Cyber Week Sale",
       "store": "MVD",
       "detail": "3,500+ titles on sale through Dec. 7, prices from 99 cents. 4K example on MVD's sale page: Maniac (4K UHD + Blu-ray) $24.99, down from $49.95.",
@@ -42,6 +28,48 @@
       "detail": "Radiance's own sale page says its Black Friday sale runs until Dec. 9. Check each title for a 4K edition; the page didn't show specific 4K prices in what I could see.",
       "ends": "2026-12-09",
       "url": "https://www.radiancefilms.co.uk/collections/sale"
+    },
+    {
+      "title": "Amazon 3 for $33 on select 4K Blu-rays",
+      "store": "Amazon",
+      "detail": "Buy three eligible 4K discs and the cart drops to $33 ($11 each). Titles on the deal post include Apollo 13, Waterworld, The Lost Boys, 47 Ronin and A Star Is Born.",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+    },
+    {
+      "title": "HMV 4K Blu-ray Black Friday sale (UK)",
+      "store": "HMV",
+      "detail": "20% off a large selection of 4K discs with code HIDEF20 at checkout, per TechRadar (Nov. 25). UK store; check region and shipping.",
+      "ends": null,
+      "url": "https://www.techradar.com/televisions/blu-ray/hmvs-4k-blu-ray-black-friday-sale-has-arrived-ive-searched-through-and-here-are-the-top-12-discs-i-recommend-all-of-which-ive-personally-tested"
+    },
+    {
+      "title": "Amazon 4K discs at $12.99 each",
+      "store": "Amazon",
+      "detail": "HD Report's Nov. 18 list of 4K Blu-rays at $12.99 each includes Speed Racer, Ben-Hur (1959), Mars Attacks!, Lee Cronin's The Mummy and Minions & Monsters.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/18/these-4k-blu-rays-are-only-12-99-each/"
+    },
+    {
+      "title": "Walmart Black Friday movie deals (4K titles included)",
+      "store": "Walmart",
+      "detail": "Walmart's Black Friday movies page lists A Charlie Brown Thanksgiving 4K + Blu-ray at $9.99 (was $14.99) and Ratatouille 4K + Blu-ray + Digital at $18.53 (was $22.49).",
+      "ends": null,
+      "url": "https://www.walmart.com/shop/deals/movies-music-and-books/movies-and-tv"
+    },
+    {
+      "title": "Arrow Video Winter Sale (4K UHD included)",
+      "store": "Arrow Video",
+      "detail": "Arrow's own sale page advertises up to 50% off hundreds of 4K and Blu-ray titles, a free gift over $70 and an extra 10% off orders over $90. The page doesn't state an end date or disc prices in what I could see.",
+      "ends": null,
+      "url": "https://www.arrowvideo.com/c/campaigns/arrow-winter-sale-2026/"
+    },
+    {
+      "title": "KPop Demon Hunters (Criterion 4K UHD)",
+      "store": "Amazon",
+      "detail": "4K UHD for $24.98 (list $49.95), part of the Criterion 50% off sale, per HD Report.",
+      "ends": "2026-12-07",
+      "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
     },
     {
       "title": "Blow Out (Criterion 4K UHD + Blu-ray)",
@@ -86,76 +114,96 @@
       "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
     },
     {
-      "title": "The Super Mario Galaxy Movie: Collector's Edition",
-      "store": "Amazon",
-      "detail": "$10.99 (4K Ultra HD + Blu-ray + Digital)",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20389947-the-super-mario-galaxy-movie-collector-s-edition-blu-ray-digital-9"
-    },
-    {
-      "title": "The Polar Express (2004)",
+      "title": "The Polar Express (4K UHD + Blu-ray)",
       "store": "Walmart",
       "detail": "$10 (4K Ultra HD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20376540-the-polar-express-4k-ultra-hd-blu-ray-9-99-walmart-com"
     },
     {
-      "title": "National Lampoon's: Christmas Vacation (1989)",
+      "title": "National Lampoon's Christmas Vacation (4K UHD + Blu-ray)",
       "store": "Walmart",
       "detail": "$10 (4K Ultra HD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-1989-4k-ultra-hd-blu-ray-10-free-s-h"
     },
     {
-      "title": "A Christmas Story (1983)",
+      "title": "A Christmas Story (4K UHD + Blu-ray)",
       "store": "Walmart",
       "detail": "$10 (4K Ultra HD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
     },
     {
-      "title": "Dungeons & Dragons Honor Among Thieves (2023)",
+      "title": "Batman 4-Film Collection (4K UHD + Blu-ray)",
       "store": "Amazon",
-      "detail": "$9.99 (4K Ultra HD + Digital Code)",
+      "detail": "$30.99 for Black Friday, 66% off the $89.99 list, limited quantities, per HD Report (Nov. 25).",
       "ends": null,
-      "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
+      "url": "https://hd-report.com/2026/11/25/black-friday-deal-batman-4-film-4k-uhd-blu-ray-collection-only-30-99-66-off/"
     },
     {
-      "title": "4K Blu-ray Movies: Apollo 13, Waterwold, The Lost Boyz & More",
-      "store": "amazon.com",
-      "detail": "3 for $33",
+      "title": "Akira (4K UHD Blu-ray)",
+      "store": "Amazon",
+      "detail": "$10.49, down from $29.98, a near-record low per GamesRadar's Black Friday live blog.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+      "url": "https://www.gamesradar.com/live/news/the-best-black-friday-retro-deals-this-week-2026/"
     },
     {
-      "title": "47 Ronin",
-      "store": "amazon.com",
-      "detail": "4K Ultra HD + Blu-ray + Digital HD",
+      "title": "Back to the Future Trilogy 40th Anniversary (4K UHD)",
+      "store": "Amazon",
+      "detail": "$24.99, down from $29.99, per GamesRadar; JoBlo's 2026 Black Friday roundup lists the same price.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+      "url": "https://www.gamesradar.com/live/news/the-best-black-friday-retro-deals-this-week-2026/"
     },
     {
-      "title": "A Star Is Born",
-      "store": "amazon.com",
-      "detail": "4K Ultra HD + Blu-ray",
+      "title": "Harry Potter 8-Film Collection (4K UHD)",
+      "store": "Amazon",
+      "detail": "$68.45, per JoBlo's 2026 Black Friday 4K roundup, which notes the deals are time-limited.",
       "ends": null,
-      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+      "url": "https://www.joblo.com/cool-holiday-gifts-2026-black-friday-deals/"
     },
     {
-      "title": "Alien: Covenant, Kingsman: The Golden Circle, Logan, War for the Planet of the Apes",
-      "store": "Best Buy",
-      "detail": "$14.99 sale on certain UHD BDs",
+      "title": "Interstellar (4K UHD + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$14.20, per HD Report (Nov. 20).",
       "ends": null,
-      "url": "https://forum.dvdtalk.com/blu-ray-bargains/633425-4k-ultra-hd-blu-ray-discounts-deals-15-printthread.html"
+      "url": "https://hd-report.com/2026/11/20/christopher-nolans-interstellar-on-4k-uhd-blu-ray-digital-is-only-14/"
     },
     {
-      "title": "HMV 4K Blu-ray Black Friday sale",
-      "store": "HMV",
-      "detail": "20% off a massive selection of 4K discs using code HIDEF20",
+      "title": "Disclosure Day 4K Collector's Edition (4K + Blu-ray + Digital)",
+      "store": "Amazon",
+      "detail": "$12.99 (list $34.98), per HD Report (Nov. 14).",
       "ends": null,
-      "url": "https://www.techradar.com/televisions/blu-ray/hmvs-4k-blu-ray-black-friday-sale-has-arrived-ive-searched-through-and-here-are-the-top-12-discs-i-recommend-all-of-which-ive-personally-tested"
+      "url": "https://hd-report.com/2026/11/14/steven-spielbergs-disclosure-day-is-only-12-99-2-disc-digital-4k-collectors-edition/"
+    },
+    {
+      "title": "The Hunger Games 4-Film Collection 4K SteelBook",
+      "store": "Amazon",
+      "detail": "$30.88, 49% off the $59.99 list, per HD Report (Nov. 11); it may have sold through since.",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/11/deal-alert-the-hunger-games-4-film-collection-4k-blu-ray-steelbook-edition-49-off/"
+    },
+    {
+      "title": "The Complete Rambo 4K Collection",
+      "store": "Amazon",
+      "detail": "Five films in 4K for $75 (list $99.99), per HD Report (Nov. 9).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/09/the-complete-rambo-4k-collection-is-only-75/"
+    },
+    {
+      "title": "Columbia Classics Vol. 5 (6 films in 4K)",
+      "store": "Amazon",
+      "detail": "$105.85, 51% off the $215.99 list, per HD Report (Nov. 22).",
+      "ends": null,
+      "url": "https://hd-report.com/2026/11/22/columbia-classics-vol-5-with-6-classic-movies-in-4k-is-51-off/"
     }
   ],
-  "upcoming": [],
+  "upcoming": [
+    {
+      "title": "Vinegar Syndrome Black Friday sale",
+      "detail": "Main sale starts Nov. 27, 2026 at 12:01 a.m. ET, with secret new releases revealed at launch, per Eyecrave Movies.",
+      "url": "https://eyecravemovies.com/news/vinegar-syndrome-announces-black-friday-2026-flash-pre-order-event-and-major-4k-uhd-debuts/"
+    }
+  ],
   "more_url": "https://slickdeals.net/deals/bluray-movies/"
 }

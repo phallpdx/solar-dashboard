@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-26",
-  "updated_at": "2026-11-26T10:35:57Z",
+  "updated_at": "2026-11-26T12:33:40Z",
   "analysis": {
     "headline": "Dow rebounded while S&P 500 and Nasdaq fell amid investor concerns.",
     "summary": "The Dow rose after a dramatic late-day comeback. Stocks faced pressure from AI doubts, tariffs, and inflation fears. Gold and Bitcoin prices moved significantly despite broader market volatility. Oil saw modest gains while Treasury yields declined.",
@@ -24,7 +24,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. A $100 million liquefier may be built in Swift Current. The global market faces shortages, while the U.S. declared helium a critical material.",
+    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. It raised over $5.5 million through the SWFF. The market faces global shortages and the U.S. declared helium a critical material.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -40,11 +40,7 @@
       },
       {
         "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
-      },
-      {
-        "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQUnFBVUJoYlVCakpnQVJab3paQmc4MlJnc0NyZEVob3hMRGlPOHV2aTNLSjh1aWdFbVVLV0lCMWZHS0s3ZGYwcFJBZ2lRbEs2QXZIbm8xNTlPZVBmUEpVa21Dbzc4TlJCYnZTUGpkLU1fSHhKMzFidkFWcWhCN0dZRHhYVDRwQzBVeVVQVXlxczRHV0YycHAtNThCaXQwOGlhVW9hZTgxZnpsWFVCQ3VqVml4cEpfTGc?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPLXIzSDl3clVoQldJOElfREVSQXpqMEZsZDVaREVzd3dOVE5hVFhUTzhFb3hKdnhxd0E3c1k0WjV2blhEbjc0djNQS2xaMmxoUW5ON1E1ZVJRSzhIaHE5TUZOaDAyQnVuTWthaG5mcFY2eFBhLUxXZFd0VmJtX1I4VlByMGlLTFY4cFpCWUg5VzhGdEh5LW5NUlctcW1mcEtl?oc=5"
       },
       {
         "name": "Google News: helium market",
@@ -86,8 +82,8 @@
     ]
   },
   "realestate": {
-    "headline": "New-home sales surge while overall home sales slow.",
-    "summary": "Builders are slashing prices to move inventory as new-home sales surge. Home sales have slowed due to elevated mortgage rates. The average 30-year mortgage rate eased to 7.21%.",
+    "headline": "Portland home sales slide despite increased inventory.",
+    "summary": "Pending home sales dropped 20% year over year and total sales slid almost 12%. Builders are slashing prices to move inventory. Mortgage rates show a small decrease.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -95,11 +91,7 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5WOGpHa3FWUElDSzNXdUZwekxyY01udldvVjhFOXJ3LVAyWXBoellHRGwtT1NiWFQwbFNGVGVRalRDSEc3dThodG9rOXJNTkp2dmRta3lSdnQ5VGswbzV0aUZ0MERLMjlmeDg4dHQ4dw?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQWXBtOWhrOHpmTnlXbXhnSGV4YVRfMTYtVnZDcmhrYl9kVTFkTjNWY0kyVXlxOThTV1RQVVljVVBjbUFHQ1VDUzBZQktSS1Rqc200MGxwZm5ZWFBwdkNBLXBVTEk4R21mcjVjdFY5X2JVUU1ENnAwMTIyb1ppLWl4SnZEZmtUUnJjdUQ1WlZUR1JJRjFLdWlJVG5UeEJNWXBy?oc=5"
       }
     ],
     "by": "local model",
@@ -117,21 +109,21 @@
         "source": "Google News: mortgage rates"
       },
       {
+        "title": "Mortgage and refinance interest rates today, Thursday, November 26, 2026: Mortgage rates mostly move lower",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxPREVEWksxemd0Mm5DeHk5NWlzdVVVSjhNMTl6NVg4Q0h2MGVYSkpPUEtfVHo5ZVdDS3FMcWNnTVdwQkFrVC1uMDd2enN3Z3haQUNSaGRzdi1jX2RlVXdTclZOWmRXOGJMc1JEVWVGenBhNGhjVVBxTEhURUlaSTF3OVNCMWItbVE2a1hzeTYxdDZFR0JVY09rMVk2RDZhLU9lWEVlOXNPTGNEVklGMjc1a2NrbW5mMnp3OW92RERXM3VYZTJQX2FWMjJPeFVWVTVFMFIxb0hUakI2RWhycThkM2NCTU9VcEk5cnVtVW11YnRQckJnUG92cmtMaEpVZktuN2NOVllzSDZzZw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
         "title": "Mortgage Rates Today: November 26, 2026 – Rates Fall For 6th Straight Day",
         "date": "2026-11-26",
         "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBOTmF2QkhPbC1hZDRFbW84dUcySHZhN3d2c2pLeTNGeEwyVFIxSktLVUZxVFdfQUxaZUdwSWIwWk12TXRDeDMzSDV3NS1qVVhWMVB6UFIxdlNYQjZNV3pFeHNPUU1INlFPSTdKODFxV1JnUHM?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today’s Mortgage Refinance Rates: November 26, 2026 – Rates Fall",
+        "title": "Current ARM mortgage rates report for Nov. 26, 2026",
         "date": "2026-11-26",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQeWJaS3ZoZDNrOEF5MENEX0lNSVd6U2swb1JsemtHLVZDVnVrRzAwa1R4b0thTHRXdXpSaUkzcFZBVU51LXJ3Z1BBcE9QR0V2TU5SRVJCNzNiZS13ZTVQUjc1bXVDX3BMaTMyODBrUWJzRlFXeElhMTZ5UTQ1Q1FsR1cxSGN3X1diTmhEMVp3?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "10-year yield below 4.85% lifts holiday mortgage rate outlook",
-        "date": "2026-11-26",
-        "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5UWmlRaU1PRW5vcm5XeXdfenRUZDluRnBfSFFZWjlVSnNOakl5blhNMHMxZWJkdFl1Y3hiU0N0LTIxVzNVcXFxU1NrdEttVUtkS3hrMm1LWmw3MEU0eFNWUGc0YW4zN2VydXhMQzVnamxwUzF1SmxCMA?oc=5",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9NcGZudkUwVHRYMk1GanA4ellMX3B1b2c2dzM4bHh1VDU3TlkwSV9BWjZPVU9iS1J4cG1kX1V0aEJJU19FM1dGMTJYeG1OTUtvSFRBdUZ1clpVN25ZMmVady04OE4xbWN1MmhLOE1rNEZRcDg?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

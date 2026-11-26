@@ -1,12 +1,12 @@
 {
   "updated": "2026-11-26",
-  "updated_at": "2026-11-26T10:33:06Z",
+  "updated_at": "2026-11-26T12:30:04Z",
   "teams": {
     "blazers": {
       "mood": "Optimistic and energized",
-      "pulse": "Fans are riding high after a victory over the Spurs. An 11-6 record against quality competition fuels optimism.",
+      "pulse": "Fans are riding high after a thrilling Cup win over the Spurs. Excitement grows as Ja Morant nears a return from injury.",
       "storylines": [
-        "Blazers beat Spurs in signature win",
+        "Blazers beat Spurs in NBA Cup victory",
         "Ja Morant nearing return from hamstring strain"
       ],
       "sources": [
@@ -30,9 +30,11 @@
     },
     "timbers": {
       "mood": "tense playoff anticipation",
-      "pulse": "Fans are focused on a must-win Game 2 against FC Dallas. There is excitement about playing at home in the Rose City.",
+      "pulse": "Fans are focused on a must-win Game 2 against FC Dallas. There is excitement about returning to home playoffs.",
       "storylines": [
-        "Must-win battle against FC Dallas"
+        "Must-win battle against FC Dallas in Game 2",
+        "MLS Cup Playoffs series opportunity",
+        "Timbers2 lost 1-0 to Ventura County FC"
       ],
       "sources": [
         {
@@ -51,11 +53,11 @@
     },
     "f1": {
       "mood": "Anticipatory and tense",
-      "pulse": "Fans are focused on driver rivalries following recent clashes. There is excitement regarding the upcoming Qatar GP.",
+      "pulse": "Fans are focused on the upcoming Qatar GP. There is excitement regarding the completed 2027 grid.",
       "storylines": [
         "Ollie Bearman confirmed for Haas in 2027",
-        "Williams minor overspend breach confirmed by FIA",
-        "Verstappen and Russell exchanged words in Las Vegas"
+        "Williams minor overspend breach of 2025 cost cap confirmed",
+        "Verstappen and Russell rivalry heating up after Las Vegas"
       ],
       "sources": [
         {
@@ -82,12 +84,11 @@
     },
     "ducks": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble. A win in the next game likely secures a playoff spot.",
+      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble at number 12. A win secures a playoff spot.",
       "storylines": [
         "Ranked 12th in penultimate CFP rankings",
-        "Must win to guarantee playoff berth",
-        "Upcoming matchup against Washington",
-        "Husky Hate week is underway"
+        "Must win upcoming game to enter playoffs",
+        "Looking ahead to Washington matchup"
       ],
       "sources": [
         {
@@ -113,14 +114,13 @@
       ]
     },
     "niners": {
-      "mood": "Anxious but dominant",
-      "pulse": "Fans are celebrating a 35-10 win over the Vikings that retained their No. 1 seed. However, concerns exist due to Brock Purdy's ankle injury and Colton McKivitz being placed on IR.",
+      "mood": "anxious but focused",
+      "pulse": "Fans are concerned about Brock Purdy's ankle injury and Colton McKivitz being on IR. Focus is on the upcoming divisional matchup against Seattle.",
       "storylines": [
-        "49ers retained No. 1 NFC seed after routing Vikings 35-10",
-        "#Brock Purdy suffered an ankle injury",
-        "#Colton McKivitz placed on injured reserve",
-        "#Brandon Aiyuk visiting Washington Commanders",
-        "#Next game is against Seattle"
+        "Brock Purdy has an ankle injury",
+        "Colton McKivitz placed on IR",
+        "Brandon Aiyuk visiting Commanders",
+        "Next game: Seahawks vs 49ers"
       ],
       "sources": [
         {

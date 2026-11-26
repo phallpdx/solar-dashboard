@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-26",
-  "updated_at": "2026-11-26T12:30:04Z",
+  "updated_at": "2026-11-26T13:11:03Z",
   "teams": {
     "blazers": {
       "mood": "Optimistic and energized",
@@ -88,7 +88,7 @@
       "storylines": [
         "Ranked 12th in penultimate CFP rankings",
         "Must win upcoming game to enter playoffs",
-        "Looking ahead to Washington matchup"
+        "Next game: Sat Nov 28 vs Washington at Autzen, 4:30 p.m. PT on NBC (Peacock)"
       ],
       "sources": [
         {
@@ -120,7 +120,7 @@
         "Brock Purdy has an ankle injury",
         "Colton McKivitz placed on IR",
         "Brandon Aiyuk visiting Commanders",
-        "Next game: Seahawks vs 49ers"
+        "Next game: Sun Nov 29 vs Seahawks at Levi's Stadium, 1:25 p.m. PT on FOX"
       ],
       "sources": [
         {
@@ -141,7 +141,7 @@
         },
         {
           "name": "Seahawks.com",
-          "url": "https://www.seahawks.com/news/how-to-watch-listen-and-follow-seahawks-at-49ers-in-week-12-on-sunday-november-29"
+          "url": "https://www.seahawks.com/game-day/2026/reg-week12/seahawks-at-49ers/how-to-watch"
         }
       ]
     }

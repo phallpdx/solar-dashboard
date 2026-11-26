@@ -1,12 +1,12 @@
 {
   "updated": "2026-11-26",
-  "updated_at": "2026-11-26T08:49:11Z",
+  "updated_at": "2026-11-26T10:33:06Z",
   "teams": {
     "blazers": {
       "mood": "Optimistic and energized",
-      "pulse": "Fans are riding high after a victory over the Spurs and an earlier win against Philadelphia. There is growing optimism regarding the team's 11-6 record and roster depth.",
+      "pulse": "Fans are riding high after a victory over the Spurs. An 11-6 record against quality competition fuels optimism.",
       "storylines": [
-        "Blazers beat Spurs in signature victory",
+        "Blazers beat Spurs in signature win",
         "Ja Morant nearing return from hamstring strain"
       ],
       "sources": [
@@ -30,11 +30,9 @@
     },
     "timbers": {
       "mood": "tense playoff anticipation",
-      "pulse": "Fans focus on a must-win Game 2 against FC Dallas. There is excitement about returning to the Rose City for playoffs.",
+      "pulse": "Fans are focused on a must-win Game 2 against FC Dallas. There is excitement about playing at home in the Rose City.",
       "storylines": [
-        "Must-win battle against FC Dallas in Game 2",
-        "Timbers2 lost 1-0 to Ventura County in semifinals",
-        "Eric Izoita signed first-team contract"
+        "Must-win battle against FC Dallas"
       ],
       "sources": [
         {
@@ -53,12 +51,11 @@
     },
     "f1": {
       "mood": "Anticipatory and tense",
-      "pulse": "Fans are focused on upcoming Qatar GP storylines. Tensions remain high following driver clashes in Las Vegas.",
+      "pulse": "Fans are focused on driver rivalries following recent clashes. There is excitement regarding the upcoming Qatar GP.",
       "storylines": [
-        "Qatar GP is Round 22 of the 2026 season.",
-        "Max Verstappen and George Russell exchanged words off track.",
-        "Williams committed a minor 2025 cost cap breach.",
-        "Pirelli mandates a 27-lap tyre limit for Qatar."
+        "Ollie Bearman confirmed for Haas in 2027",
+        "Williams minor overspend breach confirmed by FIA",
+        "Verstappen and Russell exchanged words in Las Vegas"
       ],
       "sources": [
         {
@@ -85,11 +82,12 @@
     },
     "ducks": {
       "mood": "Optimistic but cautious",
-      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble. A win secures a playoff spot.",
+      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble. A win in the next game likely secures a playoff spot.",
       "storylines": [
         "Ranked 12th in penultimate CFP rankings",
-        "Must win upcoming game to enter playoffs",
-        "Looking ahead to Washington matchup"
+        "Must win to guarantee playoff berth",
+        "Upcoming matchup against Washington",
+        "Husky Hate week is underway"
       ],
       "sources": [
         {
@@ -118,7 +116,7 @@
       "mood": "Anxious but dominant",
       "pulse": "Fans are celebrating a 35-10 win over the Vikings that retained their No. 1 seed. However, concerns exist due to Brock Purdy's ankle injury and Colton McKivitz being placed on IR.",
       "storylines": [
-        "49ers retain No. 1 NFC seed after routing Vikings 35-10",
+        "49ers retained No. 1 NFC seed after routing Vikings 35-10",
         "#Brock Purdy suffered an ankle injury",
         "#Colton McKivitz placed on injured reserve",
         "#Brandon Aiyuk visiting Washington Commanders",

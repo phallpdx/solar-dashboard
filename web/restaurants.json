@@ -2,6 +2,40 @@
   "updated": "2026-11-26",
   "restaurants": [
     {
+      "name": "Louie Cocktail Bar",
+      "neighborhood": "Portland",
+      "cuisine": "cocktail bar",
+      "price": "",
+      "opened": "upcoming",
+      "summary": "Planned for the former Garrison Space.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-16",
+          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPMGdETGh6NlB0RTZUemNGTm01eHBJWHVwbS1GT3MzTmJvbS1QeS1GTHJINjhuNm5JTS11OEpST3dCOEo3RVZCQnJmNktyaTctczdfQ1ppeGpzVF9RMDhzMHVBb1c4OHpwWkRXOXhMV2o4SVlXVzFmTy1BdzQwZ3l0dU1BZkE2NWlNLXZzWlhELXdzb2lIdVo3NlZB?oc=5"
+        }
+      ]
+    },
+    {
+      "name": "Teru Teru",
+      "neighborhood": "SE Belmont",
+      "cuisine": "",
+      "price": "",
+      "opened": "upcoming",
+      "summary": "Planning a new restaurant on SE Belmont.",
+      "reviews": [
+        {
+          "outlet": "WhatNow",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-26",
+          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOYWNJNTN6RUpWd3VuaU9UTmx4c1RXTUZaUms4WTlIc0llQlJMUWVYeFZPQWtlLVNFSnJfZlpsaTBXQm0yMkpOVXRKVmdxaXFXbnRMZ1pLQnF3UjVqZlhVTjdBdTJyVVh1ZWdJbzlsUzBTejJHZFlyLVBGY3lMaXgydUk3ZG11dlE4cXhvNnRmejI2R18tUXc?oc=5"
+        }
+      ]
+    },
+    {
       "name": "Mendocino Farms",
       "neighborhood": "Oregon",
       "cuisine": "",
@@ -393,40 +427,6 @@
           "verdict": "",
           "date": "2026-11-18",
           "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOTVhDazB4aTQ0XzlBdUE3ZUhXbXZVWnVKVXRXMlo0Zy1IMzlzSWJSczg2RHJ4Z09WeGJqMzNld2MwTnQ4NUdUOTlJZXozcUhURTRqbjY0aDZSQTlROGM3V21qRmRYZVBqOFVpdzhQWjJSSVF6WGFIb1NBbzlrZWo3NkJCMzgtVGgxa0Y4bktfRmw?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Checkpoint One",
-      "neighborhood": "Roseway",
-      "cuisine": "",
-      "price": "",
-      "opened": "soft opened",
-      "summary": "A new establishment on NE Sandy Blvd.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-10",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQRE5WY1g5MWRiRkJQZzRNYlgwYnZiZEtZczRsbmU1dHB2R3ZfUUg2THc0YkdPX2VaWHM4YUx4bFZFanRPWTFjNXlRVmpRTkpCa3Q1cmtYYk90Ykk1WVd1dWlzaGFwVHBfdkFNTktGU0JLZHU3dW9nOHVvVTg5ZkNiaS1JbklZOWk2UXBuN1YyMXV3R19VaFhjLXU5SFhmZkNrdXEtd1JiTQ?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Mossback Tavern",
-      "neighborhood": "Portland",
-      "cuisine": "Pizza pub",
-      "price": "",
-      "opened": "",
-      "summary": "A new-old pizza pub featuring $5 pizza/beer pairings.",
-      "reviews": [
-        {
-          "outlet": "newschoolbeer.com",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-19",
-          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOT0V2Rkg0cHMzS29wNUJNUlc3NTB4Yk13QmVVbjhNbVNxdmZCU0o1VVVOblRZd1c4N0FLTnBSenlnWW8wLWoyZTB1REo1enFYaFhxVmxQWTFQajlvaHZCVTUzT3VlWXUtVk85SHhNelp5cUh6ZnJiTVVPZkZaVFhWb3lFcEMteVpjQl9SUjZJZGJiUVMyc2VvSjdtOXNfRlo5ai1Ud1dDUUVOZWpnQlBwYm40aURJcmFRaFdLVlRR?oc=5"
         }
       ]
     }

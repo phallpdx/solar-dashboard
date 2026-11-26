@@ -51,46 +51,46 @@
       "url": "https://www.dealnews.com/s313/Amazon/22424961.html"
     },
     {
-      "title": "Obsession: Collector's Edition",
+      "title": "Obsession: Collector's Edition (4K Ultra HD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital, $11",
+      "detail": "$11, Free shipping with Prime",
       "ends": null,
       "url": "https://slickdeals.net/f/20391558-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-10-99-amazon"
     },
     {
-      "title": "Blade Runner: Final Cut",
+      "title": "Blade Runner: Final Cut (4K UHD + Blu-ray)",
       "store": "Amazon",
-      "detail": "4K UHD + Blu-ray, $12.99",
+      "detail": "$12.99, Free shipping w/ Prime or $35+ orders",
       "ends": null,
       "url": "https://slickdeals.net/f/20390931-blade-runner-final-cut-4k-uhd-bd-4-disc-set-for-12-99-at-amazon"
     },
     {
-      "title": "The Super Mario Galaxy Movie: Collector's Edition",
+      "title": "Frosty the Snowman (4K Ultra HD + Blu-ray + Digital)",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital, $10.99",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20389947-the-super-mario-galaxy-movie-collector-s-edition-blu-ray-digital-9"
-    },
-    {
-      "title": "Frosty the Snowman",
-      "store": "Amazon",
-      "detail": "4K Ultra HD + Blu-ray + Digital, $9.99",
+      "detail": "$9.99, Free shipping with Prime or $35+ orders",
       "ends": null,
       "url": "https://slickdeals.net/f/20385306-9-99-frosty-the-snowman-4k-ultra-hd-blu-ray-digital-at-amazon"
     },
     {
-      "title": "The Lord of the Rings: Motion Picture Trilogy",
+      "title": "The Lord of the Rings: Motion Picture Trilogy (4K UHD Blu-ray, Extended/Theatrical)",
       "store": "Amazon",
-      "detail": "4K UHD Blu-ray, Extended/Theatrical, $50",
+      "detail": "$50 + Free S&H",
       "ends": null,
       "url": "https://slickdeals.net/f/20382057-the-lord-of-the-rings-the-motion-picture-trilogy-extended-theatrical-4k-ultra-hd-49-amazon-com"
     },
     {
-      "title": "Dungeons & Dragons Honor Among Thieves",
+      "title": "Dungeons & Dragons Honor Among Thieves (2023) (4K Ultra HD + Digital Code)",
       "store": "Amazon",
-      "detail": "4K Ultra HD + Digital, $9.99",
+      "detail": "$9.99, Free shipping w/ Prime or $35+ orders",
       "ends": null,
       "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
+    },
+    {
+      "title": "The Super Mario Galaxy Movie: Collector's Edition",
+      "store": "Amazon",
+      "detail": "$10.99 (4K Ultra HD + Blu-ray + Digital)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20389947-the-super-mario-galaxy-movie-collector-s-edition-blu-ray-digital-9"
     },
     {
       "title": "The Polar Express (2004)",
@@ -101,8 +101,8 @@
     },
     {
       "title": "National Lampoon's: Christmas Vacation (1989)",
-      "store": "Walmart",
-      "detail": "$10 (4K Ultra HD + Blu-Ray)",
+      "store": "Gruv Entertainment via Walmart",
+      "detail": "$9.99 (4K Ultra HD + Blu-Ray)",
       "ends": null,
       "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-1989-4k-ultra-hd-blu-ray-10-free-s-h"
     },
@@ -115,8 +115,15 @@
     },
     {
       "title": "4K Blu-ray Movies: Apollo 13, Waterwold, The Lost Boyz & More",
-      "store": "Amazon",
+      "store": "amazon.com",
       "detail": "3 for $33",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+    },
+    {
+      "title": "4K Blu-ray Movies Bundle",
+      "store": "Amazon",
+      "detail": "3 for $33 including Apollo 13 and others",
       "ends": null,
       "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
     },

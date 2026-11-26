@@ -1,22 +1,151 @@
-{"updated": "2026-11-25", "updated_at": "2026-11-25T13:14:36Z", "teams": {
- "blazers": {"mood": "Fired up",
-  "pulse": "Portland bounced back Monday with a 128-111 win in Philadelphia, handing the Sixers only their fourth loss behind 31 points from Deni Avdija. That puts the Blazers at 11-6, and they host the Spurs tonight in an NBA Cup game, still without Ja Morant.",
-  "storylines": ["Avdija hit five 3s for 31 points and 7 assists in the Philly win", "Donovan Clingan posted 15 and 18; Jrue Holiday and Scoot Henderson gave 35 off the bench", "Ja Morant (left hamstring strain) is out again tonight; Shaedon Sharpe and Vit Krejci also out", "Tonight vs. Spurs at home, 7 PM PT; Wembanyama and Fox both questionable"],
-  "sources": [{"name": "OPB", "url": "https://www.opb.org/article/2026/11/24/portland-trail-blazers-deni-avdija-31-points-beat-philadelphia-76ers/"}, {"name": "ESPN", "url": "https://www.espn.com/nba/recap?gameId=401910037"}, {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-news/118864/portland-trail-blazers-philadelphia-76ers-recap-interviews-micah-nori-deni-avdija-donovan-clingan-scoot-henderson-road-trip"}, {"name": "Blazer's Edge", "url": "https://www.blazersedge.com/trail-blazers-injury-report/118872/portland-trail-blazers-san-antonio-spurs-nba-injury-report-ja-morant-victor-wembanyama-dylan-harper-deaaron-fox-nba-news"}]},
- "timbers": {"mood": "Backs to the wall",
-  "pulse": "FC Dallas won Game 1 of the first-round series 3-0 in Frisco on Saturday, so Portland has to win at home to stay alive. Game 2 is Saturday night at Providence Park.",
-  "storylines": ["Game 1: Joaquin Valiente scored twice in three minutes and Sam Sarver added one in stoppage time", "Game 2: Sat Nov 28, 7:30 PM PT at Providence Park (Apple TV, FS1)", "If Portland wins, Game 3 is at Dallas on Wed Dec 2, time TBD"],
-  "sources": [{"name": "FC Dallas", "url": "https://www.fcdallas.com/news/fc-dallas-opens-audi-2026-mls-cup-playoffs-with-commanding-3-0-home-win-over-the-portland-timbers"}, {"name": "Timbers", "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"}, {"name": "FC Dallas", "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"}]},
- "f1": {"mood": "Entertained",
-  "pulse": "Max Verstappen won a wild Las Vegas GP by 0.639s over Lando Norris and Oscar Piastri, in a race with more than 30 lead changes. The title is already settled, since Kimi Antonelli clinched it in Mexico City, so Qatar this weekend is about wins and bragging rights.",
-  "storylines": ["Verstappen's fourth win of the season", "Ferrari's Hamilton and Leclerc collided with each other again", "Antonelli finished fourth after late car trouble let the McLarens by", "Antonelli, 20, is F1's youngest-ever champion", "Next up: Qatar, the penultimate round, Nov 27 to 29"],
-  "sources": [{"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/las-vegas-lowdown-all-the-key-moments-as-verstappen-wins-remarkable-race-and-ferraris-drivers-collide-again.62D9SeuQXSboAspMm7N0pN"}, {"name": "Silverstone", "url": "https://www.silverstone.co.uk/news/f1-2026-las-vegas-grand-prix-results-verstappen-wins-after-race-long-battle-russell"}, {"name": "Sharp Magazine", "url": "https://sharpmagazine.com/2026/11/24/2026-las-vegas-grand-prix-recap-verstappen-wins/"}, {"name": "Formula1.com", "url": "https://www.formula1.com/en/latest/article/antonelli-crowned-youngest-ever-f1-champion-as-verstappen-wins-eventful-mexico-city-grand-prix.xpMMeef0KmRURs9IDs3LH"}, {"name": "AutoRacing1", "url": "https://www.autoracing1.com/pl/510816/formula-1-news-2026-qatar-grand-prix-preview"}]},
- "ducks": {"mood": "Hopeful",
-  "pulse": "Oregon rolled Michigan State 45-7 last Friday and sits at No. 13, 8-3 (6-2 Big Ten). Now it's Husky week, and a win over Washington plus a little help elsewhere would send the Ducks to the Big Ten title game.",
-  "storylines": ["Next game: Sat Nov 28, 4:30 PM PT vs. Washington at Autzen, on NBC", "Freshman Brandon Smith ran for 121 yards and 2 TDs at Michigan State", "Title-game path: beat UW plus an Iowa loss, a UCLA win or an Indiana win (ESPN Research)", "Oregon is a 14-point favorite (DraftKings)"],
-  "sources": [{"name": "GoDucks", "url": "https://goducks.com/news/2026/11/21/football-oregon-vs-washington-set-for-4-30-pm"}, {"name": "ESPN", "url": "https://www.espn.com/college-football/game/_/gameId/401858529/oregon-michigan-st"}, {"name": "Lookout Eugene-Springfield", "url": "https://lookouteugene-springfield.com/story/ducks/2026/11/20/four-different-ducks-score-as-no-13-oregon-steamrolls-michigan-state-45-7/"}, {"name": "Sports Illustrated", "url": "https://www.si.com/college/oregon/football/oregon-ducks-big-ten-championship-clinching-scenarios-washington-huskies"}, {"name": "Yahoo Sports", "url": "https://sports.yahoo.com/articles/oregon-conference-title-game-playoff-191727055.html"}]},
- "niners": {"mood": "Riding high",
-  "pulse": "The 49ers crushed the Vikings 35-10 in Mexico City on Sunday night to go 9-1, and Brock Purdy heard MVP chants. Next up is a home rivalry game with Seattle on Sunday afternoon.",
-  "storylines": ["Next game: Sun Nov 29, 1:25 PM PT vs. Seahawks at Levi's Stadium, on FOX", "Purdy went 21 of 26 for 255 yards and 3 TDs", "George Kittle caught two touchdowns", "9-1 is the seventh time in franchise history the 49ers have started that well or better"],
-  "sources": [{"name": "ESPN", "url": "https://www.espn.com/nfl/recap?gameId=401873077"}, {"name": "ESPN", "url": "https://www.espn.com/nfl/story/_/id/50571034/49ers-brock-purdy-beats-vikings-blitz-hears-mvp-chants-mexico-city"}, {"name": "CBS Sports", "url": "https://www.cbssports.com/nfl/news/brock-purdy-49ers-dismantle-vikings-with-35-10-rout-in-mexico-city/"}, {"name": "49ers.com", "url": "https://www.49ers.com/news/ways-to-watch-and-listen-seahawks-vs-49ers-week-12"}, {"name": "Seahawks.com", "url": "https://www.seahawks.com/news/how-to-watch-listen-and-follow-seahawks-at-49ers-in-week-12-on-sunday-november-29"}]}
-}}
+{
+  "updated": "2026-11-26",
+  "updated_at": "2026-11-26T08:49:11Z",
+  "teams": {
+    "blazers": {
+      "mood": "Optimistic and energized",
+      "pulse": "Fans are riding high after a victory over the Spurs and an earlier win against Philadelphia. There is growing optimism regarding the team's 11-6 record and roster depth.",
+      "storylines": [
+        "Blazers beat Spurs in signature victory",
+        "Ja Morant nearing return from hamstring strain"
+      ],
+      "sources": [
+        {
+          "name": "OPB",
+          "url": "https://www.opb.org/article/2026/11/24/portland-trail-blazers-deni-avdija-31-points-beat-philadelphia-76ers/"
+        },
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/nba/recap?gameId=401910037"
+        },
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-news/118864/portland-trail-blazers-philadelphia-76ers-recap-interviews-micah-nori-deni-avdija-donovan-clingan-scoot-henderson-road-trip"
+        },
+        {
+          "name": "Blazer's Edge",
+          "url": "https://www.blazersedge.com/trail-blazers-injury-report/118872/portland-trail-blazers-san-antonio-spurs-nba-injury-report-ja-morant-victor-wembanyama-dylan-harper-deaaron-fox-nba-news"
+        }
+      ]
+    },
+    "timbers": {
+      "mood": "tense playoff anticipation",
+      "pulse": "Fans focus on a must-win Game 2 against FC Dallas. There is excitement about returning to the Rose City for playoffs.",
+      "storylines": [
+        "Must-win battle against FC Dallas in Game 2",
+        "Timbers2 lost 1-0 to Ventura County in semifinals",
+        "Eric Izoita signed first-team contract"
+      ],
+      "sources": [
+        {
+          "name": "FC Dallas",
+          "url": "https://www.fcdallas.com/news/fc-dallas-opens-audi-2026-mls-cup-playoffs-with-commanding-3-0-home-win-over-the-portland-timbers"
+        },
+        {
+          "name": "Timbers",
+          "url": "https://www.timbers.com/news/timbers-set-to-host-fc-dallas-in-game-2-of-best-of-3-series-at-providence-park-on-nov-28"
+        },
+        {
+          "name": "FC Dallas",
+          "url": "https://www.fcdallas.com/news/fc-dallas-kickoff-times-and-dates-set-for-audi-2026-mls-cup-playoffs-round-one-best-of-3-series-against-the-portland-timbers"
+        }
+      ]
+    },
+    "f1": {
+      "mood": "Anticipatory and tense",
+      "pulse": "Fans are focused on upcoming Qatar GP storylines. Tensions remain high following driver clashes in Las Vegas.",
+      "storylines": [
+        "Qatar GP is Round 22 of the 2026 season.",
+        "Max Verstappen and George Russell exchanged words off track.",
+        "Williams committed a minor 2025 cost cap breach.",
+        "Pirelli mandates a 27-lap tyre limit for Qatar."
+      ],
+      "sources": [
+        {
+          "name": "Formula1.com",
+          "url": "https://www.formula1.com/en/latest/article/las-vegas-lowdown-all-the-key-moments-as-verstappen-wins-remarkable-race-and-ferraris-drivers-collide-again.62D9SeuQXSboAspMm7N0pN"
+        },
+        {
+          "name": "Silverstone",
+          "url": "https://www.silverstone.co.uk/news/f1-2026-las-vegas-grand-prix-results-verstappen-wins-after-race-long-battle-russell"
+        },
+        {
+          "name": "Sharp Magazine",
+          "url": "https://sharpmagazine.com/2026/11/24/2026-las-vegas-grand-prix-recap-verstappen-wins/"
+        },
+        {
+          "name": "Formula1.com",
+          "url": "https://www.formula1.com/en/latest/article/antonelli-crowned-youngest-ever-f1-champion-as-verstappen-wins-eventful-mexico-city-grand-prix.xpMMeef0KmRURs9IDs3LH"
+        },
+        {
+          "name": "AutoRacing1",
+          "url": "https://www.autoracing1.com/pl/510816/formula-1-news-2026-qatar-grand-prix-preview"
+        }
+      ]
+    },
+    "ducks": {
+      "mood": "Optimistic but cautious",
+      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble. A win secures a playoff spot.",
+      "storylines": [
+        "Ranked 12th in penultimate CFP rankings",
+        "Must win upcoming game to enter playoffs",
+        "Looking ahead to Washington matchup"
+      ],
+      "sources": [
+        {
+          "name": "GoDucks",
+          "url": "https://goducks.com/news/2026/11/21/football-oregon-vs-washington-set-for-4-30-pm"
+        },
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/college-football/game/_/gameId/401858529/oregon-michigan-st"
+        },
+        {
+          "name": "Lookout Eugene-Springfield",
+          "url": "https://lookouteugene-springfield.com/story/ducks/2026/11/20/four-different-ducks-score-as-no-13-oregon-steamrolls-michigan-state-45-7/"
+        },
+        {
+          "name": "Sports Illustrated",
+          "url": "https://www.si.com/college/oregon/football/oregon-ducks-big-ten-championship-clinching-scenarios-washington-huskies"
+        },
+        {
+          "name": "Yahoo Sports",
+          "url": "https://sports.yahoo.com/articles/oregon-conference-title-game-playoff-191727055.html"
+        }
+      ]
+    },
+    "niners": {
+      "mood": "Anxious but dominant",
+      "pulse": "Fans are celebrating a 35-10 win over the Vikings that retained their No. 1 seed. However, concerns exist due to Brock Purdy's ankle injury and Colton McKivitz being placed on IR.",
+      "storylines": [
+        "49ers retain No. 1 NFC seed after routing Vikings 35-10",
+        "#Brock Purdy suffered an ankle injury",
+        "#Colton McKivitz placed on injured reserve",
+        "#Brandon Aiyuk visiting Washington Commanders",
+        "#Next game is against Seattle"
+      ],
+      "sources": [
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/nfl/recap?gameId=401873077"
+        },
+        {
+          "name": "ESPN",
+          "url": "https://www.espn.com/nfl/story/_/id/50571034/49ers-brock-purdy-beats-vikings-blitz-hears-mvp-chants-mexico-city"
+        },
+        {
+          "name": "CBS Sports",
+          "url": "https://www.cbssports.com/nfl/news/brock-purdy-49ers-dismantle-vikings-with-35-10-rout-in-mexico-city/"
+        },
+        {
+          "name": "49ers.com",
+          "url": "https://www.49ers.com/news/ways-to-watch-and-listen-seahawks-vs-49ers-week-12"
+        },
+        {
+          "name": "Seahawks.com",
+          "url": "https://www.seahawks.com/news/how-to-watch-listen-and-follow-seahawks-at-49ers-in-week-12-on-sunday-november-29"
+        }
+      ]
+    }
+  }
+}

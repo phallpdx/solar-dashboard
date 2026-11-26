@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "restaurants": [
     {
       "name": "Mendocino Farms",
@@ -162,6 +162,13 @@
       "opened": "open",
       "summary": "A new establishment that is now open.",
       "reviews": [
+        {
+          "outlet": "Wisevoter",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-24",
+          "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQZktILTdhQUlsd3lHUmpPWmhzb2pJRTZyNHNtVXVCdVpFMjRDMkt4TTVIN3JZaHptdmRCcEVvei1zazB6ZWxxTmJaU2RYd0QteW8yNU4tdE4yZENhcFlJTHRYckVYdGc1Z0IwS2dmOW1xcEl1c2FGWXFzcTYxUkcxMC1SU3cxWklHZDBGTUtDWGFVdHhf?oc=5"
+        },
         {
           "outlet": "Portland Food Map",
           "critic": "",

@@ -1,56 +1,46 @@
 {
-  "updated": "2026-11-25",
-  "updated_at": "2026-11-25T13:18:30Z",
+  "updated": "2026-11-26",
+  "updated_at": "2026-11-26T08:52:37Z",
   "analysis": {
-    "headline": "Nasdaq and S&P 500 fell as AI trade doubts resurfaced while Dow rose on value rotation.",
-    "summary": "Tech stocks declined as confidence in the AI trade faded and Nvidia retreated. The Dow gained through value rotation. Gold and Bitcoin saw significant price drops. Oil prices decreased slightly.",
+    "headline": "Stocks mixed as AI fears and tariff concerns weigh on tech while Dow rebounds.",
+    "summary": "S&P 500 and Nasdaq fell due to AI-related volatility. The Dow rose despite market uncertainty. Oil prices increased amid energy shocks, while gold and Bitcoin saw divergent movements. Yields fell as investors sought Treasuries.",
     "sources": [
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxNMzFGWHF5OVhuNTdCU2FNeHdKNXdGWklxaXpGMVlDNUp0TVJLbHM4RGZ0aElBbnF6dVJRTVZ5cnFDZ3FRZWg1b3Y4cGNRcWM5MnBROFFkWjBfRThmSmtad0JjcW5HNFRLLXhRLUdCWlRNQ2Q2bU16QjB0Rmg5ejBFSjd5MW04S3M2a00zQzhYbGI0Tkd4Vk9wTXJTUGc5bUZnOHdxNjU3TUJmTnR6NURUbElnZF9pbVduYmNWdFZac0wyTnRVWmVWX2t2ZUVUYVQwWUpuTkdPMEprZ2dEWkxXQ0VCbUdVOEhHNm05bTJaQzRUYzBwWElDbDJocVRrU0czUTVSd1FhQk5sWDZhdkJIZWdtQV90Y0VUU29EZzJsOU9rZGdaQTVnVUFxZ05vdkk?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPWjE4Zm9DOUxVdmFFaTlaQVJMWHFaVEVGVy1JcTNEcEc3bnhET2xfaGNCdFlpbXkwS210Tkx0d3JVUWVzbzA4amhwWU1FWGxLd2E0YUJBY1lOOUNlVmlwNF83b3Bqc2dqaWVMTzUwSGFfYWNJVDZwXzh5TGp5YUZaTzZoa0dZenZfalhyelF0UUZwbllhOEZIbWNGc1V3OHQxWlhfV3ZoeGdKRURCS3dTVEFSRnk?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQcDJ0UmNqUTc2UWNoaVh0STB6ZHRZTnV6WGVPX2Q0VDhmRWU4Wk5hV2lZMTZOZUV4ZEwzOVBnVmVtbnB0eXlpekIyMVF5cG91WmVxLTNIeWx1MzhLN3czOHFLbFRuVTdYRUIwdk4zMTlfcEtLb2J3Y1lQM0l1OTREU2p5UzBxaXI5aExoOGlyUVctZlJZcllacVRzTU9zVXlNaVVMNThZRE85NWdlaEo2WUJKd3FtTVBRZ00xU0l0V2tMLTRiLUE?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxQdVlVRi1aTHJHaEhQZkh0QmdYSk1IVkQ3bGc4Z21ZdUFhUFROZWE2QnYxVFM5OFd6WEZTMDlsNkViemFlSzRoU2RVRmdTUGZCbnZqTWhWZHg4M1JlWWtQN1JQNDhqa2prbWkzQ25sMjBNa2paR1cteEkxa1NreHZkRElfR2JFZTdYajR0QlFfcnZYNi0yTW5sb0ZDcEljR1pUaGVJMg?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPUWRTQ2N0czgwTVhPdVhvZDUzeDNDRUJ6cFd0MWx1N05aSTJHaUlOdTQ5X2xieEVueHJ3VTRrb0ppNEtzbFVBRm1fU3VvV0xpMWVlUWg3c0NvWXJxS2ZabkwwejhwenhCVmhYRUdweUwwdHhTTWd1bTh2QlR1dFpvVDFHVQ?oc=5"
+      },
+      {
+        "name": "Google News: Business",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNUE1ZSDI1cldnWVJ2dFE3RnRhVFlXWXZCcW1aR3EwcEVfYUh2ZWJ1MWV6S3hDTEpXYVJ3VVlfM3Y5OGVrZzMzMHdDSzEtbkVHV3hJbDR4ODFueUtxNEVENzlBSlRjdTRqcWc1SDJ2dUlGcFRIdUNKaTJId0pPZTVfdmJCMWFVai1WTnRQdGFSc21ZTkRodVBCTVAtbUNLRW1HREwzY2xSU3Z3dGl5OWtv?oc=5"
       },
       {
         "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5YNzAwNUxMLVhwWjVNV0FCN3VrS0ZaMy1DS1Q3Q1dzOVVPM19LRXNhN3djeWpQMlg4dUR1enNmaHNQV1duekxwZ1lSLVpTT3lMN281cE80VHlja0NuSG1SXzdDdU1SbWEzRWhuQmR1NzM5d0FvaE9qazJVUFJTT2M?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQNlNnSlBpMXFaSUNvekNTTlNHTXVKV1VzdVFCUmNMNmRna0VBT3FRUm9wSWxRSDdvajRfR2Vla19IbG1ZNXlfOC0zUTJGbWZ0bTQzYU53WkF4cjdqbmxlX1lRaVFVbWhwS0daT1JtQmcxTHFWcGhzQzYtOU5CbjhfZ1dmMEhWRWtFUWJYUWk4YjF1MDB6UGFjbjNqbXpSUU5pNVh4RTM3WDdzN3FMSDlwUllSODVQVkg3NmlWTXNQSUREQWRRc0k0bnRMUWpUUEZWUGlZSQ?oc=5"
-      },
-      {
-        "name": "Google News: stock market",
-        "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNRGtvc1R6Y1RvSXFZeW5KTVdmOUkzMnE3MEFvNWt6UTJkSi1pUDZTSWs4YzdvTk5DR1NLYmtVOHBZOWhRY1NwVXZUVEVKOWNGeHpySXlpOF9qcmo5YllkTWpvb1MwRi0zOUEtbDFpQUJnMmdSUXZWSWhjdVhVOVZlbzhmUHhzQlZSRms3T2otRlV5YTlv?oc=5"
-      },
-      {
-        "name": "FinanceCalendar: US Personal Income and Outlays (PCE), Nov 25, 2026",
-        "url": "https://www.financecalendar.com/events/2026-11-25/"
-      },
-      {
-        "name": "Investrade: Weekly Event Calendar 11/23/2026 - 11/27/2026",
-        "url": "https://investrade.com/weekly-event-calendar-11-23-2026-11-27-2026/"
-      },
-      {
-        "name": "Gotrade: US Stocks Week Ahead: PCE, GDP and Dell Earnings",
-        "url": "https://www.heygotrade.com/en/news/weekly-economic-outlook-2026-11-23/"
+        "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxPNGdRVGZOYmxMSm43dF95Rk5PYTk3SDBzSzlwTmh4YjQwN1NTb1h1LUhlT01FVVktZnRPeEFhQjhTNERtcVpiQ2lwWGU4Y1lrcTlYU2RaVG9qRkVvSExSOG5JWnNMRnhqc0lLWEhtNnJONEk2MVdtT0hCT0RYQ1RhWVlSdnhSaFJzXy1nRVVQLUNiU0JIMzUtZm5YM3JSMTJKVGphN2hROTdZaWR2RFM5VWJkd1BjNlZBanU4VmNHN1hMc2hYdnV6N3JjSVpGREg1ejZlYV9WM2JCZjhuZUdoR0dQY2lxSE15NlV0RThWUnVtcGxiSlFTZy1VXzZjdXNwekl2TTFkWQ?oc=5"
       }
     ],
     "by": "local model",
-    "session": "2026-11-24",
+    "session": "2026-11-25",
     "drivers": [
-      "AI trade doubts resurfacing",
-      "Nvidia retreat",
-      "Traders betting on December Fed hike"
+      "AI fears and tech volatility",
+      "Tariff threats and inflation concerns"
     ],
-    "watch": [
-      "Today, 5:30 AM PT: October PCE inflation (the last inflation reading before the Fed's Dec. 9 decision), the second estimate of Q3 GDP and weekly jobless claims",
-      "Today, 11 AM PT: Federal Reserve Beige Book",
-      "Thursday: US markets closed for Thanksgiving",
-      "Friday: stock markets close early at 10 AM PT (1 PM ET), bond markets at 11 AM PT"
-    ]
+    "watch": []
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its largest helium field online and opened a purification facility in southwest Saskatchewan. The Stewart Valley plant paves the way for a potential liquefaction facility. Market conditions include tightening supply and the U.S. declaring helium a critical material.",
+    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. The global helium market faces shortages, prompting the U.S. to declare helium a critical material.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -66,11 +56,17 @@
       },
       {
         "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPY1FRTXBmS0toSW5tT1JHSU5Tb1RKREdCLUhpb3dwalhYVUN3OXdyLW9EX1VxVFViREZOTl9Id04zMkQ4VGxQZU5Qei10NkdoU2xnVkdIZm1BU0VXTWxBekV6VkllWEowU3c5REo2VDc4VnltZzRkT3YxSExVZjVtQS1rZzFGNXZTaUZRNVJ3?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5fV2ZDeFB2b1JvMzNtbW56ZlptMzBUQ0FuQ1N6aEV0d29sN2sxcE1wN09ScHNBbnN4WGNoVHRDNExqNHk3VU5uZjczRlA5cE8yeC1tT0dZdjR5R3FSb21lT0VMUHRycVQ4T0Z1U3RsV1Y2WTFYNnUxWk9Eb2hjZnM?oc=5"
       }
     ],
     "by": "local model",
     "items": [
+      {
+        "title": "FEATURE: Saskatchewan’s New Subsurface Economy: Helium, Lithium and Natural Hydrogen",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPdUh3Wm02RExHSXlIblA3bXd0Y1lBVnBBaDNHc19WNERxX0pfXzJEaEM2VkppMGZLZEJ6YmtfT1dkUlh2Yk8xbV9tVThWYVYwWnRsNkYtLUxneHU2aUtPSmo1cTllYmkwY19valZMbklHSGZVUHBRTU85cmlmc0hBMlRHbUkxc0RyQXVRR3VMOGc0cHo0TWRsU1lydDlkbVMwMnNHRHFvcWJYMlRWRm93?oc=5",
+        "source": "Google News: helium market"
+      },
       {
         "title": "Canadian helium firms eye 2027 restart of Saskatchewan processing plant",
         "date": "2026-11-25",
@@ -78,9 +74,15 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Helium Evolution Incorporated (HEVI.V) Stock Price, News, Quote & History",
-        "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5WcDdvVnNhWnctWFFTemY3TE5XS0RDZ3ZsSEtjNmQwZU9iZ1JhSHNMU3E1TFZEcUp5ZjR0YTA4OWV1d2RtbjRsdThoUG5TYmFvalNtOQ?oc=5",
+        "title": "REV confirms helium flows at Alberta–Montana target",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOaWx2azQxOEdSVFZUNk14dFVTQ1RxNWV3UmRCZUZWeHQwbGp0TnRJUXhqcW5JVFlzdFMtdFhLWjJsZnJ6YW1Kand5YV9vMHFVYXFWTjJLUHhobC1QeXdMaTk5ZGt0MFJLelVOSU45bHRxblJHQk4wNG81TTZnQ1htYndncW5CWl9zZnA5OC1BRy14Vmx0eE1LemszMFhOT1ZI?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "How Is Helium Evolution (TSXV:HEVI) Preparing for Grasslands Drilling?",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQSFJ2MDctb1hZNTEzN2MxWFJrZFg2b09ZeEFBOXB2UDVZek5tcDUwM3NTQUUxMkpnb3Biazl3MHRVNjNBMmdEb2MtalRjTnkxTDhzc0JJRDZ1VVhQZGNNd3R1X1AzTmVQbzR5QlZjZloxQmlNQVpXWDR0dTdmVEFUVUh3eHhFOEdfbm9BSi1hZFRjeEFMTzFiY3p0OExrNm9hMzhoVF9oa3l6S3NJcWc?oc=5",
         "source": "Google News: helium market"
       },
       {
@@ -88,84 +90,60 @@
         "date": "2026-11-24",
         "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxPRnk1N1VsMGE4M3BTNHBxVk9HbXdqbHhKSkkyLUdBejdMYVlUZkM5ejRYYVUyRERoUVBDc2MxVVNSSlpBcGEzcmVJQkZnLU9PZGNxR1dwYzVNN0tfb3dHcnFFck1XUkhqdGlmQWM4eEdPY1piZ1ZRX2s5LUlrQTBpVFBfQ2QzdWFud0NEM19lX2FoSkhkRy1LZVRoZFNyY2NGRFRDTDRPVFB4RWp5MGFucThuWHZoY002cU56ZVRJSXBIYnBYTmsxeC1Xb1Y0TEFYZWF0NnpWaER4d3FzWUdLMmRMMmc4TU9PQzR3LU9SRlBWMkJxYzB5aEtJZVc3Q19sLVpHU09fZ052MkhBWkNKODJhTXBYQQ?oc=5",
         "source": "Google News: helium market"
-      },
-      {
-        "title": "REV Exploration Confirms Helium Discovery with Strong Initial Gas Flow at Aden Dome",
-        "date": "2026-11-24",
-        "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNQm5UT2JwLUEzM3Z5bHBSU1hUdjI1eEJ0b3M3aG1KbHh1RHBDNXAtTUpXNEJhWXF3T2QyOEVfYTZScTNET2c3cFRRdVVuYXZDQVZFdFhKazQ3eFdjT0M0SXpXYzlQdExDb2FMbzFjSlBYWGVqcUJMSXRRbXlSenVjVG5iVnpjaUppdUJsZEJPN0QzNWJUYUZ2U0RfWGhCek5OTkFtT2llaDg1TThqMDVGeV9JTjlIbWNaTFplY0VxNWppRHI4OWlDTGpkZXBadkxoVWg0MlRyM2txUQ?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
-        "title": "Why helium exploration is gathering pace in Saskatchewan",
-        "date": "2026-11-23",
-        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNaXlibFVnOUxhUS1qMW5rQ0NKUVhzWXFRQWk3UGRFbW40Tkt0REhsYXltSHkzVlM4ZGFpY3hxU3VWXzZCNjRoZFdxS3FHLU90LWRUUXgzTzRfSkVNVUxCN25jczNBTGQ3OS03VEtvb01RY2RUR3FEWktPX1JFRDVhSXJDSjVYbEFkSmZVY05hTlFDOUxHNUJiRTQ0WUpEUS01RlI2TWFnSQ?oc=5",
-        "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
-    "headline": "Home sales slow as buyers adjust to elevated mortgage rates.",
-    "summary": "Prices keep climbing in Oregon and U.S. home sale prices lose steam. Home sales are slowing. Mortgage rates recently climbed to 7.40%.",
+    "headline": "Portland pending home sales dropped 20% year over year.",
+    "summary": "Pending home sales in Portland fell 20% compared to last year. Builders are slashing prices to move inventory. Mortgage rates show small decreases and recently climbed to 7.42%.",
     "sources": [
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObFpwdEFMVGZGWERveVVCWEh1dVQ5RjBDSFFxcENSLUx1WlRQbllsYlBMSk4waDBtRDlXdmE1NTdSY0JfN3pQVmpEcHJ0bnI3UjZoOWxxVzlQTnNMQjlIc04wbm1BSUU0anVCSm15ZDloenpCdF9OY1lhY3g5Zk1HWFJPUWRkaEo3V0h1Z29UejBjRXdEOVpnc2xmWnpZNTBRdTVVTTJGNm1iUVA0YWo3bEFYbw?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNX3JzSi1GM3hVdVN6UjhnWURrMlZpWWR5TENZVnI2SVZrcU5OUFNONTEtbnF3WmJsQ19aZjFVZWZsQXJMdHlGaW5jQURrSGpUckhPQ0ZVQmRRYVNhWE5BSzY4ZmZsRjJBb0tOYjlOVHNJODVHMlBpT1R4NmZGN0VBZWxhNi1JaDVMcWc?oc=5"
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFByNWlVTk41NThkOXA4YkJIYXBlZE4teWdEUUJsZ1hHNW9TVWVGM1JzaUJoajNfZldGLWxRVnNDSkNDR0R3NXk0dVRMOVAtMzFiOTlkVDktTlpuM1F3S01yMUJB?oc=5"
-      },
-      {
-        "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQWXBtOWhrOHpmTnlXbXhnSGV4YVRfMTYtVnZDcmhrYl9kVTFkTjNWY0kyVXlxOThTV1RQVVljVVBjbUFHQ1VDUzBZQktSS1Rqc200MGxwZm5ZWFBwdkNBLXBVTEk4R21mcjVjdFY5X2JVUU1ENnAwMTIyb1ppLWl4SnZEZmtUUnJjdUQ1WlZUR1JJRjFLdWlJVG5UeEJNWXBy?oc=5"
       },
       {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNX1laeEhzTjhjV1c5QkNGNkluYnRmZno3TkNJUkgzMkVXcUM5aHRqeklvU3FyWkppeEs5cVY4a3VQaE5WV01GdF81WDN0Y1ZxY1VBLXczLVpUdmM5UXN6Y3ZDQUNpUXJCLUZZaTBaVFBBUWpaRjZ1T1JaODAyS09MQm9NbFlxbm1xaFB0d2UwMUhWVmhYTXA3ZlRWeDdyQmpyQ3pKQVV2OA?oc=5"
       },
       {
-        "name": "Daily Tidings: Portland home sales drop more than 20% from a year ago (RMLS October data)",
-        "url": "https://www.dailytidings.com/portland-home-sales-drop-more-than-20-from-a-year-ago-but-prices-still-wont-budge/"
-      },
-      {
-        "name": "Freddie Mac: Mortgage Rates Average 7.28% (Nov 19, 2026)",
-        "url": "https://www.globenewswire.com/news-release/2026/11/19/3406994/0/en/mortgage-rates-average-7-28.html"
+        "name": "Google News: mortgage rates",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5lNFZKQVNleXNfeW5IYjNyUUVnYVpHWFRPdjZfYXFTOEFnR3BjMjRfeVIybzZ4RmMzODktU2ZwUkZLUkdDNGNrV0w1M05pT3BUQmREOU1oTDlCZzVVVHZMY0NwdjZSMWdwTWRhcHVtWQ?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
-        "title": "Nearly every major city is a buyer’s market. Here’s why Boston still isn’t.",
-        "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOV2VsVDZXSmlDZ0FOZkNfRzFLY3BXM2Q3WGQ0Qm9zOGRKZTlydHpaSThiNE5VMHdTelhQY3hvbHhIS2pkYk5KdXRzZVdWS21xQVQwdDlkVkZWQ0lZZ2R1TXlPVGJEZ0RxdEQyd1g3dWwtX0o5dTFiZ0ZsbFFsR2ZkaEFsQmxyNzNUUWlqYkhTLUUzTVVCYlNsbmUwWE41SUF6c001X3Fiaw?oc=5",
-        "source": "Google News: Portland housing"
-      },
-      {
-        "title": "Mortgage rates today, Nov. 25, 2026: Rates show small decrease",
-        "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5lNFZKQVNleXNfeW5IYjNyUUVnYVpHWFRPdjZfYXFTOEFnR3BjMjRfeVIybzZ4RmMzODktU2ZwUkZLUkdDNGNrV0w1M05pT3BUQmREOU1oTDlCZzVVVHZMY0NwdjZSMWdwTWRhcHVtWQ?oc=5",
+        "title": "Mortgage rates today, Nov. 26, 2026: Rates take another small step down",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE53a053WkQ5R2tQenlYRjBsaTFiYjRETFVBb014ZVRQdms3ejNPMG5hX19XdTVMbW1Rd3R3UlF1LWZuSE5zVW5QN05KcHoyMkdydzVaaDNtc2ZhUHM2X0F4X1d3MzFabTduRlZuVUc0MA?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage and refinance interest rates today, Wednesday, November 25, 2026: Rates mixed ahead of PCE report",
-        "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxQaFFVeDJRcjBzdVRaaTY0OV9TZE9BbW5LNmV1Mk1YUTJWN2FZUXhiRy12SmpTb2UzSzBtQWpSRlNiZ29TeXNQZXZJeHQ4NVREeHhDbWtiQU12MWppdDZrTHlmWXUtZUhZUmtxZms4WG1kdkREa05LdnRoLVB1QmZaamV1c2pUR0Z1RGFrdnY2cEtkZWJyOGR2SHgxVXYyZXJWV2RlTmRCbUJMaHlUdnBSRHJSRTVnYzlldVJFZFJWbU9ZRnNpZ3E3WHlRbGxwR3UwSWFuMWZUZ09zS000QnAtM0xzbnpvM0JCMG1faHRzYTY5QTY1WFRKYUFSekxBZ2E3RzlFVnpIRWZEdw?oc=5",
+        "title": "30-year rate slips, but stays atop 7% - Northwest Arkansas Democrat-Gazette",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPYS1QdmdPV24wR3puUkJmeUlfVWk1WjJsLUxvaXZNajRqeUNFamVHTEdqUThzQlFsVDdLXzllOFdPcGJuT3ZxZFc0UHAyYjh6ckoxRjF5b0YyYnBnWWtBc2JGMHlzTU11WXEtZmJ6ZkxJTE5sZGRfc0tuNVpnZjliYm9fQTJCdw?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "High Frequency Data: Inventory Up, Demand Down Year-over-year",
-        "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE9Cd2tXREVIMFhrUVFoUlM1dkRJVW9hUmlmR1NNNGctQ1h4VW1XQzlGMndwTlRZalFROXV1MmNTbVloT2dFVnlucktRZVNoVTMwZklBbGVBaVBRbmIySktDNHAyUS1JTWs5cmZ6S0ZCN2VyR3ZSOHI4STV5blhRY0U?oc=5",
+        "title": "10-year yield below 4.85% lifts holiday mortgage rate outlook",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5UWmlRaU1PRW5vcm5XeXdfenRUZDluRnBfSFFZWjlVSnNOakl5blhNMHMxZWJkdFl1Y3hiU0N0LTIxVzNVcXFxU1NrdEttVUtkS3hrMm1LWmw3MEU0eFNWUGc0YW4zN2VydXhMQzVnamxwUzF1SmxCMA?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Today’s home equity loan and HELOC rates, Nov. 25, 2026",
-        "date": "2026-11-25",
-        "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFBubG1MdnlSdEptSndsWWRpSUtscGpMX3VFc2tTMnM0ODN3ZnpNdFFYMVlIZ1o4TUR6Znc3ZlhEWU5DaXVtMjdrWkVlY20zUlVrOHZZSjg2TkxvWE5Cdm9NYkU0eDVmZkhW?oc=5",
+        "title": "Mortgage rates dropped in the last week | National News | 2news.com",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZmFTdHhGdk1zZk1vcGwzYkJ0ZUdjWUJTOUVjRFA5QVlhYzdaaHFMc1pfSjh1ODZzR3MtdGcxYUtYWXA0dmpTZmJXOEtidDBCa0lRUFVNUkwtWmxHOEtXcE1zODdYV2hFZXdzOG5uX216R2huVkxpMGtpcGpqY3hTTlNXWk45WmtNQVBLZ19MZURYVmFBcV94V0tkbk9adDczM3Z0OVc0N3NDS0Y3S1g5N2Q3SkFkN29YQ3liSURPUWI?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Mortgage Rates Dip, but Homebuyers Are Paying $325 More a Month on Average",
+        "date": "2026-11-26",
+        "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPZUZXdUR0U3IyZkVoSkVaTG5VcUtMTGk5MGR5ckt4UXgtbUZOYVdLOU54djVkVWVxY2tDR2g0Qmk0RjhtbWktQjNobTZScXVhRlk2dzdKRElFVUwyX2FMdWxMekJ3TlEtbTRia1V1NllBUWEzNlhBMU81dTlfWTJHanlTUWtQQ0tPS1JPa2Z0anlGa0pNWGZySS1rS2FkVU9MMkhfb0E0U1VEQQ?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],

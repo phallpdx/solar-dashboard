@@ -1,6 +1,13 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "deals": [
+    {
+      "title": "Paramount Build Your Collection (4K/HD Digital Films)",
+      "store": "Paramount+",
+      "detail": "Escape From Alcatraz and more, $3.99 or less",
+      "ends": "2026-11-30",
+      "url": "https://slickdeals.net/f/20375037-fanflix-paramount-digital-movies-3-6-w-code"
+    },
     {
       "title": "Barnes & Noble 50% off Criterion Collection sale (4K UHD included)",
       "store": "Barnes & Noble",
@@ -23,83 +30,6 @@
       "url": "https://hd-report.com/2026/11/12/kpop-demon-hunters-4k-uhd-blu-ray-dvd-50-off/"
     },
     {
-      "title": "WALL-E (Criterion 4K UHD + Blu-ray)",
-      "store": "Amazon",
-      "detail": "$24.98 with free shipping with Prime or on $35+, per a Slickdeals post from Nov. 17.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20326020-wall-e-criterion-collection-4k-uhd-24-98-free-shipping-w-prime-or-on-35"
-    },
-    {
-      "title": "Blow Out (Criterion 4K UHD + Blu-ray)",
-      "store": "Amazon",
-      "detail": "$26.36 per a Dealnews listing from Nov. 23, which shows the deal expiring Dec. 23.",
-      "ends": "2026-12-23",
-      "url": "https://www.dealnews.com/s313/Amazon/22424961.html"
-    },
-    {
-      "title": "Back to the Future Trilogy: 40th Anniversary Edition (4K + Blu-ray + Digital)",
-      "store": "Amazon",
-      "detail": "$24.99 per a Slickdeals post from Nov. 19; the poster called it the lowest price yet for the 4K set.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20341158-24-99-back-to-the-future-40th-anniversary-trilogy-4k-uhd-blu-ray-digital-at-amazon"
-    },
-    {
-      "title": "The Lord of the Rings: Motion Picture Trilogy (4K UHD, Extended + Theatrical)",
-      "store": "Amazon",
-      "detail": "$50 (down from $90) per a Slickdeals post from Nov. 23; Walmart had the same price.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20382057-the-lord-of-the-rings-the-motion-picture-trilogy-extended-theatrical-4k-ultra-hd-49-amazon-com"
-    },
-    {
-      "title": "Amazon 3 for $33 on select 4K Blu-rays",
-      "store": "Amazon",
-      "detail": "Buy three eligible 4K discs for $33, per a Slickdeals post from Nov. 21; titles listed include Apollo 13, Waterworld, Creed II, Fast X and Jurassic World. Only items sold by Amazon count.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
-    },
-    {
-      "title": "GRUV Black Friday: 4K UHDs $12.99 each, plus 3 for $33",
-      "store": "GRUV",
-      "detail": "GRUV's Black Friday collection lists 4K UHDs at $12.99 each, including Obsession, Supergirl and Wicked: For Good. A Nov. 13 report says the sale has 49 titles at $12.99 (One Battle After Another among them) and a separate 3 for $33 4K offer.",
-      "ends": null,
-      "url": "https://gruv.com/collections/black-friday-4k-uhd-deals-limited-time-only"
-    },
-    {
-      "title": "100+ 4K Blu-rays $13 and under (GRUV via Walmart)",
-      "store": "Walmart",
-      "detail": "Per a Slickdeals post from Nov. 12, GRUV's Walmart storefront has 4K titles such as Superman, The Super Mario Galaxy Movie, F1, Akira, Wuthering Heights and Mortal Kombat II at about $12.99 each.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20299698-100-4k-blu-rays-13-under-akira-superman-mission-impossible-batman-more-free-s-h"
-    },
-    {
-      "title": "The Polar Express (4K Ultra HD + Blu-ray)",
-      "store": "Walmart",
-      "detail": "$9.99 with free shipping from GRUV via Walmart, per a Slickdeals post from Nov. 23.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20376540-the-polar-express-4k-ultra-hd-blu-ray-9-99-walmart-com"
-    },
-    {
-      "title": "A Christmas Story (4K Ultra HD + Blu-ray)",
-      "store": "Walmart",
-      "detail": "$9.99 from GRUV via Walmart, per a Slickdeals post from Nov. 23; returnable until Jan. 31, 2027.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
-    },
-    {
-      "title": "National Lampoon's Christmas Vacation (4K Ultra HD + Blu-ray)",
-      "store": "Walmart",
-      "detail": "$9.99 from GRUV via Walmart, per a Slickdeals post from Nov. 23.",
-      "ends": null,
-      "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-4k-uhd-blu-ray-9-99-walmart-com"
-    },
-    {
-      "title": "Walmart Black Friday movie deals (4K titles)",
-      "store": "Walmart",
-      "detail": "Walmart's Black Friday movies page lists 4K combos such as Disclosure Day $12.99 (was $29.96), A Charlie Brown Thanksgiving $9.99, Ratatouille $18.53 and Coco $21.18.",
-      "ends": null,
-      "url": "https://www.walmart.com/shop/deals/movies-music-and-books/movies-and-tv"
-    },
-    {
       "title": "MVD Annual Black Friday & Cyber Week Sale",
       "store": "MVD",
       "detail": "3,500+ titles on sale through Dec. 7, prices from 99 cents. 4K example on MVD's sale page: Maniac (4K UHD + Blu-ray) $24.99, down from $49.95.",
@@ -114,18 +44,95 @@
       "url": "https://www.radiancefilms.co.uk/collections/sale"
     },
     {
-      "title": "Umbrella Entertainment Black Friday (4K UHD)",
-      "store": "Umbrella Entertainment",
-      "detail": "Umbrella's Black Friday page offers buy one get one free on selected releases and 60% off the Terrifier box set; Collector's Editions, new releases and pre-orders are excluded. The page doesn't show end dates. Ships from Australia.",
-      "ends": null,
-      "url": "https://shop.umbrellaent.com.au/collections/sale-2"
+      "title": "Blow Out (Criterion 4K UHD + Blu-ray)",
+      "store": "Amazon",
+      "detail": "$26.36 per a Dealnews listing from Nov. 23, which shows the deal expiring Dec. 23.",
+      "ends": "2026-12-23",
+      "url": "https://www.dealnews.com/s313/Amazon/22424961.html"
     },
     {
-      "title": "Shout! Factory 4K UHDs on sale",
-      "store": "Shout! Factory",
-      "detail": "Shout's 4K on-sale page lists Collector's Edition 4K + Blu-ray sets such as The Holdovers $27.99, Nightcrawler $32.99 and End of Watch $33.23.",
+      "title": "Obsession: Collector's Edition",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital, $11",
       "ends": null,
-      "url": "https://shoutfactory.com/collections/4k-uhd-on-sale"
+      "url": "https://slickdeals.net/f/20391558-obsession-collector-s-edition-4k-ultra-hd-blu-ray-digital-4k-10-99-amazon"
+    },
+    {
+      "title": "Blade Runner: Final Cut",
+      "store": "Amazon",
+      "detail": "4K UHD + Blu-ray, $12.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20390931-blade-runner-final-cut-4k-uhd-bd-4-disc-set-for-12-99-at-amazon"
+    },
+    {
+      "title": "The Super Mario Galaxy Movie: Collector's Edition",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital, $10.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20389947-the-super-mario-galaxy-movie-collector-s-edition-blu-ray-digital-9"
+    },
+    {
+      "title": "Frosty the Snowman",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Blu-ray + Digital, $9.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20385306-9-99-frosty-the-snowman-4k-ultra-hd-blu-ray-digital-at-amazon"
+    },
+    {
+      "title": "The Lord of the Rings: Motion Picture Trilogy",
+      "store": "Amazon",
+      "detail": "4K UHD Blu-ray, Extended/Theatrical, $50",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20382057-the-lord-of-the-rings-the-motion-picture-trilogy-extended-theatrical-4k-ultra-hd-49-amazon-com"
+    },
+    {
+      "title": "Dungeons & Dragons Honor Among Thieves",
+      "store": "Amazon",
+      "detail": "4K Ultra HD + Digital, $9.99",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20374752-9-99-dungeons-dragons-honor-among-thieves-4k-ultra-hd-digital-at-amazon"
+    },
+    {
+      "title": "The Polar Express (2004)",
+      "store": "Walmart",
+      "detail": "$10 (4K Ultra HD + Blu-Ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376540-the-polar-express-4k-ultra-hd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "National Lampoon's: Christmas Vacation (1989)",
+      "store": "Walmart",
+      "detail": "$10 (4K Ultra HD + Blu-Ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376525-national-lampoon-s-christmas-vacation-1989-4k-ultra-hd-blu-ray-10-free-s-h"
+    },
+    {
+      "title": "A Christmas Story (1983)",
+      "store": "Walmart",
+      "detail": "$10 (4K Ultra HD + Blu-Ray)",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20376516-a-christmas-story-4k-ultra-hd-blu-ray-9-99-walmart-com"
+    },
+    {
+      "title": "4K Blu-ray Movies: Apollo 13, Waterwold, The Lost Boyz & More",
+      "store": "Amazon",
+      "detail": "3 for $33",
+      "ends": null,
+      "url": "https://slickdeals.net/f/20364855-33-for-3-items-4k-blu-rays-at-amazon"
+    },
+    {
+      "title": "Alien: Covenant, Kingsman: The Golden Circle, Logan, War for the Planet of the Apes",
+      "store": "Best Buy",
+      "detail": "$14.99 sale on certain UHD BDs",
+      "ends": null,
+      "url": "https://forum.dvdtalk.com/blu-ray-bargains/633425-4k-ultra-hd-blu-ray-discounts-deals-15-printthread.html"
+    },
+    {
+      "title": "HMV 4K Blu-ray Black Friday sale",
+      "store": "HMV",
+      "detail": "20% off a massive selection of 4K discs using code HIDEF20",
+      "ends": null,
+      "url": "https://www.techradar.com/televisions/blu-ray/hmvs-4k-blu-ray-black-friday-sale-has-arrived-ive-searched-through-and-here-are-the-top-12-discs-i-recommend-all-of-which-ive-personally-tested"
     }
   ],
   "upcoming": [],

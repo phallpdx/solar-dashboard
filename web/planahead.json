@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "items": [
     {
       "title": "Mt. Hood National Forest Christmas tree permit",
@@ -34,28 +34,6 @@
         {
           "name": "Oregon Zoo",
           "url": "https://www.oregonzoo.org/lights"
-        }
-      ]
-    },
-    {
-      "title": "Topaz Farm holiday market and trees, Sauvie Island (opening Thanksgiving week)",
-      "kind": "Buy",
-      "action": "Plan a tree trip on Sauvie Island; Santa visits on weekends Nov 28 to Dec 13.",
-      "starts": "2026-11-25",
-      "by": null,
-      "why": "Event listings show the holiday market and tree sales on dates from Nov 25 through the weekend after Thanksgiving; the farm's own page describes fresh-cut noble and Douglas firs (not U-cut) and Santa photos on weekends but doesn't post 2026 dates, so check before going.",
-      "sources": [
-        {
-          "name": "Topaz Farm Holiday Market + Trees",
-          "url": "https://topazfarm.com/-holiday-market"
-        },
-        {
-          "name": "ma.to event listing (Nov 25)",
-          "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-25"
-        },
-        {
-          "name": "ma.to event listing (Nov 29)",
-          "url": "https://ma.to/event/holiday-market-christmas-trees-2026-11-29"
         }
       ]
     },

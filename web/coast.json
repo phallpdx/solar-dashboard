@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-26",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -56,6 +56,14 @@
       "town": "Seaside",
       "summary": "TV and movie theme song karaoke party starting at 6 pm.",
       "url": "https://www.seasideor.com/event/charkis-sagittarius-birthday-karaoke-party-at-the-lyons-den/"
+    },
+    {
+      "name": "Haystack Holidays",
+      "date": "2026-11-30",
+      "end": null,
+      "town": "Cannon Beach",
+      "summary": "Holiday events occurring in November and December.",
+      "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
     },
     {
       "name": "Juliet Yänko New Album Release Event",

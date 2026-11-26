@@ -1,42 +1,6 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-26",
   "shows": [
-    {
-      "artist": "Scott Bradlee's Postmodern Jukebox",
-      "kind": "Vocal",
-      "date": "2026-11-25",
-      "time": "8:00 pm",
-      "venue": "Revolution Hall",
-      "price": null,
-      "what": "Scott Bradlee's vintage-jazz collective, which recasts pop hits in swing and jazz styles, on its Future Is Vintage tour; found only on ticket listings, not on the venue's own page.",
-      "tickets": "https://www.eventworld.com/postmodern-jukebox-portland-tickets-11-25-2026/event/409152",
-      "sources": [
-        {
-          "name": "Eventworld ticket listing",
-          "url": "https://www.eventworld.com/postmodern-jukebox-portland-tickets-11-25-2026/event/409152"
-        },
-        {
-          "name": "Event Tickets Center listing",
-          "url": "https://www.eventticketscenter.com/scott-bradlees-postmodern-jukebox-portland-tickets/1405558/e"
-        }
-      ]
-    },
-    {
-      "artist": "greaterkind",
-      "kind": "Local",
-      "date": "2026-11-25",
-      "time": "06:30 PM",
-      "venue": "The 1905's",
-      "price": "$30",
-      "what": "A Portland band blending jazz fusion, funk, and R&B.",
-      "tickets": "https://the1905.turntabletickets.com/",
-      "sources": [
-        {
-          "name": "The 1905 (Turntable Tickets)",
-          "url": "https://the1905.turntabletickets.com/"
-        }
-      ]
-    },
     {
       "artist": "Charlie Brown III and Friends",
       "kind": "Local",
@@ -390,6 +354,38 @@
       ]
     },
     {
+      "artist": "CHUCK ISRAELS JAZZ ORCH",
+      "kind": "Big band",
+      "date": "2027-01-07",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "Performance by Chuck Israels Jazz Orch.",
+      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/15066803?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/15066803?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "MEL BROWN B3 ORGAN GROUP",
+      "kind": "Big band",
+      "date": "2027-01-14",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "A jazz organ group performance.",
+      "tickets": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/15066733?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/mel-brown-b3-organ-group-jack-london-revue-tickets/15066733?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
       "artist": "Mike Prigodich Quartet (MP4)",
       "kind": "Local",
       "date": "2027-01-16",
@@ -406,6 +402,22 @@
       ]
     },
     {
+      "artist": "The Tracy Stone Band",
+      "kind": "Local",
+      "date": "2027-01-16",
+      "time": "8:00 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Performance by The Tracy Stone Band.",
+      "tickets": "https://www.ticketweb.com/event/the-tracy-stone-band-jack-london-revue-tickets/15060853?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/the-tracy-stone-band-jack-london-revue-tickets/15060853?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
       "artist": "Black Tie/White Noise: Low with The Christopher Brown Quartet (Early Show)",
       "kind": "Local",
       "date": "2027-01-30",
@@ -418,6 +430,38 @@
         {
           "name": "Web search: touring jazz in Portland",
           "url": "https://www.ticketmaster.com/discover/portland-or?categoryId=KZFzniwnSyZfZ7v7nJ&classificationId=KnvZfZ7vAvE"
+        }
+      ]
+    },
+    {
+      "artist": "CHUCK ISRAELS JAZZ ORCH",
+      "kind": "Big band",
+      "date": "2027-02-04",
+      "time": "7:00 pm",
+      "venue": "Jazz Titan Thursdays",
+      "price": null,
+      "what": "Performance by Chuck Israels Jazz Orch.",
+      "tickets": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/15066813?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/chuck-israels-jazz-orch-jack-london-revue-tickets/15066813?pl=jacklondon&REFID=clientsitewp"
+        }
+      ]
+    },
+    {
+      "artist": "Kahil El'Zabar – Ethnic Heritage Ensemble",
+      "kind": "Touring",
+      "date": "2027-02-07",
+      "time": "5:30 pm",
+      "venue": "Soul'd Out Presents",
+      "price": null,
+      "what": "Black History Month Tour performance.",
+      "tickets": "https://www.ticketweb.com/event/kahil-elzabar-ethnic-jack-london-revue-tickets/14397904?pl=jacklondon&REFID=clientsitewp",
+      "sources": [
+        {
+          "name": "Jack London Revue",
+          "url": "https://www.ticketweb.com/event/kahil-elzabar-ethnic-jack-london-revue-tickets/14397904?pl=jacklondon&REFID=clientsitewp"
         }
       ]
     }

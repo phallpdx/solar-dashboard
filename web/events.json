@@ -303,27 +303,17 @@
       "title": "WWE Friday Night Smackdown",
       "date": "2027-01-29",
       "ends": null,
-      "venue": "Moda Center",
+      "venue": "Moda Center, Rose Quarter",
       "kind": "Sports",
-      "why": "No traffic info provided.",
+      "why": "Live Friday-night TV taping of WWE SmackDown at the Moda Center, with tickets on sale since Nov. 11, so expect evening Rose Quarter traffic and busy MAX trains.",
       "sources": [
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/wwe-jan-29-2027"
-        }
-      ]
-    },
-    {
-      "title": "Harlem Globetrotters Rivalry Tour",
-      "date": "2027-01-31",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Sports",
-      "why": "No traffic info provided.",
-      "sources": [
+          "name": "WWE event page",
+          "url": "https://www.wwe.com/event/friday-night-smackdown-96"
+        },
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/harlem-globetrotters-jan-31-2027"
+          "name": "WWE 2027 dates",
+          "url": "https://www.wwe.com/article/wwe-announces-11-new-event-dates-to-kick-off-2027"
         }
       ]
     },
@@ -331,41 +321,35 @@
       "title": "Gracie Abrams",
       "date": "2027-01-31",
       "ends": "2027-02-01",
-      "venue": "Moda Center",
+      "venue": "Moda Center, Rose Quarter",
       "kind": "Concert",
-      "why": "No traffic info provided.",
+      "why": "Two 8 p.m. arena shows on her Look at My Life Tour with Del Water Gap opening, Sunday and Monday nights, so the Rose Quarter is busy two evenings in a row.",
       "sources": [
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/gracie-abrams-jan-31-2027"
+          "name": "SiriusXM tour dates",
+          "url": "https://www.siriusxm.com/blog/gracie-abrams-tour"
+        },
+        {
+          "name": "Vice tour dates",
+          "url": "https://www.vice.com/en/via/gracie-abrams-look-at-my-life-tour-2026-27/"
         }
       ]
     },
     {
       "title": "Portland Winter Light Festival",
-      "date": "2027-02-01",
-      "ends": null,
-      "venue": "",
-      "kind": "Holiday lights",
-      "why": "Glowing sculptures and twinkling lights.",
-      "sources": [
-        {
-          "name": "Travel Portland",
-          "url": "https://www.travelportland.com/events/portland-winter-light-festival/"
-        }
-      ]
-    },
-    {
-      "title": "Bigger Than Life Fest",
-      "date": "2027-02-06",
-      "ends": null,
-      "venue": "Moda Center",
+      "date": "2027-02-05",
+      "ends": "2027-02-13",
+      "venue": "Pop-up installations across Portland and the Central City",
       "kind": "Festival",
-      "why": "No traffic info provided.",
+      "why": "The 12th annual free festival of light art runs nine nights at installations in parks, public spaces and storefronts around town, drawing evening crowds downtown and on the east side.",
       "sources": [
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/bigger-than-life-fest-feb-6-2027"
+          "name": "Portland Winter Light Festival",
+          "url": "https://www.pdxwlf.com/"
+        },
+        {
+          "name": "PDXWLF call for participation",
+          "url": "https://pdxwlf.com/?p=5095"
         }
       ]
     },
@@ -373,13 +357,17 @@
       "title": "Phoebe Bridgers",
       "date": "2027-02-17",
       "ends": null,
-      "venue": "Moda Center",
+      "venue": "Moda Center, Rose Quarter",
       "kind": "Concert",
-      "why": "No traffic info provided.",
+      "why": "Wednesday 7:30 p.m. opening night of her 2027 Lost Tour run, with Grouper opening, so expect weeknight Rose Quarter traffic and crowded MAX trains.",
       "sources": [
         {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/phoebe-bridgers-feb-17-2027"
+          "name": "KATU",
+          "url": "https://katu.com/news/entertainment/phoebe-bridgers-bringing-lost-weekend-tour-to-portland-in-february-17-grouper-moda-center-oregon-dates-performance-live"
+        },
+        {
+          "name": "mxdwn",
+          "url": "https://music.mxdwn.com/2026/11/12/news/phoebe-bridgers-announces-spring-2027-north-american-tour-dates/amp/"
         }
       ]
     }

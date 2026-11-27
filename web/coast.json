@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -8,14 +8,6 @@
       "town": "Cannon Beach",
       "summary": "Holiday events in Cannon Beach.",
       "url": "https://www.cannonbeach.org/haystackholidays/"
-    },
-    {
-      "name": "Seaside Turkey Trot 5K Family Run at SEPRD",
-      "date": "2026-11-26",
-      "end": "2026-11-26",
-      "town": "Seaside",
-      "summary": "5K family run starting at 9 am. Doors open at 8 am.",
-      "url": "https://www.seasideor.com/event/seaside-turkey-trot-5k-family-run-at-seprd-2/"
     },
     {
       "name": "Holiday Festival & Market",
@@ -130,12 +122,28 @@
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPampUdVpOeExaOWM2WkJwMVk0WVRSOU9YTVdkNGxTbWFQWm9QcS12a2J0eUNpZ1BydGJsUTk4VkdpN1N2dGZZajdVTENNb3B2N21SZjU1bDlzcnRaaUJYOFVrQVdNMXV0aVhQSXZWSUV1SWIxLVBXcUF5VURRbnpueGJWRVpfZw?oc=5"
     },
     {
+      "name": "Army vs Navy football game",
+      "date": "2026-12-12",
+      "end": "2026-12-12",
+      "town": "Seaside",
+      "summary": "Big screen showing the football game with food available.",
+      "url": "https://www.seasideor.com/event/army-vs-navy-football-game/"
+    },
+    {
       "name": "Seaside vs Baker Boys Varsity Basketball",
       "date": "2026-12-17",
       "end": null,
       "town": "Seaside",
       "summary": "Boys varsity basketball game.",
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPampUdVpOeExaOWM2WkJwMVk0WVRSOU9YTVdkNGxTbWFQWm9QcS12a2J0eUNpZ1BydGJsUTk4VkdpN1N2dGZZajdVTENNb3B2N21SZjU1bDlzcnRaaUJYOFVrQVdNMXV0aVhQSXZWSUV1SWIxLVBXcUF5VURRbnpueGJWRVpfZw?oc=5"
+    },
+    {
+      "name": "Let’s Go Birding! Winter Solstice Bird Walk",
+      "date": "2026-12-17",
+      "end": "2026-12-17",
+      "town": "Seaside",
+      "summary": "Guided birdwatching walk at the Fort Stevens Historic Site. Free.",
+      "url": "https://www.seasideor.com/event/lets-go-birding-winter-solstice-bird-walk/"
     },
     {
       "name": "Seaside vs Away Boys Varsity Basketball",

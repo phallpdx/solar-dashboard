@@ -1,13 +1,15 @@
 {
-  "updated": "2026-11-26",
-  "updated_at": "2026-11-26T13:11:03Z",
+  "updated": "2026-11-27",
+  "updated_at": "2026-11-27T08:31:03Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and energized",
-      "pulse": "Fans are riding high after a thrilling Cup win over the Spurs. Excitement grows as Ja Morant nears a return from injury.",
+      "mood": "Optimistic and grateful",
+      "pulse": "Fans are excited by a hot 12-6 start and Damian Lillard's smooth return. The team shows growth through players like Avdija and Clingan.",
       "storylines": [
-        "Blazers beat Spurs in NBA Cup victory",
-        "Ja Morant nearing return from hamstring strain"
+        "Team holds a strong 12-6 record",
+        "Damian Lillard has returned to Portland",
+        "Ja Morant nearing return from hamstring injury",
+        "Sidy Cissoko dunked over Victor Wembanyama"
       ],
       "sources": [
         {
@@ -29,10 +31,10 @@
       ]
     },
     "timbers": {
-      "mood": "tense playoff anticipation",
-      "pulse": "Fans are focused on a must-win Game 2 against FC Dallas. There is excitement about returning to home playoffs.",
+      "mood": "High stakes anticipation",
+      "pulse": "Fans are focused on the must-win playoff battle. There is excitement for Game 2 in Rose City.",
       "storylines": [
-        "Must-win battle against FC Dallas in Game 2",
+        "Must-win Game 2 against FC Dallas",
         "MLS Cup Playoffs series opportunity",
         "Timbers2 lost 1-0 to Ventura County FC"
       ],
@@ -52,12 +54,13 @@
       ]
     },
     "f1": {
-      "mood": "Anticipatory and tense",
-      "pulse": "Fans are focused on the upcoming Qatar GP. There is excitement regarding the completed 2027 grid.",
+      "mood": "Tense and emotional",
+      "pulse": "Fans are reacting to Las Vegas clashes and driver emotions. Tension exists between Russell and Verstappen.",
       "storylines": [
-        "Ollie Bearman confirmed for Haas in 2027",
-        "Williams minor overspend breach of 2025 cost cap confirmed",
-        "Verstappen and Russell rivalry heating up after Las Vegas"
+        "Leclerc and Hamilton seeking solutions for intra-team incidents.",
+        "Arvid Lindblad heartbroken after Las Vegas spin.",
+        "Ollie Bearman confirmed for Haas in 2027.",
+        "Rafael Camara sacrificing F2 title for Haas drive."
       ],
       "sources": [
         {
@@ -83,12 +86,12 @@
       ]
     },
     "ducks": {
-      "mood": "Optimistic but cautious",
-      "pulse": "Fans are hopeful as Oregon sits on the CFP bubble at number 12. A win secures a playoff spot.",
+      "mood": "Anticipatory and competitive",
+      "pulse": "Fans are focused on making the College Football Playoff. There is high excitement for Husky Hate week.",
       "storylines": [
-        "Ranked 12th in penultimate CFP rankings",
-        "Must win upcoming game to enter playoffs",
-        "Next game: Sat Nov 28 vs Washington at Autzen, 4:30 p.m. PT on NBC (Peacock)"
+        "Ranked 12th in CFP bubble",
+        "Must win to secure playoff spot",
+        "Upcoming matchup against Washington"
       ],
       "sources": [
         {
@@ -114,13 +117,13 @@
       ]
     },
     "niners": {
-      "mood": "anxious but focused",
-      "pulse": "Fans are concerned about Brock Purdy's ankle injury and Colton McKivitz being on IR. Focus is on the upcoming divisional matchup against Seattle.",
+      "mood": "Anxious but hopeful",
+      "pulse": "Fans are concerned about Brock Purdy's ankle injury after he missed practice. There is tension regarding roster moves and injuries.",
       "storylines": [
-        "Brock Purdy has an ankle injury",
-        "Colton McKivitz placed on IR",
-        "Brandon Aiyuk visiting Commanders",
-        "Next game: Sun Nov 29 vs Seahawks at Levi's Stadium, 1:25 p.m. PT on FOX"
+        "Brock Purdy missing practice due to an ankle injury",
+        "Colton McKivitz placed on injured reserve",
+        "Nate Hobbs activated from IR",
+        "Upcoming division matchup against Seattle Seahawks"
       ],
       "sources": [
         {

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "shows": [
     {
       "artist": "Charlie Brown III and Friends",
@@ -50,6 +50,22 @@
         {
           "name": "Concerts50 listing",
           "url": "https://concerts50.com/show/steve-oliver-in-portland-tickets-dec-02-2026"
+        }
+      ]
+    },
+    {
+      "artist": "Christopher Brown Quartet",
+      "kind": "Local",
+      "date": "2026-12-02",
+      "time": null,
+      "venue": "The 1905",
+      "price": "$30",
+      "what": "Acclaimed musician, composer, bandleader, and educator.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

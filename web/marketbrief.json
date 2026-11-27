@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-27",
-  "updated_at": "2026-11-27T12:25:06Z",
+  "updated_at": "2026-11-27T13:16:40Z",
   "analysis": {
     "headline": "Dow rebounded while S&P 500 and Nasdaq fell amid investor concerns.",
     "summary": "The Dow rose after a dramatic late-day comeback. Stocks faced pressure from AI doubts, tariffs, and inflation fears. Gold and Bitcoin prices moved significantly despite broader market volatility. Oil saw modest gains while Treasury yields declined.",
@@ -115,6 +115,14 @@
       {
         "name": "Google News: mortgage rates",
         "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPS2ktZ0k5X3RMQ3drTzVjcnJxc1diazJsRjZiTmd4cUZuNzBPUGFXcmRibFVCRFFHeENkN2t2aEs1LWxzTTlkbGZCakc1YzVlU1cwYTdMWl81NDloVi1kVXNfNmZhUXVNNmd3YmJYbEtvR0ZGMUVSYkQtZ2FjRFpfdnNoemNWUkwzYmdDR1h2b2JENUt2Z0HSAZsBQVVfeXFMTWNqWHBIM0FRbGVtamI4eUJiUmN4bnVFMFAxMW9QLVE0bHRLMUFfSzJSbmRzOHRtdzlGV3JvRVp0c0FmSVhTdlQ0QmxJTlAtbUJJcXUzQ0ExdHZjejQybmdJbmN2OERlT1pLbjdBdWh3NUFUdU9BRWtRSkdCYkZNYXJ5RWZpdS1rclNPRDZVS2tUZThCRy1TVjl0VFE?oc=5"
+      },
+      {
+        "name": "Cano Real Estate: Portland Metro Real Estate Market Report",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+      },
+      {
+        "name": "Freddie Mac: Mortgage Rates Average 7.28% (StreetInsider)",
+        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
       }
     ],
     "by": "local model",
@@ -152,18 +160,18 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (US, November 2026)",
-        "value": "7.42%",
-        "change": null,
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNX1laeEhzTjhjV1c5QkNGNkluYnRmZno3TkNJUkgzMkVXcUM5aHRqeklvU3FyWkppeEs5cVY4a3VQaE5WV01GdF81WDN0Y1ZxY1VBLXczLVpUdmM5UXN6Y3ZDQUNpUXJCLUZZaTBaVFBBUWpaRjZ1T1JaODAyS09MQm9NbFlxbm1xaFB0d2UwMUhWVmhYTXA3ZlRWeDdyQmpyQ3pKQVV2OA?oc=5"
+        "label": "Closed home sales (Portland metro, October 2026)",
+        "value": "1,622",
+        "change": "-21.5% vs October 2025 (2,066); -7.4% vs September",
+        "source": "Cano Real Estate, Portland Metro Real Estate Market Report (RMLS data)",
+        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
       },
       {
-        "label": "Average US 30-year mortgage rate (US, November 2026)",
-        "value": "7.21%",
-        "change": "not far from 2026 high",
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPS2ktZ0k5X3RMQ3drTzVjcnJxc1diazJsRjZiTmd4cUZuNzBPUGFXcmRibFVCRFFHeENkN2t2aEs1LWxzTTlkbGZCakc1YzVlU1cwYTdMWl81NDloVi1kVXNfNmZhUXVNNmd3YmJYbEtvR0ZGMUVSYkQtZ2FjRFpfdnNoemNWUkwzYmdDR1h2b2JENUt2Z0HSAZsBQVVfeXFMTWNqWHBIM0FRbGVtamI4eUJiUmN4bnVFMFAxMW9QLVE0bHRLMUFfSzJSbmRzOHRtdzlGV3JvRVp0c0FmSVhTdlQ0QmxJTlAtbUJJcXUzQ0ExdHZjejQybmdJbmN2OERlT1pLbjdBdWh3NUFUdU9BRWtRSkdCYkZNYXJ5RWZpdS1rclNPRDZVS2tUZThCRy1TVjl0VFE?oc=5"
+        "label": "30-year fixed mortgage rate (US, Freddie Mac, week of Nov 19, 2026)",
+        "value": "7.28%",
+        "change": "up from 7.11% the week before; 6.26% a year ago",
+        "source": "Freddie Mac PMMS release via StreetInsider",
+        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
       }
     ]
   }

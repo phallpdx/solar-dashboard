@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-27",
-  "updated_at": "2026-11-27T10:26:11Z",
+  "updated_at": "2026-11-27T12:25:06Z",
   "analysis": {
     "headline": "Dow rebounded while S&P 500 and Nasdaq fell amid investor concerns.",
     "summary": "The Dow rose after a dramatic late-day comeback. Stocks faced pressure from AI doubts, tariffs, and inflation fears. Gold and Bitcoin prices moved significantly despite broader market volatility. Oil saw modest gains while Treasury yields declined.",
@@ -39,7 +39,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. It raised over $5.5 million through the SWFF. Production could help ease a global shortage.",
+    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. It raised over $5.5 million through the SWFF. A new production site could ease global shortages.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -94,7 +94,7 @@
   },
   "realestate": {
     "headline": "New-home sales surge as builders slash prices to move inventory.",
-    "summary": "Home sales slow as buyers adjust to elevated mortgage rates. Builders are slashing prices to move inventory. Mortgage rates show small decreases.",
+    "summary": "Home sales slow as buyers adjust to elevated mortgage rates. Builders are slashing prices to move inventory. The average US 30-year mortgage rate eased to 7.21%.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -109,12 +109,22 @@
         "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5"
       },
       {
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
+      },
+      {
         "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5lNFZKQVNleXNfeW5IYjNyUUVnYVpHWFRPdjZfYXFTOEFnR3BjMjRfeVIybzZ4RmMzODktU2ZwUkZLUkdDNGNrV0w1M05pT3BUQmREOU1oTDlCZzVVVHZMY0NwdjZSMWdwTWRhcHVtWQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPS2ktZ0k5X3RMQ3drTzVjcnJxc1diazJsRjZiTmd4cUZuNzBPUGFXcmRibFVCRFFHeENkN2t2aEs1LWxzTTlkbGZCakc1YzVlU1cwYTdMWl81NDloVi1kVXNfNmZhUXVNNmd3YmJYbEtvR0ZGMUVSYkQtZ2FjRFpfdnNoemNWUkwzYmdDR1h2b2JENUt2Z0HSAZsBQVVfeXFMTWNqWHBIM0FRbGVtamI4eUJiUmN4bnVFMFAxMW9QLVE0bHRLMUFfSzJSbmRzOHRtdzlGV3JvRVp0c0FmSVhTdlQ0QmxJTlAtbUJJcXUzQ0ExdHZjejQybmdJbmN2OERlT1pLbjdBdWh3NUFUdU9BRWtRSkdCYkZNYXJ5RWZpdS1rclNPRDZVS2tUZThCRy1TVjl0VFE?oc=5"
       }
     ],
     "by": "local model",
     "items": [
+      {
+        "title": "Mortgage and refinance interest rates today, Friday, November 27, 2026: Mortgage rates mixed leading up to the weekend",
+        "date": "2026-11-27",
+        "url": "https://news.google.com/rss/articles/CBMipwJBVV95cUxQQmtweWI5bEZhOWRCeGc1TWhoTi1wWF9SOUFyb3ZQUzVibWZqRExOb1JENHNHUzRrZGFraEREZmpTTloweXBLWmdMZmd0NmZuWHc5cnZMN3pobVdaOVVUeXB5Y0lPZmttQWNtRXRPR0pxSjVuR2N5aTNkUWhCRlJPRTFfaGh1Zno3bjdvTkZ4NVhOZWhXYnFWTDR3T0dINWNDNmsxWXBiYThYbFZVTHBfc3JHRzBFaXBSdTBuTGJ0NXdySlV6ak1aMHhzd1drNDFUV09YNy1aMUJUUWZDNmdKd1RPMU5MRjdabG1hN2JObXBUN2lielRiY3BVcXlCVTNZWDBRZk10d2EzMnRoN3dNU3RGLUVCWUU3YWRKSzl3Z1ZwNW5Mc3JB?oc=5",
+        "source": "Google News: mortgage rates"
+      },
       {
         "title": "Mortgage Rates Declined Slightly Ahead of Thanksgiving, as Skepticism Around AI Firms Plays Role",
         "date": "2026-11-27",
@@ -134,12 +144,6 @@
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Compare Today’s Mortgage Rates",
-        "date": "2026-11-26",
-        "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBZWTRCWTZjV2FtYlpMOFBxWjVNRF9EbGN0QUJYRHVXY1VyMTdSdGc2blVoM2lFYkI0elJNRVY2VER1RTJZNGEwendkNEFGejdfZkNOVTRTa3FWSkdISHNTcmNfYlBTY3M?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
         "title": "Current Virginia Mortgage And Refinance Rates",
         "date": "2026-11-26",
         "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9xMndlMWxjMUt1ZXFaVms0dndmR1c2b0dNTEZxRGpXMVh6YjhpVGFXSFhsYmFMZWJGVmNPQUN1Q2lZMmp4S2J4UkdkTkFuNWpDODNKYWxERWVwSlJsRDB3Xy1HLWpUVEc2bkpNcWo0QjRBUQ?oc=5",
@@ -148,18 +152,18 @@
     ],
     "stats": [
       {
-        "label": "Mortgage rate (US, November)",
-        "value": "7.21%",
-        "change": "third straight decline",
-        "source": "news.google.com",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
-      },
-      {
-        "label": "Mortgage rate (US, November)",
+        "label": "Mortgage rate (US, November 2026)",
         "value": "7.42%",
         "change": null,
         "source": "news.google.com",
         "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNX1laeEhzTjhjV1c5QkNGNkluYnRmZno3TkNJUkgzMkVXcUM5aHRqeklvU3FyWkppeEs5cVY4a3VQaE5WV01GdF81WDN0Y1ZxY1VBLXczLVpUdmM5UXN6Y3ZDQUNpUXJCLUZZaTBaVFBBUWpaRjZ1T1JaODAyS09MQm9NbFlxbm1xaFB0d2UwMUhWVmhYTXA3ZlRWeDdyQmpyQ3pKQVV2OA?oc=5"
+      },
+      {
+        "label": "Average US 30-year mortgage rate (US, November 2026)",
+        "value": "7.21%",
+        "change": "not far from 2026 high",
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPS2ktZ0k5X3RMQ3drTzVjcnJxc1diazJsRjZiTmd4cUZuNzBPUGFXcmRibFVCRFFHeENkN2t2aEs1LWxzTTlkbGZCakc1YzVlU1cwYTdMWl81NDloVi1kVXNfNmZhUXVNNmd3YmJYbEtvR0ZGMUVSYkQtZ2FjRFpfdnNoemNWUkwzYmdDR1h2b2JENUt2Z0HSAZsBQVVfeXFMTWNqWHBIM0FRbGVtamI4eUJiUmN4bnVFMFAxMW9QLVE0bHRLMUFfSzJSbmRzOHRtdzlGV3JvRVp0c0FmSVhTdlQ0QmxJTlAtbUJJcXUzQ0ExdHZjejQybmdJbmN2OERlT1pLbjdBdWh3NUFUdU9BRWtRSkdCYkZNYXJ5RWZpdS1rclNPRDZVS2tUZThCRy1TVjl0VFE?oc=5"
       }
     ]
   }

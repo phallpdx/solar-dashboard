@@ -1,6 +1,38 @@
 {
-  "updated": "2026-11-21",
+  "updated": "2026-11-27",
   "releases": [
+    {
+      "artist": "Sallie Ford",
+      "title": "Growing Pains",
+      "type": "EP",
+      "local": true,
+      "genre": "",
+      "label": "",
+      "date": "",
+      "why": "Mercury Music Picks item.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxNc0Y3QkJ2WnVkbUx2QWhZdU80VGFDS2xKdGM1M2JfVV8wS18wM3VFYXdJMGpXMmc1X3oxdkluNmVJRFVrZldrMWNxTE93cnpHT0xSX21aSmMyeHNuMEhoQ1BoenZ5bGVCLU1rekRZeGtUN2I0b0w4MjVFLTVwQ2plQUJhaG5hdDZ1djBEdDB6Tl9kUHBhMmxaLUo1X3IwdzN4d0FKVkpwQjE3bzJNMHZyTlkxa3VtV1d6aUhaMldiU0dVWHp6UWE2UXA1UnU3N0h6OGg2SkJJNG1UXzN6SWZKbjBhZ3ZZelN5Q2kyLVFlSTVpNHd2dTU3ZTJB?oc=5"
+        }
+      ]
+    },
+    {
+      "artist": "The Decemberists",
+      "title": "I'll Be Your Girl",
+      "type": "Album",
+      "local": true,
+      "genre": "",
+      "label": "",
+      "date": "",
+      "why": "Album review.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOaVNqTm9BWkh0cnlzNTBFTXNrMFBJc1BmOW5SWG52YlF5b2lLSy1QMjNPT2htTnk0MWFBSS1oVGtQWFBqQzdfU0JDdUxMOHAtU1dPX1ptWHdJanVjMlJGcXpBb0hGaXpFak5FWEtiQ1h6clAycS1Vb3NSWUFIRGZxa2xRb05scWNqelE?oc=5"
+        }
+      ]
+    },
     {
       "artist": "The Delines",
       "title": "The Killing of a Motel Maid",
@@ -382,42 +414,6 @@
         {
           "name": "Portland Mercury",
           "url": "https://www.portlandmercury.com/music/spin-cycle-go-with-the-flow/"
-        }
-      ]
-    },
-    {
-      "artist": "Caroline Rose",
-      "title": "Gentling the Horse at the Walt Whitman Mall",
-      "type": "Album",
-      "local": false,
-      "genre": "Indie pop / rock",
-      "label": "SUCK Records",
-      "date": "2026-10-23",
-      "why": "Reviewed for airplay in KEXP's Oct. 26 New Music Reviews; the first release on Rose's own SUCK Records imprint.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/26/new-music-reviews-1026/"
-        },
-        {
-          "name": "Pollstar",
-          "url": "https://news.pollstar.com/2026/08/12/caroline-rose-announces-new-album-adds-fall-appearances/"
-        }
-      ]
-    },
-    {
-      "artist": "Dazy",
-      "title": "MAXIMUMBLASTSUPERLOUD Vol. 2",
-      "type": "Album",
-      "local": false,
-      "genre": "Power pop",
-      "label": "Lame-O Records",
-      "date": "",
-      "why": "A 24-track power-pop collection covering 2023 to 2026, reviewed for airplay in KEXP's Oct. 26 New Music Reviews.",
-      "links": [
-        {
-          "name": "KEXP review",
-          "url": "https://www.kexp.org/read/2026/10/26/new-music-reviews-1026/"
         }
       ]
     }

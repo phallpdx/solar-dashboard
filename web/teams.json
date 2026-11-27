@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-27",
-  "updated_at": "2026-11-27T08:31:03Z",
+  "updated_at": "2026-11-27T10:23:57Z",
   "teams": {
     "blazers": {
       "mood": "Optimistic and grateful",
@@ -36,7 +36,7 @@
       "storylines": [
         "Must-win Game 2 against FC Dallas",
         "MLS Cup Playoffs series opportunity",
-        "Timbers2 lost 1-0 to Ventura County FC"
+        "Timbers2 lost to Ventura County FC"
       ],
       "sources": [
         {
@@ -55,12 +55,11 @@
     },
     "f1": {
       "mood": "Tense and emotional",
-      "pulse": "Fans are reacting to Las Vegas clashes and driver emotions. Tension exists between Russell and Verstappen.",
+      "pulse": "Fans are reacting to driver clashes and emotional race outcomes. Tensions remain high following incidents in Las Vegas.",
       "storylines": [
-        "Leclerc and Hamilton seeking solutions for intra-team incidents.",
-        "Arvid Lindblad heartbroken after Las Vegas spin.",
-        "Ollie Bearman confirmed for Haas in 2027.",
-        "Rafael Camara sacrificing F2 title for Haas drive."
+        "Verstappen and Russell tension resurfaces",
+        "Leclerc and Hamilton addressing intra-team contact",
+        "Arvid Lindblad's emotional spin in Las Vegas"
       ],
       "sources": [
         {
@@ -86,12 +85,12 @@
       ]
     },
     "ducks": {
-      "mood": "Anticipatory and competitive",
-      "pulse": "Fans are focused on making the College Football Playoff. There is high excitement for Husky Hate week.",
+      "mood": "Anticipatory and intense",
+      "pulse": "Fans are focused on Husky Hate week. There is high interest in playoff positioning as rankings fluctuate.",
       "storylines": [
-        "Ranked 12th in CFP bubble",
-        "Must win to secure playoff spot",
-        "Upcoming matchup against Washington"
+        "Ranked 12th on CFP bubble",
+        "Next matchup against Washington",
+        "Need to win for playoff spot"
       ],
       "sources": [
         {
@@ -118,12 +117,12 @@
     },
     "niners": {
       "mood": "Anxious but hopeful",
-      "pulse": "Fans are concerned about Brock Purdy's ankle injury after he missed practice. There is tension regarding roster moves and injuries.",
+      "pulse": "Fans are concerned about Brock Purdy's ankle injury after he missed practice. There is also focus on Brandon Aiyuk visiting Washington.",
       "storylines": [
         "Brock Purdy missing practice due to an ankle injury",
         "Colton McKivitz placed on injured reserve",
-        "Nate Hobbs activated from IR",
-        "Upcoming division matchup against Seattle Seahawks"
+        "Upcoming division matchup against Seattle Seahawks",
+        "Nate Hobbs activated from IR"
       ],
       "sources": [
         {

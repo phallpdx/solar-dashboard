@@ -1,6 +1,20 @@
 {
-  "updated": "2026-11-25",
+  "updated": "2026-11-27",
   "items": [
+    {
+      "name": "Tofurky",
+      "maker": "Seth Tibbott",
+      "kind": "New product",
+      "what": "Vegan alternative to turkey",
+      "where_to_buy": [],
+      "date": "2026-11-26",
+      "sources": [
+        {
+          "name": "The Oregonian business",
+          "url": "https://www.oregonlive.com/living/2026/11/tofurky-is-an-oregon-success-story-how-it-all-started.html"
+        }
+      ]
+    },
     {
       "name": "Four Oregon wines on Wine Spectator's 2026 Top 100",
       "maker": "Ken Wright Cellars, Evening Land, Alexana and Elk Cove (Willamette Valley)",
@@ -327,29 +341,6 @@
         {
           "name": "Visit the Oregon Coast: Cheers to the Land (Lincoln City)",
           "url": "https://visittheoregoncoast.com/cities/cheers-to-the-land/"
-        }
-      ]
-    },
-    {
-      "name": "2022 Demi-Sec Rosé and fall sparkling releases",
-      "maker": "Corollary Wines (Amity)",
-      "kind": "New product",
-      "what": "The Willamette Valley sparkling house marked its 10th harvest with four fall releases, including its first-ever sweet wine, a 2022 Demi-Sec Rosé ($70, just 40 cases) blended from six Willamette Valley sites, and a 2020 Cuvée One aged five years en tirage ($95).",
-      "where_to_buy": [
-        {
-          "store": "Corollary Wines",
-          "url": "https://corollarywines.com/"
-        }
-      ],
-      "date": "2026-10-07",
-      "sources": [
-        {
-          "name": "Wine Industry Advisor: Corollary Wines announces four new releases",
-          "url": "https://wineindustryadvisor.com/2026/10/07/corollary-wines-announces-four-new-releases/"
-        },
-        {
-          "name": "Sip Magazine: Corollary Wines announces four new releases",
-          "url": "https://sipmagazine.com/corollary-wines-announces-four-new-releases/"
         }
       ]
     }

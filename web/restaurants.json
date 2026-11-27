@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "restaurants": [
+    {
+      "name": "Mossback Tavern",
+      "neighborhood": "Creston-Kenilworth",
+      "cuisine": "Pizza pub",
+      "price": "",
+      "opened": "",
+      "summary": "A new-old pizza pub with beer pairings.",
+      "reviews": [
+        {
+          "outlet": "newschoolbeer.com",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-19",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOT0V2Rkg0cHMzS29wNUJNUlc3NTB4Yk13QmVVbjhNbVNxdmZCU0o1VVVOblRZd1c4N0FLTnBSenlnWW8wLWoyZTB1REo1enFYaFhxVmxQWTFQajlvaHZCVTUzT3VlWXUtVk85SHhNelp5cUh6ZnJiTVVPZkZaVFhWb3lFcEMteVpjQl9SUjZJZGJiUVMyc2VvSjdtOXNfRlo5ai1Ud1dDUUVOZWpnQlBwYm40aURJcmFRaFdLVlRR?oc=5"
+        }
+      ]
+    },
     {
       "name": "Louie Cocktail Bar",
       "neighborhood": "Portland",
@@ -417,23 +434,6 @@
           "verdict": "",
           "date": "2026-11-16",
           "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOTURnU0NTUUhFZVNLS1pHT2p6U3NHWmthdjFVUHl3c1B5SEhJZ2RlQ2NmUTk4dDJfVXp4TEUtVVFWcnctMURtTzQ4dVV4dlk0NGNnU0J2OUlFc04wSE43aDVFUHA2WW1tZ2tGb0hYQWl5a2VheUpWSi1vd0xLaFYyZVlWZFNPZUpEYkgyQXExbnRXT3lubXFtZl9IMUJGMjMzSkxzTlZuazVvV2Q3Y2NEWGF1em81UUM3cDhPUjNB?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "Goodies Snack Shop",
-      "neighborhood": "West End",
-      "cuisine": "",
-      "price": "",
-      "opened": "reopening",
-      "summary": "A snack shop returning to the West End.",
-      "reviews": [
-        {
-          "outlet": "WhatNow",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-18",
-          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOTVhDazB4aTQ0XzlBdUE3ZUhXbXZVWnVKVXRXMlo0Zy1IMzlzSWJSczg2RHJ4Z09WeGJqMzNld2MwTnQ4NUdUOTlJZXozcUhURTRqbjY0aDZSQTlROGM3V21qRmRYZVBqOFVpdzhQWjJSSVF6WGFIb1NBbzlrZWo3NkJCMzgtVGgxa0Y4bktfRmw?oc=5"
         }
       ]
     }

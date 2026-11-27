@@ -524,7 +524,7 @@ def clean(s, limit=400):
     s = " ".join(str(s or "").replace("[…]", "").replace("[...]", "").split())
     if re.fullmatch(r"[#\d,;\s]*#[#\d,;\s]*", s):  # a stray link number ("#12") where text belongs
         return ""
-    if s.lower().rstrip(".") in JUNK or re.match(r"(no|not) (info|information|details|provided|specified|stated|given)\b", s, re.I):
+    if s.lower().rstrip(".") in JUNK or re.match(r"(no|not) (\w+ ){0,2}(info|information|details|provided|specified|stated|given)\b", s, re.I):
         return ""
     return s[:limit].rstrip() if s else ""
 
@@ -891,12 +891,51 @@ def add_scored(data, sources):
     data["missing"] = scored[:20] + [m for m in missing if m.get("score") is None]
 
 
+def removed_upstream(path, list_key, days=30):
+    """Items that someone other than this PC took off a list in the last `days` days: a cloud run
+    dropping an entry it couldn't confirm, or fixing a wrong date (the old date counts as removed)."""
+    try:
+        out = git("log", f"--since={days}.days", "--format=%H%x09%s", "origin/main", "--", path)
+    except subprocess.CalledProcessError:
+        return []
+
+    def items(rev):
+        try:
+            return json.loads(git("show", f"{rev}:{path}")).get(list_key) or []
+        except (subprocess.CalledProcessError, ValueError):
+            return []
+
+    gone = []
+    for line in out.splitlines():
+        sha, _, subject = line.partition("\t")
+        if "(from claude/local-lists)" in subject:
+            continue  # this PC's own pushes
+        after = items(sha)
+        gone += [x for x in items(f"{sha}^") if x not in after]
+    return gone
+
+
+def skip_removed(new, current, path, list_key, title_key, date_key):
+    """Leaves out new items matching something a cloud run removed lately. Answers saved for
+    unchanged pages would otherwise put the same dropped or misdated items back every night."""
+    gone = [g for g in removed_upstream(path, list_key)
+            if not any(same_thing(g.get(title_key), g.get(date_key), c.get(title_key), c.get(date_key)) for c in current)]
+    keep = []
+    for x in new:
+        if any(same_thing(x.get(title_key), x.get(date_key), g.get(title_key), g.get(date_key)) for g in gone):
+            log(f"  skipped {x.get(title_key)!r} ({x.get(date_key)}): removed from the list by a cloud run")
+        else:
+            keep.append(x)
+    return keep
+
+
 def refresh_events(data, sources):
     kinds = ["Concert", "Sports", "Convention", "Expo", "Festival", "Parade", "Holiday", "Holiday lights", "Theater", "Other"]
-    ok = future_ok("date", "ends", days=90)
+    ok = future_ok("date", "ends", days=60)  # the cloud runs cover the next 60 days too
 
     def build(r, src, links):
-        if not ok(r) or not clean(r.get("title")):
+        # An event without a venue or a "why" is a bare calendar line, not worth a card.
+        if not ok(r) or not clean(r.get("title")) or not clean(r.get("venue")) or not clean(r.get("why")):
             return None
         return {"title": clean(r["title"], 140), "date": r.get("date"), "ends": r.get("ends"),
                 "venue": clean(r.get("venue"), 100), "kind": r["kind"] if r.get("kind") in kinds else "Other",
@@ -908,6 +947,7 @@ def refresh_events(data, sources):
                            "why is one short sentence on the crowds or traffic to expect.",
                   {"title": S, "date": DATE, "ends": DATE, "venue": S, "kind": {"type": "string", "enum": kinds}, "why": S, "url": S},
                   build)
+    new = skip_removed(new, data.get("events", []), "web/events.json", "events", "title", "date")
     places = {s["name"]: s["place"] for s in sources if s.get("place")}
 
     def tidy(x):

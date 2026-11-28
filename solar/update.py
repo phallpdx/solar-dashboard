@@ -308,14 +308,16 @@ def fetch_weather(state, now_utc):
         recs.sort(key=lambda x: x[0])
         sun = sum(fnum(r.get("solarradiation")) * 5 / 60 / 1000 for _, r in recs)  # kWh/m²
         temps = [fnum(r.get("tempf")) for _, r in recs if r.get("tempf") is not None]
-        rain = [fnum(r.get("dailyrainin")) for _, r in recs if r.get("dailyrainin") is not None]
+        # The gauge keeps a running total that resets at local midnight, but the first reading or two after
+        # midnight can still carry yesterday's total. The day's latest reading is its true total so far.
+        rain = [fnum(r.get("dailyrainin")) for _, r in recs if r.get("dailyrainin") is not None][-1:]
         entry = days.get(day, {})
         if len(recs) >= entry.get("n", 0):  # keep the most complete copy of a day
             days[day] = {"n": len(recs), "sun_kwh_m2": round(sun, 3),
                          "hi": round(max(temps)) if temps else None,
                          "lo": round(min(temps)) if temps else None}
-        if rain:  # the gauge's running total for the day, so the biggest reading is the day's total
-            days[day]["rain_in"] = round(max(rain + [entry.get("rain_in") or 0]), 2)
+        if rain:
+            days[day]["rain_in"] = round(rain[0], 2)
     today = now_utc.astimezone(tz).strftime("%Y-%m-%d")
     weather["today_curve"] = [{"t": w.strftime("%H:%M"), "wm2": fnum(r.get("solarradiation"))}
                               for w, r in sorted(by_day.get(today, []), key=lambda x: x[0])]

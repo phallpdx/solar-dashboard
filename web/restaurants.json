@@ -1,6 +1,23 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "restaurants": [
+    {
+      "name": "Atlas Pizza",
+      "neighborhood": "Portland",
+      "cuisine": "Pizza / Italian",
+      "price": "",
+      "opened": "2026-09",
+      "summary": "Fast casual pizza and italian in a micro regional multi-unit format.",
+      "reviews": [
+        {
+          "outlet": "Restaurant Pipeline",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-28",
+          "url": "https://restaurantpipeline.com/portland"
+        }
+      ]
+    },
     {
       "name": "Mossback Tavern",
       "neighborhood": "Creston-Kenilworth",
@@ -262,6 +279,13 @@
       "summary": "",
       "reviews": [
         {
+          "outlet": "Restaurant Pipeline",
+          "critic": "",
+          "verdict": "",
+          "date": "2026-11-28",
+          "url": "https://restaurantpipeline.com/portland"
+        },
+        {
           "outlet": "Bridgetown Bites",
           "critic": "",
           "verdict": "",
@@ -417,23 +441,6 @@
           "verdict": "",
           "date": "2026-11-19",
           "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNYTZRdGpQY21wT2dKTUxLNU5hMzRoa25xeDN3MDN5RHNDUkVKOW1iNkRCaXFxb0V6Q1V3R3FrM0JiaEV1aWVrVlVKZ0tRSmN0RWFOMnNXSlhwSXpXOG1vbU9TbUJBMFh5TG92cXcxb1lrT3Z6d0JlRDRJZ0N5WklqVThFWEVxZVUyRTJhcGJ2eDhOcWV0ZUdVT1RHQWNvb0ZuNTVkcUtPY29oMjNBT09LWHdndTNhNnNkNDdzcS1QUVRISHpTOVZBdHdYWnhDNGRXZ0ZoQ2Rhdw?oc=5"
-        }
-      ]
-    },
-    {
-      "name": "The Balboa",
-      "neighborhood": "Pearl",
-      "cuisine": "",
-      "price": "",
-      "opened": "",
-      "summary": "Opening in the former Oven & Shaker space.",
-      "reviews": [
-        {
-          "outlet": "Bridgetown Bites",
-          "critic": "",
-          "verdict": "",
-          "date": "2026-11-16",
-          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOTURnU0NTUUhFZVNLS1pHT2p6U3NHWmthdjFVUHl3c1B5SEhJZ2RlQ2NmUTk4dDJfVXp4TEUtVVFWcnctMURtTzQ4dVV4dlk0NGNnU0J2OUlFc04wSE43aDVFUHA2WW1tZ2tGb0hYQWl5a2VheUpWSi1vd0xLaFYyZVlWZFNPZUpEYkgyQXExbnRXT3lubXFtZl9IMUJGMjMzSkxzTlZuazVvV2Q3Y2NEWGF1em81UUM3cDhPUjNB?oc=5"
         }
       ]
     }

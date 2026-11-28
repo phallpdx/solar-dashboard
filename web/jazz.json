@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "shows": [
     {
       "artist": "Charlie Brown III and Friends",
@@ -82,6 +82,22 @@
         {
           "name": "Jack London Revue",
           "url": "https://www.jacklondonrevue.com/tm-event/mel-brown-b3-organ-group-jazz-titan-thursdays/"
+        }
+      ]
+    },
+    {
+      "artist": "Aimee Nolte Quartet",
+      "kind": "Vocal",
+      "date": "2026-12-03",
+      "time": "06:30 pm",
+      "venue": "The 1905",
+      "price": "$35",
+      "what": "Pianist, vocalist, composer, and educator with a popular YouTube channel.",
+      "tickets": "https://the1905.turntabletickets.com/",
+      "sources": [
+        {
+          "name": "The 1905 (Turntable Tickets)",
+          "url": "https://the1905.turntabletickets.com/"
         }
       ]
     },

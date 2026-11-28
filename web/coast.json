@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "events": [
     {
       "name": "Haystack Holidays",
@@ -18,30 +18,6 @@
       "url": "https://www.seasideor.com/event/holiday-festival-market/"
     },
     {
-      "name": "Parade of Lights",
-      "date": "2026-11-27",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Holiday parade with twinkling floats and music at 7:00 pm.",
-      "url": "https://www.seasideor.com/event/parade-of-lights/"
-    },
-    {
-      "name": "Tree Lighting Ceremony",
-      "date": "2026-11-27",
-      "end": null,
-      "town": "Seaside",
-      "summary": "Community tree lighting ceremony featuring caroling and Santa Claus at 7:30 pm.",
-      "url": "https://www.seasideor.com/event/tree-lighting-ceremony/"
-    },
-    {
-      "name": "Johnny Franco & His Real Brother Dom live at The Lyons Den",
-      "date": "2026-11-27",
-      "end": "2026-11-27",
-      "town": "Seaside",
-      "summary": "Indie Pop/Cabaret from 7:00 pm - 10:00 pm; $10.00.",
-      "url": "https://www.seasideor.com/event/johnny-franco-his-real-brother-dom-live-at-the-lyons-den-limited-advanced-tickets-available/"
-    },
-    {
       "name": "Charki’s Sagittarius Birthday Karaoke Party",
       "date": "2026-11-28",
       "end": "2026-11-28",
@@ -50,12 +26,28 @@
       "url": "https://www.seasideor.com/event/charkis-sagittarius-birthday-karaoke-party-at-the-lyons-den/"
     },
     {
+      "name": "Holiday events",
+      "date": "2026-11-28",
+      "end": null,
+      "town": "Astoria",
+      "summary": "Upcoming Oregon holiday events happening Thanksgiving weekend.",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxORk4tbnRvOGx5YmF5YURYZ3J5Vmp3Ql9nRG5kOGpKMGtIYWtOUlByanc1SVBKcFZ0MlFnMkM4eVE3WEp1aGd4cGF0N2xZMzVocXMyNjEwcmJwa09rTHNkeEw0UWhjblRiRnFsbTc5ajVtU3hiLTU1R0pSY0hlWGx6TkFlZVRtWm5ZQTFLSTRrSWREUjhZazhYZGNHSTh5dE5sRkpRTXJOMTNuMHFqRUpTWkpHREpvNm92VXZFcXNsbElwQ3NyZ3lYWWNlOGF3b29sdTVoOTFXbFNCdlc2dDYtRQ?oc=5"
+    },
+    {
       "name": "Haystack Holidays",
       "date": "2026-11-30",
       "end": null,
       "town": "Cannon Beach",
       "summary": "Holiday events occurring in November and December.",
       "url": "https://www.cannonbeach.org/events-and-festivals/haystack-holidays/"
+    },
+    {
+      "name": "Open Mic",
+      "date": "2026-12-01",
+      "end": "2026-12-01",
+      "town": "Seaside",
+      "summary": "Poetry open mic at 6:30 PM.",
+      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
     },
     {
       "name": "Juliet Yänko New Album Release Event",
@@ -72,6 +64,14 @@
       "town": "Seaside",
       "summary": "Bird walk from 9:30 am - 10:30 am; free.",
       "url": "https://www.seasideor.com/event/lets-go-birding-coffenbury-lake-bird-walk-7/"
+    },
+    {
+      "name": "Next Stop Comedy: Xanadu Astoria",
+      "date": "2026-12-04",
+      "end": "2026-12-04",
+      "town": "Astoria",
+      "summary": "Stand-up comedy showcase at 7:00 PM.",
+      "url": "https://www.cascadiagetaways.com/blog/seaside-oregon-events"
     },
     {
       "name": "Treasure the Beach: Community Beach Cleanup",
@@ -154,12 +154,12 @@
       "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNWmZVZzc5dGV3V0hfR2RIbERydVZrSEZsQkF4dkI5RDdFUzd4TnJWQTdWd2daSjYtX2U4UDFPYmNiMmxjY29JX1gxU08tenJYZ19lREtoM3Y1MDMteURxeXBEYVVBY1dkRGxoLUJvSFVrVVNqMFUtczlkRUV1cGZ6TW8wbHRvZw?oc=5"
     },
     {
-      "name": "Seaside vs Astoria Boys Varsity Wrestling",
-      "date": "2027-01-20",
-      "end": null,
-      "town": "Astoria/Seaside",
-      "summary": "Boys varsity wrestling match.",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOUVJKNnNja2lxNGljajdFLXVDb2FvQnBmNlJGdE9MMURHbm9rQkNtaklhd2FJQjFMdUpQdUJpQjVEc3RjdmlGbjJMUHVOQU9LZkl5dGtSRzFIXzhTTm9zVVdvcXlRSkwyV3l6Qm8tWmZINGY5b01reFpERzdycHNCYndkUkdQdw?oc=5"
+      "name": "Treasure the Beach: Community Beach Cleanup",
+      "date": "2027-01-02",
+      "end": "2027-01-02",
+      "town": "Seaside",
+      "summary": "Monthly volunteer beach cleanup effort.",
+      "url": "https://www.seasideor.com/event/treasure-the-beach-community-beach-cleanup/2027-01-02/"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "events": [
     {
       "title": "ZooLights at the Oregon Zoo",
@@ -34,34 +34,6 @@
         {
           "name": "Yahoo Sports",
           "url": "https://sports.yahoo.com/articles/updated-oregon-high-school-football-003637399.html"
-        }
-      ]
-    },
-    {
-      "title": "Pioneer Courthouse Square Tree Lighting",
-      "date": "2026-11-27",
-      "ends": null,
-      "venue": "Pioneer Courthouse Square, Downtown",
-      "kind": "Holiday",
-      "why": "The 42nd annual lighting of the 75-foot tree, 5:30 to 6:45 p.m. the day after Thanksgiving, packs downtown and slows buses and MAX around the square.",
-      "sources": [
-        {
-          "name": "The Square PDX",
-          "url": "https://www.thesquarepdx.org/event/42nd-annual-tree-lighting-ceremony/"
-        }
-      ]
-    },
-    {
-      "title": "Ramon Ayala Historia De Un Final",
-      "date": "2026-11-27",
-      "ends": null,
-      "venue": "Veterans Memorial Coliseum",
-      "kind": "Concert",
-      "why": "Coliseum concert by the norteño star the day after Thanksgiving, the same evening as the Pioneer Courthouse Square tree lighting.",
-      "sources": [
-        {
-          "name": "Rose Quarter",
-          "url": "https://www.rosequarter.com/calendar-events/ramon-ayala-nov-27-2026"
         }
       ]
     },

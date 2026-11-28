@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-27",
-  "updated_at": "2026-11-27T13:16:40Z",
+  "updated": "2026-11-28",
+  "updated_at": "2026-11-28T08:30:09Z",
   "analysis": {
     "headline": "Dow rebounded while S&P 500 and Nasdaq fell amid investor concerns.",
     "summary": "The Dow rose after a dramatic late-day comeback. Stocks faced pressure from AI doubts, tariffs, and inflation fears. Gold and Bitcoin prices moved significantly despite broader market volatility. Oil saw modest gains while Treasury yields declined.",
@@ -39,7 +39,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. It raised over $5.5 million through the SWFF. A new production site could ease global shortages.",
+    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. Financing includes lifting the SWFF past $5.5 million raised. The market faces tightening supply and potential growth from federal tax changes.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -55,7 +55,15 @@
       },
       {
         "name": "Google News: North American Helium",
-        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPLXIzSDl3clVoQldJOElfREVSQXpqMEZsZDVaREVzd3dOVE5hVFhUTzhFb3hKdnhxd0E3c1k0WjV2blhEbjc0djNQS2xaMmxoUW5ON1E1ZVJRSzhIaHE5TUZOaDAyQnVuTWthaG5mcFY2eFBhLUxXZFd0VmJtX1I4VlByMGlLTFY4cFpCWUg5VzhGdEh5LW5NUlctcW1mcEtl?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
+      },
+      {
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5"
+      },
+      {
+        "name": "Google News: helium market",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcHpWdUpsSlZVMU9Ec2hBVHdjZnJ2TlZxXzRUYTBWc3BIVGlaZllfbG1DZmdEd1Z0WEZOQzhfZ3RMRi1UVTdtcEY3VVhGUFRXdUtsemZsMS1DSDlGd0R6VHJhRk5QM1RETC00bVpYYS1pdFNRelBVbFN2NWxQdUpSdXF4eHVzN3FpWkp3ZDN2Ny1IcW5jUEVtNFl3?oc=5"
       }
     ],
     "by": "local model",
@@ -73,12 +81,6 @@
         "source": "Google News: helium market"
       },
       {
-        "title": "Why helium exploration is gathering pace in Saskatchewan",
-        "date": "2026-11-23",
-        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNaXlibFVnOUxhUS1qMW5rQ0NKUVhzWXFRQWk3UGRFbW40Tkt0REhsYXltSHkzVlM4ZGFpY3hxU3VWXzZCNjRoZFdxS3FHLU90LWRUUXgzTzRfSkVNVUxCN25jczNBTGQ3OS03VEtvb01RY2RUR3FEWktPX1JFRDVhSXJDSjVYbEFkSmZVY05hTlFDOUxHNUJiRTQ0WUpEUS01RlI2TWFnSQ?oc=5",
-        "source": "Google News: helium market"
-      },
-      {
         "title": "Helium getting oil and gas treatment good news for Swift Current",
         "date": "2026-11-16",
         "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
@@ -89,12 +91,18 @@
         "date": "2026-11-16",
         "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
         "source": "Google News: North American Helium"
+      },
+      {
+        "title": "Helium Evolution targets new Saskatchewan discoveries in CAD $3m programme",
+        "date": "2026-11-16",
+        "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNVURYc1pUdmdITUdGQnlvQ1RENXdpRWs2Ri1QdTVZekgxNjJCUll1TEJsRHJjX0M1eFdkQVZwRlhCSEZIck0wcTNUdmJvNTY2Um53MFFjc2o2QjBadjBSU29peEhTVXRBYjh1N0xGZzl2d1VwQXVtQVhQZFh2RGptalJoRXd4UkVoendWWjUzX1MxRWdDbGpxMkJlSnB2Vks2ZnFsMlFLRzVaNnlfY2NnSXllVElUTzFYZ3FIMG1B?oc=5",
+        "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
-    "headline": "New-home sales surge as builders slash prices to move inventory.",
-    "summary": "Home sales slow as buyers adjust to elevated mortgage rates. Builders are slashing prices to move inventory. The average US 30-year mortgage rate eased to 7.21%.",
+    "headline": "New home sales surge as builders slash prices to move inventory.",
+    "summary": "Home sales slow as buyers adjust to elevated mortgage rates. Builders are slashing prices to move inventory. Average 30-year mortgage rates eased to 7.21%. Prices continue climbing in Oregon.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -106,72 +114,60 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
-      },
-      {
-        "name": "Google News: mortgage rates",
-        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPS2ktZ0k5X3RMQ3drTzVjcnJxc1diazJsRjZiTmd4cUZuNzBPUGFXcmRibFVCRFFHeENkN2t2aEs1LWxzTTlkbGZCakc1YzVlU1cwYTdMWl81NDloVi1kVXNfNmZhUXVNNmd3YmJYbEtvR0ZGMUVSYkQtZ2FjRFpfdnNoemNWUkwzYmdDR1h2b2JENUt2Z0HSAZsBQVVfeXFMTWNqWHBIM0FRbGVtamI4eUJiUmN4bnVFMFAxMW9QLVE0bHRLMUFfSzJSbmRzOHRtdzlGV3JvRVp0c0FmSVhTdlQ0QmxJTlAtbUJJcXUzQ0ExdHZjejQybmdJbmN2OERlT1pLbjdBdWh3NUFUdU9BRWtRSkdCYkZNYXJ5RWZpdS1rclNPRDZVS2tUZThCRy1TVjl0VFE?oc=5"
-      },
-      {
-        "name": "Cano Real Estate: Portland Metro Real Estate Market Report",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
-      },
-      {
-        "name": "Freddie Mac: Mortgage Rates Average 7.28% (StreetInsider)",
-        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
+        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5WOGpHa3FWUElDSzNXdUZwekxyY01udldvVjhFOXJ3LVAyWXBoellHRGwtT1NiWFQwbFNGVGVRalRDSEc3dThodG9rOXJNTkp2dmRta3lSdnQ5VGswbzV0aUZ0MERLMjlmeDg4dHQ4dw?oc=5"
       }
     ],
     "by": "local model",
     "items": [
       {
-        "title": "Mortgage and refinance interest rates today, Friday, November 27, 2026: Mortgage rates mixed leading up to the weekend",
+        "title": "Today's Mortgage Rates: November 27, 2026",
         "date": "2026-11-27",
-        "url": "https://news.google.com/rss/articles/CBMipwJBVV95cUxQQmtweWI5bEZhOWRCeGc1TWhoTi1wWF9SOUFyb3ZQUzVibWZqRExOb1JENHNHUzRrZGFraEREZmpTTloweXBLWmdMZmd0NmZuWHc5cnZMN3pobVdaOVVUeXB5Y0lPZmttQWNtRXRPR0pxSjVuR2N5aTNkUWhCRlJPRTFfaGh1Zno3bjdvTkZ4NVhOZWhXYnFWTDR3T0dINWNDNmsxWXBiYThYbFZVTHBfc3JHRzBFaXBSdTBuTGJ0NXdySlV6ak1aMHhzd1drNDFUV09YNy1aMUJUUWZDNmdKd1RPMU5MRjdabG1hN2JObXBUN2lielRiY3BVcXlCVTNZWDBRZk10d2EzMnRoN3dNU3RGLUVCWUU3YWRKSzl3Z1ZwNW5Mc3JB?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Mortgage Rates Declined Slightly Ahead of Thanksgiving, as Skepticism Around AI Firms Plays Role",
-        "date": "2026-11-27",
-        "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNbmJlLWlJTUFqMXpQM1E4T29vaVkzaVd1SjI1VndvSU95T09oam9nQlV6Y0ZDRW5zbm44Nkt1VWNKYXRnU2lBXzJTN3BkV3VpY1Y0SjFic1dDbl9wMzlkcVJEZmNLWTlQVWVzYVFEeHk3dlJYR1JVMWlmbEk4ZDVGSmhIeU1xalhxRGg0TWY3NVZnaS1KWERJYjIyV2pTeFhpbDczeHFSLWVVT3N1UHpDUXVwTUN4RmYtOER3?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Today's Mortgage Rates: November 26, 2026",
-        "date": "2026-11-26",
         "url": "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5rdmpsVUwtTnZNcjlIbUQ5a0oyZDlUSV9IV1ZYQy0yOHViOEttMVlsTXlfUVEwcXBibVcycFRJZTY2WEhfM2Voby0xbVpIVUtMZ05j?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Mortgage rates today, Nov. 26, 2026: Rates take another small step down",
-        "date": "2026-11-26",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE53a053WkQ5R2tQenlYRjBsaTFiYjRETFVBb014ZVRQdms3ejNPMG5hX19XdTVMbW1Rd3R3UlF1LWZuSE5zVW5QN05KcHoyMkdydzVaaDNtc2ZhUHM2X0F4X1d3MzFabTduRlZuVUc0MA?oc=5",
+        "title": "Mortgage and refinance interest rates today, Friday, November 27, 2026: Mortgage rates mixed leading up to the weekend",
+        "date": "2026-11-27",
+        "url": "https://news.google.com/rss/articles/CBMimgJBVV95cUxQeEtTSjVXYUhDcTlMdmhESVhSNXlwbjNERW5XOGN2T3dNamFXMjFXTjZWYlc3Y1RvNGNMN25wUnFZN0dKNUp5M1FvWDh0SVY4bklFdGs3b040LS11bWMzbHZubGFxbE5zZzkwaWxseEx0dmFyLXV0bEFiYVJIdmN6dV9icXUwdm1HYlEwRm9pMktIOUUxcG41a1phWF9CaUNfQzE2Y3VNZTdiQmdOcnRSZU05QnRRVjJrQUFYMldrQ0s0bTZGWTVPeDd3ZVVzX1lQMEhQRFVNdWpJVURLano2dThmMHBpMlpRQVVGZDJFeDk0NFc0Uk9fdDU4NzBnT1R2RFVMOXNuV1lvczcxNllMaW5tNHVLY0M3THc?oc=5",
         "source": "Google News: mortgage rates"
       },
       {
-        "title": "Current Virginia Mortgage And Refinance Rates",
-        "date": "2026-11-26",
-        "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9xMndlMWxjMUt1ZXFaVms0dndmR1c2b0dNTEZxRGpXMVh6YjhpVGFXSFhsYmFMZWJGVmNPQUN1Q2lZMmp4S2J4UkdkTkFuNWpDODNKYWxERWVwSlJsRDB3Xy1HLWpUVEc2bkpNcWo0QjRBUQ?oc=5",
+        "title": "Current Colorado Mortgage And Refinance Rates",
+        "date": "2026-11-27",
+        "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE9hVWQyUEJxYmcySk1UNWNNMnBRVFlBTGNYWndaYlozUjRFMnItSnVBZDA0UnRucGc1cGtpbS1BX05wWmtPTlpwTVN0UVhpQ01FdGpvSUJXSTB6X2ZFWmR5SVdCZ0xjUE0tYWpXbWI2WnBqdw?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Current Louisiana Mortgage And Refinance Rates",
+        "date": "2026-11-27",
+        "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBhM0VLU1JNQ0pWQkFYNFh3T3RUaFB5cDVHVWhyZm94MkR3QmhtODdHcmV4eFV5LTNtY2JuMkgtcjZHSWRyczlXaWdWUGtBN3JqTjdmVVdBRzBISVpFTFFiemJIbS0tcmlyQ2FvSmhSakZlLWM?oc=5",
+        "source": "Google News: mortgage rates"
+      },
+      {
+        "title": "Current Illinois Mortgage And Refinance Rates",
+        "date": "2026-11-27",
+        "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1jMHZHMmhQWmpsX09VZm4wY0RQanFkTHJwYlBYdVBMSXZjUXFXdU9WaWFOSTNGRjFlUDhqMDFEekRiXzJrOEcxWi00N25jcFNKTWs2azZjMkt0T0o4bGJLV0d1aE1HWWFtRVdzcFE1M3lXZw?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
     "stats": [
       {
-        "label": "Closed home sales (Portland metro, October 2026)",
-        "value": "1,622",
-        "change": "-21.5% vs October 2025 (2,066); -7.4% vs September",
-        "source": "Cano Real Estate, Portland Metro Real Estate Market Report (RMLS data)",
-        "url": "https://www.canorealestate.com/portland-metro-real-estate-market-report/"
+        "label": "Mortgage rate (US, November)",
+        "value": "7.40%",
+        "change": null,
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPem9XRUFYSmx4TkdHYk9Qa1FsMW5fakR6cHl2MmtPTFd5bE1NZjNpU1FicW1QUEdEVG1PaXNWS1U1c0h6VEtURUt5VVpldkhndi11X0F5cFozM2ZiZmdVeUI2UzREODVRSnJFMk1OMzFoY0hsMk93NWUyMkFMOElOd256MFVobDh5RFA1eHV3?oc=5"
       },
       {
-        "label": "30-year fixed mortgage rate (US, Freddie Mac, week of Nov 19, 2026)",
-        "value": "7.28%",
-        "change": "up from 7.11% the week before; 6.26% a year ago",
-        "source": "Freddie Mac PMMS release via StreetInsider",
-        "url": "https://www.streetinsider.com/Globe+Newswire/Mortgage+Rates+Average+7.28%25/27375239.html"
+        "label": "Mortgage rate (US, November)",
+        "value": "7.21%",
+        "change": "third straight decline",
+        "source": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
       }
     ]
   }

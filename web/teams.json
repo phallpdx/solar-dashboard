@@ -1,15 +1,15 @@
 {
-  "updated": "2026-11-27",
-  "updated_at": "2026-11-27T13:11:51Z",
+  "updated": "2026-11-28",
+  "updated_at": "2026-11-28T08:27:57Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and grateful",
-      "pulse": "Fans are excited by a hot 12-6 start and Damian Lillard's smooth return. The team shows growth through players like Avdija and Clingan.",
+      "mood": "Optimistic and excited",
+      "pulse": "Fans are thrilled after a dominant win over the Warriors despite Lillard's absence. The team's hot start has created significant momentum.",
       "storylines": [
-        "Team holds a strong 12-6 record",
-        "Damian Lillard has returned to Portland",
-        "Ja Morant nearing return from hamstring injury",
-        "Sidy Cissoko dunked over Victor Wembanyama"
+        "Won Group C of Western Conference NBA Cup",
+        "Beat Warriors 116-94 on 2026-11-28",
+        "Damian Lillard is day-to-day with calf tightness",
+        "Face Memphis Grizzlies on 2026-12-05"
       ],
       "sources": [
         {
@@ -35,8 +35,8 @@
       "pulse": "Fans are focused on the must-win playoff battle. There is excitement for Game 2 in Rose City.",
       "storylines": [
         "Must-win Game 2 against FC Dallas",
-        "MLS Cup Playoffs action",
-        "Timbers2 lost to Ventura County FC"
+        "MLS Cup Playoffs series opportunity",
+        "Timbers2 lost 1-0 to Ventura County FC"
       ],
       "sources": [
         {
@@ -54,13 +54,13 @@
       ]
     },
     "f1": {
-      "mood": "Tense and emotional",
-      "pulse": "Fans are reacting to Las Vegas clashes and driver emotions. Tensions remain high following intra-team incidents.",
+      "mood": "Uncertain and questioning",
+      "pulse": "Mercedes dominated Friday practice sessions in Qatar. Red Bull and Ferrari struggle with car balance and pace.",
       "storylines": [
-        "Leclerc and Hamilton seeking solutions for Las Vegas contact.",
-        "Arvid Lindblad heartbroken after Las Vegas spin.",
-        "Ollie Bearman confirmed with Haas for 2027.",
-        "Rafael Camara sacrificing F2 title for Haas drive."
+        "Mercedes led both Friday practice sessions.",
+        "Red Bull struggled with car balance.",
+        "Racing Bulls led the midfield pack.",
+        "Audi's appeal regarding Tsunoda was dismissed."
       ],
       "sources": [
         {
@@ -86,12 +86,13 @@
       ]
     },
     "ducks": {
-      "mood": "Anticipatory and competitive",
-      "pulse": "Fans are focused on making the College Football Playoff. There is high excitement for Husky Hate week.",
+      "mood": "Anticipatory and focused",
+      "pulse": "Fans are focused on the upcoming rivalry game against Washington. A win is needed to secure a playoff spot.",
       "storylines": [
-        "Ranked 12th in CFP bubble",
-        "Must win to secure playoff spot",
-        "Next: Sat Nov 28 vs Washington at Autzen, 4:30 p.m. PT on NBC"
+        "Second-half comeback fell short against No. 5 Texas Tech",
+        "Ranked 12th in penultimate CFP rankings",
+        "Must win for CFP eligibility",
+        "Upcoming rivalry game against Washington"
       ],
       "sources": [
         {
@@ -117,13 +118,13 @@
       ]
     },
     "niners": {
-      "mood": "Anxious but hopeful",
-      "pulse": "Fans are concerned about Brock Purdy's ankle injury after he missed practice. There is focus on roster changes and upcoming divisional matchups.",
+      "mood": "Anxious and uncertain",
+      "pulse": "Fans are worried about Brock Purdy's ankle injury. Mac Jones is set to start instead.",
       "storylines": [
-        "Brock Purdy missing practice due to an ankle injury",
-        "Colton McKivitz placed on injured reserve",
-        "Nate Hobbs activated from IR; Brandin Cook joins practice squad",
-        "Next: Sun Nov 29 vs Seahawks at Levi's, 1:25 p.m. PT on FOX"
+        "Brock Purdy ruled out with an ankle injury",
+        "Mac Jones named starter for upcoming game",
+        "Rams poached tight end Jack Stoll from practice squad",
+        "Upcoming home game against Seattle Seahawks"
       ],
       "sources": [
         {

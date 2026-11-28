@@ -1,17 +1,7 @@
 {
-  "updated": "2026-11-23",
+  "updated": "2026-11-28",
   "note": "Artists playing the Portland area who are touring a well-reviewed new album. Scores are Metacritic where one exists; otherwise the strongest critic reviews found. Check the venue before buying.",
   "shows": [
-    {
-      "artist": "Neurosis",
-      "album": "An Undying Love for a Burning World",
-      "score": 88,
-      "score_source": "Metacritic",
-      "score_url": "https://www.metacritic.com/music/an-undying-love-for-a-burning-world/neurosis",
-      "date": "2026-11-27",
-      "venue": "Revolution Hall (also Nov 28)",
-      "tickets": "https://www.neurosis.com/news/2026/9/8/neurosis-announces-new-tour-dates"
-    },
     {
       "artist": "feeble little horse",
       "album": "bitknot",

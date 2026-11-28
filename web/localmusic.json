@@ -1,6 +1,54 @@
 {
-  "updated": "2026-11-27",
+  "updated": "2026-11-28",
   "releases": [
+    {
+      "artist": "Cptn Over",
+      "title": "album release",
+      "type": "Album",
+      "local": true,
+      "genre": "",
+      "label": "Bend Bulletin",
+      "date": "2026-11-21",
+      "why": "Hold album release this Saturday at VTP.",
+      "links": [
+        {
+          "name": "Music news",
+          "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNSHFFZldEaXFQR2JXNU5DbFFqM1J6cURUVlFMcHNSOWdLR1ItVHpQMS1FbzlBcHdjN3dZR3VmMV96d2Zab1JtcW5qbnpXYUhBb0lVNXprWHd5a2ZCZ2ZWV0NGV043RDUwTWJ0Tm0xbUw0SU5LTlk3eTByd3lTN2JzU1F6MDZ2a3ItT2xueE1Mbk5tOXBJ?oc=5"
+        }
+      ]
+    },
+    {
+      "artist": "Trio Subtonic",
+      "title": "unnamed album",
+      "type": "Album",
+      "local": true,
+      "genre": "funk/experimental",
+      "label": "",
+      "date": "",
+      "why": "A Portland power trio is releasing an album.",
+      "links": [
+        {
+          "name": "Web search: Portland album releases",
+          "url": "https://the1905.turntabletickets.com/shows/13297/2026-12-12"
+        }
+      ]
+    },
+    {
+      "artist": "MATO",
+      "title": "WHAT.",
+      "type": "Single",
+      "local": true,
+      "genre": "",
+      "label": "",
+      "date": "",
+      "why": "The show includes the latest single titled WHAT.",
+      "links": [
+        {
+          "name": "Web search: Portland album releases",
+          "url": "https://ma.to/event/album-release-show-05-dec-2026"
+        }
+      ]
+    },
     {
       "artist": "Sallie Ford",
       "title": "Growing Pains",
@@ -362,58 +410,6 @@
         {
           "name": "Review",
           "url": "https://theindyreview.com/2026/09/02/album-review-the-thermals-under-crushing-rain/"
-        }
-      ]
-    },
-    {
-      "artist": "Rebecca Sanborn",
-      "title": "Shadow Work",
-      "type": "Album",
-      "local": true,
-      "genre": "Jazz / chamber pop",
-      "label": "PJCE Records",
-      "date": "2026-09-04",
-      "why": "An 18-musician suite from Portland's jazz, classical and indie scenes, produced by Todd Sickafoose; on Willamette Week's fall must-hear list and profiled there.",
-      "links": [
-        {
-          "name": "Bandcamp",
-          "url": "https://pjce.bandcamp.com/album/shadow-work"
-        },
-        {
-          "name": "WW preview",
-          "url": "https://www.wweek.com/arts/2026/09/01/upcoming-local-albums-were-stoked-on-this-fall/"
-        }
-      ]
-    },
-    {
-      "artist": "Laura Veirs",
-      "title": "Temple Songs",
-      "type": "Album",
-      "local": true,
-      "genre": "Folk",
-      "label": "Raven Marching Band Records",
-      "date": "2026-08-14",
-      "why": "Her 14th solo album, recorded almost entirely alone in her backyard studio; reviewed by Willamette Week.",
-      "links": [
-        {
-          "name": "Announcement",
-          "url": "https://klofmag.com/2026/05/laura-veirs-announces-new-album-temple-songs-and-shares-flying-into-darkness/"
-        }
-      ]
-    },
-    {
-      "artist": "Saynave",
-      "title": "Did You See the Flowers?",
-      "type": "Album",
-      "local": true,
-      "genre": "Indie",
-      "label": "Fogwood Records",
-      "date": "2026-10-09",
-      "why": "Featured in the Portland Mercury's Oct. 23 Spin Cycle column of new local releases.",
-      "links": [
-        {
-          "name": "Portland Mercury",
-          "url": "https://www.portlandmercury.com/music/spin-cycle-go-with-the-flow/"
         }
       ]
     }

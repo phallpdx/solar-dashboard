@@ -1,10 +1,10 @@
 {
   "updated": "2026-11-28",
-  "updated_at": "2026-11-28T08:27:57Z",
+  "updated_at": "2026-11-28T10:22:55Z",
   "teams": {
     "blazers": {
-      "mood": "Optimistic and excited",
-      "pulse": "Fans are thrilled after a dominant win over the Warriors despite Lillard's absence. The team's hot start has created significant momentum.",
+      "mood": "optimistic and surging",
+      "pulse": "Fans are excited after a dominant win over the Warriors. The team's hot start and NBA Cup success drive positivity.",
       "storylines": [
         "Won Group C of Western Conference NBA Cup",
         "Beat Warriors 116-94 on 2026-11-28",
@@ -55,11 +55,11 @@
     },
     "f1": {
       "mood": "Uncertain and questioning",
-      "pulse": "Mercedes dominated Friday practice sessions in Qatar. Red Bull and Ferrari struggle with car balance and pace.",
+      "pulse": "Mercedes dominated Friday practice sessions in Qatar. Uncertainty surrounds Red Bull and Ferrari performance levels.",
       "storylines": [
         "Mercedes led both Friday practice sessions.",
-        "Red Bull struggled with car balance.",
-        "Racing Bulls led the midfield pack.",
+        "Racing Bulls lead the midfield pack.",
+        "Verstappen struggled with car balance.",
         "Audi's appeal regarding Tsunoda was dismissed."
       ],
       "sources": [
@@ -86,13 +86,13 @@
       ]
     },
     "ducks": {
-      "mood": "Anticipatory and focused",
-      "pulse": "Fans are focused on the upcoming rivalry game against Washington. A win is needed to secure a playoff spot.",
+      "mood": "Anticipatory rivalry focus",
+      "pulse": "Fans are focused on the upcoming Washington game and playoff implications. Husky Hate week has arrived.",
       "storylines": [
-        "Second-half comeback fell short against No. 5 Texas Tech",
-        "Ranked 12th in penultimate CFP rankings",
-        "Must win for CFP eligibility",
-        "Upcoming rivalry game against Washington"
+        "Second-half comeback loss against No. 5 Texas Tech",
+        "Ranked 12th on CFP bubble",
+        "Upcoming rivalry game against Washington",
+        "Four games determine CFP chances"
       ],
       "sources": [
         {
@@ -122,9 +122,9 @@
       "pulse": "Fans are worried about Brock Purdy's ankle injury. Mac Jones is set to start instead.",
       "storylines": [
         "Brock Purdy ruled out with an ankle injury",
-        "Mac Jones named starter for upcoming game",
+        "Mac Jones to start against Seahawks",
         "Rams poached tight end Jack Stoll from practice squad",
-        "Upcoming home game against Seattle Seahawks"
+        "Upcoming game against Seattle Seahawks"
       ],
       "sources": [
         {

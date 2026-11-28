@@ -1,6 +1,6 @@
 {
   "updated": "2026-11-28",
-  "updated_at": "2026-11-28T08:30:09Z",
+  "updated_at": "2026-11-28T10:24:49Z",
   "analysis": {
     "headline": "Dow rebounded while S&P 500 and Nasdaq fell amid investor concerns.",
     "summary": "The Dow rose after a dramatic late-day comeback. Stocks faced pressure from AI doubts, tariffs, and inflation fears. Gold and Bitcoin prices moved significantly despite broader market volatility. Oil saw modest gains while Treasury yields declined.",
@@ -39,7 +39,7 @@
   },
   "helium": {
     "headline": "North American Helium has started production at Canada's largest helium field.",
-    "summary": "The company brought its large helium field online and opened a purification facility in southwest Saskatchewan. Financing includes lifting the SWFF past $5.5 million raised. The market faces tightening supply and potential growth from federal tax changes.",
+    "summary": "The company brought its large Canadian helium field online and opened a purification facility in southwest Saskatchewan. A $100 million liquefier may be built in Swift Current. The market faces global shortages and tightening supply.",
     "sources": [
       {
         "name": "Google News: North American Helium",
@@ -56,14 +56,6 @@
       {
         "name": "Google News: North American Helium",
         "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPU2ZWdDdrVHktZnZEcENsbElIR0FJMWtaZTFXclg2eWM3M0xRMWRaVUx6cnJsLWwzdXNNR3dSR0JqZTlfakpEZ2VuZjdoTkNmQlBxaS1Sd3Z0N3JnbzFxTDg0MzVEWE5hdnhCZEJIenU5Y3BNNm5idXZLZzZPdEc5MFdMZWV0THdQdzFOMHdtMElHaUhocnZN?oc=5"
-      },
-      {
-        "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNd3NpNlgzbS00SHh0b1NYVHR0S2wzNHd3allHRWpDWkJVamtSVnU0Y2tQWlJraXc1NjZvVVRHYjRfeElGRnlWaXV2MG1nQmE1dENFcDk2bVFPSG1NVmk5MVl2a282UDFEbWVMZm9VX1V6R0syc3hDVjY0QVR0RURMN0xkS0hfZDBadWZISWJ6eWRxbkVCWkl0SEZCODJ1djZYcDVuQ1k1TXJrak0wMlZlcENnTjJLSDEzdWpVbEt2NlFhejAz?oc=5"
-      },
-      {
-        "name": "Google News: helium market",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNcHpWdUpsSlZVMU9Ec2hBVHdjZnJ2TlZxXzRUYTBWc3BIVGlaZllfbG1DZmdEd1Z0WEZOQzhfZ3RMRi1UVTdtcEY3VVhGUFRXdUtsemZsMS1DSDlGd0R6VHJhRk5QM1RETC00bVpYYS1pdFNRelBVbFN2NWxQdUpSdXF4eHVzN3FpWkp3ZDN2Ny1IcW5jUEVtNFl3?oc=5"
       }
     ],
     "by": "local model",
@@ -75,34 +67,34 @@
         "source": "Google News: helium market"
       },
       {
+        "title": "REV confirms helium flows at Alberta–Montana target",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOaWx2azQxOEdSVFZUNk14dFVTQ1RxNWV3UmRCZUZWeHQwbGp0TnRJUXhqcW5JVFlzdFMtdFhLWjJsZnJ6YW1Kand5YV9vMHFVYXFWTjJLUHhobC1QeXdMaTk5ZGt0MFJLelVOSU45bHRxblJHQk4wNG81TTZnQ1htYndncW5CWl9zZnA5OC1BRy14Vmx0eE1LemszMFhOT1ZI?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
+        "title": "Helium Evolution reports Q3 2026 results, advan...",
+        "date": "2026-11-25",
+        "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNNkRmYVdwWFZidTJQdDl5eW5RRjFOOTJ3Y3RSUXhsbzFaV3lueE1iamhSZWV6Z0JGeFVTRllXYnVDTlduMVRndTVVZDAtOU54N3p0eUNQV3VYV0VWZHI5WFVKTFhUcVA2V2VKTTZqc1ptakFaQVJtbUlHRC1JVWw3dlVHQnJ3ckFBNUVma2JWdmNtV1JTa2NtTUdIcFhmWldYS2c?oc=5",
+        "source": "Google News: helium market"
+      },
+      {
         "title": "Helium Evolution Reports Third Quarter 2026 Results and Provides Development Update",
         "date": "2026-11-24",
         "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxPRnk1N1VsMGE4M3BTNHBxVk9HbXdqbHhKSkkyLUdBejdMYVlUZkM5ejRYYVUyRERoUVBDc2MxVVNSSlpBcGEzcmVJQkZnLU9PZGNxR1dwYzVNN0tfb3dHcnFFck1XUkhqdGlmQWM4eEdPY1piZ1ZRX2s5LUlrQTBpVFBfQ2QzdWFud0NEM19lX2FoSkhkRy1LZVRoZFNyY2NGRFRDTDRPVFB4RWp5MGFucThuWHZoY002cU56ZVRJSXBIYnBYTmsxeC1Xb1Y0TEFYZWF0NnpWaER4d3FzWUdLMmRMMmc4TU9PQzR3LU9SRlBWMkJxYzB5aEtJZVc3Q19sLVpHU09fZ052MkhBWkNKODJhTXBYQQ?oc=5",
         "source": "Google News: helium market"
       },
       {
-        "title": "Helium getting oil and gas treatment good news for Swift Current",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNVFRKbmtqaHRpZHFoTDZ4VXdpRmtXUGtUNERCOWYxbWl3ZTVBSG9BU3gwRjZCNUlqS1dPWnRZMXdHYkFacDhiOE9TM2xBd3NTbzBRSHlSTGVpMkdWUUlYa253SEM0X1V6dmZjLS04OXpwNXhTa1NCeHQxaWNtdFB4djBlNlpWQWhrcHhaRHJwMFdYVHE5OHpnYkVZWXJrOEFMR0k5MzFqU01vVXc4?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium Evolution Plans $3M Saskatchewan Seismic Program",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNTmRfdzVTb3dDamkwQ3Z0NllQNUhzOGtWVWI4N0xfLUJPdUJfMEZCdGJZUmhVOER3cFBiNmc2NHVFSl9RUkNSVDFuSFpqMGlac0xHc3gzbUtLSzkyaWQ5a2UwUEVkZFAtaTdXQlZISmFaLVJYbE0tYU84dmlpX0xWMndTWWUybWlEUTdyV0hZVWliYlFTQWcwWEFB?oc=5",
-        "source": "Google News: North American Helium"
-      },
-      {
-        "title": "Helium Evolution targets new Saskatchewan discoveries in CAD $3m programme",
-        "date": "2026-11-16",
-        "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNVURYc1pUdmdITUdGQnlvQ1RENXdpRWs2Ri1QdTVZekgxNjJCUll1TEJsRHJjX0M1eFdkQVZwRlhCSEZIck0wcTNUdmJvNTY2Um53MFFjc2o2QjBadjBSU29peEhTVXRBYjh1N0xGZzl2d1VwQXVtQVhQZFh2RGptalJoRXd4UkVoendWWjUzX1MxRWdDbGpxMkJlSnB2Vks2ZnFsMlFLRzVaNnlfY2NnSXllVElUTzFYZ3FIMG1B?oc=5",
+        "title": "REV Exploration Confirms Helium Discovery with Strong Initial Gas Flow at Aden Dome",
+        "date": "2026-11-24",
+        "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxNR0cxY2lheUE4X0VYVGlQa2tMS1VXWVcwOWl5Q3E5RXNKMzQ4dnlaTFdlYThYQVRtS2p4VWxMOEd5TnllREk3R0ZFOXdXOXRmMmFuTnBISEpZcnd3QlJSREVGb19ob0hCcFFnVmk2OGhVLV9UenhZbndiZEdkdjZzQXBwUjJlNldKc3pfNzYyZUZFNWRjWl9NTzFEVHFiZU94NW5BUmIyTlplMFg4dzdQZ0RRdmlkSXZ3bUF0OWRoVm1meWUtYjg3OU9DRzg4dE94NVFvcS0wNFpYYlZCZWk2blVvSXNQeFpSOEJfNzZ30gHzAUFVX3lxTFBRZ0lHSF9RMkJUOUg4bF9qZHh5N0ozdUJUblNRamNVcjJTYmhCX0hfeUVBU3hGV2sxX2RkaHdZbW1NVUs2aWliZ1dUZW8xQXdwRkpNRHc0WXhsRGZaMkplZVJVNE9qb19UOE5MVnFxNkNYaU5fZGpsMUc2RjFUMXU2Z2NhYWFYbDgyRWZmdUtWbGxhVHBkd0p1bVJ4WERBQWQwYUlXSTJDaXNUQUIwSkNDemZHWHoxeTNuZUdmelUxMWphM2k2akFjdm9uTlI0UWx1M0pyb3I1UEtaRGtaUmY2WjdUZldfdXhlRDFzRElvSVFKMA?oc=5",
         "source": "Google News: helium market"
       }
     ]
   },
   "realestate": {
     "headline": "New home sales surge as builders slash prices to move inventory.",
-    "summary": "Home sales slow as buyers adjust to elevated mortgage rates. Builders are slashing prices to move inventory. Average 30-year mortgage rates eased to 7.21%. Prices continue climbing in Oregon.",
+    "summary": "Builders are slashing prices to move inventory and new home sales are surging. Home sales have slowed due to elevated mortgage rates. The average US 30-year mortgage rate eased to 7.21%.",
     "sources": [
       {
         "name": "Google News: Portland housing",
@@ -114,15 +106,29 @@
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWZkM3lUZGZCS2hLekloZUVIUVh2ZW82Tmx0ajVTYW9hSGRRaktpbk9ZYnhMalk1MnZ2NWRRSE1vX0Y0RmQ3a0JKM0JNRUlDOExGem15cHgwelhGaXJJSU93WEZfSVRkRGc5LTVhc3hJanF2NnBXMjIxYjl5U21Na3dVNk1KYXNzSW5yMThBX0JDNUl1LVgxUVRWMnFWeFBpbmcxS2pueTl1WGZEa0hHaS1WYkZkdFhx0gHMAUFVX3lxTE1ZMEZuTmc4MmU1NUx0cWVwa0otN1hQemlfdkdyazl4N2xpdzZIVWhPZEt1MS01N0JueDh3UFlaVnFya0FKUmVlUGF0SlQzZ2JMSW5GbEFxa3Zxc2c5VEpkeXAxd2RHZEoxaF95VmRVUWlOVFd2N0w2SHZoMEZRMm14aU5xYUN2QU9odEpnWWF3OEpGbFlrRzJLWTVXNXdBUk0yYnRsVTFmQ0V4d3F5NHZIU1Z6N3JRUFVMWUN2SzM4d18zSGliUkpMdVdsZQ?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOZGRzTl9UOGw1RloyNnJsNzZXa1p2UTZEdjdKcVVYVFRDb1VLaHRfblpRSGRCQ21lTXB0eFdna3RMQmVRMER0MnRIbmtscE1WM0V0M2I3Tnd4NldFUk9vQjlYMk5nTEFSc3d3VGtET2F2OWVjdWtkLUp1cjh5N3pETGEtZ05LSlk?oc=5"
       },
       {
         "name": "Google News: Portland housing",
-        "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE5WOGpHa3FWUElDSzNXdUZwekxyY01udldvVjhFOXJ3LVAyWXBoellHRGwtT1NiWFQwbFNGVGVRalRDSEc3dThodG9rOXJNTkp2dmRta3lSdnQ5VGswbzV0aUZ0MERLMjlmeDg4dHQ4dw?oc=5"
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOEJnS25EUTZ4TkVGX0JtaEV5VkVHSnJJUGh0VjFnUHdKR3FoY0QzYkdTVzlNdElHeUgwYkNXLTV4eHVBVkswb29tb09zenpQeXRWRHJpNE5Jakt6N3FmbGhZTFJ1bEh3ODBMZVpyQjJBeVVaTG5jUFRSRDJiTl9IZVZiUkgwQ2VuQ3dPVzZWOVRDMGptNFhLNFoxdDlLVjRJS0VwWm5EQ0pybXpFSVJWM21n?oc=5"
+      },
+      {
+        "name": "Google News: Portland housing",
+        "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOOUVPZndpcF82SF9qeGtnbGwxOEZhSlQzTVFBSGlZV2ZWZVBDdlZaLVFkNy1TVWhrczh3Vm13WFJKN2MxSjBxcWFGU3ZOdjB5VG53d1VUV3Y3MUhoWW1iekFSYVlQVW52WnMyS0hqSjR5QnFiSTJVc2owN3JobTBROXVrRi1RbE5uZWtNQ2ZzYXZnTEo0MWlZTnRCTzE3TE00bjJUUHJfeXpoWXhNaFNFdA?oc=5"
+      },
+      {
+        "name": "Google News: mortgage rates",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOcFMybjA5M0N2ZlVOTkN0VWFZQkNkdDVseHVBdmdyVjY3SHRSVVprc0xTQTdCOVVEYXNCN3phUHV2Um5TNmg3bE9nWTItSFVlUVlmQXdWWnk1TUFpVkFySmlteTBxcFJ1bGFaVFNUZy1qR3lMNnUzQjd1RVpmVzNnWXE3OXprNk9SUUsyVV9TQzEtZjUwWEZKb3N2aWFWZnE4TGktMTZmMEV1OHY5dlNSSDF6djBYdy1pNjEyMG8zVzVFY1d4VTF4OE12eV91a0hY?oc=5"
       }
     ],
     "by": "local model",
     "items": [
+      {
+        "title": "Average U.S. 30-year mortgage rate eases to 7.21%, not far from 2026 high",
+        "date": "2026-11-28",
+        "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOOUVPZndpcF82SF9qeGtnbGwxOEZhSlQzTVFBSGlZV2ZWZVBDdlZaLVFkNy1TVWhrczh3Vm13WFJKN2MxSjBxcWFGU3ZOdjB5VG53d1VUV3Y3MUhoWW1iekFSYVlQVW52WnMyS0hqSjR5QnFiSTJVc2owN3JobTBROXVrRi1RbE5uZWtNQ2ZzYXZnTEo0MWlZTnRCTzE3TE00bjJUUHJfeXpoWXhNaFNFdA?oc=5",
+        "source": "Google News: Portland housing"
+      },
       {
         "title": "Today's Mortgage Rates: November 27, 2026",
         "date": "2026-11-27",
@@ -145,12 +151,6 @@
         "title": "Current Louisiana Mortgage And Refinance Rates",
         "date": "2026-11-27",
         "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBhM0VLU1JNQ0pWQkFYNFh3T3RUaFB5cDVHVWhyZm94MkR3QmhtODdHcmV4eFV5LTNtY2JuMkgtcjZHSWRyczlXaWdWUGtBN3JqTjdmVVdBRzBISVpFTFFiemJIbS0tcmlyQ2FvSmhSakZlLWM?oc=5",
-        "source": "Google News: mortgage rates"
-      },
-      {
-        "title": "Current Illinois Mortgage And Refinance Rates",
-        "date": "2026-11-27",
-        "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1jMHZHMmhQWmpsX09VZm4wY0RQanFkTHJwYlBYdVBMSXZjUXFXdU9WaWFOSTNGRjFlUDhqMDFEekRiXzJrOEcxWi00N25jcFNKTWs2azZjMkt0T0o4bGJLV0d1aE1HWWFtRVdzcFE1M3lXZw?oc=5",
         "source": "Google News: mortgage rates"
       }
     ],
